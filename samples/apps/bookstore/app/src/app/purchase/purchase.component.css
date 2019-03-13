@@ -1,0 +1,18 @@
+
+
+.mat-card {
+  padding: 10px;
+}
+
+.mat-card-title {
+  margin: 0px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+}
+
+.title-row-text {
+  padding-left: 10px;
+}

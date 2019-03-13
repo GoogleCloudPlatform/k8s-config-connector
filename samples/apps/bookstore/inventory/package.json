@@ -1,0 +1,30 @@
+{
+  "name": "inventory",
+  "version": "0.0.1",
+  "description": "An example implementation of a simple bookstore inventory API.",
+  "main": "inventory.js",
+  "scripts": {
+    "start": "node inventory.js"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Google Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@google-cloud/spanner": "^1.5.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14",
+    "mysql": "^2.11.1"
+  },
+  "engines": {
+    "node": ">=4.6"
+  },
+  "files": [
+    "README.md",
+    "inventory.js",
+    "appengine.js",
+    "package.json",
+    "swagger.json"
+  ]
+}

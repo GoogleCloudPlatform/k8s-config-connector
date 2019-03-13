@@ -1,0 +1,2 @@
+# kustomize local build patch
+config/kustomize/image_patch.yaml

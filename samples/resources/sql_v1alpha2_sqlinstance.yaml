@@ -1,0 +1,10 @@
+apiVersion: sql.cnrm.cloud.google.com/v1alpha2
+kind: SQLInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: sqlinstance-sample
+spec:
+  databaseVersion: MYSQL_5_7
+  settings:
+    tier: db-n1-standard-1

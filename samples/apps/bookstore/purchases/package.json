@@ -1,0 +1,31 @@
+{
+  "name": "purchases",
+  "version": "0.0.1",
+  "description": "An example implementation of a simple purchase API.",
+  "main": "purchases.js",
+  "scripts": {
+    "start": "node purchases.js"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Google Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14",
+    "mysql": "^2.11.1",
+    "request": "^2.34",
+    "request-promise": "^4.1.1"
+  },
+  "engines" : {
+    "node" : ">=4.6"
+  },
+  "files": [
+    "README.md",
+    "purchases.js",
+    "appengine.js",
+    "package.json",
+    "swagger.json"
+  ]
+}

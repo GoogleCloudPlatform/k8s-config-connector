@@ -1,0 +1,73 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "description": "An example implementation of a simple purchase API.",
+  "main": "app.js",
+  "author": "Google Inc.",
+  "license": "Apache-2.0",
+  "angular-cli": {},
+  "scripts": {
+    "ng": "ng",
+    "build": "ng build",
+    "build-prod": "ng build --prod --aot",
+    "prestart": "npm run build",
+    "start": "node app.js",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "4.0.3",
+    "@angular/common": "4.0.3",
+    "@angular/compiler": "4.0.3",
+    "@angular/compiler-cli": "4.0.3",
+    "@angular/core": "4.0.3",
+    "@angular/forms": "4.0.3",
+    "@angular/http": "4.0.3",
+    "@angular/material": "2.0.0-beta.3",
+    "@angular/platform-browser": "4.0.3",
+    "@angular/platform-browser-dynamic": "4.0.3",
+    "@angular/router": "4.0.3",
+    "@google-cloud/pubsub": "^0.19.0",
+    "atob": "^2.0.3",
+    "body-parser": "^1.15.2",
+    "core-js": "^2.4.1",
+    "express": "^4.14",
+    "google-cloud": "^0.47.0",
+    "request": "^2.34",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.7.6"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.0.0",
+    "@angular/compiler-cli": "^4.0.0",
+    "@types/jasmine": "2.5.38",
+    "@types/node": "~6.0.60",
+    "codelyzer": "~2.0.0-beta.4",
+    "jasmine-core": "~2.5.2",
+    "jasmine-spec-reporter": "~3.2.0",
+    "karma": "~1.4.1",
+    "karma-chrome-launcher": "~2.0.0",
+    "karma-cli": "~1.0.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-coverage-istanbul-reporter": "^0.2.0",
+    "protractor": "~5.1.0",
+    "ts-node": "~2.0.0",
+    "tslint": "~4.4.2",
+    "typescript": "~2.1.0"
+  },
+  "engines": {
+    "node": ">=4.6"
+  },
+  "files": [
+    "app.js",
+    "package.json",
+    "src/",
+    "e2e/",
+    "tslint.json",
+    "karma.conf.js",
+    "protractor.conf.js"
+  ]
+}

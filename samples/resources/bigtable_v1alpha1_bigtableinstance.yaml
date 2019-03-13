@@ -1,0 +1,9 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+kind: BigtableInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: bigtableinstance-sample
+spec:
+  displayName: BigtableSample
+  type: PRODUCTION

@@ -1,0 +1,152 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A simple Purchases API example.",
+    "title": "Purchases",
+    "version": "1.0.0"
+  },
+  "host": "purchases.kubernetes-hello-world-1385.appspot.com",
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/purchases": {
+      "get": {
+        "description": "Returns all purchases.",
+        "operationId": "listPurchases",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of purchases.",
+            "schema": {
+              "$ref": "#/definitions/listPurchasesResponse"
+            }
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "description": "Creates a new purchase.",
+        "operationId": "createPurchase",
+        "parameters": [
+          {
+            "description": "A purchase resource to create.",
+            "in": "body",
+            "name": "purchase",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/purchase"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A newly created purchase resource.",
+            "schema": {
+              "$ref": "#/definitions/purchase"
+            }
+          }
+        }
+      }
+    },
+    "/purchases/{purchase}": {
+      "get": {
+        "description": "Get a single purchase resource with the given name.",
+        "operationId": "getPurchase",
+        "parameters": [
+          {
+            "description": "Name of the purchase to get.",
+            "format": "int64",
+            "in": "path",
+            "name": "purchase",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A purchase resource.",
+            "schema": {
+              "$ref": "#/definitions/purchase"
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/version": {
+      "get": {
+        "description": "Returns a version of the application.",
+        "operationId": "getVersion",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Version of the application.",
+            "schema": {
+              "$ref": "#/definitions/version"
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "definitions": {
+    "listPurchasesResponse": {
+      "properties": {
+        "purchases": {
+          "items": {
+            "$ref": "#/definitions/purchase"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "purchase": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "type": "string"
+        },
+        "book": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "user",
+        "book"
+      ]
+    },
+    "version": {
+      "properties": {
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version"
+      ]
+    }
+  }
+}

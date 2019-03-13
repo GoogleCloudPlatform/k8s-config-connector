@@ -1,0 +1,322 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A simple Users API example.",
+    "title": "Users",
+    "version": "1.0.0"
+  },
+  "host": "users.kubernetes-hello-world-1385.appspot.com",
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "description": "Returns all users.",
+        "operationId": "listUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users.",
+            "schema": {
+              "$ref": "#/definitions/listUsersResponse"
+            }
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "description": "Creates a new user.",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "description": "A user resource to create.",
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A newly created user resource.",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user}": {
+      "get": {
+        "description": "Get a single user resource with the given name.",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "description": "Name of the user to get.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A user resource.",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "description": "Deletes a single user with the given name.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "description": "Name of the user to delete.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "An empty response body."
+          }
+        }
+      }
+    },
+    "/users/{user}/books": {
+      "get": {
+        "description": "Returns all books in a user with the given name.",
+        "operationId": "listBooks",
+        "parameters": [
+          {
+            "description": "Name of the user whose books should be returned.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of books on the specified user.",
+            "schema": {
+              "$ref": "#/definitions/listBooksResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new book on the user.",
+        "operationId": "createBook",
+        "parameters": [
+          {
+            "description": "Name of the user where the book should be created.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Book to create.",
+            "in": "body",
+            "name": "book",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/book"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A newly created book resource.",
+            "schema": {
+              "$ref": "#/definitions/book"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user}/books/{book}": {
+      "get": {
+        "description": "Get a single book with a given name from a user.",
+        "operationId": "getBook",
+        "parameters": [
+          {
+            "description": "Name of the user from which to get the book.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Name of the book to get from the user.",
+            "format": "int64",
+            "in": "path",
+            "name": "book",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A book resource.",
+            "schema": {
+              "$ref": "#/definitions/book"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a single book with a given name from a user.",
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "description": "Name of the user from which to delete the book.",
+            "format": "int64",
+            "in": "path",
+            "name": "user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Name of the book to delete from the user.",
+            "format": "int64",
+            "in": "path",
+            "name": "book",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "An empty response body."
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "description": "Returns a version of the application.",
+        "operationId": "getVersion",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Version of the application.",
+            "schema": {
+              "$ref": "#/definitions/version"
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "definitions": {
+    "book": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "user",
+        "name"
+      ]
+    },
+    "listBooksResponse": {
+      "properties": {
+        "books": {
+          "items": {
+            "$ref": "#/definitions/book"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "books"
+      ],
+      "type": "object"
+    },
+    "listUsersResponse": {
+      "properties": {
+        "users": {
+          "items": {
+            "$ref": "#/definitions/user"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "user": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "version": {
+      "properties": {
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version"
+      ]
+    }
+  }
+}

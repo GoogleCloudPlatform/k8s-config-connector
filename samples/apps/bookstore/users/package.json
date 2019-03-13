@@ -1,0 +1,30 @@
+{
+  "name": "users",
+  "version": "0.0.1",
+  "description": "An example implementation of a simple users API.",
+  "main": "users.js",
+  "scripts": {
+    "start": "node users.js",
+    "test": "npm install && cd ./test && npm test"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Google Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14",
+    "mysql": "^2.11.1"
+  },
+  "engines" : {
+    "node" : ">=4.6"
+  },
+  "files": [
+    "README.md",
+    "users.js",
+    "appengine.js",
+    "package.json",
+    "swagger.json"
+  ]
+}
