@@ -57,6 +57,12 @@ For existing Kubernetes applications that are currently using additional tools (
     ```bash
     kubectl apply -f install-bundle/
     ```
+    **NOTE:** If you previously installed Config Connector alpha and wish to
+    upgrade, newer versions of the `CustomResourceDefinitions` may cause some of
+    the resources to not be applied successfully. You will need to delete the
+    previous version of the CRD via `kubectl delete crd [NAME]`, and then rerun
+    the installation command above. *This will delete any resources of that
+    particular type*.
 
 1. In order to create Google Cloud resources, Config Connector needs an IAM service account to authenticate as. Create a service
 account, create a key for the service account, and inject it in the cluster:
