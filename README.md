@@ -351,6 +351,7 @@ You can find more details on the meaning of specific properties in the API docum
 | bigtableclusters.bigtable.cnrm.cloud.google.com | [Bigtable Cluster](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters) |
 | bigtableinstances.bigtable.cnrm.cloud.google.com | [Bigtable Instance](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances) |
 | bigquerydatasets.bigquery.cnrm.cloud.google.com | [BigQuery Dataset](https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets) |
+| iampolicies.iam.cnrm.cloud.google.com | [IAM Policy](https://cloud.google.com/iam/reference/rest/v1/Policy) |
 | pubsubsubscriptions.pubsub.cnrm.cloud.google.com | [Pub/Sub Subscription](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions) |
 | pubsubtopics.pubsub.cnrm.cloud.google.com | [Pub/Sub Topic](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics) |
 | redisinstances.redis.cnrm.cloud.google.com | [Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances) |
