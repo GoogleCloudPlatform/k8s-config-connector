@@ -21,6 +21,8 @@ For existing Kubernetes applications that are currently using additional tools (
 
 ## Getting Started with Config Connector
 
+There are two ways to install ConfigConnector Alpha on your Kubernetes Cluster: by downloading tarball archive or by installing GKE cluster with Add-on enabled. After completing prerequistite steps below either follow [tarball installation instructions](#Instructions-for-Tarball-Installation) or [GKE Add-on installation instructions](#Instructions-for-GKE-Addon-Installation).
+
 ### Prerequisites
 - `kubectl`
 - `gcloud` with a configuration pointed to a project you have the **Owner** role on
@@ -32,7 +34,7 @@ For existing Kubernetes applications that are currently using additional tools (
     --user $(gcloud config get-value account)
   ```
 
-### Instructions
+### Instructions for Tarball Installation
 
 1. Download a tarball with the installation configuration:
     ```bash
@@ -64,6 +66,31 @@ For existing Kubernetes applications that are currently using additional tools (
     the installation command above. *This will delete any resources of that
     particular type*.
 
+
+### Instructions for GKE Addon Installation
+1. Work with your Google Contact to whitelist your GCP project to use ConfigConnector. You will need to provide the project id.
+
+1. Use the following gcloud command to create Kubernetes cluster with ConfigConnector addon enabled.
+
+    ```bash
+    CLUSTER_NAME=[my new cluster name]
+    ZONE=[my zone]
+    CLUSTER_VERSION=1.14 # use cluster version 1.14 or later
+    g3cloud alpha container clusters create ${CLUSTER_NAME} --cluster-version=${CLUSTER_VERSION} --zone=${ZONE} --addons=ConfigConnector
+    ```
+1. After the cluster is created, verify that ConfigConnector-specific resource definitions were installed by running 
+   ```bash
+   kubectl get crds
+   ```
+   you will see CRDs with `cnrm` in their name, such as `sqldatabases.sql.cnrm.cloud.google.com`.
+1. Trying to unders
+
+## Config Connector Scenarios
+
+Config Connector Alpha includes two sample applications that demonstrate two key usage scenarios. The first sample explores the eventually-consistent, `kubectl apply -f` scenario, where your entire infrastructure may be defined declaratively in a single file and deployed with a single command. The second sample uses `kustomize`, an example of tooling in the Kubernetes ecosystem, to use the same set of configuration files to deploy an application with a SQL database dependency first using an in-cluster MySQL database, and finally using a Cloud SQL database instance.
+
+### Prerequisites
+
 1. In order to create Google Cloud resources, Config Connector needs an IAM service account to authenticate as. Create a service
 account, create a key for the service account, and inject it in the cluster:
     ```bash
@@ -89,51 +116,45 @@ account, create a key for the service account, and inject it in the cluster:
     rm ./key.json
     ```
 
-## Config Connector Scenarios
+1. Before running any of the sample applications, you need to create an identity that can be used by the demo applications and make it available as a secret in your cluster. You may use a different name than the one provided or reuse a service account created previously if it has the Editor role on your project.
 
-Config Connector Alpha includes two sample applications that demonstrate two key usage scenarios. The first sample explores the eventually-consistent, `kubectl apply -f` scenario, where your entire infrastructure may be defined declaratively in a single file and deployed with a single command. The second sample uses `kustomize`, an example of tooling in the Kubernetes ecosystem, to use the same set of configuration files to deploy an application with a SQL database dependency first using an in-cluster MySQL database, and finally using a Cloud SQL database instance.
+    Create an identity that sample applications will use to run:
 
-### Prerequisites
+    ```bash
+    SA_EMAIL=cnrm-application-demo@${PROJECT_ID}.iam.gserviceaccount.com
 
-Before running any of the sample applications, you need to create an identity that can be used by the demo applications and make it available as a secret in your cluster. You may use a different name than the one provided or reuse a service account created previously if it has the Editor role on your project.
+    # NOTE: Creating a service account will fail if it already exists; skip to
+    # the key creation below if you already created it previously.
+    gcloud iam service-accounts create cnrm-application-demo \
+        --project ${PROJECT_ID}
+    gcloud projects add-iam-policy-binding $PROJECT_ID \
+        --member serviceAccount:${SA_EMAIL} \
+        --role roles/editor
+    ```
 
-Create an identity that sample applications will use to run:
+    Create and inject a key for the service account into the cluster:
 
-```bash
-SA_EMAIL=cnrm-application-demo@${PROJECT_ID}.iam.gserviceaccount.com
-
-# NOTE: Creating a service account will fail if it already exists; skip to
-# the key creation below if you already created it previously.
-gcloud iam service-accounts create cnrm-application-demo \
-    --project ${PROJECT_ID}
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-    --member serviceAccount:${SA_EMAIL} \
-    --role roles/editor
+    ```bash
+    gcloud iam service-accounts keys create \
+        --iam-account ${SA_EMAIL} \
+        ./key.json
+    kubectl create secret generic gcp-key --from-file=key.json
 ```
 
-Create and inject a key for the service account into the cluster:
+3. Enable the APIs for the relevant GCP services:
+    ```bash
+    gcloud services enable pubsub.googleapis.com --project ${PROJECT_ID}
+    gcloud services enable spanner.googleapis.com --project ${PROJECT_ID}
+    gcloud services enable sqladmin.googleapis.com --project ${PROJECT_ID}
+    ```
 
-```bash
-gcloud iam service-accounts keys create \
-    --iam-account ${SA_EMAIL} \
-    ./key.json
-kubectl create secret generic gcp-key --from-file=key.json
-```
+4. Config Connector conceptually binds a Kubernetes namespace to a GCP project. Either set your default namespace to a namespace whose name matches the GCP project ID you wish to persist resources in, or add the `cnrm.cloud.google.com/project-id` annotation to your namespace:
 
-Enable the APIs for the relevant GCP services:
-```bash
-gcloud services enable pubsub.googleapis.com --project ${PROJECT_ID}
-gcloud services enable spanner.googleapis.com --project ${PROJECT_ID}
-gcloud services enable sqladmin.googleapis.com --project ${PROJECT_ID}
-```
-
-Config Connector conceptually binds a Kubernetes namespace to a GCP project. Either set your default namespace to a namespace whose name matches the GCP project ID you wish to persist resources in, or add the `cnrm.cloud.google.com/project-id` annotation to your namespace:
-
-```bash
-kubectl annotate namespace default \
-  "cnrm.cloud.google.com/project-id=${PROJECT_ID}" \
-  --overwrite
-```
+    ```bash
+    kubectl annotate namespace default \
+      "cnrm.cloud.google.com/project-id=${PROJECT_ID}" \
+      --overwrite
+    ```
 
 ### Downloading the Samples
 
@@ -445,6 +466,20 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: abandon
 ...
 ```
+
+## Uninstalling ConfigConnector
+
+To easiest way to ensure that ConfigConnector and all its associated resources are deleted is to delete Kubernetes cluster. Please refer to [Resource Abandonment](#Resource-Abandonment) section if you wish to delete a Config Connector resource but not delete the underlying GCP resource.
+
+### Uninstalling on GKE
+
+```bash
+gcloud container clusters delete [Cluster Name]
+```
+
+### For non-GKE installations
+Please refer to your Kubernetes instance vendor documentation to how to delete the underlying Kubernetes cluster.
+
 
 ## Troubleshooting
 **Q**: The installation bundle or samples archive seems to be corrupted.
