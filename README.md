@@ -69,21 +69,20 @@ There are two ways to install ConfigConnector Alpha on your Kubernetes Cluster: 
 
 ### Instructions for GKE Addon Installation
 1. Work with your Google Contact to whitelist your GCP project to use ConfigConnector. You will need to provide the project id.
-
+1. Use instructions (here)[https://docs.google.com/document/d/1X3SWfLS9J1QuYxJTmcMEnApMAmgPc7WX4Gy8X_ePDes] to config service account that will allow using alpha API.
+1. Ensure that you're using the latest version of `gcloud`. To update run `gcloud components update`.
 1. Use the following gcloud command to create Kubernetes cluster with ConfigConnector addon enabled.
 
     ```bash
     CLUSTER_NAME=[my new cluster name]
     ZONE=[my zone]
-    CLUSTER_VERSION=1.14 # use cluster version 1.14 or later
-    g3cloud alpha container clusters create ${CLUSTER_NAME} --cluster-version=${CLUSTER_VERSION} --zone=${ZONE} --addons=ConfigConnector
+    gcloud alpha container clusters create ${CLUSTER_NAME} --zone=${ZONE} --addons=ConfigConnector --release-channel rapid
     ```
 1. After the cluster is created, verify that ConfigConnector-specific resource definitions were installed by running 
    ```bash
    kubectl get crds
    ```
    you will see CRDs with `cnrm` in their name, such as `sqldatabases.sql.cnrm.cloud.google.com`.
-1. Trying to unders
 
 ## Config Connector Scenarios
 
