@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
+apiVersion: spanner.cnrm.cloud.google.com/v1alpha2
 kind: SpannerInstance
 metadata:
   name: cnrm-instance
 spec:
   config: regional-us-central1
   displayName: "Bookstore"
-  nodeCount: 1
+  numNodes: 1

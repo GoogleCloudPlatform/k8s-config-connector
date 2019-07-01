@@ -1,4 +1,4 @@
-apiVersion: redis.cnrm.cloud.google.com/v1alpha2
+apiVersion: redis.cnrm.cloud.google.com/v1alpha3
 kind: RedisInstance
 metadata:
   labels:

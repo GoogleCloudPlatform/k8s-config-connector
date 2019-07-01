@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeHealthCheck
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computehealthcheck-sample
+spec:
+  checkIntervalSec: 10
+  type: TCP
+  tcpHealthCheck:
+    port: 80

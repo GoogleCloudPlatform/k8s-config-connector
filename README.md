@@ -334,7 +334,7 @@ kubectl get customresourcedefinition \
 The spec schema shows all supported (writable) properties, and matches the underlying API with the following exception:
 - Fields which reference other resources are named `xyzRef` and use Kubernetes-style references. For example:
     ```yaml
-    apiVersion: pubsub.cnrm.cloud.google.com/v1alpha1
+    apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
     kind: PubSubSubscription
     metadata:
       name: pubsubsubscription-sample
@@ -351,7 +351,9 @@ You can find more details on the meaning of specific properties in the API docum
 | bigtableclusters.bigtable.cnrm.cloud.google.com | [Bigtable Cluster](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters) |
 | bigtableinstances.bigtable.cnrm.cloud.google.com | [Bigtable Instance](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances) |
 | bigquerydatasets.bigquery.cnrm.cloud.google.com | [BigQuery Dataset](https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets) |
+| computehealthchecks.compute.cloud.google.com | [Compute Health Check](https://cloud.google.com/compute/docs/reference/rest/v1/healthChecks) |
 | iampolicies.iam.cnrm.cloud.google.com | [IAM Policy](https://cloud.google.com/iam/reference/rest/v1/Policy) |
+| iamserviceaccounts.iam.cnrm.cloud.google.com | [IAM Service Account](https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts) |
 | pubsubsubscriptions.pubsub.cnrm.cloud.google.com | [Pub/Sub Subscription](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions) |
 | pubsubtopics.pubsub.cnrm.cloud.google.com | [Pub/Sub Topic](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics) |
 | redisinstances.redis.cnrm.cloud.google.com | [Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances) |
@@ -407,7 +409,7 @@ metadata:
   name: iampolicy-sample
 spec:
   resourceRef:
-    apiVersion: pubsub.cnrm.cloud.google.com/v1alpha1
+    apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
     kind: PubSubTopic
     name: pubsubtopic-sample
   bindings:
