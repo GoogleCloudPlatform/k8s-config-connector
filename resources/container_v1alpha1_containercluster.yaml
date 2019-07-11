@@ -1,0 +1,11 @@
+apiVersion: container.cnrm.cloud.google.com/v1alpha1
+kind: ContainerCluster
+metadata:
+  labels:
+    label-one: "value-one"
+  name: containercluster-sample
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  removeDefaultNodePool: false
+  loggingService: none

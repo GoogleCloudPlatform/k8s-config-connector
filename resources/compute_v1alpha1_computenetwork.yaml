@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computenetwork-sample
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: true
