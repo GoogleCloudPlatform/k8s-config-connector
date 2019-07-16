@@ -55,6 +55,7 @@ For existing Kubernetes applications that are currently using additional tools (
 
 1. Install the infrastructure in your cluster:
     ```bash
+    kubectl apply -f install-bundle/core_v1alpha1_servicemapping.yaml
     kubectl apply -f install-bundle/
     ```
     **NOTE:** If you previously installed Config Connector alpha and wish to
@@ -351,7 +352,10 @@ You can find more details on the meaning of specific properties in the API docum
 | bigtableclusters.bigtable.cnrm.cloud.google.com | [Bigtable Cluster](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters) |
 | bigtableinstances.bigtable.cnrm.cloud.google.com | [Bigtable Instance](https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances) |
 | bigquerydatasets.bigquery.cnrm.cloud.google.com | [BigQuery Dataset](https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets) |
-| computehealthchecks.compute.cloud.google.com | [Compute Health Check](https://cloud.google.com/compute/docs/reference/rest/v1/healthChecks) |
+| computehealthchecks.compute.cnrm.cloud.google.com | [Compute Health Check](https://cloud.google.com/compute/docs/reference/rest/v1/healthChecks) |
+| computenetworks.compute.cnrm.cloud.google.com | [Compute Network](https://cloud.google.com/compute/docs/reference/rest/v1/networks) |
+| computefirewalls.compute.cnrm.cloud.google.com | [Compute Firewall](https://cloud.google.com/compute/docs/reference/rest/v1/firewalls) |
+| containerclusters.container.cnrm.cloud.google.com | [Container Cluster](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters) |
 | iampolicies.iam.cnrm.cloud.google.com | [IAM Policy](https://cloud.google.com/iam/reference/rest/v1/Policy) |
 | iamserviceaccounts.iam.cnrm.cloud.google.com | [IAM Service Account](https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts) |
 | pubsubsubscriptions.pubsub.cnrm.cloud.google.com | [Pub/Sub Subscription](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions) |
@@ -487,6 +491,20 @@ sed -i'' -e "s/${OLD_SQL_NAME}/${NEW_SQL_NAME}/" samples/apps/musicians/manifest
 **Is there a cost to using Config Connector?**
 
 There is no cost to using Config Connector beyond the cost of the cluster it runs in. Customers may incur costs for using the GCP resources they create (i.e. Spanner, etc.) 
+
+**Can I use Config Connector in Production?**
+
+Config Connector Alpha is a limited-availability experiment to prepare it for the next release stage. Our focus with Alpha testing is to verify functionality and gather feedback from a limited set of customers. Participation in Config Connector Alpha is by invitation only and the binaries are not intended to be shared publicly. 
+
+No SLAs are provided for Config Connector Alpha, and there are no technical support obligations. However, Config Connector Alpha is extensively tested and is suitable for use in test environments. 
+
+We recommend that you understand and consider the following recommendations before proceeding with production deployment.
+
+1. Create the intended number and types of GCP resources and verify that they are deployed successfully on your test cluster  before proceeding with production cluster deployment.
+1. The default Config Connector behavior is that GCP resources created by Config Connector are deleted when Custom Objects, such as PubSubTopic or  Custom Resource Definitions installed as part of Config Connector are deleted. If you prefer that Config Connector does not delete the GCP resources under management, [enable the abandon deletion policy](https://github.com/GoogleCloudPlatform/k8s-config-connector#resource-abandonment).  
+1. To prevent system error, it is recommended that for a given GCP Project, there is only a single namespace in a single Config-Connector enabled cluster that is mapped to the Project.
+
+
 
 ## Feedback
 
