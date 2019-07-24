@@ -1,11 +1,11 @@
 apiVersion: storage.cnrm.cloud.google.com/v1alpha2
-kind: StorageBucketAccessControl
+kind: StorageDefaultObjectAccessControl
 metadata:
   labels:
     label-one: "value-one"
-  name: storagebucketaccesscontrol-sample
+  name: storagedefaultobjectaccesscontrol-sample
 spec:
   bucketRef:
-    name: storagebucket-sample
+    name: storagedefaultobjectaccesscontrol
   entity: allAuthenticatedUsers
   role: READER

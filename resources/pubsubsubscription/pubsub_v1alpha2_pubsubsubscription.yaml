@@ -9,4 +9,4 @@ spec:
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: pubsubtopic-sample
+    name: pubsubsubscription-dep

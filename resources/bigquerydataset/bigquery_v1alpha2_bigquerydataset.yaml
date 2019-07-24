@@ -6,3 +6,4 @@ spec:
   defaultTableExpirationMs: 3600000
   description: "BigQuery Dataset Sample"
   friendlyName: bigquerydataset-sample
+  location: US

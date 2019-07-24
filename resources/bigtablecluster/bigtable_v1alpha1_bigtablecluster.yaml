@@ -6,7 +6,7 @@ metadata:
   name: bigtablecluster-sample
 spec:
   instanceRef:
-    name: bigtableinstance-sample
+    name: bigtablecluster-dep
   defaultStorageType: SSD
   location: us-central1-a
   serveNodes: 3
