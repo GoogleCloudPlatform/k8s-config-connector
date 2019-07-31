@@ -3,7 +3,7 @@ kind: ComputeFirewall
 metadata:
   labels:
     label-one: "value-one"
-  name: computefirewall-sample
+  name: computefirewall-allow-sample
 spec:
   allow:
     - protocol: tcp

@@ -3,13 +3,14 @@ kind: IAMPolicy
 metadata:
   labels:
     label-one: value-one
-  name: iampolicy-sample
+  name: iampolicy-pubsubtopic-admin-sample
 spec:
   resourceRef:
     apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
     kind: PubSubTopic
     name: iampolicy-dep
   bindings:
-    - role: roles/pubsub.admin
+    - role: roles/editor
       members:
-        - user:me@myownpersonaldomain.com
+        # replace ${PROJECT_NAME?} with your project name
+        - serviceAccount:iampolicy-dep@${PROJECT_NAME?}.iam.gserviceaccount.com

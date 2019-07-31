@@ -9,3 +9,8 @@ spec:
   initialNodeCount: 1
   removeDefaultNodePool: false
   loggingService: none
+  masterAuth:
+    username: "user"
+    password: "password12345678"
+    clientCertificateConfig:
+      issueClientCertificate: false

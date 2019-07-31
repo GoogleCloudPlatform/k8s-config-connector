@@ -56,7 +56,6 @@ For existing Kubernetes applications that are currently using additional tools (
 1. Install the infrastructure in your cluster:
     ```bash
     kubectl apply -f install-bundle/
-    kubectl apply -f install-bundle/resources
     ```
     **NOTE:** If you previously installed Config Connector alpha and wish to
     upgrade, newer versions of the `CustomResourceDefinitions` may cause some of
@@ -359,12 +358,14 @@ You can find more details on the meaning of specific properties in the API docum
 | containerclusters.container.cnrm.cloud.google.com | [Container Cluster](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters) |
 | iampolicies.iam.cnrm.cloud.google.com | [IAM Policy](https://cloud.google.com/iam/reference/rest/v1/Policy) |
 | iamserviceaccounts.iam.cnrm.cloud.google.com | [IAM Service Account](https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts) |
+| iamserviceaccountkeys.iam.cnrm.cloud.google.com | [IAM Service Account Key](https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts.keys) |
 | pubsubsubscriptions.pubsub.cnrm.cloud.google.com | [Pub/Sub Subscription](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions) |
 | pubsubtopics.pubsub.cnrm.cloud.google.com | [Pub/Sub Topic](https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics) |
 | redisinstances.redis.cnrm.cloud.google.com | [Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances) |
 | spannerinstances.spanner.cnrm.cloud.google.com | [Spanner Instance](https://cloud.google.com/spanner/docs/reference/rest/v1/projects.instances) |
 | sqlinstances.sql.cnrm.cloud.google.com | [Cloud SQL Instance](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances) |
 | sqldatabases.sql.cnrm.cloud.google.com | [Cloud SQL Database](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/databases) |
+| sqlusers.sql.cnrm.cloud.google.com | [Cloud SQL User](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/users) |
 | storagebuckets.storage.cnrm.cloud.google.com | [Cloud Storage Bucket](https://cloud.google.com/storage/docs/json_api/v1/buckets) |
 | storagebucketaccesscontrols.storage.cnrm.cloud.google.com | [Cloud Storage Bucket Access Control](https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls) |
 | storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com | [Cloud Storage Default Object Access Control](https://cloud.google.com/storage/docs/json_api/v1/defaultObjectAccessControls) |
@@ -389,11 +390,11 @@ Note: if you `kubectl delete` the configuration, Config Connector will delete th
 ## Uninstalling Config Connector Bundle
 
 ```bash
-kubectl delete -f install-bundle/resources
-kubectl delete -f install-bundle/
+kubectl delete -f install-bundle/crds.yaml
+kubectl delete -f install-bundle/0-cnrm-system.yaml
 ```
 
-Note: Make sure to `kubectl delete -f install-bundle/resources` first to ensure the custom resource definitions are removed first before the controllers.
+Note: Make sure to `kubectl delete -f install-bundle/crds.yaml` first to ensure the custom resource definitions are removed first before the controllers.
 s
 ## Config Connector Resource Functionality
 

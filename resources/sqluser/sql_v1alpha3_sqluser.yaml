@@ -1,0 +1,9 @@
+apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+kind: SQLUser
+metadata:
+  name: sqluser-sample
+spec:
+  instanceRef:
+    name: sqluser-dep
+  host: "%"
+  password: password

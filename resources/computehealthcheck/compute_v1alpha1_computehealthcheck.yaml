@@ -4,6 +4,5 @@ metadata:
   name: computehealthcheck-sample
 spec:
   checkIntervalSec: 10
-  type: HTTP
   httpHealthCheck:
     port: 80
