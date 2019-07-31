@@ -23,6 +23,7 @@ bases:
 
 resources:
 - cloud-sql-instance.yaml
+- cloud-sql-user.yaml
 
 patches:
 - musicians-deployment-project-patch.yaml

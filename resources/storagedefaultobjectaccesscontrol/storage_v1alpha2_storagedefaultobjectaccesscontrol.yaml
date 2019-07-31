@@ -6,6 +6,6 @@ metadata:
   name: storagedefaultobjectaccesscontrol-sample
 spec:
   bucketRef:
-    name: storagedefaultobjectaccesscontrol
+    name: storagedefaultobjectaccesscontrol-dep
   entity: allAuthenticatedUsers
   role: READER

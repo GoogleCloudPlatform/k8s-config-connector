@@ -56,7 +56,7 @@ For existing Kubernetes applications that are currently using additional tools (
 1. Install the infrastructure in your cluster:
     ```bash
     kubectl apply -f install-bundle/
-    kubectl apply -f install-bundle/resources
+    kubectl apply -f install-bundle/servicemappings
     ```
     **NOTE:** If you previously installed Config Connector alpha and wish to
     upgrade, newer versions of the `CustomResourceDefinitions` may cause some of
@@ -365,6 +365,7 @@ You can find more details on the meaning of specific properties in the API docum
 | spannerinstances.spanner.cnrm.cloud.google.com | [Spanner Instance](https://cloud.google.com/spanner/docs/reference/rest/v1/projects.instances) |
 | sqlinstances.sql.cnrm.cloud.google.com | [Cloud SQL Instance](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances) |
 | sqldatabases.sql.cnrm.cloud.google.com | [Cloud SQL Database](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/databases) |
+| sqlusers.sql.cnrm.cloud.google.com | [Cloud SQL User](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/users) |
 | storagebuckets.storage.cnrm.cloud.google.com | [Cloud Storage Bucket](https://cloud.google.com/storage/docs/json_api/v1/buckets) |
 | storagebucketaccesscontrols.storage.cnrm.cloud.google.com | [Cloud Storage Bucket Access Control](https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls) |
 | storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com | [Cloud Storage Default Object Access Control](https://cloud.google.com/storage/docs/json_api/v1/defaultObjectAccessControls) |
@@ -389,11 +390,11 @@ Note: if you `kubectl delete` the configuration, Config Connector will delete th
 ## Uninstalling Config Connector Bundle
 
 ```bash
-kubectl delete -f install-bundle/resources
-kubectl delete -f install-bundle/
+kubectl delete -f install-bundle/crds.yaml
+kubectl delete -f install-bundle/0-cnrm-system.yaml
 ```
 
-Note: Make sure to `kubectl delete -f install-bundle/resources` first to ensure the custom resource definitions are removed first before the controllers.
+Note: Make sure to `kubectl delete -f install-bundle/crds.yaml` first to ensure the custom resource definitions are removed first before the controllers.
 s
 ## Config Connector Resource Functionality
 
