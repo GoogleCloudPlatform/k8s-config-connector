@@ -8,4 +8,4 @@ spec:
   deny:
     - protocol: icmp
   networkRef:
-    name: computefirewall-dep
+    name: computefirewall-deny-dep

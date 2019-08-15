@@ -11,4 +11,4 @@ spec:
        - "80"
        - "1000-2000"
   networkRef:
-    name: computefirewall-dep
+    name: computefirewall-allow-dep
