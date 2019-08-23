@@ -34,12 +34,14 @@ sensible-browser ${address}
 
 ### Prerequisites
 To build and deploy the images, the following binaries must be in your PATH:
+
 - sed
 - make
 - docker
 - kubectl
 - kustomize
 - gcloud
+- jq
 
 To build and run the images for yourself:
 
@@ -50,6 +52,6 @@ make docker-build
 # Push them to Google Container Registry (GCR)
 make docker-push
 
-# Deploy your built images to your GKE cluster
+# Deploy your built images to your Kubernetes cluster
 make deploy
 ```

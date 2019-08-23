@@ -33,7 +33,7 @@ spec:
         - serviceAccount:service-[PROJECT_NUMBER]@containerregistry.iam.gserviceaccount.com
       role: roles/editor
     - members:
-        # Make sure to keep the "cnrm-system" service account permission, or else KCC will
+        # Make sure to keep the "cnrm-system" service account permission, or else Config Connector will
         # be locked out from managing GCP resources.
         - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
         # Ensure that your account is not locked out of the project.

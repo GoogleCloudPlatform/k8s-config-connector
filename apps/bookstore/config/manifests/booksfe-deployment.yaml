@@ -27,9 +27,9 @@ spec:
         app: booksfe
     spec:
       volumes:
-      - name: google-cloud-key
+      - name: cnrm-bookstore-frontend-key
         secret:
-          secretName: gcp-key
+          secretName: cnrm-bookstore-frontend-key
       containers:
       - name: booksfe-svc
         image: gcr.io/cnrm-eap/bookstore/app
@@ -37,7 +37,7 @@ spec:
         ports:
           - containerPort: 8080
         volumeMounts:
-        - name: google-cloud-key
+        - name: cnrm-bookstore-frontend-key
           mountPath: /var/secrets/google
         env:
           - name: SVC_USERS_HOST

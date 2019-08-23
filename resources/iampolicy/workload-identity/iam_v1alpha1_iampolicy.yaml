@@ -10,5 +10,5 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        # replace ${PROJECT_NAME?} with your project name
-        - serviceAccount:${PROJECT_NAME?}.svc.id.goog[default/iampolicy-ksa-dep]
+        # replace ${PROJECT_ID} with your project name
+        - serviceAccount:${PROJECT_ID?}.svc.id.goog[default/iampolicy-ksa-dep]

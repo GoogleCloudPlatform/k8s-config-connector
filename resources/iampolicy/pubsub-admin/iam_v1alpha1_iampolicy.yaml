@@ -12,5 +12,5 @@ spec:
   bindings:
     - role: roles/editor
       members:
-        # replace ${PROJECT_NAME?} with your project name
-        - serviceAccount:iampolicy-dep@${PROJECT_NAME?}.iam.gserviceaccount.com
+        # replace ${PROJECT_ID?} with your project name
+        - serviceAccount:iampolicy-dep@${PROJECT_ID?}.iam.gserviceaccount.com

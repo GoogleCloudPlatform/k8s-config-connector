@@ -21,7 +21,8 @@ spec:
     spec:
       containers:
       - name: booksfe-svc
-        image: gcr.io/[PROJECT_ID]/bookstore/app:[TAG]
+        # hardcoding a6254e8 image tag: last known good configuration
+        image: gcr.io/[PROJECT_ID]/bookstore/app:a6254e8
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

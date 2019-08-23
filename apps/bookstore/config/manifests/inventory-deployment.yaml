@@ -27,9 +27,9 @@ spec:
         app: inventory
     spec:
       volumes:
-      - name: google-cloud-key
+      - name: cnrm-bookstore-inventory-key
         secret:
-          secretName: gcp-key
+          secretName: cnrm-bookstore-inventory-key
       containers:
       - name: inventory-svc
         image: gcr.io/cnrm-eap/bookstore/inventory
@@ -37,7 +37,7 @@ spec:
         ports:
           - containerPort: 8080
         volumeMounts:
-        - name: google-cloud-key
+        - name: cnrm-bookstore-inventory-key
           mountPath: /var/secrets/google
         env:
           - name: GOOGLE_APPLICATION_CREDENTIALS
