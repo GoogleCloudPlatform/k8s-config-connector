@@ -4,5 +4,6 @@ metadata:
   name: postgres-sql-instance-sample
 spec:
   databaseVersion: POSTGRES_9_6
+  region: us-central1
   settings:
     tier: db-custom-16-61440 # see https://cloud.google.com/sql/docs/postgres/create-instance
