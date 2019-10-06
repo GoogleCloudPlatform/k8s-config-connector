@@ -3,6 +3,7 @@ kind: ComputeURLMap
 metadata:
   name: computeurlmap-sample
 spec:
-  defaultServiceRef:
-    name: computeurlmap-dep
-    kind: ComputeBackendService
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-dep
+      kind: ComputeBackendService
