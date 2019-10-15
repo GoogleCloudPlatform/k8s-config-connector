@@ -20,7 +20,8 @@ spec:
   template:
     spec:
       containers:
-      - env:
+      - name: web
+        env:
         - name: DB_HOST
           value: mysql-test:3306
         - name: DB_PASSWORD
@@ -28,4 +29,3 @@ spec:
             secretKeyRef:
               name: db-info
               key: password
-        name: web

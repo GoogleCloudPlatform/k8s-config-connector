@@ -20,6 +20,10 @@ spec:
   template:
     spec:
       containers:
+      - name: web
+        env:
+        - name: DB_USER
+          value: root-prod
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         env:

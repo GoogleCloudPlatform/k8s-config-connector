@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha2
+kind: ComputeBackendService
+metadata:
+  name: computetargethttpproxy-dep
+spec:
+  healthCheckRef:
+    name: computetargethttpproxy-dep
+  location: global
