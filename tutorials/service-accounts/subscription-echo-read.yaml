@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START config_connector_auth_cicd_topic]
+# [START config_connector_service_accounts_subscription]
 apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
-kind: PubSubTopic
+kind: PubSubSubscription
 metadata:
-  name: echo
-# [END config_connector_auth_cicd_topic]
+  name: echo-read
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: echo
+# [END config_connector_service_accounts_subscription]
