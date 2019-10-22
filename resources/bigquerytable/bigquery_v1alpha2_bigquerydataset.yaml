@@ -1,0 +1,6 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1alpha2
+kind: BigQueryDataset
+metadata:
+  name: bigquerytabledep
+spec:
+  description: "BigQuery Sample Dataset"
