@@ -1,0 +1,6 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeDisk
+metadata:
+  name: computesnapshot-dep
+spec:
+  location: us-west1-c

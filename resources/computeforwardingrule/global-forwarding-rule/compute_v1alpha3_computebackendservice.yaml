@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeBackendService
+metadata:
+  name: computeglobalforwardingrule-dep
+spec:
+  healthCheckRef:
+    name: computeglobalforwardingrule-dep
+  location: global

@@ -1,0 +1,25 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeNetworkPeering
+metadata:
+  name: computenetworkpeering-peering1
+spec:
+  autoCreateRoutes: true
+  exportCustomRoutes: false
+  importCustomRoutes: false
+  networkRef:
+    name: computenetworkpeering-dep1
+  peerNetworkRef:
+    name: computenetworkpeering-dep2
+---
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeNetworkPeering
+metadata:
+  name: computenetworkpeering-peering2
+spec:
+  autoCreateRoutes: true
+  exportCustomRoutes: false
+  importCustomRoutes: false
+  networkRef:
+    name: computenetworkpeering-dep2
+  peerNetworkRef:
+    name: computenetworkpeering-dep1

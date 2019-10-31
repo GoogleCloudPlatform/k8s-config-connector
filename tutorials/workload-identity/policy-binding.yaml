@@ -11,9 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START config_connector_service_accounts_topic]
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
-kind: PubSubTopic
+# [START config_connector_workload_identity_policy_binding]
+apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+kind: IAMPolicy
 metadata:
-  name: echo
-# [END config_connector_service_accounts_topic]
+  name: iampolicy-workload-identity-sample
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+    kind: IAMServiceAccount
+    name: ${GSA_NAME}
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        - serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/${KSA_NAME}]
+# [END config_connector_workload_identity_policy_binding]

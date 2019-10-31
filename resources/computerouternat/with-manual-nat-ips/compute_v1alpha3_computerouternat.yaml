@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeRouterNAT
+metadata:
+  name: computerouternat-sample
+spec:
+  region: us-west1
+  routerRef:
+    name: computerouternat-dep
+  natIpAllocateOption: MANUAL_ONLY
+  natIps:
+  - name: computerouternat-dep
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES

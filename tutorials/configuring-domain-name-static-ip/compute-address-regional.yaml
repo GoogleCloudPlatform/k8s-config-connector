@@ -1,3 +1,4 @@
+
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,9 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START config_connector_service_accounts_topic]
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
-kind: PubSubTopic
+# [START config_connector_configuring_domain_name_static_ip_compute_address_regional]
+apiVersion: compute.cnrm.cloud.google.com/v1alpha2
+kind: ComputeAddress
 metadata:
-  name: echo
-# [END config_connector_service_accounts_topic]
+  name: helloweb-ip
+spec:
+  location: us-central1
+# [END config_connector_configuring_domain_name_static_ip_compute_address_regional]

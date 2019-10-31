@@ -1,0 +1,48 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# [START config_connector_hardening_your_cluster_policy]
+apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+kind: IAMPolicy
+metadata:
+  name: policy-binding
+spec:
+  resourceRef:
+    kind: Project
+    name: [PROJECT_ID]
+  bindings:
+    - members:
+        - serviceAccount:service-[PROJECT_NUMBER]@compute-system.iam.gserviceaccount.com
+      role: roles/compute.serviceAgent
+    - members:
+        - serviceAccount:service-[PROJECT_NUMBER]@container-engine-robot.iam.gserviceaccount.com
+      role: roles/container.serviceAgent
+    - members:
+        - serviceAccount:[PROJECT_NUMBER]-compute@developer.gserviceaccount.com
+        - serviceAccount:[PROJECT_NUMBER]@cloudservices.gserviceaccount.com
+        - serviceAccount:service-[PROJECT_NUMBER]@containerregistry.iam.gserviceaccount.com
+      role: roles/editor
+    - members:
+        - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+        - user:[ACCOUNT]
+      role: roles/owner
+    - role: roles/logging.logWriter
+      members:
+        - serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
+    - role: roles/monitoring.metricWriter
+      members:
+        - serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
+    - role: roles/monitoring.viewer
+      members:
+        - serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
+# [END config_connector_hardening_your_cluster_policy]
