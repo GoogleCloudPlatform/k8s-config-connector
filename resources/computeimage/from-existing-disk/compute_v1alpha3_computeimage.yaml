@@ -3,5 +3,7 @@ kind: ComputeImage
 metadata:
   name: diskcomputeimage-sample
 spec:
-  description: A sample image created from a disk resource
-  sourceDisk: diskcomputeimage-dep
+  description: A sample image created from an empty disk resource
+  diskRef:
+    name: diskcomputeimage-dep
+  diskSizeGb: 0

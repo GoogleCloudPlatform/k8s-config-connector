@@ -1,8 +1,0 @@
-apiVersion: compute.cnrm.cloud.google.com/v1alpha3
-kind: ComputeImage
-metadata:
-  name: diskcomputeimage-sample
-spec:
-  description: A sample image created from URL to a raw TAR disk image
-  rawDisk:
-    source: "https://storage.googleapis.com/bosh-cpi-artifacts/bosh-stemcell-3262.7-google-kvm-ubuntu-trusty-go_agent-raw.tar.gz"
