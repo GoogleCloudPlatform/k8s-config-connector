@@ -11,8 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START config_connector_hardening_your_cluster_policy_binding_object_viewer]
-    - role: roles/storage.objectViewer
-      members:
-        - serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
-# [END config_connector_hardening_your_cluster_policy_binding_object_viewer]
+# [START config_connector_hardening_your_cluster_policy_logging]
+apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+kind: IAMPolicyMember
+metadata:
+  name: policy-logging
+spec:
+  member: serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
+  role: roles/logging.logWriter
+  resourceRef:
+    kind: Project
+    name: [PROJECT_ID]
+# [END config_connector_hardening_your_cluster_policy_logging]
