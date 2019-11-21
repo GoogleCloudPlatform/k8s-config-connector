@@ -1,0 +1,14 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeDisk
+metadata:
+  name: computedisk-sample-zonal
+  labels:
+    label-one: "value-one"
+spec:
+  description: a sample encrypted, blank disk
+  diskEncryptionKey:
+    rawKey: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west1-c

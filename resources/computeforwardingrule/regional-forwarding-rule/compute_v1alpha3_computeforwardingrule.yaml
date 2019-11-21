@@ -3,14 +3,14 @@ kind: ComputeForwardingRule
 metadata:
   labels:
     label-one: "value-one"
-  name: computeregionalforwardingrule-sample
+  name: computeforwardingrule-sample-regional
 spec:
   description: "A global forwarding rule"
   target:
     targetVPNGatewayRef:
-      name: computeregionalforwardingrule-dep
+      name: computeforwardingrule-dep-regional
   ipProtocol: "ESP"
   location: us-central1
   ipAddress:
     addressRef:
-      name: computeregionalforwardingrule-dep
+      name: computeforwardingrule-dep-regional

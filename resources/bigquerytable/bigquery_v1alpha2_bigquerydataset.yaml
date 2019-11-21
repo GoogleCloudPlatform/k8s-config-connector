@@ -3,4 +3,4 @@ kind: BigQueryDataset
 metadata:
   name: bigquerytabledep
 spec:
-  description: "BigQuery Sample Dataset"
+  friendlyName: bigquerytable-dep

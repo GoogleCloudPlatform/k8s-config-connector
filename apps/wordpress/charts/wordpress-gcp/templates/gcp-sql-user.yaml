@@ -1,0 +1,9 @@
+apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+kind: SQLUser
+metadata:
+  name: {{ required "user is required!" .Values.database.user }}
+spec:
+  instanceRef:
+    name: {{ required "instanceName is required!" .Values.database.instanceName }}
+  host: "%"
+  password: {{ required "password is required!" .Values.database.password }}

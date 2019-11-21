@@ -3,12 +3,12 @@ kind: ComputeForwardingRule
 metadata:
   labels:
     label-one: "value-one"
-  name: computeglobalforwardingrule-sample
+  name: computeforwardingrule-sample-global
 spec:
   description: "A global forwarding rule"
   target:
     targetHTTPProxyRef:
-      name: computeglobalforwardingrule-dep
+      name: computeforwardingrule-dep-global
   portRange: "80"
   ipProtocol: "TCP"
   ipVersion: "IPV4"

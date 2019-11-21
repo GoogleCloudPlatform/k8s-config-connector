@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+kind: ComputeNetwork
+metadata:
+  name: computefirewall-dep-deny
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: true

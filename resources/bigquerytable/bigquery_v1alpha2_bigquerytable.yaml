@@ -1,12 +1,12 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1alpha2
 kind: BigQueryTable
 metadata:
-  name: bigquerytable
+  name: bigquerytablesample
 spec:
   description: "BigQuery Sample Table"
   datasetRef:
     name: bigquerytabledep
-  friendlyName: "Friendly Name"
+  friendlyName: bigquerytable-sample
   timePartitioning:
     type: DAY
   externalDataConfiguration:

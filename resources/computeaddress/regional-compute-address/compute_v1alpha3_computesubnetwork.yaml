@@ -1,9 +1,9 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha3
 kind: ComputeSubnetwork
 metadata:
-  name: regionalcomputeaddress-dep
+  name: computeaddress-dep-regional
 spec:
   ipCidrRange: 10.2.0.0/16
   region: us-central1
   networkRef:
-    name: regionalcomputeaddress-dep
+    name: computeaddress-dep-regional

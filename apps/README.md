@@ -54,3 +54,7 @@ The [bookstore](bookstore) is a simple application with a web user interface.
 ## Musicians
 
 The [musicians](musicians) sample is a simple web service which uses a Cloud SQL database.
+
+## WordPress
+
+The [WordPress](wordpress) sample demonstrates how you can use Config Connector to provision a WordPress site powered by Google Cloud SQL MySQL database and using Workload Identity for authentication.

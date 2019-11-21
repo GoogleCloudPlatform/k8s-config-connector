@@ -1,7 +1,7 @@
 apiVersion: sql.cnrm.cloud.google.com/v1alpha3
 kind: SQLInstance
 metadata:
-  name: postgres-sql-instance-sample
+  name: sqlinstance-sample-postgres
 spec:
   databaseVersion: POSTGRES_9_6
   settings:

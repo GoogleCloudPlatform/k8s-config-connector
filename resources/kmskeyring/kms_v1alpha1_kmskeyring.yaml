@@ -1,6 +1,6 @@
 apiVersion: kms.cnrm.cloud.google.com/v1alpha1
 kind: KMSKeyRing
 metadata:
-  name: key-ring-samples
+  name: kmskeyring-sample
 spec:
   location: us-central1

@@ -1,7 +1,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha3
 kind: ComputeExternalVPNGateway
 metadata:
-  name: externalvpngateway-sample
+  name: computeexternalvpngateway-sample
   labels:
     label-one: "value-one"
 spec:
