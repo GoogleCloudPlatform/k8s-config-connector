@@ -14,5 +14,5 @@ spec:
     name: computesubnetwork-dep
   logConfig:
     aggregationInterval: INTERVAL_10_MIN
-    flowSampling: "0.5"
+    flowSampling: 0.5
     metadata: INCLUDE_ALL_METADATA

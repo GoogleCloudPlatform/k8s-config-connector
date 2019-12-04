@@ -16,11 +16,11 @@ spec:
         - paths: ["/home"]
           service:
             backendServiceRef:
-              name: computeurlmap-dep2
+              name: computeurlmap-dep3
         - paths: ["/foo"]
           service:
-            backendServiceRef:
-              name: computeurlmap-dep3
+            backendBucketRef:
+              name: computeurlmap-dep
   hostRule:
     - hosts: ["example.com"]
       pathMatcher: allpaths
