@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_configuring_domain_name_static_ip_compute_address_regional]
-apiVersion: compute.cnrm.cloud.google.com/v1alpha2
+apiVersion: compute.cnrm.cloud.google.com/v1alpha3
 kind: ComputeAddress
 metadata:
   name: helloweb-ip
