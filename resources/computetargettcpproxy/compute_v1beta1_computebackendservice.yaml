@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computetargettcpproxy-dep
+spec:
+  healthCheckRef:
+    name: computetargettcpproxy-dep
+  location: global
+  protocol: TCP

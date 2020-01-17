@@ -1,0 +1,18 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeVPNTunnel
+metadata:
+  name: computerouterinterface-dep
+  labels:
+    foo: bar
+spec:
+  peerIp: "15.0.0.120"
+  region: us-central1
+  sharedSecret:
+    valueFrom:
+      secretKeyRef:
+        name: computerouterinterface-dep
+        key: sharedSecret
+  targetVPNGatewayRef:
+    name: computerouterinterface-dep
+  localTrafficSelector:
+   - "192.168.0.0/16"

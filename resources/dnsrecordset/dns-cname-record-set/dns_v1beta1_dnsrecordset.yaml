@@ -1,0 +1,12 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-cname
+spec:
+  name: "*.example.com."
+  type: "CNAME"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-cname
+  rrdatas:
+  - ".www.example.com."

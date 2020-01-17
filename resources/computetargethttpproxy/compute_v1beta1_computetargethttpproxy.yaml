@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: computetargethttpproxy-sample
+spec:
+  description: "A sample proxy"
+  urlMapRef:
+    name: computetargethttpproxy-dep
+  location: global

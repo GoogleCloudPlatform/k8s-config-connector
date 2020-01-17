@@ -1,0 +1,11 @@
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: servicenetworkingconnection-sample
+spec:
+  networkRef:
+    name: servicenetworkingconnection-dep
+  reservedPeeringRanges:
+    - name: servicenetworkingconnection-dep1
+    - name: servicenetworkingconnection-dep2
+  service: "servicenetworking.googleapis.com"

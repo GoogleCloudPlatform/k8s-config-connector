@@ -1,0 +1,23 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSnapshot
+metadata:
+  name: computesnapshot-sample
+  labels:
+    label-one: "value-one"
+spec:
+  description: "ComputeSnapshot Sample"
+  zone: us-west1-c
+  sourceDiskRef:
+    name: computesnapshot-dep
+  snapshotEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: snapshotEncryptionKey
+  sourceDiskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: sourceDiskEncryptionKey

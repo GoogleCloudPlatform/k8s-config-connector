@@ -1,0 +1,12 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreIndex
+metadata:
+  name: firestoreindex-sample
+spec:
+  collection: sample-collection
+  fields:
+  - fieldPath: field1
+    order: ASCENDING
+  - fieldPath: field2
+    order: DESCENDING
+  queryScope: COLLECTION

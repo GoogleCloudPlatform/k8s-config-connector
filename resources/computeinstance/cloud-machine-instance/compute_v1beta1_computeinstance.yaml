@@ -1,0 +1,45 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  name: computeinstance-sample-cloudmachine
+  labels:
+    created-from: "image"
+    network-type: "subnetwork"
+spec:
+  machineType: n1-standard-1
+  zone: us-west1-a
+  bootDisk:
+    initializeParams:
+      size: 24
+      type: pd-ssd
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+    - subnetworkRef:
+        name: computeinstance-dep-cloudmachine
+      aliasIpRange:
+        - ipCidrRange: /24
+          subnetworkRangeName: cloudrange
+  attachedDisk:
+    - sourceDiskRef:
+        name: computeinstance-dep1-cloudmachine
+      mode: READ_ONLY
+      deviceName: proxycontroldisk
+      diskEncryptionKeyRaw:
+        valueFrom:
+          secretKeyRef:
+            name: computeinstance-dep-cloudmachine
+            key: diskEncryptionKey
+    - sourceDiskRef:
+        name: computeinstance-dep2-cloudmachine
+      mode: READ_WRITE
+      deviceName: persistentdisk
+  minCpuPlatform: "Intel Skylake"
+  serviceAccount:
+    serviceAccountRef:
+      name: inst-dep-cloudmachine
+    scopes:
+    - compute-rw
+    - logging-write

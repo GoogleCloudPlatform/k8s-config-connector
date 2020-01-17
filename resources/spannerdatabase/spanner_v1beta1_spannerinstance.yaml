@@ -1,0 +1,7 @@
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  name: spannerdatabase-dep
+spec:
+  config: regional-us-west1
+  displayName: Spanner Database Dependency

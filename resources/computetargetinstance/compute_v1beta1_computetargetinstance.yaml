@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetInstance
+metadata:
+  name: computetargetinstance-sample
+spec:
+  description: Target instance, containing a VM instance which will have no NAT applied to it and can be used for protocol forwarding.
+  zone: us-central1-a
+  instanceRef:
+    name: computetargetinstance-dep

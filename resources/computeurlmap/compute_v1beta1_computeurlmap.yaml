@@ -1,0 +1,26 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-sample
+spec:
+  location: global
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-dep1
+  pathMatcher:
+    - name: allpaths
+      defaultService:
+        backendServiceRef:
+          name: computeurlmap-dep2
+      pathRule:
+        - paths: ["/home"]
+          service:
+            backendServiceRef:
+              name: computeurlmap-dep3
+        - paths: ["/foo"]
+          service:
+            backendBucketRef:
+              name: computeurlmap-dep
+  hostRule:
+    - hosts: ["example.com"]
+      pathMatcher: allpaths

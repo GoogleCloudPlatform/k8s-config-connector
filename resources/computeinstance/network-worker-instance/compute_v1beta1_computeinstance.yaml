@@ -1,0 +1,41 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstance-sample-networkworker
+  labels:
+    created-from: "disk"
+    network-type: "global"
+spec:
+  machineType: n1-standard-1
+  zone: us-west1-b
+  bootDisk:
+    sourceDiskRef:
+      name: computeinstance-dep-networkworker
+    autoDelete: false
+    deviceName: proxycontroldisk
+    mode: READ_ONLY
+    diskEncryptionKeyRaw:
+      valueFrom:
+        secretKeyRef:
+          name: computeinstance-dep-networkworker
+          key: diskEncryptionKey
+  networkInterface:
+    - networkRef:
+        name: computeinstance-dep-networkworker
+      subnetworkRef:
+        name: computeinstance-dep-networkworker
+      networkIp: "10.2.0.4"
+      accessConfig:
+        - natIpRef:
+            name: computeinstance-dep-networkworker
+  guestAccelerator:
+    - type: nvidia-tesla-v100
+      count: 1
+  scratchDisk:
+    - interface: SCSI
+    - interface: NVME
+  scheduling:
+    preemptible: true
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+  canIpForward: true

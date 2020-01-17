@@ -1,0 +1,6 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouternat-dep-withmanualnatips
+spec:
+  location: us-west1

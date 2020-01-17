@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRoute
+metadata:
+  name: computeroute-sample
+spec:
+  description: "A sample compute route"
+  destRange: 0.0.0.0/0
+  networkRef:
+    name: computeroute-dep
+  priority: 100
+  nextHopIp: 10.132.1.5

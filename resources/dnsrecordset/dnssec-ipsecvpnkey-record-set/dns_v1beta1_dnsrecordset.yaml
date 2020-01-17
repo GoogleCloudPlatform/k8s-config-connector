@@ -1,0 +1,12 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-dnssecipsecvpnkey
+spec:
+  name: "service.secure.example.com."
+  type: "IPSECKEY"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-dnssecipsecvpnkey
+  rrdatas:
+  - "10 1 2 192.0.2.3 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ=="

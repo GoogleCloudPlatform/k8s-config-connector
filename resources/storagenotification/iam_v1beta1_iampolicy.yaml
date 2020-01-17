@@ -1,0 +1,14 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: storagenotification-dep
+spec:
+  resourceRef:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: storagenotification-dep
+  bindings:
+    - role: roles/pubsub.publisher
+      members:
+        # replace ${PROJECT_NUMBER?} with your project ID number
+        - serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com

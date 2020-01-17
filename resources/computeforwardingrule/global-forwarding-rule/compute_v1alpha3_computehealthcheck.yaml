@@ -1,9 +1,0 @@
-apiVersion: compute.cnrm.cloud.google.com/v1alpha3
-kind: ComputeHealthCheck
-metadata:
-  name: computeforwardingrule-dep-global
-spec:
-  checkIntervalSec: 10
-  httpHealthCheck:
-    port: 80
-  location: global

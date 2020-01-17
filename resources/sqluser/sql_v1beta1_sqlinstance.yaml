@@ -1,0 +1,11 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: sqluser-dep
+spec:
+  region: us-central1
+  databaseVersion: MYSQL_5_7
+  settings:
+    tier: db-n1-standard-1

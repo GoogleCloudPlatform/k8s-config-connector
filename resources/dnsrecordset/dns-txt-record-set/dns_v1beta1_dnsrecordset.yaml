@@ -1,0 +1,14 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-txt
+spec:
+  name: "example.com."
+  type: "TXT"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-txt
+  rrdatas:
+  - "\"This is a sample DNS text record string\""
+  - "Text records are normally split on spaces"
+  - "To prevent this, \"quote your text like this\""

@@ -1,0 +1,16 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouterpeer-dep
+spec:
+  networkRef:
+    name: computerouterpeer-dep
+  description: example router description
+  region: us-central1
+  bgp:
+    asn: 64514
+    advertiseMode: CUSTOM
+    advertisedGroups:
+      - ALL_SUBNETS
+    advertisedIpRanges:
+      - range: "1.2.3.4"

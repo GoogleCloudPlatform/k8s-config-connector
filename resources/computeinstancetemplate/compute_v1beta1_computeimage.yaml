@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: instancetemplate-dep
+spec:
+  description: A sample image created from an empty disk resource
+  diskRef:
+    name: instancetemplate-dep

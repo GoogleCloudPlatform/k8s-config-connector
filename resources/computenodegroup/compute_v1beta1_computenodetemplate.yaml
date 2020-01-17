@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodegroup-dep
+spec:
+  region: us-central1
+  nodeType: n1-node-96-624

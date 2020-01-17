@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computetargethttpproxy-dep
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computetargethttpproxy-dep
+  location: global

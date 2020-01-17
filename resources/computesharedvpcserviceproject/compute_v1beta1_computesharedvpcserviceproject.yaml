@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSharedVPCServiceProject
+metadata:
+  name: computesharedvpcserviceproject-sample
+spec:
+  projectRef:
+    name: sharedvpc-service-project-dep

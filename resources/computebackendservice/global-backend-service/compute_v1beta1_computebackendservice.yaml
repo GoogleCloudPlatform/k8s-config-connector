@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample
+spec:
+  healthCheckRef:
+    name: computebackendservice-dep
+  location: global

@@ -1,0 +1,20 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytablesample
+spec:
+  description: "BigQuery Sample Table"
+  datasetRef:
+    name: bigquerytabledep
+  friendlyName: bigquerytable-sample
+  timePartitioning:
+    type: DAY
+  externalDataConfiguration:
+    autodetect: true
+    compression: NONE
+    ignoreUnknownValues: false
+    maxBadRecords: 10
+    sourceFormat: CSV
+    sourceUris:
+      - my-uri-1
+      - my-uri-2

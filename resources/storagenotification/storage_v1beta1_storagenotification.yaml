@@ -1,0 +1,12 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageNotification
+metadata:
+  name: storagenotification-sample
+spec:
+  bucketRef:
+    name: storagenotification-dep
+  payloadFormat: JSON_API_V1
+  topicRef:
+    name: storagenotification-dep
+  eventTypes:
+    - "OBJECT_ARCHIVE"

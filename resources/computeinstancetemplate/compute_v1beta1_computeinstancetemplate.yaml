@@ -1,0 +1,59 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: instancetemplate-sample
+  labels:
+    env: "dev"
+spec:
+  description: a sample instance template
+  tags:
+    - foo
+    - bar
+  instanceDescription: a sample instance created from the sample instance template
+  machineType: n1-standard-1
+  region: us-west1
+  disk:
+    - sourceDiskRef:
+        name: instancetemplate-dep
+      autoDelete: false
+      boot: true
+    - sourceImageRef:
+        name: instancetemplate-dep
+      autoDelete: true
+      boot: false
+      diskName: sample-attached-disk
+      deviceName: attachment
+      interface: SCSI
+      diskType: pd-ssd
+      diskSizeGb: 10
+      type: PERSISTENT
+  networkInterface:
+    - networkRef:
+        name: instancetemplate-dep
+      subnetworkRef:
+        name: instancetemplate-dep
+      networkIp: "10.2.0.1"
+      aliasIpRange:
+        - ipCidrRange: /16
+          subnetworkRangeName: sub-range
+  canIpForward: false
+  scheduling:
+    automaticRestart: true
+    onHostMaintenance: "MIGRATE"
+    preemptible: false
+  metadataStartupScript: "echo hi > /test.txt"
+  serviceAccount:
+    serviceAccountRef:
+      name: instancetemplate-dep
+    scopes:
+      - userinfo-email
+      - compute-ro
+      - storage-ro
+  guestAccelerator:
+    - type: nvidia-tesla-k80
+      count: 1
+  minCpuPlatform: "Intel Skylake"
+  shieldedInstanceConfig:
+    enableSecureBoot: false
+    enableVtpm: true
+    enableIntegrityMonitoring: true

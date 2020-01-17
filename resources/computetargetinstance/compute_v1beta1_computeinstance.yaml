@@ -1,0 +1,14 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetinstance-dep
+spec:
+  machineType: n1-standard-1
+  zone: us-central1-a
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+  - networkRef:
+      name: computetargetinstance-dep

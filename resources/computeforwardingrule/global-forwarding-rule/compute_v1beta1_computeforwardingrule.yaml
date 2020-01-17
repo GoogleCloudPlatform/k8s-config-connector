@@ -1,0 +1,15 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computeforwardingrule-sample-global
+spec:
+  description: "A global forwarding rule"
+  target:
+    targetHTTPProxyRef:
+      name: computeforwardingrule-dep-global
+  portRange: "80"
+  ipProtocol: "TCP"
+  ipVersion: "IPV4"
+  location: global

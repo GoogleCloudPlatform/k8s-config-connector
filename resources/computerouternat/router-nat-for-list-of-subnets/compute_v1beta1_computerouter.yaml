@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouternat-dep-forlistofsubnets
+spec:
+  description: example router description
+  region: us-west1
+  networkRef:
+    name: computerouternat-dep-forlistofsubnets

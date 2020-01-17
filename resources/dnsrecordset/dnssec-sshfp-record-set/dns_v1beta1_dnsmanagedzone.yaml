@@ -1,0 +1,8 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-dnssecsshfp
+spec:
+  dnsName: "secure.example.com."
+  dnssecConfig:
+    state: "on"

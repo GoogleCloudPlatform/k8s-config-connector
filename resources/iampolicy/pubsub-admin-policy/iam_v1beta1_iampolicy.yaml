@@ -1,0 +1,16 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  labels:
+    label-one: value-one
+  name: iampolicy-sample-pubsubadmin
+spec:
+  resourceRef:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: iampolicy-dep-pubsubadmin
+  bindings:
+    - role: roles/editor
+      members:
+        # replace ${PROJECT_ID?} with your project name
+        - serviceAccount:iampolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com

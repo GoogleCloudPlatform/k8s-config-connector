@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeExternalVPNGateway
+metadata:
+  name: computeexternalvpngateway-sample
+  labels:
+    label-one: "value-one"
+spec:
+  description: an external vpn gateway
+  redundancyType: "SINGLE_IP_INTERNALLY_REDUNDANT"
+  interface:
+    - id: 0
+      ipAddress: "8.8.8.8"

@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  name: computesslpolicy-sample-moderntls11
+spec:
+  description: An SSL Policy with a MODERN encryption profile, supporting several modern methods of encryption for TLS 1.1 and up.
+  minTlsVersion: TLS_1_1
+  profile: MODERN

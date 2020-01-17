@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouternat-dep-forallsubnets
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false

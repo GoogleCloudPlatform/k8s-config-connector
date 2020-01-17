@@ -1,0 +1,26 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computesecuritypolicy-sample-lockdownwithtest
+spec:
+  description: A policy designed to completely lock down network access while testing the effect of opening ports over a few select ranges.
+  rule:
+  - action: deny(403)
+    priority: 2147483647
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - "*"
+    description: Rule matching all IPs with priority 2147483647, set to deny.
+  - action: allow
+    preview: true
+    priority: 1000000000
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 16.0.0.0/4
+        - 115.128.0.0/9
+        - 62.48.212.0/24
+    description: Tests opening listed IP ranges. Logs sent to Stackdriver.

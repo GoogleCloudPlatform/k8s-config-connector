@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computehealthcheck-sample
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: global

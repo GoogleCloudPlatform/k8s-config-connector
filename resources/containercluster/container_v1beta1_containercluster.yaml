@@ -1,0 +1,22 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "false"
+  labels:
+    label-one: "value-one"
+  name: containercluster-sample
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  loggingService: logging.googleapis.com/kubernetes
+  monitoringService: monitoring.googleapis.com/kubernetes
+  masterAuth:
+    username: "user"
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: containercluster-dep
+          key: password
+    clientCertificateConfig:
+      issueClientCertificate: false

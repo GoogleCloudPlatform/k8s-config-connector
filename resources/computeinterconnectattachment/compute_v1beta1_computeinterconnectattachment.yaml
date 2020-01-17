@@ -1,0 +1,16 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInterconnectAttachment
+metadata:
+  name: computeinterconnectattachment-sample
+spec:
+  description: example interconnect attachment description
+  interconnect: https://www.googleapis.com/compute/v1/projects/my-project/global/interconnects/my-interconnect
+  adminEnabled: true
+  bandwidth: BPS_50M
+  type: DEDICATED
+  candidateSubnets:
+    - 169.254.0.0/16
+  region: us-west1
+  vlanTag8021q: 1024
+  routerRef:
+    name: computeinterconnectattachment-dep

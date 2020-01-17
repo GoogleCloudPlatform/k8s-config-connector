@@ -74,7 +74,7 @@ spec:
         secret:
           secretName: gcp-key
 ---
-apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: musicians-demo

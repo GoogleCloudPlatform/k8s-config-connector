@@ -1,0 +1,12 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-dnssecds
+spec:
+  name: "secure.example.com."
+  type: "DS"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-dnssecds
+  rrdatas:
+  - "31523 5 1 c8761ba5defc26ac7b78e076d7c47fa9f86b9fba"

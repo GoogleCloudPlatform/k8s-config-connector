@@ -1,0 +1,12 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-dnssecdnskey
+spec:
+  name: "secure.example.com."
+  type: "DNSKEY"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-dnssecdnskey
+  rrdatas:
+  - "256 3 8 AwEAAcAPhPM4CQHqg6hZ49y2P3IdKZuF44QNCc50vjATD7W+je4va6djY5JpnNP0pIohKNYiCFap/b4Y9jjJGSOkOfkfBR8neI7X5LisMEGUjwRcrG8J9UYP1S1unTNqRcWyDYFH2q3KnIO08zImh5DiFt8yfCdKoqZUN1dup5hy0UWz"

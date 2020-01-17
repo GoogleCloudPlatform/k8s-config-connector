@@ -1,0 +1,14 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+spec:
+  displayName: BigtableSample
+  instanceType: PRODUCTION
+  cluster:
+  - clusterId: bigtableinstance-dep1
+    zone: us-central1-a
+    numNodes: 3
+  - clusterId: bigtableinstance-dep2
+    zone: us-west1-a
+    numNodes: 3

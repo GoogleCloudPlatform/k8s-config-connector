@@ -1,6 +1,0 @@
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
-kind: PubSubTopic
-metadata:
-  labels:
-    label-one: "value-one"
-  name: pubsubtopic-sample

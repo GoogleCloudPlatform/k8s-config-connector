@@ -1,0 +1,15 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computeinstancegroup-sample
+spec:
+  description: Compute instance group with two specified instances and named http and https ports.
+  instances:
+  - name: computeinstancegroup-dep1
+  - name: computeinstancegroup-dep2
+  namedPort:
+  - name: http
+    port: 8080
+  - name: https
+    port: 8443
+  zone: us-central1-a

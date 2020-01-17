@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_service_accounts_topic]
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha2
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   name: echo

@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  name: computesslpolicy-sample-customtls10
+spec:
+  description: An SSL Policy with a CUSTOM encryption profile, supporting a custom set of ciphers for TLS 1.0 and up.
+  profile: CUSTOM
+  customFeatures:
+    - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+    - TLS_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_RSA_WITH_AES_256_CBC_SHA

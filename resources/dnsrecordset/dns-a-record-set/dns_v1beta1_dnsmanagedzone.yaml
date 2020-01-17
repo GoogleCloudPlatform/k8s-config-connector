@@ -1,0 +1,6 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-a
+spec:
+  dnsName: "example.com."

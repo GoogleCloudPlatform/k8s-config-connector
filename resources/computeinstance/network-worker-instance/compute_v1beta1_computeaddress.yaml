@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  description: a sample external address
+  location: us-west1

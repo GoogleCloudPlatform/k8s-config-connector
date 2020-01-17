@@ -1,0 +1,14 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMCustomRole
+metadata:
+  labels:
+    label-one: "value-one"
+  name: iamcustomrolesample
+spec:
+  title: Example Custom Role
+  description: Example custom role description
+  permissions:
+    - iam.roles.list
+    - iam.roles.create
+    - iam.roles.delete
+  stage: GA

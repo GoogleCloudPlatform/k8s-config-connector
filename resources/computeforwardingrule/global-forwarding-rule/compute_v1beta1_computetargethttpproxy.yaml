@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: computeforwardingrule-dep-global
+spec:
+  urlMapRef:
+    name: computeforwardingrule-dep-global
+  location: global

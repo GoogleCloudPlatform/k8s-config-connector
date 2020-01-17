@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computeinstancegroup-dep
+spec:
+  machineType: n1-standard-1
+  disk:
+    - sourceImageRef:
+        external: debian-cloud/debian-9
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computeinstancegroup-dep

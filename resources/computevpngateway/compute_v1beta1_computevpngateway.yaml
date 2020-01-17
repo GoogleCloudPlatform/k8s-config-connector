@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeVPNGateway
+metadata:
+  name: computevpngateway-sample
+spec:
+  description: "Compute VPN Gateway Sample"
+  region: us-central1
+  networkRef:
+    name: computevpngateway-dep

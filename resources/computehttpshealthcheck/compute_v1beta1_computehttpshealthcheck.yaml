@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHTTPSHealthCheck
+metadata:
+  name: computehttpshealthcheck-sample
+spec:
+  checkIntervalSec: 10
+  description: example HTTPS health check
+  healthyThreshold: 2
+  port: 80
+  requestPath: /
+  timeoutSec: 5
+  unhealthyThreshold: 2
+

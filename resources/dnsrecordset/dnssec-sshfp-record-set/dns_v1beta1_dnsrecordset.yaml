@@ -1,0 +1,12 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-dnssecsshfp
+spec:
+  name: "host.secure.example.com."
+  type: "SSHFP"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-dnssecsshfp
+  rrdatas:
+  - "2 1 123456789abcdef67890123456789abcdef67890"

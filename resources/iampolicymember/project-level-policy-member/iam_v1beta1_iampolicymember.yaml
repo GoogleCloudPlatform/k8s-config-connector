@@ -1,0 +1,13 @@
+# Replace [PROJECT_ID] below with your desired project ID.
+#
+# This sample assumes that you have created a service account named cnrm-system@[PROJECT_ID].iam.gserviceaccount.com.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-projectlevel
+spec:
+  member: serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    kind: Project
+    name: [PROJECT_ID]

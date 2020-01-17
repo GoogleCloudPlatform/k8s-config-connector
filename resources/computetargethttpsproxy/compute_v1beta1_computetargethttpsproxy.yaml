@@ -1,0 +1,14 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPSProxy
+metadata:
+  name: computetargethttpsproxy-sample
+spec:
+  description: "A sample proxy"
+  urlMapRef:
+    name: computetargethttpsproxy-dep
+  sslCertificates:
+    - name: computetargethttpsproxy-dep
+  sslPolicyRef:
+    name: computetargethttpsproxy-dep
+  quicOverride: ENABLE
+  location: global

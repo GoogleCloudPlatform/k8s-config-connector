@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewall
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computefirewall-sample-deny
+spec:
+  deny:
+    - protocol: icmp
+  networkRef:
+    name: computefirewall-dep-deny

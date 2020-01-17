@@ -1,0 +1,14 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  labels:
+    label-one: "value-one"
+  name: dnsmanagedzone-sample
+spec:
+  description: "Example DNS zone"
+  dnsName: "cnrm-dns-example.com."
+  visibility: private
+  privateVisibilityConfig:
+    networks:
+      - networkRef:
+          name: dnsmanagedzone-dep

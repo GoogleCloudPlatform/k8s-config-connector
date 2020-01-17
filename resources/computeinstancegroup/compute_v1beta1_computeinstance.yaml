@@ -1,0 +1,17 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstancegroup-dep1
+spec:
+  zone: us-central1-a
+  instanceTemplateRef:
+    name: computeinstancegroup-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstancegroup-dep2
+spec:
+  zone: us-central1-a
+  instanceTemplateRef:
+    name: computeinstancegroup-dep

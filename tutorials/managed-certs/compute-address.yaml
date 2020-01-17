@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_managed_certs_compute_address]
-apiVersion: compute.cnrm.cloud.google.com/v1alpha3
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
   name: example-ip-address

@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-sample-regional
+  labels:
+    label-one: "value-one"
+spec:
+  addressType: INTERNAL
+  description: a test regional address
+  location: us-central1
+  ipVersion: IPV6
+  subnetworkRef:
+    name: computeaddress-dep-regional

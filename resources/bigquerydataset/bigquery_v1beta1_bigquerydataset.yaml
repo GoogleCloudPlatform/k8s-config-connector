@@ -1,0 +1,9 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerydatasetsample
+spec:
+  defaultTableExpirationMs: 3600000
+  description: "BigQuery Dataset Sample"
+  friendlyName: bigquerydataset-sample
+  location: US

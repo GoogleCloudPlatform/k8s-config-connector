@@ -1,0 +1,8 @@
+# This resource will enable the project this namespace is bound to as a Shared
+# VPC host. You should only create one of these resources per project. If you
+# have multiple namespaces mapping to the same project, ensure that only one
+# ComputeSharedVPCHostProject resource exists across these namespaces.
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSharedVPCHostProject
+metadata:
+  name: computesharedvpchostproject-sample

@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterInterface
+metadata:
+  name: computerouterpeer-dep
+spec:
+  routerRef:
+    name: computerouterpeer-dep
+  region: us-central1
+  ipRange: "169.254.0.1/30"

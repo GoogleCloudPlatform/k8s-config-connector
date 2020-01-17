@@ -1,0 +1,17 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLCertificate
+metadata:
+  name: computesslcertificate-sample
+spec:
+  location: global
+  description: example compute SSL certificate
+  certificate:
+    valueFrom:
+      secretKeyRef:
+        name: computesslcertificate-dep
+        key: certificate
+  privateKey:
+    valueFrom:
+      secretKeyRef:
+        name: computesslcertificate-dep
+        key: privateKey

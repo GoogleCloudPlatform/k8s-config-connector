@@ -1,0 +1,9 @@
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerDatabase
+metadata:
+  name: spannerdatabase-sample
+spec:
+  instanceRef:
+    name: spannerdatabase-dep
+  ddl:
+  - "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"

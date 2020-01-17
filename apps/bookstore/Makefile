@@ -30,9 +30,9 @@ docker-build-users:
 	docker build ./users -t gcr.io/${PROJECT_ID}/bookstore/users:${SHORT_SHA}
 
 docker-build: docker-build-app docker-build-inventory docker-build-purchases docker-build-users
-	cp config/image_patch_template.yaml config/kustomize/image_patch.yaml
-	sed -i'' -e 's/\[PROJECT_ID\]/${PROJECT_ID}/g' config/kustomize/image_patch.yaml
-	sed -i'' -e 's/\[TAG\]/${SHORT_SHA}/g' config/kustomize/image_patch.yaml
+	cp config/image_patch_template.yaml config/image_patch.yaml
+	sed -i'' -e 's/\[PROJECT_ID\]/${PROJECT_ID}/g' config/image_patch.yaml
+	sed -i'' -e 's/\[TAG\]/${SHORT_SHA}/g' config/image_patch.yaml
 
 docker-push-app:
 	docker push gcr.io/${PROJECT_ID}/bookstore/app:${SHORT_SHA}
@@ -49,4 +49,4 @@ docker-push-users:
 docker-push: docker-push-app docker-push-inventory docker-push-purchases docker-push-users
 
 deploy:
-	kustomize build config/kustomize | kubectl apply -f -
+	kustomize build config/ | kubectl apply -f -

@@ -1,0 +1,11 @@
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: redisinstance-sample
+spec:
+  displayName: Sample Redis Instance
+  region: us-central1
+  tier: BASIC
+  memorySizeGb: 16

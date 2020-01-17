@@ -1,0 +1,19 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeReservation
+metadata:
+  name: computereservation-sample-specialized
+spec:
+  description: Reservation for a single tricked out machine that can only be consumed by a VM instance that references this reservation.
+  zone: us-central1-a
+  specificReservationRequired: true
+  specificReservation:
+    count: 1
+    instanceProperties:
+      machineType: n1-highmem-8
+      minCpuPlatform: "Intel Skylake"
+      guestAccelerators:
+      - acceleratorCount: 1
+        acceleratorType: nvidia-tesla-v100
+      localSsds:
+      - interface: NVME
+        diskSizeGb: 375

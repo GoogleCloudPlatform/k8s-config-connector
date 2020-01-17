@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeReservation
+metadata:
+  name: computereservation-sample-bulk
+spec:
+  description: Reservation for 2 basic machines which will become generally available for VM instances to consume.
+  zone: us-central1-a
+  specificReservation:
+    count: 2
+    instanceProperties:
+      machineType: n1-standard-1
+      minCpuPlatform: "Intel Sandy Bridge"

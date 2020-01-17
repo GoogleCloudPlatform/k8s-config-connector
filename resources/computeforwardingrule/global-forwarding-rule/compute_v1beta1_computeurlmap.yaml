@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeforwardingrule-dep-global
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computeforwardingrule-dep-global
+  location: global

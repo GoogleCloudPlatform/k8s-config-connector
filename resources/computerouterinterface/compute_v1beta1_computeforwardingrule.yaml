@@ -1,0 +1,52 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep1
+spec:
+  description: "A regional forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computerouterinterface-dep
+  ipProtocol: "ESP"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep2
+spec:
+  description: "A regional forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computerouterinterface-dep
+  ipProtocol: "UDP"
+  portRange: "500"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep3
+spec:
+  description: "A regional forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computerouterinterface-dep
+  ipProtocol: "UDP"
+  portRange: "4500"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep

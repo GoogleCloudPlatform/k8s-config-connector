@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false

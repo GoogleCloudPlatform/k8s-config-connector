@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodetemplate-sample-flexible
+  labels:
+    memory_guarantee: "false"
+    desired_workload: "high-cpu"
+spec:
+  description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.
+  region: us-central1
+  nodeTypeFlexibility:
+    cpus: "96"
+    memory: any

@@ -1,0 +1,16 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLCertificate
+metadata:
+  name: computetargetsslproxy-dep
+spec:
+  location: global
+  certificate:
+    valueFrom:
+      secretKeyRef:
+        name: computetargetsslproxy-dep
+        key: certificate
+  privateKey:
+    valueFrom:
+      secretKeyRef:
+        name: computetargetsslproxy-dep
+        key: privateKey

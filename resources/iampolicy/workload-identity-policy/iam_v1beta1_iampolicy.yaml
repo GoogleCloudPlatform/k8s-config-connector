@@ -1,0 +1,14 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-sample-workloadidentity
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: iampolicy-dep-workloadidentity
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        # replace ${PROJECT_ID} with your project name
+        - serviceAccount:${PROJECT_ID?}.svc.id.goog[default/iampolicy-dep-workloadidentity]

@@ -1,0 +1,16 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computeforwardingrule-sample-regional
+spec:
+  description: "A global forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computeforwardingrule-dep-regional
+  ipProtocol: "ESP"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computeforwardingrule-dep-regional

@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstance-sample-fromtemplate
+  labels:
+    created-from: "template"
+    override-type: "largermachine"
+spec:
+  machineType: n1-standard-2
+  instanceTemplateRef:
+    name: computeinstance-dep-fromtemplate
+  zone: us-west1-c

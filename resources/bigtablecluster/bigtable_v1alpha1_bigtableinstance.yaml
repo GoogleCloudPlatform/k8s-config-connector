@@ -1,6 +1,0 @@
-apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
-kind: BigtableInstance
-metadata:
-  name: bigtablecluster-dep
-spec:
-  displayName: Bigtable Cluster Dependency

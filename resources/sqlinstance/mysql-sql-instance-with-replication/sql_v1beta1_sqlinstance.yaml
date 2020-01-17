@@ -1,0 +1,35 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample1-mysqlwithreplication
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+    backupConfiguration:
+        binaryLogEnabled: true
+        enabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    locationPreference:
+        zone: us-central1-b
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample2-mysqlwithreplication
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  masterInstanceRef: 
+    name: sqlinstance-sample1-mysqlwithreplication
+  replicaConfiguration:
+    connectRetryInterval: 30
+  settings:
+    tier: db-f1-micro
+    ipConfiguration:
+      requireSsl: true
+    locationPreference:
+        zone: us-central1-c

@@ -1,0 +1,18 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computesubnetwork-sample
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  description: My subnet
+  enableFlowLogs: true
+  privateIpGoogleAccess: false
+  networkRef:
+    name: computesubnetwork-dep
+  logConfig:
+    aggregationInterval: INTERVAL_10_MIN
+    flowSampling: 0.5
+    metadata: INCLUDE_ALL_METADATA

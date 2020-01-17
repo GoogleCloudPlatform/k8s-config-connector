@@ -1,0 +1,11 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucketAccessControl
+metadata:
+  labels:
+    label-one: "value-one"
+  name: storagebucketaccesscontrol-sample
+spec:
+  bucketRef:
+    name: storagebucketaccesscontrol-dep
+  entity: allAuthenticatedUsers
+  role: READER

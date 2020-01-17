@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computetargetsslproxy-dep
+spec:
+  healthCheckRef:
+    name: computetargetsslproxy-dep
+  location: global
+  protocol: SSL

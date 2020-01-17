@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodetemplate-sample-template
+  labels:
+    memory_guarantee: "true"
+    desired_workload: "sustained"
+spec:
+  description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and 624GB of memory, on n1 machines.
+  region: us-central1
+  nodeType: n1-node-96-624

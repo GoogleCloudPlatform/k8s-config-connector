@@ -1,0 +1,16 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-mx
+spec:
+  name: "mail.example.com."
+  type: "MX"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-mx
+  rrdatas:
+  - "5 gmr-stmp-in.l.google.com."
+  - "10 alt1.gmr-stmp-in.l.google.com."
+  - "10 alt2.gmr-stmp-in.l.google.com."
+  - "10 alt3.gmr-stmp-in.l.google.com."
+  - "10 alt4.gmr-stmp-in.l.google.com."

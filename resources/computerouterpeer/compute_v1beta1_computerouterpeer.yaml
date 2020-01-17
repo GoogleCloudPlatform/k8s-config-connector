@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterPeer
+metadata:
+  name: computerouterpeer-sample
+spec:
+  region: us-central1
+  peerIpAddress: "169.254.0.2"
+  peerAsn: 65513
+  advertisedRoutePriority: 1
+  routerRef:
+    name: computerouterpeer-dep
+  routerInterfaceRef:
+    name: computerouterpeer-dep

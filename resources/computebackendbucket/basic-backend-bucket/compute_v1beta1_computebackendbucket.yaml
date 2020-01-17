@@ -1,0 +1,10 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendBucket
+metadata:
+  name: computebackendbucket-sample-basic
+  labels:
+    label-one: "value-one"
+spec:
+  bucketRef:
+    name: computebackendbucket-dep-basic
+  description: contains a reference to a bucket for use with HTTP(S) load-balancing

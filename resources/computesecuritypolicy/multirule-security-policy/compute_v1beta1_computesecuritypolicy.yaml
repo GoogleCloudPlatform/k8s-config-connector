@@ -1,0 +1,42 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computesecuritypolicy-sample-multirule
+spec:
+  description: A generally permissive policy that locks out a large block of untrusted IPs, except for some allowed trusted IP ranges within them, and never allows IPs from a blacklist.
+  rule:
+  - action: allow
+    priority: 2147483647
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - "*"
+    description: This rule must be included in any rule array. Action can change.
+  - action: deny(502)
+    priority: 111111111
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 60.0.0.0/6
+    description: Untrusted range. Block IPs and return 502.
+  - action: allow
+    priority: 555
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 63.0.0.0/8
+        - 61.128.0.0/10
+    description: Even though they're in an untrusted block, these ranges are OK.
+  - action: deny(403)
+    priority: 0
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 145.4.56.4/30
+        - 63.63.63.63/32
+        - 4.5.4.0/24
+    description: Never allow these blacklisted IP ranges.

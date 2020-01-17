@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterInterface
+metadata:
+  name: computerouterinterface-sample
+spec:
+  routerRef:
+    name: computerouterinterface-dep
+  region: us-central1
+  ipRange: "169.254.1.1/30"
+  vpnTunnelRef:
+    name: computerouterinterface-dep

@@ -1,0 +1,14 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewall
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computefirewall-sample-allow
+spec:
+  allow:
+    - protocol: tcp
+      ports:
+       - "80"
+       - "1000-2000"
+  networkRef:
+    name: computefirewall-dep-allow

@@ -1,0 +1,47 @@
+# **WARNING**: The bindings here represent the full declarative intent for the project.
+# It will fully overwrite the existing policy on the given project.
+#
+# This sample assumes the following additional APIs are enabled:
+#   - compute.googleapis.com
+#   - container.googleapis.com
+#   - containerregistry.googleapis.com
+#   - redis.googleapis.com
+#
+# Replace [PROJECT_ID], [PROJECT_NUMBER], and [ACCOUNT] with your desired project ID,
+# that project's project number, and your Google Cloud account email respectively.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  labels:
+    label-one: value-one
+  name: iampolicy-sample-projectlevel
+spec:
+  resourceRef:
+    kind: Project
+    name: [PROJECT_ID]
+  bindings:
+    - members:
+        - serviceAccount:service-[PROJECT_NUMBER]@compute-system.iam.gserviceaccount.com
+      role: roles/compute.serviceAgent
+    - members:
+        - serviceAccount:service-[PROJECT_NUMBER]@container-engine-robot.iam.gserviceaccount.com
+      role: roles/container.serviceAgent
+    - members:
+        - serviceAccount:[PROJECT_NUMBER]-compute@developer.gserviceaccount.com
+        - serviceAccount:[PROJECT_NUMBER]@cloudservices.gserviceaccount.com
+        - serviceAccount:cnrm-application-demo@[PROJECT_ID].iam.gserviceaccount.com
+        - serviceAccount:service-[PROJECT_NUMBER]@containerregistry.iam.gserviceaccount.com
+      role: roles/editor
+    - members:
+        # Make sure to keep the "cnrm-system" service account permission, or else Config Connector will
+        # be locked out from managing GCP resources.
+        - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+        # Ensure that your account is not locked out of the project.
+        - user:[ACCOUNT]
+      role: roles/owner
+    - members:
+        - serviceAccount:service-[PROJECT_NUMBER]@cloud-redis.iam.gserviceaccount.com
+      role: roles/redis.serviceAgent
+    - members:
+        - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+      role: roles/storage.admin

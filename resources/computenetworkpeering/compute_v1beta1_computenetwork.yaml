@@ -1,0 +1,15 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetworkpeering-dep1
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetworkpeering-dep2
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false

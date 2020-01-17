@@ -1,0 +1,11 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  labels:
+    label-one: "value-one"
+  name: sqldatabase-sample
+spec:
+  charset: utf8mb4
+  collation: utf8mb4_bin
+  instanceRef:
+    name: sqldatabase-dep

@@ -1,0 +1,10 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  name: computenodegroup-sample
+spec:
+  description: A single sole-tenant node in the us-central1-b zone.
+  size: 1
+  nodeTemplateRef:
+    name: computenodegroup-dep
+  zone: us-central1-b
