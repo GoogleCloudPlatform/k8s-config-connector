@@ -3,6 +3,7 @@ kind: ComputeBackendService
 metadata:
   name: computetargethttpproxy-dep
 spec:
-  healthCheckRef:
-    name: computetargethttpproxy-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computetargethttpproxy-dep
   location: global

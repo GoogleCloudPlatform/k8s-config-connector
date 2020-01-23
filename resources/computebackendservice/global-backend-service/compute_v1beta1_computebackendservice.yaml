@@ -1,8 +1,15 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
-  name: computebackendservice-sample
+  name: computebackendservice-sample-global
 spec:
-  healthCheckRef:
-    name: computebackendservice-dep
   location: global
+  backend:
+    - group:
+        instanceGroupRef:
+          name: computebackendservice-dep-global
+  healthChecks:
+    - healthCheckRef:
+        name: computebackendservice-dep-global
+  securityPolicyRef:
+    name: computebackendservice-dep-global

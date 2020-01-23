@@ -3,7 +3,8 @@ kind: ComputeBackendService
 metadata:
   name: computetargetsslproxy-dep
 spec:
-  healthCheckRef:
-    name: computetargetsslproxy-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computetargetsslproxy-dep
   location: global
   protocol: SSL

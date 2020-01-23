@@ -6,7 +6,7 @@ spec:
   addressType: INTERNAL
   location: global
   purpose: VPC_PEERING
-  prefixLength: 8
+  prefixLength: 16
   networkRef:
     name: servicenetworkingconnection-dep
 ---

@@ -4,3 +4,9 @@ metadata:
   name: computesnapshot-dep
 spec:
   location: us-west1-c
+  diskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: sourceDiskEncryptionKey

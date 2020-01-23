@@ -1,0 +1,14 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computebackendservice-dep-regional
+spec:
+  zone: us-central1-a
+  machineType: n1-standard-1
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+    - networkRef:
+        name: computebackendservice-dep-regional

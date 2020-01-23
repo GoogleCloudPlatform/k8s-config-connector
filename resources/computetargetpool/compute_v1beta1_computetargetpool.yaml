@@ -1,0 +1,27 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetPool
+metadata:
+  name: computetargetpool-dep
+spec:
+  region: us-central1
+  instances:
+    - name: computetargetpool-dep3
+    - name: computetargetpool-dep4
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetPool
+metadata:
+  name: computetargetpool-sample
+spec:
+  backupTargetPoolRef:
+    name: computetargetpool-dep
+  description: A pool of compute instances to use as a backend to a load balancer, with health check and backup pool. A hash of requester's IP is used to determine session affinity to instances.
+  instances:
+  - name: computetargetpool-dep1
+  - name: computetargetpool-dep2
+  healthChecks:
+    - httpHealthCheckRef:
+        name: computetargetpool-dep
+  failoverRatio: 0.5
+  region: us-central1
+  sessionAffinity: CLIENT_IP

@@ -1,0 +1,13 @@
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  labels:
+    key-one: value-one
+  name: kmscryptokey-sample
+spec:
+  keyRingRef:
+    name: kmscryptokey-dep
+  purpose: ASYMMETRIC_SIGN
+  versionTemplate:
+    algorithm: EC_SIGN_P384_SHA384
+    protectionLevel: SOFTWARE

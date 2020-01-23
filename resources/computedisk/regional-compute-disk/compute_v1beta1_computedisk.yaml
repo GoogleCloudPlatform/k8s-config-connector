@@ -10,7 +10,7 @@ kind: ComputeDisk
 metadata:
   name: computedisk-sample-regional
   labels:
-    extraSizeGB: "100"
+    extra-gb: "100"
 spec:
   description: A 600GB regional disk from a 500GB snapshot.
   location: us-central1

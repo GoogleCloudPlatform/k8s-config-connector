@@ -2,13 +2,14 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
   name: bigquerytablesample
+  labels:
+    data-source: "external"
+    schema-type: "auto-junk"
 spec:
   description: "BigQuery Sample Table"
   datasetRef:
     name: bigquerytabledep
   friendlyName: bigquerytable-sample
-  timePartitioning:
-    type: DAY
   externalDataConfiguration:
     autodetect: true
     compression: NONE
@@ -16,5 +17,5 @@ spec:
     maxBadRecords: 10
     sourceFormat: CSV
     sourceUris:
-      - my-uri-1
-      - my-uri-2
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"

@@ -2,3 +2,5 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeDisk
 metadata:
   name: computeimage-dep-fromexistingdisk
+spec:
+  location: us-central1-a

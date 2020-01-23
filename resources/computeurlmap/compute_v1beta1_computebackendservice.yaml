@@ -3,8 +3,9 @@ kind: ComputeBackendService
 metadata:
   name: computeurlmap-dep1
 spec:
-  healthCheckRef:
-    name: computeurlmap-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -12,8 +13,9 @@ kind: ComputeBackendService
 metadata:
   name: computeurlmap-dep2
 spec:
-  healthCheckRef:
-    name: computeurlmap-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -21,6 +23,7 @@ kind: ComputeBackendService
 metadata:
   name: computeurlmap-dep3
 spec:
-  healthCheckRef:
-    name: computeurlmap-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
   location: global

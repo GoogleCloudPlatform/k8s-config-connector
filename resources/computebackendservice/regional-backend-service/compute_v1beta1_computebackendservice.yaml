@@ -1,9 +1,14 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
-  name: computeregionbackendservice-sample
+  name: computebackendservice-sample-regional
 spec:
-  healthCheckRef:
-    name: computeregionbackendservice-dep
+  backend:
+    - group:
+        instanceGroupRef:
+          name: computebackendservice-dep-regional
+  healthChecks:
+    - healthCheckRef:
+        name: computebackendservice-dep-regional
   location: us-central1
   loadBalancingScheme: INTERNAL

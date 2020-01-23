@@ -5,3 +5,4 @@ metadata:
 spec:
   sourceDiskRef:
     name: computedisk-dep-regional
+  zone: us-west1-c

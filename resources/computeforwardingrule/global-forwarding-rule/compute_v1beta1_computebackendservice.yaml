@@ -3,6 +3,7 @@ kind: ComputeBackendService
 metadata:
   name: computeforwardingrule-dep-global
 spec:
-  healthCheckRef:
-    name: computeforwardingrule-dep-global
+  healthChecks:
+    - healthCheckRef:
+        name: computeforwardingrule-dep-global
   location: global

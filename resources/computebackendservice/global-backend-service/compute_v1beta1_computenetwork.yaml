@@ -1,9 +1,6 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeHealthCheck
+kind: ComputeNetwork
 metadata:
   name: computebackendservice-dep-global
 spec:
-  checkIntervalSec: 10
-  httpHealthCheck:
-    port: 80
-  location: global
+  description: Example network for global backend services

@@ -3,7 +3,8 @@ kind: ComputeBackendService
 metadata:
   name: computetargettcpproxy-dep
 spec:
-  healthCheckRef:
-    name: computetargettcpproxy-dep
+  healthChecks:
+    - healthCheckRef:
+        name: computetargettcpproxy-dep
   location: global
   protocol: TCP

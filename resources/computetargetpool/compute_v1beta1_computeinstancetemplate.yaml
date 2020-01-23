@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computetargetpool-dep
+spec:
+  machineType: n1-standard-1
+  disk:
+    - sourceImageRef:
+        external: debian-cloud/debian-9
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computetargetpool-dep

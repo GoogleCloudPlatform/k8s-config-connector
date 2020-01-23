@@ -3,7 +3,7 @@ kind: ComputeImage
 metadata:
   name: computeimage-sample-fromurlraw
   labels:
-    imageType: stemcell
+    image-type: stemcell
 spec:
   description: A sample image created from URL to a raw TAR disk image
   family: ubuntu-custom
