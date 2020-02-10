@@ -7,7 +7,7 @@ metadata:
     label-one: "value-one"
   name: containernodepool-dep
 spec:
-  location: us-central1-a
+  location: us-east1-c
   initialNodeCount: 1
   loggingService: logging.googleapis.com/kubernetes
   monitoringService: monitoring.googleapis.com/kubernetes
