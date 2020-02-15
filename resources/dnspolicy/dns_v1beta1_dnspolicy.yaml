@@ -1,0 +1,14 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSPolicy
+metadata:
+  name: dnspolicy-sample
+spec:
+  alternativeNameServerConfig:
+    targetNameServers:
+      - ipv4Address: "104.132.166.92"
+  description: "Example DNS policy"
+  enableInboundForwarding: true
+  enableLogging: true
+  networks:
+    - networkRef:
+        name: dnspolicy-dep
