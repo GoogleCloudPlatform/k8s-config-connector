@@ -10,4 +10,4 @@ spec:
   role: roles/storage.admin
   resourceRef:
     kind: Project
-    name: [PROJECT_ID]
+    #name: [PROJECT_ID] - can be used just in case of the Project resource was created via Config Connector and exists in the API server
