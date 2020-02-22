@@ -1,6 +1,9 @@
 # **WARNING**: The bindings here represent the full declarative intent for the project.
 # It will fully overwrite the existing policy on the given project.
 #
+# For finer-grained control over the project's IAM policy, it is recommended
+# that the IAMPolicyMember resource be used instead.
+#
 # This sample assumes the following additional APIs are enabled:
 #   - compute.googleapis.com
 #   - container.googleapis.com
@@ -12,6 +15,13 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
+  annotations:
+    # By default, the underlying GCP resource is deleted upon deletion of the
+    # K8s resource representing it (i.e. the entire IAM policy object of the
+    # GCP project will be wiped out if you delete this IAMPolicy resource). Set
+    # the 'deletion-policy' to 'abandon' to prevent the underlying GCP resource
+    # from being deleted upon deletion of this K8s resource.
+    cnrm.cloud.google.com/deletion-policy: abandon
   labels:
     label-one: value-one
   name: iampolicy-sample-projectlevel

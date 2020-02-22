@@ -4,4 +4,4 @@ metadata:
   name: computefirewall-dep-allow
 spec:
   routingMode: REGIONAL
-  autoCreateSubnetworks: true
+  autoCreateSubnetworks: false

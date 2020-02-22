@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetworkEndpointGroup
+metadata:
+  name: computenetworkendpointgroup-sample
+spec:
+  networkRef:
+    name: computenetworkendpointgroup-dep
+  subnetworkRef:
+    name: computenetworkendpointgroup-dep
+  location: us-west1-a
+  defaultPort: 90
+  description: A network endpoint group living in a specific us-west1 subnetwork, whose member endpoints will serve on port number 90 by default.
