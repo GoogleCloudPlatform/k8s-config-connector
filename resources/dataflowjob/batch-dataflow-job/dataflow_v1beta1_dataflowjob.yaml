@@ -1,0 +1,20 @@
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/on-delete: "cancel"
+  labels:
+    label-one: "value-one"
+  name: dataflowjob-sample-batch
+spec:
+  tempGcsLocation: gs://dataflowjob-dep-batch/tmp
+  # This is a public, Google-maintained Dataflow Job template of a batch job
+  templateGcsPath: gs://dataflow-templates/2020-02-03-01_RC00/Word_Count
+  parameters:
+    # This is a public, Google-maintained text file
+    inputFile: gs://dataflow-samples/shakespeare/various.txt
+    output: gs://dataflowjob-dep-batch/output
+  zone: us-central1-a
+  machineType: "n1-standard-1"
+  maxWorkers: 3
+  ipConfiguration: "WORKER_IP_PUBLIC"

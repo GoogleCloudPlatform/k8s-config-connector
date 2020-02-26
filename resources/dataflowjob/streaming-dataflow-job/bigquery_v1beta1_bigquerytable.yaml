@@ -1,0 +1,7 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: dataflowjobdepstreaming
+spec:
+  datasetRef:
+    name: dataflowjobdepstreaming
