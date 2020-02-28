@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetworkEndpointGroup
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  networkRef:
+    name: computebackendservice-dep-externalloadbalancing
+  location: us-west1-a

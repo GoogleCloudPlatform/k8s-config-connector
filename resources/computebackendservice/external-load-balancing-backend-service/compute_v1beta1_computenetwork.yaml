@@ -1,0 +1,6 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  routingMode: GLOBAL

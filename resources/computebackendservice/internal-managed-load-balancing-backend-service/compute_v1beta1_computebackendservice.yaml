@@ -1,0 +1,53 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample-internalmanagedloadbalancing
+spec:
+  description: Internal managed backend service with Maglev session affinity.
+  localityLbPolicy: MAGLEV
+  timeoutSec: 86400
+  consistentHash:
+    httpHeaderName: "Hash string"
+  healthChecks:
+  - healthCheckRef:
+      name: computebackendservice-dep-internalmanagedloadbalancing
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-east1
+  protocol: HTTP
+  connectionDrainingTimeoutSec: 10
+  sessionAffinity: HEADER_FIELD
+  circuitBreakers:
+    connectTimeout:
+      nanos: 999999999
+      seconds: 0
+    maxConnections: 1024
+    maxPendingRequests: 1024
+    maxRequests: 1024
+    maxRequestsPerConnection: 1
+    maxRetries: 3
+  logConfig:
+    enable: false
+  outlierDetection:
+    consecutiveGatewayFailure: 5
+    enforcingConsecutiveErrors: 100
+    enforcingSuccessRate: 100
+    successRateMinimumHosts: 5
+    successRateRequestVolume: 100
+    baseEjectionTime:
+      nanos: 999999999
+      seconds: 29
+    consecutiveErrors: 5
+    enforcingConsecutiveGatewayFailure: 0
+    interval:
+      nanos: 999999999
+      seconds: 9
+    maxEjectionPercent: 10
+    successRateStdevFactor: 1900
+  backend:
+  - balancingMode: RATE
+    capacityScaler: 0.9
+    description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
+    maxRate: 10000
+    group:
+      instanceGroupRef:
+        name: computebackendservice-dep-internalmanagedloadbalancing

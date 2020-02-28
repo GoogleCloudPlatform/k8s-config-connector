@@ -27,8 +27,9 @@ metadata:
   name: iampolicy-sample-projectlevel
 spec:
   resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    name: [PROJECT_ID]
+    external: projects/[PROJECT_ID]
   bindings:
     - members:
         - serviceAccount:service-[PROJECT_NUMBER]@compute-system.iam.gserviceaccount.com

@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  namedPort:
+  - name: cookie-cloud
+    port: 8444
+  zone: us-central1-a
+  networkRef:
+    name: computebackendservice-dep-externalloadbalancing

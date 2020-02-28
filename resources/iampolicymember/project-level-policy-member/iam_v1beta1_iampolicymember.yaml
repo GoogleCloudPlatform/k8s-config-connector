@@ -9,5 +9,6 @@ spec:
   member: serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    name: [PROJECT_ID]
+    external: projects/[PROJECT_ID]

@@ -1,0 +1,32 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample-externalloadbalancing
+spec:
+  description: External backend service with cookie-based session affinity.
+  portName: cookie-cloud
+  timeoutSec: 30
+  healthChecks:
+  - healthCheckRef:
+      name: computebackendservice-dep-externalloadbalancing
+  loadBalancingScheme: EXTERNAL
+  location: global
+  protocol: HTTPS
+  affinityCookieTtlSec: 360
+  connectionDrainingTimeoutSec: 60
+  securityPolicyRef:
+    name: computebackendservice-dep-externalloadbalancing
+  sessionAffinity: GENERATED_COOKIE
+  customRequestHeaders:
+  - "Trailer: custom-trailer"
+  logConfig:
+    enable: true
+    sampleRate: 0.5
+  backend:
+  - balancingMode: RATE
+    capacityScaler: 1
+    description: A network endpoint group serving this backend with all its available capacity, as calculated by number of simultaneous connections.
+    maxRatePerEndpoint: 10
+    group:
+      networkEndpointGroupRef:
+        name: computebackendservice-dep-externalloadbalancing

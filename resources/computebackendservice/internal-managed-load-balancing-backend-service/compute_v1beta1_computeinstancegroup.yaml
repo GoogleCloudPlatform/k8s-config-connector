@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computebackendservice-dep-internalmanagedloadbalancing
+spec:
+  zone: us-east1-c
+  networkRef:
+    name: computebackendservice-dep-internalmanagedloadbalancing
