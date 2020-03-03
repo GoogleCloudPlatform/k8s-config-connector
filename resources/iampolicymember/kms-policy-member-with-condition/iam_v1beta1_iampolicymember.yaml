@@ -1,0 +1,16 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-condition
+spec:
+  # replace ${PROJECT_ID?} with your project name
+  member: serviceAccount:iampolicymember-dep-condition@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: roles/cloudkms.admin
+  condition:
+    title: expires_after_2019_12_31
+    description: Expires at midnight of 2019-12-31
+    expression: request.time < timestamp("2020-01-01T00:00:00Z")
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    name: iampolicymember-dep-condition
