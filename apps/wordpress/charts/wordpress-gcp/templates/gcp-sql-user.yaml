@@ -6,4 +6,5 @@ spec:
   instanceRef:
     name: {{ required "instanceName is required!" .Values.database.instanceName }}
   host: "%"
-  password: {{ required "password is required!" .Values.database.password }}
+  password: 
+    value: {{ required "password is required!" .Values.database.password }}
