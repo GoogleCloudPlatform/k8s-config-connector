@@ -1,7 +1,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
-  name: computehealthcheck-sample
+  name: computehealthcheck-sample-global
 spec:
   checkIntervalSec: 10
   httpHealthCheck:
