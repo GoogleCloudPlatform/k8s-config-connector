@@ -2,6 +2,7 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: {{ required "instanceName is required!" .Values.database.instanceName }}
+  cnrm.cloud.google.com/project-id: {{ required "projectId is required!" .Values.google.projectId }}
 spec:
   databaseVersion: {{ required "version is required!" .Values.database.version }}
   region: {{ required "region is required!" .Values.google.region }}
