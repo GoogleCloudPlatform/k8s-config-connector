@@ -1,0 +1,10 @@
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: sqlinstance-dep-private-ip
+spec:
+  networkRef:
+    name: sqlinstance-dep-private-ip
+  reservedPeeringRanges:
+    - name: sqlinstance-dep-private-ip
+  service: servicenetworking.googleapis.com

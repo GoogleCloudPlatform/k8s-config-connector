@@ -1,0 +1,13 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-private-ip
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+    ipConfiguration:
+      ipv4Enabled: false
+      privateNetworkRef:
+        name: sqlinstance-dep-private-ip
