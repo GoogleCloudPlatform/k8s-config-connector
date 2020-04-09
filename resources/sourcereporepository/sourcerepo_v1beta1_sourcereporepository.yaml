@@ -1,0 +1,11 @@
+apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
+kind: SourceRepoRepository
+metadata:
+  name: sourcereporepository-sample
+spec:
+  pubsubConfigs:
+    - topicRef:
+        name: sourcereporepository-dep
+      serviceAccountRef:
+        name: sourcereporepository-dep
+      messageFormat: JSON

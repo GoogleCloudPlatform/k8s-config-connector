@@ -3,6 +3,7 @@ kind: StorageBucketAccessControl
 metadata:
   labels:
     label-one: "value-one"
+  # You MUST change the name to a globally unique bucket name.
   name: storagebucketaccesscontrol-sample
 spec:
   bucketRef:

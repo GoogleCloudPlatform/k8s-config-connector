@@ -1,4 +1,5 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  # You MUST change the name to a globally unique bucket name.
   name: computeurl-dep

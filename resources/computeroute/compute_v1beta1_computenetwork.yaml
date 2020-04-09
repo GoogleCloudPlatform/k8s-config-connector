@@ -3,6 +3,6 @@ kind: ComputeNetwork
 metadata:
   name: computeroute-dep
   annotations:
-    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   description: Default network for the project

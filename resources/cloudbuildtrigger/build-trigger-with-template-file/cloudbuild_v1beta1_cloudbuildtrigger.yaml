@@ -1,0 +1,19 @@
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: cloudbuildtrigger-sample-withtemplatefile
+spec:
+  description: Cloud Build Trigger with a build template file. Builds the master branch of the referenced Cloud Source Repository.
+  disabled: false
+  triggerTemplate:
+    repoRef:
+      name: cloudbuildtrigger-dep-withtemplatefile
+    dir: "team-a/service-b"
+    branchName: master
+  ignoredFiles:
+    - "**/*.md"
+  includedFiles:
+    - "src/**"
+  substitutions:
+    "_SERVICE_NAME": "service-name"
+  filename: "cloudbuild.yaml"

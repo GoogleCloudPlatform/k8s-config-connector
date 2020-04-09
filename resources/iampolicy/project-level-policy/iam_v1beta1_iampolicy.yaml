@@ -21,7 +21,7 @@ metadata:
     # GCP project will be wiped out if you delete this IAMPolicy resource). Set
     # the 'deletion-policy' to 'abandon' to prevent the underlying GCP resource
     # from being deleted upon deletion of this K8s resource.
-    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   labels:
     label-one: value-one
   name: iampolicy-sample-projectlevel

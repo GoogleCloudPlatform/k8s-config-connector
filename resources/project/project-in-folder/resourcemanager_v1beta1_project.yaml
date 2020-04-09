@@ -4,6 +4,7 @@ metadata:
   annotations:
     # Replace "${FOLDER_ID?}" with the numeric ID for your folder
     cnrm.cloud.google.com/folder-id: "${FOLDER_ID?}"
+    cnrm.cloud.google.com/auto-create-network: "false"
   labels:
     label-one: "value-one"
   name: project-sample-in-folder
