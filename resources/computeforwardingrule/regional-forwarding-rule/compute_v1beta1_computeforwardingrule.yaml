@@ -5,7 +5,7 @@ metadata:
     label-one: "value-one"
   name: computeforwardingrule-sample-regional
 spec:
-  description: "A global forwarding rule"
+  description: "A regional forwarding rule"
   target:
     targetVPNGatewayRef:
       name: computeforwardingrule-dep-regional
