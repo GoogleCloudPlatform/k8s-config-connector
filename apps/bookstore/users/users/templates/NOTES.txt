@@ -1,2 +1,0 @@
-hostname: users
-port: 8080

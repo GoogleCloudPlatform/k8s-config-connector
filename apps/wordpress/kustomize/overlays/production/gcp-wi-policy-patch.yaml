@@ -1,6 +1,0 @@
-- op: add
-  path: /spec/bindings
-  value:
-  - role: roles/iam.workloadIdentityUser
-    members:
-      - serviceAccount:my-project-id.svc.id.goog[default/sql-wp-ksa-wi]

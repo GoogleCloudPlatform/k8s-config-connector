@@ -1,7 +1,0 @@
-- op: replace
-  path: /spec/member
-  value: serviceAccount:sql-wp-sa@my-project-id.iam.gserviceaccount.com
-
-- op: replace
-  path: /spec/resourceRef/name
-  value: my-project-id

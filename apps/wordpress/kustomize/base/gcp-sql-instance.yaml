@@ -1,9 +1,0 @@
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
-metadata:
-  name: wp2-db
-spec:
-  databaseVersion: MYSQL_5_7
-  region: us-central1
-  settings:
-    tier: db-f1-micro

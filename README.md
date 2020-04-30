@@ -16,8 +16,10 @@ configuration, and -- more importantly -- *tooling*. For example, the same
 customization or templating tool can be used to manage test vs. production
 versions of an application across both Kubernetes and GCP.
 
-This repository contains sample applications and resources for use with Config
-Connector.
+This repository contains Config Connector resource configs.
+
+For simple starter
+examples, please refer to [Cloud Foundation Toolkit Config Connector Solutions](https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions).
 
 For more information about Config Connector, see
 https://cloud.google.com/config-connector/docs/overview.
