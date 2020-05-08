@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_workload_identity_policy_binding]
+# [START configconnector_workload_identity_policy_binding]
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -25,4 +26,5 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
         - serviceAccount:[PROJECT_ID].svc.id.goog[[K8S_NAMESPACE]/[KSA_NAME]]
+# [END configconnector_workload_identity_policy_binding]
 # [END config_connector_workload_identity_policy_binding]

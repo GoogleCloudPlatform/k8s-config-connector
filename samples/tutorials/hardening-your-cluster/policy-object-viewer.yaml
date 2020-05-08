@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_hardening_your_cluster_object_viewer]
+# [START configconnector_hardening_your_cluster_object_viewer]
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
@@ -22,4 +23,5 @@ spec:
   resourceRef:
     kind: Project
     name: [PROJECT_ID]
+# [END configconnector_hardening_your_cluster_object_viewer]
 # [END config_connector_hardening_your_cluster_object_viewer]
