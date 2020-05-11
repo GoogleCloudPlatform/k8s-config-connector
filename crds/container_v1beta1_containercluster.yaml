@@ -1,0 +1,587 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.9.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: containerclusters.container.cnrm.cloud.google.com
+spec:
+  group: container.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ContainerCluster
+    plural: containerclusters
+    shortNames:
+    - gcpcontainercluster
+    - gcpcontainerclusters
+    singular: containercluster
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'apiVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            addonsConfig:
+              properties:
+                cloudrunConfig:
+                  properties:
+                    disabled:
+                      type: boolean
+                  required:
+                  - disabled
+                  type: object
+                horizontalPodAutoscaling:
+                  properties:
+                    disabled:
+                      type: boolean
+                  required:
+                  - disabled
+                  type: object
+                httpLoadBalancing:
+                  properties:
+                    disabled:
+                      type: boolean
+                  required:
+                  - disabled
+                  type: object
+                istioConfig:
+                  properties:
+                    auth:
+                      type: string
+                    disabled:
+                      type: boolean
+                  required:
+                  - disabled
+                  type: object
+                networkPolicyConfig:
+                  properties:
+                    disabled:
+                      type: boolean
+                  required:
+                  - disabled
+                  type: object
+              type: object
+            authenticatorGroupsConfig:
+              properties:
+                securityGroup:
+                  type: string
+              required:
+              - securityGroup
+              type: object
+            clusterAutoscaling:
+              properties:
+                autoProvisioningDefaults:
+                  properties:
+                    oauthScopes:
+                      items:
+                        type: string
+                      type: array
+                    serviceAccountRef:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The email of an IAMServiceAccount.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  type: object
+                enabled:
+                  type: boolean
+                resourceLimits:
+                  items:
+                    properties:
+                      maximum:
+                        type: integer
+                      minimum:
+                        type: integer
+                      resourceType:
+                        type: string
+                    required:
+                    - resourceType
+                    type: object
+                  type: array
+              required:
+              - enabled
+              type: object
+            clusterIpv4Cidr:
+              type: string
+            databaseEncryption:
+              properties:
+                keyName:
+                  type: string
+                state:
+                  type: string
+              required:
+              - state
+              type: object
+            defaultMaxPodsPerNode:
+              type: integer
+            description:
+              type: string
+            enableBinaryAuthorization:
+              type: boolean
+            enableIntranodeVisibility:
+              type: boolean
+            enableKubernetesAlpha:
+              type: boolean
+            enableLegacyAbac:
+              type: boolean
+            enableShieldedNodes:
+              type: boolean
+            enableTpu:
+              type: boolean
+            initialNodeCount:
+              type: integer
+            ipAllocationPolicy:
+              properties:
+                clusterIpv4CidrBlock:
+                  type: string
+                clusterSecondaryRangeName:
+                  type: string
+                servicesIpv4CidrBlock:
+                  type: string
+                servicesSecondaryRangeName:
+                  type: string
+              type: object
+            location:
+              type: string
+            loggingService:
+              type: string
+            maintenancePolicy:
+              properties:
+                dailyMaintenanceWindow:
+                  properties:
+                    duration:
+                      type: string
+                    startTime:
+                      type: string
+                  required:
+                  - startTime
+                  type: object
+                recurringWindow:
+                  properties:
+                    endTime:
+                      type: string
+                    recurrence:
+                      type: string
+                    startTime:
+                      type: string
+                  required:
+                  - endTime
+                  - recurrence
+                  - startTime
+                  type: object
+              type: object
+            masterAuth:
+              properties:
+                clientCertificate:
+                  type: string
+                clientCertificateConfig:
+                  properties:
+                    issueClientCertificate:
+                      type: boolean
+                  required:
+                  - issueClientCertificate
+                  type: object
+                clientKey:
+                  type: string
+                clusterCaCertificate:
+                  type: string
+                password:
+                  oneOf:
+                  - not:
+                      required:
+                      - valueFrom
+                    required:
+                    - value
+                  - not:
+                      required:
+                      - value
+                    required:
+                    - valueFrom
+                  properties:
+                    value:
+                      description: Value of the field. Cannot be used if 'valueFrom'
+                        is specified.
+                      type: string
+                    valueFrom:
+                      description: Source for the field's value. Cannot be used if
+                        'value' is specified.
+                      properties:
+                        secretKeyRef:
+                          description: Reference to a value with the given key in
+                            the given Secret in the resource's namespace.
+                          properties:
+                            key:
+                              description: Key that identifies the value to be extracted.
+                              type: string
+                            name:
+                              description: Name of the Secret to extract a value from.
+                              type: string
+                          required:
+                          - name
+                          - key
+                          type: object
+                      type: object
+                  type: object
+                username:
+                  type: string
+              type: object
+            masterAuthorizedNetworksConfig:
+              properties:
+                cidrBlocks:
+                  items:
+                    properties:
+                      cidrBlock:
+                        type: string
+                      displayName:
+                        type: string
+                    required:
+                    - cidrBlock
+                    type: object
+                  type: array
+              type: object
+            minMasterVersion:
+              type: string
+            monitoringService:
+              type: string
+            networkPolicy:
+              properties:
+                enabled:
+                  type: boolean
+                provider:
+                  type: string
+              required:
+              - enabled
+              type: object
+            networkRef:
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The selfLink of a ComputeNetwork.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
+            nodeConfig:
+              properties:
+                diskSizeGb:
+                  type: integer
+                diskType:
+                  type: string
+                guestAccelerator:
+                  items:
+                    properties:
+                      count:
+                        type: integer
+                      type:
+                        type: string
+                    required:
+                    - count
+                    - type
+                    type: object
+                  type: array
+                imageType:
+                  type: string
+                labels:
+                  additionalProperties:
+                    type: string
+                  type: object
+                localSsdCount:
+                  type: integer
+                machineType:
+                  type: string
+                metadata:
+                  additionalProperties:
+                    type: string
+                  type: object
+                minCpuPlatform:
+                  type: string
+                oauthScopes:
+                  items:
+                    type: string
+                  type: array
+                preemptible:
+                  type: boolean
+                sandboxConfig:
+                  properties:
+                    sandboxType:
+                      type: string
+                  required:
+                  - sandboxType
+                  type: object
+                serviceAccountRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The email of an IAMServiceAccount.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
+                shieldedInstanceConfig:
+                  properties:
+                    enableIntegrityMonitoring:
+                      type: boolean
+                    enableSecureBoot:
+                      type: boolean
+                  type: object
+                tags:
+                  items:
+                    type: string
+                  type: array
+                taint:
+                  items:
+                    properties:
+                      effect:
+                        type: string
+                      key:
+                        type: string
+                      value:
+                        type: string
+                    required:
+                    - effect
+                    - key
+                    - value
+                    type: object
+                  type: array
+                workloadMetadataConfig:
+                  properties:
+                    nodeMetadata:
+                      type: string
+                  required:
+                  - nodeMetadata
+                  type: object
+              type: object
+            nodeLocations:
+              items:
+                type: string
+              type: array
+            nodeVersion:
+              type: string
+            podSecurityPolicyConfig:
+              properties:
+                enabled:
+                  type: boolean
+              required:
+              - enabled
+              type: object
+            privateClusterConfig:
+              properties:
+                enablePrivateEndpoint:
+                  type: boolean
+                enablePrivateNodes:
+                  type: boolean
+                masterIpv4CidrBlock:
+                  type: string
+                peeringName:
+                  type: string
+                privateEndpoint:
+                  type: string
+                publicEndpoint:
+                  type: string
+              required:
+              - enablePrivateEndpoint
+              type: object
+            releaseChannel:
+              properties:
+                channel:
+                  type: string
+              required:
+              - channel
+              type: object
+            resourceUsageExportConfig:
+              properties:
+                bigqueryDestination:
+                  properties:
+                    datasetId:
+                      type: string
+                  required:
+                  - datasetId
+                  type: object
+                enableNetworkEgressMetering:
+                  type: boolean
+              required:
+              - bigqueryDestination
+              type: object
+            subnetworkRef:
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The selfLink of a ComputeSubnetwork.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
+            verticalPodAutoscaling:
+              properties:
+                enabled:
+                  type: boolean
+              required:
+              - enabled
+              type: object
+            workloadIdentityConfig:
+              properties:
+                identityNamespace:
+                  type: string
+              required:
+              - identityNamespace
+              type: object
+          required:
+          - location
+          type: object
+        status:
+          properties:
+            conditions:
+              description: Conditions represents the latest available observation
+                of the resource's current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    type: string
+                  message:
+                    description: Human-readable message indicating details about last
+                      transition.
+                    type: string
+                  reason:
+                    description: Unique, one-word, CamelCase reason for the condition's
+                      last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown.
+                    type: string
+                  type:
+                    description: Type is the type of the condition.
+                    type: string
+                type: object
+              type: array
+            endpoint:
+              type: string
+            instanceGroupUrls:
+              items:
+                type: string
+              type: array
+            labelFingerprint:
+              type: string
+            masterVersion:
+              type: string
+            operation:
+              type: string
+            servicesIpv4Cidr:
+              type: string
+            tpuIpv4CidrBlock:
+              type: string
+          type: object
+      required:
+      - spec
+      type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

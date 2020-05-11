@@ -1,4 +1,4 @@
-# GCP Config Connector Samples
+# GCP Config Connector
 
 Config Connector is a Kubernetes add-on that allows customers to manage GCP
 resources, such as Cloud Spanner or Cloud Storage, through your cluster's API.
@@ -16,11 +16,11 @@ configuration, and -- more importantly -- *tooling*. For example, the same
 customization or templating tool can be used to manage test vs. production
 versions of an application across both Kubernetes and GCP.
 
-This repository contains Config Connector resource configs.
+This repository contains Config Connector CRDs, install bundles, and sample
+resource configurations.
 
 For simple starter
 examples, please refer to [Cloud Foundation Toolkit Config Connector Solutions](https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions).
 
 For more information about Config Connector, see
 https://cloud.google.com/config-connector/docs/overview.
-

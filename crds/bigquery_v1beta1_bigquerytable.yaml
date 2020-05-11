@@ -1,0 +1,250 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.9.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: bigquerytables.bigquery.cnrm.cloud.google.com
+spec:
+  group: bigquery.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigQueryTable
+    plural: bigquerytables
+    shortNames:
+    - gcpbigquerytable
+    - gcpbigquerytables
+    singular: bigquerytable
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'apiVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            clustering:
+              items:
+                type: string
+              type: array
+            datasetRef:
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The name of a BigQueryDataset.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
+            description:
+              type: string
+            encryptionConfiguration:
+              properties:
+                kmsKeyRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The selfLink of a KMSCryptoKey.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
+              required:
+              - kmsKeyRef
+              type: object
+            expirationTime:
+              type: integer
+            externalDataConfiguration:
+              properties:
+                autodetect:
+                  type: boolean
+                compression:
+                  type: string
+                csvOptions:
+                  properties:
+                    allowJaggedRows:
+                      type: boolean
+                    allowQuotedNewlines:
+                      type: boolean
+                    encoding:
+                      type: string
+                    fieldDelimiter:
+                      type: string
+                    quote:
+                      type: string
+                    skipLeadingRows:
+                      type: integer
+                  required:
+                  - quote
+                  type: object
+                googleSheetsOptions:
+                  properties:
+                    range:
+                      type: string
+                    skipLeadingRows:
+                      type: integer
+                  type: object
+                ignoreUnknownValues:
+                  type: boolean
+                maxBadRecords:
+                  type: integer
+                sourceFormat:
+                  type: string
+                sourceUris:
+                  items:
+                    type: string
+                  type: array
+              required:
+              - autodetect
+              - sourceFormat
+              - sourceUris
+              type: object
+            friendlyName:
+              type: string
+            schema:
+              type: string
+            timePartitioning:
+              properties:
+                expirationMs:
+                  type: integer
+                field:
+                  type: string
+                requirePartitionFilter:
+                  type: boolean
+                type:
+                  type: string
+              required:
+              - type
+              type: object
+            view:
+              properties:
+                query:
+                  type: string
+                useLegacySql:
+                  type: boolean
+              required:
+              - query
+              type: object
+          required:
+          - datasetRef
+          type: object
+        status:
+          properties:
+            conditions:
+              description: Conditions represents the latest available observation
+                of the resource's current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    type: string
+                  message:
+                    description: Human-readable message indicating details about last
+                      transition.
+                    type: string
+                  reason:
+                    description: Unique, one-word, CamelCase reason for the condition's
+                      last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown.
+                    type: string
+                  type:
+                    description: Type is the type of the condition.
+                    type: string
+                type: object
+              type: array
+            creationTime:
+              type: integer
+            etag:
+              type: string
+            lastModifiedTime:
+              type: integer
+            location:
+              type: string
+            numBytes:
+              type: integer
+            numLongTermBytes:
+              type: integer
+            numRows:
+              type: integer
+            selfLink:
+              type: string
+            type:
+              type: string
+          type: object
+      required:
+      - spec
+      type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

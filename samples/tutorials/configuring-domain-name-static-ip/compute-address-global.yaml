@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # [START config_connector_configuring_domain_name_static_ip_compute_address_global]
+# [START configconnector_configuring_domain_name_static_ip_compute_address_global]
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
   name: helloweb-ip
 spec:
   location: global
+# [END configconnector_configuring_domain_name_static_ip_compute_address_global]
 # [END config_connector_configuring_domain_name_static_ip_compute_address_global]
