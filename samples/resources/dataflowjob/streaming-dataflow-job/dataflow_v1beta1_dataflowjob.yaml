@@ -21,7 +21,7 @@ metadata:
     label-one: "value-one"
   name: dataflowjob-sample-streaming
 spec:
-  tempGcsLocation: gs://dataflowjob-dep-streaming/tmp
+  tempGcsLocation: gs://${PROJECT_ID?}-dataflowjob-dep-streaming/tmp
   # This is a public, Google-maintained Dataflow Job template of a streaming job
   templateGcsPath: gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery
   parameters:

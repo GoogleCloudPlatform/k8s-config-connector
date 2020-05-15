@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,6 +53,9 @@ spec:
         spec:
           properties:
             accessPolicyRef:
+              description: |-
+                The AccessContextManagerAccessPolicy this
+                AccessContextManagerAccessLevel lives in.
               oneOf:
               - not:
                   required:
@@ -163,6 +166,14 @@ spec:
                         type: array
                       members:
                         items:
+                          description: |-
+                            An allowed list of members (users, service accounts).
+                            Using groups is not supported yet.
+
+                            The signed-in user originating the request must be a part of one
+                            of the provided members. If not specified, a request may come
+                            from any user (logged in/not logged in, not present in any
+                            groups, etc.).
                           oneOf:
                           - required:
                             - serviceAccountRef
@@ -208,6 +219,11 @@ spec:
                         type: boolean
                       requiredAccessLevels:
                         items:
+                          description: |-
+                            A list of other access levels defined in the same policy.
+                            Referencing an AccessContextManagerAccessLevel which does not exist
+                            is an error. All access levels listed must be granted for the
+                            condition to be true.
                           oneOf:
                           - not:
                               required:

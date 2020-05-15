@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -66,6 +66,9 @@ spec:
                 Otherwise only allows from the local region the ILB is located at.
               type: boolean
             backendServiceRef:
+              description: |-
+                A ComputeBackendService to receive the matched traffic. This is
+                used only for internal load balancing.
               oneOf:
               - not:
                   required:
@@ -97,6 +100,26 @@ spec:
                 you create the resource.
               type: string
             ipAddress:
+              description: |-
+                The IP address that this forwarding rule is serving on behalf of.
+
+                Addresses are restricted based on the forwarding rule's load
+                balancing scheme (EXTERNAL or INTERNAL) and scope (global or
+                regional).
+
+                When the load balancing scheme is EXTERNAL, for global forwarding
+                rules, the address must be a global IP, and for regional forwarding
+                rules, the address must live in the same region as the forwarding
+                rule. If this field is empty, an ephemeral IPv4 address from the
+                same scope (global or regional) will be assigned. A regional
+                forwarding rule supports IPv4 only. A global forwarding rule
+                supports either IPv4 or IPv6.
+
+                When the load balancing scheme is INTERNAL, this can only be an RFC
+                1918 IP address belonging to the network/subnet configured for the
+                forwarding rule. By default, if this field is empty, an ephemeral
+                internal IP address will be automatically allocated from the IP
+                range of the subnet or network configured for this forwarding rule.
               oneOf:
               - required:
                 - addressRef
@@ -220,6 +243,11 @@ spec:
                 type: object
               type: array
             networkRef:
+              description: |-
+                This field is not used for external load balancing. For internal
+                load balancing, this field identifies the network that the load
+                balanced IP should belong to for this forwarding rule. If this
+                field is not specified, the default network will be used.
               oneOf:
               - not:
                   required:
@@ -303,6 +331,14 @@ spec:
                 This field is only used for INTERNAL load balancing.
               type: string
             subnetworkRef:
+              description: |-
+                The subnetwork that the load balanced IP should belong to for this
+                forwarding rule. This field is only used for internal load
+                balancing.
+
+                If the network specified is in auto subnet mode, this field is
+                optional. However, if the network is in custom subnet mode, a
+                subnetwork must be specified.
               oneOf:
               - not:
                   required:
@@ -329,6 +365,11 @@ spec:
                   type: string
               type: object
             target:
+              description: |-
+                The target resource to receive the matched traffic. The forwarded
+                traffic must be of a type appropriate to the target object. For
+                INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+                are valid.
               oneOf:
               - required:
                 - targetHTTPProxyRef

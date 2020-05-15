@@ -23,7 +23,7 @@ spec:
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
-    name: storagetransferjob-dep1
+    name: ${PROJECT_ID?}-storagetransferjob-dep1
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
@@ -36,4 +36,4 @@ spec:
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
-    name: storagetransferjob-dep2
+    name: ${PROJECT_ID?}-storagetransferjob-dep2

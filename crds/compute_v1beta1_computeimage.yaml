@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -58,6 +58,10 @@ spec:
                 you create the resource.
               type: string
             diskRef:
+              description: |-
+                The source disk to create this image based on.
+                You must provide either this property or the
+                rawDisk.source property but not both to create an image.
               oneOf:
               - not:
                   required:

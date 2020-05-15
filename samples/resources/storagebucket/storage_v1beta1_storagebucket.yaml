@@ -19,8 +19,8 @@ metadata:
     cnrm.cloud.google.com/force-destroy: "false"
   labels:
     label-one: "value-one"
-  # You MUST change the name to a globally unique bucket name.
-  name: storagebucket-sample
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-sample
 spec:
   lifecycleRule:
     - action:

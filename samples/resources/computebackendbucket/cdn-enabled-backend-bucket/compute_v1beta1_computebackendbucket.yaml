@@ -20,7 +20,7 @@ metadata:
     label-one: "value-one"
 spec:
   bucketRef:
-    name: computebackendbucket-dep-cdnenabled
+    name: ${PROJECT_ID?}-backendbucket-dep-cdn
   description: contains a reference to a bucket for use with HTTP(S) load-balancing and integrated CDN, caching on endpoints for only 1/10th the default time
   enableCdn: true
   cdnPolicy:

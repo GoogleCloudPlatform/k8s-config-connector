@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -54,6 +54,9 @@ spec:
           properties:
             drainNatIps:
               items:
+                description: |-
+                  A list of IP resources to be drained. These IPs must be valid
+                  static external IPs that have been assigned to the NAT.
                 oneOf:
                 - not:
                     required:
@@ -110,6 +113,8 @@ spec:
               type: string
             natIps:
               items:
+                description: NAT IPs. Only valid if natIpAllocateOption is set to
+                  MANUAL_ONLY.
                 oneOf:
                 - not:
                     required:
@@ -140,6 +145,7 @@ spec:
               description: Region where the router and NAT reside.
               type: string
             routerRef:
+              description: The Cloud Router in which this NAT will be configured.
               oneOf:
               - not:
                   required:
@@ -203,6 +209,7 @@ spec:
                       type: string
                     type: array
                   subnetworkRef:
+                    description: The subnetwork to NAT.
                     oneOf:
                     - not:
                         required:

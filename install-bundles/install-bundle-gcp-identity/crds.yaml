@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,6 +53,9 @@ spec:
         spec:
           properties:
             accessPolicyRef:
+              description: |-
+                The AccessContextManagerAccessPolicy this
+                AccessContextManagerAccessLevel lives in.
               oneOf:
               - not:
                   required:
@@ -163,6 +166,14 @@ spec:
                         type: array
                       members:
                         items:
+                          description: |-
+                            An allowed list of members (users, service accounts).
+                            Using groups is not supported yet.
+
+                            The signed-in user originating the request must be a part of one
+                            of the provided members. If not specified, a request may come
+                            from any user (logged in/not logged in, not present in any
+                            groups, etc.).
                           oneOf:
                           - required:
                             - serviceAccountRef
@@ -208,6 +219,11 @@ spec:
                         type: boolean
                       requiredAccessLevels:
                         items:
+                          description: |-
+                            A list of other access levels defined in the same policy.
+                            Referencing an AccessContextManagerAccessLevel which does not exist
+                            is an error. All access levels listed must be granted for the
+                            condition to be true.
                           oneOf:
                           - not:
                               required:
@@ -295,7 +311,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -390,7 +406,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -504,6 +520,10 @@ spec:
                 this value, unless table creation request (or query) overrides the key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    Describes the Cloud KMS encryption key that will be used to protect destination
+                    BigQuery table. The BigQuery Service Account associated with your project requires
+                    access to this encryption key.
                   oneOf:
                   - not:
                       required:
@@ -653,7 +673,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -890,7 +910,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -989,7 +1009,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1310,6 +1330,9 @@ spec:
                     execution.
                   type: string
                 repoRef:
+                  description: |-
+                    The Cloud Source Repository to build. If omitted, the repo with
+                    name "default" is assumed.
                   oneOf:
                   - not:
                       required:
@@ -1390,7 +1413,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1452,6 +1475,12 @@ spec:
                 GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
             networkRef:
+              description: |-
+                The network in which to reserve the IP range. The IP range must be
+                in the RFC1918 space. The network cannot be deleted if there are
+                any reserved IP ranges referring to it.
+
+                This should only be set when using an Internal address.
               oneOf:
               - not:
                   required:
@@ -1499,6 +1528,11 @@ spec:
                 This should only be set when using an Internal address.
               type: string
             subnetworkRef:
+              description: |-
+                The subnetwork in which to reserve the address. If an IP address is
+                specified, it must be within the subnetwork's IP range.  This field
+                can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
+                purposes.
               oneOf:
               - not:
                   required:
@@ -1586,7 +1620,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1623,6 +1657,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -1725,7 +1760,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1798,6 +1833,23 @@ spec:
                       Provide this property when you create the resource.
                     type: string
                   group:
+                    description: |-
+                      Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+                      resource. In case of instance group this defines the list of
+                      instances that serve traffic. Member virtual machine instances from
+                      each instance group must live in the same zone as the instance
+                      group itself. No two backends in a backend service are allowed to
+                      use same Instance Group resource.
+
+                      For Network Endpoint Groups this defines list of endpoints. All
+                      endpoints of Network Endpoint Group must be hosted on instances
+                      located in the same zone as the Network Endpoint Group.
+
+                      Backend services cannot mix Instance Group and Network Endpoint
+                      Group backends.
+
+                      When the 'load_balancing_scheme' is INTERNAL, only instance groups
+                      are supported.
                     oneOf:
                     - required:
                       - instanceGroupRef
@@ -2142,6 +2194,10 @@ spec:
               type: object
             healthChecks:
               items:
+                description: |-
+                  The health check resources for health checking this
+                  ComputeBackendService. Currently at most one health check can be
+                  specified, and a health check is required.
                 oneOf:
                 - required:
                   - healthCheckRef
@@ -2315,6 +2371,10 @@ spec:
                   type: number
               type: object
             networkRef:
+              description: |-
+                The network to which this backend service belongs.  This field can
+                only be specified when the load balancing scheme is set to
+                INTERNAL.
               oneOf:
               - not:
                   required:
@@ -2459,6 +2519,7 @@ spec:
                 types and may result in errors if used with the GA API.
               type: string
             securityPolicyRef:
+              description: The security policy associated with this backend service.
               oneOf:
               - not:
                   required:
@@ -2552,7 +2613,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2609,6 +2670,13 @@ spec:
                 you do not need to provide a key to use the disk later.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2681,6 +2749,7 @@ spec:
                   type: string
               type: object
             imageRef:
+              description: The image from which to initialize this disk.
               oneOf:
               - not:
                   required:
@@ -2726,6 +2795,8 @@ spec:
               type: array
             resourcePolicies:
               items:
+                description: Resource policies applied to this disk for automatic
+                  snapshot creations.
                 oneOf:
                 - not:
                     required:
@@ -2764,6 +2835,7 @@ spec:
                 or the size of the snapshot.
               type: integer
             snapshotRef:
+              description: The source snapshot used to create this disk.
               oneOf:
               - not:
                   required:
@@ -2795,6 +2867,13 @@ spec:
                 the source image is protected by a customer-supplied encryption key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2838,6 +2917,13 @@ spec:
                 key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2966,7 +3052,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3074,7 +3160,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3203,6 +3289,7 @@ spec:
                 Stackdriver.
               type: boolean
             networkRef:
+              description: The network to attach this firewall to.
               oneOf:
               - not:
                   required:
@@ -3252,6 +3339,18 @@ spec:
               type: array
             sourceServiceAccounts:
               items:
+                description: |-
+                  If source service accounts are specified, the firewall will apply only
+                  to traffic originating from an instance with a service account in this
+                  list. Source service accounts cannot be used to control traffic to an
+                  instance's external IP address because service accounts are associated
+                  with an instance, not an IP address. sourceRanges can be set at the
+                  same time as sourceServiceAccounts. If both are set, the firewall will
+                  apply to traffic that has source IP address within sourceRanges OR the
+                  source IP belongs to an instance with service account listed in
+                  sourceServiceAccount. The connection does not need to match both
+                  properties for the firewall to apply. sourceServiceAccounts cannot be
+                  used at the same time as sourceTags or targetTags.
                 oneOf:
                 - not:
                     required:
@@ -3294,6 +3393,13 @@ spec:
               type: array
             targetServiceAccounts:
               items:
+                description: |-
+                  A list of service accounts indicating sets of instances located in the
+                  network that may make network connections as specified in allowed[].
+                  targetServiceAccounts cannot be used at the same time as targetTags or
+                  sourceTags. If neither targetServiceAccounts nor targetTags are
+                  specified, the firewall rule applies to all instances on the specified
+                  network.
                 oneOf:
                 - not:
                     required:
@@ -3381,7 +3487,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3431,6 +3537,9 @@ spec:
                 Otherwise only allows from the local region the ILB is located at.
               type: boolean
             backendServiceRef:
+              description: |-
+                A ComputeBackendService to receive the matched traffic. This is
+                used only for internal load balancing.
               oneOf:
               - not:
                   required:
@@ -3462,6 +3571,26 @@ spec:
                 you create the resource.
               type: string
             ipAddress:
+              description: |-
+                The IP address that this forwarding rule is serving on behalf of.
+
+                Addresses are restricted based on the forwarding rule's load
+                balancing scheme (EXTERNAL or INTERNAL) and scope (global or
+                regional).
+
+                When the load balancing scheme is EXTERNAL, for global forwarding
+                rules, the address must be a global IP, and for regional forwarding
+                rules, the address must live in the same region as the forwarding
+                rule. If this field is empty, an ephemeral IPv4 address from the
+                same scope (global or regional) will be assigned. A regional
+                forwarding rule supports IPv4 only. A global forwarding rule
+                supports either IPv4 or IPv6.
+
+                When the load balancing scheme is INTERNAL, this can only be an RFC
+                1918 IP address belonging to the network/subnet configured for the
+                forwarding rule. By default, if this field is empty, an ephemeral
+                internal IP address will be automatically allocated from the IP
+                range of the subnet or network configured for this forwarding rule.
               oneOf:
               - required:
                 - addressRef
@@ -3585,6 +3714,11 @@ spec:
                 type: object
               type: array
             networkRef:
+              description: |-
+                This field is not used for external load balancing. For internal
+                load balancing, this field identifies the network that the load
+                balanced IP should belong to for this forwarding rule. If this
+                field is not specified, the default network will be used.
               oneOf:
               - not:
                   required:
@@ -3668,6 +3802,14 @@ spec:
                 This field is only used for INTERNAL load balancing.
               type: string
             subnetworkRef:
+              description: |-
+                The subnetwork that the load balanced IP should belong to for this
+                forwarding rule. This field is only used for internal load
+                balancing.
+
+                If the network specified is in auto subnet mode, this field is
+                optional. However, if the network is in custom subnet mode, a
+                subnetwork must be specified.
               oneOf:
               - not:
                   required:
@@ -3694,6 +3836,11 @@ spec:
                   type: string
               type: object
             target:
+              description: |-
+                The target resource to receive the matched traffic. The forwarded
+                traffic must be of a type appropriate to the target object. For
+                INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+                are valid.
               oneOf:
               - required:
                 - targetHTTPProxyRef
@@ -3843,7 +3990,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4223,7 +4370,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4349,7 +4496,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4475,7 +4622,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4517,6 +4664,10 @@ spec:
                 you create the resource.
               type: string
             diskRef:
+              description: |-
+                The source disk to create this image based on.
+                You must provide either this property or the
+                rawDisk.source property but not both to create an image.
               oneOf:
               - not:
                   required:
@@ -4656,7 +4807,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4813,7 +4964,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5404,7 +5555,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5816,7 +5967,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5899,6 +6050,12 @@ spec:
               description: Region where the regional interconnect attachment resides.
               type: string
             routerRef:
+              description: |-
+                The Cloud Router to be used for dynamic routing. This router must
+                be in the same region as this ComputeInterconnectAttachment. The
+                ComputeInterconnectAttachment will automatically connect the
+                interconnect to the network & region within which the Cloud Router
+                is configured.
               oneOf:
               - not:
                   required:
@@ -6029,7 +6186,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6085,6 +6242,9 @@ spec:
                 the only supported value is GCE_VM_IP_PORT.
               type: string
             networkRef:
+              description: |-
+                The network to which all network endpoints in the NEG belong. Uses
+                "default" project network if unspecified.
               oneOf:
               - not:
                   required:
@@ -6111,6 +6271,8 @@ spec:
                   type: string
               type: object
             subnetworkRef:
+              description: Optional subnetwork to which all network endpoints in the
+                NEG belong.
               oneOf:
               - not:
                   required:
@@ -6189,7 +6351,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6333,7 +6495,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6443,7 +6605,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6483,6 +6645,7 @@ spec:
               description: An optional textual description of the resource.
               type: string
             nodeTemplateRef:
+              description: The node template to which this node group belongs.
               oneOf:
               - not:
                   required:
@@ -6568,7 +6731,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6709,7 +6872,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6887,7 +7050,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7082,7 +7245,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7248,7 +7411,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7286,6 +7449,9 @@ spec:
           properties:
             drainNatIps:
               items:
+                description: |-
+                  A list of IP resources to be drained. These IPs must be valid
+                  static external IPs that have been assigned to the NAT.
                 oneOf:
                 - not:
                     required:
@@ -7342,6 +7508,8 @@ spec:
               type: string
             natIps:
               items:
+                description: NAT IPs. Only valid if natIpAllocateOption is set to
+                  MANUAL_ONLY.
                 oneOf:
                 - not:
                     required:
@@ -7372,6 +7540,7 @@ spec:
               description: Region where the router and NAT reside.
               type: string
             routerRef:
+              description: The Cloud Router in which this NAT will be configured.
               oneOf:
               - not:
                   required:
@@ -7435,6 +7604,7 @@ spec:
                       type: string
                     type: array
                   subnetworkRef:
+                    description: The subnetwork to NAT.
                     oneOf:
                     - not:
                         required:
@@ -7529,7 +7699,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7630,6 +7800,7 @@ spec:
                 If it is not provided, the provider region is used.
               type: string
             routerInterfaceRef:
+              description: The interface the BGP peer is associated with.
               oneOf:
               - not:
                   required:
@@ -7656,6 +7827,7 @@ spec:
                   type: string
               type: object
             routerRef:
+              description: The Cloud Router in which this BGP peer will be configured.
               oneOf:
               - not:
                   required:
@@ -7750,7 +7922,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7842,6 +8014,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: A reference to the network to which this router belongs.
               oneOf:
               - not:
                   required:
@@ -7923,7 +8096,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7970,6 +8143,7 @@ spec:
                 Only IPv4 is supported.
               type: string
             networkRef:
+              description: The network that this route applies to.
               oneOf:
               - not:
                   required:
@@ -8006,6 +8180,10 @@ spec:
                 * The string 'default-internet-gateway'.
               type: string
             nextHopILBRef:
+              description: |-
+                A forwarding rule of type loadBalancingScheme=INTERNAL that should
+                handle matching packets.  Note that this can only be used when the
+                destinationRange is a public (non-RFC 1918) IP CIDR range.
               oneOf:
               - not:
                   required:
@@ -8032,6 +8210,7 @@ spec:
                   type: string
               type: object
             nextHopInstanceRef:
+              description: Instance that should handle matching packets.
               oneOf:
               - not:
                   required:
@@ -8062,6 +8241,7 @@ spec:
                 packets.
               type: string
             nextHopVPNTunnelRef:
+              description: The ComputeVPNTunnel that should handle matching packets
               oneOf:
               - not:
                   required:
@@ -8155,7 +8335,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8278,7 +8458,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8354,7 +8534,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8463,7 +8643,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8603,6 +8783,7 @@ spec:
                   type: object
               type: object
             sourceDiskRef:
+              description: A reference to the disk used to create this snapshot.
               oneOf:
               - not:
                   required:
@@ -8711,7 +8892,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8890,7 +9071,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9022,7 +9203,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9102,6 +9283,9 @@ spec:
                   type: string
               type: object
             networkRef:
+              description: |-
+                The network this subnet belongs to. Only networks that are in the
+                distributed mode can have subnetworks.
               oneOf:
               - not:
                   required:
@@ -9239,7 +9423,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9283,6 +9467,9 @@ spec:
                 Specify "global" for global resources.
               type: string
             urlMapRef:
+              description: |-
+                A reference to the ComputeURLMap resource that defines the mapping
+                from URL to the BackendService.
               oneOf:
               - not:
                   required:
@@ -9364,7 +9551,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9418,6 +9605,10 @@ spec:
               type: string
             sslCertificates:
               items:
+                description: |-
+                  A list of ComputeSSLCertificate resources that are used to
+                  authenticate connections between users and the load balancer. At
+                  least one SSL certificate must be specified.
                 oneOf:
                 - not:
                     required:
@@ -9445,6 +9636,11 @@ spec:
                 type: object
               type: array
             sslPolicyRef:
+              description: |-
+                A reference to the ComputeSSLPolicy resource that will be
+                associated with the ComputeTargetHTTPSProxy resource. If not set,
+                the ComputeTargetHTTPSProxy resource will not have any SSL policy
+                configured.
               oneOf:
               - not:
                   required:
@@ -9471,6 +9667,9 @@ spec:
                   type: string
               type: object
             urlMapRef:
+              description: |-
+                A reference to the ComputeURLMap resource that defines the mapping
+                from URL to the BackendService.
               oneOf:
               - not:
                   required:
@@ -9553,7 +9752,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9593,6 +9792,7 @@ spec:
               description: An optional description of this resource.
               type: string
             instanceRef:
+              description: The ComputeInstance handling traffic for this target instance.
               oneOf:
               - not:
                   required:
@@ -9679,7 +9879,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9857,7 +10057,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9894,6 +10094,7 @@ spec:
         spec:
           properties:
             backendServiceRef:
+              description: A reference to the ComputeBackendService resource.
               oneOf:
               - not:
                   required:
@@ -9929,6 +10130,10 @@ spec:
               type: string
             sslCertificates:
               items:
+                description: |-
+                  A list of ComputeSSLCertificate resources that are used to
+                  authenticate connections between users and the load balancer.
+                  Currently, exactly one SSL certificate must be specified.
                 oneOf:
                 - not:
                     required:
@@ -9956,6 +10161,11 @@ spec:
                 type: object
               type: array
             sslPolicyRef:
+              description: |-
+                A reference to the ComputeSSLPolicy resource that will be
+                associated with the TargetSslProxy resource. If not set, the
+                ComputeTargetSSLProxy resource will not have any SSL policy
+                configured.
               oneOf:
               - not:
                   required:
@@ -10037,7 +10247,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10074,6 +10284,7 @@ spec:
         spec:
           properties:
             backendServiceRef:
+              description: A reference to the ComputeBackendService resource.
               oneOf:
               - not:
                   required:
@@ -10162,7 +10373,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10202,6 +10413,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: The network this VPN gateway is accepting traffic for.
               oneOf:
               - not:
                   required:
@@ -10286,7 +10498,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10323,6 +10535,9 @@ spec:
         spec:
           properties:
             defaultService:
+              description: |-
+                The backend service or backend bucket to use when none of the given
+                rules match.
               oneOf:
               - required:
                 - backendBucketRef
@@ -10491,6 +10706,9 @@ spec:
               items:
                 properties:
                   defaultService:
+                    description: |-
+                      The backend service or backend bucket to use when none of the given
+                      paths match.
                     oneOf:
                     - required:
                       - backendBucketRef
@@ -10894,6 +11112,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -11007,6 +11229,9 @@ spec:
                               type: array
                           type: object
                         service:
+                          description: |-
+                            The backend service or backend bucket to use if any of the given
+                            paths match.
                           oneOf:
                           - required:
                             - backendBucketRef
@@ -11656,6 +11881,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -11848,6 +12077,9 @@ spec:
                     description: Path portion of the URL.
                     type: string
                   service:
+                    description: |-
+                      The backend service or backend bucket link that should be matched
+                      by this test.
                     oneOf:
                     - required:
                       - backendBucketRef
@@ -11973,7 +12205,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12013,6 +12245,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: The network this VPN gateway is accepting traffic for.
               oneOf:
               - not:
                   required:
@@ -12103,7 +12336,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12162,6 +12395,9 @@ spec:
                 VPN tunnel is connected.
               type: integer
             peerExternalGatewayRef:
+              description: |-
+                The peer side external VPN gateway to which this VPN tunnel
+                is connected.
               oneOf:
               - not:
                   required:
@@ -12188,6 +12424,10 @@ spec:
                   type: string
               type: object
             peerGCPGatewayRef:
+              description: |-
+                The peer side HA GCP VPN gateway to which this VPN tunnel is
+                connected. If provided, the VPN tunnel will automatically use the
+                same VPN gateway interface ID in the peer GCP VPN gateway.
               oneOf:
               - not:
                   required:
@@ -12230,6 +12470,7 @@ spec:
                 type: string
               type: array
             routerRef:
+              description: The router to be used for dynamic routing.
               oneOf:
               - not:
                   required:
@@ -12296,6 +12537,9 @@ spec:
                   type: object
               type: object
             targetVPNGatewayRef:
+              description: |-
+                The ComputeTargetVPNGateway with which this VPN tunnel is
+                associated.
               oneOf:
               - not:
                   required:
@@ -12326,6 +12570,10 @@ spec:
                 tunnel is associated.
               type: integer
             vpnGatewayRef:
+              description: |-
+                The ComputeVPNGateway with which this VPN tunnel is associated.
+                This must be used if a High Availability VPN gateway resource is
+                created.
               oneOf:
               - not:
                   required:
@@ -12419,7 +12667,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12993,7 +13241,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13257,7 +13505,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13442,7 +13690,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13558,6 +13806,7 @@ spec:
                   description: The network with which to peer.
                   properties:
                     networkRef:
+                      description: VPC network to forward queries to.
                       oneOf:
                       - not:
                           required:
@@ -13598,6 +13847,7 @@ spec:
                   items:
                     properties:
                       networkRef:
+                        description: VPC network to bind to.
                         oneOf:
                         - not:
                             required:
@@ -13690,7 +13940,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13769,6 +14019,7 @@ spec:
               items:
                 properties:
                   networkRef:
+                    description: VPC network to bind to.
                     oneOf:
                     - not:
                         required:
@@ -13841,7 +14092,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13964,7 +14215,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14089,7 +14340,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14180,7 +14431,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14276,7 +14527,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14424,7 +14675,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14563,7 +14814,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14688,7 +14939,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14777,7 +15028,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14814,6 +15065,7 @@ spec:
         spec:
           properties:
             keyRingRef:
+              description: The KMSKeyRing that this key belongs to.
               oneOf:
               - not:
                   required:
@@ -14916,7 +15168,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15006,7 +15258,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15119,7 +15371,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15284,6 +15536,7 @@ spec:
                 messageRetentionDuration window.
               type: boolean
             topicRef:
+              description: Reference to a PubSubTopic.
               oneOf:
               - not:
                   required:
@@ -15358,7 +15611,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15395,6 +15648,12 @@ spec:
         spec:
           properties:
             kmsKeyRef:
+              description: |-
+                The KMSCryptoKey to be used to protect access to messages published
+                on this topic. Your project's PubSub service account
+                ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
+                must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                feature.
               oneOf:
               - not:
                   required:
@@ -15483,7 +15742,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15527,6 +15786,9 @@ spec:
                 [locationId].
               type: string
             authorizedNetworkRef:
+              description: |-
+                The network to which the instance is connected. If left
+                unspecified, the default network will be used.
               oneOf:
               - not:
                   required:
@@ -15669,7 +15931,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15864,6 +16126,10 @@ spec:
                       to other GCP resources into explicit Kubernetes-style references.
                     items:
                       properties:
+                        description:
+                          description: Description is the description for the resource
+                            reference that will be exposed in the CRD.
+                          type: string
                         group:
                           description: Group is the Kubernetes group of the resource
                             being referenced. If not is set, it is implied that the
@@ -16037,7 +16303,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16180,7 +16446,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16256,7 +16522,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16303,6 +16569,13 @@ spec:
                       JSON: The message payload is a JSON string of SourceRepoEvent."
                     type: string
                   serviceAccountRef:
+                    description: |-
+                      Service account used for publishing Cloud Pub/Sub messages. This
+                      service account needs to be in the same project as the
+                      pubsubConfig. When added, the caller needs to have
+                      iam.serviceAccounts.actAs permission on this service account. If
+                      unspecified, it defaults to the compute engine default service
+                      account.
                     oneOf:
                     - not:
                         required:
@@ -16408,7 +16681,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16454,6 +16727,7 @@ spec:
                 type: string
               type: array
             instanceRef:
+              description: The instance to create the database on.
               oneOf:
               - not:
                   required:
@@ -16529,7 +16803,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16633,7 +16907,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16686,6 +16960,7 @@ spec:
                 a value of 'en_US.UTF8' at creation time.
               type: string
             instanceRef:
+              description: The Cloud SQL instance.
               oneOf:
               - not:
                   required:
@@ -16760,7 +17035,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17118,7 +17393,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17266,7 +17541,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17303,6 +17578,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -17403,7 +17679,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17608,7 +17884,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17645,6 +17921,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -17760,7 +18037,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17913,7 +18190,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"

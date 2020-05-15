@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -70,6 +70,10 @@ spec:
               type: string
             sslCertificates:
               items:
+                description: |-
+                  A list of ComputeSSLCertificate resources that are used to
+                  authenticate connections between users and the load balancer. At
+                  least one SSL certificate must be specified.
                 oneOf:
                 - not:
                     required:
@@ -97,6 +101,11 @@ spec:
                 type: object
               type: array
             sslPolicyRef:
+              description: |-
+                A reference to the ComputeSSLPolicy resource that will be
+                associated with the ComputeTargetHTTPSProxy resource. If not set,
+                the ComputeTargetHTTPSProxy resource will not have any SSL policy
+                configured.
               oneOf:
               - not:
                   required:
@@ -123,6 +132,9 @@ spec:
                   type: string
               type: object
             urlMapRef:
+              description: |-
+                A reference to the ComputeURLMap resource that defines the mapping
+                from URL to the BackendService.
               oneOf:
               - not:
                   required:

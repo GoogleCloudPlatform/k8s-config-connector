@@ -20,5 +20,5 @@ metadata:
     label-one: "value-one"
 spec:
   bucketRef:
-    name: computebackendbucket-dep-basic
+    name: ${PROJECT_ID?}-backendbucket-dep-basic
   description: contains a reference to a bucket for use with HTTP(S) load-balancing

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -117,6 +117,7 @@ spec:
                 If it is not provided, the provider region is used.
               type: string
             routerInterfaceRef:
+              description: The interface the BGP peer is associated with.
               oneOf:
               - not:
                   required:
@@ -143,6 +144,7 @@ spec:
                   type: string
               type: object
             routerRef:
+              description: The Cloud Router in which this BGP peer will be configured.
               oneOf:
               - not:
                   required:

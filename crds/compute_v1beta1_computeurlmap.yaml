@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.9.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,6 +53,9 @@ spec:
         spec:
           properties:
             defaultService:
+              description: |-
+                The backend service or backend bucket to use when none of the given
+                rules match.
               oneOf:
               - required:
                 - backendBucketRef
@@ -221,6 +224,9 @@ spec:
               items:
                 properties:
                   defaultService:
+                    description: |-
+                      The backend service or backend bucket to use when none of the given
+                      paths match.
                     oneOf:
                     - required:
                       - backendBucketRef
@@ -624,6 +630,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -737,6 +747,9 @@ spec:
                               type: array
                           type: object
                         service:
+                          description: |-
+                            The backend service or backend bucket to use if any of the given
+                            paths match.
                           oneOf:
                           - required:
                             - backendBucketRef
@@ -1386,6 +1399,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -1578,6 +1595,9 @@ spec:
                     description: Path portion of the URL.
                     type: string
                   service:
+                    description: |-
+                      The backend service or backend bucket link that should be matched
+                      by this test.
                     oneOf:
                     - required:
                       - backendBucketRef
