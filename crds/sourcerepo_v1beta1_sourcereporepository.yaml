@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -60,7 +60,8 @@ spec:
                   messageFormat:
                     description: "The format of the Cloud Pub/Sub messages. \n- PROTOBUF:
                       The message payload is a serialized protocol buffer of SourceRepoEvent.\n-
-                      JSON: The message payload is a JSON string of SourceRepoEvent."
+                      JSON: The message payload is a JSON string of SourceRepoEvent.
+                      Possible values: [\"PROTOBUF\", \"JSON\"]"
                     type: string
                   serviceAccountRef:
                     description: |-

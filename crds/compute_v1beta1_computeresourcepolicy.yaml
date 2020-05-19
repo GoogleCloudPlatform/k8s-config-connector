@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -52,6 +52,25 @@ spec:
           type: object
         spec:
           properties:
+            groupPlacementPolicy:
+              description: Policy for creating snapshots of persistent disks.
+              properties:
+                availabilityDomainCount:
+                  description: |-
+                    The number of availability domains instances will be spread across. If two instances are in different
+                    availability domain, they will not be put in the same low latency network
+                  type: integer
+                collocation:
+                  description: |-
+                    Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
+                    Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
+                    with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
+                    attached. Possible values: ["COLLOCATED"]
+                  type: string
+                vmCount:
+                  description: Number of vms in this placement group.
+                  type: integer
+              type: object
             region:
               description: Region where resource policy resides.
               type: string
@@ -69,8 +88,7 @@ spec:
                     onSourceDiskDelete:
                       description: |-
                         Specifies the behavior to apply to scheduled snapshots when
-                        the source disk is deleted.
-                        Valid options are KEEP_AUTO_SNAPSHOTS and APPLY_RETENTION_POLICY
+                        the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]
                       type: string
                   required:
                   - maxRetentionDays
@@ -106,8 +124,9 @@ spec:
                         startTime:
                           description: |-
                             Time within the window to start the operations.
-                            It must be in format "HH:MM",
-                            where HH : [00-23] and MM : [00-00] GMT.
+                            It must be in an hourly format "HH:MM",
+                            where HH : [00-23] and MM : [00] GMT.
+                            eg: 21:00
                           type: string
                       required:
                       - hoursInCycle
@@ -123,8 +142,9 @@ spec:
                           items:
                             properties:
                               day:
-                                description: The day of the week to create the snapshot.
-                                  e.g. MONDAY
+                                description: 'The day of the week to create the snapshot.
+                                  e.g. MONDAY Possible values: ["MONDAY", "TUESDAY",
+                                  "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]'
                                 type: string
                               startTime:
                                 description: |-
@@ -153,8 +173,9 @@ spec:
                       description: A set of key-value pairs.
                       type: object
                     storageLocations:
-                      description: Cloud Storage bucket location in which to store
-                        the snapshot (regional or multi-regional).
+                      description: |-
+                        Cloud Storage bucket location to store the auto snapshot
+                        (regional or multi-regional)
                       items:
                         type: string
                       type: array

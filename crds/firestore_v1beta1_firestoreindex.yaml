@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -71,7 +71,7 @@ spec:
                   arrayConfig:
                     description: |-
                       Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-                      be specified.
+                      be specified. Possible values: ["CONTAINS"]
                     type: string
                   fieldPath:
                     description: Name of the field.
@@ -79,14 +79,13 @@ spec:
                   order:
                     description: |-
                       Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-                      Only one of 'order' and 'arrayConfig' can be specified.
+                      Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]
                     type: string
                 type: object
               type: array
             queryScope:
-              description: |-
-                The scope at which a query is run. One of '"COLLECTION"' or
-                '"COLLECTION_GROUP"'. Defaults to '"COLLECTION"'.
+              description: 'The scope at which a query is run. Default value: "COLLECTION"
+                Possible values: ["COLLECTION", "COLLECTION_GROUP"]'
               type: string
           required:
           - collection

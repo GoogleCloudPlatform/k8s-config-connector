@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -157,17 +157,24 @@ spec:
               type: object
             ipProtocol:
               description: |-
-                The IP protocol to which this rule applies. Valid options are TCP,
-                UDP, ESP, AH, SCTP or ICMP.
+                The IP protocol to which this rule applies.
 
                 When the load balancing scheme is INTERNAL, only TCP and UDP are
-                valid.
+                valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP"]
               type: string
             ipVersion:
-              description: |-
-                The IP Version that will be used by this global forwarding rule.
-                Valid options are IPV4 or IPV6.
+              description: 'The IP Version that will be used by this global forwarding
+                rule. Possible values: ["IPV4", "IPV6"]'
               type: string
+            isMirroringCollector:
+              description: |-
+                Indicates whether or not this load balancer can be used
+                as a collector for packet mirroring. To prevent mirroring loops,
+                instances behind this load balancer will not have their traffic
+                mirrored even if a PacketMirroring rule applies to them. This
+                can only be set to true for load balancers that have their
+                loadBalancingScheme set to INTERNAL.
+              type: boolean
             loadBalancingScheme:
               description: |-
                 This signifies what the ForwardingRule will be used for and can be
@@ -176,7 +183,7 @@ spec:
                 and HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP load balancers.
                 INTERNAL is used for protocol forwarding to VMs from an internal IP address,
                 and internal TCP/UDP load balancers.
-                INTERNAL_MANAGED is used for internal HTTP(S) load balancers.
+                INTERNAL_MANAGED is used for internal HTTP(S) load balancers. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL", "INTERNAL_MANAGED"]
               type: string
             location:
               description: 'Location represents the geographical location of the ComputeForwardingRule.
@@ -235,7 +242,7 @@ spec:
                       MATCH_ANY - At least one of the filterLabels must have a matching
                       label in the provided metadata.
                       MATCH_ALL - All filterLabels must have matching labels in the
-                      provided metadata.
+                      provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"]
                     type: string
                 required:
                 - filterLabels
@@ -275,9 +282,8 @@ spec:
               type: object
             networkTier:
               description: |-
-                The networking tier used for configuring this address. This field can
-                take the following values: PREMIUM or STANDARD. If this field is not
-                specified, it is assumed to be PREMIUM.
+                The networking tier used for configuring this address. If this field is not
+                specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"]
               type: string
             portRange:
               description: |-

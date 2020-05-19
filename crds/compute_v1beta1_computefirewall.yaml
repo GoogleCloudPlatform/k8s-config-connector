@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -76,7 +76,7 @@ spec:
                       The IP protocol to which this rule applies. The protocol type is
                       required when creating a firewall rule. This value can either be
                       one of the following well known protocol strings (tcp, udp,
-                      icmp, esp, ah, sctp), or the IP protocol number.
+                      icmp, esp, ah, sctp, ipip), or the IP protocol number.
                     type: string
                 required:
                 - protocol
@@ -105,7 +105,7 @@ spec:
                       The IP protocol to which this rule applies. The protocol type is
                       required when creating a firewall rule. This value can either be
                       one of the following well known protocol strings (tcp, udp,
-                      icmp, esp, ah, sctp), or the IP protocol number.
+                      icmp, esp, ah, sctp, ipip), or the IP protocol number.
                     type: string
                 required:
                 - protocol
@@ -129,7 +129,7 @@ spec:
                 Direction of traffic to which this firewall applies; default is
                 INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
                 destinationRanges; For EGRESS traffic, it is NOT supported to specify
-                sourceRanges OR sourceTags.
+                sourceRanges OR sourceTags. Possible values: ["INGRESS", "EGRESS"]
               type: string
             disabled:
               description: |-

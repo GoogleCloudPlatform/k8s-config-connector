@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -91,7 +91,7 @@ spec:
                     is granted this AccessLevel. If AND is used, each Condition in
                     conditions must be satisfied for the AccessLevel to be applied. If
                     OR is used, at least one Condition in conditions must be satisfied
-                    for the AccessLevel to be applied. Defaults to AND if unspecified.
+                    for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"]
                   type: string
                 conditions:
                   description: A set of requirements for the AccessLevel to be granted.
@@ -130,7 +130,9 @@ spec:
                                     Format: "major.minor.patch" such as "10.5.301", "9.2.1".
                                   type: string
                                 osType:
-                                  description: The operating system type of the device.
+                                  description: 'The operating system type of the device.
+                                    Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC",
+                                    "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS"]'
                                   type: string
                               required:
                               - osType
@@ -168,7 +170,7 @@ spec:
                         items:
                           description: |-
                             An allowed list of members (users, service accounts).
-                            Using groups is not supported yet.
+                            Using groups is not supported.
 
                             The signed-in user originating the request must be a part of one
                             of the provided members. If not specified, a request may come
@@ -217,6 +219,14 @@ spec:
                           a NAND over its non-empty fields, each field must be false for
                           the Condition overall to be satisfied. Defaults to false.
                         type: boolean
+                      regions:
+                        description: |-
+                          The request must originate from one of the provided
+                          countries/regions.
+                          Format: A valid ISO 3166-1 alpha-2 code.
+                        items:
+                          type: string
+                        type: array
                       requiredAccessLevels:
                         items:
                           description: |-

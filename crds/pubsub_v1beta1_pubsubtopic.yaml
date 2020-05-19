@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -55,7 +55,7 @@ spec:
             kmsKeyRef:
               description: |-
                 The KMSCryptoKey to be used to protect access to messages published
-                on this topic. Your project's PubSub service account
+                on this topic. Your project's Pub/Sub service account
                 ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
                 must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
                 feature.

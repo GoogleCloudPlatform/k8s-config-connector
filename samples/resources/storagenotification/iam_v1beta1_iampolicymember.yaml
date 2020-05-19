@@ -13,16 +13,14 @@
 # limitations under the License.
 
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicy
+kind: IAMPolicyMember
 metadata:
   name: storagenotification-dep
 spec:
+  # replace ${PROJECT_NUMBER?} with your project name
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
   resourceRef:
     apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
     kind: PubSubTopic
     name: storagenotification-dep
-  bindings:
-    - role: roles/pubsub.publisher
-      members:
-        # replace ${PROJECT_NUMBER?} with your project ID number
-        - serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com

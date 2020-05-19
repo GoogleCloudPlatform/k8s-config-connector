@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -100,7 +100,7 @@ spec:
                     software licenses tied to the underlying server characteristics
                     such as physical sockets or cores, to avoid the need for
                     additional licenses when maintenance occurs. However, VMs on such
-                    nodes will experience outages while maintenance is applied.
+                    nodes will experience outages while maintenance is applied. Possible values: ["RESTART_NODE_ON_ANY_SERVER", "RESTART_NODE_ON_MINIMAL_SERVERS"]
                   type: string
               required:
               - type

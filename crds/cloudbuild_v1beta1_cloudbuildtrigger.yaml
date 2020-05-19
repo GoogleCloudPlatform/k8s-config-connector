@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.1
+    cnrm.cloud.google.com/version: 1.9.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -207,13 +207,12 @@ spec:
                     type: string
                   type: array
                 timeout:
-                  description: "Amount of time that this build should be allowed to
-                    run, to second granularity. \nIf this amount of time elapses,
-                    work on the build will cease and the build status will be TIMEOUT.\nThis
-                    timeout must be equal to or greater than the sum of the timeouts
-                    for build steps within the build.\nThe expected format is the
-                    number of seconds followed by s.\nDefault time is ten minutes
-                    (600s)."
+                  description: |-
+                    Amount of time that this build should be allowed to run, to second granularity.
+                    If this amount of time elapses, work on the build will cease and the build status will be TIMEOUT.
+                    This timeout must be equal to or greater than the sum of the timeouts for build steps within the build.
+                    The expected format is the number of seconds followed by s.
+                    Default time is ten minutes (600s).
                   type: string
               required:
               - step
@@ -254,8 +253,9 @@ spec:
                       description: Regex of branches to match.
                       type: string
                     commentControl:
-                      description: Whether to block builds on a "/gcbrun" comment
-                        from a repository owner or collaborator.
+                      description: 'Whether to block builds on a "/gcbrun" comment
+                        from a repository owner or collaborator. Possible values:
+                        ["COMMENTS_DISABLED", "COMMENTS_ENABLED"]'
                       type: string
                   required:
                   - branch
@@ -276,7 +276,7 @@ spec:
               type: object
             ignoredFiles:
               description: |-
-                ignoredFiles and includedFiles are file glob matches using http://godoc/pkg/path/filepath#Match
+                ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
                 extended with support for '**'.
 
                 If ignoredFiles and changed files are both empty, then they are not
@@ -290,7 +290,7 @@ spec:
               type: array
             includedFiles:
               description: |-
-                ignoredFiles and includedFiles are file glob matches using http://godoc/pkg/path/filepath#Match
+                ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
                 extended with support for '**'.
 
                 If any of the files altered in the commit pass the ignoredFiles filter

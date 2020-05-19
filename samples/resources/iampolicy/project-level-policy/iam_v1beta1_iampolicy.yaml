@@ -24,7 +24,7 @@
 #   - containerregistry.googleapis.com
 #   - redis.googleapis.com
 #
-# Replace [PROJECT_ID], [PROJECT_NUMBER], and [ACCOUNT] with your desired project ID,
+# Replace ${PROJECT_ID?}, ${PROJECT_NUMBER?}, and [ACCOUNT] with your desired project ID,
 # that project's project number, and your Google Cloud account email respectively.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
@@ -43,30 +43,30 @@ spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: projects/[PROJECT_ID]
+    external: projects/${PROJECT_ID?}
   bindings:
     - members:
-        - serviceAccount:service-[PROJECT_NUMBER]@compute-system.iam.gserviceaccount.com
+        - serviceAccount:service-${PROJECT_NUMBER?}@compute-system.iam.gserviceaccount.com
       role: roles/compute.serviceAgent
     - members:
-        - serviceAccount:service-[PROJECT_NUMBER]@container-engine-robot.iam.gserviceaccount.com
+        - serviceAccount:service-${PROJECT_NUMBER?}@container-engine-robot.iam.gserviceaccount.com
       role: roles/container.serviceAgent
     - members:
-        - serviceAccount:[PROJECT_NUMBER]-compute@developer.gserviceaccount.com
-        - serviceAccount:[PROJECT_NUMBER]@cloudservices.gserviceaccount.com
-        - serviceAccount:cnrm-application-demo@[PROJECT_ID].iam.gserviceaccount.com
-        - serviceAccount:service-[PROJECT_NUMBER]@containerregistry.iam.gserviceaccount.com
+        - serviceAccount:${PROJECT_NUMBER?}-compute@developer.gserviceaccount.com
+        - serviceAccount:${PROJECT_NUMBER?}@cloudservices.gserviceaccount.com
+        - serviceAccount:cnrm-application-demo@${PROJECT_ID?}.iam.gserviceaccount.com
+        - serviceAccount:service-${PROJECT_NUMBER?}@containerregistry.iam.gserviceaccount.com
       role: roles/editor
     - members:
         # Make sure to keep the "cnrm-system" service account permission, or else Config Connector will
         # be locked out from managing GCP resources.
-        - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+        - serviceAccount:cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com
         # Ensure that your account is not locked out of the project.
-        - user:[ACCOUNT]
+        - user:${PROJECT_NAME?}
       role: roles/owner
     - members:
-        - serviceAccount:service-[PROJECT_NUMBER]@cloud-redis.iam.gserviceaccount.com
+        - serviceAccount:service-${PROJECT_NUMBER?}@cloud-redis.iam.gserviceaccount.com
       role: roles/redis.serviceAgent
     - members:
-        - serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+        - serviceAccount:cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com
       role: roles/storage.admin

@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace [PROJECT_ID] below with your desired project ID.
+# Replace ${PROJECT_ID?} below with your desired project ID.
 #
-# This sample assumes that you have created a service account named cnrm-system@[PROJECT_ID].iam.gserviceaccount.com.
+# This sample assumes that you have created a service account named cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: iampolicymember-sample-projectlevel
 spec:
-  member: serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
+  member: serviceAccount:cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: projects/[PROJECT_ID]
+    external: projects/${PROJECT_ID?}
