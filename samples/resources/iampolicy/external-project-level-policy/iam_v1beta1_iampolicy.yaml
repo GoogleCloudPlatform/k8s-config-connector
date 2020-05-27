@@ -12,20 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# **WARNING**: The bindings here represent the full declarative intent for the project.
-# It will fully overwrite the existing policy on the given project.
-#
-# For finer-grained control over the project's IAM policy, it is recommended
-# that the IAMPolicyMember resource be used instead.
-#
-# This sample assumes the following additional APIs are enabled:
-#   - compute.googleapis.com
-#   - container.googleapis.com
-#   - containerregistry.googleapis.com
-#   - redis.googleapis.com
-#
-# Replace ${PROJECT_ID?}, ${PROJECT_NUMBER?}, and [ACCOUNT] with your desired project ID,
-# that project's project number, and your Google Cloud account email respectively.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
@@ -44,6 +30,20 @@ spec:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${PROJECT_ID?}
+  # **WARNING**: The bindings here represent the full declarative intent for the project.
+  # It will fully overwrite the existing policy on the given project.
+  #
+  # For finer-grained control over the project's IAM policy, it is recommended
+  # that the IAMPolicyMember resource be used instead.
+  #
+  # This sample assumes the following additional APIs are enabled:
+  #   - compute.googleapis.com
+  #   - container.googleapis.com
+  #   - containerregistry.googleapis.com
+  #   - redis.googleapis.com
+  #
+  # Replace ${PROJECT_ID?}, ${PROJECT_NUMBER?}, and ${PROJECT_NAME?} with your desired project ID,
+  # that project's project number, and your Google Cloud account email respectively.
   bindings:
     - members:
         - serviceAccount:service-${PROJECT_NUMBER?}@compute-system.iam.gserviceaccount.com
