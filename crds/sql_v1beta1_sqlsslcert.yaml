@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: computetargetpools.compute.cnrm.cloud.google.com
+  name: sqlsslcerts.sql.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: sql.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeTargetPool
-    plural: computetargetpools
+    kind: SQLSSLCert
+    plural: sqlsslcerts
     shortNames:
-    - gcpcomputetargetpool
-    - gcpcomputetargetpools
-    singular: computetargetpool
+    - gcpsqlsslcert
+    - gcpsqlsslcerts
+    singular: sqlsslcert
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -52,7 +52,10 @@ spec:
           type: object
         spec:
           properties:
-            backupTargetPoolRef:
+            commonName:
+              type: string
+            instanceRef:
+              description: The Cloud SQL instance.
               oneOf:
               - not:
                   required:
@@ -69,7 +72,7 @@ spec:
                 - external
               properties:
                 external:
-                  description: The selfLink of a ComputeTargetPool.
+                  description: The name of a SQLInstance.
                   type: string
                 name:
                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -78,78 +81,16 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
-            description:
-              type: string
-            failoverRatio:
-              type: number
-            healthChecks:
-              items:
-                properties:
-                  httpHealthCheckRef:
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The selfLink of a ComputeHTTPHealthCheck.
-                        type: string
-                      name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                        type: string
-                      namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                        type: string
-                    type: object
-                type: object
-              type: array
-            instances:
-              items:
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The selfLink of a ComputeInstance.
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              type: array
-            region:
-              type: string
-            sessionAffinity:
-              type: string
           required:
-          - region
+          - commonName
+          - instanceRef
           type: object
         status:
           properties:
+            cert:
+              type: string
+            certSerialNumber:
+              type: string
             conditions:
               description: Conditions represents the latest available observation
                 of the resource's current state.
@@ -176,7 +117,15 @@ spec:
                     type: string
                 type: object
               type: array
-            selfLink:
+            createTime:
+              type: string
+            expirationTime:
+              type: string
+            privateKey:
+              type: string
+            serverCaCert:
+              type: string
+            sha1Fingerprint:
               type: string
           type: object
       required:

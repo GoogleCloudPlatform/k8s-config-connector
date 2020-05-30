@@ -20,7 +20,6 @@ metadata:
   name: containernodepool-sample
 spec:
   location: us-east1-c
-  initialNodeCount: 1
   autoscaling:
     minNodeCount: 1
     maxNodeCount: 3
