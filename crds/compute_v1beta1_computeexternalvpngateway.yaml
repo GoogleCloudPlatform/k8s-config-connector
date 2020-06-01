@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -77,7 +77,9 @@ spec:
                 type: object
               type: array
             redundancyType:
-              description: Indicates the redundancy type of this external VPN gateway
+              description: 'Indicates the redundancy type of this external VPN gateway
+                Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT",
+                "TWO_IPS_REDUNDANCY"]'
               type: string
           type: object
         status:

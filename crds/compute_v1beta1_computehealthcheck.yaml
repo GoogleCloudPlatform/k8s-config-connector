@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -101,12 +101,12 @@ spec:
                       checking.
 
                     If not specified, HTTP2 health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -154,12 +154,12 @@ spec:
                       checking.
 
                     If not specified, HTTP health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -207,12 +207,12 @@ spec:
                       checking.
 
                     If not specified, HTTPS health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -231,6 +231,15 @@ spec:
                 Specify a region name or "global" for global resources. Reference:
                 GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
+            logConfig:
+              description: Configure logging on this health check.
+              properties:
+                enable:
+                  description: |-
+                    Indicates whether or not to export logs. This is false by default,
+                    which means no health check logging will be done.
+                  type: boolean
+              type: object
             sslHealthCheck:
               description: A nested object resource
               properties:
@@ -259,12 +268,12 @@ spec:
                       checking.
 
                     If not specified, SSL health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 request:
                   description: |-
@@ -308,12 +317,12 @@ spec:
                       checking.
 
                     If not specified, TCP health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 request:
                   description: |-

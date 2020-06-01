@@ -15,5 +15,5 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
-  # You MUST change the name to a globally unique bucket name.
-  name: storagenotification-dep
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-storagenotification-dep

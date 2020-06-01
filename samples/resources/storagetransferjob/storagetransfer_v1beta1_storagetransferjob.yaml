@@ -36,10 +36,10 @@ spec:
   transferSpec:
     gcsDataSink:
       bucketRef:
-        name: storagetransferjob-dep1
+        name: ${PROJECT_ID?}-storagetransferjob-dep1
     gcsDataSource:
       bucketRef:
-        name: storagetransferjob-dep2
+        name: ${PROJECT_ID?}-storagetransferjob-dep2
     objectConditions:
       maxTimeElapsedSinceLastModification: 5s
       minTimeElapsedSinceLastModification: 2s

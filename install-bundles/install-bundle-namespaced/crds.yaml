@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,6 +53,9 @@ spec:
         spec:
           properties:
             accessPolicyRef:
+              description: |-
+                The AccessContextManagerAccessPolicy this
+                AccessContextManagerAccessLevel lives in.
               oneOf:
               - not:
                   required:
@@ -88,7 +91,7 @@ spec:
                     is granted this AccessLevel. If AND is used, each Condition in
                     conditions must be satisfied for the AccessLevel to be applied. If
                     OR is used, at least one Condition in conditions must be satisfied
-                    for the AccessLevel to be applied. Defaults to AND if unspecified.
+                    for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"]
                   type: string
                 conditions:
                   description: A set of requirements for the AccessLevel to be granted.
@@ -127,7 +130,9 @@ spec:
                                     Format: "major.minor.patch" such as "10.5.301", "9.2.1".
                                   type: string
                                 osType:
-                                  description: The operating system type of the device.
+                                  description: 'The operating system type of the device.
+                                    Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC",
+                                    "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS"]'
                                   type: string
                               required:
                               - osType
@@ -163,6 +168,14 @@ spec:
                         type: array
                       members:
                         items:
+                          description: |-
+                            An allowed list of members (users, service accounts).
+                            Using groups is not supported.
+
+                            The signed-in user originating the request must be a part of one
+                            of the provided members. If not specified, a request may come
+                            from any user (logged in/not logged in, not present in any
+                            groups, etc.).
                           oneOf:
                           - required:
                             - serviceAccountRef
@@ -206,8 +219,21 @@ spec:
                           a NAND over its non-empty fields, each field must be false for
                           the Condition overall to be satisfied. Defaults to false.
                         type: boolean
+                      regions:
+                        description: |-
+                          The request must originate from one of the provided
+                          countries/regions.
+                          Format: A valid ISO 3166-1 alpha-2 code.
+                        items:
+                          type: string
+                        type: array
                       requiredAccessLevels:
                         items:
+                          description: |-
+                            A list of other access levels defined in the same policy.
+                            Referencing an AccessContextManagerAccessLevel which does not exist
+                            is an error. All access levels listed must be granted for the
+                            condition to be true.
                           oneOf:
                           - not:
                               required:
@@ -295,7 +321,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -390,7 +416,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -504,6 +530,10 @@ spec:
                 this value, unless table creation request (or query) overrides the key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    Describes the Cloud KMS encryption key that will be used to protect destination
+                    BigQuery table. The BigQuery Service Account associated with your project requires
+                    access to this encryption key.
                   oneOf:
                   - not:
                       required:
@@ -653,7 +683,733 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: bigqueryjobs.bigquery.cnrm.cloud.google.com
+spec:
+  group: bigquery.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigQueryJob
+    plural: bigqueryjobs
+    shortNames:
+    - gcpbigqueryjob
+    - gcpbigqueryjobs
+    singular: bigqueryjob
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'apiVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            copy:
+              description: Copies a table.
+              properties:
+                createDisposition:
+                  description: |-
+                    Specifies whether the job is allowed to create new tables. The following values are supported:
+                    CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
+                    CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+                    Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                  type: string
+                destinationEncryptionConfiguration:
+                  description: Custom encryption configuration (e.g., Cloud KMS keys)
+                  properties:
+                    kmsKeyRef:
+                      description: |-
+                        Describes the Cloud KMS encryption key that will be used to protect
+                        destination BigQuery table. The BigQuery Service Account associated
+                        with your project requires access to this encryption key.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a KMSCryptoKey.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - kmsKeyRef
+                  type: object
+                destinationTable:
+                  description: The destination table.
+                  properties:
+                    tableRef:
+                      description: A reference to the table.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a BigQueryTable.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - tableRef
+                  type: object
+                sourceTables:
+                  description: Source tables to copy.
+                  items:
+                    properties:
+                      tableRef:
+                        description: A reference to the table.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The selfLink of a BigQueryTable.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
+                    required:
+                    - tableRef
+                    type: object
+                  type: array
+                writeDisposition:
+                  description: |-
+                    Specifies the action that occurs if the destination table already exists. The following values are supported:
+                    WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
+                    WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
+                    WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
+                    Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
+                    Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                  type: string
+              required:
+              - sourceTables
+              type: object
+            extract:
+              description: Configures an extract job.
+              properties:
+                compression:
+                  description: |-
+                    The compression type to use for exported files. Possible values include GZIP, DEFLATE, SNAPPY, and NONE.
+                    The default value is NONE. DEFLATE and SNAPPY are only supported for Avro.
+                  type: string
+                destinationFormat:
+                  description: |-
+                    The exported file format. Possible values include CSV, NEWLINE_DELIMITED_JSON and AVRO for tables and SAVED_MODEL for models.
+                    The default value for tables is CSV. Tables with nested or repeated fields cannot be exported as CSV.
+                    The default value for models is SAVED_MODEL.
+                  type: string
+                destinationUris:
+                  description: A list of fully-qualified Google Cloud Storage URIs
+                    where the extracted table should be written.
+                  items:
+                    type: string
+                  type: array
+                fieldDelimiter:
+                  description: |-
+                    When extracting data in CSV format, this defines the delimiter to use between fields in the exported data.
+                    Default is ','
+                  type: string
+                printHeader:
+                  description: Whether to print out a header row in the results. Default
+                    is true.
+                  type: boolean
+                sourceTable:
+                  description: A reference to the table being exported.
+                  properties:
+                    tableRef:
+                      description: A reference to the table.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a BigQueryTable.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - tableRef
+                  type: object
+                useAvroLogicalTypes:
+                  description: Whether to use logical types when extracting to AVRO
+                    format.
+                  type: boolean
+              required:
+              - destinationUris
+              type: object
+            jobTimeoutMs:
+              description: Job timeout in milliseconds. If this time limit is exceeded,
+                BigQuery may attempt to terminate the job.
+              type: string
+            load:
+              description: Configures a load job.
+              properties:
+                allowJaggedRows:
+                  description: |-
+                    Accept rows that are missing trailing optional columns. The missing values are treated as nulls.
+                    If false, records with missing trailing columns are treated as bad records, and if there are too many bad records,
+                    an invalid error is returned in the job result. The default value is false. Only applicable to CSV, ignored for other formats.
+                  type: boolean
+                allowQuotedNewlines:
+                  description: |-
+                    Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file.
+                    The default value is false.
+                  type: boolean
+                autodetect:
+                  description: Indicates if we should automatically infer the options
+                    and schema for CSV and JSON sources.
+                  type: boolean
+                createDisposition:
+                  description: |-
+                    Specifies whether the job is allowed to create new tables. The following values are supported:
+                    CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
+                    CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+                    Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                  type: string
+                destinationEncryptionConfiguration:
+                  description: Custom encryption configuration (e.g., Cloud KMS keys)
+                  properties:
+                    kmsKeyRef:
+                      description: |-
+                        Describes the Cloud KMS encryption key that will be used to protect
+                        destination BigQuery table. The BigQuery Service Account associated
+                        with your project requires access to this encryption key.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a KMSCryptoKey.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - kmsKeyRef
+                  type: object
+                destinationTable:
+                  description: The destination table to load the data into.
+                  properties:
+                    tableRef:
+                      description: A reference to the table.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a BigQueryTable.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - tableRef
+                  type: object
+                encoding:
+                  description: |-
+                    The character encoding of the data. The supported values are UTF-8 or ISO-8859-1.
+                    The default value is UTF-8. BigQuery decodes the data after the raw, binary data
+                    has been split using the values of the quote and fieldDelimiter properties.
+                  type: string
+                fieldDelimiter:
+                  description: |-
+                    The separator for fields in a CSV file. The separator can be any ISO-8859-1 single-byte character.
+                    To use a character in the range 128-255, you must encode the character as UTF8. BigQuery converts
+                    the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the
+                    data in its raw, binary state. BigQuery also supports the escape sequence "\t" to specify a tab separator.
+                    The default value is a comma (',').
+                  type: string
+                ignoreUnknownValues:
+                  description: |-
+                    Indicates if BigQuery should allow extra values that are not represented in the table schema.
+                    If true, the extra values are ignored. If false, records with extra columns are treated as bad records,
+                    and if there are too many bad records, an invalid error is returned in the job result.
+                    The default value is false. The sourceFormat property determines what BigQuery treats as an extra value:
+                    CSV: Trailing columns
+                    JSON: Named values that don't match any column names
+                  type: boolean
+                maxBadRecords:
+                  description: |-
+                    The maximum number of bad records that BigQuery can ignore when running the job. If the number of bad records exceeds this value,
+                    an invalid error is returned in the job result. The default value is 0, which requires that all records are valid.
+                  type: integer
+                nullMarker:
+                  description: |-
+                    Specifies a string that represents a null value in a CSV file. For example, if you specify "\N", BigQuery interprets "\N" as a null value
+                    when loading a CSV file. The default value is the empty string. If you set this property to a custom value, BigQuery throws an error if an
+                    empty string is present for all data types except for STRING and BYTE. For STRING and BYTE columns, BigQuery interprets the empty string as
+                    an empty value.
+                  type: string
+                projectionFields:
+                  description: |-
+                    If sourceFormat is set to "DATASTORE_BACKUP", indicates which entity properties to load into BigQuery from a Cloud Datastore backup.
+                    Property names are case sensitive and must be top-level properties. If no properties are specified, BigQuery loads all properties.
+                    If any named property isn't found in the Cloud Datastore backup, an invalid error is returned in the job result.
+                  items:
+                    type: string
+                  type: array
+                quote:
+                  description: |-
+                    The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding,
+                    and then uses the first byte of the encoded string to split the data in its raw, binary state.
+                    The default value is a double-quote ('"'). If your data does not contain quoted sections, set the property value to an empty string.
+                    If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
+                  type: string
+                schemaUpdateOptions:
+                  description: |-
+                    Allows the schema of the destination table to be updated as a side effect of the load job if a schema is autodetected or
+                    supplied in the job configuration. Schema update options are supported in two cases: when writeDisposition is WRITE_APPEND;
+                    when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table, specified by partition decorators.
+                    For normal tables, WRITE_TRUNCATE will always overwrite the schema. One or more of the following values are specified:
+                    ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema.
+                    ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
+                  items:
+                    type: string
+                  type: array
+                skipLeadingRows:
+                  description: |-
+                    The number of rows at the top of a CSV file that BigQuery will skip when loading the data.
+                    The default value is 0. This property is useful if you have header rows in the file that should be skipped.
+                    When autodetect is on, the behavior is the following:
+                    skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected,
+                    the row is read as data. Otherwise data is read starting from the second row.
+                    skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row.
+                    skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected,
+                    row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
+                  type: integer
+                sourceFormat:
+                  description: |-
+                    The format of the data files. For CSV files, specify "CSV". For datastore backups, specify "DATASTORE_BACKUP".
+                    For newline-delimited JSON, specify "NEWLINE_DELIMITED_JSON". For Avro, specify "AVRO". For parquet, specify "PARQUET".
+                    For orc, specify "ORC". The default value is CSV.
+                  type: string
+                sourceUris:
+                  description: |-
+                    The fully-qualified URIs that point to your data in Google Cloud.
+                    For Google Cloud Storage URIs: Each URI can contain one '*' wildcard character
+                    and it must come after the 'bucket' name. Size limits related to load jobs apply
+                    to external data sources. For Google Cloud Bigtable URIs: Exactly one URI can be
+                    specified and it has be a fully specified and valid HTTPS URL for a Google Cloud Bigtable table.
+                    For Google Cloud Datastore backups: Exactly one URI can be specified. Also, the '*' wildcard character is not allowed.
+                  items:
+                    type: string
+                  type: array
+                timePartitioning:
+                  description: Time-based partitioning specification for the destination
+                    table.
+                  properties:
+                    expirationMs:
+                      description: Number of milliseconds for which to keep the storage
+                        for a partition. A wrapper is used here because 0 is an invalid
+                        value.
+                      type: string
+                    field:
+                      description: |-
+                        If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field.
+                        The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED.
+                        A wrapper is used here because an empty string is an invalid value.
+                      type: string
+                    type:
+                      description: |-
+                        The only type supported is DAY, which will generate one partition per day. Providing an empty string used to cause an error,
+                        but in OnePlatform the field will be treated as unset.
+                      type: string
+                  required:
+                  - type
+                  type: object
+                writeDisposition:
+                  description: |-
+                    Specifies the action that occurs if the destination table already exists. The following values are supported:
+                    WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
+                    WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
+                    WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
+                    Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
+                    Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                  type: string
+              required:
+              - destinationTable
+              - sourceUris
+              type: object
+            location:
+              description: The geographic location of the job. The default value is
+                US.
+              type: string
+            query:
+              description: Configures a query job.
+              properties:
+                allowLargeResults:
+                  description: |-
+                    If true and query uses legacy SQL dialect, allows the query to produce arbitrarily large result tables at a slight cost in performance.
+                    Requires destinationTable to be set. For standard SQL queries, this flag is ignored and large results are always allowed.
+                    However, you must still set destinationTable when result size exceeds the allowed maximum response size.
+                  type: boolean
+                createDisposition:
+                  description: |-
+                    Specifies whether the job is allowed to create new tables. The following values are supported:
+                    CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
+                    CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+                    Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                  type: string
+                defaultDataset:
+                  description: Specifies the default dataset to use for unqualified
+                    table names in the query. Note that this does not alter behavior
+                    of unqualified dataset names.
+                  properties:
+                    datasetRef:
+                      description: A reference to the dataset.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a BigQueryDataset.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - datasetRef
+                  type: object
+                destinationEncryptionConfiguration:
+                  description: Custom encryption configuration (e.g., Cloud KMS keys)
+                  properties:
+                    kmsKeyRef:
+                      description: |-
+                        Describes the Cloud KMS encryption key that will be used to protect
+                        destination BigQuery table. The BigQuery Service Account associated
+                        with your project requires access to this encryption key.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a KMSCryptoKey.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - kmsKeyRef
+                  type: object
+                destinationTable:
+                  description: |-
+                    Describes the table where the query results should be stored.
+                    This property must be set for large results that exceed the maximum response size.
+                    For queries that produce anonymous (cached) results, this field will be populated by BigQuery.
+                  properties:
+                    tableRef:
+                      description: A reference to the table.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a BigQueryTable.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - tableRef
+                  type: object
+                flattenResults:
+                  description: |-
+                    If true and query uses legacy SQL dialect, flattens all nested and repeated fields in the query results.
+                    allowLargeResults must be true if this is set to false. For standard SQL queries, this flag is ignored and results are never flattened.
+                  type: boolean
+                maximumBillingTier:
+                  description: |-
+                    Limits the billing tier for this job. Queries that have resource usage beyond this tier will fail (without incurring a charge).
+                    If unspecified, this will be set to your project default.
+                  type: integer
+                maximumBytesBilled:
+                  description: |-
+                    Limits the bytes billed for this job. Queries that will have bytes billed beyond this limit will fail (without incurring a charge).
+                    If unspecified, this will be set to your project default.
+                  type: string
+                parameterMode:
+                  description: Standard SQL only. Set to POSITIONAL to use positional
+                    (?) query parameters or to NAMED to use named (@myparam) query
+                    parameters in this query.
+                  type: string
+                priority:
+                  description: 'Specifies a priority for the query. Default value:
+                    "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"]'
+                  type: string
+                query:
+                  description: SQL query text to execute. The useLegacySql field can
+                    be used to indicate whether the query uses legacy SQL or standard
+                    SQL.
+                  type: string
+                schemaUpdateOptions:
+                  description: |-
+                    Allows the schema of the destination table to be updated as a side effect of the query job.
+                    Schema update options are supported in two cases: when writeDisposition is WRITE_APPEND;
+                    when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table,
+                    specified by partition decorators. For normal tables, WRITE_TRUNCATE will always overwrite the schema.
+                    One or more of the following values are specified:
+                    ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema.
+                    ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
+                  items:
+                    type: string
+                  type: array
+                scriptOptions:
+                  description: Options controlling the execution of scripts.
+                  properties:
+                    keyResultStatement:
+                      description: |-
+                        Determines which statement in the script represents the "key result",
+                        used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"]
+                      type: string
+                    statementByteBudget:
+                      description: Limit on the number of bytes billed per statement.
+                        Exceeding this budget results in an error.
+                      type: string
+                    statementTimeoutMs:
+                      description: Timeout period for each statement in a script.
+                      type: string
+                  type: object
+                useLegacySql:
+                  description: |-
+                    Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true.
+                    If set to false, the query will use BigQuery's standard SQL.
+                  type: boolean
+                useQueryCache:
+                  description: |-
+                    Whether to look for the result in the query cache. The query cache is a best-effort cache that will be flushed whenever
+                    tables in the query are modified. Moreover, the query cache is only available when a query does not have a destination table specified.
+                    The default value is true.
+                  type: boolean
+                userDefinedFunctionResources:
+                  description: Describes user-defined function resources used in the
+                    query.
+                  items:
+                    properties:
+                      inlineCode:
+                        description: |-
+                          An inline resource that contains code for a user-defined function (UDF).
+                          Providing a inline code resource is equivalent to providing a URI for a file containing the same code.
+                        type: string
+                      resourceUri:
+                        description: A code resource to load from a Google Cloud Storage
+                          URI (gs://bucket/path).
+                        type: string
+                    type: object
+                  type: array
+                writeDisposition:
+                  description: |-
+                    Specifies the action that occurs if the destination table already exists. The following values are supported:
+                    WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
+                    WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
+                    WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
+                    Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
+                    Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                  type: string
+              required:
+              - query
+              type: object
+          type: object
+        status:
+          properties:
+            conditions:
+              description: Conditions represents the latest available observation
+                of the resource's current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    type: string
+                  message:
+                    description: Human-readable message indicating details about last
+                      transition.
+                    type: string
+                  reason:
+                    description: Unique, one-word, CamelCase reason for the condition's
+                      last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown.
+                    type: string
+                  type:
+                    description: Type is the type of the condition.
+                    type: string
+                type: object
+              type: array
+            jobType:
+              description: The type of the job.
+              type: string
+            userEmail:
+              description: Email address of the user who ran the job.
+              type: string
+          type: object
+      type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -801,6 +1557,27 @@ spec:
               type: object
             friendlyName:
               type: string
+            rangePartitioning:
+              properties:
+                field:
+                  type: string
+                range:
+                  properties:
+                    end:
+                      type: integer
+                    interval:
+                      type: integer
+                    start:
+                      type: integer
+                  required:
+                  - end
+                  - interval
+                  - start
+                  type: object
+              required:
+              - field
+              - range
+              type: object
             schema:
               type: string
             timePartitioning:
@@ -890,7 +1667,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -989,7 +1766,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1180,13 +1957,12 @@ spec:
                     type: string
                   type: array
                 timeout:
-                  description: "Amount of time that this build should be allowed to
-                    run, to second granularity. \nIf this amount of time elapses,
-                    work on the build will cease and the build status will be TIMEOUT.\nThis
-                    timeout must be equal to or greater than the sum of the timeouts
-                    for build steps within the build.\nThe expected format is the
-                    number of seconds followed by s.\nDefault time is ten minutes
-                    (600s)."
+                  description: |-
+                    Amount of time that this build should be allowed to run, to second granularity.
+                    If this amount of time elapses, work on the build will cease and the build status will be TIMEOUT.
+                    This timeout must be equal to or greater than the sum of the timeouts for build steps within the build.
+                    The expected format is the number of seconds followed by s.
+                    Default time is ten minutes (600s).
                   type: string
               required:
               - step
@@ -1227,8 +2003,9 @@ spec:
                       description: Regex of branches to match.
                       type: string
                     commentControl:
-                      description: Whether to block builds on a "/gcbrun" comment
-                        from a repository owner or collaborator.
+                      description: 'Whether to block builds on a "/gcbrun" comment
+                        from a repository owner or collaborator. Possible values:
+                        ["COMMENTS_DISABLED", "COMMENTS_ENABLED"]'
                       type: string
                   required:
                   - branch
@@ -1249,7 +2026,7 @@ spec:
               type: object
             ignoredFiles:
               description: |-
-                ignoredFiles and includedFiles are file glob matches using http://godoc/pkg/path/filepath#Match
+                ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
                 extended with support for '**'.
 
                 If ignoredFiles and changed files are both empty, then they are not
@@ -1263,7 +2040,7 @@ spec:
               type: array
             includedFiles:
               description: |-
-                ignoredFiles and includedFiles are file glob matches using http://godoc/pkg/path/filepath#Match
+                ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
                 extended with support for '**'.
 
                 If any of the files altered in the commit pass the ignoredFiles filter
@@ -1310,6 +2087,9 @@ spec:
                     execution.
                   type: string
                 repoRef:
+                  description: |-
+                    The Cloud Source Repository to build. If omitted, the repo with
+                    name "default" is assumed.
                   oneOf:
                   - not:
                       required:
@@ -1390,7 +2170,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1434,17 +2214,15 @@ spec:
                 if any.
               type: string
             addressType:
-              description: |-
-                The type of address to reserve, either INTERNAL or EXTERNAL.
-                If unspecified, defaults to EXTERNAL.
+              description: 'The type of address to reserve. Default value: "EXTERNAL"
+                Possible values: ["INTERNAL", "EXTERNAL"]'
               type: string
             description:
               description: An optional description of this resource.
               type: string
             ipVersion:
-              description: |-
-                The IP Version that will be used by this address. Valid options are
-                'IPV4' or 'IPV6'. The default value is 'IPV4'.
+              description: 'The IP Version that will be used by this address. The
+                default value is ''IPV4''. Possible values: ["IPV4", "IPV6"]'
               type: string
             location:
               description: 'Location represents the geographical location of the ComputeAddress.
@@ -1452,6 +2230,12 @@ spec:
                 GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
             networkRef:
+              description: |-
+                The network in which to reserve the IP range. The IP range must be
+                in the RFC1918 space. The network cannot be deleted if there are
+                any reserved IP ranges referring to it.
+
+                This should only be set when using an Internal address.
               oneOf:
               - not:
                   required:
@@ -1479,9 +2263,8 @@ spec:
               type: object
             networkTier:
               description: |-
-                The networking tier used for configuring this address. This field can
-                take the following values: PREMIUM or STANDARD. If this field is not
-                specified, it is assumed to be PREMIUM.
+                The networking tier used for configuring this address. If this field is not
+                specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"]
               type: string
             prefixLength:
               description: |-
@@ -1496,9 +2279,14 @@ spec:
 
                 - GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
 
-                This should only be set when using an Internal address.
+                This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT"]
               type: string
             subnetworkRef:
+              description: |-
+                The subnetwork in which to reserve the address. If an IP address is
+                specified, it must be within the subnetwork's IP range.  This field
+                can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
+                purposes.
               oneOf:
               - not:
                   required:
@@ -1586,7 +2374,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1623,6 +2411,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -1725,7 +2514,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1780,7 +2569,7 @@ spec:
 
                       For global HTTP(S) or TCP/SSL load balancing, the default is
                       UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
-                      and CONNECTION (for TCP/SSL).
+                      and CONNECTION (for TCP/SSL). Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"]
                     type: string
                   capacityScaler:
                     description: |-
@@ -1798,6 +2587,23 @@ spec:
                       Provide this property when you create the resource.
                     type: string
                   group:
+                    description: |-
+                      Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+                      resource. In case of instance group this defines the list of
+                      instances that serve traffic. Member virtual machine instances from
+                      each instance group must live in the same zone as the instance
+                      group itself. No two backends in a backend service are allowed to
+                      use same Instance Group resource.
+
+                      For Network Endpoint Groups this defines list of endpoints. All
+                      endpoints of Network Endpoint Group must be hosted on instances
+                      located in the same zone as the Network Endpoint Group.
+
+                      Backend services cannot mix Instance Group and Network Endpoint
+                      Group backends.
+
+                      When the 'load_balancing_scheme' is INTERNAL, only instance groups
+                      are supported.
                     oneOf:
                     - required:
                       - instanceGroupRef
@@ -2142,6 +2948,10 @@ spec:
               type: object
             healthChecks:
               items:
+                description: |-
+                  The health check resources for health checking this
+                  ComputeBackendService. Currently at most one health check can be
+                  specified, and a health check is required.
                 oneOf:
                 - required:
                   - healthCheckRef
@@ -2257,8 +3067,7 @@ spec:
               description: |-
                 Indicates whether the backend service will be used with internal or
                 external load balancing. A backend service created for one type of
-                load balancing cannot be used with the other. Must be 'EXTERNAL' or
-                'INTERNAL_SELF_MANAGED' for a global backend service. Defaults to 'EXTERNAL'.
+                load balancing cannot be used with the other. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED"]
               type: string
             localityLbPolicy:
               description: |-
@@ -2290,7 +3099,7 @@ spec:
                          Maglev, refer to https://ai.google/research/pubs/pub44824
 
                 This field is applicable only when the load_balancing_scheme is set to
-                INTERNAL_SELF_MANAGED.
+                INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]
               type: string
             location:
               description: 'Location represents the geographical location of the ComputeBackendService.
@@ -2315,6 +3124,10 @@ spec:
                   type: number
               type: object
             networkRef:
+              description: |-
+                The network to which this backend service belongs.  This field can
+                only be specified when the load balancing scheme is set to
+                INTERNAL.
               oneOf:
               - not:
                   required:
@@ -2454,11 +3267,11 @@ spec:
             protocol:
               description: |-
                 The protocol this BackendService uses to communicate with backends.
-                Possible values are HTTP, HTTPS, HTTP2, TCP, and SSL. The default is
-                HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-                types and may result in errors if used with the GA API.
+                The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
+                types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL"]
               type: string
             securityPolicyRef:
+              description: The security policy associated with this backend service.
               oneOf:
               - not:
                   required:
@@ -2487,7 +3300,7 @@ spec:
             sessionAffinity:
               description: |-
                 Type of session affinity to use. The default is NONE. Session affinity is
-                not applicable if the protocol is UDP.
+                not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]
               type: string
             timeoutSec:
               description: |-
@@ -2552,7 +3365,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2609,6 +3422,13 @@ spec:
                 you do not need to provide a key to use the disk later.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2669,8 +3489,8 @@ spec:
                               description: Name of the Secret to extract a value from.
                               type: string
                           required:
-                          - name
                           - key
+                          - name
                           type: object
                       type: object
                   type: object
@@ -2681,6 +3501,7 @@ spec:
                   type: string
               type: object
             imageRef:
+              description: The image from which to initialize this disk.
               oneOf:
               - not:
                   required:
@@ -2726,6 +3547,8 @@ spec:
               type: array
             resourcePolicies:
               items:
+                description: Resource policies applied to this disk for automatic
+                  snapshot creations.
                 oneOf:
                 - not:
                     required:
@@ -2764,6 +3587,7 @@ spec:
                 or the size of the snapshot.
               type: integer
             snapshotRef:
+              description: The source snapshot used to create this disk.
               oneOf:
               - not:
                   required:
@@ -2795,6 +3619,13 @@ spec:
                 the source image is protected by a customer-supplied encryption key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2838,6 +3669,13 @@ spec:
                 key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -2966,7 +3804,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3027,7 +3865,9 @@ spec:
                 type: object
               type: array
             redundancyType:
-              description: Indicates the redundancy type of this external VPN gateway
+              description: 'Indicates the redundancy type of this external VPN gateway
+                Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT",
+                "TWO_IPS_REDUNDANCY"]'
               type: string
           type: object
         status:
@@ -3074,7 +3914,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3134,7 +3974,7 @@ spec:
                       The IP protocol to which this rule applies. The protocol type is
                       required when creating a firewall rule. This value can either be
                       one of the following well known protocol strings (tcp, udp,
-                      icmp, esp, ah, sctp), or the IP protocol number.
+                      icmp, esp, ah, sctp, ipip), or the IP protocol number.
                     type: string
                 required:
                 - protocol
@@ -3163,7 +4003,7 @@ spec:
                       The IP protocol to which this rule applies. The protocol type is
                       required when creating a firewall rule. This value can either be
                       one of the following well known protocol strings (tcp, udp,
-                      icmp, esp, ah, sctp), or the IP protocol number.
+                      icmp, esp, ah, sctp, ipip), or the IP protocol number.
                     type: string
                 required:
                 - protocol
@@ -3187,7 +4027,7 @@ spec:
                 Direction of traffic to which this firewall applies; default is
                 INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
                 destinationRanges; For EGRESS traffic, it is NOT supported to specify
-                sourceRanges OR sourceTags.
+                sourceRanges OR sourceTags. Possible values: ["INGRESS", "EGRESS"]
               type: string
             disabled:
               description: |-
@@ -3203,6 +4043,7 @@ spec:
                 Stackdriver.
               type: boolean
             networkRef:
+              description: The network to attach this firewall to.
               oneOf:
               - not:
                   required:
@@ -3252,6 +4093,18 @@ spec:
               type: array
             sourceServiceAccounts:
               items:
+                description: |-
+                  If source service accounts are specified, the firewall will apply only
+                  to traffic originating from an instance with a service account in this
+                  list. Source service accounts cannot be used to control traffic to an
+                  instance's external IP address because service accounts are associated
+                  with an instance, not an IP address. sourceRanges can be set at the
+                  same time as sourceServiceAccounts. If both are set, the firewall will
+                  apply to traffic that has source IP address within sourceRanges OR the
+                  source IP belongs to an instance with service account listed in
+                  sourceServiceAccount. The connection does not need to match both
+                  properties for the firewall to apply. sourceServiceAccounts cannot be
+                  used at the same time as sourceTags or targetTags.
                 oneOf:
                 - not:
                     required:
@@ -3294,6 +4147,13 @@ spec:
               type: array
             targetServiceAccounts:
               items:
+                description: |-
+                  A list of service accounts indicating sets of instances located in the
+                  network that may make network connections as specified in allowed[].
+                  targetServiceAccounts cannot be used at the same time as targetTags or
+                  sourceTags. If neither targetServiceAccounts nor targetTags are
+                  specified, the firewall rule applies to all instances on the specified
+                  network.
                 oneOf:
                 - not:
                     required:
@@ -3381,7 +4241,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3431,6 +4291,9 @@ spec:
                 Otherwise only allows from the local region the ILB is located at.
               type: boolean
             backendServiceRef:
+              description: |-
+                A ComputeBackendService to receive the matched traffic. This is
+                used only for internal load balancing.
               oneOf:
               - not:
                   required:
@@ -3462,6 +4325,26 @@ spec:
                 you create the resource.
               type: string
             ipAddress:
+              description: |-
+                The IP address that this forwarding rule is serving on behalf of.
+
+                Addresses are restricted based on the forwarding rule's load
+                balancing scheme (EXTERNAL or INTERNAL) and scope (global or
+                regional).
+
+                When the load balancing scheme is EXTERNAL, for global forwarding
+                rules, the address must be a global IP, and for regional forwarding
+                rules, the address must live in the same region as the forwarding
+                rule. If this field is empty, an ephemeral IPv4 address from the
+                same scope (global or regional) will be assigned. A regional
+                forwarding rule supports IPv4 only. A global forwarding rule
+                supports either IPv4 or IPv6.
+
+                When the load balancing scheme is INTERNAL, this can only be an RFC
+                1918 IP address belonging to the network/subnet configured for the
+                forwarding rule. By default, if this field is empty, an ephemeral
+                internal IP address will be automatically allocated from the IP
+                range of the subnet or network configured for this forwarding rule.
               oneOf:
               - required:
                 - addressRef
@@ -3499,17 +4382,24 @@ spec:
               type: object
             ipProtocol:
               description: |-
-                The IP protocol to which this rule applies. Valid options are TCP,
-                UDP, ESP, AH, SCTP or ICMP.
+                The IP protocol to which this rule applies.
 
                 When the load balancing scheme is INTERNAL, only TCP and UDP are
-                valid.
+                valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP"]
               type: string
             ipVersion:
-              description: |-
-                The IP Version that will be used by this global forwarding rule.
-                Valid options are IPV4 or IPV6.
+              description: 'The IP Version that will be used by this global forwarding
+                rule. Possible values: ["IPV4", "IPV6"]'
               type: string
+            isMirroringCollector:
+              description: |-
+                Indicates whether or not this load balancer can be used
+                as a collector for packet mirroring. To prevent mirroring loops,
+                instances behind this load balancer will not have their traffic
+                mirrored even if a PacketMirroring rule applies to them. This
+                can only be set to true for load balancers that have their
+                loadBalancingScheme set to INTERNAL.
+              type: boolean
             loadBalancingScheme:
               description: |-
                 This signifies what the ForwardingRule will be used for and can be
@@ -3518,7 +4408,7 @@ spec:
                 and HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP load balancers.
                 INTERNAL is used for protocol forwarding to VMs from an internal IP address,
                 and internal TCP/UDP load balancers.
-                INTERNAL_MANAGED is used for internal HTTP(S) load balancers.
+                INTERNAL_MANAGED is used for internal HTTP(S) load balancers. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL", "INTERNAL_MANAGED"]
               type: string
             location:
               description: 'Location represents the geographical location of the ComputeForwardingRule.
@@ -3577,7 +4467,7 @@ spec:
                       MATCH_ANY - At least one of the filterLabels must have a matching
                       label in the provided metadata.
                       MATCH_ALL - All filterLabels must have matching labels in the
-                      provided metadata.
+                      provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"]
                     type: string
                 required:
                 - filterLabels
@@ -3585,6 +4475,11 @@ spec:
                 type: object
               type: array
             networkRef:
+              description: |-
+                This field is not used for external load balancing. For internal
+                load balancing, this field identifies the network that the load
+                balanced IP should belong to for this forwarding rule. If this
+                field is not specified, the default network will be used.
               oneOf:
               - not:
                   required:
@@ -3612,9 +4507,8 @@ spec:
               type: object
             networkTier:
               description: |-
-                The networking tier used for configuring this address. This field can
-                take the following values: PREMIUM or STANDARD. If this field is not
-                specified, it is assumed to be PREMIUM.
+                The networking tier used for configuring this address. If this field is not
+                specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"]
               type: string
             portRange:
               description: |-
@@ -3668,6 +4562,14 @@ spec:
                 This field is only used for INTERNAL load balancing.
               type: string
             subnetworkRef:
+              description: |-
+                The subnetwork that the load balanced IP should belong to for this
+                forwarding rule. This field is only used for internal load
+                balancing.
+
+                If the network specified is in auto subnet mode, this field is
+                optional. However, if the network is in custom subnet mode, a
+                subnetwork must be specified.
               oneOf:
               - not:
                   required:
@@ -3694,6 +4596,11 @@ spec:
                   type: string
               type: object
             target:
+              description: |-
+                The target resource to receive the matched traffic. The forwarded
+                traffic must be of a type appropriate to the target object. For
+                INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+                are valid.
               oneOf:
               - required:
                 - targetHTTPProxyRef
@@ -3843,7 +4750,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3928,12 +4835,12 @@ spec:
                       checking.
 
                     If not specified, HTTP2 health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -3981,12 +4888,12 @@ spec:
                       checking.
 
                     If not specified, HTTP health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -4034,12 +4941,12 @@ spec:
                       checking.
 
                     If not specified, HTTPS health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 requestPath:
                   description: |-
@@ -4058,6 +4965,15 @@ spec:
                 Specify a region name or "global" for global resources. Reference:
                 GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
+            logConfig:
+              description: Configure logging on this health check.
+              properties:
+                enable:
+                  description: |-
+                    Indicates whether or not to export logs. This is false by default,
+                    which means no health check logging will be done.
+                  type: boolean
+              type: object
             sslHealthCheck:
               description: A nested object resource
               properties:
@@ -4086,12 +5002,12 @@ spec:
                       checking.
 
                     If not specified, SSL health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 request:
                   description: |-
@@ -4135,12 +5051,12 @@ spec:
                       checking.
 
                     If not specified, TCP health check follows behavior specified in 'port' and
-                    'portName' fields.
+                    'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]
                   type: string
                 proxyHeader:
                   description: |-
                     Specifies the type of proxy header to append before sending data to the
-                    backend, either NONE or PROXY_V1. The default is NONE.
+                    backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
                   type: string
                 request:
                   description: |-
@@ -4223,7 +5139,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4349,7 +5265,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4475,7 +5391,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4517,6 +5433,10 @@ spec:
                 you create the resource.
               type: string
             diskRef:
+              description: |-
+                The source disk to create this image based on.
+                You must provide either this property or the
+                rawDisk.source property but not both to create an image.
               oneOf:
               - not:
                   required:
@@ -4561,9 +5481,11 @@ spec:
               items:
                 properties:
                   type:
-                    description: The type of supported feature. Read [Enabling guest
+                    description: 'The type of supported feature. Read [Enabling guest
                       operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features)
-                      to see a list of available options.
+                      to see a list of available options. Possible values: ["MULTI_IP_SUBNET",
+                      "SECURE_BOOT", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE",
+                      "WINDOWS"]'
                     type: string
                 required:
                 - type
@@ -4582,7 +5504,7 @@ spec:
                     The format used to encode and transmit the block device, which
                     should be TAR. This is just a container and transmission format
                     and not a runtime format. Provided by the client when the disk
-                    image is created.
+                    image is created. Default value: "TAR" Possible values: ["TAR"]
                   type: string
                 sha1:
                   description: |-
@@ -4656,7 +5578,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4813,7 +5735,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5102,6 +6024,8 @@ spec:
               type: boolean
             description:
               type: string
+            desiredStatus:
+              type: string
             enableDisplay:
               type: boolean
             guestAccelerator:
@@ -5272,6 +6196,34 @@ spec:
                     type: object
                 type: object
               type: array
+            resourcePolicies:
+              items:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The selfLink of a ComputeResourcePolicy.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              type: array
             scheduling:
               properties:
                 automaticRestart:
@@ -5378,6 +6330,8 @@ spec:
               type: array
             cpuPlatform:
               type: string
+            currentStatus:
+              type: string
             instanceId:
               type: string
             labelFingerprint:
@@ -5404,7 +6358,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5625,6 +6579,8 @@ spec:
                           type: object
                         networkTier:
                           type: string
+                        publicPtrDomainName:
+                          type: string
                       type: object
                     type: array
                   aliasIpRange:
@@ -5638,6 +6594,8 @@ spec:
                       - ipCidrRange
                       type: object
                     type: array
+                  name:
+                    type: string
                   networkIp:
                     type: string
                   networkRef:
@@ -5816,7 +6774,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5863,7 +6821,7 @@ spec:
                 For attachments of type DEDICATED, the user can set the bandwidth.
                 For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
                 Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
-                Defaults to BPS_10G
+                Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"]
               type: string
             candidateSubnets:
               description: |-
@@ -5899,6 +6857,12 @@ spec:
               description: Region where the regional interconnect attachment resides.
               type: string
             routerRef:
+              description: |-
+                The Cloud Router to be used for dynamic routing. This router must
+                be in the same region as this ComputeInterconnectAttachment. The
+                ComputeInterconnectAttachment will automatically connect the
+                interconnect to the network & region within which the Cloud Router
+                is configured.
               oneOf:
               - not:
                   required:
@@ -5927,7 +6891,7 @@ spec:
             type:
               description: |-
                 The type of InterconnectAttachment you wish to create. Defaults to
-                DEDICATED.
+                DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]
               type: string
             vlanTag8021q:
               description: |-
@@ -6029,7 +6993,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6080,11 +7044,13 @@ spec:
                 Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
             networkEndpointType:
-              description: |-
-                Type of network endpoints in this network endpoint group. Currently
-                the only supported value is GCE_VM_IP_PORT.
+              description: 'Type of network endpoints in this network endpoint group.
+                Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT"]'
               type: string
             networkRef:
+              description: |-
+                The network to which all network endpoints in the NEG belong. Uses
+                "default" project network if unspecified.
               oneOf:
               - not:
                   required:
@@ -6111,6 +7077,8 @@ spec:
                   type: string
               type: object
             subnetworkRef:
+              description: Optional subnetwork to which all network endpoints in the
+                NEG belong.
               oneOf:
               - not:
                   required:
@@ -6189,7 +7157,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6333,7 +7301,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6391,7 +7359,7 @@ spec:
                 network's cloud routers will only advertise routes with subnetworks
                 of this network in the same region as the router. If set to 'GLOBAL',
                 this network's cloud routers will advertise routes with all
-                subnetworks of this network, across regions.
+                subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"]
               type: string
           type: object
         status:
@@ -6443,7 +7411,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6479,10 +7447,34 @@ spec:
           type: object
         spec:
           properties:
+            autoscalingPolicy:
+              description: |-
+                If you use sole-tenant nodes for your workloads, you can use the node
+                group autoscaler to automatically manage the sizes of your node groups.
+              properties:
+                maxNodes:
+                  description: |-
+                    Maximum size of the node group. Set to a value less than or equal
+                    to 100 and greater than or equal to min-nodes.
+                  type: integer
+                minNodes:
+                  description: "Minimum size of the node group. Must be less \nthan
+                    or equal to max-nodes. The default value is 0."
+                  type: integer
+                mode:
+                  description: "The autoscaling mode. Set to one of the following:\n
+                    \ - OFF: Disables the autoscaler.\n  - ON: Enables scaling in
+                    and scaling out.\n  - ONLY_SCALE_OUT: Enables only scaling out.
+                    \n  You must use this mode if your node groups are configured
+                    to \n  restart their hosted VMs on minimal servers. Possible values:
+                    [\"OFF\", \"ON\", \"ONLY_SCALE_OUT\"]"
+                  type: string
+              type: object
             description:
               description: An optional textual description of the resource.
               type: string
             nodeTemplateRef:
+              description: The node template to which this node group belongs.
               oneOf:
               - not:
                   required:
@@ -6568,7 +7560,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6652,7 +7644,7 @@ spec:
                     software licenses tied to the underlying server characteristics
                     such as physical sockets or cores, to avoid the need for
                     additional licenses when maintenance occurs. However, VMs on such
-                    nodes will experience outages while maintenance is applied.
+                    nodes will experience outages while maintenance is applied. Possible values: ["RESTART_NODE_ON_ANY_SERVER", "RESTART_NODE_ON_MINIMAL_SERVERS"]
                   type: string
               required:
               - type
@@ -6709,7 +7701,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6792,9 +7784,9 @@ spec:
                             description: The size of the disk in base-2 GB.
                             type: integer
                           interface:
-                            description: |-
-                              The disk interface to use for attaching this disk, one
-                              of 'SCSI' or 'NVME'. The default is 'SCSI'.
+                            description: 'The disk interface to use for attaching
+                              this disk. Default value: "SCSI" Possible values: ["SCSI",
+                              "NVME"]'
                             type: string
                         required:
                         - diskSizeGb
@@ -6887,7 +7879,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6923,6 +7915,25 @@ spec:
           type: object
         spec:
           properties:
+            groupPlacementPolicy:
+              description: Policy for creating snapshots of persistent disks.
+              properties:
+                availabilityDomainCount:
+                  description: |-
+                    The number of availability domains instances will be spread across. If two instances are in different
+                    availability domain, they will not be put in the same low latency network
+                  type: integer
+                collocation:
+                  description: |-
+                    Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
+                    Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
+                    with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
+                    attached. Possible values: ["COLLOCATED"]
+                  type: string
+                vmCount:
+                  description: Number of vms in this placement group.
+                  type: integer
+              type: object
             region:
               description: Region where resource policy resides.
               type: string
@@ -6940,8 +7951,7 @@ spec:
                     onSourceDiskDelete:
                       description: |-
                         Specifies the behavior to apply to scheduled snapshots when
-                        the source disk is deleted.
-                        Valid options are KEEP_AUTO_SNAPSHOTS and APPLY_RETENTION_POLICY
+                        the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]
                       type: string
                   required:
                   - maxRetentionDays
@@ -6977,8 +7987,9 @@ spec:
                         startTime:
                           description: |-
                             Time within the window to start the operations.
-                            It must be in format "HH:MM",
-                            where HH : [00-23] and MM : [00-00] GMT.
+                            It must be in an hourly format "HH:MM",
+                            where HH : [00-23] and MM : [00] GMT.
+                            eg: 21:00
                           type: string
                       required:
                       - hoursInCycle
@@ -6994,8 +8005,9 @@ spec:
                           items:
                             properties:
                               day:
-                                description: The day of the week to create the snapshot.
-                                  e.g. MONDAY
+                                description: 'The day of the week to create the snapshot.
+                                  e.g. MONDAY Possible values: ["MONDAY", "TUESDAY",
+                                  "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]'
                                 type: string
                               startTime:
                                 description: |-
@@ -7024,8 +8036,9 @@ spec:
                       description: A set of key-value pairs.
                       type: object
                     storageLocations:
-                      description: Cloud Storage bucket location in which to store
-                        the snapshot (regional or multi-regional).
+                      description: |-
+                        Cloud Storage bucket location to store the auto snapshot
+                        (regional or multi-regional)
                       items:
                         type: string
                       type: array
@@ -7082,7 +8095,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7248,7 +8261,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7286,6 +8299,9 @@ spec:
           properties:
             drainNatIps:
               items:
+                description: |-
+                  A list of IP resources to be drained. These IPs must be valid
+                  static external IPs that have been assigned to the NAT.
                 oneOf:
                 - not:
                     required:
@@ -7323,9 +8339,8 @@ spec:
                   description: Indicates whether or not to export logs.
                   type: boolean
                 filter:
-                  description: |-
-                    Specifies the desired filtering of logs on this NAT. Valid
-                    values are: '"ERRORS_ONLY"', '"TRANSLATIONS_ONLY"', '"ALL"'
+                  description: 'Specifies the desired filtering of logs on this NAT.
+                    Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]'
                   type: string
               required:
               - enable
@@ -7338,10 +8353,12 @@ spec:
               description: |-
                 How external IPs should be allocated for this NAT. Valid values are
                 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-                Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses.
+                Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]
               type: string
             natIps:
               items:
+                description: NAT IPs. Only valid if natIpAllocateOption is set to
+                  MANUAL_ONLY.
                 oneOf:
                 - not:
                     required:
@@ -7372,6 +8389,7 @@ spec:
               description: Region where the router and NAT reside.
               type: string
             routerRef:
+              description: The Cloud Router in which this NAT will be configured.
               oneOf:
               - not:
                   required:
@@ -7408,7 +8426,7 @@ spec:
                 (specified in the field subnetwork below). Note that if this field
                 contains ALL_SUBNETWORKS_ALL_IP_RANGES or
                 ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-                other RouterNat section in any Router for this network in this region.
+                other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]
               type: string
             subnetwork:
               description: |-
@@ -7435,6 +8453,7 @@ spec:
                       type: string
                     type: array
                   subnetworkRef:
+                    description: The subnetwork to NAT.
                     oneOf:
                     - not:
                         required:
@@ -7529,7 +8548,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7568,7 +8587,7 @@ spec:
             advertiseMode:
               description: |-
                 User-specified flag to indicate which mode to use for advertisement.
-                Valid values of this enum field are: 'DEFAULT', 'CUSTOM'
+                Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"]
               type: string
             advertisedGroups:
               description: |-
@@ -7630,6 +8649,7 @@ spec:
                 If it is not provided, the provider region is used.
               type: string
             routerInterfaceRef:
+              description: The interface the BGP peer is associated with.
               oneOf:
               - not:
                   required:
@@ -7656,6 +8676,7 @@ spec:
                   type: string
               type: object
             routerRef:
+              description: The Cloud Router in which this BGP peer will be configured.
               oneOf:
               - not:
                   required:
@@ -7750,7 +8771,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7790,10 +8811,9 @@ spec:
               description: BGP information specific to this router.
               properties:
                 advertiseMode:
-                  description: |-
-                    User-specified flag to indicate which mode to use for advertisement.
-
-                    Valid values of this enum field are: DEFAULT, CUSTOM
+                  description: 'User-specified flag to indicate which mode to use
+                    for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT",
+                    "CUSTOM"]'
                   type: string
                 advertisedGroups:
                   description: |-
@@ -7842,6 +8862,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: A reference to the network to which this router belongs.
               oneOf:
               - not:
                   required:
@@ -7923,7 +8944,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7970,6 +8991,7 @@ spec:
                 Only IPv4 is supported.
               type: string
             networkRef:
+              description: The network that this route applies to.
               oneOf:
               - not:
                   required:
@@ -8006,6 +9028,10 @@ spec:
                 * The string 'default-internet-gateway'.
               type: string
             nextHopILBRef:
+              description: |-
+                A forwarding rule of type loadBalancingScheme=INTERNAL that should
+                handle matching packets.  Note that this can only be used when the
+                destinationRange is a public (non-RFC 1918) IP CIDR range.
               oneOf:
               - not:
                   required:
@@ -8032,6 +9058,7 @@ spec:
                   type: string
               type: object
             nextHopInstanceRef:
+              description: Instance that should handle matching packets.
               oneOf:
               - not:
                   required:
@@ -8062,6 +9089,7 @@ spec:
                 packets.
               type: string
             nextHopVPNTunnelRef:
+              description: The ComputeVPNTunnel that should handle matching packets
               oneOf:
               - not:
                   required:
@@ -8155,7 +9183,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8278,7 +9306,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8354,7 +9382,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8463,7 +9491,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8603,6 +9631,7 @@ spec:
                   type: object
               type: object
             sourceDiskRef:
+              description: A reference to the disk used to create this snapshot.
               oneOf:
               - not:
                   required:
@@ -8711,7 +9740,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8890,7 +9919,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8947,22 +9976,18 @@ spec:
             minTlsVersion:
               description: |-
                 The minimum version of SSL protocol that can be used by the clients
-                to establish a connection with the load balancer. This can be one of
-                'TLS_1_0', 'TLS_1_1', 'TLS_1_2'.
-                 Default is 'TLS_1_0'.
+                to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]
               type: string
             profile:
               description: |-
                 Profile specifies the set of SSL features that can be used by the
-                load balancer when negotiating SSL with clients. This can be one of
-                'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
+                load balancer when negotiating SSL with clients. If using 'CUSTOM',
                 the set of SSL features to enable must be specified in the
                 'customFeatures' field.
 
                 See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
                 for information on what cipher suites each profile provides. If
-                'CUSTOM' is used, the 'custom_features' attribute **must be set**.
-                Default is 'COMPATIBLE'.
+                'CUSTOM' is used, the 'custom_features' attribute **must be set**. Default value: "COMPATIBLE" Possible values: ["COMPATIBLE", "MODERN", "RESTRICTED", "CUSTOM"]
               type: string
           type: object
         status:
@@ -9022,7 +10047,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9084,7 +10109,7 @@ spec:
                     interval time will reduce the amount of generated flow logs for long
                     lasting connections. Default is an interval of 5 seconds per connection.
                     Possible values are INTERVAL_5_SEC, INTERVAL_30_SEC, INTERVAL_1_MIN,
-                    INTERVAL_5_MIN, INTERVAL_10_MIN, INTERVAL_15_MIN
+                    INTERVAL_5_MIN, INTERVAL_10_MIN, INTERVAL_15_MIN Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"]
                   type: string
                 flowSampling:
                   description: |-
@@ -9098,10 +10123,13 @@ spec:
                   description: |-
                     Can only be specified if VPC flow logging for this subnetwork is enabled.
                     Configures whether metadata fields should be added to the reported VPC
-                    flow logs. Default is 'INCLUDE_ALL_METADATA'.
+                    flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"]
                   type: string
               type: object
             networkRef:
+              description: |-
+                The network this subnet belongs to. Only networks that are in the
+                distributed mode can have subnetworks.
               oneOf:
               - not:
                   required:
@@ -9140,7 +10168,7 @@ spec:
                 reserved for Internal HTTP(S) Load Balancing. If unspecified, the
                 purpose defaults to PRIVATE.
 
-                If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the role.
+                If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the role. Possible values: ["INTERNAL_HTTPS_LOAD_BALANCER", "PRIVATE"]
               type: string
             region:
               description: URL of the GCP region for this subnetwork.
@@ -9151,7 +10179,7 @@ spec:
                 purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE
                 or BACKUP. An ACTIVE subnetwork is one that is currently being used
                 for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that
-                is ready to be promoted to ACTIVE or is currently draining.
+                is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"]
               type: string
             secondaryIpRange:
               items:
@@ -9239,7 +10267,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9283,6 +10311,9 @@ spec:
                 Specify "global" for global resources.
               type: string
             urlMapRef:
+              description: |-
+                A reference to the ComputeURLMap resource that defines the mapping
+                from URL to the BackendService.
               oneOf:
               - not:
                   required:
@@ -9364,7 +10395,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9413,11 +10444,14 @@ spec:
                 whether the load balancer will attempt to negotiate QUIC with clients
                 or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
                 specified, uses the QUIC policy with no user overrides, which is
-                equivalent to DISABLE. Not specifying this field is equivalent to
-                specifying NONE.
+                equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]
               type: string
             sslCertificates:
               items:
+                description: |-
+                  A list of ComputeSSLCertificate resources that are used to
+                  authenticate connections between users and the load balancer. At
+                  least one SSL certificate must be specified.
                 oneOf:
                 - not:
                     required:
@@ -9445,6 +10479,11 @@ spec:
                 type: object
               type: array
             sslPolicyRef:
+              description: |-
+                A reference to the ComputeSSLPolicy resource that will be
+                associated with the ComputeTargetHTTPSProxy resource. If not set,
+                the ComputeTargetHTTPSProxy resource will not have any SSL policy
+                configured.
               oneOf:
               - not:
                   required:
@@ -9471,6 +10510,9 @@ spec:
                   type: string
               type: object
             urlMapRef:
+              description: |-
+                A reference to the ComputeURLMap resource that defines the mapping
+                from URL to the BackendService.
               oneOf:
               - not:
                   required:
@@ -9553,7 +10595,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9593,6 +10635,7 @@ spec:
               description: An optional description of this resource.
               type: string
             instanceRef:
+              description: The ComputeInstance handling traffic for this target instance.
               oneOf:
               - not:
                   required:
@@ -9621,7 +10664,7 @@ spec:
             natPolicy:
               description: |-
                 NAT option controlling how IPs are NAT'ed to the instance.
-                Currently only NO_NAT (default value) is supported.
+                Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"]
               type: string
             zone:
               description: URL of the zone where the target instance resides.
@@ -9679,7 +10722,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9857,7 +10900,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9894,6 +10937,7 @@ spec:
         spec:
           properties:
             backendServiceRef:
+              description: A reference to the ComputeBackendService resource.
               oneOf:
               - not:
                   required:
@@ -9925,10 +10969,14 @@ spec:
             proxyHeader:
               description: |-
                 Specifies the type of proxy header to append before sending data to
-                the backend, either NONE or PROXY_V1. The default is NONE.
+                the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
               type: string
             sslCertificates:
               items:
+                description: |-
+                  A list of ComputeSSLCertificate resources that are used to
+                  authenticate connections between users and the load balancer.
+                  Currently, exactly one SSL certificate must be specified.
                 oneOf:
                 - not:
                     required:
@@ -9956,6 +11004,11 @@ spec:
                 type: object
               type: array
             sslPolicyRef:
+              description: |-
+                A reference to the ComputeSSLPolicy resource that will be
+                associated with the TargetSslProxy resource. If not set, the
+                ComputeTargetSSLProxy resource will not have any SSL policy
+                configured.
               oneOf:
               - not:
                   required:
@@ -10037,7 +11090,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10074,6 +11127,7 @@ spec:
         spec:
           properties:
             backendServiceRef:
+              description: A reference to the ComputeBackendService resource.
               oneOf:
               - not:
                   required:
@@ -10105,7 +11159,7 @@ spec:
             proxyHeader:
               description: |-
                 Specifies the type of proxy header to append before sending data to
-                the backend, either NONE or PROXY_V1. The default is NONE.
+                the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
               type: string
           required:
           - backendServiceRef
@@ -10162,7 +11216,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10202,6 +11256,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: The network this VPN gateway is accepting traffic for.
               oneOf:
               - not:
                   required:
@@ -10286,7 +11341,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10323,6 +11378,9 @@ spec:
         spec:
           properties:
             defaultService:
+              description: |-
+                The backend service or backend bucket to use when none of the given
+                rules match.
               oneOf:
               - required:
                 - backendBucketRef
@@ -10381,6 +11439,61 @@ spec:
                       description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                       type: string
                   type: object
+              type: object
+            defaultUrlRedirect:
+              description: |-
+                When none of the specified hostRules match, the request is redirected to a URL specified
+                by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
+                defaultRouteAction must not be set.
+              properties:
+                hostRedirect:
+                  description: |-
+                    The host that will be used in the redirect response instead of the one that was
+                    supplied in the request. The value must be between 1 and 255 characters.
+                  type: string
+                httpsRedirect:
+                  description: |-
+                    If set to true, the URL scheme in the redirected request is set to https. If set to
+                    false, the URL scheme of the redirected request will remain the same as that of the
+                    request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this
+                    true for TargetHttpsProxy is not permitted. The default is set to false.
+                  type: boolean
+                pathRedirect:
+                  description: |-
+                    The path that will be used in the redirect response instead of the one that was
+                    supplied in the request. pathRedirect cannot be supplied together with
+                    prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the
+                    original request will be used for the redirect. The value must be between 1 and 1024
+                    characters.
+                  type: string
+                prefixRedirect:
+                  description: |-
+                    The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
+                    retaining the remaining portion of the URL before redirecting the request.
+                    prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or
+                    neither. If neither is supplied, the path of the original request will be used for
+                    the redirect. The value must be between 1 and 1024 characters.
+                  type: string
+                redirectResponseCode:
+                  description: |-
+                    The HTTP Status code to use for this RedirectAction. Supported values are:
+                    - MOVED_PERMANENTLY_DEFAULT, which is the default value and corresponds to 301.
+                    - FOUND, which corresponds to 302.
+                    - SEE_OTHER which corresponds to 303.
+                    - TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
+                    will be retained.
+                    - PERMANENT_REDIRECT, which corresponds to 308. In this case,
+                    the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
+                  type: string
+                stripQuery:
+                  description: |-
+                    If set to true, any accompanying query portion of the original URL is removed prior
+                    to redirecting the request. If set to false, the query portion of the original URL is
+                    retained. The default is set to false.
+                     This field is required to ensure an empty block is not set. The normal default value is false.
+                  type: boolean
+              required:
+              - stripQuery
               type: object
             description:
               description: |-
@@ -10491,6 +11604,9 @@ spec:
               items:
                 properties:
                   defaultService:
+                    description: |-
+                      The backend service or backend bucket to use when none of the given
+                      paths match.
                     oneOf:
                     - required:
                       - backendBucketRef
@@ -10549,6 +11665,61 @@ spec:
                             description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
+                    type: object
+                  defaultUrlRedirect:
+                    description: |-
+                      When none of the specified hostRules match, the request is redirected to a URL specified
+                      by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
+                      defaultRouteAction must not be set.
+                    properties:
+                      hostRedirect:
+                        description: |-
+                          The host that will be used in the redirect response instead of the one that was
+                          supplied in the request. The value must be between 1 and 255 characters.
+                        type: string
+                      httpsRedirect:
+                        description: |-
+                          If set to true, the URL scheme in the redirected request is set to https. If set to
+                          false, the URL scheme of the redirected request will remain the same as that of the
+                          request. This must only be set for UrlMaps used in TargetHttpProxys. Setting this
+                          true for TargetHttpsProxy is not permitted. The default is set to false.
+                        type: boolean
+                      pathRedirect:
+                        description: |-
+                          The path that will be used in the redirect response instead of the one that was
+                          supplied in the request. pathRedirect cannot be supplied together with
+                          prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the
+                          original request will be used for the redirect. The value must be between 1 and 1024
+                          characters.
+                        type: string
+                      prefixRedirect:
+                        description: |-
+                          The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
+                          retaining the remaining portion of the URL before redirecting the request.
+                          prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or
+                          neither. If neither is supplied, the path of the original request will be used for
+                          the redirect. The value must be between 1 and 1024 characters.
+                        type: string
+                      redirectResponseCode:
+                        description: |-
+                          The HTTP Status code to use for this RedirectAction. Supported values are:
+                          - MOVED_PERMANENTLY_DEFAULT, which is the default value and corresponds to 301.
+                          - FOUND, which corresponds to 302.
+                          - SEE_OTHER which corresponds to 303.
+                          - TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
+                          will be retained.
+                          - PERMANENT_REDIRECT, which corresponds to 308. In this case,
+                          the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
+                        type: string
+                      stripQuery:
+                        description: |-
+                          If set to true, any accompanying query portion of the original URL is removed prior
+                          to redirecting the request. If set to false, the query portion of the original URL is
+                          retained.
+                           This field is required to ensure an empty block is not set. The normal default value is false.
+                        type: boolean
+                    required:
+                    - stripQuery
                     type: object
                   description:
                     description: |-
@@ -10894,6 +12065,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -11007,6 +12182,9 @@ spec:
                               type: array
                           type: object
                         service:
+                          description: |-
+                            The backend service or backend bucket to use if any of the given
+                            paths match.
                           oneOf:
                           - required:
                             - backendBucketRef
@@ -11070,32 +12248,40 @@ spec:
                           type: object
                         urlRedirect:
                           description: |-
-                            When a path pattern is matched, the request is redirected to a URL specified by
-                            urlRedirect. If urlRedirect is specified, service or routeAction must not be
-                            set.
+                            When a path pattern is matched, the request is redirected to a URL specified
+                            by urlRedirect. If urlRedirect is specified, service or routeAction must not
+                            be set.
                           properties:
                             hostRedirect:
                               description: |-
-                                The host that will be used in the redirect response instead of the one that was
-                                supplied in the request. The value must be between 1 and 255 characters.
+                                The host that will be used in the redirect response instead of the one
+                                that was supplied in the request. The value must be between 1 and 255
+                                characters.
                               type: string
                             httpsRedirect:
                               description: |-
-                                If set to true, the URL scheme in the redirected request is set to https. If set
-                                to false, the URL scheme of the redirected request will remain the same as that
-                                of the request. This must only be set for UrlMaps used in TargetHttpProxys.
-                                Setting this true for TargetHttpsProxy is not permitted. Defaults to false.
+                                If set to true, the URL scheme in the redirected request is set to https.
+                                If set to false, the URL scheme of the redirected request will remain the
+                                same as that of the request. This must only be set for UrlMaps used in
+                                TargetHttpProxys. Setting this true for TargetHttpsProxy is not
+                                permitted. The default is set to false.
                               type: boolean
                             pathRedirect:
                               description: |-
-                                The path that will be used in the redirect response instead of the one that was
-                                supplied in the request. Only one of pathRedirect or prefixRedirect must be
-                                specified. The value must be between 1 and 1024 characters.
+                                The path that will be used in the redirect response instead of the one
+                                that was supplied in the request. pathRedirect cannot be supplied
+                                together with prefixRedirect. Supply one alone or neither. If neither is
+                                supplied, the path of the original request will be used for the redirect.
+                                The value must be between 1 and 1024 characters.
                               type: string
                             prefixRedirect:
                               description: |-
-                                The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
-                                retaining the remaining portion of the URL before redirecting the request.
+                                The prefix that replaces the prefixMatch specified in the
+                                HttpRouteRuleMatch, retaining the remaining portion of the URL before
+                                redirecting the request. prefixRedirect cannot be supplied together with
+                                pathRedirect. Supply one alone or neither. If neither is supplied, the
+                                path of the original request will be used for the redirect. The value
+                                must be between 1 and 1024 characters.
                               type: string
                             redirectResponseCode:
                               description: |-
@@ -11106,13 +12292,14 @@ spec:
                                 - TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
                                 will be retained.
                                 - PERMANENT_REDIRECT, which corresponds to 308. In this case,
-                                the request method will be retained.
+                                the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
                               type: string
                             stripQuery:
                               description: |-
-                                If set to true, any accompanying query portion of the original URL is removed
-                                prior to redirecting the request. If set to false, the query portion of the
-                                original URL is retained.
+                                If set to true, any accompanying query portion of the original URL is
+                                removed prior to redirecting the request. If set to false, the query
+                                portion of the original URL is retained.
+                                 This field is required to ensure an empty block is not set. The normal default value is false.
                               type: boolean
                           required:
                           - stripQuery
@@ -11335,7 +12522,7 @@ spec:
                                           - MATCH_ANY: At least one of the filterLabels must have a matching label in the
                                         provided metadata.
                                           - MATCH_ALL: All filterLabels must have matching labels in
-                                        the provided metadata.
+                                        the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"]
                                       type: string
                                   required:
                                   - filterLabels
@@ -11656,6 +12843,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default ComputeBackendService resource. Before forwarding the
+                                      request to backendService, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -11814,7 +13005,7 @@ spec:
                                 FOUND, which corresponds to 302.  - SEE_OTHER which corresponds to 303.  -
                                 TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
                                 will be retained.  - PERMANENT_REDIRECT, which corresponds to 308. In this case,
-                                the request method will be retained.
+                                the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
                               type: string
                             stripQuery:
                               description: |-
@@ -11848,6 +13039,9 @@ spec:
                     description: Path portion of the URL.
                     type: string
                   service:
+                    description: |-
+                      The backend service or backend bucket link that should be matched
+                      by this test.
                     oneOf:
                     - required:
                       - backendBucketRef
@@ -11973,7 +13167,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12013,6 +13207,7 @@ spec:
               description: An optional description of this resource.
               type: string
             networkRef:
+              description: The network this VPN gateway is accepting traffic for.
               oneOf:
               - not:
                   required:
@@ -12103,7 +13298,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12162,6 +13357,9 @@ spec:
                 VPN tunnel is connected.
               type: integer
             peerExternalGatewayRef:
+              description: |-
+                The peer side external VPN gateway to which this VPN tunnel
+                is connected.
               oneOf:
               - not:
                   required:
@@ -12188,6 +13386,10 @@ spec:
                   type: string
               type: object
             peerGCPGatewayRef:
+              description: |-
+                The peer side HA GCP VPN gateway to which this VPN tunnel is
+                connected. If provided, the VPN tunnel will automatically use the
+                same VPN gateway interface ID in the peer GCP VPN gateway.
               oneOf:
               - not:
                   required:
@@ -12230,6 +13432,7 @@ spec:
                 type: string
               type: array
             routerRef:
+              description: The router to be used for dynamic routing.
               oneOf:
               - not:
                   required:
@@ -12296,6 +13499,9 @@ spec:
                   type: object
               type: object
             targetVPNGatewayRef:
+              description: |-
+                The ComputeTargetVPNGateway with which this VPN tunnel is
+                associated.
               oneOf:
               - not:
                   required:
@@ -12326,6 +13532,10 @@ spec:
                 tunnel is associated.
               type: integer
             vpnGatewayRef:
+              description: |-
+                The ComputeVPNGateway with which this VPN tunnel is associated.
+                This must be used if a High Availability VPN gateway resource is
+                created.
               oneOf:
               - not:
                   required:
@@ -12419,7 +13629,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12463,6 +13673,20 @@ spec:
                       type: boolean
                   required:
                   - disabled
+                  type: object
+                dnsCacheConfig:
+                  properties:
+                    enabled:
+                      type: boolean
+                  required:
+                  - enabled
+                  type: object
+                gcePersistentDiskCsiDriverConfig:
+                  properties:
+                    enabled:
+                      type: boolean
+                  required:
+                  - enabled
                   type: object
                 horizontalPodAutoscaling:
                   properties:
@@ -12537,6 +13761,8 @@ spec:
                           type: string
                       type: object
                   type: object
+                autoscalingProfile:
+                  type: string
                 enabled:
                   type: boolean
                 resourceLimits:
@@ -12734,6 +13960,32 @@ spec:
               type: object
             nodeConfig:
               properties:
+                bootDiskKMSCryptoKeyRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The selfLink of a KMSCryptoKey.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
                 diskSizeGb:
                   type: integer
                 diskType:
@@ -12887,6 +14139,8 @@ spec:
                   type: object
                 enableNetworkEgressMetering:
                   type: boolean
+                enableResourceConsumptionMetering:
+                  type: boolean
               required:
               - bigqueryDestination
               type: object
@@ -12993,7 +14247,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13082,6 +14336,32 @@ spec:
               type: string
             nodeConfig:
               properties:
+                bootDiskKMSCryptoKeyRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The selfLink of a KMSCryptoKey.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
                 diskSizeGb:
                   type: integer
                 diskType:
@@ -13257,7 +14537,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13293,6 +14573,10 @@ spec:
           type: object
         spec:
           properties:
+            additionalExperiments:
+              items:
+                type: string
+              type: array
             ipConfiguration:
               type: string
             machineType:
@@ -13390,7 +14674,6 @@ spec:
           required:
           - tempGcsLocation
           - templateGcsPath
-          - zone
           type: object
         status:
           properties:
@@ -13442,7 +14725,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13491,11 +14774,13 @@ spec:
                     Specifies parameters that will be used for generating initial DnsKeys
                     for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
                     you must also provide one for the other.
+                    default_key_specs can only be updated when the state is 'off'.
                   items:
                     properties:
                       algorithm:
-                        description: String mnemonic specifying the DNSSEC algorithm
-                          of this key
+                        description: 'String mnemonic specifying the DNSSEC algorithm
+                          of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384",
+                          "rsasha1", "rsasha256", "rsasha512"]'
                         type: string
                       keyLength:
                         description: Length of the keys in bits
@@ -13507,7 +14792,7 @@ spec:
                           Point flag set and, when active, will only be used to sign
                           resource record sets of type DNSKEY. Zone signing keys do
                           not have the Secure Entry Point flag set and will be used
-                          to sign all other types of resource record sets.
+                          to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]
                         type: string
                       kind:
                         description: Identifies what kind of resource this is
@@ -13518,12 +14803,13 @@ spec:
                   description: Identifies what kind of resource this is
                   type: string
                 nonExistence:
-                  description: Specifies the mechanism used to provide authenticated
-                    denial-of-existence responses.
+                  description: |-
+                    Specifies the mechanism used to provide authenticated denial-of-existence responses.
+                    non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]
                   type: string
                 state:
-                  description: Specifies whether DNSSEC is enabled, and what mode
-                    it is in
+                  description: 'Specifies whether DNSSEC is enabled, and what mode
+                    it is in Possible values: ["off", "on", "transfer"]'
                   type: string
               type: object
             forwardingConfig:
@@ -13539,6 +14825,12 @@ spec:
                     one target is given.
                   items:
                     properties:
+                      forwardingPath:
+                        description: |-
+                          Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
+                          decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
+                          to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]
+                        type: string
                       ipv4Address:
                         description: IPv4 address of a target name server.
                         type: string
@@ -13558,6 +14850,7 @@ spec:
                   description: The network with which to peer.
                   properties:
                     networkRef:
+                      description: VPC network to forward queries to.
                       oneOf:
                       - not:
                           required:
@@ -13598,6 +14891,7 @@ spec:
                   items:
                     properties:
                       networkRef:
+                        description: VPC network to bind to.
                         oneOf:
                         - not:
                             required:
@@ -13630,11 +14924,38 @@ spec:
               required:
               - networks
               type: object
+            reverseLookup:
+              description: |-
+                Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
+                lookup queries using automatically configured records for VPC resources. This only applies
+                to networks listed under 'private_visibility_config'.
+              type: boolean
+            serviceDirectoryConfig:
+              description: The presence of this field indicates that this zone is
+                backed by Service Directory. The value of this field contains information
+                related to the namespace associated with the zone.
+              properties:
+                namespace:
+                  description: The namespace associated with the zone.
+                  properties:
+                    namespaceUrl:
+                      description: |-
+                        The fully qualified or partial URL of the service directory namespace that should be
+                        associated with the zone. This should be formatted like
+                        'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
+                        or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}'
+                        Ignored for 'public' visibility zones.
+                      type: string
+                  required:
+                  - namespaceUrl
+                  type: object
+              required:
+              - namespace
+              type: object
             visibility:
               description: |-
                 The zone's visibility: public zones are exposed to the Internet,
-                while private zones are visible only to Virtual Private Cloud resources.
-                Must be one of: 'public', 'private'.
+                while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]
               type: string
           required:
           - dnsName
@@ -13690,7 +15011,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13769,6 +15090,7 @@ spec:
               items:
                 properties:
                   networkRef:
+                    description: VPC network to bind to.
                     oneOf:
                     - not:
                         required:
@@ -13841,7 +15163,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13964,7 +15286,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14019,7 +15341,7 @@ spec:
                   arrayConfig:
                     description: |-
                       Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-                      be specified.
+                      be specified. Possible values: ["CONTAINS"]
                     type: string
                   fieldPath:
                     description: Name of the field.
@@ -14027,14 +15349,13 @@ spec:
                   order:
                     description: |-
                       Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-                      Only one of 'order' and 'arrayConfig' can be specified.
+                      Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]
                     type: string
                 type: object
               type: array
             queryScope:
-              description: |-
-                The scope at which a query is run. One of '"COLLECTION"' or
-                '"COLLECTION_GROUP"'. Defaults to '"COLLECTION"'.
+              description: 'The scope at which a query is run. Default value: "COLLECTION"
+                Possible values: ["COLLECTION", "COLLECTION_GROUP"]'
               type: string
           required:
           - collection
@@ -14089,7 +15410,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14180,7 +15501,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14260,6 +15581,8 @@ spec:
               type: array
             deleted:
               type: boolean
+            name:
+              type: string
           type: object
       required:
       - spec
@@ -14276,7 +15599,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14424,7 +15747,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14563,7 +15886,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14688,7 +16011,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14777,7 +16100,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14814,6 +16137,7 @@ spec:
         spec:
           properties:
             keyRingRef:
+              description: The KMSKeyRing that this key belongs to.
               oneOf:
               - not:
                   required:
@@ -14843,7 +16167,7 @@ spec:
               description: |-
                 The immutable purpose of this CryptoKey. See the
                 [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-                for possible inputs.
+                for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"]
               type: string
             rotationPeriod:
               description: |-
@@ -14861,8 +16185,9 @@ spec:
                     See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs.
                   type: string
                 protectionLevel:
-                  description: The protection level to use when creating a version
-                    based on this template.
+                  description: 'The protection level to use when creating a version
+                    based on this template. Default value: "SOFTWARE" Possible values:
+                    ["SOFTWARE", "HSM"]'
                   type: string
               required:
               - algorithm
@@ -14916,7 +16241,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15006,7 +16331,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15119,7 +16444,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15176,6 +16501,54 @@ spec:
                 If the subscriber never acknowledges the message, the Pub/Sub system
                 will eventually redeliver the message.
               type: integer
+            deadLetterPolicy:
+              description: |-
+                A policy that specifies the conditions for dead lettering messages in
+                this subscription. If dead_letter_policy is not set, dead lettering
+                is disabled.
+
+                The Cloud Pub/Sub service account associated with this subscriptions's
+                parent project (i.e.,
+                service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
+                permission to Acknowledge() messages on this subscription.
+              properties:
+                deadLetterTopicRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The name of a PubSubTopic.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
+                maxDeliveryAttempts:
+                  description: "The maximum number of delivery attempts for any message.
+                    The value must be\nbetween 5 and 100.\n\nThe number of delivery
+                    attempts is defined as 1 + (the sum of number of \nNACKs and number
+                    of times the acknowledgement deadline has been exceeded for the
+                    message).\n\nA NACK is any call to ModifyAckDeadline with a 0
+                    deadline. Note that\nclient libraries may automatically extend
+                    ack_deadlines.\n\nThis field will be honored on a best effort
+                    basis.\n\nIf this parameter is 0, a default value of 5 is used."
+                  type: integer
+              type: object
             expirationPolicy:
               description: |-
                 A policy that specifies the conditions for this subscription's expiration.
@@ -15284,6 +16657,7 @@ spec:
                 messageRetentionDuration window.
               type: boolean
             topicRef:
+              description: Reference to a PubSubTopic.
               oneOf:
               - not:
                   required:
@@ -15358,7 +16732,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15395,6 +16769,12 @@ spec:
         spec:
           properties:
             kmsKeyRef:
+              description: |-
+                The KMSCryptoKey to be used to protect access to messages published
+                on this topic. Your project's Pub/Sub service account
+                ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
+                must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                feature.
               oneOf:
               - not:
                   required:
@@ -15483,7 +16863,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15527,6 +16907,9 @@ spec:
                 [locationId].
               type: string
             authorizedNetworkRef:
+              description: |-
+                The network to which the instance is connected. If left
+                unspecified, the default network will be used.
               oneOf:
               - not:
                   required:
@@ -15552,6 +16935,10 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            connectMode:
+              description: 'The connection mode of the Redis instance. Default value:
+                "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"]'
+              type: string
             displayName:
               description: An arbitrary and optional user-provided name for the instance.
               type: string
@@ -15598,7 +16985,7 @@ spec:
                 The service tier of the instance. Must be one of these values:
 
                 - BASIC: standalone instance
-                - STANDARD_HA: highly available primary/replica instances
+                - STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"]
               type: string
           required:
           - memorySizeGb
@@ -15669,7 +17056,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15802,9 +17189,12 @@ spec:
                   idTemplate:
                     description: IDTemplate defines the format in which the ID fed
                       into the TF resource's importer should look. Fields may be sourced
-                      from the TF resource by using the `{{foo}}` syntax. (e.g. {{project}}/{{location}}/{{name}}.
-                      If SkipImport is true, this must be specified, and its expanded
-                      form will be directly used as the TF resource's `id` field.
+                      from the TF resource by using the `{{foo}}` syntax. (e.g. {{project}}/{{location}}/{{name}}.  All
+                      fields are required. A field can be marked as optional with
+                      the ? suffix, e.g. with {{project}}/{{host?}}, the host field
+                      is optional  If SkipImport is true, this must be specified,
+                      and its expanded form will be directly used as the TF resource's
+                      `id` field.
                     type: string
                   ignoredFields:
                     description: IgnoredFields is a list of fields that should be
@@ -15864,6 +17254,10 @@ spec:
                       to other GCP resources into explicit Kubernetes-style references.
                     items:
                       properties:
+                        description:
+                          description: Description is the description for the resource
+                            reference that will be exposed in the CRD.
+                          type: string
                         group:
                           description: Group is the Kubernetes group of the resource
                             being referenced. If not is set, it is implied that the
@@ -16037,7 +17431,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16180,7 +17574,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16256,7 +17650,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16300,9 +17694,17 @@ spec:
                   messageFormat:
                     description: "The format of the Cloud Pub/Sub messages. \n- PROTOBUF:
                       The message payload is a serialized protocol buffer of SourceRepoEvent.\n-
-                      JSON: The message payload is a JSON string of SourceRepoEvent."
+                      JSON: The message payload is a JSON string of SourceRepoEvent.
+                      Possible values: [\"PROTOBUF\", \"JSON\"]"
                     type: string
                   serviceAccountRef:
+                    description: |-
+                      Service account used for publishing Cloud Pub/Sub messages. This
+                      service account needs to be in the same project as the
+                      pubsubConfig. When added, the caller needs to have
+                      iam.serviceAccounts.actAs permission on this service account. If
+                      unspecified, it defaults to the compute engine default service
+                      account.
                     oneOf:
                     - not:
                         required:
@@ -16408,7 +17810,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16454,6 +17856,7 @@ spec:
                 type: string
               type: array
             instanceRef:
+              description: The instance to create the database on.
               oneOf:
               - not:
                   required:
@@ -16529,7 +17932,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16633,7 +18036,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16686,6 +18089,7 @@ spec:
                 a value of 'en_US.UTF8' at creation time.
               type: string
             instanceRef:
+              description: The Cloud SQL instance.
               oneOf:
               - not:
                   required:
@@ -16760,7 +18164,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16798,6 +18202,32 @@ spec:
           properties:
             databaseVersion:
               type: string
+            encryptionKMSCryptoKeyRef:
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The name of a KMSCryptoKey.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
             masterInstanceRef:
               oneOf:
               - not:
@@ -16928,6 +18358,8 @@ spec:
                 activationPolicy:
                   type: string
                 authorizedGaeApplications:
+                  description: DEPRECATED — This property is only applicable to First
+                    Generation instances, and First Generation instances are now deprecated.
                   items:
                     type: string
                   type: array
@@ -16945,6 +18377,8 @@ spec:
                       type: string
                   type: object
                 crashSafeReplication:
+                  description: DEPRECATED — This property is only applicable to First
+                    Generation instances, and First Generation instances are now deprecated.
                   type: boolean
                 databaseFlags:
                   items:
@@ -17029,6 +18463,8 @@ spec:
                 pricingPlan:
                   type: string
                 replicationType:
+                  description: DEPRECATED — This property is only applicable to First
+                    Generation instances, and First Generation instances are now deprecated.
                   type: string
                 tier:
                   type: string
@@ -17118,7 +18554,134 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: sqlsslcerts.sql.cnrm.cloud.google.com
+spec:
+  group: sql.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SQLSSLCert
+    plural: sqlsslcerts
+    shortNames:
+    - gcpsqlsslcert
+    - gcpsqlsslcerts
+    singular: sqlsslcert
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'apiVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            commonName:
+              type: string
+            instanceRef:
+              description: The Cloud SQL instance.
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The name of a SQLInstance.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
+          required:
+          - commonName
+          - instanceRef
+          type: object
+        status:
+          properties:
+            cert:
+              type: string
+            certSerialNumber:
+              type: string
+            conditions:
+              description: Conditions represents the latest available observation
+                of the resource's current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    type: string
+                  message:
+                    description: Human-readable message indicating details about last
+                      transition.
+                    type: string
+                  reason:
+                    description: Unique, one-word, CamelCase reason for the condition's
+                      last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown.
+                    type: string
+                  type:
+                    description: Type is the type of the condition.
+                    type: string
+                type: object
+              type: array
+            createTime:
+              type: string
+            expirationTime:
+              type: string
+            privateKey:
+              type: string
+            serverCaCert:
+              type: string
+            sha1Fingerprint:
+              type: string
+          type: object
+      required:
+      - spec
+      type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17266,7 +18829,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17303,6 +18866,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -17347,7 +18911,8 @@ spec:
                   example.com, the entity would be domain-example.com.
               type: string
             role:
-              description: The access permission for the entity.
+              description: 'The access permission for the entity. Possible values:
+                ["OWNER", "READER", "WRITER"]'
               type: string
           required:
           - bucketRef
@@ -17403,7 +18968,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17460,6 +19025,8 @@ spec:
                     type: array
                 type: object
               type: array
+            defaultEventBasedHold:
+              type: boolean
             encryption:
               properties:
                 kmsKeyRef:
@@ -17608,7 +19175,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17645,6 +19212,7 @@ spec:
         spec:
           properties:
             bucketRef:
+              description: Reference to the bucket.
               oneOf:
               - not:
                   required:
@@ -17686,7 +19254,8 @@ spec:
               description: The name of the object, if applied to an object.
               type: string
             role:
-              description: The access permission for the entity.
+              description: 'The access permission for the entity. Possible values:
+                ["OWNER", "READER"]'
               type: string
           required:
           - bucketRef
@@ -17741,7 +19310,7 @@ spec:
                   description: The project team associated with the entity
                   type: string
                 team:
-                  description: The team.
+                  description: 'The team. Possible values: ["editors", "owners", "viewers"]'
                   type: string
               type: object
           type: object
@@ -17760,7 +19329,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17913,7 +19482,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"

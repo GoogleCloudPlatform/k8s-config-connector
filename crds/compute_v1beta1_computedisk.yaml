@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -73,6 +73,13 @@ spec:
                 you do not need to provide a key to use the disk later.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -133,8 +140,8 @@ spec:
                               description: Name of the Secret to extract a value from.
                               type: string
                           required:
-                          - name
                           - key
+                          - name
                           type: object
                       type: object
                   type: object
@@ -145,6 +152,7 @@ spec:
                   type: string
               type: object
             imageRef:
+              description: The image from which to initialize this disk.
               oneOf:
               - not:
                   required:
@@ -190,6 +198,8 @@ spec:
               type: array
             resourcePolicies:
               items:
+                description: Resource policies applied to this disk for automatic
+                  snapshot creations.
                 oneOf:
                 - not:
                     required:
@@ -228,6 +238,7 @@ spec:
                 or the size of the snapshot.
               type: integer
             snapshotRef:
+              description: The source snapshot used to create this disk.
               oneOf:
               - not:
                   required:
@@ -259,6 +270,13 @@ spec:
                 the source image is protected by a customer-supplied encryption key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:
@@ -302,6 +320,13 @@ spec:
                 key.
               properties:
                 kmsKeyRef:
+                  description: |-
+                    The encryption key used to encrypt the disk. Your project's Compute
+                    Engine System service account
+                    ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+                    must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+                    feature. See
+                    https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
                   oneOf:
                   - not:
                       required:

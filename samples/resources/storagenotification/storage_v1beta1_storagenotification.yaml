@@ -18,7 +18,7 @@ metadata:
   name: storagenotification-sample
 spec:
   bucketRef:
-    name: storagenotification-dep
+    name: ${PROJECT_ID?}-storagenotification-dep
   payloadFormat: JSON_API_V1
   topicRef:
     name: storagenotification-dep

@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicy
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
 metadata:
-  name: storagenotification-dep
+  name: bigqueryjob-dep-copy
 spec:
-  resourceRef:
-    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-    kind: PubSubTopic
-    name: storagenotification-dep
-  bindings:
-    - role: roles/pubsub.publisher
-      members:
-        # replace ${PROJECT_NUMBER?} with your project ID number
-        - serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com
+  location: global

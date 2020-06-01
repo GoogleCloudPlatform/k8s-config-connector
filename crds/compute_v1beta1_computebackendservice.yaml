@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -71,7 +71,7 @@ spec:
 
                       For global HTTP(S) or TCP/SSL load balancing, the default is
                       UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
-                      and CONNECTION (for TCP/SSL).
+                      and CONNECTION (for TCP/SSL). Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"]
                     type: string
                   capacityScaler:
                     description: |-
@@ -89,6 +89,23 @@ spec:
                       Provide this property when you create the resource.
                     type: string
                   group:
+                    description: |-
+                      Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+                      resource. In case of instance group this defines the list of
+                      instances that serve traffic. Member virtual machine instances from
+                      each instance group must live in the same zone as the instance
+                      group itself. No two backends in a backend service are allowed to
+                      use same Instance Group resource.
+
+                      For Network Endpoint Groups this defines list of endpoints. All
+                      endpoints of Network Endpoint Group must be hosted on instances
+                      located in the same zone as the Network Endpoint Group.
+
+                      Backend services cannot mix Instance Group and Network Endpoint
+                      Group backends.
+
+                      When the 'load_balancing_scheme' is INTERNAL, only instance groups
+                      are supported.
                     oneOf:
                     - required:
                       - instanceGroupRef
@@ -433,6 +450,10 @@ spec:
               type: object
             healthChecks:
               items:
+                description: |-
+                  The health check resources for health checking this
+                  ComputeBackendService. Currently at most one health check can be
+                  specified, and a health check is required.
                 oneOf:
                 - required:
                   - healthCheckRef
@@ -548,8 +569,7 @@ spec:
               description: |-
                 Indicates whether the backend service will be used with internal or
                 external load balancing. A backend service created for one type of
-                load balancing cannot be used with the other. Must be 'EXTERNAL' or
-                'INTERNAL_SELF_MANAGED' for a global backend service. Defaults to 'EXTERNAL'.
+                load balancing cannot be used with the other. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED"]
               type: string
             localityLbPolicy:
               description: |-
@@ -581,7 +601,7 @@ spec:
                          Maglev, refer to https://ai.google/research/pubs/pub44824
 
                 This field is applicable only when the load_balancing_scheme is set to
-                INTERNAL_SELF_MANAGED.
+                INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]
               type: string
             location:
               description: 'Location represents the geographical location of the ComputeBackendService.
@@ -606,6 +626,10 @@ spec:
                   type: number
               type: object
             networkRef:
+              description: |-
+                The network to which this backend service belongs.  This field can
+                only be specified when the load balancing scheme is set to
+                INTERNAL.
               oneOf:
               - not:
                   required:
@@ -745,11 +769,11 @@ spec:
             protocol:
               description: |-
                 The protocol this BackendService uses to communicate with backends.
-                Possible values are HTTP, HTTPS, HTTP2, TCP, and SSL. The default is
-                HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-                types and may result in errors if used with the GA API.
+                The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
+                types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL"]
               type: string
             securityPolicyRef:
+              description: The security policy associated with this backend service.
               oneOf:
               - not:
                   required:
@@ -778,7 +802,7 @@ spec:
             sessionAffinity:
               description: |-
                 Type of session affinity to use. The default is NONE. Session affinity is
-                not applicable if the protocol is UDP.
+                not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]
               type: string
             timeoutSec:
               description: |-

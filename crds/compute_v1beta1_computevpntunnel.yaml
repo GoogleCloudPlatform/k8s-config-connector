@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -75,6 +75,9 @@ spec:
                 VPN tunnel is connected.
               type: integer
             peerExternalGatewayRef:
+              description: |-
+                The peer side external VPN gateway to which this VPN tunnel
+                is connected.
               oneOf:
               - not:
                   required:
@@ -101,6 +104,10 @@ spec:
                   type: string
               type: object
             peerGCPGatewayRef:
+              description: |-
+                The peer side HA GCP VPN gateway to which this VPN tunnel is
+                connected. If provided, the VPN tunnel will automatically use the
+                same VPN gateway interface ID in the peer GCP VPN gateway.
               oneOf:
               - not:
                   required:
@@ -143,6 +150,7 @@ spec:
                 type: string
               type: array
             routerRef:
+              description: The router to be used for dynamic routing.
               oneOf:
               - not:
                   required:
@@ -209,6 +217,9 @@ spec:
                   type: object
               type: object
             targetVPNGatewayRef:
+              description: |-
+                The ComputeTargetVPNGateway with which this VPN tunnel is
+                associated.
               oneOf:
               - not:
                   required:
@@ -239,6 +250,10 @@ spec:
                 tunnel is associated.
               type: integer
             vpnGatewayRef:
+              description: |-
+                The ComputeVPNGateway with which this VPN tunnel is associated.
+                This must be used if a High Availability VPN gateway resource is
+                created.
               oneOf:
               - not:
                   required:

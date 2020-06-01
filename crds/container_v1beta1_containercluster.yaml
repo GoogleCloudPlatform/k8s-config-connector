@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -60,6 +60,20 @@ spec:
                       type: boolean
                   required:
                   - disabled
+                  type: object
+                dnsCacheConfig:
+                  properties:
+                    enabled:
+                      type: boolean
+                  required:
+                  - enabled
+                  type: object
+                gcePersistentDiskCsiDriverConfig:
+                  properties:
+                    enabled:
+                      type: boolean
+                  required:
+                  - enabled
                   type: object
                 horizontalPodAutoscaling:
                   properties:
@@ -134,6 +148,8 @@ spec:
                           type: string
                       type: object
                   type: object
+                autoscalingProfile:
+                  type: string
                 enabled:
                   type: boolean
                 resourceLimits:
@@ -331,6 +347,32 @@ spec:
               type: object
             nodeConfig:
               properties:
+                bootDiskKMSCryptoKeyRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The selfLink of a KMSCryptoKey.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
                 diskSizeGb:
                   type: integer
                 diskType:
@@ -483,6 +525,8 @@ spec:
                   - datasetId
                   type: object
                 enableNetworkEgressMetering:
+                  type: boolean
+                enableResourceConsumptionMetering:
                   type: boolean
               required:
               - bigqueryDestination

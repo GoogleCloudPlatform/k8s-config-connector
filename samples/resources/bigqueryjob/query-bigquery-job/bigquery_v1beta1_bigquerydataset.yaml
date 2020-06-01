@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace [PROJECT_ID] below with your desired project ID.
-#
-# This sample assumes that you have created a service account named cnrm-system@[PROJECT_ID].iam.gserviceaccount.com.
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
 metadata:
-  name: iampolicymember-sample-projectlevel
+  name: bigqueryjobdep1query
 spec:
-  member: serviceAccount:cnrm-system@[PROJECT_ID].iam.gserviceaccount.com
-  role: roles/storage.admin
-  resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: projects/[PROJECT_ID]
+  friendlyName: bigqueryjob-dep1-query
+  description: "Default Source BigQueryDataset"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep2query
+spec:
+  friendlyName: bigqueryjob-dep2-query
+  description: "Destination BigQueryDataset"

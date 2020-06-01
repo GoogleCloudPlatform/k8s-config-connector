@@ -17,5 +17,5 @@ kind: StorageBucket
 metadata:
   annotations:
     cnrm.cloud.google.com/force-destroy: "true"
-  # You MUST change the name to a globally unique bucket name.
-  name: dataflowjob-dep-streaming
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-dataflowjob-dep-streaming

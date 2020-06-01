@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.9.0
+    cnrm.cloud.google.com/version: 1.11.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -54,6 +54,9 @@ spec:
           properties:
             drainNatIps:
               items:
+                description: |-
+                  A list of IP resources to be drained. These IPs must be valid
+                  static external IPs that have been assigned to the NAT.
                 oneOf:
                 - not:
                     required:
@@ -91,9 +94,8 @@ spec:
                   description: Indicates whether or not to export logs.
                   type: boolean
                 filter:
-                  description: |-
-                    Specifies the desired filtering of logs on this NAT. Valid
-                    values are: '"ERRORS_ONLY"', '"TRANSLATIONS_ONLY"', '"ALL"'
+                  description: 'Specifies the desired filtering of logs on this NAT.
+                    Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]'
                   type: string
               required:
               - enable
@@ -106,10 +108,12 @@ spec:
               description: |-
                 How external IPs should be allocated for this NAT. Valid values are
                 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-                Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses.
+                Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]
               type: string
             natIps:
               items:
+                description: NAT IPs. Only valid if natIpAllocateOption is set to
+                  MANUAL_ONLY.
                 oneOf:
                 - not:
                     required:
@@ -140,6 +144,7 @@ spec:
               description: Region where the router and NAT reside.
               type: string
             routerRef:
+              description: The Cloud Router in which this NAT will be configured.
               oneOf:
               - not:
                   required:
@@ -176,7 +181,7 @@ spec:
                 (specified in the field subnetwork below). Note that if this field
                 contains ALL_SUBNETWORKS_ALL_IP_RANGES or
                 ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-                other RouterNat section in any Router for this network in this region.
+                other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]
               type: string
             subnetwork:
               description: |-
@@ -203,6 +208,7 @@ spec:
                       type: string
                     type: array
                   subnetworkRef:
+                    description: The subnetwork to NAT.
                     oneOf:
                     - not:
                         required:

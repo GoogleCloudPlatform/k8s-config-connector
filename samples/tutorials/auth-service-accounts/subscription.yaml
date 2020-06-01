@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START config_connector_service_accounts_subscription]
 # [START configconnector_service_accounts_subscription]
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
@@ -22,4 +21,3 @@ spec:
   topicRef:
     name: echo
 # [END configconnector_service_accounts_subscription]
-# [END config_connector_service_accounts_subscription]
