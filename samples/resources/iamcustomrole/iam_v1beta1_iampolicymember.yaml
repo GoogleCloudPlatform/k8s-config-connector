@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,16 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START configconnector_service_accounts_service_account_policy]
+
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
-  name: policy-member-binding
+  name: iampolicymember-sample-iamcustomrole
 spec:
-  member: serviceAccount:pubsub-app@[PROJECT_ID].iam.gserviceaccount.com
-  role: roles/pubsub.subscriber
+  # replace ${PROJECT_ID?} with your project ID
+  member: serviceAccount:iamcustomrole-dep-pubsub@${PROJECT_ID?}.iam.gserviceaccount.com
+  # replace ${PROJECT_ID?} with your project ID
+  role: projects/${PROJECT_ID?}/roles/iamcustomrolesamplepubsubpublishupdate
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: projects/[PROJECT_ID]
-# [END configconnector_service_accounts_service_account_policy]
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: iamcustomrole-dep-pubsub-publish-update
