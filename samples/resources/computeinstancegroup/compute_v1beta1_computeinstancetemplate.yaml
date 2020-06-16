@@ -25,3 +25,5 @@ spec:
   networkInterface:
     - networkRef:
         name: computeinstancegroup-dep
+      subnetworkRef:
+        name: computeinstancegroup-dep

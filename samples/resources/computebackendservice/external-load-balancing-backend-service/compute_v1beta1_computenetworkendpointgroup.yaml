@@ -19,4 +19,6 @@ metadata:
 spec:
   networkRef:
     name: computebackendservice-dep-externalloadbalancing
+  subnetworkRef:
+    name: computebackendservice-dep-externalloadbalancing
   location: us-west1-a

@@ -13,17 +13,11 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeInstanceTemplate
+kind: ComputeSubnetwork
 metadata:
-  name: computetargetpool-dep
+  name: computebackendservice-dep-externalloadbalancing
 spec:
-  machineType: n1-standard-1
-  disk:
-    - sourceImageRef:
-        external: debian-cloud/debian-9
-      boot: true
-  networkInterface:
-    - networkRef:
-        name: computetargetpool-dep
-      subnetworkRef:
-        name: computetargetpool-dep
+  ipCidrRange: 10.2.0.0/16
+  region: us-west1
+  networkRef:
+    name: computebackendservice-dep-externalloadbalancing

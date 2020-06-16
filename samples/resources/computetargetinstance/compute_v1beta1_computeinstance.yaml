@@ -26,3 +26,5 @@ spec:
   networkInterface:
   - networkRef:
       name: computetargetinstance-dep
+    subnetworkRef:
+      name: computetargetinstance-dep
