@@ -13,11 +13,12 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeHealthCheck
+kind: ComputeBackendService
 metadata:
-  name: computeforwardingrule-dep-global
+  name: computeforwardingrule-dep-global-with-target-tcp-proxy
 spec:
-  checkIntervalSec: 10
-  httpHealthCheck:
-    port: 80
+  healthChecks:
+    - healthCheckRef:
+        name: computeforwardingrule-dep-global-with-target-tcp-proxy
+  protocol: TCP
   location: global

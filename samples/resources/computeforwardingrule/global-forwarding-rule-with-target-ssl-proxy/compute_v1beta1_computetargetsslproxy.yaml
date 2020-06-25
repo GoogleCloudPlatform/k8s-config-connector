@@ -13,10 +13,11 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeTargetHTTPProxy
+kind: ComputeTargetSSLProxy
 metadata:
-  name: computeforwardingrule-dep-global
+  name: computeforwardingrule-dep-global-with-target-ssl-proxy
 spec:
-  urlMapRef:
-    name: computeforwardingrule-dep-global
-  location: global
+  backendServiceRef:
+    name: computeforwardingrule-dep-global-with-target-ssl-proxy
+  sslCertificates:
+    - name: computeforwardingrule-dep-global-with-target-ssl-proxy
