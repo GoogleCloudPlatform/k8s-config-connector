@@ -22,7 +22,6 @@ spec:
   ipCidrRange: 10.2.0.0/16
   region: us-central1
   description: My subnet
-  enableFlowLogs: true
   privateIpGoogleAccess: false
   networkRef:
     name: computesubnetwork-dep
