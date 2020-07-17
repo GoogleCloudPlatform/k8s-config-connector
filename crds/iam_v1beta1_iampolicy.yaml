@@ -73,7 +73,7 @@ spec:
                     type: array
                   role:
                     description: Required. The role to bind the users to.
-                    pattern: ^(projects/[^/]+/)?roles/[\w_\.]+$
+                    pattern: ^((organizations|projects)/[^/]+/)?roles/[\w_\.]+$
                     type: string
                 required:
                 - role
