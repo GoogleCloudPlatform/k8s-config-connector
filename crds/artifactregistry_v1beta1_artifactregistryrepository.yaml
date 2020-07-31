@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: computesharedvpchostprojects.compute.cnrm.cloud.google.com
+  name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: artifactregistry.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeSharedVPCHostProject
-    plural: computesharedvpchostprojects
+    kind: ArtifactRegistryRepository
+    plural: artifactregistryrepositories
     shortNames:
-    - gcpcomputesharedvpchostproject
-    - gcpcomputesharedvpchostprojects
-    singular: computesharedvpchostproject
+    - gcpartifactregistryrepository
+    - gcpartifactregistryrepositories
+    singular: artifactregistryrepository
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -49,6 +49,22 @@ spec:
             submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
+          type: object
+        spec:
+          properties:
+            description:
+              description: The user-provided description of the repository.
+              type: string
+            format:
+              description: 'The format of packages that are stored in the repoitory.
+                Possible values: ["DOCKER"]'
+              type: string
+            location:
+              description: The name of the location this repository is located in.
+              type: string
+          required:
+          - format
+          - location
           type: object
         status:
           properties:
@@ -78,7 +94,20 @@ spec:
                     type: string
                 type: object
               type: array
+            createTime:
+              description: The time when the repository was created.
+              type: string
+            name:
+              description: |-
+                The name of the repository, for example:
+                "projects/p1/locations/us-central1/repositories/repo1"
+              type: string
+            updateTime:
+              description: The time when the repository was last updated.
+              type: string
           type: object
+      required:
+      - spec
       type: object
   version: v1beta1
 status:
