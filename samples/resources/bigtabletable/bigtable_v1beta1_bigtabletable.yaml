@@ -12,21 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: container.cnrm.cloud.google.com/v1beta1
-kind: ContainerCluster
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableTable
 metadata:
-  annotations:
-    cnrm.cloud.google.com/remove-default-node-pool: "true"
-  name: containernodepool-dep
+  name: bigtabletable-sample
 spec:
-  location: us-east1-c
-  initialNodeCount: 1
-  masterAuth:
-    username: "user"
-    password:
-      valueFrom:
-        secretKeyRef:
-          name: containernodepool-dep
-          key: password
-    clientCertificateConfig:
-      issueClientCertificate: false
+  columnFamily:
+  - family: family1
+  - family: family2
+  instanceRef:
+    name: bigtabletable-dep
+  splitKeys:
+  - a

@@ -22,6 +22,7 @@ metadata:
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
   name: ${PROJECT_ID?}-sample
 spec:
+  bucketPolicyOnly: true
   lifecycleRule:
     - action:
         type: Delete
