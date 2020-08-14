@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: computehttpshealthchecks.compute.cnrm.cloud.google.com
+  name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: bigtable.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeHTTPSHealthCheck
-    plural: computehttpshealthchecks
+    kind: BigtableAppProfile
+    plural: bigtableappprofiles
     shortNames:
-    - gcpcomputehttpshealthcheck
-    - gcpcomputehttpshealthchecks
-    singular: computehttpshealthcheck
+    - gcpbigtableappprofile
+    - gcpbigtableappprofiles
+    singular: bigtableappprofile
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -52,48 +52,57 @@ spec:
           type: object
         spec:
           properties:
-            checkIntervalSec:
-              description: |-
-                How often (in seconds) to send a health check. The default value is 5
-                seconds.
-              type: integer
             description:
-              description: |-
-                An optional description of this resource. Provide this property when
-                you create the resource.
+              description: Long form description of the use case for this app profile.
               type: string
-            healthyThreshold:
+            instanceRef:
+              description: The instance to create the app profile within.
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
+              properties:
+                external:
+                  description: The name of a BigtableInstance.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
+              type: object
+            multiClusterRoutingUseAny:
               description: |-
-                A so-far unhealthy instance will be marked healthy after this many
-                consecutive successes. The default value is 2.
-              type: integer
-            host:
-              description: |-
-                The value of the host header in the HTTPS health check request. If
-                left empty (default value), the public IP on behalf of which this
-                health check is performed will be used.
-              type: string
-            port:
-              description: |-
-                The TCP port number for the HTTPS health check request.
-                The default value is 80.
-              type: integer
-            requestPath:
-              description: |-
-                The request path of the HTTPS health check request.
-                The default value is /.
-              type: string
-            timeoutSec:
-              description: |-
-                How long (in seconds) to wait before claiming failure.
-                The default value is 5 seconds.  It is invalid for timeoutSec to have
-                greater value than checkIntervalSec.
-              type: integer
-            unhealthyThreshold:
-              description: |-
-                A so-far healthy instance will be marked unhealthy after this many
-                consecutive failures. The default value is 2.
-              type: integer
+                If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
+                in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
+                consistency to improve availability.
+              type: boolean
+            singleClusterRouting:
+              description: Use a single-cluster routing policy.
+              properties:
+                allowTransactionalWrites:
+                  description: |-
+                    If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
+                    It is unsafe to send these requests to the same table/row/column in multiple clusters.
+                  type: boolean
+                clusterId:
+                  description: The cluster to which read/write requests should be
+                    routed.
+                  type: string
+              required:
+              - clusterId
+              type: object
           type: object
         status:
           properties:
@@ -123,10 +132,9 @@ spec:
                     type: string
                 type: object
               type: array
-            creationTimestamp:
-              description: Creation timestamp in RFC3339 text format.
-              type: string
-            selfLink:
+            name:
+              description: The unique name of the requested app profile. Values are
+                of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'.
               type: string
           type: object
       type: object
