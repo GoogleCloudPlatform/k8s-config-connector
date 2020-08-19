@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: pubsubtopics.pubsub.cnrm.cloud.google.com
+  name: bigtablegcpolicies.bigtable.cnrm.cloud.google.com
 spec:
-  group: pubsub.cnrm.cloud.google.com
+  group: bigtable.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: PubSubTopic
-    plural: pubsubtopics
+    kind: BigtableGCPolicy
+    plural: bigtablegcpolicies
     shortNames:
-    - gcppubsubtopic
-    - gcppubsubtopics
-    singular: pubsubtopic
+    - gcpbigtablegcpolicy
+    - gcpbigtablegcpolicies
+    singular: bigtablegcpolicy
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -52,13 +52,10 @@ spec:
           type: object
         spec:
           properties:
-            kmsKeyRef:
-              description: |-
-                The KMSCryptoKey to be used to protect access to messages published
-                on this topic. Your project's Pub/Sub service account
-                ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
-                must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-                feature.
+            columnFamily:
+              type: string
+            instanceRef:
+              description: The name of the Bigtable instance.
               oneOf:
               - not:
                   required:
@@ -75,7 +72,7 @@ spec:
                 - external
               properties:
                 external:
-                  description: The selfLink of a KMSCryptoKey.
+                  description: The name of a BigtableInstance.
                   type: string
                 name:
                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -84,26 +81,57 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
-            messageStoragePolicy:
-              description: |-
-                Policy constraining the set of Google Cloud Platform regions where
-                messages published to the topic may be stored. If not present, then no
-                constraints are in effect.
+            maxAge:
+              items:
+                properties:
+                  days:
+                    type: integer
+                required:
+                - days
+                type: object
+              type: array
+            maxVersion:
+              items:
+                properties:
+                  number:
+                    type: integer
+                required:
+                - number
+                type: object
+              type: array
+            mode:
+              type: string
+            tableRef:
+              description: The name of the table.
+              oneOf:
+              - not:
+                  required:
+                  - external
+                required:
+                - name
+              - not:
+                  anyOf:
+                  - required:
+                    - name
+                  - required:
+                    - namespace
+                required:
+                - external
               properties:
-                allowedPersistenceRegions:
-                  description: |-
-                    A list of IDs of GCP regions where messages that are published to
-                    the topic may be persisted in storage. Messages published by
-                    publishers running in non-allowed GCP regions (or running outside
-                    of GCP altogether) will be routed for storage in one of the
-                    allowed regions. An empty list means that no regions are allowed,
-                    and is not a valid configuration.
-                  items:
-                    type: string
-                  type: array
-              required:
-              - allowedPersistenceRegions
+                external:
+                  description: The name of a BigtableTable.
+                  type: string
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                  type: string
+                namespace:
+                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                  type: string
               type: object
+          required:
+          - columnFamily
+          - instanceRef
+          - tableRef
           type: object
         status:
           properties:
@@ -134,6 +162,8 @@ spec:
                 type: object
               type: array
           type: object
+      required:
+      - spec
       type: object
   version: v1beta1
 status:

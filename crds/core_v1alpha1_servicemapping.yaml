@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.18.0
+    cnrm.cloud.google.com/version: 1.19.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -229,11 +229,11 @@ spec:
                           description: Description is the description for the resource
                             reference that will be exposed in the CRD.
                           type: string
-                        group:
-                          description: Group is the Kubernetes group of the resource
-                            being referenced. If not is set, it is implied that the
-                            kind specified is unique across all groups.
-                          type: string
+                        gvk:
+                          description: GVK is the Group,Version,Kind of the resource
+                            being referenced.  This field is mutually exclusive with
+                            JSONSchemaType.
+                          type: object
                         jsonSchemaType:
                           description: JSONSchemaType specifies the type as understood
                             by JSON schema validation of this reference field. Should
@@ -248,12 +248,6 @@ spec:
                             healthCheckRef) Complex references (those with a "Types"
                             list defined) or lists of references should not specify
                             a key.'
-                          type: string
-                        kind:
-                          description: Kind is the Kubernetes kind of the resource
-                            being referenced. The API group and version are assumed
-                            to match the referencing resource's.  This field is mutually
-                            exclusive with JSONSchemaType.
                           type: string
                         parent:
                           description: Parent specifies whether the referenced resource
@@ -290,12 +284,11 @@ spec:
                             for that value.
                           items:
                             properties:
-                              group:
-                                description: Group is the Kubernetes group of the
-                                  resource being referenced. If not is set, it is
-                                  implied that the kind specified is unique across
-                                  all groups.
-                                type: string
+                              gvk:
+                                description: GVK is the Group,Version,Kind of the
+                                  resource being referenced.  This field is mutually
+                                  exclusive with JSONSchemaType.
+                                type: object
                               jsonSchemaType:
                                 description: JSONSchemaType specifies the type as
                                   understood by JSON schema validation of this reference
@@ -311,12 +304,6 @@ spec:
                                   (e.g.   instanceRef, healthCheckRef) Complex references
                                   (those with a "Types" list defined) or lists of
                                   references should not specify a key.'
-                                type: string
-                              kind:
-                                description: Kind is the Kubernetes kind of the resource
-                                  being referenced. The API group and version are
-                                  assumed to match the referencing resource's.  This
-                                  field is mutually exclusive with JSONSchemaType.
                                 type: string
                               parent:
                                 description: Parent specifies whether the referenced
