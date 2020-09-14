@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.20.0
+    cnrm.cloud.google.com/version: 1.20.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -62,8 +62,11 @@ spec:
                     type: string
                   numNodes:
                     description: The number of nodes in your Cloud Bigtable cluster.
-                      Required, with a minimum of 1 for a PRODUCTION instance. Must
-                      be left unset for a DEVELOPMENT instance.
+                      For PRODUCTION instances where the numNodes will be managed
+                      by Config Connector, this field is required with a minimum of
+                      1. For a DEVELOPMENT instance or for an existing instance where
+                      the numNodes is managed outside of Config Connector, this field
+                      must be left unset.
                     type: integer
                   storageType:
                     description: The storage type to use. One of "SSD" or "HDD". Defaults
