@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.20.1
+    cnrm.cloud.google.com/version: 1.21.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -169,9 +169,29 @@ spec:
                   type: array
                 imageType:
                   type: string
+                kubeletConfig:
+                  properties:
+                    cpuCfsQuota:
+                      type: boolean
+                    cpuCfsQuotaPeriod:
+                      type: string
+                    cpuManagerPolicy:
+                      type: string
+                  required:
+                  - cpuManagerPolicy
+                  type: object
                 labels:
                   additionalProperties:
                     type: string
+                  type: object
+                linuxNodeConfig:
+                  properties:
+                    sysctls:
+                      additionalProperties:
+                        type: string
+                      type: object
+                  required:
+                  - sysctls
                   type: object
                 localSsdCount:
                   type: integer

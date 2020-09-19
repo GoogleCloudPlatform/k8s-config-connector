@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.20.1
+    cnrm.cloud.google.com/version: 1.21.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,19 +53,43 @@ spec:
         spec:
           properties:
             description:
+              description: An optional description of this security policy. Max size
+                is 2048.
               type: string
             rule:
+              description: The set of rules that belong to this policy. There must
+                always be a default rule (rule with priority 2147483647 and match
+                "*"). If no rules are provided when creating a security policy, a
+                default rule with action "allow" will be added.
               items:
                 properties:
                   action:
+                    description: 'Action to take when match matches the request. Valid
+                      values:   "allow" : allow access to target, "deny(status)" :
+                      deny access to target, returns the HTTP response code specified
+                      (valid values are 403, 404 and 502)'
                     type: string
                   description:
+                    description: An optional description of this rule. Max size is
+                      64.
                     type: string
                   match:
+                    description: A match condition that incoming traffic is evaluated
+                      against. If it evaluates to true, the corresponding action is
+                      enforced.
                     properties:
                       config:
+                        description: The configuration options available when specifying
+                          versioned_expr. This field must be specified if versioned_expr
+                          is specified and cannot be specified if versioned_expr is
+                          not specified.
                         properties:
                           srcIpRanges:
+                            description: Set of IP addresses or ranges (IPV4 or IPV6)
+                              in CIDR notation to match against inbound traffic. There
+                              is a limit of 10 IP ranges per rule. A value of '*'
+                              matches all IPs (can be used to override the default
+                              behavior).
                             items:
                               type: string
                             type: array
@@ -73,18 +97,35 @@ spec:
                         - srcIpRanges
                         type: object
                       expr:
+                        description: User defined CEVAL expression. A CEVAL expression
+                          is used to specify match criteria such as origin.ip, source.region_code
+                          and contents in the request header.
                         properties:
                           expression:
+                            description: Textual representation of an expression in
+                              Common Expression Language syntax. The application context
+                              of the containing message determines which well-known
+                              feature set of CEL is supported.
                             type: string
                         required:
                         - expression
                         type: object
                       versionedExpr:
+                        description: 'Predefined rule expression. If this field is
+                          specified, config must also be specified. Available options:   SRC_IPS_V1:
+                          Must specify the corresponding src_ip_ranges field in config.'
                         type: string
                     type: object
                   preview:
+                    description: When set to true, the action specified above is not
+                      enforced. Stackdriver logs for requests that trigger a preview
+                      action are annotated as such.
                     type: boolean
                   priority:
+                    description: An unique positive integer indicating the priority
+                      of evaluation for a rule. Rules are evaluated from highest priority
+                      (lowest numerically) to lowest priority (highest numerically)
+                      in order.
                     type: integer
                 required:
                 - action
@@ -122,8 +163,10 @@ spec:
                 type: object
               type: array
             fingerprint:
+              description: Fingerprint of this resource.
               type: string
             selfLink:
+              description: The URI of the created resource.
               type: string
           type: object
       type: object

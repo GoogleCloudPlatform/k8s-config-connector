@@ -22,12 +22,12 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     controller-tools.k8s.io: "1.0"
-  name: iampolicymembers.iam.cnrm.cloud.google.com
+  name: iamauditconfigs.iam.cnrm.cloud.google.com
 spec:
   group: iam.cnrm.cloud.google.com
   names:
-    kind: IAMPolicyMember
-    plural: iampolicymembers
+    kind: IAMAuditConfig
+    plural: iamauditconfigs
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -46,50 +46,32 @@ spec:
           type: object
         spec:
           properties:
-            condition:
-              description: Optional. The condition under which the binding applies.
-              properties:
-                description:
-                  type: string
-                expression:
-                  type: string
-                title:
-                  type: string
-              required:
-              - title
-              - expression
-              type: object
-            member:
-              description: Required. The list of IAM identities to be bound to the
-                role
-              pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
-              type: string
+            auditLogConfigs:
+              description: Required. The configuration for logging of each type of
+                permission.
+              items:
+                properties:
+                  exemptedMembers:
+                    description: Identities that do not cause logging for this type
+                      of permission. The format is the same as that for 'members'
+                      in IAMPolicy/IAMPolicyMember.
+                    items:
+                      pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
+                      type: string
+                    pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
+                    type: array
+                  logType:
+                    description: Permission type for which logging is to be configured.
+                      Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'.
+                    pattern: ^(DATA_READ|DATA_WRITE|ADMIN_READ)$
+                    type: string
+                required:
+                - logType
+                type: object
+              type: array
             resourceRef:
-              description: Required. The GCP resource to set the IAM policy on.
-              oneOf:
-              - not:
-                  required:
-                  - external
-                required:
-                - name
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                required:
-                - external
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                  - required:
-                    - apiVersion
-                  - required:
-                    - external
+              description: Required. The GCP resource to set the IAMAuditConfig on
+                (e.g. project).
               properties:
                 apiVersion:
                   type: string
@@ -104,20 +86,25 @@ spec:
               required:
               - kind
               type: object
-            role:
-              description: Required. The role for which the Member will be bound.
-              pattern: ^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
+            service:
+              description: 'Required. The service which will be enabled for audit
+                logging. The special value ''allServices'' covers all services. Note
+                that if there are audit configs covering both ''allServices'' and
+                a specific service, then the union of the two audit configs is used
+                for that service: the ''logTypes'' specified in each ''auditLogConfig''
+                are enabled, and the ''exemptedMembers'' in each ''auditLogConfg''
+                are exempted.'
               type: string
           required:
           - resourceRef
-          - member
-          - role
+          - service
+          - auditLogConfigs
           type: object
         status:
           properties:
             conditions:
               description: Conditions represents the latest available observations
-                of the IAM policy's current state.
+                of the IAMAuditConfig's current state.
               items:
                 properties:
                   lastTransitionTime:

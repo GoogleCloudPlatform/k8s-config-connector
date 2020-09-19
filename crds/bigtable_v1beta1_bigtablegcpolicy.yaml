@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.20.1
+    cnrm.cloud.google.com/version: 1.21.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,6 +53,7 @@ spec:
         spec:
           properties:
             columnFamily:
+              description: The name of the column family.
               type: string
             instanceRef:
               description: The name of the Bigtable instance.
@@ -82,24 +83,32 @@ spec:
                   type: string
               type: object
             maxAge:
+              description: GC policy that applies to all cells older than the given
+                age.
               items:
                 properties:
                   days:
+                    description: Number of days before applying GC policy.
                     type: integer
                 required:
                 - days
                 type: object
               type: array
             maxVersion:
+              description: GC policy that applies to all versions of a cell except
+                for the most recent.
               items:
                 properties:
                   number:
+                    description: Number of version before applying the GC policy.
                     type: integer
                 required:
                 - number
                 type: object
               type: array
             mode:
+              description: If multiple policies are set, you should choose between
+                UNION OR INTERSECTION.
               type: string
             tableRef:
               description: The name of the table.
