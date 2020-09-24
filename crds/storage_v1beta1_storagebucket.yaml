@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.21.1
+    cnrm.cloud.google.com/version: 1.22.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -176,7 +176,7 @@ spec:
                 type: object
               type: array
             location:
-              description: The GCS location
+              description: The Google Cloud Storage location
               type: string
             logging:
               description: The bucket's Access & Storage Logs configuration.
@@ -186,7 +186,7 @@ spec:
                   type: string
                 logObjectPrefix:
                   description: The object prefix for log objects. If it's not provided,
-                    by default GCS sets this to this bucket's name.
+                    by default Google Cloud Storage sets this to this bucket's name.
                   type: string
               required:
               - logBucket
