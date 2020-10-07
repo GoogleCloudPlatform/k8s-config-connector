@@ -45,7 +45,7 @@ spec:
         - natIpRef:
             name: computeinstance-dep-networkworker
   guestAccelerator:
-    - type: nvidia-tesla-v100
+    - type: nvidia-tesla-t4
       count: 1
   scratchDisk:
     - interface: SCSI

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.23.0
+    cnrm.cloud.google.com/version: 1.24.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -61,6 +61,8 @@ spec:
                   properties:
                     disabled:
                       type: boolean
+                    loadBalancerType:
+                      type: string
                   required:
                   - disabled
                   type: object
@@ -278,6 +280,10 @@ spec:
               required:
               - state
               type: object
+            datapathProvider:
+              description: The desired datapath provider for this cluster. By default,
+                uses the IPTables-based kube-proxy implementation.
+              type: string
             defaultMaxPodsPerNode:
               description: The default maximum number of pods per node in this cluster.
                 This doesn't work on "routes-based" clusters, clusters that don't
@@ -728,6 +734,48 @@ spec:
               type: array
             nodeVersion:
               type: string
+            notificationConfig:
+              description: The notification config for sending cluster upgrade notifications
+              properties:
+                pubsub:
+                  description: Notification config for Cloud Pub/Sub
+                  properties:
+                    enabled:
+                      description: Whether or not the notification config is enabled
+                      type: boolean
+                    topicRef:
+                      description: The PubSubTopic to send the notification to.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The name of a PubSubTopic.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                  required:
+                  - enabled
+                  type: object
+              required:
+              - pubsub
+              type: object
             podSecurityPolicyConfig:
               description: Configuration for the PodSecurityPolicy feature.
               properties:

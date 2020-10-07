@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.23.0
+    cnrm.cloud.google.com/version: 1.24.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26,8 +26,14 @@ metadata:
 spec:
   group: iam.cnrm.cloud.google.com
   names:
+    categories:
+    - gcp
     kind: IAMPolicy
     plural: iampolicies
+    shortNames:
+    - gcpiampolicy
+    - gcpiampolicies
+    singular: iampolicy
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -46,6 +52,48 @@ spec:
           type: object
         spec:
           properties:
+            auditConfigs:
+              description: Optional. The list of IAM audit configs.
+              items:
+                properties:
+                  auditLogConfigs:
+                    description: Required. The configuration for logging of each type
+                      of permission.
+                    items:
+                      properties:
+                        exemptedMembers:
+                          description: Identities that do not cause logging for this
+                            type of permission. The format is the same as that for
+                            'members' in IAMPolicy/IAMPolicyMember.
+                          items:
+                            pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
+                            type: string
+                          pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
+                          type: array
+                        logType:
+                          description: Permission type for which logging is to be
+                            configured. Must be one of 'DATA_READ', 'DATA_WRITE',
+                            or 'ADMIN_READ'.
+                          pattern: ^(DATA_READ|DATA_WRITE|ADMIN_READ)$
+                          type: string
+                      required:
+                      - logType
+                      type: object
+                    type: array
+                  service:
+                    description: 'Required. The service for which to enable Data Access
+                      audit logs. The special value ''allServices'' covers all services.
+                      Note that if there are audit configs covering both ''allServices''
+                      and a specific service, then the union of the two audit configs
+                      is used for that service: the ''logTypes'' specified in each
+                      ''auditLogConfig'' are enabled, and the ''exemptedMembers''
+                      in each ''auditLogConfg'' are exempted.'
+                    type: string
+                required:
+                - service
+                - auditLogConfigs
+                type: object
+              type: array
             bindings:
               description: Optional. The list of IAM bindings.
               items:

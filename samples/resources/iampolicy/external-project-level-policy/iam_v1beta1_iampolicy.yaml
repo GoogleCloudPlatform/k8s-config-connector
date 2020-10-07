@@ -12,61 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# **WARNING**: The policy here represents the full declarative intent for the
+# referenced project. It will fully overwrite the existing policy on the
+# project.
+#
+# If you want finer-grained control over a project's IAM bindings, use
+# IAMPolicyMember. If you want finer-grained control over audit configs, use
+# IAMAuditConfig.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
-  annotations:
-    # By default, the underlying GCP resource is deleted upon deletion of the
-    # K8s resource representing it (i.e. the entire IAM policy object of the
-    # GCP project will be wiped out if you delete this IAMPolicy resource). Set
-    # the 'deletion-policy' to 'abandon' to prevent the underlying GCP resource
-    # from being deleted upon deletion of this K8s resource.
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  labels:
-    label-one: value-one
-  name: iampolicy-sample-projectlevel
+  name: iampolicy-sample-external-project
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
-    external: projects/${PROJECT_ID?}
-  # **WARNING**: The bindings here represent the full declarative intent for the project.
-  # It will fully overwrite the existing policy on the given project.
-  #
-  # For finer-grained control over the project's IAM policy, it is recommended
-  # that the IAMPolicyMember resource be used instead.
-  #
-  # This sample assumes the following additional APIs are enabled:
-  #   - compute.googleapis.com
-  #   - container.googleapis.com
-  #   - containerregistry.googleapis.com
-  #   - redis.googleapis.com
-  #
-  # Replace ${PROJECT_ID?}, ${PROJECT_NUMBER?}, and ${PROJECT_NAME?} with your desired project ID,
-  # that project's project number, and your Google Cloud account email respectively.
+    external: projects/iampolicy-dep-external-project
   bindings:
     - members:
-        - serviceAccount:service-${PROJECT_NUMBER?}@compute-system.iam.gserviceaccount.com
-      role: roles/compute.serviceAgent
-    - members:
-        - serviceAccount:service-${PROJECT_NUMBER?}@container-engine-robot.iam.gserviceaccount.com
-      role: roles/container.serviceAgent
-    - members:
-        - serviceAccount:${PROJECT_NUMBER?}-compute@developer.gserviceaccount.com
-        - serviceAccount:${PROJECT_NUMBER?}@cloudservices.gserviceaccount.com
-        - serviceAccount:cnrm-application-demo@${PROJECT_ID?}.iam.gserviceaccount.com
-        - serviceAccount:service-${PROJECT_NUMBER?}@containerregistry.iam.gserviceaccount.com
-      role: roles/editor
-    - members:
-        # Make sure to keep the "cnrm-system" service account permission, or else Config Connector will
-        # be locked out from managing GCP resources.
-        - serviceAccount:cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com
-        # Ensure that your account is not locked out of the project.
-        - user:${PROJECT_NAME?}
+        # Replace ${GSA_EMAIL?} with the Config Connector service account's
+        # email address. This ensures that the Config Connector service account
+        # can continue to manage the referenced project.
+        - serviceAccount:${GSA_EMAIL?}
       role: roles/owner
     - members:
-        - serviceAccount:service-${PROJECT_NUMBER?}@cloud-redis.iam.gserviceaccount.com
-      role: roles/redis.serviceAgent
-    - members:
-        - serviceAccount:cnrm-system@${PROJECT_ID?}.iam.gserviceaccount.com
+        - serviceAccount:iampolicy-dep-external-project@iampolicy-dep-external-project.iam.gserviceaccount.com
       role: roles/storage.admin
