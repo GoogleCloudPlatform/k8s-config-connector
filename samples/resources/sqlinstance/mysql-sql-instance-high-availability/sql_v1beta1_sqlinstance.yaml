@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
 metadata:
-  name: pubsubsubscription-dep
----
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
-metadata:
-  name: pubsubsubscription-dep2
+  name: sqlinstance-sample-mysqlhighavailability
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-g1-small
+    diskSize: 25
+    diskType: PD_SSD
+    availabilityType: REGIONAL
+    backupConfiguration:
+      binaryLogEnabled: true
+      enabled: true

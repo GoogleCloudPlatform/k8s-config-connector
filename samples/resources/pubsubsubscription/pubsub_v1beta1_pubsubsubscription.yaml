@@ -24,3 +24,6 @@ spec:
   retainAckedMessages: false
   topicRef:
     name: pubsubsubscription-dep
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubsubscription-dep2
