@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -175,19 +175,19 @@ spec:
                 type: object
               type: array
             bootDisk:
-              description: The boot disk for the instance.
+              description: Immutable. The boot disk for the instance.
               properties:
                 autoDelete:
-                  description: Whether the disk will be auto-deleted when the instance
-                    is deleted.
+                  description: Immutable. Whether the disk will be auto-deleted when
+                    the instance is deleted.
                   type: boolean
                 deviceName:
-                  description: Name with which attached disk will be accessible under
-                    /dev/disk/by-id/
+                  description: Immutable. Name with which attached disk will be accessible
+                    under /dev/disk/by-id/
                   type: string
                 diskEncryptionKeyRaw:
-                  description: A 256-bit customer-supplied encryption key, encoded
-                    in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link
+                  description: Immutable. A 256-bit customer-supplied encryption key,
+                    encoded in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link
                     and disk_encryption_key_raw may be set.
                   oneOf:
                   - not:
@@ -230,15 +230,15 @@ spec:
                     encryption key that protects this resource.
                   type: string
                 initializeParams:
-                  description: Parameters with which a disk was created alongside
-                    the instance.
+                  description: Immutable. Parameters with which a disk was created
+                    alongside the instance.
                   properties:
                     labels:
-                      description: A set of key/value label pairs assigned to the
-                        disk.
+                      description: Immutable. A set of key/value label pairs assigned
+                        to the disk.
                       type: object
                     size:
-                      description: The size of the image in gigabytes.
+                      description: Immutable. The size of the image in gigabytes.
                       type: integer
                     sourceImageRef:
                       oneOf:
@@ -267,8 +267,8 @@ spec:
                           type: string
                       type: object
                     type:
-                      description: The Google Compute Engine disk type. One of pd-standard,
-                        pd-ssd or pd-balanced.
+                      description: Immutable. The Google Compute Engine disk type.
+                        One of pd-standard, pd-ssd or pd-balanced.
                       type: string
                   type: object
                 kmsKeyRef:
@@ -298,8 +298,8 @@ spec:
                       type: string
                   type: object
                 mode:
-                  description: Read/write mode for the disk. One of "READ_ONLY" or
-                    "READ_WRITE".
+                  description: Immutable. Read/write mode for the disk. One of "READ_ONLY"
+                    or "READ_WRITE".
                   type: string
                 sourceDiskRef:
                   oneOf:
@@ -329,12 +329,13 @@ spec:
                   type: object
               type: object
             canIpForward:
-              description: Whether sending and receiving of packets with non-matching
-                source or destination IPs is allowed.
+              description: Immutable. Whether sending and receiving of packets with
+                non-matching source or destination IPs is allowed.
               type: boolean
             confidentialInstanceConfig:
-              description: The Confidential VM config being used by the instance.  on_host_maintenance
-                has to be set to TERMINATE or this will fail to create.
+              description: Immutable. The Confidential VM config being used by the
+                instance.  on_host_maintenance has to be set to TERMINATE or this
+                will fail to create.
               properties:
                 enableConfidentialCompute:
                   description: Defines whether the instance should have confidential
@@ -347,7 +348,7 @@ spec:
               description: Whether deletion protection is enabled on this instance.
               type: boolean
             description:
-              description: A brief description of the resource.
+              description: Immutable. A brief description of the resource.
               type: string
             desiredStatus:
               description: Desired status of the instance. Either "RUNNING" or "TERMINATED".
@@ -356,17 +357,17 @@ spec:
               description: Whether the instance has virtual displays enabled.
               type: boolean
             guestAccelerator:
-              description: List of the type and count of accelerator cards attached
-                to the instance.
+              description: Immutable. List of the type and count of accelerator cards
+                attached to the instance.
               items:
                 properties:
                   count:
-                    description: The number of the guest accelerator cards exposed
-                      to this instance.
+                    description: Immutable. The number of the guest accelerator cards
+                      exposed to this instance.
                     type: integer
                   type:
-                    description: The accelerator type resource exposed to this instance.
-                      E.g. nvidia-tesla-k80.
+                    description: Immutable. The accelerator type resource exposed
+                      to this instance. E.g. nvidia-tesla-k80.
                     type: string
                 required:
                 - count
@@ -374,9 +375,9 @@ spec:
                 type: object
               type: array
             hostname:
-              description: A custom hostname for the instance. Must be a fully qualified
-                DNS name and RFC-1035-valid. Valid format is a series of labels 1-63
-                characters long matching the regular expression [a-z]([-a-z0-9]*[a-z0-9]),
+              description: Immutable. A custom hostname for the instance. Must be
+                a fully qualified DNS name and RFC-1035-valid. Valid format is a series
+                of labels 1-63 characters long matching the regular expression [a-z]([-a-z0-9]*[a-z0-9]),
                 concatenated with periods. The entire hostname must not exceed 253
                 characters. Changing this forces a new resource to be created.
               type: string
@@ -422,13 +423,14 @@ spec:
                 type: object
               type: array
             metadataStartupScript:
-              description: Metadata startup scripts made available within the instance.
+              description: Immutable. Metadata startup scripts made available within
+                the instance.
               type: string
             minCpuPlatform:
               description: The minimum CPU platform specified for the VM instance.
               type: string
             networkInterface:
-              description: The networks attached to the instance.
+              description: Immutable. The networks attached to the instance.
               items:
                 properties:
                   accessConfig:
@@ -493,7 +495,8 @@ spec:
                     description: The name of the interface
                     type: string
                   networkIp:
-                    description: The private IP address assigned to the instance.
+                    description: Immutable. The private IP address assigned to the
+                      instance.
                     type: string
                   networkRef:
                     oneOf:
@@ -601,11 +604,11 @@ spec:
                     of MIGRATE or TERMINATE,
                   type: string
                 preemptible:
-                  description: Whether the instance is preemptible.
+                  description: Immutable. Whether the instance is preemptible.
                   type: boolean
               type: object
             scratchDisk:
-              description: The scratch disks attached to the instance.
+              description: Immutable. The scratch disks attached to the instance.
               items:
                 properties:
                   interface:
@@ -672,9 +675,9 @@ spec:
                 type: string
               type: array
             zone:
-              description: The zone of the instance. If self_link is provided, this
-                value is ignored. If neither self_link nor zone are provided, the
-                provider zone is used.
+              description: Immutable. The zone of the instance. If self_link is provided,
+                this value is ignored. If neither self_link nor zone are provided,
+                the provider zone is used.
               type: string
           type: object
         status:

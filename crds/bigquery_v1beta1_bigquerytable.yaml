@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -89,9 +89,9 @@ spec:
               description: The field description.
               type: string
             encryptionConfiguration:
-              description: Specifies how the table should be encrypted. If left blank,
-                the table will be encrypted with a Google-managed key; that process
-                is transparent to the user.
+              description: Immutable. Specifies how the table should be encrypted.
+                If left blank, the table will be encrypted with a Google-managed key;
+                that process is transparent to the user.
               properties:
                 kmsKeyRef:
                   oneOf:
@@ -213,10 +213,10 @@ spec:
                     ignore when reading data.
                   type: integer
                 schema:
-                  description: A JSON schema for the external table. Schema is required
-                    for CSV and JSON formats and is disallowed for Google Cloud Bigtable,
-                    Cloud Datastore backups, and Avro formats when using external
-                    tables.
+                  description: Immutable. A JSON schema for the external table. Schema
+                    is required for CSV and JSON formats and is disallowed for Google
+                    Cloud Bigtable, Cloud Datastore backups, and Avro formats when
+                    using external tables.
                   type: string
                 sourceFormat:
                   description: 'The data format. Supported values are: "CSV", "GOOGLE_SHEETS",
@@ -260,8 +260,8 @@ spec:
                 table.
               properties:
                 field:
-                  description: The field used to determine how to create a range-based
-                    partition.
+                  description: Immutable. The field used to determine how to create
+                    a range-based partition.
                   type: string
                 range:
                   description: Information required to partition based on ranges.
@@ -297,9 +297,10 @@ spec:
                     for a partition.
                   type: integer
                 field:
-                  description: The field used to determine how to create a time-based
-                    partition. If time-based partitioning is enabled without this
-                    value, the table is partitioned based on the load time.
+                  description: Immutable. The field used to determine how to create
+                    a time-based partition. If time-based partitioning is enabled
+                    without this value, the table is partitioned based on the load
+                    time.
                   type: string
                 requirePartitionFilter:
                   description: If set to true, queries over this table require a partition

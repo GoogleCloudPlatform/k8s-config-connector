@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -60,19 +60,19 @@ spec:
                 be scheduled to start, end and and what time to run.
               properties:
                 scheduleEndDate:
-                  description: The last day the recurring transfer will be run. If
-                    schedule_end_date is the same as schedule_start_date, the transfer
-                    will be executed only once.
+                  description: Immutable. The last day the recurring transfer will
+                    be run. If schedule_end_date is the same as schedule_start_date,
+                    the transfer will be executed only once.
                   properties:
                     day:
-                      description: Day of month. Must be from 1 to 31 and valid for
-                        the year and month.
+                      description: Immutable. Day of month. Must be from 1 to 31 and
+                        valid for the year and month.
                       type: integer
                     month:
-                      description: Month of year. Must be from 1 to 12.
+                      description: Immutable. Month of year. Must be from 1 to 12.
                       type: integer
                     year:
-                      description: Year of date. Must be from 1 to 9999.
+                      description: Immutable. Year of date. Must be from 1 to 9999.
                       type: integer
                   required:
                   - day
@@ -80,19 +80,19 @@ spec:
                   - year
                   type: object
                 scheduleStartDate:
-                  description: The first day the recurring transfer is scheduled to
-                    run. If schedule_start_date is in the past, the transfer will
-                    run for the first time on the following day.
+                  description: Immutable. The first day the recurring transfer is
+                    scheduled to run. If schedule_start_date is in the past, the transfer
+                    will run for the first time on the following day.
                   properties:
                     day:
-                      description: Day of month. Must be from 1 to 31 and valid for
-                        the year and month.
+                      description: Immutable. Day of month. Must be from 1 to 31 and
+                        valid for the year and month.
                       type: integer
                     month:
-                      description: Month of year. Must be from 1 to 12.
+                      description: Immutable. Month of year. Must be from 1 to 12.
                       type: integer
                     year:
-                      description: Year of date. Must be from 1 to 9999.
+                      description: Immutable. Year of date. Must be from 1 to 9999.
                       type: integer
                   required:
                   - day
@@ -100,29 +100,30 @@ spec:
                   - year
                   type: object
                 startTimeOfDay:
-                  description: The time in UTC at which the transfer will be scheduled
-                    to start in a day. Transfers may start later than this time. If
-                    not specified, recurring and one-time transfers that are scheduled
-                    to run today will run immediately; recurring transfers that are
-                    scheduled to run on a future date will start at approximately
-                    midnight UTC on that date. Note that when configuring a transfer
-                    with the Cloud Platform Console, the transfer's start time in
-                    a day is specified in your local timezone.
+                  description: Immutable. The time in UTC at which the transfer will
+                    be scheduled to start in a day. Transfers may start later than
+                    this time. If not specified, recurring and one-time transfers
+                    that are scheduled to run today will run immediately; recurring
+                    transfers that are scheduled to run on a future date will start
+                    at approximately midnight UTC on that date. Note that when configuring
+                    a transfer with the Cloud Platform Console, the transfer's start
+                    time in a day is specified in your local timezone.
                   properties:
                     hours:
-                      description: Hours of day in 24 hour format. Should be from
-                        0 to 23.
+                      description: Immutable. Hours of day in 24 hour format. Should
+                        be from 0 to 23.
                       type: integer
                     minutes:
-                      description: Minutes of hour of day. Must be from 0 to 59.
+                      description: Immutable. Minutes of hour of day. Must be from
+                        0 to 59.
                       type: integer
                     nanos:
-                      description: Fractions of seconds in nanoseconds. Must be from
-                        0 to 999,999,999.
+                      description: Immutable. Fractions of seconds in nanoseconds.
+                        Must be from 0 to 999,999,999.
                       type: integer
                     seconds:
-                      description: Seconds of minutes of the time. Must normally be
-                        from 0 to 59.
+                      description: Immutable. Seconds of minutes of the time. Must
+                        normally be from 0 to 59.
                       type: integer
                   required:
                   - hours

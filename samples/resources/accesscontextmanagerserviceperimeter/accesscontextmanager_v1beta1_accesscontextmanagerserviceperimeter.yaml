@@ -14,23 +14,22 @@
 apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerServicePerimeter
 metadata:
-  name: accesscontextmanagerserviceperimetersample 
+  name: serviceperimetersample
 spec:
   # Config for DRY-RUN
   # To use this 'useExplicitDryRunSpec' must be set to 'true'
   # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-  # Replace "${ACCESS_LEVELx}" with the appropriate 'name' for Access Level to be used
-  # Replace "${PROJECT_IDx}" with the appropriate `project ID` for the project to be protected by the perimeter
+  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
   spec:
     # List of Access Levels to be applied for this perimeter
     accessLevels:
-    - external: "accessPolicies/${ACCESS_POLICY_NUMBER}/accessLevels/${ACCESS_LEVEL1}"
+    - name: serviceperimeterdep2
     # List of projects to be included in this perimeter
     resources:
     - projectRef:
-        external: "projects/${PROJECT_ID1}"
+        external: "projects/${PROJECT_NUMBER1}"
     - projectRef:
-        external: "projects/${PROJECT_ID2}"
+        external: "projects/${PROJECT_NUMBER2}"
     # List of restricted services
     restrictedServices:
     - "storage.googleapis.com"
@@ -43,16 +42,15 @@ spec:
   # Config to ENFORCE
   # Config items are repeated as above for DRY-RUN
   # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-  # Replace "${ACCESS_LEVELx}" with the appropriate 'name' for Access Level to be used
-  # Replace "${PROJECT_IDx}" with the appropriate `project ID` for the project to be protected by the perimeter
+  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
   status:
     accessLevels:
-    - external: "accessPolicies/${ACCESS_POLICY_NUMBER}/accessLevels/${ACCESS_LEVEL2}"
+    - name: serviceperimeterdep2
     resources:
     - projectRef:
-        external: "projects/${PROJECT_ID3}"
+        external: "projects/${PROJECT_NUMBER3}"
     - projectRef:
-        external: "projects/${PROJECT_ID4}"
+        external: "projects/${PROJECT_NUMBER4}"
     restrictedServices:
     - "bigquery.googleapis.com"
     vpcAccessibleServices:

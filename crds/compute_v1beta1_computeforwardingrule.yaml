@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -54,7 +54,7 @@ spec:
           properties:
             allPorts:
               description: |-
-                For internal TCP/UDP load balancing (i.e. load balancing scheme is
+                Immutable. For internal TCP/UDP load balancing (i.e. load balancing scheme is
                 INTERNAL and protocol is TCP/UDP), set this to true to allow packets
                 addressed to any ports to be forwarded to the backends configured
                 with this forwarding rule. Used with backend service. Cannot be set
@@ -96,7 +96,7 @@ spec:
               type: object
             description:
               description: |-
-                An optional description of this resource. Provide this property when
+                Immutable. An optional description of this resource. Provide this property when
                 you create the resource.
               type: string
             ipAddress:
@@ -157,18 +157,18 @@ spec:
               type: object
             ipProtocol:
               description: |-
-                The IP protocol to which this rule applies.
+                Immutable. The IP protocol to which this rule applies.
 
                 When the load balancing scheme is INTERNAL, only TCP and UDP are
                 valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP"]
               type: string
             ipVersion:
-              description: 'The IP Version that will be used by this global forwarding
-                rule. Possible values: ["IPV4", "IPV6"]'
+              description: 'Immutable. The IP Version that will be used by this global
+                forwarding rule. Possible values: ["IPV4", "IPV6"]'
               type: string
             isMirroringCollector:
               description: |-
-                Indicates whether or not this load balancer can be used
+                Immutable. Indicates whether or not this load balancer can be used
                 as a collector for packet mirroring. To prevent mirroring loops,
                 instances behind this load balancer will not have their traffic
                 mirrored even if a PacketMirroring rule applies to them. This
@@ -177,7 +177,7 @@ spec:
               type: boolean
             loadBalancingScheme:
               description: |-
-                This signifies what the ForwardingRule will be used for and can be
+                Immutable. This signifies what the ForwardingRule will be used for and can be
                 EXTERNAL, INTERNAL, or INTERNAL_MANAGED. EXTERNAL is used for Classic
                 Cloud VPN gateways, protocol forwarding to VMs from an external IP address,
                 and HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP load balancers.
@@ -192,7 +192,7 @@ spec:
               type: string
             metadataFilters:
               description: |-
-                Opaque filter criteria used by Loadbalancer to restrict routing
+                Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
                 configuration to a limited set xDS compliant clients. In their xDS
                 requests to Loadbalancer, xDS clients present node metadata. If a
                 match takes place, the relevant routing configuration is made available
@@ -213,7 +213,7 @@ spec:
                 properties:
                   filterLabels:
                     description: |-
-                      The list of label value pairs that must match labels in the
+                      Immutable. The list of label value pairs that must match labels in the
                       provided metadata based on filterMatchCriteria
 
                       This list must not be empty and can have at the most 64 entries.
@@ -221,12 +221,12 @@ spec:
                       properties:
                         name:
                           description: |-
-                            Name of the metadata label. The length must be between
+                            Immutable. Name of the metadata label. The length must be between
                             1 and 1024 characters, inclusive.
                           type: string
                         value:
                           description: |-
-                            The value that the label must match. The value has a maximum
+                            Immutable. The value that the label must match. The value has a maximum
                             length of 1024 characters.
                           type: string
                       required:
@@ -236,7 +236,7 @@ spec:
                     type: array
                   filterMatchCriteria:
                     description: |-
-                      Specifies how individual filterLabel matches within the list of
+                      Immutable. Specifies how individual filterLabel matches within the list of
                       filterLabels contribute towards the overall metadataFilter match.
 
                       MATCH_ANY - At least one of the filterLabels must have a matching
@@ -282,12 +282,12 @@ spec:
               type: object
             networkTier:
               description: |-
-                The networking tier used for configuring this address. If this field is not
+                Immutable. The networking tier used for configuring this address. If this field is not
                 specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"]
               type: string
             portRange:
               description: |-
-                This field is used along with the target field for TargetHttpProxy,
+                Immutable. This field is used along with the target field for TargetHttpProxy,
                 TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway,
                 TargetPool, TargetInstance.
 
@@ -309,7 +309,7 @@ spec:
               type: string
             ports:
               description: |-
-                This field is used along with the backend_service field for internal
+                Immutable. This field is used along with the backend_service field for internal
                 load balancing.
 
                 When the load balancing scheme is INTERNAL, a single port or a comma
@@ -323,7 +323,7 @@ spec:
               type: array
             serviceLabel:
               description: |-
-                An optional prefix to the service name for this Forwarding Rule.
+                Immutable. An optional prefix to the service name for this Forwarding Rule.
                 If specified, will be the first label of the fully qualified service
                 name.
 

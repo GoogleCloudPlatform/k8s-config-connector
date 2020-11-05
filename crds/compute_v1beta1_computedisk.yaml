@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -54,12 +54,12 @@ spec:
           properties:
             description:
               description: |-
-                An optional description of this resource. Provide this property when
+                Immutable. An optional description of this resource. Provide this property when
                 you create the resource.
               type: string
             diskEncryptionKey:
               description: |-
-                Encrypts the disk using a customer-supplied encryption key.
+                Immutable. Encrypts the disk using a customer-supplied encryption key.
 
                 After you encrypt a disk with a customer-supplied key, you must
                 provide the same key if you use the disk later (e.g. to create a disk
@@ -136,7 +136,7 @@ spec:
                   type: object
                 rawKey:
                   description: |-
-                    Specifies a 256-bit customer-supplied encryption key, encoded in
+                    Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
                     RFC 4648 base64 to either encrypt or decrypt this resource.
                   oneOf:
                   - not:
@@ -214,14 +214,15 @@ spec:
               type: string
             physicalBlockSizeBytes:
               description: |-
-                Physical block size of the persistent disk, in bytes. If not present
+                Immutable. Physical block size of the persistent disk, in bytes. If not present
                 in a request, a default value is used. Currently supported sizes
                 are 4096 and 16384, other sizes may be added in the future.
                 If an unsupported value is requested, the error message will list
                 the supported values for the caller's project.
               type: integer
             replicaZones:
-              description: URLs of the zones where the disk should be replicated to.
+              description: Immutable. URLs of the zones where the disk should be replicated
+                to.
               items:
                 type: string
               type: array
@@ -295,7 +296,7 @@ spec:
               type: object
             sourceImageEncryptionKey:
               description: |-
-                The customer-supplied encryption key of the source image. Required if
+                Immutable. The customer-supplied encryption key of the source image. Required if
                 the source image is protected by a customer-supplied encryption key.
               properties:
                 kmsKeyRef:
@@ -362,7 +363,7 @@ spec:
                   type: object
                 rawKey:
                   description: |-
-                    Specifies a 256-bit customer-supplied encryption key, encoded in
+                    Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
                     RFC 4648 base64 to either encrypt or decrypt this resource.
                   type: string
                 sha256:
@@ -373,7 +374,7 @@ spec:
               type: object
             sourceSnapshotEncryptionKey:
               description: |-
-                The customer-supplied encryption key of the source snapshot. Required
+                Immutable. The customer-supplied encryption key of the source snapshot. Required
                 if the source snapshot is protected by a customer-supplied encryption
                 key.
               properties:
@@ -441,7 +442,7 @@ spec:
                   type: object
                 rawKey:
                   description: |-
-                    Specifies a 256-bit customer-supplied encryption key, encoded in
+                    Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
                     RFC 4648 base64 to either encrypt or decrypt this resource.
                   type: string
                 sha256:
@@ -452,7 +453,7 @@ spec:
               type: object
             type:
               description: |-
-                URL of the disk type resource describing which disk type to use to
+                Immutable. URL of the disk type resource describing which disk type to use to
                 create the disk. Provide this when creating the disk.
               type: string
           required:

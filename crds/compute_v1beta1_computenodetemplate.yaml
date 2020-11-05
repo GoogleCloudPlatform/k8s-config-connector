@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,47 +53,48 @@ spec:
         spec:
           properties:
             cpuOvercommitType:
-              description: 'CPU overcommit. Default value: "NONE" Possible values:
-                ["ENABLED", "NONE"]'
+              description: 'Immutable. CPU overcommit. Default value: "NONE" Possible
+                values: ["ENABLED", "NONE"]'
               type: string
             description:
-              description: An optional textual description of the resource.
+              description: Immutable. An optional textual description of the resource.
               type: string
             nodeType:
               description: |-
-                Node type to use for nodes group that are created from this template.
+                Immutable. Node type to use for nodes group that are created from this template.
                 Only one of nodeTypeFlexibility and nodeType can be specified.
               type: string
             nodeTypeFlexibility:
               description: |-
-                Flexible properties for the desired node type. Node groups that
+                Immutable. Flexible properties for the desired node type. Node groups that
                 use this node template will create nodes of a type that matches
                 these properties. Only one of nodeTypeFlexibility and nodeType can
                 be specified.
               properties:
                 cpus:
-                  description: Number of virtual CPUs to use.
+                  description: Immutable. Number of virtual CPUs to use.
                   type: string
                 localSsd:
                   description: Use local SSD
                   type: string
                 memory:
-                  description: Physical memory available to the node, defined in MB.
+                  description: Immutable. Physical memory available to the node, defined
+                    in MB.
                   type: string
               type: object
             region:
               description: |-
-                Region where nodes using the node template will be created.
+                Immutable. Region where nodes using the node template will be created.
                 If it is not provided, the provider region is used.
               type: string
             serverBinding:
               description: |-
-                The server binding policy for nodes using this template. Determines
+                Immutable. The server binding policy for nodes using this template. Determines
                 where the nodes should restart following a maintenance event.
               properties:
                 type:
                   description: |-
-                    Type of server binding policy. If 'RESTART_NODE_ON_ANY_SERVER',
+                    Immutable. Type of server binding policy. If 'RESTART_NODE_ON_ANY_SERVER',
                     nodes using this template will restart on any physical server
                     following a maintenance event.
 

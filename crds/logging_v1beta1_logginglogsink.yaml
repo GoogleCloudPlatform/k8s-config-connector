@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -187,9 +187,9 @@ spec:
                   type: string
               type: object
             includeChildren:
-              description: Whether or not to include children organizations in the
-                sink export. If true, logs associated with child projects are also
-                exported; otherwise only logs relating to the provided organization
+              description: Immutable. Whether or not to include children organizations
+                in the sink export. If true, logs associated with child projects are
+                also exported; otherwise only logs relating to the provided organization
                 are included.
               type: boolean
             organizationRef:
@@ -251,11 +251,11 @@ spec:
                   type: string
               type: object
             uniqueWriterIdentity:
-              description: Whether or not to create a unique identity associated with
-                this sink. If false (the default), then the writer_identity used is
-                serviceAccount:cloud-logs@system.gserviceaccount.com. If true, then
-                a unique service account is created and used for this sink. If you
-                wish to publish logs across projects, you must set unique_writer_identity
+              description: Immutable. Whether or not to create a unique identity associated
+                with this sink. If false (the default), then the writer_identity used
+                is serviceAccount:cloud-logs@system.gserviceaccount.com. If true,
+                then a unique service account is created and used for this sink. If
+                you wish to publish logs across projects, you must set unique_writer_identity
                 to true.
               type: boolean
           required:

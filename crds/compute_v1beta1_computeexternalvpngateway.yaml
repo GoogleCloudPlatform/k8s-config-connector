@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.28.0
+    cnrm.cloud.google.com/version: 1.29.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -53,15 +53,15 @@ spec:
         spec:
           properties:
             description:
-              description: An optional description of this resource.
+              description: Immutable. An optional description of this resource.
               type: string
             interface:
-              description: A list of interfaces on this external VPN gateway.
+              description: Immutable. A list of interfaces on this external VPN gateway.
               items:
                 properties:
                   id:
                     description: |-
-                      The numberic ID for this interface. Allowed values are based on the redundancy type
+                      Immutable. The numberic ID for this interface. Allowed values are based on the redundancy type
                       of this external VPN gateway
                       * '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
                       * '0, 1 - TWO_IPS_REDUNDANCY'
@@ -69,7 +69,7 @@ spec:
                     type: integer
                   ipAddress:
                     description: |-
-                      IP address of the interface in the external VPN gateway.
+                      Immutable. IP address of the interface in the external VPN gateway.
                       Only IPv4 is supported. This IP address can be either from
                       your on-premise gateway or another Cloud provider's VPN gateway,
                       it cannot be an IP address from Google Compute Engine.
@@ -77,8 +77,8 @@ spec:
                 type: object
               type: array
             redundancyType:
-              description: 'Indicates the redundancy type of this external VPN gateway
-                Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT",
+              description: 'Immutable. Indicates the redundancy type of this external
+                VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT",
                 "TWO_IPS_REDUNDANCY"]'
               type: string
           type: object
