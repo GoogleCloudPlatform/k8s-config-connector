@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,33 +39,26 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
         spec:
           properties:
             booleanPolicy:
-              description: A boolean policy is a constraint that is either enforced
-                or not.
+              description: A boolean policy is a constraint that is either enforced or not.
               properties:
                 enforced:
-                  description: If true, then the Policy is enforced. If false, then
-                    any configuration is acceptable.
+                  description: If true, then the Policy is enforced. If false, then any configuration is acceptable.
                   type: boolean
               required:
               - enforced
               type: object
             constraint:
-              description: Immutable. The name of the Constraint the Policy is configuring,
-                for example, serviceuser.services.
+              description: Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services.
               type: string
             folderRef:
               description: |-
@@ -97,9 +90,7 @@ spec:
                   type: string
               type: object
             listPolicy:
-              description: 'A policy that can define specific values that are allowed
-                or denied for the given constraint. It can also be used to allow or
-                deny all values. '
+              description: 'A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. '
               properties:
                 allow:
                   description: One or the other must be set.
@@ -108,8 +99,7 @@ spec:
                       description: The policy allows or denies all values.
                       type: boolean
                     values:
-                      description: The policy can define specific values that are
-                        allowed or denied.
+                      description: The policy can define specific values that are allowed or denied.
                       items:
                         type: string
                       type: array
@@ -121,20 +111,16 @@ spec:
                       description: The policy allows or denies all values.
                       type: boolean
                     values:
-                      description: The policy can define specific values that are
-                        allowed or denied.
+                      description: The policy can define specific values that are allowed or denied.
                       items:
                         type: string
                       type: array
                   type: object
                 inheritFromParent:
-                  description: If set to true, the values from the effective Policy
-                    of the parent resource are inherited, meaning the values set in
-                    this Policy are added to the values inherited up the hierarchy.
+                  description: If set to true, the values from the effective Policy of the parent resource are inherited, meaning the values set in this Policy are added to the values inherited up the hierarchy.
                   type: boolean
                 suggestedValue:
-                  description: The Google Cloud Console will try to default to a configuration
-                    that matches the value specified in this field.
+                  description: The Google Cloud Console will try to default to a configuration that matches the value specified in this field.
                   type: string
               type: object
             organizationRef:
@@ -196,12 +182,10 @@ spec:
                   type: string
               type: object
             restorePolicy:
-              description: A restore policy is a constraint to restore the default
-                policy.
+              description: A restore policy is a constraint to restore the default policy.
               properties:
                 default:
-                  description: May only be set to true. If set, then the default Policy
-                    is restored.
+                  description: May only be set to true. If set, then the default Policy is restored.
                   type: boolean
               required:
               - default
@@ -215,25 +199,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.
@@ -241,14 +220,10 @@ spec:
                 type: object
               type: array
             etag:
-              description: The etag of the organization policy. etag is used for optimistic
-                concurrency control as a way to help prevent simultaneous updates
-                of a policy from overwriting each other.
+              description: The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other.
               type: string
             updateTime:
-              description: 'The timestamp in RFC3339 UTC "Zulu" format, accurate to
-                nanoseconds, representing when the variable was last updated. Example:
-                "2016-10-09T12:33:37.578138407Z".'
+              description: 'The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z".'
               type: string
           type: object
       required:

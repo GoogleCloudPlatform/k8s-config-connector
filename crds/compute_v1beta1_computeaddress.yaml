@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,14 +39,10 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
@@ -60,20 +56,16 @@ spec:
                 if any.
               type: string
             addressType:
-              description: 'Immutable. The type of address to reserve. Default value:
-                "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"]'
+              description: 'Immutable. The type of address to reserve. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"]'
               type: string
             description:
               description: Immutable. An optional description of this resource.
               type: string
             ipVersion:
-              description: 'Immutable. The IP Version that will be used by this address.
-                The default value is ''IPV4''. Possible values: ["IPV4", "IPV6"]'
+              description: 'Immutable. The IP Version that will be used by this address. The default value is ''IPV4''. Possible values: ["IPV4", "IPV6"]'
               type: string
             location:
-              description: 'Location represents the geographical location of the ComputeAddress.
-                Specify a region name or "global" for global resources. Reference:
-                GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+              description: 'Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
             networkRef:
               description: |-
@@ -122,8 +114,10 @@ spec:
             purpose:
               description: |-
                 Immutable. The purpose of this resource, which can be one of the following values:
-                - GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
-                - SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers
+
+                * GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
+                * SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers.
+
                 This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "SHARED_LOADBALANCER_VIP"]
               type: string
             subnetworkRef:
@@ -163,25 +157,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.

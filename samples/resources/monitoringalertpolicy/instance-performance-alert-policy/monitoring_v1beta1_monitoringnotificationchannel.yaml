@@ -12,17 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeImage
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
 metadata:
-  name: computeimage-sample-fromurlraw
-  labels:
-    image-type: stemcell
+  name: monitoringalertpolicy-dep-instanceperformance
 spec:
-  description: A sample image created from URL to a raw TAR disk image
-  family: ubuntu-custom
-  licenses: ["https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"]
-  rawDisk:
-    source: "https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz"
-    containerType: "TAR"
-    sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
+  type: sms
+  labels:
+    number: "12025550196"

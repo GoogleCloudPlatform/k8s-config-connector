@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -354,7 +354,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -449,7 +449,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -818,7 +818,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -862,6 +862,9 @@ spec:
                 repoitory. Possible values: ["DOCKER"]'
               type: string
             kmsKeyRef:
+              description: |-
+                The customer managed encryption key that’s used to encrypt the
+                contents of the Repository.
               oneOf:
               - not:
                   required:
@@ -950,7 +953,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1147,14 +1150,6 @@ spec:
                 contains at least two geographic places.
 
 
-                Possible regional values include: 'asia-east1', 'asia-northeast1',
-                'asia-southeast1', 'australia-southeast1', 'europe-north1',
-                'europe-west2' and 'us-east4'.
-
-
-                Possible multi-regional values: 'EU' and 'US'.
-
-
                 The default value is multi-regional location 'US'.
                 Changing this forces a new resource to be created.
               type: string
@@ -1216,7 +1211,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1947,7 +1942,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2151,7 +2146,7 @@ spec:
                   type: string
                 sourceFormat:
                   description: 'The data format. Supported values are: "CSV", "GOOGLE_SHEETS",
-                    "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", and "DATSTORE_BACKUP".
+                    "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", and "DATASTORE_BACKUP".
                     To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".'
                   type: string
                 sourceUris:
@@ -2238,8 +2233,9 @@ spec:
                     filter that can be used for partition elimination to be specified.
                   type: boolean
                 type:
-                  description: The supported types are DAY and HOUR, which will generate
-                    one partition per day or hour based on data loading time.
+                  description: The supported types are DAY, HOUR, MONTH, and YEAR,
+                    which will generate one partition per day, hour, month, and year,
+                    respectively.
                   type: string
               required:
               - type
@@ -2338,7 +2334,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2472,7 +2468,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2642,7 +2638,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2680,7 +2676,7 @@ spec:
           properties:
             cluster:
               description: A block of cluster configuration options. This can be specified
-                at least once, and up to 4 times.
+                at least once.
               items:
                 properties:
                   clusterId:
@@ -2769,7 +2765,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2895,7 +2891,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3008,6 +3004,9 @@ spec:
                     type: string
                   type: array
                 logsBucketRef:
+                  description: |-
+                    Google Cloud Storage bucket where logs should be written. Logs file
+                    names will be of the format ${logsBucket}/log-${build_id}.txt.
                   oneOf:
                   - not:
                       required:
@@ -3146,6 +3145,7 @@ spec:
                   items:
                     properties:
                       kmsKeyRef:
+                        description: KMS crypto key to use to decrypt these envs.
                         oneOf:
                         - not:
                             required:
@@ -3221,6 +3221,9 @@ spec:
                             build is assumed."
                           type: string
                         repoRef:
+                          description: |-
+                            The desired Cloud Source Repository. If omitted, "default" is
+                            assumed.
                           oneOf:
                           - not:
                               required:
@@ -3267,6 +3270,8 @@ spec:
                         Cloud Storage.
                       properties:
                         bucketRef:
+                          description: Google Cloud Storage bucket containing the
+                            source.
                           oneOf:
                           - not:
                               required:
@@ -3685,7 +3690,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3791,8 +3796,10 @@ spec:
             purpose:
               description: |-
                 Immutable. The purpose of this resource, which can be one of the following values:
-                - GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
-                - SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers
+
+                * GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
+                * SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers.
+
                 This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "SHARED_LOADBALANCER_VIP"]
               type: string
             subnetworkRef:
@@ -3888,7 +3895,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4028,7 +4035,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4588,29 +4595,29 @@ spec:
                 The load balancing algorithm used within the scope of the locality.
                 The possible values are -
 
-                ROUND_ROBIN - This is a simple policy in which each healthy backend
-                              is selected in round robin order.
+                * ROUND_ROBIN - This is a simple policy in which each healthy backend
+                                is selected in round robin order.
 
-                LEAST_REQUEST - An O(1) algorithm which selects two random healthy
-                                hosts and picks the host which has fewer active requests.
+                * LEAST_REQUEST - An O(1) algorithm which selects two random healthy
+                                  hosts and picks the host which has fewer active requests.
 
-                RING_HASH - The ring/modulo hash load balancer implements consistent
-                            hashing to backends. The algorithm has the property that the
-                            addition/removal of a host from a set of N hosts only affects
-                            1/N of the requests.
+                * RING_HASH - The ring/modulo hash load balancer implements consistent
+                              hashing to backends. The algorithm has the property that the
+                              addition/removal of a host from a set of N hosts only affects
+                              1/N of the requests.
 
-                RANDOM - The load balancer selects a random healthy host.
+                * RANDOM - The load balancer selects a random healthy host.
 
-                ORIGINAL_DESTINATION - Backend host is selected based on the client
-                                       connection metadata, i.e., connections are opened
-                                       to the same address as the destination address of
-                                       the incoming connection before the connection
-                                       was redirected to the load balancer.
+                * ORIGINAL_DESTINATION - Backend host is selected based on the client
+                                         connection metadata, i.e., connections are opened
+                                         to the same address as the destination address of
+                                         the incoming connection before the connection
+                                         was redirected to the load balancer.
 
-                MAGLEV - used as a drop in replacement for the ring hash load balancer.
-                         Maglev is not as stable as ring hash but has faster table lookup
-                         build times and host selection times. For more information about
-                         Maglev, refer to https://ai.google/research/pubs/pub44824
+                * MAGLEV - used as a drop in replacement for the ring hash load balancer.
+                           Maglev is not as stable as ring hash but has faster table lookup
+                           build times and host selection times. For more information about
+                           Maglev, refer to https://ai.google/research/pubs/pub44824
 
                 This field is applicable only when the load_balancing_scheme is set to
                 INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]
@@ -4878,7 +4885,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5069,6 +5076,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            interface:
+              description: 'Immutable. Specifies the disk interface to use for attaching
+                this disk, which is either SCSI or NVME. The default is SCSI. Default
+                value: "SCSI" Possible values: ["SCSI", "NVME"]'
+              type: string
             location:
               description: 'Location represents the geographical location of the ComputeDisk.
                 Specify a region name or a zone name. Reference: GCP definition of
@@ -5405,7 +5417,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5515,7 +5527,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5853,7 +5865,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6418,7 +6430,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6847,7 +6859,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6973,7 +6985,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7099,7 +7111,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7229,6 +7241,7 @@ spec:
               - source
               type: object
             sourceImageRef:
+              description: The source image used to create this image.
               oneOf:
               - not:
                   required:
@@ -7255,6 +7268,7 @@ spec:
                   type: string
               type: object
             sourceSnapshotRef:
+              description: The source snapshot used to create this image.
               oneOf:
               - not:
                   required:
@@ -7338,7 +7352,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7504,7 +7518,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7983,8 +7997,7 @@ spec:
                     description: The name of the interface
                     type: string
                   networkIp:
-                    description: Immutable. The private IP address assigned to the
-                      instance.
+                    description: The private IP address assigned to the instance.
                     type: string
                   networkRef:
                     oneOf:
@@ -8233,7 +8246,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8778,7 +8791,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8997,7 +9010,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9161,7 +9174,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9198,15 +9211,15 @@ spec:
         spec:
           properties:
             exportCustomRoutes:
-              description: Immutable. Whether to export the custom routes to the peer
-                network. Defaults to false.
+              description: Whether to export the custom routes to the peer network.
+                Defaults to false.
               type: boolean
             exportSubnetRoutesWithPublicIp:
               description: Immutable.
               type: boolean
             importCustomRoutes:
-              description: Immutable. Whether to export the custom routes from the
-                peer network. Defaults to false.
+              description: Whether to export the custom routes from the peer network.
+                Defaults to false.
               type: boolean
             importSubnetRoutesWithPublicIp:
               description: Immutable.
@@ -9318,7 +9331,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9370,6 +9383,11 @@ spec:
                 Immutable. An optional description of this resource. The resource must be
                 recreated to modify this field.
               type: string
+            mtu:
+              description: |-
+                Immutable. Maximum Transmission Unit in bytes. The minimum value for this field is 1460
+                and the maximum value is 1500 bytes.
+              type: integer
             routingMode:
               description: |-
                 The network-wide routing mode to use. If set to 'REGIONAL', this
@@ -9428,7 +9446,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9491,6 +9509,11 @@ spec:
               type: object
             description:
               description: Immutable. An optional textual description of the resource.
+              type: string
+            maintenancePolicy:
+              description: 'Immutable. Specifies how to handle instances when a node
+                in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE,
+                or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT.'
               type: string
             nodeTemplateRef:
               description: The node template to which this node group belongs.
@@ -9579,7 +9602,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9725,7 +9748,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9904,7 +9927,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10123,7 +10146,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10295,7 +10318,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10582,7 +10605,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10805,7 +10828,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10978,7 +11001,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11218,7 +11241,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11384,7 +11407,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11460,7 +11483,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11569,7 +11592,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11907,7 +11930,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12086,7 +12109,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12214,7 +12237,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12280,6 +12303,7 @@ spec:
                   description: |-
                     Export filter used to define which VPC flow logs should be logged, as as CEL expression. See
                     https://cloud.google.com/vpc/docs/flow-logs#filtering for details on how to format this field.
+                    The default value is 'true', which evaluates to include everything.
                   type: string
                 flowSampling:
                   description: |-
@@ -12337,6 +12361,10 @@ spec:
                 When enabled, VMs in this subnetwork without external IP addresses can
                 access Google APIs and services by using Private Google Access.
               type: boolean
+            privateIpv6GoogleAccess:
+              description: The private IPv6 google access type for the VMs in this
+                subnet.
+              type: string
             purpose:
               description: |-
                 Immutable. The purpose of the resource. This field can be either PRIVATE
@@ -12444,7 +12472,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12572,7 +12600,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12772,7 +12800,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12929,7 +12957,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13116,7 +13144,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13306,7 +13334,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13432,7 +13460,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13557,7 +13585,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13713,6 +13741,7 @@ spec:
                     the host / authority header is suffixed with -shadow.
                   properties:
                     backendServiceRef:
+                      description: The backend service resource being mirrored to.
                       oneOf:
                       - not:
                           required:
@@ -13770,20 +13799,20 @@ spec:
                       description: |-
                         Specfies one or more conditions when this retry rule applies. Valid values are:
 
-                        5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
-                        or if the backend service does not respond at all, example: disconnects, reset, read timeout,
-                        connection failure, and refused streams.
-                        gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
-                        connect-failure: Loadbalancer will retry on failures connecting to backend services,
-                        for example due to connection timeouts.
-                        retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-                        Currently the only retriable error supported is 409.
-                        refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
-                        This reset type indicates that it is safe to retry.
-                        cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
-                        deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
-                        resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
-                        unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable
+                        * 5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
+                          or if the backend service does not respond at all, example: disconnects, reset, read timeout,
+                        * connection failure, and refused streams.
+                        * gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
+                        * connect-failure: Loadbalancer will retry on failures connecting to backend services,
+                          for example due to connection timeouts.
+                        * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+                          Currently the only retriable error supported is 409.
+                        * refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
+                          This reset type indicates that it is safe to retry.
+                        * cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
+                        * deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
+                        * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
+                        * unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable
                       items:
                         type: string
                       type: array
@@ -13838,6 +13867,10 @@ spec:
                   items:
                     properties:
                       backendServiceRef:
+                        description: |-
+                          The default backend service. Before forwarding the request to the
+                          backend service, the loadbalancer applies any relevant
+                          headerActions specified as part of this backendServiceWeight.
                         oneOf:
                         - not:
                             required:
@@ -14288,6 +14321,8 @@ spec:
                           the host / authority header is suffixed with -shadow.
                         properties:
                           backendServiceRef:
+                            description: The backend service resource being mirrored
+                              to.
                             oneOf:
                             - not:
                                 required:
@@ -14347,20 +14382,20 @@ spec:
                             description: |-
                               Specfies one or more conditions when this retry rule applies. Valid values are:
 
-                              5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
-                              or if the backend service does not respond at all, example: disconnects, reset, read timeout,
-                              connection failure, and refused streams.
-                              gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
-                              connect-failure: Loadbalancer will retry on failures connecting to backend services,
-                              for example due to connection timeouts.
-                              retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-                              Currently the only retriable error supported is 409.
-                              refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
-                              This reset type indicates that it is safe to retry.
-                              cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
-                              deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
-                              resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
-                              unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable
+                              * 5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
+                                or if the backend service does not respond at all, example: disconnects, reset, read timeout,
+                              * connection failure, and refused streams.
+                              * gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
+                              * connect-failure: Loadbalancer will retry on failures connecting to backend services,
+                                for example due to connection timeouts.
+                              * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+                                Currently the only retriable error supported is 409.
+                              * refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
+                                This reset type indicates that it is safe to retry.
+                              * cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
+                              * deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
+                              * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
+                              * unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable
                             items:
                               type: string
                             type: array
@@ -14415,6 +14450,10 @@ spec:
                         items:
                           properties:
                             backendServiceRef:
+                              description: |-
+                                The default backend service. Before forwarding the request to the
+                                backend service, the loadbalancer applies any relevant
+                                headerActions specified as part of this backendServiceWeight.
                               oneOf:
                               - not:
                                   required:
@@ -14870,6 +14909,8 @@ spec:
                                 service, the host / authority header is suffixed with -shadow.
                               properties:
                                 backendServiceRef:
+                                  description: The backend service resource being
+                                    mirrored to.
                                   oneOf:
                                   - not:
                                       required:
@@ -14929,25 +14970,26 @@ spec:
                                 retryConditions:
                                   description: |-
                                     Specifies one or more conditions when this retry rule applies. Valid values are:
-                                    - 5xx: Loadbalancer will attempt a retry if the backend service responds with
+
+                                    * 5xx: Loadbalancer will attempt a retry if the backend service responds with
                                     any 5xx response code, or if the backend service does not respond at all,
                                     example: disconnects, reset, read timeout, connection failure, and refused
                                     streams.
-                                    - gateway-error: Similar to 5xx, but only applies to response codes
+                                    * gateway-error: Similar to 5xx, but only applies to response codes
                                     502, 503 or 504.
-                                    - connect-failure: Loadbalancer will retry on failures
+                                    * connect-failure: Loadbalancer will retry on failures
                                     connecting to backend services, for example due to connection timeouts.
-                                    - retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+                                    * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
                                     Currently the only retriable error supported is 409.
-                                    - refused-stream: Loadbalancer will retry if the backend service resets the stream with a
+                                    * refused-stream: Loadbalancer will retry if the backend service resets the stream with a
                                     REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-                                    - cancelled: Loadbalancer will retry if the gRPC status code in the response
+                                    * cancelled: Loadbalancer will retry if the gRPC status code in the response
                                     header is set to cancelled
-                                    - deadline-exceeded: Loadbalancer will retry if the
+                                    * deadline-exceeded: Loadbalancer will retry if the
                                     gRPC status code in the response header is set to deadline-exceeded
-                                    - resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
+                                    * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
                                     header is set to resource-exhausted
-                                    - unavailable: Loadbalancer will retry if
+                                    * unavailable: Loadbalancer will retry if
                                     the gRPC status code in the response header is set to unavailable
                                   items:
                                     type: string
@@ -15005,6 +15047,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default backend service. Before forwarding the request to the
+                                      backend service, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -15669,6 +15715,8 @@ spec:
                                 service, the host / authority header is suffixed with -shadow.
                               properties:
                                 backendServiceRef:
+                                  description: The backend service resource being
+                                    mirrored to.
                                   oneOf:
                                   - not:
                                       required:
@@ -15730,25 +15778,26 @@ spec:
                                 retryConditions:
                                   description: |-
                                     Specfies one or more conditions when this retry rule applies. Valid values are:
-                                    - 5xx: Loadbalancer will attempt a retry if the backend service responds with
+
+                                    * 5xx: Loadbalancer will attempt a retry if the backend service responds with
                                       any 5xx response code, or if the backend service does not respond at all,
                                       example: disconnects, reset, read timeout, connection failure, and refused
                                       streams.
-                                    - gateway-error: Similar to 5xx, but only applies to response codes
+                                    * gateway-error: Similar to 5xx, but only applies to response codes
                                       502, 503 or 504.
-                                    - connect-failure: Loadbalancer will retry on failures
+                                    * connect-failure: Loadbalancer will retry on failures
                                       connecting to backend services, for example due to connection timeouts.
-                                    - retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+                                    * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
                                       Currently the only retriable error supported is 409.
-                                    - refused-stream: Loadbalancer will retry if the backend service resets the stream with a
+                                    * refused-stream: Loadbalancer will retry if the backend service resets the stream with a
                                       REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-                                    - cancelled: Loadbalancer will retry if the gRPC status code in the response
+                                    * cancelled: Loadbalancer will retry if the gRPC status code in the response
                                       header is set to cancelled
-                                    - deadline-exceeded: Loadbalancer will retry if the
+                                    * deadline-exceeded: Loadbalancer will retry if the
                                       gRPC status code in the response header is set to deadline-exceeded
-                                    - resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
+                                    * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
                                       header is set to resource-exhausted
-                                    - unavailable: Loadbalancer will retry if the gRPC status code in
+                                    * unavailable: Loadbalancer will retry if the gRPC status code in
                                       the response header is set to unavailable
                                   items:
                                     type: string
@@ -15808,6 +15857,10 @@ spec:
                               items:
                                 properties:
                                   backendServiceRef:
+                                    description: |-
+                                      The default backend service. Before forwarding the request to the
+                                      backend service, the loadbalancer applies any relevant
+                                      headerActions specified as part of this backendServiceWeight.
                                     oneOf:
                                     - not:
                                         required:
@@ -16133,7 +16186,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16264,7 +16317,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16596,7 +16649,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16845,6 +16898,19 @@ spec:
                   type: string
               required:
               - type
+              type: object
+            confidentialNodes:
+              description: 'Immutable. Configuration for the confidential nodes feature,
+                which makes nodes run on confidential VMs. Warning: This configuration
+                can''t be changed (or added/removed) after cluster creation without
+                deleting and recreating the entire cluster.'
+              properties:
+                enabled:
+                  description: Immutable. Whether Confidential Nodes feature is enabled
+                    for all nodes in this cluster.
+                  type: boolean
+              required:
+              - enabled
               type: object
             databaseEncryption:
               description: 'Application-layer Secrets Encryption settings. The object
@@ -17602,7 +17668,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17975,7 +18041,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18071,7 +18137,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18283,7 +18349,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18572,7 +18638,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18732,7 +18798,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18858,7 +18924,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18982,7 +19048,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19086,7 +19152,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19146,8 +19212,8 @@ spec:
                 type: object
               type: array
             resourceRef:
-              description: Required. The GCP resource to set the IAMAuditConfig on
-                (e.g. project).
+              description: Immutable. Required. The GCP resource to set the IAMAuditConfig
+                on (e.g. project).
               properties:
                 apiVersion:
                   type: string
@@ -19163,8 +19229,8 @@ spec:
               - kind
               type: object
             service:
-              description: 'Required. The service for which to enable Data Access
-                audit logs. The special value ''allServices'' covers all services.
+              description: 'Immutable. Required. The service for which to enable Data
+                Access audit logs. The special value ''allServices'' covers all services.
                 Note that if there are audit configs covering both ''allServices''
                 and a specific service, then the union of the two audit configs is
                 used for that service: the ''logTypes'' specified in each ''auditLogConfig''
@@ -19218,7 +19284,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19325,7 +19391,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19437,7 +19503,8 @@ spec:
                 type: object
               type: array
             resourceRef:
-              description: Required. The GCP resource to set the IAM policy on.
+              description: Immutable. Required. The GCP resource to set the IAM policy
+                on.
               oneOf:
               - not:
                   required:
@@ -19521,7 +19588,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19558,7 +19625,8 @@ spec:
         spec:
           properties:
             condition:
-              description: Optional. The condition under which the binding applies.
+              description: Immutable. Optional. The condition under which the binding
+                applies.
               properties:
                 description:
                   type: string
@@ -19571,12 +19639,13 @@ spec:
               - expression
               type: object
             member:
-              description: Required. The list of IAM identities to be bound to the
-                role
+              description: Immutable. Required. The list of IAM identities to be bound
+                to the role
               pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
               type: string
             resourceRef:
-              description: Required. The GCP resource to set the IAM policy on.
+              description: Immutable. Required. The GCP resource to set the IAM policy
+                on.
               oneOf:
               - not:
                   required:
@@ -19616,7 +19685,8 @@ spec:
               - kind
               type: object
             role:
-              description: Required. The role for which the Member will be bound.
+              description: Immutable. Required. The role for which the Member will
+                be bound.
               pattern: ^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
               type: string
           required:
@@ -19666,7 +19736,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19812,7 +19882,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19910,7 +19980,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19986,6 +20056,10 @@ spec:
                 the format of a decimal number with up to 9 fractional digits, followed by the
                 letter 's' (seconds). It must be greater than a day (ie, 86400).
               type: string
+            skipInitialVersionCreation:
+              description: Immutable. If set to true, the request will create a CryptoKey
+                without any CryptoKeyVersions.
+              type: boolean
             versionTemplate:
               description: A template describing settings for new crypto key versions.
               properties:
@@ -20051,7 +20125,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20141,7 +20215,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20278,6 +20352,35 @@ spec:
                       type: string
                   type: object
               type: object
+            exclusions:
+              description: Log entries that match any of the exclusion filters will
+                not be exported. If a log entry is matched by both filter and one
+                of exclusion_filters it will not be exported.
+              items:
+                properties:
+                  description:
+                    description: A description of this exclusion.
+                    type: string
+                  disabled:
+                    description: If set to True, then this exclusion is disabled and
+                      it does not exclude any log entries
+                    type: boolean
+                  filter:
+                    description: An advanced logs filter that matches the log entries
+                      to be excluded. By using the sample function, you can exclude
+                      less than 100% of the matching log entries
+                    type: string
+                  name:
+                    description: A client-assigned identifier, such as "load-balancer-exclusion".
+                      Identifiers are limited to 100 characters and can include only
+                      letters, digits, underscores, hyphens, and periods. First character
+                      has to be alphanumeric.
+                    type: string
+                required:
+                - filter
+                - name
+                type: object
+              type: array
             filter:
               description: The filter to apply when exporting logs. Only log entries
                 that match the filter are exported.
@@ -20434,7 +20537,731 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
+spec:
+  group: monitoring.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: MonitoringAlertPolicy
+    plural: monitoringalertpolicies
+    shortNames:
+    - gcpmonitoringalertpolicy
+    - gcpmonitoringalertpolicies
+    singular: monitoringalertpolicy
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'apiVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            combiner:
+              description: |-
+                How to combine the results of multiple conditions to
+                determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"]
+              type: string
+            conditions:
+              description: |-
+                A list of conditions for the policy. The conditions are combined by
+                AND or OR according to the combiner field. If the combined conditions
+                evaluate to true, then an incident is created. A policy can have from
+                one to six conditions.
+              items:
+                properties:
+                  conditionAbsent:
+                    description: |-
+                      A condition that checks that a time series
+                      continues to receive new data points.
+                    properties:
+                      aggregations:
+                        description: |-
+                          Specifies the alignment of data points in
+                          individual time series as well as how to
+                          combine the retrieved time series together
+                          (such as when aggregating multiple streams
+                          on each resource to a single stream for each
+                          resource or when aggregating streams across
+                          all members of a group of resources).
+                          Multiple aggregations are applied in the
+                          order specified.
+                        items:
+                          properties:
+                            alignmentPeriod:
+                              description: |-
+                                The alignment period for per-time
+                                series alignment. If present,
+                                alignmentPeriod must be at least
+                                60 seconds. After per-time series
+                                alignment, each time series will
+                                contain data points only on the
+                                period boundaries. If
+                                perSeriesAligner is not specified
+                                or equals ALIGN_NONE, then this
+                                field is ignored. If
+                                perSeriesAligner is specified and
+                                does not equal ALIGN_NONE, then
+                                this field must be defined;
+                                otherwise an error is returned.
+                              type: string
+                            crossSeriesReducer:
+                              description: |-
+                                The approach to be used to combine
+                                time series. Not all reducer
+                                functions may be applied to all
+                                time series, depending on the
+                                metric type and the value type of
+                                the original time series.
+                                Reduction may change the metric
+                                type of value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]
+                              type: string
+                            groupByFields:
+                              description: |-
+                                The set of fields to preserve when
+                                crossSeriesReducer is specified.
+                                The groupByFields determine how
+                                the time series are partitioned
+                                into subsets prior to applying the
+                                aggregation function. Each subset
+                                contains time series that have the
+                                same value for each of the
+                                grouping fields. Each individual
+                                time series is a member of exactly
+                                one subset. The crossSeriesReducer
+                                is applied to each subset of time
+                                series. It is not possible to
+                                reduce across different resource
+                                types, so this field implicitly
+                                contains resource.type. Fields not
+                                specified in groupByFields are
+                                aggregated away. If groupByFields
+                                is not specified and all the time
+                                series have the same resource
+                                type, then the time series are
+                                aggregated into a single output
+                                time series. If crossSeriesReducer
+                                is not defined, this field is
+                                ignored.
+                              items:
+                                type: string
+                              type: array
+                            perSeriesAligner:
+                              description: |-
+                                The approach to be used to align
+                                individual time series. Not all
+                                alignment functions may be applied
+                                to all time series, depending on
+                                the metric type and value type of
+                                the original time series.
+                                Alignment may change the metric
+                                type or the value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]
+                              type: string
+                          type: object
+                        type: array
+                      duration:
+                        description: |-
+                          The amount of time that a time series must
+                          fail to report new data to be considered
+                          failing. Currently, only values that are a
+                          multiple of a minute--e.g. 60s, 120s, or 300s
+                          --are supported.
+                        type: string
+                      filter:
+                        description: |-
+                          A filter that identifies which time series
+                          should be compared with the threshold.The
+                          filter is similar to the one that is
+                          specified in the
+                          MetricService.ListTimeSeries request (that
+                          call is useful to verify the time series
+                          that will be retrieved / processed) and must
+                          specify the metric type and optionally may
+                          contain restrictions on resource type,
+                          resource labels, and metric labels. This
+                          field may not exceed 2048 Unicode characters
+                          in length.
+                        type: string
+                      trigger:
+                        description: |-
+                          The number/percent of time series for which
+                          the comparison must hold in order for the
+                          condition to trigger. If unspecified, then
+                          the condition will trigger if the comparison
+                          is true for any of the time series that have
+                          been identified by filter and aggregations.
+                        properties:
+                          count:
+                            description: |-
+                              The absolute number of time series
+                              that must fail the predicate for the
+                              condition to be triggered.
+                            type: integer
+                          percent:
+                            description: |-
+                              The percentage of time series that
+                              must fail the predicate for the
+                              condition to be triggered.
+                            type: number
+                        type: object
+                    required:
+                    - duration
+                    type: object
+                  conditionMonitoringQueryLanguage:
+                    description: A Monitoring Query Language query that outputs a
+                      boolean stream
+                    properties:
+                      duration:
+                        description: |-
+                          The amount of time that a time series must
+                          violate the threshold to be considered
+                          failing. Currently, only values that are a
+                          multiple of a minute--e.g., 0, 60, 120, or
+                          300 seconds--are supported. If an invalid
+                          value is given, an error will be returned.
+                          When choosing a duration, it is useful to
+                          keep in mind the frequency of the underlying
+                          time series data (which may also be affected
+                          by any alignments specified in the
+                          aggregations field); a good duration is long
+                          enough so that a single outlier does not
+                          generate spurious alerts, but short enough
+                          that unhealthy states are detected and
+                          alerted on quickly.
+                        type: string
+                      query:
+                        description: Monitoring Query Language query that outputs
+                          a boolean stream.
+                        type: string
+                      trigger:
+                        description: |-
+                          The number/percent of time series for which
+                          the comparison must hold in order for the
+                          condition to trigger. If unspecified, then
+                          the condition will trigger if the comparison
+                          is true for any of the time series that have
+                          been identified by filter and aggregations,
+                          or by the ratio, if denominator_filter and
+                          denominator_aggregations are specified.
+                        properties:
+                          count:
+                            description: |-
+                              The absolute number of time series
+                              that must fail the predicate for the
+                              condition to be triggered.
+                            type: integer
+                          percent:
+                            description: |-
+                              The percentage of time series that
+                              must fail the predicate for the
+                              condition to be triggered.
+                            type: number
+                        type: object
+                    required:
+                    - duration
+                    - query
+                    type: object
+                  conditionThreshold:
+                    description: |-
+                      A condition that compares a time series against a
+                      threshold.
+                    properties:
+                      aggregations:
+                        description: |-
+                          Specifies the alignment of data points in
+                          individual time series as well as how to
+                          combine the retrieved time series together
+                          (such as when aggregating multiple streams
+                          on each resource to a single stream for each
+                          resource or when aggregating streams across
+                          all members of a group of resources).
+                          Multiple aggregations are applied in the
+                          order specified.This field is similar to the
+                          one in the MetricService.ListTimeSeries
+                          request. It is advisable to use the
+                          ListTimeSeries method when debugging this
+                          field.
+                        items:
+                          properties:
+                            alignmentPeriod:
+                              description: |-
+                                The alignment period for per-time
+                                series alignment. If present,
+                                alignmentPeriod must be at least
+                                60 seconds. After per-time series
+                                alignment, each time series will
+                                contain data points only on the
+                                period boundaries. If
+                                perSeriesAligner is not specified
+                                or equals ALIGN_NONE, then this
+                                field is ignored. If
+                                perSeriesAligner is specified and
+                                does not equal ALIGN_NONE, then
+                                this field must be defined;
+                                otherwise an error is returned.
+                              type: string
+                            crossSeriesReducer:
+                              description: |-
+                                The approach to be used to combine
+                                time series. Not all reducer
+                                functions may be applied to all
+                                time series, depending on the
+                                metric type and the value type of
+                                the original time series.
+                                Reduction may change the metric
+                                type of value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]
+                              type: string
+                            groupByFields:
+                              description: |-
+                                The set of fields to preserve when
+                                crossSeriesReducer is specified.
+                                The groupByFields determine how
+                                the time series are partitioned
+                                into subsets prior to applying the
+                                aggregation function. Each subset
+                                contains time series that have the
+                                same value for each of the
+                                grouping fields. Each individual
+                                time series is a member of exactly
+                                one subset. The crossSeriesReducer
+                                is applied to each subset of time
+                                series. It is not possible to
+                                reduce across different resource
+                                types, so this field implicitly
+                                contains resource.type. Fields not
+                                specified in groupByFields are
+                                aggregated away. If groupByFields
+                                is not specified and all the time
+                                series have the same resource
+                                type, then the time series are
+                                aggregated into a single output
+                                time series. If crossSeriesReducer
+                                is not defined, this field is
+                                ignored.
+                              items:
+                                type: string
+                              type: array
+                            perSeriesAligner:
+                              description: |-
+                                The approach to be used to align
+                                individual time series. Not all
+                                alignment functions may be applied
+                                to all time series, depending on
+                                the metric type and value type of
+                                the original time series.
+                                Alignment may change the metric
+                                type or the value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]
+                              type: string
+                          type: object
+                        type: array
+                      comparison:
+                        description: |-
+                          The comparison to apply between the time
+                          series (indicated by filter and aggregation)
+                          and the threshold (indicated by
+                          threshold_value). The comparison is applied
+                          on each time series, with the time series on
+                          the left-hand side and the threshold on the
+                          right-hand side. Only COMPARISON_LT and
+                          COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]
+                        type: string
+                      denominatorAggregations:
+                        description: |-
+                          Specifies the alignment of data points in
+                          individual time series selected by
+                          denominatorFilter as well as how to combine
+                          the retrieved time series together (such as
+                          when aggregating multiple streams on each
+                          resource to a single stream for each
+                          resource or when aggregating streams across
+                          all members of a group of resources).When
+                          computing ratios, the aggregations and
+                          denominator_aggregations fields must use the
+                          same alignment period and produce time
+                          series that have the same periodicity and
+                          labels.This field is similar to the one in
+                          the MetricService.ListTimeSeries request. It
+                          is advisable to use the ListTimeSeries
+                          method when debugging this field.
+                        items:
+                          properties:
+                            alignmentPeriod:
+                              description: |-
+                                The alignment period for per-time
+                                series alignment. If present,
+                                alignmentPeriod must be at least
+                                60 seconds. After per-time series
+                                alignment, each time series will
+                                contain data points only on the
+                                period boundaries. If
+                                perSeriesAligner is not specified
+                                or equals ALIGN_NONE, then this
+                                field is ignored. If
+                                perSeriesAligner is specified and
+                                does not equal ALIGN_NONE, then
+                                this field must be defined;
+                                otherwise an error is returned.
+                              type: string
+                            crossSeriesReducer:
+                              description: |-
+                                The approach to be used to combine
+                                time series. Not all reducer
+                                functions may be applied to all
+                                time series, depending on the
+                                metric type and the value type of
+                                the original time series.
+                                Reduction may change the metric
+                                type of value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]
+                              type: string
+                            groupByFields:
+                              description: |-
+                                The set of fields to preserve when
+                                crossSeriesReducer is specified.
+                                The groupByFields determine how
+                                the time series are partitioned
+                                into subsets prior to applying the
+                                aggregation function. Each subset
+                                contains time series that have the
+                                same value for each of the
+                                grouping fields. Each individual
+                                time series is a member of exactly
+                                one subset. The crossSeriesReducer
+                                is applied to each subset of time
+                                series. It is not possible to
+                                reduce across different resource
+                                types, so this field implicitly
+                                contains resource.type. Fields not
+                                specified in groupByFields are
+                                aggregated away. If groupByFields
+                                is not specified and all the time
+                                series have the same resource
+                                type, then the time series are
+                                aggregated into a single output
+                                time series. If crossSeriesReducer
+                                is not defined, this field is
+                                ignored.
+                              items:
+                                type: string
+                              type: array
+                            perSeriesAligner:
+                              description: |-
+                                The approach to be used to align
+                                individual time series. Not all
+                                alignment functions may be applied
+                                to all time series, depending on
+                                the metric type and value type of
+                                the original time series.
+                                Alignment may change the metric
+                                type or the value type of the time
+                                series.Time series data must be
+                                aligned in order to perform cross-
+                                time series reduction. If
+                                crossSeriesReducer is specified,
+                                then perSeriesAligner must be
+                                specified and not equal ALIGN_NONE
+                                and alignmentPeriod must be
+                                specified; otherwise, an error is
+                                returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]
+                              type: string
+                          type: object
+                        type: array
+                      denominatorFilter:
+                        description: |-
+                          A filter that identifies a time series that
+                          should be used as the denominator of a ratio
+                          that will be compared with the threshold. If
+                          a denominator_filter is specified, the time
+                          series specified by the filter field will be
+                          used as the numerator.The filter is similar
+                          to the one that is specified in the
+                          MetricService.ListTimeSeries request (that
+                          call is useful to verify the time series
+                          that will be retrieved / processed) and must
+                          specify the metric type and optionally may
+                          contain restrictions on resource type,
+                          resource labels, and metric labels. This
+                          field may not exceed 2048 Unicode characters
+                          in length.
+                        type: string
+                      duration:
+                        description: |-
+                          The amount of time that a time series must
+                          violate the threshold to be considered
+                          failing. Currently, only values that are a
+                          multiple of a minute--e.g., 0, 60, 120, or
+                          300 seconds--are supported. If an invalid
+                          value is given, an error will be returned.
+                          When choosing a duration, it is useful to
+                          keep in mind the frequency of the underlying
+                          time series data (which may also be affected
+                          by any alignments specified in the
+                          aggregations field); a good duration is long
+                          enough so that a single outlier does not
+                          generate spurious alerts, but short enough
+                          that unhealthy states are detected and
+                          alerted on quickly.
+                        type: string
+                      filter:
+                        description: |-
+                          A filter that identifies which time series
+                          should be compared with the threshold.The
+                          filter is similar to the one that is
+                          specified in the
+                          MetricService.ListTimeSeries request (that
+                          call is useful to verify the time series
+                          that will be retrieved / processed) and must
+                          specify the metric type and optionally may
+                          contain restrictions on resource type,
+                          resource labels, and metric labels. This
+                          field may not exceed 2048 Unicode characters
+                          in length.
+                        type: string
+                      thresholdValue:
+                        description: |-
+                          A value against which to compare the time
+                          series.
+                        type: number
+                      trigger:
+                        description: |-
+                          The number/percent of time series for which
+                          the comparison must hold in order for the
+                          condition to trigger. If unspecified, then
+                          the condition will trigger if the comparison
+                          is true for any of the time series that have
+                          been identified by filter and aggregations,
+                          or by the ratio, if denominator_filter and
+                          denominator_aggregations are specified.
+                        properties:
+                          count:
+                            description: |-
+                              The absolute number of time series
+                              that must fail the predicate for the
+                              condition to be triggered.
+                            type: integer
+                          percent:
+                            description: |-
+                              The percentage of time series that
+                              must fail the predicate for the
+                              condition to be triggered.
+                            type: number
+                        type: object
+                    required:
+                    - comparison
+                    - duration
+                    type: object
+                  displayName:
+                    description: |-
+                      A short name or phrase used to identify the
+                      condition in dashboards, notifications, and
+                      incidents. To avoid confusion, don't use the same
+                      display name for multiple conditions in the same
+                      policy.
+                    type: string
+                  name:
+                    description: |-
+                      The unique resource name for this condition.
+                      Its syntax is:
+                      projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
+                      [CONDITION_ID] is assigned by Stackdriver Monitoring when
+                      the condition is created as part of a new or updated alerting
+                      policy.
+                    type: string
+                required:
+                - displayName
+                type: object
+              type: array
+            displayName:
+              description: |-
+                A short name or phrase used to identify the policy in
+                dashboards, notifications, and incidents. To avoid confusion, don't use
+                the same display name for multiple policies in the same project. The
+                name is limited to 512 Unicode characters.
+              type: string
+            documentation:
+              description: |-
+                A short name or phrase used to identify the policy in dashboards,
+                notifications, and incidents. To avoid confusion, don't use the same
+                display name for multiple policies in the same project. The name is
+                limited to 512 Unicode characters.
+              properties:
+                content:
+                  description: |-
+                    The text of the documentation, interpreted according to mimeType.
+                    The content may not exceed 8,192 Unicode characters and may not
+                    exceed more than 10,240 bytes when encoded in UTF-8 format,
+                    whichever is smaller.
+                  type: string
+                mimeType:
+                  description: |-
+                    The format of the content field. Presently, only the value
+                    "text/markdown" is supported.
+                  type: string
+              type: object
+            enabled:
+              description: Whether or not the policy is enabled. The default is true.
+              type: boolean
+            notificationChannels:
+              items:
+                description: Identifies the notification channels to which notifications
+                  should be sent when incidents are opened or closed or when new violations
+                  occur on an already opened incident.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The name of a MonitoringNotificationChannel.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              type: array
+          required:
+          - combiner
+          - conditions
+          - displayName
+          type: object
+        status:
+          properties:
+            conditions:
+              description: Conditions represents the latest available observation
+                of the resource's current state.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    type: string
+                  message:
+                    description: Human-readable message indicating details about last
+                      transition.
+                    type: string
+                  reason:
+                    description: Unique, one-word, CamelCase reason for the condition's
+                      last transition.
+                    type: string
+                  status:
+                    description: Status is the status of the condition. Can be True,
+                      False, Unknown.
+                    type: string
+                  type:
+                    description: Type is the type of the condition.
+                    type: string
+                type: object
+              type: array
+            creationRecord:
+              description: |-
+                A read-only record of the creation of the alerting policy.
+                If provided in a call to create or update, this field will
+                be ignored.
+              items:
+                properties:
+                  mutateTime:
+                    description: When the change occurred.
+                    type: string
+                  mutatedBy:
+                    description: The email address of the user making the change.
+                    type: string
+                type: object
+              type: array
+            name:
+              description: |-
+                The unique resource name for this policy.
+                Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
+              type: string
+          type: object
+      required:
+      - spec
+      type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20687,7 +21514,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20802,7 +21629,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20909,7 +21736,7 @@ spec:
               type: object
             enableMessageOrdering:
               description: |-
-                If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to
+                Immutable. If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to
                 the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they
                 may be delivered in any order.
               type: boolean
@@ -21122,7 +21949,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21253,7 +22080,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21296,6 +22123,12 @@ spec:
                 If provided, it must be a different zone from the one provided in
                 [locationId].
               type: string
+            authEnabled:
+              description: |-
+                Optional. Indicates whether OSS Redis AUTH is enabled for the
+                instance. If set to "true" AUTH is enabled on the instance.
+                Default value is "false" meaning AUTH is disabled.
+              type: boolean
             authorizedNetworkRef:
               description: |-
                 The network to which the instance is connected. If left
@@ -21455,7 +22288,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21705,7 +22538,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21826,7 +22659,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21989,7 +22822,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22398,7 +23231,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22544,7 +23377,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22620,7 +23453,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22780,7 +23613,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22902,7 +23735,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23006,7 +23839,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23134,7 +23967,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23371,8 +24204,8 @@ spec:
                     This property is only applicable to First Generation instances.
                     First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice
                     for information on how to upgrade to Second Generation instances.
-                    A list of Google App Engine (GAE) project names that are allowed
-                    to access this instance.
+                    A list of Google App Engine project names that are allowed to
+                    access this instance.
                   items:
                     type: string
                   type: array
@@ -23623,7 +24456,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23763,7 +24596,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23917,7 +24750,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24056,7 +24889,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24329,7 +25162,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24483,7 +25316,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24649,7 +25482,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24690,7 +25523,7 @@ spec:
               type: string
             schedule:
               description: Schedule specification defining when the Transfer Job should
-                be scheduled to start, end and and what time to run.
+                be scheduled to start, end and what time to run.
               properties:
                 scheduleEndDate:
                   description: Immutable. The last day the recurring transfer will

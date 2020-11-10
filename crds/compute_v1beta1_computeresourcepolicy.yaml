@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,22 +39,17 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
         spec:
           properties:
             groupPlacementPolicy:
-              description: Immutable. Policy for creating snapshots of persistent
-                disks.
+              description: Immutable. Policy for creating snapshots of persistent disks.
               properties:
                 availabilityDomainCount:
                   description: |-
@@ -76,16 +71,13 @@ spec:
               description: Immutable. Region where resource policy resides.
               type: string
             snapshotSchedulePolicy:
-              description: Immutable. Policy for creating snapshots of persistent
-                disks.
+              description: Immutable. Policy for creating snapshots of persistent disks.
               properties:
                 retentionPolicy:
-                  description: Immutable. Retention policy applied to snapshots created
-                    by this resource policy.
+                  description: Immutable. Retention policy applied to snapshots created by this resource policy.
                   properties:
                     maxRetentionDays:
-                      description: Immutable. Maximum age of the snapshot that is
-                        allowed to be kept.
+                      description: Immutable. Maximum age of the snapshot that is allowed to be kept.
                       type: integer
                     onSourceDiskDelete:
                       description: |-
@@ -96,12 +88,10 @@ spec:
                   - maxRetentionDays
                   type: object
                 schedule:
-                  description: Immutable. Contains one of an 'hourlySchedule', 'dailySchedule',
-                    or 'weeklySchedule'.
+                  description: Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'.
                   properties:
                     dailySchedule:
-                      description: Immutable. The policy will execute every nth day
-                        at the specified time.
+                      description: Immutable. The policy will execute every nth day at the specified time.
                       properties:
                         daysInCycle:
                           description: Immutable. The number of days between snapshots.
@@ -117,8 +107,7 @@ spec:
                       - startTime
                       type: object
                     hourlySchedule:
-                      description: Immutable. The policy will execute every nth hour
-                        starting at the specified time.
+                      description: Immutable. The policy will execute every nth hour starting at the specified time.
                       properties:
                         hoursInCycle:
                           description: Immutable. The number of hours between snapshots.
@@ -135,19 +124,14 @@ spec:
                       - startTime
                       type: object
                     weeklySchedule:
-                      description: Immutable. Allows specifying a snapshot time for
-                        each day of the week.
+                      description: Immutable. Allows specifying a snapshot time for each day of the week.
                       properties:
                         dayOfWeeks:
-                          description: Immutable. May contain up to seven (one for
-                            each day of the week) snapshot times.
+                          description: Immutable. May contain up to seven (one for each day of the week) snapshot times.
                           items:
                             properties:
                               day:
-                                description: 'Immutable. The day of the week to create
-                                  the snapshot. e.g. MONDAY Possible values: ["MONDAY",
-                                  "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-                                  "SUNDAY"]'
+                                description: 'Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]'
                                 type: string
                               startTime:
                                 description: |-
@@ -164,8 +148,7 @@ spec:
                       type: object
                   type: object
                 snapshotProperties:
-                  description: Immutable. Properties with which the snapshots are
-                    created, such as labels.
+                  description: Immutable. Properties with which the snapshots are created, such as labels.
                   properties:
                     guestFlush:
                       description: Immutable. Whether to perform a 'guest aware' snapshot.
@@ -192,25 +175,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.

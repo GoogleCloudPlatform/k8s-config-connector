@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,25 +39,17 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
         spec:
           properties:
             databaseVersion:
-              description: Immutable. The MySQL, PostgreSQL or SQL Server (beta) version
-                to use. Supported values include MYSQL_5_6, MYSQL_5_7, POSTGRES_9_6,POSTGRES_11,
-                SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS,
-                SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date
-                reference of supported versions.
+              description: Immutable. The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, POSTGRES_9_6,POSTGRES_11, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions.
               type: string
             encryptionKMSCryptoKeyRef:
               oneOf:
@@ -112,41 +104,28 @@ spec:
                   type: string
               type: object
             region:
-              description: Immutable. The region the instance will sit in. Note, Cloud
-                SQL is not available in all regions - choose from one of the options
-                listed here. A valid region must be provided to use this resource.
-                If a region is not provided in the resource definition, the provider
-                region will be used instead, but this will be an apply-time error
-                for instances if the provider region is not supported with Cloud SQL.
-                If you choose not to provide the region argument for this resource,
-                make sure you understand this.
+              description: Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions - choose from one of the options listed here. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this.
               type: string
             replicaConfiguration:
               description: The configuration for replication.
               properties:
                 caCertificate:
-                  description: Immutable. PEM representation of the trusted CA's x509
-                    certificate.
+                  description: Immutable. PEM representation of the trusted CA's x509 certificate.
                   type: string
                 clientCertificate:
                   description: Immutable. PEM representation of the slave's x509 certificate.
                   type: string
                 clientKey:
-                  description: Immutable. PEM representation of the slave's private
-                    key. The corresponding public key in encoded in the client_certificate.
+                  description: Immutable. PEM representation of the slave's private key. The corresponding public key in encoded in the client_certificate.
                   type: string
                 connectRetryInterval:
                   description: Immutable. The number of seconds between connect retries.
                   type: integer
                 dumpFilePath:
-                  description: Immutable. Path to a SQL file in Google Cloud Storage
-                    from which slave instances are created. Format is gs://bucket/filename.
+                  description: Immutable. Path to a SQL file in Google Cloud Storage from which slave instances are created. Format is gs://bucket/filename.
                   type: string
                 failoverTarget:
-                  description: Immutable. Specifies if the replica is the failover
-                    target. If the field is set to true the replica will be designated
-                    as a failover replica. If the master instance fails, the replica
-                    instance will be promoted as the new master instance.
+                  description: Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance.
                   type: boolean
                 masterHeartbeatPeriod:
                   description: Immutable. Time in ms between replication heartbeats.
@@ -166,16 +145,13 @@ spec:
                     - valueFrom
                   properties:
                     value:
-                      description: Value of the field. Cannot be used if 'valueFrom'
-                        is specified.
+                      description: Value of the field. Cannot be used if 'valueFrom' is specified.
                       type: string
                     valueFrom:
-                      description: Source for the field's value. Cannot be used if
-                        'value' is specified.
+                      description: Source for the field's value. Cannot be used if 'value' is specified.
                       properties:
                         secretKeyRef:
-                          description: Reference to a value with the given key in
-                            the given Secret in the resource's namespace.
+                          description: Reference to a value with the given key in the given Secret in the resource's namespace.
                           properties:
                             key:
                               description: Key that identifies the value to be extracted.
@@ -196,13 +172,11 @@ spec:
                   description: Immutable. Username for replication connection.
                   type: string
                 verifyServerCertificate:
-                  description: Immutable. True if the master's common name value is
-                    checked during the SSL handshake.
+                  description: Immutable. True if the master's common name value is checked during the SSL handshake.
                   type: boolean
               type: object
             rootPassword:
-              description: Immutable. Initial root password. Required for MS SQL Server,
-                ignored by MySQL and PostgreSQL.
+              description: Immutable. Initial root password. Required for MS SQL Server, ignored by MySQL and PostgreSQL.
               oneOf:
               - not:
                   required:
@@ -216,16 +190,13 @@ spec:
                 - valueFrom
               properties:
                 value:
-                  description: Value of the field. Cannot be used if 'valueFrom' is
-                    specified.
+                  description: Value of the field. Cannot be used if 'valueFrom' is specified.
                   type: string
                 valueFrom:
-                  description: Source for the field's value. Cannot be used if 'value'
-                    is specified.
+                  description: Source for the field's value. Cannot be used if 'value' is specified.
                   properties:
                     secretKeyRef:
-                      description: Reference to a value with the given key in the
-                        given Secret in the resource's namespace.
+                      description: Reference to a value with the given key in the given Secret in the resource's namespace.
                       properties:
                         key:
                           description: Key that identifies the value to be extracted.
@@ -240,21 +211,13 @@ spec:
                   type: object
               type: object
             settings:
-              description: The settings to use for the database. The configuration
-                is detailed below.
+              description: The settings to use for the database. The configuration is detailed below.
               properties:
                 activationPolicy:
-                  description: This specifies when the instance should be active.
-                    Can be either ALWAYS, NEVER or ON_DEMAND.
+                  description: This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND.
                   type: string
                 authorizedGaeApplications:
-                  description: DEPRECATED — This property is only applicable to First
-                    Generation instances, and First Generation instances are now deprecated.
-                    This property is only applicable to First Generation instances.
-                    First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice
-                    for information on how to upgrade to Second Generation instances.
-                    A list of Google App Engine (GAE) project names that are allowed
-                    to access this instance.
+                  description: DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. A list of Google App Engine project names that are allowed to access this instance.
                   items:
                     type: string
                   type: array
@@ -268,8 +231,7 @@ spec:
                 backupConfiguration:
                   properties:
                     binaryLogEnabled:
-                      description: True if binary logging is enabled. If settings.backup_configuration.enabled
-                        is false, this must be as well. Cannot be used with Postgres.
+                      description: True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Cannot be used with Postgres.
                       type: boolean
                     enabled:
                       description: True if backup configuration is enabled.
@@ -281,18 +243,11 @@ spec:
                       description: True if Point-in-time recovery is enabled.
                       type: boolean
                     startTime:
-                      description: HH:MM format time indicating when backup configuration
-                        starts.
+                      description: HH:MM format time indicating when backup configuration starts.
                       type: string
                   type: object
                 crashSafeReplication:
-                  description: DEPRECATED — This property is only applicable to First
-                    Generation instances, and First Generation instances are now deprecated.
-                    This property is only applicable to First Generation instances.
-                    First Generation instances are now deprecated, see here for information
-                    on how to upgrade to Second Generation instances. Specific to
-                    read instances, indicates when crash-safe replication flags are
-                    enabled.
+                  description: DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled.
                   type: boolean
                 databaseFlags:
                   items:
@@ -311,8 +266,7 @@ spec:
                 diskAutoresize:
                   type: boolean
                 diskSize:
-                  description: The size of data disk, in GB. Size of a running instance
-                    cannot be reduced but can be increased.
+                  description: The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased.
                   type: integer
                 diskType:
                   description: 'The type of data disk: PD_SSD or PD_HDD.'
@@ -333,9 +287,7 @@ spec:
                         type: object
                       type: array
                     ipv4Enabled:
-                      description: Whether this Cloud SQL instance should be assigned
-                        a public IPV4 address. Either ipv4_enabled must be enabled
-                        or a private_network must be configured.
+                      description: Whether this Cloud SQL instance should be assigned a public IPV4 address. Either ipv4_enabled must be enabled or a private_network must be configured.
                       type: boolean
                     privateNetworkRef:
                       oneOf:
@@ -369,17 +321,14 @@ spec:
                 locationPreference:
                   properties:
                     followGaeApplication:
-                      description: A Google App Engine application whose zone to remain
-                        in. Must be in the same region as this instance.
+                      description: A Google App Engine application whose zone to remain in. Must be in the same region as this instance.
                       type: string
                     zone:
                       description: The preferred compute engine zone.
                       type: string
                   type: object
                 maintenanceWindow:
-                  description: Declares a one-hour maintenance window when an Instance
-                    can automatically restart to apply updates. The maintenance window
-                    is specified in UTC time.
+                  description: Declares a one-hour maintenance window when an Instance can automatically restart to apply updates. The maintenance window is specified in UTC time.
                   properties:
                     day:
                       description: Day of week (1-7), starting on Monday
@@ -395,19 +344,10 @@ spec:
                   description: Pricing plan for this instance, can only be PER_USE.
                   type: string
                 replicationType:
-                  description: DEPRECATED — This property is only applicable to First
-                    Generation instances, and First Generation instances are now deprecated.
-                    This property is only applicable to First Generation instances.
-                    First Generation instances are now deprecated, see here for information
-                    on how to upgrade to Second Generation instances. Replication
-                    type for this instance, can be one of ASYNCHRONOUS or SYNCHRONOUS.
+                  description: DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Replication type for this instance, can be one of ASYNCHRONOUS or SYNCHRONOUS.
                   type: string
                 tier:
-                  description: The machine type to use. See tiers for more details
-                    and supported versions. Postgres supports only shared-core machine
-                    types such as db-f1-micro, and custom machine types such as db-custom-2-13312.
-                    See the Custom Machine Type Documentation to learn about specifying
-                    custom machine types.
+                  description: The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types such as db-f1-micro, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types.
                   type: string
               required:
               - tier
@@ -418,25 +358,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.
@@ -444,8 +379,7 @@ spec:
                 type: object
               type: array
             connectionName:
-              description: The connection name of the instance to be used in connection
-                strings. For example, when connecting with Cloud SQL Proxy.
+              description: The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy.
               type: string
             firstIpAddress:
               type: string
@@ -470,8 +404,7 @@ spec:
             serverCaCert:
               properties:
                 cert:
-                  description: The CA Certificate used to connect to the SQL Instance
-                    via SSL.
+                  description: The CA Certificate used to connect to the SQL Instance via SSL.
                   type: string
                 commonName:
                   description: The CN valid for the CA Cert.

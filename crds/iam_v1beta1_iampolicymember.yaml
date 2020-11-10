@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,21 +39,17 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'APIVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
           type: string
         kind:
-          description: 'Kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
         spec:
           properties:
             condition:
-              description: Optional. The condition under which the binding applies.
+              description: Immutable. Optional. The condition under which the binding applies.
               properties:
                 description:
                   type: string
@@ -66,12 +62,11 @@ spec:
               - expression
               type: object
             member:
-              description: Required. The list of IAM identities to be bound to the
-                role
+              description: Immutable. Required. The list of IAM identities to be bound to the role
               pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
               type: string
             resourceRef:
-              description: Required. The GCP resource to set the IAM policy on.
+              description: Immutable. Required. The GCP resource to set the IAM policy on.
               oneOf:
               - not:
                   required:
@@ -111,7 +106,7 @@ spec:
               - kind
               type: object
             role:
-              description: Required. The role for which the Member will be bound.
+              description: Immutable. Required. The role for which the Member will be bound.
               pattern: ^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
               type: string
           required:
@@ -122,25 +117,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observations
-                of the IAM policy's current state.
+              description: Conditions represents the latest available observations of the IAM policy's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.

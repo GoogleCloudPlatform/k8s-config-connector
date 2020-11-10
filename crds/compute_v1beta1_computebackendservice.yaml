@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,14 +39,10 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
@@ -234,12 +230,10 @@ spec:
                   description: The CacheKeyPolicy for this CdnPolicy.
                   properties:
                     includeHost:
-                      description: If true requests to different hosts will be cached
-                        separately.
+                      description: If true requests to different hosts will be cached separately.
                       type: boolean
                     includeProtocol:
-                      description: If true, http and https requests will be cached
-                        separately.
+                      description: If true, http and https requests will be cached separately.
                       type: boolean
                     includeQueryString:
                       description: |-
@@ -535,16 +529,13 @@ spec:
                     - valueFrom
                   properties:
                     value:
-                      description: Value of the field. Cannot be used if 'valueFrom'
-                        is specified.
+                      description: Value of the field. Cannot be used if 'valueFrom' is specified.
                       type: string
                     valueFrom:
-                      description: Source for the field's value. Cannot be used if
-                        'value' is specified.
+                      description: Source for the field's value. Cannot be used if 'value' is specified.
                       properties:
                         secretKeyRef:
-                          description: Reference to a value with the given key in
-                            the given Secret in the resource's namespace.
+                          description: Reference to a value with the given key in the given Secret in the resource's namespace.
                           properties:
                             key:
                               description: Key that identifies the value to be extracted.
@@ -576,37 +567,35 @@ spec:
                 The load balancing algorithm used within the scope of the locality.
                 The possible values are -
 
-                ROUND_ROBIN - This is a simple policy in which each healthy backend
-                              is selected in round robin order.
+                * ROUND_ROBIN - This is a simple policy in which each healthy backend
+                                is selected in round robin order.
 
-                LEAST_REQUEST - An O(1) algorithm which selects two random healthy
-                                hosts and picks the host which has fewer active requests.
+                * LEAST_REQUEST - An O(1) algorithm which selects two random healthy
+                                  hosts and picks the host which has fewer active requests.
 
-                RING_HASH - The ring/modulo hash load balancer implements consistent
-                            hashing to backends. The algorithm has the property that the
-                            addition/removal of a host from a set of N hosts only affects
-                            1/N of the requests.
+                * RING_HASH - The ring/modulo hash load balancer implements consistent
+                              hashing to backends. The algorithm has the property that the
+                              addition/removal of a host from a set of N hosts only affects
+                              1/N of the requests.
 
-                RANDOM - The load balancer selects a random healthy host.
+                * RANDOM - The load balancer selects a random healthy host.
 
-                ORIGINAL_DESTINATION - Backend host is selected based on the client
-                                       connection metadata, i.e., connections are opened
-                                       to the same address as the destination address of
-                                       the incoming connection before the connection
-                                       was redirected to the load balancer.
+                * ORIGINAL_DESTINATION - Backend host is selected based on the client
+                                         connection metadata, i.e., connections are opened
+                                         to the same address as the destination address of
+                                         the incoming connection before the connection
+                                         was redirected to the load balancer.
 
-                MAGLEV - used as a drop in replacement for the ring hash load balancer.
-                         Maglev is not as stable as ring hash but has faster table lookup
-                         build times and host selection times. For more information about
-                         Maglev, refer to https://ai.google/research/pubs/pub44824
+                * MAGLEV - used as a drop in replacement for the ring hash load balancer.
+                           Maglev is not as stable as ring hash but has faster table lookup
+                           build times and host selection times. For more information about
+                           Maglev, refer to https://ai.google/research/pubs/pub44824
 
                 This field is applicable only when the load_balancing_scheme is set to
                 INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]
               type: string
             location:
-              description: 'Location represents the geographical location of the ComputeBackendService.
-                Specify a region name or "global" for global resources. Reference:
-                GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+              description: 'Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
               type: string
             logConfig:
               description: |-
@@ -614,8 +603,7 @@ spec:
                 If logging is enabled, logs will be exported to Stackdriver.
               properties:
                 enable:
-                  description: Whether to enable logging for the load balancer traffic
-                    served by this backend service.
+                  description: Whether to enable logging for the load balancer traffic served by this backend service.
                   type: boolean
                 sampleRate:
                   description: |-
@@ -815,25 +803,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.

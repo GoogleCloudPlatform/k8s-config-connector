@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,23 +39,17 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
         spec:
           properties:
             commonName:
-              description: Immutable. The common name to be used in the certificate
-                to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this
-                forces a new resource to be created.
+              description: Immutable. The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
               type: string
             instanceRef:
               description: The Cloud SQL instance.
@@ -97,25 +91,20 @@ spec:
               description: The serial number extracted from the certificate data.
               type: string
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.
@@ -123,19 +112,16 @@ spec:
                 type: object
               type: array
             createTime:
-              description: The time when the certificate was created in RFC 3339 format,
-                for example 2012-11-15T16:19:00.094Z.
+              description: The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
               type: string
             expirationTime:
-              description: The time when the certificate expires in RFC 3339 format,
-                for example 2012-11-15T16:19:00.094Z.
+              description: The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
               type: string
             privateKey:
               description: The private key associated with the client certificate.
               type: string
             serverCaCert:
-              description: The CA cert of the server this client cert was generated
-                from.
+              description: The CA cert of the server this client cert was generated from.
               type: string
             sha1Fingerprint:
               description: The SHA1 Fingerprint of the certificate.

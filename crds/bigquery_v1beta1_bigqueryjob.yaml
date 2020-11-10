@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.29.0
+    cnrm.cloud.google.com/version: 1.30.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -39,14 +39,10 @@ spec:
     openAPIV3Schema:
       properties:
         apiVersion:
-          description: 'apiVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
           type: string
         kind:
-          description: 'kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
           type: string
         metadata:
           type: object
@@ -63,8 +59,7 @@ spec:
                     Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
                   type: string
                 destinationEncryptionConfiguration:
-                  description: Immutable. Custom encryption configuration (e.g., Cloud
-                    KMS keys)
+                  description: Immutable. Custom encryption configuration (e.g., Cloud KMS keys)
                   properties:
                     kmsKeyRef:
                       description: |-
@@ -194,8 +189,7 @@ spec:
                     The default value for models is SAVED_MODEL.
                   type: string
                 destinationUris:
-                  description: Immutable. A list of fully-qualified Google Cloud Storage
-                    URIs where the extracted table should be written.
+                  description: Immutable. A list of fully-qualified Google Cloud Storage URIs where the extracted table should be written.
                   items:
                     type: string
                   type: array
@@ -205,8 +199,7 @@ spec:
                     Default is ','
                   type: string
                 printHeader:
-                  description: Immutable. Whether to print out a header row in the
-                    results. Default is true.
+                  description: Immutable. Whether to print out a header row in the results. Default is true.
                   type: boolean
                 sourceTable:
                   description: Immutable. A reference to the table being exported.
@@ -242,15 +235,13 @@ spec:
                   - tableRef
                   type: object
                 useAvroLogicalTypes:
-                  description: Immutable. Whether to use logical types when extracting
-                    to AVRO format.
+                  description: Immutable. Whether to use logical types when extracting to AVRO format.
                   type: boolean
               required:
               - destinationUris
               type: object
             jobTimeoutMs:
-              description: Immutable. Job timeout in milliseconds. If this time limit
-                is exceeded, BigQuery may attempt to terminate the job.
+              description: Immutable. Job timeout in milliseconds. If this time limit is exceeded, BigQuery may attempt to terminate the job.
               type: string
             load:
               description: Immutable. Configures a load job.
@@ -267,8 +258,7 @@ spec:
                     The default value is false.
                   type: boolean
                 autodetect:
-                  description: Immutable. Indicates if we should automatically infer
-                    the options and schema for CSV and JSON sources.
+                  description: Immutable. Indicates if we should automatically infer the options and schema for CSV and JSON sources.
                   type: boolean
                 createDisposition:
                   description: |-
@@ -278,8 +268,7 @@ spec:
                     Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
                   type: string
                 destinationEncryptionConfiguration:
-                  description: Immutable. Custom encryption configuration (e.g., Cloud
-                    KMS keys)
+                  description: Immutable. Custom encryption configuration (e.g., Cloud KMS keys)
                   properties:
                     kmsKeyRef:
                       description: |-
@@ -437,13 +426,10 @@ spec:
                     type: string
                   type: array
                 timePartitioning:
-                  description: Immutable. Time-based partitioning specification for
-                    the destination table.
+                  description: Immutable. Time-based partitioning specification for the destination table.
                   properties:
                     expirationMs:
-                      description: Immutable. Number of milliseconds for which to
-                        keep the storage for a partition. A wrapper is used here because
-                        0 is an invalid value.
+                      description: Immutable. Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value.
                       type: string
                     field:
                       description: |-
@@ -473,8 +459,7 @@ spec:
               - sourceUris
               type: object
             location:
-              description: Immutable. The geographic location of the job. The default
-                value is US.
+              description: Immutable. The geographic location of the job. The default value is US.
               type: string
             query:
               description: Immutable. Configures a query job.
@@ -493,9 +478,7 @@ spec:
                     Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
                   type: string
                 defaultDataset:
-                  description: Immutable. Specifies the default dataset to use for
-                    unqualified table names in the query. Note that this does not
-                    alter behavior of unqualified dataset names.
+                  description: Immutable. Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
                   properties:
                     datasetRef:
                       description: A reference to the dataset.
@@ -528,8 +511,7 @@ spec:
                   - datasetRef
                   type: object
                 destinationEncryptionConfiguration:
-                  description: Immutable. Custom encryption configuration (e.g., Cloud
-                    KMS keys)
+                  description: Immutable. Custom encryption configuration (e.g., Cloud KMS keys)
                   properties:
                     kmsKeyRef:
                       description: |-
@@ -616,13 +598,10 @@ spec:
                     If unspecified, this will be set to your project default.
                   type: string
                 parameterMode:
-                  description: Immutable. Standard SQL only. Set to POSITIONAL to
-                    use positional (?) query parameters or to NAMED to use named (@myparam)
-                    query parameters in this query.
+                  description: Immutable. Standard SQL only. Set to POSITIONAL to use positional (?) query parameters or to NAMED to use named (@myparam) query parameters in this query.
                   type: string
                 priority:
-                  description: 'Immutable. Specifies a priority for the query. Default
-                    value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"]'
+                  description: 'Immutable. Specifies a priority for the query. Default value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"]'
                   type: string
                 query:
                   description: |-
@@ -651,12 +630,10 @@ spec:
                         used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"]
                       type: string
                     statementByteBudget:
-                      description: Immutable. Limit on the number of bytes billed
-                        per statement. Exceeding this budget results in an error.
+                      description: Immutable. Limit on the number of bytes billed per statement. Exceeding this budget results in an error.
                       type: string
                     statementTimeoutMs:
-                      description: Immutable. Timeout period for each statement in
-                        a script.
+                      description: Immutable. Timeout period for each statement in a script.
                       type: string
                   type: object
                 useLegacySql:
@@ -671,8 +648,7 @@ spec:
                     The default value is true.
                   type: boolean
                 userDefinedFunctionResources:
-                  description: Immutable. Describes user-defined function resources
-                    used in the query.
+                  description: Immutable. Describes user-defined function resources used in the query.
                   items:
                     properties:
                       inlineCode:
@@ -681,8 +657,7 @@ spec:
                           Providing a inline code resource is equivalent to providing a URI for a file containing the same code.
                         type: string
                       resourceUri:
-                        description: Immutable. A code resource to load from a Google
-                          Cloud Storage URI (gs://bucket/path).
+                        description: Immutable. A code resource to load from a Google Cloud Storage URI (gs://bucket/path).
                         type: string
                     type: object
                   type: array
@@ -702,25 +677,20 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation
-                of the resource's current state.
+              description: Conditions represents the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
-                    description: Last time the condition transitioned from one status
-                      to another.
+                    description: Last time the condition transitioned from one status to another.
                     type: string
                   message:
-                    description: Human-readable message indicating details about last
-                      transition.
+                    description: Human-readable message indicating details about last transition.
                     type: string
                   reason:
-                    description: Unique, one-word, CamelCase reason for the condition's
-                      last transition.
+                    description: Unique, one-word, CamelCase reason for the condition's last transition.
                     type: string
                   status:
-                    description: Status is the status of the condition. Can be True,
-                      False, Unknown.
+                    description: Status is the status of the condition. Can be True, False, Unknown.
                     type: string
                   type:
                     description: Type is the type of the condition.
