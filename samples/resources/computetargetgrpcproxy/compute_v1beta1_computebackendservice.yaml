@@ -12,16 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-kind: BigtableInstance
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
 metadata:
-  name: bigtableinstance-sample
+  name: computetargetgrpcproxy-dep
 spec:
-  displayName: BigtableSample
-  cluster:
-  - clusterId: bigtableinstance-dep1
-    zone: us-central1-a
-    numNodes: 3
-  - clusterId: bigtableinstance-dep2
-    zone: us-west1-a
-    numNodes: 3
+  location: global
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  protocol: GRPC

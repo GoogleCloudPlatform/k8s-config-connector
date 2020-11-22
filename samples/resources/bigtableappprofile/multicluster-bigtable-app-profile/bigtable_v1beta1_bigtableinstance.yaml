@@ -18,7 +18,6 @@ metadata:
   name: bigtableappprofile-dep-multi
 spec:
   displayName: BigtableSample
-  instanceType: PRODUCTION
   cluster:
   - clusterId: bigtableappprofile-dep1-multi
     zone: us-central1-a

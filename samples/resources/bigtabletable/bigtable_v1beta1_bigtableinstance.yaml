@@ -18,7 +18,6 @@ metadata:
   name: bigtabletable-dep
 spec:
   displayName: BigtableSample
-  instanceType: PRODUCTION
   cluster:
   - clusterId: cluster1
     zone: us-central1-a

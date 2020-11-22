@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-kind: BigtableInstance
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
 metadata:
-  name: bigtableinstance-sample
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: resourcemanagerlien-dep
 spec:
-  displayName: BigtableSample
-  cluster:
-  - clusterId: bigtableinstance-dep1
-    zone: us-central1-a
-    numNodes: 3
-  - clusterId: bigtableinstance-dep2
-    zone: us-west1-a
-    numNodes: 3
+  name: ResourceManagerLien dependency

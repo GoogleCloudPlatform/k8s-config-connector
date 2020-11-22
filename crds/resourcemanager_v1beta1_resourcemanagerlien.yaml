@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
+  name: resourcemanagerliens.resourcemanager.cnrm.cloud.google.com
 spec:
-  group: artifactregistry.cnrm.cloud.google.com
+  group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ArtifactRegistryRepository
-    plural: artifactregistryrepositories
+    kind: ResourceManagerLien
+    plural: resourcemanagerliens
     shortNames:
-    - gcpartifactregistryrepository
-    - gcpartifactregistryrepositories
-    singular: artifactregistryrepository
+    - gcpresourcemanagerlien
+    - gcpresourcemanagerliens
+    singular: resourcemanagerlien
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -48,47 +48,61 @@ spec:
           type: object
         spec:
           properties:
-            description:
-              description: The user-provided description of the repository.
-              type: string
-            format:
-              description: 'Immutable. The format of packages that are stored in the repoitory. Possible values: ["DOCKER"]'
-              type: string
-            kmsKeyRef:
+            origin:
               description: |-
-                The customer managed encryption key that’s used to encrypt the
-                contents of the Repository.
-              oneOf:
-              - not:
-                  required:
-                  - external
-                required:
-                - name
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                required:
-                - external
-              properties:
-                external:
-                  description: The selfLink of a KMSCryptoKey.
-                  type: string
-                name:
-                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                  type: string
-                namespace:
-                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                  type: string
-              type: object
-            location:
-              description: Immutable. The name of the location this repository is located in.
+                Immutable. A stable, user-visible/meaningful string identifying the origin
+                of the Lien, intended to be inspected programmatically. Maximum length of
+                200 characters.
               type: string
+            parent:
+              properties:
+                projectRef:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The number of a Project.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
+              type: object
+            reason:
+              description: |-
+                Immutable. Concise user-visible strings indicating why an action cannot be performed
+                on a resource. Maximum length of 200 characters.
+              type: string
+            restrictions:
+              description: |-
+                Immutable. The types of operations which should be blocked as a result of this Lien.
+                Each value should correspond to an IAM permission. The server will validate
+                the permissions against those for which Liens are supported.  An empty
+                list is meaningless and will be rejected.
+                e.g. ['resourcemanager.projects.delete']
+              items:
+                type: string
+              type: array
           required:
-          - format
-          - location
+          - origin
+          - parent
+          - reason
+          - restrictions
           type: object
         status:
           properties:
@@ -114,15 +128,10 @@ spec:
                 type: object
               type: array
             createTime:
-              description: The time when the repository was created.
+              description: Time of creation
               type: string
             name:
-              description: |-
-                The name of the repository, for example:
-                "projects/p1/locations/us-central1/repositories/repo1"
-              type: string
-            updateTime:
-              description: The time when the repository was last updated.
+              description: A system-generated unique identifier for this Lien.
               type: string
           type: object
       required:

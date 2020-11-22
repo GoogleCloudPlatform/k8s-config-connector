@@ -12,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-kind: BigtableInstance
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerLien
 metadata:
-  name: bigtableinstance-sample
+  name: resourcemanagerlien-sample
 spec:
-  displayName: BigtableSample
-  cluster:
-  - clusterId: bigtableinstance-dep1
-    zone: us-central1-a
-    numNodes: 3
-  - clusterId: bigtableinstance-dep2
-    zone: us-west1-a
-    numNodes: 3
+  origin: project-deletion-prohibited
+  reason: This project is protected from deletion, for reasons which can be explained in this field.
+  parent:
+    projectRef:
+      name: resourcemanagerlien-dep
+  restrictions:
+    - resourcemanager.projects.delete
