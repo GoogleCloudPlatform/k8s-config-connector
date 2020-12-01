@@ -19,4 +19,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSharedVPCHostProject
 metadata:
+  annotations:
+    # Replace ${HOST_PROJECT_ID?} with the ID of the project that you want to enable as a Shared VPC host.
+    cnrm.cloud.google.com/project-id: "${HOST_PROJECT_ID?}"
   name: computesharedvpchostproject-sample
