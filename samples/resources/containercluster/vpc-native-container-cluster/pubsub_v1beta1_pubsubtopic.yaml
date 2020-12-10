@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Secret
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
 metadata:
-  name: containercluster-dep
-stringData:
-  password: password12345678
+  name: containercluster-dep-vpcnative

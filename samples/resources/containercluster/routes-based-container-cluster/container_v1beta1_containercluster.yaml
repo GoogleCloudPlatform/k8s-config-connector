@@ -15,22 +15,28 @@
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
-  annotations:
-    cnrm.cloud.google.com/remove-default-node-pool: "false"
   labels:
-    label-one: "value-one"
-  name: containercluster-sample
+    availability: dev
+    target-audience: development
+  name: containercluster-sample-routesbased
 spec:
+  description: A routes-based cluster confined to one zone configured for development.
   location: us-central1-a
   initialNodeCount: 1
-  loggingService: logging.googleapis.com/kubernetes
-  monitoringService: monitoring.googleapis.com/kubernetes
-  masterAuth:
-    username: "user"
-    password:
-      valueFrom:
-        secretKeyRef:
-          name: containercluster-dep
-          key: password
-    clientCertificateConfig:
-      issueClientCertificate: false
+  clusterTelemetry:
+    type: SYSTEM_ONLY
+  networkingMode: ROUTES
+  clusterIpv4Cidr: 10.96.0.0/14
+  masterAuthorizedNetworksConfig:
+    cidrBlocks:
+      - displayName: Trusted external network
+        cidrBlock: 10.2.0.0/16
+  addonsConfig:
+    gcePersistentDiskCsiDriverConfig:
+      enabled: true
+    kalmConfig:
+      enabled: true
+    horizontalPodAutoscaling:
+      disabled: true
+    httpLoadBalancing:
+      disabled: true

@@ -22,18 +22,18 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: iamserviceaccountkeys.iam.cnrm.cloud.google.com
+  name: computeprojectmetadatas.compute.cnrm.cloud.google.com
 spec:
-  group: iam.cnrm.cloud.google.com
+  group: compute.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: IAMServiceAccountKey
-    plural: iamserviceaccountkeys
+    kind: ComputeProjectMetadata
+    plural: computeprojectmetadatas
     shortNames:
-    - gcpiamserviceaccountkey
-    - gcpiamserviceaccountkeys
-    singular: iamserviceaccountkey
+    - gcpcomputeprojectmetadata
+    - gcpcomputeprojectmetadatas
+    singular: computeprojectmetadata
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -48,46 +48,13 @@ spec:
           type: object
         spec:
           properties:
-            keyAlgorithm:
-              description: 'Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: "KEY_ALG_RSA_1024", "KEY_ALG_RSA_2048".'
-              type: string
-            privateKeyType:
-              description: Immutable.
-              type: string
-            publicKeyData:
-              description: Immutable. A field that allows clients to upload their own public key. If set, use this public key data to create a service account key for given service account. Please note, the expected format for this field is a base64 encoded X509_PEM.
-              type: string
-            publicKeyType:
-              description: Immutable.
-              type: string
-            serviceAccountRef:
-              oneOf:
-              - not:
-                  required:
-                  - external
-                required:
-                - name
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                required:
-                - external
-              properties:
-                external:
-                  description: The email of an IAMServiceAccount.
-                  type: string
-                name:
-                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                  type: string
-                namespace:
-                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                  type: string
+            metadata:
+              additionalProperties:
+                type: string
+              description: A series of key value pairs.
               type: object
           required:
-          - serviceAccountRef
+          - metadata
           type: object
         status:
           properties:
@@ -112,21 +79,6 @@ spec:
                     type: string
                 type: object
               type: array
-            name:
-              description: Immutable. The name used for this key pair
-              type: string
-            privateKey:
-              description: The private key in JSON format, base64 encoded. This is what you normally get as a file when creating service account keys through the CLI or web console. This is only populated when creating a new key.
-              type: string
-            publicKey:
-              description: Immutable. The public key, base64 encoded
-              type: string
-            validAfter:
-              description: 'The key can be used after this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
-              type: string
-            validBefore:
-              description: 'The key can be used before this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
-              type: string
           type: object
       required:
       - spec
