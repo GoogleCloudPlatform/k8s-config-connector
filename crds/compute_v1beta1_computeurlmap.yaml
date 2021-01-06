@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.33.0
+    cnrm.cloud.google.com/version: 1.34.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -79,7 +79,7 @@ spec:
                       type: array
                     allowOriginRegexes:
                       description: |-
-                        Specifies the regualar expression patterns that match allowed origins. For regular expression grammar
+                        Specifies the regular expression patterns that match allowed origins. For regular expression grammar
                         please see en.cppreference.com/w/cpp/regex/ecmascript
                         An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.
                       items:
@@ -644,7 +644,7 @@ spec:
                             type: array
                           allowOriginRegexes:
                             description: |-
-                              Specifies the regualar expression patterns that match allowed origins. For regular expression grammar
+                              Specifies the regular expression patterns that match allowed origins. For regular expression grammar
                               please see en.cppreference.com/w/cpp/regex/ecmascript
                               An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.
                             items:
@@ -1198,7 +1198,7 @@ spec:
                                   type: array
                                 allowOriginRegexes:
                                   description: |-
-                                    Specifies the regualar expression patterns that match allowed origins. For
+                                    Specifies the regular expression patterns that match allowed origins. For
                                     regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript
                                     An origin is allowed if it matches either allow_origins or allow_origin_regex.
                                   items:
@@ -1755,7 +1755,7 @@ spec:
                             properties:
                               fullPathMatch:
                                 description: |-
-                                  For satifying the matchRule condition, the path of the request must exactly
+                                  For satisfying the matchRule condition, the path of the request must exactly
                                   match the value specified in fullPathMatch after removing any query parameters
                                   and anchor that may be part of the original URL. FullPathMatch must be between 1
                                   and 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must
@@ -1817,7 +1817,7 @@ spec:
                                       type: object
                                     regexMatch:
                                       description: |-
-                                        The value of the header must match the regualar expression specified in
+                                        The value of the header must match the regular expression specified in
                                         regexMatch. For regular expression grammar, please see:
                                         en.cppreference.com/w/cpp/regex/ecmascript  For matching against a port
                                         specified in the HTTP request, use a headerMatch with headerName set to PORT and
@@ -1893,7 +1893,7 @@ spec:
                                 type: array
                               prefixMatch:
                                 description: |-
-                                  For satifying the matchRule condition, the request's path must begin with the
+                                  For satisfying the matchRule condition, the request's path must begin with the
                                   specified prefixMatch. prefixMatch must begin with a /. The value must be
                                   between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or
                                   regexMatch must be specified.
@@ -1934,7 +1934,7 @@ spec:
                                 type: array
                               regexMatch:
                                 description: |-
-                                  For satifying the matchRule condition, the path of the request must satisfy the
+                                  For satisfying the matchRule condition, the path of the request must satisfy the
                                   regular expression specified in regexMatch after removing any query parameters
                                   and anchor supplied with the original URL. For regular expression grammar please
                                   see en.cppreference.com/w/cpp/regex/ecmascript  Only one of prefixMatch,
@@ -1992,7 +1992,7 @@ spec:
                                   type: array
                                 allowOriginRegexes:
                                   description: |-
-                                    Specifies the regualar expression patterns that match allowed origins. For
+                                    Specifies the regular expression patterns that match allowed origins. For
                                     regular expression grammar please see en.cppreference.com/w/cpp/regex/ecmascript
                                     An origin is allowed if it matches either allow_origins or allow_origin_regex.
                                   items:

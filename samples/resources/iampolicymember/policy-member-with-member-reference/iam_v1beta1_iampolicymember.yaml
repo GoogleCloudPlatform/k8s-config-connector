@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: dns.cnrm.cloud.google.com/v1beta1
-kind: DNSRecordSet
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
 metadata:
-  name: dnsrecordset-sample-dnssecds
+  name: iampolicymember-sample-memberref
 spec:
-  name: "host.secure.example.com."
-  type: "DS"
-  ttl: 300
-  managedZoneRef:
-    name: dnsrecordset-dep-dnssecds
-  rrdatas:
-  - "31523 5 1 c8761ba5defc26ac7b78e076d7c47fa9f86b9fba"
+  memberFrom:
+    serviceAccountRef:
+      name: iampolicymember-dep-memberref
+  role: roles/editor
+  resourceRef:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: iampolicymember-dep-memberref

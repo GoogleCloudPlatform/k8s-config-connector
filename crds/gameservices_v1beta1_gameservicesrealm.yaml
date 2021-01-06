@@ -19,21 +19,21 @@ metadata:
     cnrm.cloud.google.com/version: 1.34.0
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: computevpngateways.compute.cnrm.cloud.google.com
+  name: gameservicesrealms.gameservices.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: gameservices.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeVPNGateway
-    plural: computevpngateways
+    kind: GameServicesRealm
+    plural: gameservicesrealms
     shortNames:
-    - gcpcomputevpngateway
-    - gcpcomputevpngateways
-    singular: computevpngateway
+    - gcpgameservicesrealm
+    - gcpgameservicesrealms
+    singular: gameservicesrealm
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -49,41 +49,20 @@ spec:
         spec:
           properties:
             description:
-              description: Immutable. An optional description of this resource.
+              description: Human readable description of the realm.
               type: string
-            networkRef:
-              description: The network this VPN gateway is accepting traffic for.
-              oneOf:
-              - not:
-                  required:
-                  - external
-                required:
-                - name
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                required:
-                - external
-              properties:
-                external:
-                  description: The selfLink of a ComputeNetwork.
-                  type: string
-                name:
-                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                  type: string
-                namespace:
-                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                  type: string
-              type: object
-            region:
-              description: Immutable. The region this gateway should sit in.
+            location:
+              description: The location for this realm.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+              type: string
+            timeZone:
+              description: 'Required. Time zone where all policies targeting this realm are evaluated. The value of this field must be from the IANA time zone database: https://www.iana.org/time-zones.'
               type: string
           required:
-          - networkRef
-          - region
+          - location
+          - timeZone
           type: object
         status:
           properties:
@@ -108,20 +87,14 @@ spec:
                     type: string
                 type: object
               type: array
-            selfLink:
+            createTime:
+              description: Output only. The creation time.
+              format: date-time
               type: string
-            vpnInterfaces:
-              description: A list of interfaces on this VPN gateway.
-              items:
-                properties:
-                  id:
-                    description: The numeric ID of this VPN gateway interface.
-                    type: integer
-                  ipAddress:
-                    description: The external IP address for this VPN gateway interface.
-                    type: string
-                type: object
-              type: array
+            updateTime:
+              description: Output only. The last-modified time.
+              format: date-time
+              type: string
           type: object
       required:
       - spec
