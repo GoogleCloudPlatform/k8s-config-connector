@@ -19,21 +19,21 @@ metadata:
     cnrm.cloud.google.com/version: 1.35.0
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: computenetworkpeerings.compute.cnrm.cloud.google.com
+  name: monitoringgroups.monitoring.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: monitoring.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeNetworkPeering
-    plural: computenetworkpeerings
+    kind: MonitoringGroup
+    plural: monitoringgroups
     shortNames:
-    - gcpcomputenetworkpeering
-    - gcpcomputenetworkpeerings
-    singular: computenetworkpeering
+    - gcpmonitoringgroup
+    - gcpmonitoringgroups
+    singular: monitoringgroup
   scope: Namespaced
   validation:
     openAPIV3Schema:
@@ -48,19 +48,16 @@ spec:
           type: object
         spec:
           properties:
-            exportCustomRoutes:
-              description: Whether to export the custom routes to the peer network. Defaults to false.
+            displayName:
+              description: A user-assigned name for this group, used only for display purposes.
+              type: string
+            filter:
+              description: The filter used to determine which monitored resources belong to this group.
+              type: string
+            isCluster:
+              description: If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.
               type: boolean
-            exportSubnetRoutesWithPublicIp:
-              description: Immutable.
-              type: boolean
-            importCustomRoutes:
-              description: Whether to export the custom routes from the peer network. Defaults to false.
-              type: boolean
-            importSubnetRoutesWithPublicIp:
-              description: Immutable.
-              type: boolean
-            networkRef:
+            parentRef:
               oneOf:
               - not:
                   required:
@@ -77,7 +74,7 @@ spec:
                 - external
               properties:
                 external:
-                  description: The selfLink of a ComputeNetwork.
+                  description: 'The name of the group''s parent, if it has one. The format is: projects/ For groups with no parent, `parent_name` is the empty string, ``.'
                   type: string
                 name:
                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -86,35 +83,12 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
-            peerNetworkRef:
-              oneOf:
-              - not:
-                  required:
-                  - external
-                required:
-                - name
-              - not:
-                  anyOf:
-                  - required:
-                    - name
-                  - required:
-                    - namespace
-                required:
-                - external
-              properties:
-                external:
-                  description: The selfLink of a ComputeNetwork.
-                  type: string
-                name:
-                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                  type: string
-                namespace:
-                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                  type: string
-              type: object
+            resourceID:
+              description: Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+              type: string
           required:
-          - networkRef
-          - peerNetworkRef
+          - displayName
+          - filter
           type: object
         status:
           properties:
@@ -139,12 +113,6 @@ spec:
                     type: string
                 type: object
               type: array
-            state:
-              description: State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network.
-              type: string
-            stateDetails:
-              description: Details about the current state of the peering.
-              type: string
           type: object
       required:
       - spec

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.34.0
+    cnrm.cloud.google.com/version: 1.35.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -121,6 +121,9 @@ spec:
                   idTemplate:
                     description: IDTemplate defines the format in which the ID fed into the TF resource's importer should look. Fields may be sourced from the TF resource by using the `{{foo}}` syntax. (e.g. {{project}}/{{location}}/{{name}}.  All fields are required. A field can be marked as optional with the ? suffix, e.g. with {{project}}/{{host?}}, the host field is optional  An OR condition can be defined on a portion of the template by enclosing the portion with brackets `[...]` and using a bar character, `|`, to deliminate the OR. Example, `my-template/[{{field1}}|text_{{field2}]`.  If SkipImport is true, this must be specified, and its expanded form will be directly used as the TF resource's `id` field.
                     type: string
+                  idTemplateCanBeUsedToMatchResourceName:
+                    description: 'The resource name is the One Platform / GCP resource name, when this value is true, it means the IDTemplate can be converted to a regex and used to match against a given URL to determine if it is a name for the given ResourceConfig. If this flag is true then the ID Template is used by "config-connector export" to match against URLs.  see: https://cloud.google.com/apis/design/resource_names'
+                    type: boolean
                   ignoredFields:
                     description: IgnoredFields is a list of fields that should be dropped from the underlying Terraform resource.
                     items:
