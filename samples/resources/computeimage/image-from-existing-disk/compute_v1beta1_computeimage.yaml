@@ -20,4 +20,3 @@ spec:
   description: A sample image created from an empty disk resource
   diskRef:
     name: computeimage-dep-fromexistingdisk
-  diskSizeGb: 0

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24,6 +24,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstancetemplates.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -350,6 +359,9 @@ spec:
               type: array
             region:
               description: Immutable. An instance template is a global resource that is not bound to a zone or a region. However, you can still specify some regional resources in an instance template, which restricts the template to the region where that resource resides. For example, a custom subnetwork resource is tied to a specific region. Defaults to the region of the Provider if no value is given.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
               type: string
             scheduling:
               description: Immutable. The scheduling strategy to use.

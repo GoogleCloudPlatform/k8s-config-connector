@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24,6 +24,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: accesscontextmanager.cnrm.cloud.google.com
   names:
     categories:
@@ -354,7 +363,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -362,6 +371,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanageraccesspolicies.accesscontextmanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: accesscontextmanager.cnrm.cloud.google.com
   names:
     categories:
@@ -449,7 +467,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -457,6 +475,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: accesscontextmanager.cnrm.cloud.google.com
   names:
     categories:
@@ -816,7 +843,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -824,6 +851,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: artifactregistry.cnrm.cloud.google.com
   names:
     categories:
@@ -951,7 +987,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -959,6 +995,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerydatasets.bigquery.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigquery.cnrm.cloud.google.com
   names:
     categories:
@@ -1214,7 +1259,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1222,6 +1267,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigqueryjobs.bigquery.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigquery.cnrm.cloud.google.com
   names:
     categories:
@@ -1950,7 +2004,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1958,6 +2012,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerytables.bigquery.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigquery.cnrm.cloud.google.com
   names:
     categories:
@@ -2347,7 +2410,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2355,6 +2418,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigtable.cnrm.cloud.google.com
   names:
     categories:
@@ -2481,7 +2553,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2489,6 +2561,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtablegcpolicies.bigtable.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigtable.cnrm.cloud.google.com
   names:
     categories:
@@ -2651,7 +2732,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2659,6 +2740,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableinstances.bigtable.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigtable.cnrm.cloud.google.com
   names:
     categories:
@@ -2778,7 +2868,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2786,6 +2876,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtabletables.bigtable.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: bigtable.cnrm.cloud.google.com
   names:
     categories:
@@ -2904,7 +3003,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2912,6 +3011,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: cloudbuild.cnrm.cloud.google.com
   names:
     categories:
@@ -3703,7 +3811,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3711,6 +3819,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeaddresses.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -3815,6 +3932,11 @@ spec:
 
                 This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "SHARED_LOADBALANCER_VIP"]
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             subnetworkRef:
               description: |-
                 The subnetwork in which to reserve the address. If an IP address is
@@ -3908,7 +4030,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3916,6 +4038,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computebackendbuckets.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -4046,6 +4177,11 @@ spec:
             enableCdn:
               description: If true, enable Cloud CDN for this BackendBucket.
               type: boolean
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - bucketRef
           type: object
@@ -4098,7 +4234,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4106,6 +4242,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computebackendservices.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -4907,6 +5052,11 @@ spec:
                 The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
                 types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"]
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             securityPolicyRef:
               description: The security policy associated with this backend service.
               oneOf:
@@ -5001,7 +5151,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5009,6 +5159,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computedisks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -5216,6 +5375,11 @@ spec:
               items:
                 type: string
               type: array
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             resourcePolicies:
               items:
                 description: Resource policies applied to this disk for automatic
@@ -5533,7 +5697,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5541,6 +5705,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeexternalvpngateways.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -5598,6 +5771,11 @@ spec:
                 VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT",
                 "TWO_IPS_REDUNDANCY"]'
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           type: object
         status:
           properties:
@@ -5643,7 +5821,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5651,6 +5829,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computefirewalls.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -5818,6 +6005,11 @@ spec:
                 higher precedence than a rule with priority 1). DENY rules take
                 precedence over ALLOW rules having equal priority.
               type: integer
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             sourceRanges:
               description: |-
                 If source ranges are specified, the firewall will apply only to
@@ -5981,7 +6173,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5989,6 +6181,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeforwardingrules.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -6286,6 +6487,11 @@ spec:
               items:
                 type: string
               type: array
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             serviceLabel:
               description: |-
                 Immutable. An optional prefix to the service name for this Forwarding Rule.
@@ -6546,7 +6752,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6554,6 +6760,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehealthchecks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -6810,6 +7025,11 @@ spec:
                     which means no health check logging will be done.
                   type: boolean
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             sslHealthCheck:
               description: A nested object resource
               properties:
@@ -6975,7 +7195,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6983,6 +7203,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehttphealthchecks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -7042,6 +7271,11 @@ spec:
                 The request path of the HTTP health check request.
                 The default value is /.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             timeoutSec:
               description: |-
                 How long (in seconds) to wait before claiming failure.
@@ -7101,7 +7335,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7109,6 +7343,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehttpshealthchecks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -7168,6 +7411,11 @@ spec:
                 The request path of the HTTPS health check request.
                 The default value is /.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             timeoutSec:
               description: |-
                 How long (in seconds) to wait before claiming failure.
@@ -7227,7 +7475,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7235,6 +7483,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeimages.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -7356,6 +7613,11 @@ spec:
               required:
               - source
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             sourceImageRef:
               description: The source image used to create this image.
               oneOf:
@@ -7468,7 +7730,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7476,6 +7738,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstancegroups.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -7577,6 +7848,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             zone:
               description: Immutable. The zone that this instance group should be
                 created in.
@@ -7634,7 +7910,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7642,6 +7918,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstances.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -8172,6 +8457,11 @@ spec:
                     type: object
                 type: object
               type: array
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             resourcePolicies:
               items:
                 oneOf:
@@ -8362,7 +8652,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8370,6 +8660,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstancetemplates.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -8757,6 +9056,11 @@ spec:
                 custom subnetwork resource is tied to a specific region. Defaults
                 to the region of the Provider if no value is given.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             scheduling:
               description: Immutable. The scheduling strategy to use.
               properties:
@@ -8907,7 +9211,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8915,6 +9219,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinterconnectattachments.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -8988,6 +9301,11 @@ spec:
               type: string
             region:
               description: Region where the regional interconnect attachment resides.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             routerRef:
               description: |-
@@ -9126,7 +9444,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9134,6 +9452,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworkendpointgroups.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9209,6 +9536,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             subnetworkRef:
               description: Optional subnetwork to which all network endpoints in the
                 NEG belong.
@@ -9290,7 +9622,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9298,6 +9630,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworkpeerings.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9392,6 +9733,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - networkRef
           - peerNetworkRef
@@ -9447,7 +9793,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9455,6 +9801,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9504,6 +9859,11 @@ spec:
                 Immutable. Maximum Transmission Unit in bytes. The minimum value for this field is 1460
                 and the maximum value is 1500 bytes.
               type: integer
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             routingMode:
               description: |-
                 The network-wide routing mode to use. If set to 'REGIONAL', this
@@ -9562,7 +9922,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9570,6 +9930,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenodegroups.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9658,6 +10027,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             size:
               description: Immutable. The total number of nodes in the node group.
               type: integer
@@ -9718,7 +10092,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9726,6 +10100,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenodetemplates.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9788,6 +10171,11 @@ spec:
               description: |-
                 Immutable. Region where nodes using the node template will be created.
                 If it is not provided, the provider region is used.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             serverBinding:
               description: |-
@@ -9864,7 +10252,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9872,6 +10260,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeprojectmetadatas.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9952,7 +10349,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9960,6 +10357,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computereservations.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -9990,6 +10396,11 @@ spec:
           properties:
             description:
               description: Immutable. An optional description of this resource.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             specificReservation:
               description: Reservation for instances with specific machine shapes.
@@ -10131,7 +10542,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10139,6 +10550,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeresourcepolicies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -10189,6 +10609,11 @@ spec:
               type: object
             region:
               description: Immutable. Region where resource policy resides.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             snapshotSchedulePolicy:
               description: Immutable. Policy for creating snapshots of persistent
@@ -10350,7 +10775,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10358,6 +10783,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouterinterfaces.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -10421,6 +10855,11 @@ spec:
               description: Immutable. The region this interface's router sits in.
                 If not specified, the project region will be used. Changing this forces
                 a new interface to be created.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             routerRef:
               oneOf:
@@ -10522,7 +10961,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10530,6 +10969,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouternats.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -10648,6 +11096,11 @@ spec:
               type: array
             region:
               description: Immutable. Region where the router and NAT reside.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             routerRef:
               description: The Cloud Router in which this NAT will be configured.
@@ -10809,7 +11262,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10817,6 +11270,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouterpeers.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -10908,6 +11370,11 @@ spec:
               description: |-
                 Immutable. Region where the router and BgpPeer reside.
                 If it is not provided, the provider region is used.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             routerInterfaceRef:
               description: The interface the BGP peer is associated with.
@@ -11032,7 +11499,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11040,6 +11507,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouters.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11152,6 +11628,11 @@ spec:
             region:
               description: Immutable. Region where the router resides.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - networkRef
           - region
@@ -11205,7 +11686,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11213,6 +11694,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeroutes.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11386,6 +11876,11 @@ spec:
 
                 Default value is 1000. Valid range is 0 through 65535.
               type: integer
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             tags:
               description: Immutable. A list of instance tags to which this route
                 applies.
@@ -11445,7 +11940,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11453,6 +11948,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesecuritypolicies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11484,6 +11988,11 @@ spec:
             description:
               description: An optional description of this security policy. Max size
                 is 2048.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             rule:
               description: The set of rules that belong to this policy. There must
@@ -11611,7 +12120,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11619,6 +12128,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesharedvpchostprojects.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11687,7 +12205,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11695,6 +12213,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesharedvpcserviceprojects.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11796,7 +12323,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11804,6 +12331,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesnapshots.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -11834,6 +12370,11 @@ spec:
           properties:
             description:
               description: Immutable. An optional description of this resource.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             snapshotEncryptionKey:
               description: |-
@@ -12134,7 +12675,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12142,6 +12683,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesslcertificates.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12256,6 +12806,11 @@ spec:
                       type: object
                   type: object
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - certificate
           - location
@@ -12313,7 +12868,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12321,6 +12876,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesslpolicies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12383,6 +12947,11 @@ spec:
                 for information on what cipher suites each profile provides. If
                 'CUSTOM' is used, the 'custom_features' attribute **must be set**. Default value: "COMPATIBLE" Possible values: ["COMPATIBLE", "MODERN", "RESTRICTED", "CUSTOM"]
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           type: object
         status:
           properties:
@@ -12441,7 +13010,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12449,6 +13018,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesubnetworks.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12582,6 +13160,11 @@ spec:
             region:
               description: Immutable. The GCP region for this subnetwork.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             role:
               description: |-
                 The role of subnetwork. Currently, this field is only used when
@@ -12676,7 +13259,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12684,6 +13267,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetgrpcproxies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12714,6 +13306,11 @@ spec:
           properties:
             description:
               description: An optional description of this resource.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             urlMapRef:
               description: |-
@@ -12818,7 +13415,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12826,6 +13423,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargethttpproxies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12860,6 +13466,11 @@ spec:
             location:
               description: Location represents the geographical location of the ComputeTargetHTTPProxy.
                 Specify "global" for global resources.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             urlMapRef:
               description: |-
@@ -12946,7 +13557,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12954,6 +13565,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargethttpsproxies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -12996,6 +13616,11 @@ spec:
                 or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
                 specified, uses the QUIC policy with no user overrides, which is
                 equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             sslCertificates:
               items:
@@ -13146,7 +13771,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13154,6 +13779,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetinstances.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -13247,6 +13881,11 @@ spec:
                   description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                   type: string
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             zone:
               description: Immutable. URL of the zone where the target instance resides.
               type: string
@@ -13303,7 +13942,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13311,6 +13950,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetpools.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -13435,6 +14083,11 @@ spec:
               description: Immutable. Where the target pool resides. Defaults to project
                 region.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             sessionAffinity:
               description: Immutable. How to distribute load. Options are "NONE" (no
                 affinity). "CLIENT_IP" (hash of the source/dest addresses / ports),
@@ -13490,7 +14143,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13498,6 +14151,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetsslproxies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -13560,6 +14222,11 @@ spec:
               description: |-
                 Specifies the type of proxy header to append before sending data to
                 the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
             sslCertificates:
               items:
@@ -13680,7 +14347,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13688,6 +14355,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargettcpproxies.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -13751,6 +14427,11 @@ spec:
                 Specifies the type of proxy header to append before sending data to
                 the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - backendServiceRef
           type: object
@@ -13806,7 +14487,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13814,6 +14495,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetvpngateways.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -13875,6 +14565,11 @@ spec:
             region:
               description: Immutable. The region this gateway should sit in.
               type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
           required:
           - networkRef
           - region
@@ -13931,7 +14626,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13939,6 +14634,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeurlmaps.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -16387,6 +17091,11 @@ spec:
                 - name
                 type: object
               type: array
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             test:
               description: |-
                 The list of expected URL mapping tests. Request to update this UrlMap will
@@ -16532,7 +17241,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16540,6 +17249,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computevpngateways.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -16600,6 +17318,11 @@ spec:
               type: object
             region:
               description: Immutable. The region this gateway should sit in.
+              type: string
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
               type: string
           required:
           - networkRef
@@ -16663,7 +17386,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16671,6 +17394,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computevpntunnels.compute.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -16797,6 +17529,11 @@ spec:
               items:
                 type: string
               type: array
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for
+                creation and acquisition. When unset, the value of `metadata.name`
+                is used as the default.
+              type: string
             routerRef:
               description: The router to be used for dynamic routing.
               oneOf:
@@ -16995,7 +17732,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17003,6 +17740,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: containerclusters.container.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: container.cnrm.cloud.google.com
   names:
     categories:
@@ -18038,7 +18784,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18046,6 +18792,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: containernodepools.container.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: container.cnrm.cloud.google.com
   names:
     categories:
@@ -18411,7 +19166,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18419,6 +19174,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: dataflow.cnrm.cloud.google.com
   names:
     categories:
@@ -18507,7 +19271,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18515,6 +19279,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dataflowjobs.dataflow.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: dataflow.cnrm.cloud.google.com
   names:
     categories:
@@ -18719,7 +19492,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18727,6 +19500,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnsmanagedzones.dns.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: dns.cnrm.cloud.google.com
   names:
     categories:
@@ -19008,7 +19790,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19016,6 +19798,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnspolicies.dns.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: dns.cnrm.cloud.google.com
   names:
     categories:
@@ -19168,7 +19959,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19176,6 +19967,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnsrecordsets.dns.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: dns.cnrm.cloud.google.com
   names:
     categories:
@@ -19294,7 +20094,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19302,6 +20102,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: firestoreindexes.firestore.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: firestore.cnrm.cloud.google.com
   names:
     categories:
@@ -19418,7 +20227,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19426,6 +20235,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: folders.resourcemanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:
@@ -19526,7 +20344,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -19534,6 +20352,15 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: gameservicesrealms.gameservices.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: gameservices.cnrm.cloud.google.com
   names:
     categories:
@@ -19634,7 +20461,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19642,6 +20469,15 @@ metadata:
     controller-tools.k8s.io: "1.0"
   name: iamauditconfigs.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True' the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -19766,7 +20602,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19774,6 +20610,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamcustomroles.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -19858,9 +20703,7 @@ spec:
               description: The current deleted state of the role.
               type: boolean
             name:
-              description: The name of the role in the format projects/{{project}}/roles/{{role_id}}.
-                Like id, this field can be used as a reference in other resources
-                such as IAM role bindings.
+              description: The full name of the role.
               type: string
           type: object
       required:
@@ -19878,7 +20721,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19886,6 +20729,15 @@ metadata:
     controller-tools.k8s.io: "1.0"
   name: iampolicies.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True' the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -20075,7 +20927,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20083,6 +20935,15 @@ metadata:
     controller-tools.k8s.io: "1.0"
   name: iampolicymembers.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True' the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -20260,7 +21121,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20268,6 +21129,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamserviceaccountkeys.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -20406,7 +21276,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20414,6 +21284,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamserviceaccounts.iam.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: iam.cnrm.cloud.google.com
   names:
     categories:
@@ -20504,7 +21383,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20512,6 +21391,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: kmscryptokeys.kms.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: kms.cnrm.cloud.google.com
   names:
     categories:
@@ -20654,7 +21542,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20662,6 +21550,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: kmskeyrings.kms.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: kms.cnrm.cloud.google.com
   names:
     categories:
@@ -20749,7 +21646,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20757,6 +21654,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: logginglogsinks.logging.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: logging.cnrm.cloud.google.com
   names:
     categories:
@@ -21084,7 +21990,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21092,6 +21998,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: monitoring.cnrm.cloud.google.com
   names:
     categories:
@@ -21808,7 +22723,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -21816,6 +22731,15 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: monitoringgroups.monitoring.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: monitoring.cnrm.cloud.google.com
   names:
     categories:
@@ -21937,7 +22861,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21945,6 +22869,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: monitoringnotificationchannels.monitoring.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: monitoring.cnrm.cloud.google.com
   names:
     categories:
@@ -22190,7 +23123,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22198,6 +23131,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: projects.resourcemanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:
@@ -22305,7 +23247,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22313,6 +23255,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: pubsub.cnrm.cloud.google.com
   names:
     categories:
@@ -22630,7 +23581,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22638,6 +23589,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: pubsubtopics.pubsub.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: pubsub.cnrm.cloud.google.com
   names:
     categories:
@@ -22766,7 +23726,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22774,6 +23734,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: redisinstances.redis.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: redis.cnrm.cloud.google.com
   names:
     categories:
@@ -22974,7 +23943,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22982,6 +23951,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: resourcemanagerliens.resourcemanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:
@@ -23116,7 +24094,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23124,6 +24102,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:
@@ -23366,7 +24353,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23374,6 +24361,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: secretmanagersecrets.secretmanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: secretmanager.cnrm.cloud.google.com
   names:
     categories:
@@ -23487,7 +24483,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23495,6 +24491,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: secretmanagersecretversions.secretmanager.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: secretmanager.cnrm.cloud.google.com
   names:
     categories:
@@ -23650,7 +24655,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24094,7 +25099,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24102,6 +25107,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: servicenetworking.cnrm.cloud.google.com
   names:
     categories:
@@ -24240,7 +25254,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24248,6 +25262,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: services.serviceusage.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: serviceusage.cnrm.cloud.google.com
   names:
     categories:
@@ -24324,7 +25347,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24332,6 +25355,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: sourcereporepositories.sourcerepo.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: sourcerepo.cnrm.cloud.google.com
   names:
     categories:
@@ -24484,7 +25516,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24492,6 +25524,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: spannerdatabases.spanner.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: spanner.cnrm.cloud.google.com
   names:
     categories:
@@ -24606,7 +25647,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24614,6 +25655,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: spannerinstances.spanner.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: spanner.cnrm.cloud.google.com
   names:
     categories:
@@ -24710,7 +25760,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24718,6 +25768,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqldatabases.sql.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: sql.cnrm.cloud.google.com
   names:
     categories:
@@ -24843,7 +25902,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24851,6 +25910,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlinstances.sql.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: sql.cnrm.cloud.google.com
   names:
     categories:
@@ -25337,7 +26405,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25345,6 +26413,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlsslcerts.sql.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: sql.cnrm.cloud.google.com
   names:
     categories:
@@ -25482,7 +26559,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25490,6 +26567,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlusers.sql.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: sql.cnrm.cloud.google.com
   names:
     categories:
@@ -25641,7 +26727,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25649,6 +26735,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagebucketaccesscontrols.storage.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: storage.cnrm.cloud.google.com
   names:
     categories:
@@ -25780,7 +26875,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25788,6 +26883,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagebuckets.storage.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: storage.cnrm.cloud.google.com
   names:
     categories:
@@ -26075,7 +27179,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26083,6 +27187,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: storage.cnrm.cloud.google.com
   names:
     categories:
@@ -26229,7 +27342,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26237,6 +27350,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagenotifications.storage.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: storage.cnrm.cloud.google.com
   names:
     categories:
@@ -26400,7 +27522,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.35.0
+    cnrm.cloud.google.com/version: 1.36.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26408,6 +27530,15 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagetransferjobs.storagetransfer.cnrm.cloud.google.com
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[0].status
+    description: When 'True', the most recent reconcile of the resource succeeded
+    name: Ready
+    type: string
+  - JSONPath: .status.conditions[0].reason
+    description: The reason for the value in 'Ready'
+    name: Status
+    type: string
   group: storagetransfer.cnrm.cloud.google.com
   names:
     categories:

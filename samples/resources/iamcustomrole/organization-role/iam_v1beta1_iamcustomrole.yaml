@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeDisk
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMCustomRole
 metadata:
-  name: computeimage-dep-fromexistingdisk
+  annotations:
+    # Replace "${ORG_ID?}" with your organization ID
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: iamcustomrolesampleorganization
 spec:
-  location: us-central1-a
+  title: Example Organization-Level Custom Role
+  description: This role only contains two permissions - publish and update
+  permissions:
+    - pubsub.topics.publish
+    - pubsub.topics.update
+  stage: GA

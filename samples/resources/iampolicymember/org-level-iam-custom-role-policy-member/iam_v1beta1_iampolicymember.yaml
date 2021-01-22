@@ -19,9 +19,8 @@ metadata:
   name: iampolicymember-sample-orgrole
 spec:
   member: serviceAccount:iampolicymember-dep-orgrole@${PROJECT_ID?}.iam.gserviceaccount.com
-  # Replace ${ORG_ID?} with the numeric ID of your organization, and replace
-  # ${ROLE_ID?} with your IAM custom role ID.
-  role: organizations/${ORG_ID?}/roles/${ROLE_ID?}
+  # Replace ${ORG_ID?} with the numeric ID of your organization
+  role: organizations/${ORG_ID?}/roles/iampolicymemberdeporgrole
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
