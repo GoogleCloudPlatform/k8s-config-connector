@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.36.0
+    cnrm.cloud.google.com/version: 1.37.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25,14 +25,21 @@ metadata:
   name: computeaddresses.compute.cnrm.cloud.google.com
 spec:
   additionalPrinterColumns:
-  - JSONPath: .status.conditions[0].status
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
+  - JSONPath: .status.conditions[?(@.type=='Ready')].status
     description: When 'True', the most recent reconcile of the resource succeeded
     name: Ready
     type: string
-  - JSONPath: .status.conditions[0].reason
+  - JSONPath: .status.conditions[?(@.type=='Ready')].reason
     description: The reason for the value in 'Ready'
     name: Status
     type: string
+  - JSONPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+    description: The last transition time for the value in 'Status'
+    name: Status Age
+    type: date
   group: compute.cnrm.cloud.google.com
   names:
     categories:
@@ -125,9 +132,12 @@ spec:
                 Immutable. The purpose of this resource, which can be one of the following values:
 
                 * GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
+
                 * SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers.
 
-                This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "SHARED_LOADBALANCER_VIP"]
+                * VPC_PEERING for addresses that are reserved for VPC peer networks.
+
+                This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "VPC_PEERING", "SHARED_LOADBALANCER_VIP"]
               type: string
             resourceID:
               description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.

@@ -24,6 +24,6 @@ spec:
     name: bigtablegcpolicy-dep
   mode: INTERSECTION
   maxAge:
-  - days: 30
+  - duration: "24h"
   maxVersion:
   - number: 10
