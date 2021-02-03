@@ -337,6 +337,21 @@ spec:
                     requireSsl:
                       type: boolean
                   type: object
+                insightsConfig:
+                  description: Query Insights helps you detect, diagnose, and prevent query performance problems.
+                  properties:
+                    queryInsightsEnabled:
+                      description: Enable Query Insights on this Instance.
+                      type: boolean
+                    queryStringLength:
+                      description: The query string length in bytes to be stored by the query insights feature. Default length is 1024 bytes. Allowed range: 256 to 4500 bytes.
+                      type: integer
+                    recordApplicationTags:
+                      description: Enable the storage of application tags.
+                      type: boolean
+                    recordClientAddress:
+                      description: Enable the storage client IP addresses.
+                      type: boolean
                 locationPreference:
                   properties:
                     followGaeApplication:
