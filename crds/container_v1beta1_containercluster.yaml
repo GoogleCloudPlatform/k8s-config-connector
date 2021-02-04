@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.37.0
+    cnrm.cloud.google.com/version: 1.38.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -764,6 +764,9 @@ spec:
               required:
               - channel
               type: object
+            resourceID:
+              description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+              type: string
             resourceUsageExportConfig:
               description: Configuration for the ResourceUsageExportConfig feature.
               properties:

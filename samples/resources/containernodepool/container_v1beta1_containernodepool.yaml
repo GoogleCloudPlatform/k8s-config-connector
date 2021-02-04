@@ -24,6 +24,7 @@ spec:
     minNodeCount: 1
     maxNodeCount: 3
   nodeConfig:
+    machineType: n1-standard-1
     diskSizeGb: 100
     diskType: pd-standard
     tags:
