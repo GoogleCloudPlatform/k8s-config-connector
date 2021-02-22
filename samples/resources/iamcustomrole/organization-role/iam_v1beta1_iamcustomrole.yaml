@@ -20,7 +20,7 @@ metadata:
     cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: iamcustomrolesampleorganization
 spec:
-  title: Example Organization-Level Custom Role
+  title: Example Organization-Level Custom Role Created by Config Connector
   description: This role only contains two permissions - publish and update
   permissions:
     - pubsub.topics.publish

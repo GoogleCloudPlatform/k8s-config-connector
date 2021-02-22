@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.38.1
+    cnrm.cloud.google.com/version: 1.39.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -51,6 +51,8 @@ spec:
     - gcpsqlinstances
     singular: sqlinstance
   scope: Namespaced
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       properties:
@@ -129,16 +131,16 @@ spec:
                   description: Immutable. PEM representation of the trusted CA's x509 certificate.
                   type: string
                 clientCertificate:
-                  description: Immutable. PEM representation of the slave's x509 certificate.
+                  description: Immutable. PEM representation of the replica's x509 certificate.
                   type: string
                 clientKey:
-                  description: Immutable. PEM representation of the slave's private key. The corresponding public key in encoded in the client_certificate.
+                  description: Immutable. PEM representation of the replica's private key. The corresponding public key in encoded in the client_certificate.
                   type: string
                 connectRetryInterval:
                   description: Immutable. The number of seconds between connect retries.
                   type: integer
                 dumpFilePath:
-                  description: Immutable. Path to a SQL file in Google Cloud Storage from which slave instances are created. Format is gs://bucket/filename.
+                  description: Immutable. Path to a SQL file in Google Cloud Storage from which replica instances are created. Format is gs://bucket/filename.
                   type: string
                 failoverTarget:
                   description: Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance.
