@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.39.0
+    cnrm.cloud.google.com/version: 1.40.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -698,7 +698,7 @@ spec:
         status:
           properties:
             conditions:
-              description: Conditions represents the latest available observation of the resource's current state.
+              description: Conditions represent the latest available observation of the resource's current state.
               items:
                 properties:
                   lastTransitionTime:
@@ -721,6 +721,48 @@ spec:
             jobType:
               description: The type of the job.
               type: string
+            status:
+              description: The status of this job. Examine this value when polling an asynchronous job to see if the job is complete.
+              items:
+                properties:
+                  errorResult:
+                    description: Final error result of the job. If present, indicates that the job has completed and was unsuccessful.
+                    items:
+                      properties:
+                        location:
+                          description: Specifies where the error occurred, if present.
+                          type: string
+                        message:
+                          description: A human-readable description of the error.
+                          type: string
+                        reason:
+                          description: A short error code that summarizes the error.
+                          type: string
+                      type: object
+                    type: array
+                  errors:
+                    description: |-
+                      The first errors encountered during the running of the job. The final message
+                      includes the number of errors that caused the process to stop. Errors here do
+                      not necessarily mean that the job has not completed or was unsuccessful.
+                    items:
+                      properties:
+                        location:
+                          description: Specifies where the error occurred, if present.
+                          type: string
+                        message:
+                          description: A human-readable description of the error.
+                          type: string
+                        reason:
+                          description: A short error code that summarizes the error.
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: Running state of the job. Valid states include 'PENDING', 'RUNNING', and 'DONE'.
+                    type: string
+                type: object
+              type: array
             userEmail:
               description: Email address of the user who ran the job.
               type: string
