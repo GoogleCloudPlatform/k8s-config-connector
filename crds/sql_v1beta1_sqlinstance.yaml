@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.40.0
+    cnrm.cloud.google.com/version: 1.41.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -292,6 +292,22 @@ spec:
                 diskType:
                   description: 'The type of data disk: PD_SSD or PD_HDD.'
                   type: string
+                insightsConfig:
+                  description: Configuration of Query Insights.
+                  properties:
+                    queryInsightsEnabled:
+                      description: True if Query Insights feature is enabled.
+                      type: boolean
+                    queryStringLength:
+                      description: Maximum query length stored in bytes. Between 256 and 4500. Default to 1024.
+                      type: integer
+                    recordApplicationTags:
+                      description: True if Query Insights will record application tags from query when enabled.
+                      type: boolean
+                    recordClientAddress:
+                      description: True if Query Insights will record client address when enabled.
+                      type: boolean
+                  type: object
                 ipConfiguration:
                   properties:
                     authorizedNetworks:
