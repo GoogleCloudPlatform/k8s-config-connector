@@ -17,7 +17,7 @@ kind: ComputeSecurityPolicy
 metadata:
   name: computesecuritypolicy-sample-multirule
 spec:
-  description: A generally permissive policy that locks out a large block of untrusted IPs, except for some allowed trusted IP ranges within them, and never allows IPs from a blacklist.
+  description: A generally permissive policy that locks out a large block of untrusted IPs, except for some allowed trusted IP ranges within them, and never allows IPs from a denylist.
   rule:
   - action: allow
     priority: 2147483647
@@ -53,4 +53,4 @@ spec:
         - 145.4.56.4/30
         - 63.63.63.63/32
         - 4.5.4.0/24
-    description: Never allow these blacklisted IP ranges.
+    description: Never allow these denylisted IP ranges.
