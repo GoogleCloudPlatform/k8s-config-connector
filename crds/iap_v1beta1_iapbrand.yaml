@@ -19,10 +19,10 @@ metadata:
     cnrm.cloud.google.com/version: 1.43.0
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com
+  name: iapbrands.iap.cnrm.cloud.google.com
 spec:
   additionalPrinterColumns:
   - JSONPath: .metadata.creationTimestamp
@@ -40,16 +40,16 @@ spec:
     description: The last transition time for the value in 'Status'
     name: Status Age
     type: date
-  group: dataflow.cnrm.cloud.google.com
+  group: iap.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: DataflowFlexTemplateJob
-    plural: dataflowflextemplatejobs
+    kind: IAPBrand
+    plural: iapbrands
     shortNames:
-    - gcpdataflowflextemplatejob
-    - gcpdataflowflextemplatejobs
-    singular: dataflowflextemplatejob
+    - gcpiapbrand
+    - gcpiapbrands
+    singular: iapbrand
   scope: Namespaced
   subresources:
     status: {}
@@ -66,17 +66,15 @@ spec:
           type: object
         spec:
           properties:
-            containerSpecGcsPath:
-              description: Immutable.
+            applicationTitle:
+              description: Application name displayed on OAuth consent screen.
               type: string
-            parameters:
-              description: Immutable.
-              type: object
-            region:
-              description: Immutable. The region in which the created job should run.
+            resourceID:
+              description: Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
               type: string
-          required:
-          - containerSpecGcsPath
+            supportEmail:
+              description: Support email displayed on the OAuth consent screen.
+              type: string
           type: object
         status:
           properties:
@@ -101,13 +99,10 @@ spec:
                     type: string
                 type: object
               type: array
-            jobId:
-              type: string
-            state:
-              type: string
+            orgInternalOnly:
+              description: Output only. Whether the brand is only intended for usage inside the G Suite organization only.
+              type: boolean
           type: object
-      required:
-      - spec
       type: object
   version: v1beta1
 status:
