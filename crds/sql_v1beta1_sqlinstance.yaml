@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.43.0
+    cnrm.cloud.google.com/version: 1.44.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -122,7 +122,7 @@ spec:
                   type: string
               type: object
             region:
-              description: Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions - choose from one of the options listed here. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this.
+              description: Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this.
               type: string
             replicaConfiguration:
               description: The configuration for replication.
@@ -251,6 +251,17 @@ spec:
                   type: string
                 backupConfiguration:
                   properties:
+                    backupRetentionSettings:
+                      properties:
+                        retainedBackups:
+                          description: Number of backups to retain.
+                          type: integer
+                        retentionUnit:
+                          description: The unit that 'retainedBackups' represents. Defaults to COUNT
+                          type: string
+                      required:
+                      - retainedBackups
+                      type: object
                     binaryLogEnabled:
                       description: True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Cannot be used with Postgres.
                       type: boolean
@@ -266,6 +277,9 @@ spec:
                     startTime:
                       description: HH:MM format time indicating when backup configuration starts.
                       type: string
+                    transactionLogRetentionDays:
+                      description: The number of days of transaction logs we retain for point in time restore, from 1-7.
+                      type: integer
                   type: object
                 crashSafeReplication:
                   description: DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled.
