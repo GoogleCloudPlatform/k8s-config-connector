@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -42,7 +47,7 @@ type ComputeTargetVPNGatewaySpec struct {
 }
 
 type ComputeTargetVPNGatewayStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeTargetVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -70,9 +75,9 @@ type ComputeTargetVPNGateway struct {
 
 // ComputeTargetVPNGatewayList contains a list of ComputeTargetVPNGateway
 type ComputeTargetVPNGatewayList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeTargetVPNGateway `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetVPNGateway `json:"items"`
 }
 
 func init() {

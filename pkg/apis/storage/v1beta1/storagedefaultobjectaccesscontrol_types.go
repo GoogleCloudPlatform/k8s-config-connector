@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -49,7 +54,7 @@ type StorageDefaultObjectAccessControlSpec struct {
 	Role string `json:"role,omitempty"`
 }
 
-type ProjectTeam struct {
+type DefaultobjectaccesscontrolProjectTeamStatus struct {
 	/* The project team associated with the entity */
 	ProjectNumber string `json:"projectNumber,omitempty"`
 
@@ -58,7 +63,7 @@ type ProjectTeam struct {
 }
 
 type StorageDefaultObjectAccessControlStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   StorageDefaultObjectAccessControl's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The domain associated with the entity. */
@@ -70,7 +75,7 @@ type StorageDefaultObjectAccessControlStatus struct {
 	/* The content generation of the object, if applied to an object. */
 	Generation int `json:"generation,omitempty"`
 	/* The project team associated with the entity */
-	ProjectTeam ProjectTeam `json:"projectTeam,omitempty"`
+	ProjectTeam DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omitempty"`
 }
 
 // +genclient
@@ -90,9 +95,9 @@ type StorageDefaultObjectAccessControl struct {
 
 // StorageDefaultObjectAccessControlList contains a list of StorageDefaultObjectAccessControl
 type StorageDefaultObjectAccessControlList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []StorageDefaultObjectAccessControl `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageDefaultObjectAccessControl `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Parent struct {
+type LienParent struct {
 	/*  */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
@@ -41,7 +46,7 @@ type ResourceManagerLienSpec struct {
 	200 characters. */
 	Origin string `json:"origin,omitempty"`
 	/*  */
-	Parent Parent `json:"parent,omitempty"`
+	Parent LienParent `json:"parent,omitempty"`
 	/* Immutable. Concise user-visible strings indicating why an action cannot be performed
 	on a resource. Maximum length of 200 characters. */
 	Reason string `json:"reason,omitempty"`
@@ -56,7 +61,7 @@ type ResourceManagerLienSpec struct {
 }
 
 type ResourceManagerLienStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ResourceManagerLien's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time of creation */
@@ -82,9 +87,9 @@ type ResourceManagerLien struct {
 
 // ResourceManagerLienList contains a list of ResourceManagerLien
 type ResourceManagerLienList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ResourceManagerLien `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ResourceManagerLien `json:"items"`
 }
 
 func init() {

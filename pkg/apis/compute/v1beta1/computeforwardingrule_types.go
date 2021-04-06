@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputeforwardingruleFilterLabels struct {
+type ForwardingruleFilterLabels struct {
 	/* Immutable. Name of the metadata label. The length must be between
 	1 and 1024 characters, inclusive. */
 	Name string `json:"name,omitempty"`
@@ -39,12 +44,19 @@ type ComputeforwardingruleFilterLabels struct {
 	Value string `json:"value,omitempty"`
 }
 
-type ComputeforwardingruleMetadataFilters struct {
+type ForwardingruleIpAddress struct {
+	/*  */
+	AddressRef v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	/*  */
+	Ip string `json:"ip,omitempty"`
+}
+
+type ForwardingruleMetadataFilters struct {
 	/* Immutable. The list of label value pairs that must match labels in the
 	provided metadata based on filterMatchCriteria
 
 	This list must not be empty and can have at the most 64 entries. */
-	FilterLabels ComputeforwardingruleFilterLabels `json:"filterLabels,omitempty"`
+	FilterLabels []ForwardingruleFilterLabels `json:"filterLabels,omitempty"`
 	/* Immutable. Specifies how individual filterLabel matches within the list of
 	filterLabels contribute towards the overall metadataFilter match.
 
@@ -55,14 +67,9 @@ type ComputeforwardingruleMetadataFilters struct {
 	FilterMatchCriteria string `json:"filterMatchCriteria,omitempty"`
 }
 
-type IpAddress struct {
+type ForwardingruleTarget struct {
 	/*  */
-	AddressRef v1alpha1.ResourceRef `json:"addressRef,omitempty"`
-	/*  */
-	Ip string `json:"ip,omitempty"`
-}
-
-type Target struct {
+	TargetGRPCProxyRef v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
 	/*  */
 	TargetHTTPProxyRef v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
 	/*  */
@@ -110,7 +117,7 @@ type ComputeForwardingRuleSpec struct {
 	forwarding rule. By default, if this field is empty, an ephemeral
 	internal IP address will be automatically allocated from the IP
 	range of the subnet or network configured for this forwarding rule. */
-	IpAddress IpAddress `json:"ipAddress,omitempty"`
+	IpAddress ForwardingruleIpAddress `json:"ipAddress,omitempty"`
 	/* Immutable. The IP protocol to which this rule applies.
 
 	When the load balancing scheme is INTERNAL, only TCP and UDP are
@@ -152,7 +159,7 @@ type ComputeForwardingRuleSpec struct {
 
 	metadataFilters only applies to Loadbalancers that have their
 	loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
-	MetadataFilters ComputeforwardingruleMetadataFilters `json:"metadataFilters,omitempty"`
+	MetadataFilters []ForwardingruleMetadataFilters `json:"metadataFilters,omitempty"`
 	/* This field is not used for external load balancing. For internal
 	load balancing, this field identifies the network that the load
 	balanced IP should belong to for this forwarding rule. If this
@@ -218,11 +225,11 @@ type ComputeForwardingRuleSpec struct {
 	traffic must be of a type appropriate to the target object. For
 	INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
 	are valid. */
-	Target Target `json:"target,omitempty"`
+	Target ForwardingruleTarget `json:"target,omitempty"`
 }
 
 type ComputeForwardingRuleStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeForwardingRule's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -254,9 +261,9 @@ type ComputeForwardingRule struct {
 
 // ComputeForwardingRuleList contains a list of ComputeForwardingRule
 type ComputeForwardingRuleList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeForwardingRule `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeForwardingRule `json:"items"`
 }
 
 func init() {

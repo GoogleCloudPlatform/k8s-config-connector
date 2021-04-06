@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Aggregations struct {
+type AlertpolicyAggregations struct {
 	/* The alignment period for per-time
 	series alignment. If present,
 	alignmentPeriod must be at least
@@ -110,7 +115,7 @@ type Aggregations struct {
 	PerSeriesAligner string `json:"perSeriesAligner,omitempty"`
 }
 
-type ConditionAbsent struct {
+type AlertpolicyConditionAbsent struct {
 	/* Specifies the alignment of data points in
 	individual time series as well as how to
 	combine the retrieved time series together
@@ -120,7 +125,7 @@ type ConditionAbsent struct {
 	all members of a group of resources).
 	Multiple aggregations are applied in the
 	order specified. */
-	Aggregations []Aggregations `json:"aggregations,omitempty"`
+	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
 	/* The amount of time that a time series must
 	fail to report new data to be considered
 	failing. Currently, only values that are a
@@ -146,10 +151,10 @@ type ConditionAbsent struct {
 	the condition will trigger if the comparison
 	is true for any of the time series that have
 	been identified by filter and aggregations. */
-	Trigger Trigger `json:"trigger,omitempty"`
+	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
-type ConditionMonitoringQueryLanguage struct {
+type AlertpolicyConditionMonitoringQueryLanguage struct {
 	/* The amount of time that a time series must
 	violate the threshold to be considered
 	failing. Currently, only values that are a
@@ -176,10 +181,10 @@ type ConditionMonitoringQueryLanguage struct {
 	been identified by filter and aggregations,
 	or by the ratio, if denominator_filter and
 	denominator_aggregations are specified. */
-	Trigger Trigger `json:"trigger,omitempty"`
+	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
-type ConditionThreshold struct {
+type AlertpolicyConditionThreshold struct {
 	/* Specifies the alignment of data points in
 	individual time series as well as how to
 	combine the retrieved time series together
@@ -193,7 +198,7 @@ type ConditionThreshold struct {
 	request. It is advisable to use the
 	ListTimeSeries method when debugging this
 	field. */
-	Aggregations []Aggregations `json:"aggregations,omitempty"`
+	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
 	/* The comparison to apply between the time
 	series (indicated by filter and aggregation)
 	and the threshold (indicated by
@@ -219,7 +224,7 @@ type ConditionThreshold struct {
 	the MetricService.ListTimeSeries request. It
 	is advisable to use the ListTimeSeries
 	method when debugging this field. */
-	DenominatorAggregations []DenominatorAggregations `json:"denominatorAggregations,omitempty"`
+	DenominatorAggregations []AlertpolicyDenominatorAggregations `json:"denominatorAggregations,omitempty"`
 	/* A filter that identifies a time series that
 	should be used as the denominator of a ratio
 	that will be compared with the threshold. If
@@ -276,18 +281,18 @@ type ConditionThreshold struct {
 	been identified by filter and aggregations,
 	or by the ratio, if denominator_filter and
 	denominator_aggregations are specified. */
-	Trigger Trigger `json:"trigger,omitempty"`
+	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
-type Conditions struct {
+type AlertpolicyConditions struct {
 	/* A condition that checks that a time series
 	continues to receive new data points. */
-	ConditionAbsent ConditionAbsent `json:"conditionAbsent,omitempty"`
+	ConditionAbsent AlertpolicyConditionAbsent `json:"conditionAbsent,omitempty"`
 	/* A Monitoring Query Language query that outputs a boolean stream */
-	ConditionMonitoringQueryLanguage ConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
+	ConditionMonitoringQueryLanguage AlertpolicyConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
 	/* A condition that compares a time series against a
 	threshold. */
-	ConditionThreshold ConditionThreshold `json:"conditionThreshold,omitempty"`
+	ConditionThreshold AlertpolicyConditionThreshold `json:"conditionThreshold,omitempty"`
 	/* A short name or phrase used to identify the
 	condition in dashboards, notifications, and
 	incidents. To avoid confusion, don't use the same
@@ -303,14 +308,7 @@ type Conditions struct {
 	Name string `json:"name,omitempty"`
 }
 
-type CreationRecord struct {
-	/* When the change occurred. */
-	MutateTime string `json:"mutateTime,omitempty"`
-	/* The email address of the user making the change. */
-	MutatedBy string `json:"mutatedBy,omitempty"`
-}
-
-type DenominatorAggregations struct {
+type AlertpolicyDenominatorAggregations struct {
 	/* The alignment period for per-time
 	series alignment. If present,
 	alignmentPeriod must be at least
@@ -390,7 +388,7 @@ type DenominatorAggregations struct {
 	PerSeriesAligner string `json:"perSeriesAligner,omitempty"`
 }
 
-type Documentation struct {
+type AlertpolicyDocumentation struct {
 	/* The text of the documentation, interpreted according to mimeType.
 	The content may not exceed 8,192 Unicode characters and may not
 	exceed more than 10,240 bytes when encoded in UTF-8 format,
@@ -401,7 +399,7 @@ type Documentation struct {
 	MimeType string `json:"mimeType,omitempty"`
 }
 
-type Trigger struct {
+type AlertpolicyTrigger struct {
 	/* The absolute number of time series
 	that must fail the predicate for the
 	condition to be triggered. */
@@ -420,7 +418,7 @@ type MonitoringAlertPolicySpec struct {
 	AND or OR according to the combiner field. If the combined conditions
 	evaluate to true, then an incident is created. A policy can have from
 	one to six conditions. */
-	Conditions []Conditions `json:"conditions,omitempty"`
+	Conditions []AlertpolicyConditions `json:"conditions,omitempty"`
 	/* A short name or phrase used to identify the policy in
 	dashboards, notifications, and incidents. To avoid confusion, don't use
 	the same display name for multiple policies in the same project. The
@@ -431,7 +429,7 @@ type MonitoringAlertPolicySpec struct {
 	to help responders understand, mitigate, escalate, and correct the underlying
 	problems detected by the alerting policy. Notification channels that have
 	limited capacity might not show this documentation. */
-	Documentation Documentation `json:"documentation,omitempty"`
+	Documentation AlertpolicyDocumentation `json:"documentation,omitempty"`
 	/* Whether or not the policy is enabled. The default is true. */
 	Enabled bool `json:"enabled,omitempty"`
 	/*  */
@@ -440,14 +438,22 @@ type MonitoringAlertPolicySpec struct {
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
+type AlertpolicyCreationRecordStatus struct {
+	/* When the change occurred. */
+	MutateTime string `json:"mutateTime,omitempty"`
+
+	/* The email address of the user making the change. */
+	MutatedBy string `json:"mutatedBy,omitempty"`
+}
+
 type MonitoringAlertPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   MonitoringAlertPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* A read-only record of the creation of the alerting policy.
 	If provided in a call to create or update, this field will
 	be ignored. */
-	CreationRecord []CreationRecord `json:"creationRecord,omitempty"`
+	CreationRecord []AlertpolicyCreationRecordStatus `json:"creationRecord,omitempty"`
 	/* The unique resource name for this policy.
 	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID] */
 	Name string `json:"name,omitempty"`
@@ -470,9 +476,9 @@ type MonitoringAlertPolicy struct {
 
 // MonitoringAlertPolicyList contains a list of MonitoringAlertPolicy
 type MonitoringAlertPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []MonitoringAlertPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []MonitoringAlertPolicy `json:"items"`
 }
 
 func init() {

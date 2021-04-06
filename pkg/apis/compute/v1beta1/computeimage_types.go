@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,12 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type GuestOsFeatures struct {
+type ImageGuestOsFeatures struct {
 	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC"] */
 	Type string `json:"type,omitempty"`
 }
 
-type RawDisk struct {
+type ImageRawDisk struct {
 	/* Immutable. The format used to encode and transmit the block device, which
 	should be TAR. This is just a container and transmission format
 	and not a runtime format. Provided by the client when the disk
@@ -68,11 +73,11 @@ type ComputeImageSpec struct {
 	Family string `json:"family,omitempty"`
 	/* Immutable. A list of features to enable on the guest operating system.
 	Applicable only for bootable images. */
-	GuestOsFeatures []GuestOsFeatures `json:"guestOsFeatures,omitempty"`
+	GuestOsFeatures []ImageGuestOsFeatures `json:"guestOsFeatures,omitempty"`
 	/* Immutable. Any applicable license URI. */
 	Licenses []string `json:"licenses,omitempty"`
 	/* Immutable. The parameters of the raw disk image. */
-	RawDisk RawDisk `json:"rawDisk,omitempty"`
+	RawDisk ImageRawDisk `json:"rawDisk,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* The source image used to create this image. */
@@ -82,7 +87,7 @@ type ComputeImageSpec struct {
 }
 
 type ComputeImageStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeImage's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Size of the image tar.gz archive stored in Google Cloud Storage (in
@@ -114,9 +119,9 @@ type ComputeImage struct {
 
 // ComputeImageList contains a list of ComputeImage
 type ComputeImageList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeImage `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeImage `json:"items"`
 }
 
 func init() {

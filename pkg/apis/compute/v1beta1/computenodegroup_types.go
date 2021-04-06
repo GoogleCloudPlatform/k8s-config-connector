@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AutoscalingPolicy struct {
+type NodegroupAutoscalingPolicy struct {
 	/* Immutable. Maximum size of the node group. Set to a value less than or equal
 	to 100 and greater than or equal to min-nodes. */
 	MaxNodes int `json:"maxNodes,omitempty"`
@@ -49,7 +54,7 @@ type AutoscalingPolicy struct {
 type ComputeNodeGroupSpec struct {
 	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
 	group autoscaler to automatically manage the sizes of your node groups. */
-	AutoscalingPolicy AutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+	AutoscalingPolicy NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
 	/* Immutable. An optional textual description of the resource. */
 	Description string `json:"description,omitempty"`
 	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
@@ -65,7 +70,7 @@ type ComputeNodeGroupSpec struct {
 }
 
 type ComputeNodeGroupStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeNodeGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -91,9 +96,9 @@ type ComputeNodeGroup struct {
 
 // ComputeNodeGroupList contains a list of ComputeNodeGroup
 type ComputeNodeGroupList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeNodeGroup `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNodeGroup `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Fields struct {
+type IndexFields struct {
 	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
 	be specified. Possible values: ["CONTAINS"] */
 	ArrayConfig string `json:"arrayConfig,omitempty"`
@@ -52,13 +57,13 @@ type FirestoreIndexSpec struct {
 	same direction as that of the last field defined. If the final field
 	in a composite index is not directional, the '__name__' will be
 	ordered '"ASCENDING"' (unless explicitly specified otherwise). */
-	Fields []Fields `json:"fields,omitempty"`
+	Fields []IndexFields `json:"fields,omitempty"`
 	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"] */
 	QueryScope string `json:"queryScope,omitempty"`
 }
 
 type FirestoreIndexStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   FirestoreIndex's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* A server defined name for this index. Format:
@@ -83,9 +88,9 @@ type FirestoreIndex struct {
 
 // FirestoreIndexList contains a list of FirestoreIndex
 type FirestoreIndexList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []FirestoreIndex `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirestoreIndex `json:"items"`
 }
 
 func init() {

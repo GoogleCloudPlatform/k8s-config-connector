@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type MessageStoragePolicy struct {
+type TopicMessageStoragePolicy struct {
 	/* A list of IDs of GCP regions where messages that are published to
 	the topic may be persisted in storage. Messages published by
 	publishers running in non-allowed GCP regions (or running outside
@@ -50,13 +55,13 @@ type PubSubTopicSpec struct {
 	/* Policy constraining the set of Google Cloud Platform regions where
 	messages published to the topic may be stored. If not present, then no
 	constraints are in effect. */
-	MessageStoragePolicy MessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
+	MessageStoragePolicy TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
 type PubSubTopicStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   PubSubTopic's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -78,9 +83,9 @@ type PubSubTopic struct {
 
 // PubSubTopicList contains a list of PubSubTopic
 type PubSubTopicList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []PubSubTopic `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []PubSubTopic `json:"items"`
 }
 
 func init() {

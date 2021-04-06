@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -56,7 +61,8 @@ type ComputeAddressSpec struct {
 	/* Immutable. The prefix length of the IP range. If not present, it means the
 	address field is a single IP address.
 
-	This field is not applicable to addresses with addressType=EXTERNAL. */
+	This field is not applicable to addresses with addressType=EXTERNAL,
+	or addressType=INTERNAL when purpose=PRIVATE_SERVICE_CONNECT */
 	PrefixLength int `json:"prefixLength,omitempty"`
 	/* Immutable. The purpose of this resource, which can be one of the following values:
 
@@ -78,7 +84,7 @@ type ComputeAddressSpec struct {
 }
 
 type ComputeAddressStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeAddress's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -109,9 +115,9 @@ type ComputeAddress struct {
 
 // ComputeAddressList contains a list of ComputeAddress
 type ComputeAddressList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeAddress `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeAddress `json:"items"`
 }
 
 func init() {

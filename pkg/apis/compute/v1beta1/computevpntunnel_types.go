@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,16 +35,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputevpntunnelValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
-}
-
-type SharedSecret struct {
+type VpntunnelSharedSecret struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ComputevpntunnelValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom VpntunnelValueFrom `json:"valueFrom,omitempty"`
+}
+
+type VpntunnelValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeVPNTunnelSpec struct {
@@ -78,7 +83,7 @@ type ComputeVPNTunnelSpec struct {
 	RouterRef v1alpha1.ResourceRef `json:"routerRef,omitempty"`
 	/* Immutable. Shared secret used to set the secure session between the Cloud VPN
 	gateway and the peer VPN gateway. */
-	SharedSecret SharedSecret `json:"sharedSecret,omitempty"`
+	SharedSecret VpntunnelSharedSecret `json:"sharedSecret,omitempty"`
 	/* The ComputeTargetVPNGateway with which this VPN tunnel is
 	associated. */
 	TargetVPNGatewayRef v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
@@ -91,7 +96,7 @@ type ComputeVPNTunnelSpec struct {
 }
 
 type ComputeVPNTunnelStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeVPNTunnel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -126,9 +131,9 @@ type ComputeVPNTunnel struct {
 
 // ComputeVPNTunnelList contains a list of ComputeVPNTunnel
 type ComputeVPNTunnelList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeVPNTunnel `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeVPNTunnel `json:"items"`
 }
 
 func init() {

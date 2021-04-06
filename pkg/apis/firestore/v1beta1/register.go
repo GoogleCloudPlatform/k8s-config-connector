@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 // Package v1beta1 contains API Schema definitions for the firestore v1beta1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register

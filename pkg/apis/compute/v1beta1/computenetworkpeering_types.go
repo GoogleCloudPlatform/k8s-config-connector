@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -48,7 +53,7 @@ type ComputeNetworkPeeringSpec struct {
 }
 
 type ComputeNetworkPeeringStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeNetworkPeering's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network. */
@@ -74,9 +79,9 @@ type ComputeNetworkPeering struct {
 
 // ComputeNetworkPeeringList contains a list of ComputeNetworkPeering
 type ComputeNetworkPeeringList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeNetworkPeering `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNetworkPeering `json:"items"`
 }
 
 func init() {

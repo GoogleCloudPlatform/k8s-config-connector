@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.44.0
+    cnrm.cloud.google.com/version: 1.45.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -128,7 +128,7 @@ spec:
               description: Immutable. Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name.
               type: string
             nodeConfig:
-              description: Immutable.
+              description: Immutable. The configuration of the nodepool
               properties:
                 bootDiskKMSCryptoKeyRef:
                   oneOf:
@@ -157,10 +157,10 @@ spec:
                       type: string
                   type: object
                 diskSizeGb:
-                  description: Immutable.
+                  description: Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB.
                   type: integer
                 diskType:
-                  description: Immutable.
+                  description: Immutable. Type of the disk attached to each node.
                   type: string
                 ephemeralStorageConfig:
                   description: Immutable.
@@ -172,14 +172,14 @@ spec:
                   - localSsdCount
                   type: object
                 guestAccelerator:
-                  description: Immutable.
+                  description: Immutable. List of the type and count of accelerator cards attached to the instance.
                   items:
                     properties:
                       count:
-                        description: Immutable.
+                        description: Immutable. The number of the accelerator cards exposed to an instance.
                         type: integer
                       type:
-                        description: Immutable.
+                        description: Immutable. The accelerator type resource name.
                         type: string
                     required:
                     - count
@@ -187,14 +187,19 @@ spec:
                     type: object
                   type: array
                 imageType:
+                  description: The image type to use for this node. Note that for a given image type, the latest version of it will be used.
                   type: string
                 kubeletConfig:
+                  description: Node kubelet configs.
                   properties:
                     cpuCfsQuota:
+                      description: Enable CPU CFS quota enforcement for containers that specify CPU limits.
                       type: boolean
                     cpuCfsQuotaPeriod:
+                      description: Set the CPU CFS quota period value 'cpu.cfs_period_us'.
                       type: string
                     cpuManagerPolicy:
+                      description: Control the CPU management policy on the node.
                       type: string
                   required:
                   - cpuManagerPolicy
@@ -202,43 +207,46 @@ spec:
                 labels:
                   additionalProperties:
                     type: string
-                  description: Immutable.
+                  description: Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.
                   type: object
                 linuxNodeConfig:
+                  description: Parameters that can be configured on Linux nodes.
                   properties:
                     sysctls:
                       additionalProperties:
                         type: string
+                      description: The Linux kernel parameters to be applied to the nodes and all pods running on the nodes.
                       type: object
                   required:
                   - sysctls
                   type: object
                 localSsdCount:
-                  description: Immutable.
+                  description: Immutable. The number of local SSD disks to be attached to the node.
                   type: integer
                 machineType:
-                  description: Immutable.
+                  description: Immutable. The name of a Google Compute Engine machine type.
                   type: string
                 metadata:
                   additionalProperties:
                     type: string
-                  description: Immutable.
+                  description: Immutable. The metadata key/value pairs assigned to instances in the cluster.
                   type: object
                 minCpuPlatform:
-                  description: Immutable.
+                  description: Immutable. Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform.
                   type: string
                 oauthScopes:
-                  description: Immutable.
+                  description: Immutable. The set of Google API scopes to be made available on all of the node VMs.
                   items:
                     type: string
                   type: array
                 preemptible:
-                  description: Immutable.
+                  description: Immutable. Whether the nodes are created as preemptible VM instances.
                   type: boolean
                 sandboxConfig:
-                  description: Immutable.
+                  description: Immutable. Sandbox configuration for this node.
                   properties:
                     sandboxType:
+                      description: Type of the sandbox to use for the node (e.g. 'gvisor')
                       type: string
                   required:
                   - sandboxType
@@ -270,32 +278,32 @@ spec:
                       type: string
                   type: object
                 shieldedInstanceConfig:
-                  description: Immutable.
+                  description: Immutable. Shielded Instance options.
                   properties:
                     enableIntegrityMonitoring:
-                      description: Immutable.
+                      description: Immutable. Defines whether the instance has integrity monitoring enabled.
                       type: boolean
                     enableSecureBoot:
-                      description: Immutable.
+                      description: Immutable. Defines whether the instance has Secure Boot enabled.
                       type: boolean
                   type: object
                 tags:
-                  description: Immutable.
+                  description: Immutable. The list of instance tags applied to all nodes.
                   items:
                     type: string
                   type: array
                 taint:
-                  description: Immutable.
+                  description: Immutable. List of Kubernetes taints to be applied to each node.
                   items:
                     properties:
                       effect:
-                        description: Immutable.
+                        description: Immutable. Effect for taint.
                         type: string
                       key:
-                        description: Immutable.
+                        description: Immutable. Key for taint.
                         type: string
                       value:
-                        description: Immutable.
+                        description: Immutable. Value for taint.
                         type: string
                     required:
                     - effect
@@ -304,8 +312,10 @@ spec:
                     type: object
                   type: array
                 workloadMetadataConfig:
+                  description: The workload metadata configuration for this node.
                   properties:
                     nodeMetadata:
+                      description: NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.
                       type: string
                   required:
                   - nodeMetadata

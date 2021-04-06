@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AdvertisedIpRanges struct {
+type RouterpeerAdvertisedIpRanges struct {
 	/* User-specified description for the IP range. */
 	Description string `json:"description,omitempty"`
 	/* The IP range to advertise. The value must be a
@@ -60,7 +65,7 @@ type ComputeRouterPeerSpec struct {
 	is 'CUSTOM' and is advertised to all peers of the router. These IP
 	ranges will be advertised in addition to any specified groups.
 	Leave this field blank to advertise no custom IP ranges. */
-	AdvertisedIpRanges []AdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
+	AdvertisedIpRanges []RouterpeerAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
 	/* The priority of routes advertised to this BGP peer.
 	Where there is more than one matching route of maximum
 	length, the routes with the lowest priority value win. */
@@ -83,7 +88,7 @@ type ComputeRouterPeerSpec struct {
 }
 
 type ComputeRouterPeerStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeRouterPeer's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* IP address of the interface inside Google Cloud Platform.
@@ -119,9 +124,9 @@ type ComputeRouterPeer struct {
 
 // ComputeRouterPeerList contains a list of ComputeRouterPeer
 type ComputeRouterPeerList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeRouterPeer `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeRouterPeer `json:"items"`
 }
 
 func init() {

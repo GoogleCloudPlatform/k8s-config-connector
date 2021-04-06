@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Allow struct {
+type FirewallAllow struct {
 	/* An optional list of ports to which this rule applies. This field
 	is only applicable for UDP or TCP protocol. Each entry must be
 	either an integer or a range. If not specified, this rule
@@ -46,35 +51,35 @@ type Allow struct {
 	Protocol string `json:"protocol,omitempty"`
 }
 
-type ComputefirewallLogConfig struct {
+type FirewallDeny struct {
+	/* An optional list of ports to which this rule applies. This field
+	is only applicable for UDP or TCP protocol. Each entry must be
+	either an integer or a range. If not specified, this rule
+	applies to connections through any port.
+
+	Example inputs include: ["22"], ["80","443"], and
+	["12345-12349"]. */
+	Ports []string `json:"ports,omitempty"`
+	/* The IP protocol to which this rule applies. The protocol type is
+	required when creating a firewall rule. This value can either be
+	one of the following well known protocol strings (tcp, udp,
+	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
+	Protocol string `json:"protocol,omitempty"`
+}
+
+type FirewallLogConfig struct {
 	/* This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"] */
 	Metadata string `json:"metadata,omitempty"`
-}
-
-type Deny struct {
-	/* An optional list of ports to which this rule applies. This field
-	is only applicable for UDP or TCP protocol. Each entry must be
-	either an integer or a range. If not specified, this rule
-	applies to connections through any port.
-
-	Example inputs include: ["22"], ["80","443"], and
-	["12345-12349"]. */
-	Ports []string `json:"ports,omitempty"`
-	/* The IP protocol to which this rule applies. The protocol type is
-	required when creating a firewall rule. This value can either be
-	one of the following well known protocol strings (tcp, udp,
-	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
-	Protocol string `json:"protocol,omitempty"`
 }
 
 type ComputeFirewallSpec struct {
 	/* The list of ALLOW rules specified by this firewall. Each rule
 	specifies a protocol and port-range tuple that describes a permitted
 	connection. */
-	Allow []Allow `json:"allow,omitempty"`
+	Allow []FirewallAllow `json:"allow,omitempty"`
 	/* The list of DENY rules specified by this firewall. Each rule specifies
 	a protocol and port-range tuple that describes a denied connection. */
-	Deny []Deny `json:"deny,omitempty"`
+	Deny []FirewallDeny `json:"deny,omitempty"`
 	/* An optional description of this resource. Provide this property when
 	you create the resource. */
 	Description string `json:"description,omitempty"`
@@ -96,7 +101,7 @@ type ComputeFirewallSpec struct {
 	EnableLogging bool `json:"enableLogging,omitempty"`
 	/* This field denotes the logging options for a particular firewall rule.
 	If defined, logging is enabled, and logs will be exported to Cloud Logging. */
-	LogConfig ComputefirewallLogConfig `json:"logConfig,omitempty"`
+	LogConfig FirewallLogConfig `json:"logConfig,omitempty"`
 	/* The network to attach this firewall to. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 	/* Priority for this rule. This is an integer between 0 and 65535, both
@@ -139,7 +144,7 @@ type ComputeFirewallSpec struct {
 }
 
 type ComputeFirewallStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeFirewall's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -165,9 +170,9 @@ type ComputeFirewall struct {
 
 // ComputeFirewallList contains a list of ComputeFirewall
 type ComputeFirewallList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeFirewall `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeFirewall `json:"items"`
 }
 
 func init() {

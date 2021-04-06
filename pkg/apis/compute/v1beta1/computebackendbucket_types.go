@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputebackendbucketCdnPolicy struct {
+type BackendbucketCdnPolicy struct {
 	/* Specifies the cache setting for all responses from this backend.
 	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"] */
 	CacheMode string `json:"cacheMode,omitempty"`
@@ -45,7 +50,7 @@ type ComputebackendbucketCdnPolicy struct {
 	NegativeCaching bool `json:"negativeCaching,omitempty"`
 	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
 	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
-	NegativeCachingPolicy ComputebackendbucketNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
+	NegativeCachingPolicy []BackendbucketNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
 	ServeWhileStale int `json:"serveWhileStale,omitempty"`
 	/* Maximum number of seconds the response to a signed URL request will
@@ -59,7 +64,7 @@ type ComputebackendbucketCdnPolicy struct {
 	SignedUrlCacheMaxAgeSec int `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
-type ComputebackendbucketNegativeCachingPolicy struct {
+type BackendbucketNegativeCachingPolicy struct {
 	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
 	can be specified as values, and you cannot specify a status code more than once. */
 	Code int `json:"code,omitempty"`
@@ -72,7 +77,7 @@ type ComputeBackendBucketSpec struct {
 	/* Reference to the bucket. */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 	/* Cloud CDN configuration for this Backend Bucket. */
-	CdnPolicy ComputebackendbucketCdnPolicy `json:"cdnPolicy,omitempty"`
+	CdnPolicy BackendbucketCdnPolicy `json:"cdnPolicy,omitempty"`
 	/* Headers that the HTTP/S load balancer should add to proxied responses. */
 	CustomResponseHeaders []string `json:"customResponseHeaders,omitempty"`
 	/* An optional textual description of the resource; provided by the
@@ -85,7 +90,7 @@ type ComputeBackendBucketSpec struct {
 }
 
 type ComputeBackendBucketStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeBackendBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -111,9 +116,9 @@ type ComputeBackendBucket struct {
 
 // ComputeBackendBucketList contains a list of ComputeBackendBucket
 type ComputeBackendBucketList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeBackendBucket `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeBackendBucket `json:"items"`
 }
 
 func init() {

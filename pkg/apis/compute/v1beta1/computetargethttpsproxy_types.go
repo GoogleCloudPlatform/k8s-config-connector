@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -35,6 +40,9 @@ type ComputeTargetHTTPSProxySpec struct {
 	Description string `json:"description,omitempty"`
 	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify "global" for global resources. */
 	Location string `json:"location,omitempty"`
+	/* Immutable. This field only applies when the forwarding rule that references
+	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	ProxyBind bool `json:"proxyBind,omitempty"`
 	/* Specifies the QUIC override policy for this resource. This determines
 	whether the load balancer will attempt to negotiate QUIC with clients
 	or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
@@ -56,7 +64,7 @@ type ComputeTargetHTTPSProxySpec struct {
 }
 
 type ComputeTargetHTTPSProxyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeTargetHTTPSProxy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -84,9 +92,9 @@ type ComputeTargetHTTPSProxy struct {
 
 // ComputeTargetHTTPSProxyList contains a list of ComputeTargetHTTPSProxy
 type ComputeTargetHTTPSProxyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeTargetHTTPSProxy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetHTTPSProxy `json:"items"`
 }
 
 func init() {

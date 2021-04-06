@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type IampolicymemberCondition struct {
+type PolicymemberCondition struct {
 	/*  */
 	Description string `json:"description,omitempty"`
 	/*  */
@@ -39,7 +44,7 @@ type IampolicymemberCondition struct {
 	Title string `json:"title,omitempty"`
 }
 
-type MemberFrom struct {
+type PolicymemberMemberFrom struct {
 	/* Immutable. The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	LogSinkRef v1alpha1.ResourceRef `json:"logSinkRef,omitempty"`
 	/* Immutable. The IAMServiceAccount to be bound to the role. */
@@ -48,11 +53,11 @@ type MemberFrom struct {
 
 type IAMPolicyMemberSpec struct {
 	/* Immutable. Optional. The condition under which the binding applies. */
-	Condition IampolicymemberCondition `json:"condition,omitempty"`
+	Condition PolicymemberCondition `json:"condition,omitempty"`
 	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
 	Member string `json:"member,omitempty"`
 	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
-	MemberFrom MemberFrom `json:"memberFrom,omitempty"`
+	MemberFrom PolicymemberMemberFrom `json:"memberFrom,omitempty"`
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
 	ResourceRef v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
 	/* Immutable. Required. The role for which the Member will be bound. */
@@ -60,7 +65,7 @@ type IAMPolicyMemberSpec struct {
 }
 
 type IAMPolicyMemberStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   IAMPolicyMember's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -82,9 +87,9 @@ type IAMPolicyMember struct {
 
 // IAMPolicyMemberList contains a list of IAMPolicyMember
 type IAMPolicyMemberList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []IAMPolicyMember `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMPolicyMember `json:"items"`
 }
 
 func init() {

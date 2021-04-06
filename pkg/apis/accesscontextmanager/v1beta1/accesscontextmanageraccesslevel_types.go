@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Basic struct {
+type AccesslevelBasic struct {
 	/* How the conditions list should be combined to determine if a request
 	is granted this AccessLevel. If AND is used, each Condition in
 	conditions must be satisfied for the AccessLevel to be applied. If
@@ -38,14 +43,14 @@ type Basic struct {
 	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"] */
 	CombiningFunction string `json:"combiningFunction,omitempty"`
 	/* A set of requirements for the AccessLevel to be granted. */
-	Conditions []Conditions `json:"conditions,omitempty"`
+	Conditions []AccesslevelConditions `json:"conditions,omitempty"`
 }
 
-type Conditions struct {
+type AccesslevelConditions struct {
 	/* Device specific restrictions, all restrictions must hold for
 	the Condition to be true. If not specified, all devices are
 	allowed. */
-	DevicePolicy DevicePolicy `json:"devicePolicy,omitempty"`
+	DevicePolicy AccesslevelDevicePolicy `json:"devicePolicy,omitempty"`
 	/* A list of CIDR block IP subnetwork specification. May be IPv4
 	or IPv6.
 	Note that for a CIDR IP address block, the specified IP address
@@ -58,7 +63,7 @@ type Conditions struct {
 	If empty, all IP addresses are allowed. */
 	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
 	/*  */
-	Members []Members `json:"members,omitempty"`
+	Members []AccesslevelMembers `json:"members,omitempty"`
 	/* Whether to negate the Condition. If true, the Condition becomes
 	a NAND over its non-empty fields, each field must be false for
 	the Condition overall to be satisfied. Defaults to false. */
@@ -71,14 +76,14 @@ type Conditions struct {
 	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
 }
 
-type Custom struct {
+type AccesslevelCustom struct {
 	/* Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.
 	This page details the objects and attributes that are used to the build the CEL expressions for
 	custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec. */
-	Expr Expr `json:"expr,omitempty"`
+	Expr AccesslevelExpr `json:"expr,omitempty"`
 }
 
-type DevicePolicy struct {
+type AccesslevelDevicePolicy struct {
 	/* A list of allowed device management levels.
 	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"] */
 	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
@@ -87,7 +92,7 @@ type DevicePolicy struct {
 	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
 	/* A list of allowed OS versions.
 	An empty list allows all types and all versions. */
-	OsConstraints []OsConstraints `json:"osConstraints,omitempty"`
+	OsConstraints []AccesslevelOsConstraints `json:"osConstraints,omitempty"`
 	/* Whether the device needs to be approved by the customer admin. */
 	RequireAdminApproval bool `json:"requireAdminApproval,omitempty"`
 	/* Whether the device needs to be corp owned. */
@@ -97,7 +102,7 @@ type DevicePolicy struct {
 	RequireScreenLock bool `json:"requireScreenLock,omitempty"`
 }
 
-type Expr struct {
+type AccesslevelExpr struct {
 	/* Description of the expression */
 	Description string `json:"description,omitempty"`
 	/* Textual representation of an expression in Common Expression Language syntax. */
@@ -108,14 +113,14 @@ type Expr struct {
 	Title string `json:"title,omitempty"`
 }
 
-type Members struct {
+type AccesslevelMembers struct {
 	/*  */
 	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 	/*  */
 	User string `json:"user,omitempty"`
 }
 
-type OsConstraints struct {
+type AccesslevelOsConstraints struct {
 	/* The minimum allowed OS version. If not set, any version
 	of this OS satisfies the constraint.
 	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
@@ -129,10 +134,10 @@ type AccessContextManagerAccessLevelSpec struct {
 	AccessContextManagerAccessLevel lives in. */
 	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef,omitempty"`
 	/* A set of predefined conditions for the access level and a combining function. */
-	Basic Basic `json:"basic,omitempty"`
+	Basic AccesslevelBasic `json:"basic,omitempty"`
 	/* Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request.
 	See CEL spec at: https://github.com/google/cel-spec. */
-	Custom Custom `json:"custom,omitempty"`
+	Custom AccesslevelCustom `json:"custom,omitempty"`
 	/* Description of the AccessLevel and its use. Does not affect behavior. */
 	Description string `json:"description,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -142,7 +147,7 @@ type AccessContextManagerAccessLevelSpec struct {
 }
 
 type AccessContextManagerAccessLevelStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessLevel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -164,9 +169,9 @@ type AccessContextManagerAccessLevel struct {
 
 // AccessContextManagerAccessLevelList contains a list of AccessContextManagerAccessLevel
 type AccessContextManagerAccessLevelList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []AccessContextManagerAccessLevel `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []AccessContextManagerAccessLevel `json:"items"`
 }
 
 func init() {

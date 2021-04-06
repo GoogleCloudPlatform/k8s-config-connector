@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type CsvOptions struct {
+type TableCsvOptions struct {
 	/* Indicates if BigQuery should accept rows that are missing trailing optional columns. */
 	AllowJaggedRows bool `json:"allowJaggedRows,omitempty"`
 	/* Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false. */
@@ -45,22 +50,22 @@ type CsvOptions struct {
 	SkipLeadingRows int `json:"skipLeadingRows,omitempty"`
 }
 
-type EncryptionConfiguration struct {
+type TableEncryptionConfiguration struct {
 	/*  */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
-type ExternalDataConfiguration struct {
+type TableExternalDataConfiguration struct {
 	/* Let BigQuery try to autodetect the schema and format of the table. */
 	Autodetect bool `json:"autodetect,omitempty"`
 	/* The compression type of the data source. Valid values are "NONE" or "GZIP". */
 	Compression string `json:"compression,omitempty"`
 	/* Additional properties to set if source_format is set to "CSV". */
-	CsvOptions CsvOptions `json:"csvOptions,omitempty"`
+	CsvOptions TableCsvOptions `json:"csvOptions,omitempty"`
 	/* Additional options if source_format is set to "GOOGLE_SHEETS". */
-	GoogleSheetsOptions GoogleSheetsOptions `json:"googleSheetsOptions,omitempty"`
+	GoogleSheetsOptions TableGoogleSheetsOptions `json:"googleSheetsOptions,omitempty"`
 	/* When set, configures hive partitioning support. Not all storage formats support hive partitioning -- requesting hive partitioning on an unsupported format will lead to an error, as will providing an invalid specification. */
-	HivePartitioningOptions HivePartitioningOptions `json:"hivePartitioningOptions,omitempty"`
+	HivePartitioningOptions TableHivePartitioningOptions `json:"hivePartitioningOptions,omitempty"`
 	/* Indicates if BigQuery should allow extra values that are not represented in the table schema. If true, the extra values are ignored. If false, records with extra columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. */
 	IgnoreUnknownValues bool `json:"ignoreUnknownValues,omitempty"`
 	/* The maximum number of bad records that BigQuery can ignore when reading data. */
@@ -73,30 +78,30 @@ type ExternalDataConfiguration struct {
 	SourceUris []string `json:"sourceUris,omitempty"`
 }
 
-type GoogleSheetsOptions struct {
+type TableGoogleSheetsOptions struct {
 	/* Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20" */
 	Range string `json:"range,omitempty"`
 	/* The number of rows at the top of the sheet that BigQuery will skip when reading the data. At least one of range or skip_leading_rows must be set. */
 	SkipLeadingRows int `json:"skipLeadingRows,omitempty"`
 }
 
-type HivePartitioningOptions struct {
+type TableHivePartitioningOptions struct {
 	/* When set, what mode of hive partitioning to use when reading data. */
 	Mode string `json:"mode,omitempty"`
 	/* When hive partition detection is requested, a common for all source uris must be required. The prefix must end immediately before the partition key encoding begins. */
 	SourceUriPrefix string `json:"sourceUriPrefix,omitempty"`
 }
 
-type MaterializedView struct {
+type TableMaterializedView struct {
 	/* Specifies if BigQuery should automatically refresh materialized view when the base table is updated. The default is true. */
 	EnableRefresh bool `json:"enableRefresh,omitempty"`
-	/* A query whose result is persisted. */
+	/* Immutable. A query whose result is persisted. */
 	Query string `json:"query,omitempty"`
 	/* Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000 */
 	RefreshIntervalMs int `json:"refreshIntervalMs,omitempty"`
 }
 
-type Range struct {
+type TableRange struct {
 	/* End of the range partitioning, exclusive. */
 	End int `json:"end,omitempty"`
 	/* The width of each range within the partition. */
@@ -105,14 +110,14 @@ type Range struct {
 	Start int `json:"start,omitempty"`
 }
 
-type RangePartitioning struct {
+type TableRangePartitioning struct {
 	/* Immutable. The field used to determine how to create a range-based partition. */
 	Field string `json:"field,omitempty"`
 	/* Information required to partition based on ranges. Structure is documented below. */
-	Range Range `json:"range,omitempty"`
+	Range TableRange `json:"range,omitempty"`
 }
 
-type TimePartitioning struct {
+type TableTimePartitioning struct {
 	/* Number of milliseconds for which to keep the storage for a partition. */
 	ExpirationMs int `json:"expirationMs,omitempty"`
 	/* Immutable. The field used to determine how to create a time-based partition. If time-based partitioning is enabled without this value, the table is partitioned based on the load time. */
@@ -123,7 +128,7 @@ type TimePartitioning struct {
 	Type string `json:"type,omitempty"`
 }
 
-type View struct {
+type TableView struct {
 	/* A query that BigQuery executes when the view is referenced. */
 	Query string `json:"query,omitempty"`
 	/* Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's standard SQL */
@@ -138,29 +143,29 @@ type BigQueryTableSpec struct {
 	/* The field description. */
 	Description string `json:"description,omitempty"`
 	/* Immutable. Specifies how the table should be encrypted. If left blank, the table will be encrypted with a Google-managed key; that process is transparent to the user. */
-	EncryptionConfiguration EncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
+	EncryptionConfiguration TableEncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
 	/* The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed. */
 	ExpirationTime int `json:"expirationTime,omitempty"`
 	/* Describes the data format, location, and other properties of a table stored outside of BigQuery. By defining these properties, the data source can then be queried as if it were a standard BigQuery table. */
-	ExternalDataConfiguration ExternalDataConfiguration `json:"externalDataConfiguration,omitempty"`
+	ExternalDataConfiguration TableExternalDataConfiguration `json:"externalDataConfiguration,omitempty"`
 	/* A descriptive name for the table. */
 	FriendlyName string `json:"friendlyName,omitempty"`
 	/* If specified, configures this table as a materialized view. */
-	MaterializedView MaterializedView `json:"materializedView,omitempty"`
+	MaterializedView TableMaterializedView `json:"materializedView,omitempty"`
 	/* If specified, configures range-based partitioning for this table. */
-	RangePartitioning RangePartitioning `json:"rangePartitioning,omitempty"`
+	RangePartitioning TableRangePartitioning `json:"rangePartitioning,omitempty"`
 	/* Immutable. Optional. The tableId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* A JSON schema for the table. */
 	Schema string `json:"schema,omitempty"`
 	/* If specified, configures time-based partitioning for this table. */
-	TimePartitioning TimePartitioning `json:"timePartitioning,omitempty"`
+	TimePartitioning TableTimePartitioning `json:"timePartitioning,omitempty"`
 	/* If specified, configures this table as a view. */
-	View View `json:"view,omitempty"`
+	View TableView `json:"view,omitempty"`
 }
 
 type BigQueryTableStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigQueryTable's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when this table was created, in milliseconds since the epoch. */
@@ -200,9 +205,9 @@ type BigQueryTable struct {
 
 // BigQueryTableList contains a list of BigQueryTable
 type BigQueryTableList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigQueryTable `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryTable `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Artifacts struct {
+type TriggerArtifacts struct {
 	/* A list of images to be pushed upon the successful completion of all build steps.
 
 	The images will be pushed using the builder service account's credentials.
@@ -47,12 +52,12 @@ type Artifacts struct {
 	The location and generation of the uploaded objects will be stored in the Build resource's results field.
 
 	If any objects fail to be pushed, the build is marked FAILURE. */
-	Objects Objects `json:"objects,omitempty"`
+	Objects TriggerObjects `json:"objects,omitempty"`
 }
 
-type Build struct {
+type TriggerBuild struct {
 	/* Artifacts produced by the build that should be uploaded upon successful completion of all build steps. */
-	Artifacts Artifacts `json:"artifacts,omitempty"`
+	Artifacts TriggerArtifacts `json:"artifacts,omitempty"`
 	/* A list of images to be pushed upon the successful completion of all build steps.
 	The images are pushed using the builder service account's credentials.
 	The digests of the pushed images will be stored in the Build resource's results field.
@@ -62,20 +67,20 @@ type Build struct {
 	names will be of the format ${logsBucket}/log-${build_id}.txt. */
 	LogsBucketRef v1alpha1.ResourceRef `json:"logsBucketRef,omitempty"`
 	/* Special options for this build. */
-	Options Options `json:"options,omitempty"`
+	Options TriggerOptions `json:"options,omitempty"`
 	/* TTL in queue for this build. If provided and the build is enqueued longer than this value,
 	the build will expire and the build status will be EXPIRED.
 	The TTL starts ticking from createTime.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
 	QueueTtl string `json:"queueTtl,omitempty"`
 	/* Secrets to decrypt using Cloud Key Management Service. */
-	Secret []Secret `json:"secret,omitempty"`
+	Secret []TriggerSecret `json:"secret,omitempty"`
 	/* The location of the source files to build.
 
 	One of 'storageSource' or 'repoSource' must be provided. */
-	Source Source `json:"source,omitempty"`
+	Source TriggerSource `json:"source,omitempty"`
 	/* The operations to be performed on the workspace. */
-	Step []Step `json:"step,omitempty"`
+	Step []TriggerStep `json:"step,omitempty"`
 	/* Substitutions data for Build resource. */
 	Substitutions map[string]string `json:"substitutions,omitempty"`
 	/* Tags for annotation of a Build. These are not docker tags. */
@@ -88,7 +93,7 @@ type Build struct {
 	Timeout string `json:"timeout,omitempty"`
 }
 
-type Github struct {
+type TriggerGithub struct {
 	/* Name of the repository. For example: The name for
 	https://github.com/googlecloudplatform/cloud-builders is "cloud-builders". */
 	Name string `json:"name,omitempty"`
@@ -96,12 +101,12 @@ type Github struct {
 	https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform". */
 	Owner string `json:"owner,omitempty"`
 	/* filter to match changes in pull requests.  Specify only one of pullRequest or push. */
-	PullRequest PullRequest `json:"pullRequest,omitempty"`
+	PullRequest TriggerPullRequest `json:"pullRequest,omitempty"`
 	/* filter to match changes in refs, like branches or tags.  Specify only one of pullRequest or push. */
-	Push Push `json:"push,omitempty"`
+	Push TriggerPush `json:"push,omitempty"`
 }
 
-type Objects struct {
+type TriggerObjects struct {
 	/* Cloud Storage bucket and optional object path, in the form "gs://bucket/path/to/somewhere/".
 
 	Files in the workspace matching any path pattern will be uploaded to Cloud Storage with
@@ -110,10 +115,10 @@ type Objects struct {
 	/* Path globs used to match files in the build's workspace. */
 	Paths []string `json:"paths,omitempty"`
 	/* Output only. Stores timing information for pushing all artifact objects. */
-	Timing []Timing `json:"timing,omitempty"`
+	Timing []TriggerTiming `json:"timing,omitempty"`
 }
 
-type Options struct {
+type TriggerOptions struct {
 	/* Requested disk size for the VM that runs the build. Note that this is NOT "disk free";
 	some of the space will be used by the operating system and build utilities.
 	Also note that this is the minimum disk size that will be allocated for the build --
@@ -157,14 +162,14 @@ type Options struct {
 
 	Using a global volume in a build with only one step is not valid as it is indicative
 	of a build request with an incorrect configuration. */
-	Volumes []Volumes `json:"volumes,omitempty"`
+	Volumes []TriggerVolumes `json:"volumes,omitempty"`
 	/* Option to specify a WorkerPool for the build. Format projects/{project}/workerPools/{workerPool}
 
 	This field is experimental. */
 	WorkerPool string `json:"workerPool,omitempty"`
 }
 
-type PullRequest struct {
+type TriggerPullRequest struct {
 	/* Regex of branches to match. */
 	Branch string `json:"branch,omitempty"`
 	/* Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"] */
@@ -173,7 +178,7 @@ type PullRequest struct {
 	InvertRegex bool `json:"invertRegex,omitempty"`
 }
 
-type Push struct {
+type TriggerPush struct {
 	/* Regex of branches to match.  Specify only one of branch or tag. */
 	Branch string `json:"branch,omitempty"`
 	/* When true, only trigger a build if the revision regex does NOT match the git_ref regex. */
@@ -182,7 +187,7 @@ type Push struct {
 	Tag string `json:"tag,omitempty"`
 }
 
-type RepoSource struct {
+type TriggerRepoSource struct {
 	/* Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided.
 	The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 	described at https://github.com/google/re2/wiki/Syntax */
@@ -209,7 +214,7 @@ type RepoSource struct {
 	TagName string `json:"tagName,omitempty"`
 }
 
-type Secret struct {
+type TriggerSecret struct {
 	/* KMS crypto key to use to decrypt these envs. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 	/* Map of environment variable name to its encrypted value.
@@ -219,14 +224,14 @@ type Secret struct {
 	SecretEnv map[string]string `json:"secretEnv,omitempty"`
 }
 
-type Source struct {
+type TriggerSource struct {
 	/* Location of the source in a Google Cloud Source Repository. */
-	RepoSource RepoSource `json:"repoSource,omitempty"`
+	RepoSource TriggerRepoSource `json:"repoSource,omitempty"`
 	/* Location of the source in an archive file in Google Cloud Storage. */
-	StorageSource StorageSource `json:"storageSource,omitempty"`
+	StorageSource TriggerStorageSource `json:"storageSource,omitempty"`
 }
 
-type Step struct {
+type TriggerStep struct {
 	/* A list of arguments that will be presented to the step when it is started.
 
 	If the image used to run the step's container has an entrypoint, the args
@@ -266,7 +271,8 @@ type Step struct {
 	the builder service account's credentials if necessary.
 
 	The Docker daemon's cache will already have the latest versions of all of
-	the officially supported build steps (https://github.com/GoogleCloudPlatform/cloud-builders).
+	the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders
+	for images and examples).
 	The Docker daemon will also have cached many of the layers for some popular
 	images, like "ubuntu", "debian", but they will be refreshed at the time
 	you attempt to use them.
@@ -296,7 +302,7 @@ type Step struct {
 
 	Using a named volume in only one step is not valid as it is
 	indicative of a build request with an incorrect configuration. */
-	Volumes []Volumes `json:"volumes,omitempty"`
+	Volumes []TriggerVolumes `json:"volumes,omitempty"`
 	/* The ID(s) of the step(s) that this build step depends on.
 
 	This build step will not start until all the build steps in 'wait_for'
@@ -306,7 +312,7 @@ type Step struct {
 	WaitFor []string `json:"waitFor,omitempty"`
 }
 
-type StorageSource struct {
+type TriggerStorageSource struct {
 	/* Google Cloud Storage bucket containing the source. */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 	/* Google Cloud Storage generation for the object.
@@ -317,7 +323,7 @@ type StorageSource struct {
 	Object string `json:"object,omitempty"`
 }
 
-type Timing struct {
+type TriggerTiming struct {
 	/* End of time span.
 
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
@@ -330,7 +336,7 @@ type Timing struct {
 	StartTime string `json:"startTime,omitempty"`
 }
 
-type TriggerTemplate struct {
+type TriggerTriggerTemplate struct {
 	/* Name of the branch to build. Exactly one a of branch name, tag, or commit SHA must be provided.
 	This field is a regular expression. */
 	BranchName string `json:"branchName,omitempty"`
@@ -352,7 +358,7 @@ type TriggerTemplate struct {
 	TagName string `json:"tagName,omitempty"`
 }
 
-type Volumes struct {
+type TriggerVolumes struct {
 	/* Name of the volume to mount.
 
 	Volume names must be unique per build step and must be valid names for
@@ -367,7 +373,7 @@ type Volumes struct {
 
 type CloudBuildTriggerSpec struct {
 	/* Contents of the build template. Either a filename or build template must be provided. */
-	Build Build `json:"build,omitempty"`
+	Build TriggerBuild `json:"build,omitempty"`
 	/* Human-readable description of the trigger. */
 	Description string `json:"description,omitempty"`
 	/* Whether the trigger is disabled or not. If true, the trigger will never result in a build. */
@@ -377,7 +383,7 @@ type CloudBuildTriggerSpec struct {
 	/* Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
 	One of 'trigger_template' or 'github' must be provided. */
-	Github Github `json:"github,omitempty"`
+	Github TriggerGithub `json:"github,omitempty"`
 	/* ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
 	extended with support for '**'.
 
@@ -411,11 +417,11 @@ type CloudBuildTriggerSpec struct {
 	expression will trigger a build.
 
 	One of 'trigger_template' or 'github' must be provided. */
-	TriggerTemplate TriggerTemplate `json:"triggerTemplate,omitempty"`
+	TriggerTemplate TriggerTriggerTemplate `json:"triggerTemplate,omitempty"`
 }
 
 type CloudBuildTriggerStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   CloudBuildTrigger's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time when the trigger was created. */
@@ -441,9 +447,9 @@ type CloudBuildTrigger struct {
 
 // CloudBuildTriggerList contains a list of CloudBuildTrigger
 type CloudBuildTriggerList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []CloudBuildTrigger `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []CloudBuildTrigger `json:"items"`
 }
 
 func init() {

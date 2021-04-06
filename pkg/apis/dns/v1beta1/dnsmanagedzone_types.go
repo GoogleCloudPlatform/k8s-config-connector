@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DefaultKeySpecs struct {
+type ManagedzoneDefaultKeySpecs struct {
 	/* String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"] */
 	Algorithm string `json:"algorithm,omitempty"`
 	/* Length of the keys in bits */
@@ -46,26 +51,12 @@ type DefaultKeySpecs struct {
 	Kind string `json:"kind,omitempty"`
 }
 
-type DnsmanagedzoneNetworks struct {
-	/* VPC network to bind to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
-}
-
-type DnsmanagedzoneTargetNameServers struct {
-	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
-	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"] */
-	ForwardingPath string `json:"forwardingPath,omitempty"`
-	/* IPv4 address of a target name server. */
-	Ipv4Address string `json:"ipv4Address,omitempty"`
-}
-
-type DnssecConfig struct {
+type ManagedzoneDnssecConfig struct {
 	/* Specifies parameters that will be used for generating initial DnsKeys
 	for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
 	you must also provide one for the other.
 	default_key_specs can only be updated when the state is 'off'. */
-	DefaultKeySpecs []DefaultKeySpecs `json:"defaultKeySpecs,omitempty"`
+	DefaultKeySpecs []ManagedzoneDefaultKeySpecs `json:"defaultKeySpecs,omitempty"`
 	/* Identifies what kind of resource this is */
 	Kind string `json:"kind,omitempty"`
 	/* Specifies the mechanism used to provide authenticated denial-of-existence responses.
@@ -75,14 +66,14 @@ type DnssecConfig struct {
 	State string `json:"state,omitempty"`
 }
 
-type ForwardingConfig struct {
+type ManagedzoneForwardingConfig struct {
 	/* List of target name servers to forward to. Cloud DNS will
 	select the best available name server if more than
 	one target is given. */
-	TargetNameServers DnsmanagedzoneTargetNameServers `json:"targetNameServers,omitempty"`
+	TargetNameServers []ManagedzoneTargetNameServers `json:"targetNameServers,omitempty"`
 }
 
-type Namespace struct {
+type ManagedzoneNamespace struct {
 	/* The fully qualified or partial URL of the service directory namespace that should be
 	associated with the zone. This should be formatted like
 	'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
@@ -91,22 +82,36 @@ type Namespace struct {
 	NamespaceUrl string `json:"namespaceUrl,omitempty"`
 }
 
-type PeeringConfig struct {
+type ManagedzoneNetworks struct {
+	/* VPC network to bind to. */
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+}
+
+type ManagedzonePeeringConfig struct {
 	/* The network with which to peer. */
-	TargetNetwork TargetNetwork `json:"targetNetwork,omitempty"`
+	TargetNetwork ManagedzoneTargetNetwork `json:"targetNetwork,omitempty"`
 }
 
-type PrivateVisibilityConfig struct {
+type ManagedzonePrivateVisibilityConfig struct {
 	/*  */
-	Networks DnsmanagedzoneNetworks `json:"networks,omitempty"`
+	Networks []ManagedzoneNetworks `json:"networks,omitempty"`
 }
 
-type ServiceDirectoryConfig struct {
+type ManagedzoneServiceDirectoryConfig struct {
 	/* The namespace associated with the zone. */
-	Namespace Namespace `json:"namespace,omitempty"`
+	Namespace ManagedzoneNamespace `json:"namespace,omitempty"`
 }
 
-type TargetNetwork struct {
+type ManagedzoneTargetNameServers struct {
+	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
+	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
+	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"] */
+	ForwardingPath string `json:"forwardingPath,omitempty"`
+	/* IPv4 address of a target name server. */
+	Ipv4Address string `json:"ipv4Address,omitempty"`
+}
+
+type ManagedzoneTargetNetwork struct {
 	/* VPC network to forward queries to. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
@@ -117,17 +122,17 @@ type DNSManagedZoneSpec struct {
 	/* Immutable. The DNS name of this managed zone, for instance "example.com.". */
 	DnsName string `json:"dnsName,omitempty"`
 	/* DNSSEC configuration */
-	DnssecConfig DnssecConfig `json:"dnssecConfig,omitempty"`
+	DnssecConfig ManagedzoneDnssecConfig `json:"dnssecConfig,omitempty"`
 	/* The presence for this field indicates that outbound forwarding is enabled
 	for this zone. The value of this field contains the set of destinations
 	to forward to. */
-	ForwardingConfig ForwardingConfig `json:"forwardingConfig,omitempty"`
+	ForwardingConfig ManagedzoneForwardingConfig `json:"forwardingConfig,omitempty"`
 	/* The presence of this field indicates that DNS Peering is enabled for this
 	zone. The value of this field contains the network to peer with. */
-	PeeringConfig PeeringConfig `json:"peeringConfig,omitempty"`
+	PeeringConfig ManagedzonePeeringConfig `json:"peeringConfig,omitempty"`
 	/* For privately visible zones, the set of Virtual Private Cloud
 	resources that the zone is visible from. */
-	PrivateVisibilityConfig PrivateVisibilityConfig `json:"privateVisibilityConfig,omitempty"`
+	PrivateVisibilityConfig ManagedzonePrivateVisibilityConfig `json:"privateVisibilityConfig,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
@@ -135,14 +140,14 @@ type DNSManagedZoneSpec struct {
 	to networks listed under 'private_visibility_config'. */
 	ReverseLookup bool `json:"reverseLookup,omitempty"`
 	/* Immutable. The presence of this field indicates that this zone is backed by Service Directory. The value of this field contains information related to the namespace associated with the zone. */
-	ServiceDirectoryConfig ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+	ServiceDirectoryConfig ManagedzoneServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
 	/* Immutable. The zone's visibility: public zones are exposed to the Internet,
 	while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"] */
 	Visibility string `json:"visibility,omitempty"`
 }
 
 type DNSManagedZoneStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   DNSManagedZone's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Delegate your managed_zone to these virtual name servers;
@@ -167,9 +172,9 @@ type DNSManagedZone struct {
 
 // DNSManagedZoneList contains a list of DNSManagedZone
 type DNSManagedZoneList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []DNSManagedZone `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DNSManagedZone `json:"items"`
 }
 
 func init() {

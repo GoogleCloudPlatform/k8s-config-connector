@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,14 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Action struct {
+type BucketAction struct {
 	/* The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
 	StorageClass string `json:"storageClass,omitempty"`
 	/* The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass. */
 	Type string `json:"type,omitempty"`
 }
 
-type Condition struct {
+type BucketCondition struct {
 	/* Minimum age of an object in days to satisfy this condition. */
 	Age int `json:"age,omitempty"`
 	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
@@ -59,7 +64,7 @@ type Condition struct {
 	WithState string `json:"withState,omitempty"`
 }
 
-type Cors struct {
+type BucketCors struct {
 	/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
 	MaxAgeSeconds int `json:"maxAgeSeconds,omitempty"`
 	/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
@@ -70,38 +75,38 @@ type Cors struct {
 	ResponseHeader []string `json:"responseHeader,omitempty"`
 }
 
-type Encryption struct {
+type BucketEncryption struct {
 	/*  */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
-type LifecycleRule struct {
+type BucketLifecycleRule struct {
 	/* The Lifecycle Rule's action configuration. A single block of this type is supported. */
-	Action Action `json:"action,omitempty"`
+	Action BucketAction `json:"action,omitempty"`
 	/* The Lifecycle Rule's condition configuration. */
-	Condition Condition `json:"condition,omitempty"`
+	Condition BucketCondition `json:"condition,omitempty"`
 }
 
-type Logging struct {
+type BucketLogging struct {
 	/* The bucket that will receive log objects. */
 	LogBucket string `json:"logBucket,omitempty"`
 	/* The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name. */
 	LogObjectPrefix string `json:"logObjectPrefix,omitempty"`
 }
 
-type RetentionPolicy struct {
+type BucketRetentionPolicy struct {
 	/* If set to true, the bucket will be locked and permanently restrict edits to the bucket's retention policy.  Caution: Locking a bucket is an irreversible action. */
 	IsLocked bool `json:"isLocked,omitempty"`
 	/* The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds. */
 	RetentionPeriod int `json:"retentionPeriod,omitempty"`
 }
 
-type Versioning struct {
+type BucketVersioning struct {
 	/* While set to true, versioning is fully enabled for this bucket. */
 	Enabled bool `json:"enabled,omitempty"`
 }
 
-type Website struct {
+type BucketWebsite struct {
 	/* Behaves as the bucket's directory index where missing objects are treated as potential directories. */
 	MainPageSuffix string `json:"mainPageSuffix,omitempty"`
 	/* The custom object to return when a requested resource is not found. */
@@ -112,35 +117,35 @@ type StorageBucketSpec struct {
 	/* DEPRECATED — Please use the uniform_bucket_level_access as this field has been renamed by Google. Enables Bucket Policy Only access to a bucket. */
 	BucketPolicyOnly bool `json:"bucketPolicyOnly,omitempty"`
 	/* The bucket's Cross-Origin Resource Sharing (CORS) configuration. */
-	Cors []Cors `json:"cors,omitempty"`
+	Cors []BucketCors `json:"cors,omitempty"`
 	/*  */
 	DefaultEventBasedHold bool `json:"defaultEventBasedHold,omitempty"`
 	/* The bucket's encryption configuration. */
-	Encryption Encryption `json:"encryption,omitempty"`
+	Encryption BucketEncryption `json:"encryption,omitempty"`
 	/* The bucket's Lifecycle Rules configuration. */
-	LifecycleRule []LifecycleRule `json:"lifecycleRule,omitempty"`
+	LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
 	/* Immutable. The Google Cloud Storage location */
 	Location string `json:"location,omitempty"`
 	/* The bucket's Access & Storage Logs configuration. */
-	Logging Logging `json:"logging,omitempty"`
+	Logging BucketLogging `json:"logging,omitempty"`
 	/* Enables Requester Pays on a storage bucket. */
 	RequesterPays bool `json:"requesterPays,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Configuration of the bucket's data retention policy for how long objects in the bucket should be retained. */
-	RetentionPolicy RetentionPolicy `json:"retentionPolicy,omitempty"`
+	RetentionPolicy BucketRetentionPolicy `json:"retentionPolicy,omitempty"`
 	/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
 	StorageClass string `json:"storageClass,omitempty"`
 	/* Enables uniform bucket-level access on a bucket. */
 	UniformBucketLevelAccess bool `json:"uniformBucketLevelAccess,omitempty"`
 	/* The bucket's Versioning configuration. */
-	Versioning Versioning `json:"versioning,omitempty"`
+	Versioning BucketVersioning `json:"versioning,omitempty"`
 	/* Configuration if the bucket acts as a website. */
-	Website Website `json:"website,omitempty"`
+	Website BucketWebsite `json:"website,omitempty"`
 }
 
 type StorageBucketStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   StorageBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The URI of the created resource. */
@@ -166,9 +171,9 @@ type StorageBucket struct {
 
 // StorageBucketList contains a list of StorageBucket
 type StorageBucketList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []StorageBucket `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageBucket `json:"items"`
 }
 
 func init() {

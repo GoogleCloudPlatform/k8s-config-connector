@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type SingleClusterRouting struct {
+type AppprofileSingleClusterRouting struct {
 	/* If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
 	It is unsafe to send these requests to the same table/row/column in multiple clusters. */
 	AllowTransactionalWrites bool `json:"allowTransactionalWrites,omitempty"`
@@ -50,11 +55,11 @@ type BigtableAppProfileSpec struct {
 	/* Immutable. Optional. The appProfileId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Use a single-cluster routing policy. */
-	SingleClusterRouting SingleClusterRouting `json:"singleClusterRouting,omitempty"`
+	SingleClusterRouting AppprofileSingleClusterRouting `json:"singleClusterRouting,omitempty"`
 }
 
 type BigtableAppProfileStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigtableAppProfile's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique name of the requested app profile. Values are of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'. */
@@ -78,9 +83,9 @@ type BigtableAppProfile struct {
 
 // BigtableAppProfileList contains a list of BigtableAppProfile
 type BigtableAppProfileList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigtableAppProfile `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableAppProfile `json:"items"`
 }
 
 func init() {

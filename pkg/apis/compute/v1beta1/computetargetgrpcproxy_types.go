@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -52,7 +57,7 @@ type ComputeTargetGRPCProxySpec struct {
 }
 
 type ComputeTargetGRPCProxyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeTargetGRPCProxy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -88,9 +93,9 @@ type ComputeTargetGRPCProxy struct {
 
 // ComputeTargetGRPCProxyList contains a list of ComputeTargetGRPCProxy
 type ComputeTargetGRPCProxyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeTargetGRPCProxy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetGRPCProxy `json:"items"`
 }
 
 func init() {

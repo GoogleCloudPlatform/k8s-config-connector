@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -40,7 +45,7 @@ type ServiceNetworkingConnectionSpec struct {
 }
 
 type ServiceNetworkingConnectionStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ServiceNetworkingConnection's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
@@ -64,9 +69,9 @@ type ServiceNetworkingConnection struct {
 
 // ServiceNetworkingConnectionList contains a list of ServiceNetworkingConnection
 type ServiceNetworkingConnectionList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ServiceNetworkingConnection `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ServiceNetworkingConnection `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AuthorizedNetworks struct {
+type InstanceAuthorizedNetworks struct {
 	/*  */
 	ExpirationTime string `json:"expirationTime,omitempty"`
 	/*  */
@@ -39,7 +44,9 @@ type AuthorizedNetworks struct {
 	Value string `json:"value,omitempty"`
 }
 
-type BackupConfiguration struct {
+type InstanceBackupConfiguration struct {
+	/*  */
+	BackupRetentionSettings InstanceBackupRetentionSettings `json:"backupRetentionSettings,omitempty"`
 	/* True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Cannot be used with Postgres. */
 	BinaryLogEnabled bool `json:"binaryLogEnabled,omitempty"`
 	/* True if backup configuration is enabled. */
@@ -50,27 +57,38 @@ type BackupConfiguration struct {
 	PointInTimeRecoveryEnabled bool `json:"pointInTimeRecoveryEnabled,omitempty"`
 	/* HH:MM format time indicating when backup configuration starts. */
 	StartTime string `json:"startTime,omitempty"`
+	/* The number of days of transaction logs we retain for point in time restore, from 1-7. */
+	TransactionLogRetentionDays int `json:"transactionLogRetentionDays,omitempty"`
 }
 
-type DatabaseFlags struct {
+type InstanceBackupRetentionSettings struct {
+	/* Number of backups to retain. */
+	RetainedBackups int `json:"retainedBackups,omitempty"`
+	/* The unit that 'retainedBackups' represents. Defaults to COUNT */
+	RetentionUnit string `json:"retentionUnit,omitempty"`
+}
+
+type InstanceDatabaseFlags struct {
 	/* Name of the flag. */
 	Name string `json:"name,omitempty"`
 	/* Value of the flag. */
 	Value string `json:"value,omitempty"`
 }
 
-type IpAddress struct {
-	/*  */
-	IpAddress string `json:"ipAddress,omitempty"`
-	/*  */
-	TimeToRetire string `json:"timeToRetire,omitempty"`
-	/*  */
-	Type string `json:"type,omitempty"`
+type InstanceInsightsConfig struct {
+	/* True if Query Insights feature is enabled. */
+	QueryInsightsEnabled bool `json:"queryInsightsEnabled,omitempty"`
+	/* Maximum query length stored in bytes. Between 256 and 4500. Default to 1024. */
+	QueryStringLength int `json:"queryStringLength,omitempty"`
+	/* True if Query Insights will record application tags from query when enabled. */
+	RecordApplicationTags bool `json:"recordApplicationTags,omitempty"`
+	/* True if Query Insights will record client address when enabled. */
+	RecordClientAddress bool `json:"recordClientAddress,omitempty"`
 }
 
-type IpConfiguration struct {
+type InstanceIpConfiguration struct {
 	/*  */
-	AuthorizedNetworks []AuthorizedNetworks `json:"authorizedNetworks,omitempty"`
+	AuthorizedNetworks []InstanceAuthorizedNetworks `json:"authorizedNetworks,omitempty"`
 	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. Either ipv4_enabled must be enabled or a private_network must be configured. */
 	Ipv4Enabled bool `json:"ipv4Enabled,omitempty"`
 	/*  */
@@ -79,14 +97,14 @@ type IpConfiguration struct {
 	RequireSsl bool `json:"requireSsl,omitempty"`
 }
 
-type LocationPreference struct {
+type InstanceLocationPreference struct {
 	/* A Google App Engine application whose zone to remain in. Must be in the same region as this instance. */
 	FollowGaeApplication string `json:"followGaeApplication,omitempty"`
 	/* The preferred compute engine zone. */
 	Zone string `json:"zone,omitempty"`
 }
 
-type MaintenanceWindow struct {
+type InstanceMaintenanceWindow struct {
 	/* Day of week (1-7), starting on Monday */
 	Day int `json:"day,omitempty"`
 	/* Hour of day (0-23), ignored if day not set */
@@ -95,30 +113,30 @@ type MaintenanceWindow struct {
 	UpdateTrack string `json:"updateTrack,omitempty"`
 }
 
-type Password struct {
+type InstancePassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
-type ReplicaConfiguration struct {
+type InstanceReplicaConfiguration struct {
 	/* Immutable. PEM representation of the trusted CA's x509 certificate. */
 	CaCertificate string `json:"caCertificate,omitempty"`
-	/* Immutable. PEM representation of the slave's x509 certificate. */
+	/* Immutable. PEM representation of the replica's x509 certificate. */
 	ClientCertificate string `json:"clientCertificate,omitempty"`
-	/* Immutable. PEM representation of the slave's private key. The corresponding public key in encoded in the client_certificate. */
+	/* Immutable. PEM representation of the replica's private key. The corresponding public key in encoded in the client_certificate. */
 	ClientKey string `json:"clientKey,omitempty"`
 	/* Immutable. The number of seconds between connect retries. */
 	ConnectRetryInterval int `json:"connectRetryInterval,omitempty"`
-	/* Immutable. Path to a SQL file in Google Cloud Storage from which slave instances are created. Format is gs://bucket/filename. */
+	/* Immutable. Path to a SQL file in Google Cloud Storage from which replica instances are created. Format is gs://bucket/filename. */
 	DumpFilePath string `json:"dumpFilePath,omitempty"`
 	/* Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance. */
 	FailoverTarget bool `json:"failoverTarget,omitempty"`
 	/* Immutable. Time in ms between replication heartbeats. */
 	MasterHeartbeatPeriod int `json:"masterHeartbeatPeriod,omitempty"`
 	/* Immutable. Password for the replication connection. */
-	Password Password `json:"password,omitempty"`
+	Password InstancePassword `json:"password,omitempty"`
 	/* Immutable. Permissible ciphers for use in SSL encryption. */
 	SslCipher string `json:"sslCipher,omitempty"`
 	/* Immutable. Username for replication connection. */
@@ -127,14 +145,14 @@ type ReplicaConfiguration struct {
 	VerifyServerCertificate bool `json:"verifyServerCertificate,omitempty"`
 }
 
-type RootPassword struct {
+type InstanceRootPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
-type Settings struct {
+type InstanceSettings struct {
 	/* This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND. */
 	ActivationPolicy string `json:"activationPolicy,omitempty"`
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. A list of Google App Engine project names that are allowed to access this instance. */
@@ -145,23 +163,25 @@ type Settings struct {
 	settings.backup_configuration.binary_log_enabled are both set to true. */
 	AvailabilityType string `json:"availabilityType,omitempty"`
 	/*  */
-	BackupConfiguration BackupConfiguration `json:"backupConfiguration,omitempty"`
+	BackupConfiguration InstanceBackupConfiguration `json:"backupConfiguration,omitempty"`
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled. */
 	CrashSafeReplication bool `json:"crashSafeReplication,omitempty"`
 	/*  */
-	DatabaseFlags []DatabaseFlags `json:"databaseFlags,omitempty"`
+	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 	/*  */
 	DiskAutoresize bool `json:"diskAutoresize,omitempty"`
 	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. */
 	DiskSize int `json:"diskSize,omitempty"`
 	/* The type of data disk: PD_SSD or PD_HDD. */
 	DiskType string `json:"diskType,omitempty"`
+	/* Configuration of Query Insights. */
+	InsightsConfig InstanceInsightsConfig `json:"insightsConfig,omitempty"`
 	/*  */
-	IpConfiguration IpConfiguration `json:"ipConfiguration,omitempty"`
+	IpConfiguration InstanceIpConfiguration `json:"ipConfiguration,omitempty"`
 	/*  */
-	LocationPreference LocationPreference `json:"locationPreference,omitempty"`
+	LocationPreference InstanceLocationPreference `json:"locationPreference,omitempty"`
 	/* Declares a one-hour maintenance window when an Instance can automatically restart to apply updates. The maintenance window is specified in UTC time. */
-	MaintenanceWindow MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+	MaintenanceWindow InstanceMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 	/* Pricing plan for this instance, can only be PER_USE. */
 	PricingPlan string `json:"pricingPlan,omitempty"`
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Replication type for this instance, can be one of ASYNCHRONOUS or SYNCHRONOUS. */
@@ -170,7 +190,7 @@ type Settings struct {
 	Tier string `json:"tier,omitempty"`
 }
 
-type ValueFrom struct {
+type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
@@ -182,19 +202,30 @@ type SQLInstanceSpec struct {
 	EncryptionKMSCryptoKeyRef v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 	/*  */
 	MasterInstanceRef v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
-	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions - choose from one of the options listed here. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
+	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	Region string `json:"region,omitempty"`
 	/* The configuration for replication. */
-	ReplicaConfiguration ReplicaConfiguration `json:"replicaConfiguration,omitempty"`
+	ReplicaConfiguration InstanceReplicaConfiguration `json:"replicaConfiguration,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. Initial root password. Required for MS SQL Server, ignored by MySQL and PostgreSQL. */
-	RootPassword RootPassword `json:"rootPassword,omitempty"`
+	RootPassword InstanceRootPassword `json:"rootPassword,omitempty"`
 	/* The settings to use for the database. The configuration is detailed below. */
-	Settings Settings `json:"settings,omitempty"`
+	Settings InstanceSettings `json:"settings,omitempty"`
 }
 
-type ServerCaCert struct {
+type InstanceIpAddressStatus struct {
+	/*  */
+	IpAddress string `json:"ipAddress,omitempty"`
+
+	/*  */
+	TimeToRetire string `json:"timeToRetire,omitempty"`
+
+	/*  */
+	Type string `json:"type,omitempty"`
+}
+
+type InstanceServerCaCertStatus struct {
 	/* The CA Certificate used to connect to the SQL Instance via SSL. */
 	Cert string `json:"cert,omitempty"`
 
@@ -212,7 +243,7 @@ type ServerCaCert struct {
 }
 
 type SQLInstanceStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   SQLInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy. */
@@ -220,7 +251,7 @@ type SQLInstanceStatus struct {
 	/*  */
 	FirstIpAddress string `json:"firstIpAddress,omitempty"`
 	/*  */
-	IpAddress []IpAddress `json:"ipAddress,omitempty"`
+	IpAddress []InstanceIpAddressStatus `json:"ipAddress,omitempty"`
 	/*  */
 	PrivateIpAddress string `json:"privateIpAddress,omitempty"`
 	/*  */
@@ -228,7 +259,7 @@ type SQLInstanceStatus struct {
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 	/*  */
-	ServerCaCert ServerCaCert `json:"serverCaCert,omitempty"`
+	ServerCaCert InstanceServerCaCertStatus `json:"serverCaCert,omitempty"`
 	/* The service account email address assigned to the instance. */
 	ServiceAccountEmailAddress string `json:"serviceAccountEmailAddress,omitempty"`
 }
@@ -250,9 +281,9 @@ type SQLInstance struct {
 
 // SQLInstanceList contains a list of SQLInstance
 type SQLInstanceList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []SQLInstance `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SQLInstance `json:"items"`
 }
 
 func init() {

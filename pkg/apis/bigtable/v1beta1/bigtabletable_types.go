@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,14 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ColumnFamily struct {
+type TableColumnFamily struct {
 	/* The name of the column family. */
 	Family string `json:"family,omitempty"`
 }
 
 type BigtableTableSpec struct {
 	/* A group of columns within a table which share a common configuration. This can be specified multiple times. */
-	ColumnFamily []ColumnFamily `json:"columnFamily,omitempty"`
+	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
 	/* The name of the Bigtable instance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -47,7 +52,7 @@ type BigtableTableSpec struct {
 }
 
 type BigtableTableStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigtableTable's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -69,9 +74,9 @@ type BigtableTable struct {
 
 // BigtableTableList contains a list of BigtableTable
 type BigtableTableList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigtableTable `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableTable `json:"items"`
 }
 
 func init() {

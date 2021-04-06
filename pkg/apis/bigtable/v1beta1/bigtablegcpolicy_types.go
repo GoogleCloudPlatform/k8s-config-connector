@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,15 +35,15 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type MaxAge struct {
-	/* DEPRECATED — Deprecated in favor of duration. Number of days before applying GC policy. */
+type GcpolicyMaxAge struct {
+	/* DEPRECATED — Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
 	Days int `json:"days,omitempty"`
-	/* Duration before applying GC policy */
+	/* Immutable. Duration before applying GC policy */
 	Duration string `json:"duration,omitempty"`
 }
 
-type MaxVersion struct {
-	/* Number of version before applying the GC policy. */
+type GcpolicyMaxVersion struct {
+	/* Immutable. Number of version before applying the GC policy. */
 	Number int `json:"number,omitempty"`
 }
 
@@ -48,9 +53,9 @@ type BigtableGCPolicySpec struct {
 	/* The name of the Bigtable instance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 	/* Immutable. GC policy that applies to all cells older than the given age. */
-	MaxAge []MaxAge `json:"maxAge,omitempty"`
+	MaxAge []GcpolicyMaxAge `json:"maxAge,omitempty"`
 	/* Immutable. GC policy that applies to all versions of a cell except for the most recent. */
-	MaxVersion []MaxVersion `json:"maxVersion,omitempty"`
+	MaxVersion []GcpolicyMaxVersion `json:"maxVersion,omitempty"`
 	/* Immutable. If multiple policies are set, you should choose between UNION OR INTERSECTION. */
 	Mode string `json:"mode,omitempty"`
 	/* The name of the table. */
@@ -58,7 +63,7 @@ type BigtableGCPolicySpec struct {
 }
 
 type BigtableGCPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigtableGCPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -80,9 +85,9 @@ type BigtableGCPolicy struct {
 
 // BigtableGCPolicyList contains a list of BigtableGCPolicy
 type BigtableGCPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigtableGCPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableGCPolicy `json:"items"`
 }
 
 func init() {

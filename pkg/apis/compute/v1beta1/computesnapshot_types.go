@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,19 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputesnapshotRawKey struct {
+type SnapshotRawKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ComputesnapshotValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom SnapshotValueFrom `json:"valueFrom,omitempty"`
 }
 
-type ComputesnapshotValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
-}
-
-type SnapshotEncryptionKey struct {
+type SnapshotSnapshotEncryptionKey struct {
 	/* The encryption key that is stored in Google Cloud KMS. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 	/* The service account used for the encryption request for the given KMS key.
@@ -50,19 +50,24 @@ type SnapshotEncryptionKey struct {
 	KmsKeyServiceAccountRef v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-	RawKey ComputesnapshotRawKey `json:"rawKey,omitempty"`
+	RawKey SnapshotRawKey `json:"rawKey,omitempty"`
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
 	encryption key that protects this resource. */
 	Sha256 string `json:"sha256,omitempty"`
 }
 
-type SourceDiskEncryptionKey struct {
+type SnapshotSourceDiskEncryptionKey struct {
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
 	KmsKeyServiceAccountRef v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-	RawKey ComputesnapshotRawKey `json:"rawKey,omitempty"`
+	RawKey SnapshotRawKey `json:"rawKey,omitempty"`
+}
+
+type SnapshotValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeSnapshotSpec struct {
@@ -72,11 +77,11 @@ type ComputeSnapshotSpec struct {
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. The customer-supplied encryption key of the snapshot. Required if the
 	source snapshot is protected by a customer-supplied encryption key. */
-	SnapshotEncryptionKey SnapshotEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
+	SnapshotEncryptionKey SnapshotSnapshotEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
 	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
 	if the source snapshot is protected by a customer-supplied encryption
 	key. */
-	SourceDiskEncryptionKey SourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
+	SourceDiskEncryptionKey SnapshotSourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
 	/* A reference to the disk used to create this snapshot. */
 	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 	/* Immutable. Cloud Storage bucket storage location of the snapshot (regional or multi-regional). */
@@ -86,7 +91,7 @@ type ComputeSnapshotSpec struct {
 }
 
 type ComputeSnapshotStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeSnapshot's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -130,9 +135,9 @@ type ComputeSnapshot struct {
 
 // ComputeSnapshotList contains a list of ComputeSnapshot
 type ComputeSnapshotList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeSnapshot `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSnapshot `json:"items"`
 }
 
 func init() {

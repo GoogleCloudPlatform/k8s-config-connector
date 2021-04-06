@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,32 +35,32 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Config struct {
+type SecuritypolicyConfig struct {
 	/* Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior). */
 	SrcIpRanges []string `json:"srcIpRanges,omitempty"`
 }
 
-type Expr struct {
+type SecuritypolicyExpr struct {
 	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
 	Expression string `json:"expression,omitempty"`
 }
 
-type Match struct {
+type SecuritypolicyMatch struct {
 	/* The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified. */
-	Config Config `json:"config,omitempty"`
+	Config SecuritypolicyConfig `json:"config,omitempty"`
 	/* User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. */
-	Expr Expr `json:"expr,omitempty"`
+	Expr SecuritypolicyExpr `json:"expr,omitempty"`
 	/* Predefined rule expression. If this field is specified, config must also be specified. Available options:   SRC_IPS_V1: Must specify the corresponding src_ip_ranges field in config. */
 	VersionedExpr string `json:"versionedExpr,omitempty"`
 }
 
-type Rule struct {
+type SecuritypolicyRule struct {
 	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502) */
 	Action string `json:"action,omitempty"`
 	/* An optional description of this rule. Max size is 64. */
 	Description string `json:"description,omitempty"`
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding action is enforced. */
-	Match Match `json:"match,omitempty"`
+	Match SecuritypolicyMatch `json:"match,omitempty"`
 	/* When set to true, the action specified above is not enforced. Stackdriver logs for requests that trigger a preview action are annotated as such. */
 	Preview bool `json:"preview,omitempty"`
 	/* An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order. */
@@ -68,11 +73,11 @@ type ComputeSecurityPolicySpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added. */
-	Rule []Rule `json:"rule,omitempty"`
+	Rule []SecuritypolicyRule `json:"rule,omitempty"`
 }
 
 type ComputeSecurityPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeSecurityPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Fingerprint of this resource. */
@@ -98,9 +103,9 @@ type ComputeSecurityPolicy struct {
 
 // ComputeSecurityPolicyList contains a list of ComputeSecurityPolicy
 type ComputeSecurityPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeSecurityPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSecurityPolicy `json:"items"`
 }
 
 func init() {

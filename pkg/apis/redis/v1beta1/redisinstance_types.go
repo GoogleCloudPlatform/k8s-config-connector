@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -40,7 +45,7 @@ type RedisInstanceSpec struct {
 	instance. If set to "true" AUTH is enabled on the instance.
 	Default value is "false" meaning AUTH is disabled. */
 	AuthEnabled bool `json:"authEnabled,omitempty"`
-	/*  */
+	/* AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
 	AuthString string `json:"authString,omitempty"`
 	/* The network to which the instance is connected. If left
 	unspecified, the default network will be used. */
@@ -83,10 +88,31 @@ type RedisInstanceSpec struct {
 	- BASIC: standalone instance
 	- STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"] */
 	Tier string `json:"tier,omitempty"`
+	/* Immutable. The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
+
+	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentcation Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"] */
+	TransitEncryptionMode string `json:"transitEncryptionMode,omitempty"`
+}
+
+type InstanceServerCaCertsStatus struct {
+	/* Serial number, as extracted from the certificate. */
+	Cert string `json:"cert,omitempty"`
+
+	/* The time when the certificate was created. */
+	CreateTime string `json:"createTime,omitempty"`
+
+	/* The time when the certificate expires. */
+	ExpireTime string `json:"expireTime,omitempty"`
+
+	/* Serial number, as extracted from the certificate. */
+	SerialNumber string `json:"serialNumber,omitempty"`
+
+	/* Sha1 Fingerprint of the certificate. */
+	Sha1Fingerprint string `json:"sha1Fingerprint,omitempty"`
 }
 
 type RedisInstanceStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   RedisInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time the instance was created in RFC3339 UTC "Zulu" format,
@@ -108,6 +134,8 @@ type RedisInstanceStatus struct {
 	PersistenceIamIdentity string `json:"persistenceIamIdentity,omitempty"`
 	/* The port number of the exposed Redis endpoint. */
 	Port int `json:"port,omitempty"`
+	/* List of server CA certificates for the instance. */
+	ServerCaCerts []InstanceServerCaCertsStatus `json:"serverCaCerts,omitempty"`
 }
 
 // +genclient
@@ -127,9 +155,9 @@ type RedisInstance struct {
 
 // RedisInstanceList contains a list of RedisInstance
 type RedisInstanceList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []RedisInstance `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []RedisInstance `json:"items"`
 }
 
 func init() {

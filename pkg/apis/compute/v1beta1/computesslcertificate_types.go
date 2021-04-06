@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,42 +35,42 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Certificate struct {
+type SslcertificateCertificate struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ComputesslcertificateValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom SslcertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
-type ComputesslcertificateValueFrom struct {
+type SslcertificatePrivateKey struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	Value string `json:"value,omitempty"`
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	ValueFrom SslcertificateValueFrom `json:"valueFrom,omitempty"`
+}
+
+type SslcertificateValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
-}
-
-type PrivateKey struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ComputesslcertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type ComputeSSLCertificateSpec struct {
 	/* Immutable. The certificate in PEM format.
 	The certificate chain must be no greater than 5 certs long.
 	The chain must include at least one intermediate cert. */
-	Certificate Certificate `json:"certificate,omitempty"`
+	Certificate SslcertificateCertificate `json:"certificate,omitempty"`
 	/* Immutable. An optional description of this resource. */
 	Description string `json:"description,omitempty"`
 	/* Location represents the geographical location of the ComputeSSLCertificate. Specify "global" for global resources. */
 	Location string `json:"location,omitempty"`
 	/* Immutable. The write-only private key in PEM format. */
-	PrivateKey PrivateKey `json:"privateKey,omitempty"`
+	PrivateKey SslcertificatePrivateKey `json:"privateKey,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
 type ComputeSSLCertificateStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeSSLCertificate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique identifier for the resource. */
@@ -93,9 +98,9 @@ type ComputeSSLCertificate struct {
 
 // ComputeSSLCertificateList contains a list of ComputeSSLCertificate
 type ComputeSSLCertificateList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeSSLCertificate `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSSLCertificate `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DiskEncryptionKey struct {
+type DiskDiskEncryptionKey struct {
 	/* The encryption key used to encrypt the disk. Your project's Compute
 	Engine System service account
 	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
@@ -43,20 +48,20 @@ type DiskEncryptionKey struct {
 	KmsKeyServiceAccountRef v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-	RawKey RawKey `json:"rawKey,omitempty"`
+	RawKey DiskRawKey `json:"rawKey,omitempty"`
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
 	encryption key that protects this resource. */
 	Sha256 string `json:"sha256,omitempty"`
 }
 
-type RawKey struct {
+type DiskRawKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom DiskValueFrom `json:"valueFrom,omitempty"`
 }
 
-type SourceImageEncryptionKey struct {
+type DiskSourceImageEncryptionKey struct {
 	/* The encryption key used to encrypt the disk. Your project's Compute
 	Engine System service account
 	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
@@ -75,7 +80,7 @@ type SourceImageEncryptionKey struct {
 	Sha256 string `json:"sha256,omitempty"`
 }
 
-type SourceSnapshotEncryptionKey struct {
+type DiskSourceSnapshotEncryptionKey struct {
 	/* The encryption key used to encrypt the disk. Your project's Compute
 	Engine System service account
 	('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
@@ -94,7 +99,7 @@ type SourceSnapshotEncryptionKey struct {
 	Sha256 string `json:"sha256,omitempty"`
 }
 
-type ValueFrom struct {
+type DiskValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
@@ -115,7 +120,7 @@ type ComputeDiskSpec struct {
 	If you do not provide an encryption key when creating the disk, then
 	the disk will be encrypted using an automatically generated key and
 	you do not need to provide a key to use the disk later. */
-	DiskEncryptionKey DiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
+	DiskEncryptionKey DiskDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
 	/* The image from which to initialize this disk. */
 	ImageRef v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 	/* Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. Default value: "SCSI" Possible values: ["SCSI", "NVME"] */
@@ -143,24 +148,27 @@ type ComputeDiskSpec struct {
 
 	If you specify this field along with 'image' or 'snapshot',
 	the value must not be less than the size of the image
-	or the size of the snapshot. */
+	or the size of the snapshot.
+
+	Upsizing the disk is mutable, but downsizing the disk
+	requires re-creating the resource. */
 	Size int `json:"size,omitempty"`
 	/* The source snapshot used to create this disk. */
 	SnapshotRef v1alpha1.ResourceRef `json:"snapshotRef,omitempty"`
 	/* Immutable. The customer-supplied encryption key of the source image. Required if
 	the source image is protected by a customer-supplied encryption key. */
-	SourceImageEncryptionKey SourceImageEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
+	SourceImageEncryptionKey DiskSourceImageEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
 	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
 	if the source snapshot is protected by a customer-supplied encryption
 	key. */
-	SourceSnapshotEncryptionKey SourceSnapshotEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
+	SourceSnapshotEncryptionKey DiskSourceSnapshotEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
 	/* Immutable. URL of the disk type resource describing which disk type to use to
 	create the disk. Provide this when creating the disk. */
 	Type string `json:"type,omitempty"`
 }
 
 type ComputeDiskStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeDisk's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -209,9 +217,9 @@ type ComputeDisk struct {
 
 // ComputeDiskList contains a list of ComputeDisk
 type ComputeDiskList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeDisk `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeDisk `json:"items"`
 }
 
 func init() {

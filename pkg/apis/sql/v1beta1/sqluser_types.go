@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,14 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type SqluserPassword struct {
+type UserPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom SqluserValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom UserValueFrom `json:"valueFrom,omitempty"`
 }
 
-type SqluserValueFrom struct {
+type UserValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
@@ -49,7 +54,7 @@ type SQLUserSpec struct {
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 	/* The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
 	   either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT. */
-	Password SqluserPassword `json:"password,omitempty"`
+	Password UserPassword `json:"password,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. The user type. It determines the method to authenticate the user during login.
@@ -58,7 +63,7 @@ type SQLUserSpec struct {
 }
 
 type SQLUserStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   SQLUser's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -80,9 +85,9 @@ type SQLUser struct {
 
 // SQLUserList contains a list of SQLUser
 type SQLUserList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []SQLUser `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SQLUser `json:"items"`
 }
 
 func init() {

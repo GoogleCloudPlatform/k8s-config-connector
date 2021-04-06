@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type LogConfig struct {
+type SubnetworkLogConfig struct {
 	/* Can only be specified if VPC flow logging for this subnetwork is enabled.
 	Toggles the aggregation interval for collecting flow logs. Increasing the
 	interval time will reduce the amount of generated flow logs for long
@@ -55,7 +60,7 @@ type LogConfig struct {
 	MetadataFields []string `json:"metadataFields,omitempty"`
 }
 
-type SecondaryIpRange struct {
+type SubnetworkSecondaryIpRange struct {
 	/* The range of IP addresses belonging to this subnetwork secondary
 	range. Provide this property when you create the subnetwork.
 	Ranges must be unique and non-overlapping with all primary and
@@ -81,7 +86,7 @@ type ComputeSubnetworkSpec struct {
 	/* Denotes the logging options for the subnetwork flow logs. If logging is enabled
 	logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
 	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER' */
-	LogConfig LogConfig `json:"logConfig,omitempty"`
+	LogConfig SubnetworkLogConfig `json:"logConfig,omitempty"`
 	/* The network this subnet belongs to. Only networks that are in the
 	distributed mode can have subnetworks. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
@@ -96,7 +101,7 @@ type ComputeSubnetworkSpec struct {
 	reserved for Internal HTTP(S) Load Balancing. If unspecified, the
 	purpose defaults to PRIVATE.
 
-	If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the role. Possible values: ["INTERNAL_HTTPS_LOAD_BALANCER", "PRIVATE"] */
+	If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set 'role'. */
 	Purpose string `json:"purpose,omitempty"`
 	/* Immutable. The GCP region for this subnetwork. */
 	Region string `json:"region,omitempty"`
@@ -109,11 +114,11 @@ type ComputeSubnetworkSpec struct {
 	is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"] */
 	Role string `json:"role,omitempty"`
 	/*  */
-	SecondaryIpRange []SecondaryIpRange `json:"secondaryIpRange,omitempty"`
+	SecondaryIpRange []SubnetworkSecondaryIpRange `json:"secondaryIpRange,omitempty"`
 }
 
 type ComputeSubnetworkStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeSubnetwork's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -144,9 +149,9 @@ type ComputeSubnetwork struct {
 
 // ComputeSubnetworkList contains a list of ComputeSubnetwork
 type ComputeSubnetworkList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeSubnetwork `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeSubnetwork `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type NodeTypeFlexibility struct {
+type NodetemplateNodeTypeFlexibility struct {
 	/* Immutable. Number of virtual CPUs to use. */
 	Cpus string `json:"cpus,omitempty"`
 	/* Use local SSD */
@@ -39,7 +44,7 @@ type NodeTypeFlexibility struct {
 	Memory string `json:"memory,omitempty"`
 }
 
-type ServerBinding struct {
+type NodetemplateServerBinding struct {
 	/* Immutable. Type of server binding policy. If 'RESTART_NODE_ON_ANY_SERVER',
 	nodes using this template will restart on any physical server
 	following a maintenance event.
@@ -67,7 +72,7 @@ type ComputeNodeTemplateSpec struct {
 	use this node template will create nodes of a type that matches
 	these properties. Only one of nodeTypeFlexibility and nodeType can
 	be specified. */
-	NodeTypeFlexibility NodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
+	NodeTypeFlexibility NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
 	/* Immutable. Region where nodes using the node template will be created.
 	If it is not provided, the provider region is used. */
 	Region string `json:"region,omitempty"`
@@ -75,11 +80,11 @@ type ComputeNodeTemplateSpec struct {
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. The server binding policy for nodes using this template. Determines
 	where the nodes should restart following a maintenance event. */
-	ServerBinding ServerBinding `json:"serverBinding,omitempty"`
+	ServerBinding NodetemplateServerBinding `json:"serverBinding,omitempty"`
 }
 
 type ComputeNodeTemplateStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeNodeTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -105,9 +110,9 @@ type ComputeNodeTemplate struct {
 
 // ComputeNodeTemplateList contains a list of ComputeNodeTemplate
 type ComputeNodeTemplateList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeNodeTemplate `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeNodeTemplate `json:"items"`
 }
 
 func init() {

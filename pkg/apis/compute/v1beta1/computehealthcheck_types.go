@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,13 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputehealthcheckLogConfig struct {
-	/* Indicates whether or not to export logs. This is false by default,
-	which means no health check logging will be done. */
-	Enable bool `json:"enable,omitempty"`
-}
-
-type GrpcHealthCheck struct {
+type HealthcheckGrpcHealthCheck struct {
 	/* The gRPC service name for the health check.
 	The value of grpcServiceName has the following meanings by convention:
 	  - Empty serviceName means the overall status of all services at the backend.
@@ -67,7 +66,7 @@ type GrpcHealthCheck struct {
 	PortSpecification string `json:"portSpecification,omitempty"`
 }
 
-type Http2HealthCheck struct {
+type HealthcheckHttp2HealthCheck struct {
 	/* The value of the host header in the HTTP2 health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
@@ -105,7 +104,7 @@ type Http2HealthCheck struct {
 	Response string `json:"response,omitempty"`
 }
 
-type HttpHealthCheck struct {
+type HealthcheckHttpHealthCheck struct {
 	/* The value of the host header in the HTTP health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
@@ -143,7 +142,7 @@ type HttpHealthCheck struct {
 	Response string `json:"response,omitempty"`
 }
 
-type HttpsHealthCheck struct {
+type HealthcheckHttpsHealthCheck struct {
 	/* The value of the host header in the HTTPS health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
@@ -181,7 +180,13 @@ type HttpsHealthCheck struct {
 	Response string `json:"response,omitempty"`
 }
 
-type SslHealthCheck struct {
+type HealthcheckLogConfig struct {
+	/* Indicates whether or not to export logs. This is false by default,
+	which means no health check logging will be done. */
+	Enable bool `json:"enable,omitempty"`
+}
+
+type HealthcheckSslHealthCheck struct {
 	/* The TCP port number for the SSL health check request.
 	The default value is 443. */
 	Port int `json:"port,omitempty"`
@@ -217,7 +222,7 @@ type SslHealthCheck struct {
 	Response string `json:"response,omitempty"`
 }
 
-type TcpHealthCheck struct {
+type HealthcheckTcpHealthCheck struct {
 	/* The TCP port number for the TCP health check request.
 	The default value is 443. */
 	Port int `json:"port,omitempty"`
@@ -261,26 +266,26 @@ type ComputeHealthCheckSpec struct {
 	you create the resource. */
 	Description string `json:"description,omitempty"`
 	/* A nested object resource */
-	GrpcHealthCheck GrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
+	GrpcHealthCheck HealthcheckGrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
 	/* A so-far unhealthy instance will be marked healthy after this many
 	consecutive successes. The default value is 2. */
 	HealthyThreshold int `json:"healthyThreshold,omitempty"`
 	/* A nested object resource */
-	Http2HealthCheck Http2HealthCheck `json:"http2HealthCheck,omitempty"`
+	Http2HealthCheck HealthcheckHttp2HealthCheck `json:"http2HealthCheck,omitempty"`
 	/* A nested object resource */
-	HttpHealthCheck HttpHealthCheck `json:"httpHealthCheck,omitempty"`
+	HttpHealthCheck HealthcheckHttpHealthCheck `json:"httpHealthCheck,omitempty"`
 	/* A nested object resource */
-	HttpsHealthCheck HttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
+	HttpsHealthCheck HealthcheckHttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
 	/* Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location,omitempty"`
 	/* Configure logging on this health check. */
-	LogConfig ComputehealthcheckLogConfig `json:"logConfig,omitempty"`
+	LogConfig HealthcheckLogConfig `json:"logConfig,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* A nested object resource */
-	SslHealthCheck SslHealthCheck `json:"sslHealthCheck,omitempty"`
+	SslHealthCheck HealthcheckSslHealthCheck `json:"sslHealthCheck,omitempty"`
 	/* A nested object resource */
-	TcpHealthCheck TcpHealthCheck `json:"tcpHealthCheck,omitempty"`
+	TcpHealthCheck HealthcheckTcpHealthCheck `json:"tcpHealthCheck,omitempty"`
 	/* How long (in seconds) to wait before claiming failure.
 	The default value is 5 seconds.  It is invalid for timeoutSec to have
 	greater value than checkIntervalSec. */
@@ -291,7 +296,7 @@ type ComputeHealthCheckSpec struct {
 }
 
 type ComputeHealthCheckStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeHealthCheck's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -319,9 +324,9 @@ type ComputeHealthCheck struct {
 
 // ComputeHealthCheckList contains a list of ComputeHealthCheck
 type ComputeHealthCheckList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeHealthCheck `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeHealthCheck `json:"items"`
 }
 
 func init() {

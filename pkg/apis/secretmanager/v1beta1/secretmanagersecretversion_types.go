@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,14 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type SecretData struct {
+type SecretversionSecretData struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom SecretversionValueFrom `json:"valueFrom,omitempty"`
 }
 
-type ValueFrom struct {
+type SecretversionValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
@@ -46,13 +51,13 @@ type SecretManagerSecretVersionSpec struct {
 	/* The current state of the SecretVersion. */
 	Enabled bool `json:"enabled,omitempty"`
 	/* Immutable. The secret data. Must be no larger than 64KiB. */
-	SecretData SecretData `json:"secretData,omitempty"`
+	SecretData SecretversionSecretData `json:"secretData,omitempty"`
 	/* Secret Manager secret resource */
 	SecretRef v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type SecretManagerSecretVersionStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   SecretManagerSecretVersion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time at which the Secret was created. */
@@ -81,9 +86,9 @@ type SecretManagerSecretVersion struct {
 
 // SecretManagerSecretVersionList contains a list of SecretManagerSecretVersion
 type SecretManagerSecretVersionList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []SecretManagerSecretVersion `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SecretManagerSecretVersion `json:"items"`
 }
 
 func init() {

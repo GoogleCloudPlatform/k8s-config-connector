@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,51 +35,51 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Allow struct {
+type PolicyAllow struct {
 	/* The policy allows or denies all values. */
 	All bool `json:"all,omitempty"`
 	/* The policy can define specific values that are allowed or denied. */
 	Values []string `json:"values,omitempty"`
 }
 
-type BooleanPolicy struct {
+type PolicyBooleanPolicy struct {
 	/* If true, then the Policy is enforced. If false, then any configuration is acceptable. */
 	Enforced bool `json:"enforced,omitempty"`
 }
 
-type Deny struct {
+type PolicyDeny struct {
 	/* The policy allows or denies all values. */
 	All bool `json:"all,omitempty"`
 	/* The policy can define specific values that are allowed or denied. */
 	Values []string `json:"values,omitempty"`
 }
 
-type ListPolicy struct {
+type PolicyListPolicy struct {
 	/* One or the other must be set. */
-	Allow Allow `json:"allow,omitempty"`
+	Allow PolicyAllow `json:"allow,omitempty"`
 	/* One or the other must be set. */
-	Deny Deny `json:"deny,omitempty"`
+	Deny PolicyDeny `json:"deny,omitempty"`
 	/* If set to true, the values from the effective Policy of the parent resource are inherited, meaning the values set in this Policy are added to the values inherited up the hierarchy. */
 	InheritFromParent bool `json:"inheritFromParent,omitempty"`
 	/* The Google Cloud Console will try to default to a configuration that matches the value specified in this field. */
 	SuggestedValue string `json:"suggestedValue,omitempty"`
 }
 
-type RestorePolicy struct {
+type PolicyRestorePolicy struct {
 	/* May only be set to true. If set, then the default Policy is restored. */
 	Default bool `json:"default,omitempty"`
 }
 
 type ResourceManagerPolicySpec struct {
 	/* A boolean policy is a constraint that is either enforced or not. */
-	BooleanPolicy BooleanPolicy `json:"booleanPolicy,omitempty"`
+	BooleanPolicy PolicyBooleanPolicy `json:"booleanPolicy,omitempty"`
 	/* Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services. */
 	Constraint string `json:"constraint,omitempty"`
 	/* The folder on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
 	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values.  */
-	ListPolicy ListPolicy `json:"listPolicy,omitempty"`
+	ListPolicy PolicyListPolicy `json:"listPolicy,omitempty"`
 	/* The organization on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
 	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
@@ -82,13 +87,13 @@ type ResourceManagerPolicySpec struct {
 	projectRef, folderRef, or organizationRef may be specified. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 	/* A restore policy is a constraint to restore the default policy. */
-	RestorePolicy RestorePolicy `json:"restorePolicy,omitempty"`
+	RestorePolicy PolicyRestorePolicy `json:"restorePolicy,omitempty"`
 	/* Version of the Policy. Default version is 0. */
 	Version int `json:"version,omitempty"`
 }
 
 type ResourceManagerPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ResourceManagerPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
@@ -114,9 +119,9 @@ type ResourceManagerPolicy struct {
 
 // ResourceManagerPolicyList contains a list of ResourceManagerPolicy
 type ResourceManagerPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ResourceManagerPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ResourceManagerPolicy `json:"items"`
 }
 
 func init() {

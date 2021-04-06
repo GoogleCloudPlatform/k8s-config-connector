@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Access struct {
+type DatasetAccess struct {
 	/* A domain to grant access to. Any users signed in with the
 	domain specified will be granted the specified access */
 	Domain string `json:"domain,omitempty"`
@@ -64,10 +69,17 @@ type Access struct {
 	this dataset. The role field is not required when this field is
 	set. If that view is updated by any user, access to the view
 	needs to be granted again via an update operation. */
-	View BigquerydatasetView `json:"view,omitempty"`
+	View DatasetView `json:"view,omitempty"`
 }
 
-type BigquerydatasetView struct {
+type DatasetDefaultEncryptionConfiguration struct {
+	/* Describes the Cloud KMS encryption key that will be used to protect destination
+	BigQuery table. The BigQuery Service Account associated with your project requires
+	access to this encryption key. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+}
+
+type DatasetView struct {
 	/* The ID of the dataset containing this table. */
 	DatasetId string `json:"datasetId,omitempty"`
 	/* The ID of the project containing this table. */
@@ -78,20 +90,13 @@ type BigquerydatasetView struct {
 	TableId string `json:"tableId,omitempty"`
 }
 
-type DefaultEncryptionConfiguration struct {
-	/* Describes the Cloud KMS encryption key that will be used to protect destination
-	BigQuery table. The BigQuery Service Account associated with your project requires
-	access to this encryption key. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
-}
-
 type BigQueryDatasetSpec struct {
 	/* An array of objects that define dataset access for one or more entities. */
-	Access []Access `json:"access,omitempty"`
+	Access []DatasetAccess `json:"access,omitempty"`
 	/* The default encryption key for all tables in the dataset. Once this property is set,
 	all newly-created partitioned tables in the dataset will have encryption key set to
 	this value, unless table creation request (or query) overrides the key. */
-	DefaultEncryptionConfiguration DefaultEncryptionConfiguration `json:"defaultEncryptionConfiguration,omitempty"`
+	DefaultEncryptionConfiguration DatasetDefaultEncryptionConfiguration `json:"defaultEncryptionConfiguration,omitempty"`
 	/* The default partition expiration for all partitioned tables in
 	the dataset, in milliseconds.
 
@@ -144,7 +149,7 @@ type BigQueryDatasetSpec struct {
 }
 
 type BigQueryDatasetStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigQueryDataset's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when this dataset was created, in milliseconds since the
@@ -176,9 +181,9 @@ type BigQueryDataset struct {
 
 // BigQueryDatasetList contains a list of BigQueryDataset
 type BigQueryDatasetList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigQueryDataset `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryDataset `json:"items"`
 }
 
 func init() {

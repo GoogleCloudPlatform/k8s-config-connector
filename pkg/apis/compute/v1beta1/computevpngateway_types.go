@@ -23,19 +23,17 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-type VpnInterfaces struct {
-	/* The numeric ID of this VPN gateway interface. */
-	Id int `json:"id,omitempty"`
-	/* The external IP address for this VPN gateway interface. */
-	IpAddress string `json:"ipAddress,omitempty"`
-}
 
 type ComputeVPNGatewaySpec struct {
 	/* Immutable. An optional description of this resource. */
@@ -48,14 +46,22 @@ type ComputeVPNGatewaySpec struct {
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
+type VpngatewayVpnInterfacesStatus struct {
+	/* The numeric ID of this VPN gateway interface. */
+	Id int `json:"id,omitempty"`
+
+	/* The external IP address for this VPN gateway interface. */
+	IpAddress string `json:"ipAddress,omitempty"`
+}
+
 type ComputeVPNGatewayStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* A list of interfaces on this VPN gateway. */
-	VpnInterfaces []VpnInterfaces `json:"vpnInterfaces,omitempty"`
+	VpnInterfaces []VpngatewayVpnInterfacesStatus `json:"vpnInterfaces,omitempty"`
 }
 
 // +genclient
@@ -75,9 +81,9 @@ type ComputeVPNGateway struct {
 
 // ComputeVPNGatewayList contains a list of ComputeVPNGateway
 type ComputeVPNGatewayList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeVPNGateway `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeVPNGateway `json:"items"`
 }
 
 func init() {

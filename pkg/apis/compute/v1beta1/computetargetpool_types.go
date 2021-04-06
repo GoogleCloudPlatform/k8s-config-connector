@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputetargetpoolHealthChecks struct {
+type TargetpoolHealthChecks struct {
 	/*  */
 	HttpHealthCheckRef v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
@@ -43,7 +48,7 @@ type ComputeTargetPoolSpec struct {
 	/* Immutable. Ratio (0 to 1) of failed nodes before using the backup pool (which must also be set). */
 	FailoverRatio float64 `json:"failoverRatio,omitempty"`
 	/*  */
-	HealthChecks ComputetargetpoolHealthChecks `json:"healthChecks,omitempty"`
+	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
 	/*  */
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 	/* Immutable. Where the target pool resides. Defaults to project region. */
@@ -55,7 +60,7 @@ type ComputeTargetPoolSpec struct {
 }
 
 type ComputeTargetPoolStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeTargetPool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The URI of the created resource. */
@@ -79,9 +84,9 @@ type ComputeTargetPool struct {
 
 // ComputeTargetPoolList contains a list of ComputeTargetPool
 type ComputeTargetPoolList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeTargetPool `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetPool `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -46,7 +51,7 @@ type ComputeRouterInterfaceSpec struct {
 }
 
 type ComputeRouterInterfaceStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeRouterInterface's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -68,9 +73,9 @@ type ComputeRouterInterface struct {
 
 // ComputeRouterInterfaceList contains a list of ComputeRouterInterface
 type ComputeRouterInterfaceList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeRouterInterface `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeRouterInterface `json:"items"`
 }
 
 func init() {

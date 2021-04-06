@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type GuestAccelerators struct {
+type ReservationGuestAccelerators struct {
 	/* Immutable. The number of the guest accelerator cards exposed to
 	this instance. */
 	AcceleratorCount int `json:"acceleratorCount,omitempty"`
@@ -42,12 +47,12 @@ type GuestAccelerators struct {
 	AcceleratorType string `json:"acceleratorType,omitempty"`
 }
 
-type InstanceProperties struct {
+type ReservationInstanceProperties struct {
 	/* Immutable. Guest accelerator type and count. */
-	GuestAccelerators []GuestAccelerators `json:"guestAccelerators,omitempty"`
+	GuestAccelerators []ReservationGuestAccelerators `json:"guestAccelerators,omitempty"`
 	/* Immutable. The amount of local ssd to reserve with each instance. This
 	reserves disks of type 'local-ssd'. */
-	LocalSsds []LocalSsds `json:"localSsds,omitempty"`
+	LocalSsds []ReservationLocalSsds `json:"localSsds,omitempty"`
 	/* Immutable. The name of the machine type to reserve. */
 	MachineType string `json:"machineType,omitempty"`
 	/* Immutable. The minimum CPU platform for the reservation. For example,
@@ -57,20 +62,20 @@ type InstanceProperties struct {
 	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
 }
 
-type LocalSsds struct {
+type ReservationLocalSsds struct {
 	/* Immutable. The size of the disk in base-2 GB. */
 	DiskSizeGb int `json:"diskSizeGb,omitempty"`
 	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"] */
 	Interface string `json:"interface,omitempty"`
 }
 
-type SpecificReservation struct {
+type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
 	Count int `json:"count,omitempty"`
 	/* How many instances are in use. */
 	InUseCount int `json:"inUseCount,omitempty"`
 	/* Immutable. The instance properties for the reservation. */
-	InstanceProperties InstanceProperties `json:"instanceProperties,omitempty"`
+	InstanceProperties ReservationInstanceProperties `json:"instanceProperties,omitempty"`
 }
 
 type ComputeReservationSpec struct {
@@ -79,7 +84,7 @@ type ComputeReservationSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Reservation for instances with specific machine shapes. */
-	SpecificReservation SpecificReservation `json:"specificReservation,omitempty"`
+	SpecificReservation ReservationSpecificReservation `json:"specificReservation,omitempty"`
 	/* Immutable. When set to true, only VMs that target this reservation by name can
 	consume this reservation. Otherwise, it can be consumed by VMs with
 	affinity for any reservation. Defaults to false. */
@@ -89,7 +94,7 @@ type ComputeReservationSpec struct {
 }
 
 type ComputeReservationStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeReservation's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Full or partial URL to a parent commitment. This field displays for
@@ -120,9 +125,9 @@ type ComputeReservation struct {
 
 // ComputeReservationList contains a list of ComputeReservation
 type ComputeReservationList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeReservation `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeReservation `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -35,6 +40,9 @@ type ComputeTargetTCPProxySpec struct {
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 	/* Immutable. An optional description of this resource. */
 	Description string `json:"description,omitempty"`
+	/* Immutable. This field only applies when the forwarding rule that references
+	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	ProxyBind bool `json:"proxyBind,omitempty"`
 	/* Specifies the type of proxy header to append before sending data to
 	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
 	ProxyHeader string `json:"proxyHeader,omitempty"`
@@ -43,7 +51,7 @@ type ComputeTargetTCPProxySpec struct {
 }
 
 type ComputeTargetTCPProxyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeTargetTCPProxy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -71,9 +79,9 @@ type ComputeTargetTCPProxy struct {
 
 // ComputeTargetTCPProxyList contains a list of ComputeTargetTCPProxy
 type ComputeTargetTCPProxyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeTargetTCPProxy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetTCPProxy `json:"items"`
 }
 
 func init() {

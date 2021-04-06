@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Cluster struct {
+type InstanceCluster struct {
 	/* The ID of the Cloud Bigtable cluster. */
 	ClusterId string `json:"clusterId,omitempty"`
 	/* The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset. */
@@ -43,7 +48,7 @@ type Cluster struct {
 
 type BigtableInstanceSpec struct {
 	/* A block of cluster configuration options. This can be specified at least once. */
-	Cluster []Cluster `json:"cluster,omitempty"`
+	Cluster []InstanceCluster `json:"cluster,omitempty"`
 	/*  */
 	DeletionProtection bool `json:"deletionProtection,omitempty"`
 	/* The human-readable display name of the Bigtable instance. Defaults to the instance name. */
@@ -55,7 +60,7 @@ type BigtableInstanceSpec struct {
 }
 
 type BigtableInstanceStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigtableInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -77,9 +82,9 @@ type BigtableInstance struct {
 
 // BigtableInstanceList contains a list of BigtableInstance
 type BigtableInstanceList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigtableInstance `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigtableInstance `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,19 +35,19 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AlternativeNameServerConfig struct {
+type PolicyAlternativeNameServerConfig struct {
 	/* Sets an alternative name server for the associated networks. When specified,
 	all DNS queries are forwarded to a name server that you choose. Names such as .internal
 	are not available when an alternative name server is specified. */
-	TargetNameServers []TargetNameServers `json:"targetNameServers,omitempty"`
+	TargetNameServers []PolicyTargetNameServers `json:"targetNameServers,omitempty"`
 }
 
-type Networks struct {
+type PolicyNetworks struct {
 	/* VPC network to bind to. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
-type TargetNameServers struct {
+type PolicyTargetNameServers struct {
 	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
 	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
 	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"] */
@@ -55,7 +60,7 @@ type DNSPolicySpec struct {
 	/* Sets an alternative name server for the associated networks.
 	When specified, all DNS queries are forwarded to a name server that you choose.
 	Names such as .internal are not available when an alternative name server is specified. */
-	AlternativeNameServerConfig AlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+	AlternativeNameServerConfig PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
 	/* A textual description field. Defaults to 'Managed by Config Connector'. */
 	Description string `json:"description,omitempty"`
 	/* Allows networks bound to this policy to receive DNS queries sent
@@ -67,13 +72,13 @@ type DNSPolicySpec struct {
 	Defaults to no logging if not set. */
 	EnableLogging bool `json:"enableLogging,omitempty"`
 	/* List of network names specifying networks to which this policy is applied. */
-	Networks []Networks `json:"networks,omitempty"`
+	Networks []PolicyNetworks `json:"networks,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
 type DNSPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   DNSPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -95,9 +100,9 @@ type DNSPolicy struct {
 
 // DNSPolicyList contains a list of DNSPolicy
 type DNSPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []DNSPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DNSPolicy `json:"items"`
 }
 
 func init() {

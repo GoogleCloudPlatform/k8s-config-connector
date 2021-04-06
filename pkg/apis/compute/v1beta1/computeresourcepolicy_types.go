@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DailySchedule struct {
+type ResourcepolicyDailySchedule struct {
 	/* Immutable. The number of days between snapshots. */
 	DaysInCycle int `json:"daysInCycle,omitempty"`
 	/* Immutable. This must be in UTC format that resolves to one of
@@ -39,7 +44,7 @@ type DailySchedule struct {
 	StartTime string `json:"startTime,omitempty"`
 }
 
-type DayOfWeeks struct {
+type ResourcepolicyDayOfWeeks struct {
 	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"] */
 	Day string `json:"day,omitempty"`
 	/* Immutable. Time within the window to start the operations.
@@ -47,7 +52,7 @@ type DayOfWeeks struct {
 	StartTime string `json:"startTime,omitempty"`
 }
 
-type GroupPlacementPolicy struct {
+type ResourcepolicyGroupPlacementPolicy struct {
 	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
 	availability domain, they will not be put in the same low latency network */
 	AvailabilityDomainCount int `json:"availabilityDomainCount,omitempty"`
@@ -60,7 +65,7 @@ type GroupPlacementPolicy struct {
 	VmCount int `json:"vmCount,omitempty"`
 }
 
-type HourlySchedule struct {
+type ResourcepolicyHourlySchedule struct {
 	/* Immutable. The number of hours between snapshots. */
 	HoursInCycle int `json:"hoursInCycle,omitempty"`
 	/* Immutable. Time within the window to start the operations.
@@ -70,7 +75,7 @@ type HourlySchedule struct {
 	StartTime string `json:"startTime,omitempty"`
 }
 
-type RetentionPolicy struct {
+type ResourcepolicyRetentionPolicy struct {
 	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
 	MaxRetentionDays int `json:"maxRetentionDays,omitempty"`
 	/* Immutable. Specifies the behavior to apply to scheduled snapshots when
@@ -78,16 +83,16 @@ type RetentionPolicy struct {
 	OnSourceDiskDelete string `json:"onSourceDiskDelete,omitempty"`
 }
 
-type Schedule struct {
+type ResourcepolicySchedule struct {
 	/* Immutable. The policy will execute every nth day at the specified time. */
-	DailySchedule DailySchedule `json:"dailySchedule,omitempty"`
+	DailySchedule ResourcepolicyDailySchedule `json:"dailySchedule,omitempty"`
 	/* Immutable. The policy will execute every nth hour starting at the specified time. */
-	HourlySchedule HourlySchedule `json:"hourlySchedule,omitempty"`
+	HourlySchedule ResourcepolicyHourlySchedule `json:"hourlySchedule,omitempty"`
 	/* Immutable. Allows specifying a snapshot time for each day of the week. */
-	WeeklySchedule WeeklySchedule `json:"weeklySchedule,omitempty"`
+	WeeklySchedule ResourcepolicyWeeklySchedule `json:"weeklySchedule,omitempty"`
 }
 
-type SnapshotProperties struct {
+type ResourcepolicySnapshotProperties struct {
 	/* Immutable. Whether to perform a 'guest aware' snapshot. */
 	GuestFlush bool `json:"guestFlush,omitempty"`
 	/* Immutable. A set of key-value pairs. */
@@ -97,33 +102,33 @@ type SnapshotProperties struct {
 	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 
-type SnapshotSchedulePolicy struct {
+type ResourcepolicySnapshotSchedulePolicy struct {
 	/* Immutable. Retention policy applied to snapshots created by this resource policy. */
-	RetentionPolicy RetentionPolicy `json:"retentionPolicy,omitempty"`
+	RetentionPolicy ResourcepolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
 	/* Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'. */
-	Schedule Schedule `json:"schedule,omitempty"`
+	Schedule ResourcepolicySchedule `json:"schedule,omitempty"`
 	/* Immutable. Properties with which the snapshots are created, such as labels. */
-	SnapshotProperties SnapshotProperties `json:"snapshotProperties,omitempty"`
+	SnapshotProperties ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
 }
 
-type WeeklySchedule struct {
+type ResourcepolicyWeeklySchedule struct {
 	/* Immutable. May contain up to seven (one for each day of the week) snapshot times. */
-	DayOfWeeks []DayOfWeeks `json:"dayOfWeeks,omitempty"`
+	DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks,omitempty"`
 }
 
 type ComputeResourcePolicySpec struct {
-	/* Immutable. Policy for creating snapshots of persistent disks. */
-	GroupPlacementPolicy GroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+	/* Immutable. Resource policy for instances used for placement configuration. */
+	GroupPlacementPolicy ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
 	/* Immutable. Region where resource policy resides. */
 	Region string `json:"region,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. Policy for creating snapshots of persistent disks. */
-	SnapshotSchedulePolicy SnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
+	SnapshotSchedulePolicy ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
 }
 
 type ComputeResourcePolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeResourcePolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
@@ -147,9 +152,9 @@ type ComputeResourcePolicy struct {
 
 // ComputeResourcePolicyList contains a list of ComputeResourcePolicy
 type ComputeResourcePolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeResourcePolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeResourcePolicy `json:"items"`
 }
 
 func init() {

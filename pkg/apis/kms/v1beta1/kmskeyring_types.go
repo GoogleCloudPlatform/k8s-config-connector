@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -39,10 +44,10 @@ type KMSKeyRingSpec struct {
 }
 
 type KMSKeyRingStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   KMSKeyRing's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
+	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider. The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }
 
@@ -63,9 +68,9 @@ type KMSKeyRing struct {
 
 // KMSKeyRingList contains a list of KMSKeyRing
 type KMSKeyRingList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []KMSKeyRing `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSKeyRing `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,16 +35,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Resources struct {
+type ServiceperimeterResources struct {
 	/*  */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
-type Spec struct {
+type ServiceperimeterSpec struct {
 	/*  */
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 	/*  */
-	Resources []Resources `json:"resources,omitempty"`
+	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 	/* GCP services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
 	'storage.googleapis.com' is specified, access to the storage
@@ -48,14 +53,14 @@ type Spec struct {
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
 	/* Specifies how APIs are allowed to communicate within the Service
 	Perimeter. */
-	VpcAccessibleServices VpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
+	VpcAccessibleServices ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
 }
 
-type Status struct {
+type ServiceperimeterStatus struct {
 	/*  */
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 	/*  */
-	Resources []Resources `json:"resources,omitempty"`
+	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 	/* GCP services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
 	'storage.googleapis.com' is specified, access to the storage
@@ -64,10 +69,10 @@ type Status struct {
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
 	/* Specifies how APIs are allowed to communicate within the Service
 	Perimeter. */
-	VpcAccessibleServices VpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
+	VpcAccessibleServices ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
 }
 
-type VpcAccessibleServices struct {
+type ServiceperimeterVpcAccessibleServices struct {
 	/* The list of APIs usable within the Service Perimeter.
 	Must be empty unless 'enableRestriction' is True. */
 	AllowedServices []string `json:"allowedServices,omitempty"`
@@ -106,11 +111,11 @@ type AccessContextManagerServicePerimeterSpec struct {
 	This configuration allows to specify and test ServicePerimeter configuration
 	without enforcing actual access restrictions. Only allowed to be set when
 	the 'useExplicitDryRunSpec' flag is set. */
-	Spec Spec `json:"spec,omitempty"`
+	Spec ServiceperimeterSpec `json:"spec,omitempty"`
 	/* ServicePerimeter configuration. Specifies sets of resources,
 	restricted services and access levels that determine
 	perimeter content and boundaries. */
-	Status Status `json:"status,omitempty"`
+	Status ServiceperimeterStatus `json:"status,omitempty"`
 	/* Human readable title. Must be unique within the Policy. */
 	Title string `json:"title,omitempty"`
 	/* Use explicit dry run spec flag. Ordinarily, a dry-run spec implicitly exists
@@ -126,7 +131,7 @@ type AccessContextManagerServicePerimeterSpec struct {
 }
 
 type AccessContextManagerServicePerimeterStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   AccessContextManagerServicePerimeter's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the AccessPolicy was created in UTC. */
@@ -152,9 +157,9 @@ type AccessContextManagerServicePerimeter struct {
 
 // AccessContextManagerServicePerimeterList contains a list of AccessContextManagerServicePerimeter
 type AccessContextManagerServicePerimeterList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []AccessContextManagerServicePerimeter `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []AccessContextManagerServicePerimeter `json:"items"`
 }
 
 func init() {

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.44.0
+    cnrm.cloud.google.com/version: 1.45.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -80,10 +80,18 @@ spec:
               description: A nested object resource
               properties:
                 grpcServiceName:
-                  description: "The gRPC service name for the health check. \nThe value of grpcServiceName has the following meanings by convention:\n  - Empty serviceName means the overall status of all services at the backend.\n  - Non-empty serviceName means the health of that gRPC service, as defined by the owner of the service.\nThe grpcServiceName can only be ASCII."
+                  description: |-
+                    The gRPC service name for the health check.
+                    The value of grpcServiceName has the following meanings by convention:
+                      - Empty serviceName means the overall status of all services at the backend.
+                      - Non-empty serviceName means the health of that gRPC service, as defined by the owner of the service.
+                    The grpcServiceName can only be ASCII.
                   type: string
                 port:
-                  description: "The port number for the health check request. \nMust be specified if portName and portSpecification are not set \nor if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535."
+                  description: |-
+                    The port number for the health check request.
+                    Must be specified if portName and portSpecification are not set
+                    or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.
                   type: integer
                 portName:
                   description: |-

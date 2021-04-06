@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type PubsubConfigs struct {
+type RepositoryPubsubConfigs struct {
 	/* The format of the Cloud Pub/Sub messages.
 	- PROTOBUF: The message payload is a serialized protocol buffer of SourceRepoEvent.
 	- JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"] */
@@ -49,13 +54,13 @@ type PubsubConfigs struct {
 type SourceRepoRepositorySpec struct {
 	/* How this repository publishes a change in the repository through Cloud Pub/Sub.
 	Keyed by the topic names. */
-	PubsubConfigs []PubsubConfigs `json:"pubsubConfigs,omitempty"`
+	PubsubConfigs []RepositoryPubsubConfigs `json:"pubsubConfigs,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
 type SourceRepoRepositoryStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   SourceRepoRepository's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The disk usage of the repo, in bytes. */
@@ -81,9 +86,9 @@ type SourceRepoRepository struct {
 
 // SourceRepoRepositoryList contains a list of SourceRepoRepository
 type SourceRepoRepositoryList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []SourceRepoRepository `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SourceRepoRepository `json:"items"`
 }
 
 func init() {

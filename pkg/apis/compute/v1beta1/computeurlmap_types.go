@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Abort struct {
+type UrlmapAbort struct {
 	/* The HTTP status code used to abort the request. The value must be between 200
 	and 599 inclusive. */
 	HttpStatus int `json:"httpStatus,omitempty"`
@@ -40,7 +45,7 @@ type Abort struct {
 	Percentage float64 `json:"percentage,omitempty"`
 }
 
-type CorsPolicy struct {
+type UrlmapCorsPolicy struct {
 	/* In response to a preflight request, setting this to true indicates that the
 	actual request can include user credentials. This translates to the Access-
 	Control-Allow-Credentials header. Defaults to false. */
@@ -66,30 +71,30 @@ type CorsPolicy struct {
 	MaxAge int `json:"maxAge,omitempty"`
 }
 
-type DefaultRouteAction struct {
+type UrlmapDefaultRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see
 	[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/) */
-	CorsPolicy CorsPolicy `json:"corsPolicy,omitempty"`
+	CorsPolicy UrlmapCorsPolicy `json:"corsPolicy,omitempty"`
 	/* The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure.
 	As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a
 	percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted
 	by the Loadbalancer for a percentage of requests.
 
 	timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy. */
-	FaultInjectionPolicy FaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
+	FaultInjectionPolicy UrlmapFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 	/* Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
 	Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service,
 	the host / authority header is suffixed with -shadow. */
-	RequestMirrorPolicy RequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
+	RequestMirrorPolicy UrlmapRequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
 	/* Specifies the retry policy associated with this route. */
-	RetryPolicy RetryPolicy `json:"retryPolicy,omitempty"`
+	RetryPolicy UrlmapRetryPolicy `json:"retryPolicy,omitempty"`
 	/* Specifies the timeout for the selected route. Timeout is computed from the time the request has been
 	fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries.
 
 	If not specified, will use the largest timeout among all backend services associated with the route. */
-	Timeout Timeout `json:"timeout,omitempty"`
+	Timeout UrlmapTimeout `json:"timeout,omitempty"`
 	/* The spec to modify the URL of the request, prior to forwarding the request to the matched service. */
-	UrlRewrite UrlRewrite `json:"urlRewrite,omitempty"`
+	UrlRewrite UrlmapUrlRewrite `json:"urlRewrite,omitempty"`
 	/* A list of weighted backend services to send traffic to when a route match occurs.
 	The weights determine the fraction of traffic that flows to their corresponding backend service.
 	If all traffic needs to go to a single backend service, there must be one weightedBackendService
@@ -98,17 +103,17 @@ type DefaultRouteAction struct {
 	Once a backendService is identified and before forwarding the request to the backend service,
 	advanced routing actions like Url rewrites and header transformations are applied depending on
 	additional settings specified in this HttpRouteAction. */
-	WeightedBackendServices []WeightedBackendServices `json:"weightedBackendServices,omitempty"`
+	WeightedBackendServices []UrlmapWeightedBackendServices `json:"weightedBackendServices,omitempty"`
 }
 
-type DefaultService struct {
+type UrlmapDefaultService struct {
 	/*  */
 	BackendBucketRef v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 	/*  */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
-type DefaultUrlRedirect struct {
+type UrlmapDefaultUrlRedirect struct {
 	/* The host that will be used in the redirect response instead of the one that was
 	supplied in the request. The value must be between 1 and 255 characters. */
 	HostRedirect string `json:"hostRedirect,omitempty"`
@@ -150,25 +155,25 @@ type DefaultUrlRedirect struct {
 	StripQuery bool `json:"stripQuery,omitempty"`
 }
 
-type Delay struct {
+type UrlmapDelay struct {
 	/* Specifies the value of the fixed delay interval. */
-	FixedDelay FixedDelay `json:"fixedDelay,omitempty"`
+	FixedDelay UrlmapFixedDelay `json:"fixedDelay,omitempty"`
 	/* The percentage of traffic (connections/operations/requests) on which delay will
 	be introduced as part of fault injection. The value must be between 0.0 and
 	100.0 inclusive. */
 	Percentage float64 `json:"percentage,omitempty"`
 }
 
-type FaultInjectionPolicy struct {
+type UrlmapFaultInjectionPolicy struct {
 	/* The specification for how client requests are aborted as part of fault
 	injection. */
-	Abort Abort `json:"abort,omitempty"`
+	Abort UrlmapAbort `json:"abort,omitempty"`
 	/* The specification for how client requests are delayed as part of fault
 	injection, before being sent to a backend service. */
-	Delay Delay `json:"delay,omitempty"`
+	Delay UrlmapDelay `json:"delay,omitempty"`
 }
 
-type FilterLabels struct {
+type UrlmapFilterLabels struct {
 	/* Name of metadata label. The name can have a maximum length of 1024 characters
 	and must be at least 1 character long. */
 	Name string `json:"name,omitempty"`
@@ -177,7 +182,7 @@ type FilterLabels struct {
 	Value string `json:"value,omitempty"`
 }
 
-type FixedDelay struct {
+type UrlmapFixedDelay struct {
 	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
 	less than one second are represented with a 0 'seconds' field and a positive
 	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
@@ -187,21 +192,21 @@ type FixedDelay struct {
 	Seconds string `json:"seconds,omitempty"`
 }
 
-type HeaderAction struct {
+type UrlmapHeaderAction struct {
 	/* Headers to add to a matching request prior to forwarding the request to the
 	backendService. */
-	RequestHeadersToAdd []RequestHeadersToAdd `json:"requestHeadersToAdd,omitempty"`
+	RequestHeadersToAdd []UrlmapRequestHeadersToAdd `json:"requestHeadersToAdd,omitempty"`
 	/* A list of header names for headers that need to be removed from the request
 	prior to forwarding the request to the backendService. */
 	RequestHeadersToRemove []string `json:"requestHeadersToRemove,omitempty"`
 	/* Headers to add the response prior to sending the response back to the client. */
-	ResponseHeadersToAdd []ResponseHeadersToAdd `json:"responseHeadersToAdd,omitempty"`
+	ResponseHeadersToAdd []UrlmapResponseHeadersToAdd `json:"responseHeadersToAdd,omitempty"`
 	/* A list of header names for headers that need to be removed from the response
 	prior to sending the response back to the client. */
 	ResponseHeadersToRemove []string `json:"responseHeadersToRemove,omitempty"`
 }
 
-type HeaderMatches struct {
+type UrlmapHeaderMatches struct {
 	/* The value should exactly match contents of exactMatch. Only one of exactMatch,
 	prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set. */
 	ExactMatch string `json:"exactMatch,omitempty"`
@@ -227,7 +232,7 @@ type HeaderMatches struct {
 	not match.  - 0.25 will not match.  - -3someString will not match.   Only one of
 	exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch
 	must be set. */
-	RangeMatch RangeMatch `json:"rangeMatch,omitempty"`
+	RangeMatch UrlmapRangeMatch `json:"rangeMatch,omitempty"`
 	/* The value of the header must match the regular expression specified in
 	regexMatch. For regular expression grammar, please see:
 	en.cppreference.com/w/cpp/regex/ecmascript  For matching against a port
@@ -242,7 +247,7 @@ type HeaderMatches struct {
 	SuffixMatch string `json:"suffixMatch,omitempty"`
 }
 
-type HostRule struct {
+type UrlmapHostRule struct {
 	/* An optional description of this resource. Provide this property when you create
 	the resource. */
 	Description string `json:"description,omitempty"`
@@ -255,7 +260,7 @@ type HostRule struct {
 	PathMatcher string `json:"pathMatcher,omitempty"`
 }
 
-type MatchRules struct {
+type UrlmapMatchRules struct {
 	/* For satisfying the matchRule condition, the path of the request must exactly
 	match the value specified in fullPathMatch after removing any query parameters
 	and anchor that may be part of the original URL. FullPathMatch must be between 1
@@ -264,7 +269,7 @@ type MatchRules struct {
 	FullPathMatch string `json:"fullPathMatch,omitempty"`
 	/* Specifies a list of header match criteria, all of which must match corresponding
 	headers in the request. */
-	HeaderMatches []HeaderMatches `json:"headerMatches,omitempty"`
+	HeaderMatches []UrlmapHeaderMatches `json:"headerMatches,omitempty"`
 	/* Specifies that prefixMatch and fullPathMatch matches are case sensitive.
 	Defaults to false. */
 	IgnoreCase bool `json:"ignoreCase,omitempty"`
@@ -279,7 +284,7 @@ type MatchRules struct {
 	here can be overrides those specified in ForwardingRule that refers to this
 	UrlMap. metadataFilters only applies to Loadbalancers that have their
 	loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
-	MetadataFilters []MetadataFilters `json:"metadataFilters,omitempty"`
+	MetadataFilters []UrlmapMetadataFilters `json:"metadataFilters,omitempty"`
 	/* For satisfying the matchRule condition, the request's path must begin with the
 	specified prefixMatch. prefixMatch must begin with a /. The value must be
 	between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or
@@ -287,7 +292,7 @@ type MatchRules struct {
 	PrefixMatch string `json:"prefixMatch,omitempty"`
 	/* Specifies a list of query parameter match criteria, all of which must match
 	corresponding query parameters in the request. */
-	QueryParameterMatches []QueryParameterMatches `json:"queryParameterMatches,omitempty"`
+	QueryParameterMatches []UrlmapQueryParameterMatches `json:"queryParameterMatches,omitempty"`
 	/* For satisfying the matchRule condition, the path of the request must satisfy the
 	regular expression specified in regexMatch after removing any query parameters
 	and anchor supplied with the original URL. For regular expression grammar please
@@ -296,11 +301,11 @@ type MatchRules struct {
 	RegexMatch string `json:"regexMatch,omitempty"`
 }
 
-type MetadataFilters struct {
+type UrlmapMetadataFilters struct {
 	/* The list of label value pairs that must match labels in the provided metadata
 	based on filterMatchCriteria  This list must not be empty and can have at the
 	most 64 entries. */
-	FilterLabels []FilterLabels `json:"filterLabels,omitempty"`
+	FilterLabels []UrlmapFilterLabels `json:"filterLabels,omitempty"`
 	/* Specifies how individual filterLabel matches within the list of filterLabels
 	contribute towards the overall metadataFilter match. Supported values are:
 	  - MATCH_ANY: At least one of the filterLabels must have a matching label in the
@@ -310,28 +315,28 @@ type MetadataFilters struct {
 	FilterMatchCriteria string `json:"filterMatchCriteria,omitempty"`
 }
 
-type PathMatcher struct {
+type UrlmapPathMatcher struct {
 	/* defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs
 	advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request
 	to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set.
 	Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
 
 	Only one of defaultRouteAction or defaultUrlRedirect must be set. */
-	DefaultRouteAction DefaultRouteAction `json:"defaultRouteAction,omitempty"`
+	DefaultRouteAction UrlmapDefaultRouteAction `json:"defaultRouteAction,omitempty"`
 	/* The backend service or backend bucket to use when none of the given
 	paths match. */
-	DefaultService DefaultService `json:"defaultService,omitempty"`
+	DefaultService UrlmapDefaultService `json:"defaultService,omitempty"`
 	/* When none of the specified hostRules match, the request is redirected to a URL specified
 	by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
 	defaultRouteAction must not be set. */
-	DefaultUrlRedirect DefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
+	DefaultUrlRedirect UrlmapDefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
 	/* An optional description of this resource. Provide this property when you create
 	the resource. */
 	Description string `json:"description,omitempty"`
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. HeaderAction specified here are applied after the
 	matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap */
-	HeaderAction HeaderAction `json:"headerAction,omitempty"`
+	HeaderAction UrlmapHeaderAction `json:"headerAction,omitempty"`
 	/* The name to which this PathMatcher is referred by the HostRule. */
 	Name string `json:"name,omitempty"`
 	/* The list of path rules. Use this list instead of routeRules when routing based
@@ -340,17 +345,17 @@ type PathMatcher struct {
 	basis. For example: a pathRule with a path /a/b/c/* will match before /a/b/*
 	irrespective of the order in which those paths appear in this list. Within a
 	given pathMatcher, only one of pathRules or routeRules must be set. */
-	PathRule []PathRule `json:"pathRule,omitempty"`
+	PathRule []UrlmapPathRule `json:"pathRule,omitempty"`
 	/* The list of ordered HTTP route rules. Use this list instead of pathRules when
 	advanced route matching and routing actions are desired. The order of specifying
 	routeRules matters: the first rule that matches will cause its specified routing
 	action to take effect. Within a given pathMatcher, only one of pathRules or
 	routeRules must be set. routeRules are not supported in UrlMaps intended for
 	External load balancers. */
-	RouteRules []RouteRules `json:"routeRules,omitempty"`
+	RouteRules []UrlmapRouteRules `json:"routeRules,omitempty"`
 }
 
-type PathRule struct {
+type UrlmapPathRule struct {
 	/* The list of path patterns to match. Each must start with / and the only place a
 	* is allowed is at the end following a /. The string fed to the path matcher
 	does not include any text after the first ? or #, and those chars are not
@@ -362,17 +367,17 @@ type PathRule struct {
 	weightedBackendServices, service must not be set. Conversely if service is set,
 	routeAction cannot contain any  weightedBackendServices. Only one of routeAction
 	or urlRedirect must be set. */
-	RouteAction RouteAction `json:"routeAction,omitempty"`
+	RouteAction UrlmapRouteAction `json:"routeAction,omitempty"`
 	/* The backend service or backend bucket to use if any of the given
 	paths match. */
-	Service Service `json:"service,omitempty"`
+	Service UrlmapService `json:"service,omitempty"`
 	/* When a path pattern is matched, the request is redirected to a URL specified
 	by urlRedirect. If urlRedirect is specified, service or routeAction must not
 	be set. */
-	UrlRedirect UrlRedirect `json:"urlRedirect,omitempty"`
+	UrlRedirect UrlmapUrlRedirect `json:"urlRedirect,omitempty"`
 }
 
-type PerTryTimeout struct {
+type UrlmapPerTryTimeout struct {
 	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
 	less than one second are represented with a 0 'seconds' field and a positive
 	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
@@ -382,7 +387,7 @@ type PerTryTimeout struct {
 	Seconds string `json:"seconds,omitempty"`
 }
 
-type QueryParameterMatches struct {
+type UrlmapQueryParameterMatches struct {
 	/* The queryParameterMatch matches if the value of the parameter exactly matches
 	the contents of exactMatch. Only one of presentMatch, exactMatch and regexMatch
 	must be set. */
@@ -401,14 +406,14 @@ type QueryParameterMatches struct {
 	RegexMatch string `json:"regexMatch,omitempty"`
 }
 
-type RangeMatch struct {
+type UrlmapRangeMatch struct {
 	/* The end of the range (exclusive). */
 	RangeEnd int `json:"rangeEnd,omitempty"`
 	/* The start of the range (inclusive). */
 	RangeStart int `json:"rangeStart,omitempty"`
 }
 
-type RequestHeadersToAdd struct {
+type UrlmapRequestHeadersToAdd struct {
 	/* The name of the header. */
 	HeaderName string `json:"headerName,omitempty"`
 	/* The value of the header to add. */
@@ -419,12 +424,12 @@ type RequestHeadersToAdd struct {
 	Replace bool `json:"replace,omitempty"`
 }
 
-type RequestMirrorPolicy struct {
+type UrlmapRequestMirrorPolicy struct {
 	/* The backend service resource being mirrored to. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
-type ResponseHeadersToAdd struct {
+type UrlmapResponseHeadersToAdd struct {
 	/* The name of the header. */
 	HeaderName string `json:"headerName,omitempty"`
 	/* The value of the header to add. */
@@ -435,13 +440,13 @@ type ResponseHeadersToAdd struct {
 	Replace bool `json:"replace,omitempty"`
 }
 
-type RetryPolicy struct {
+type UrlmapRetryPolicy struct {
 	/* Specifies the allowed number retries. This number must be > 0. */
 	NumRetries int `json:"numRetries,omitempty"`
 	/* Specifies a non-zero timeout per retry attempt.
 	If not specified, will use the timeout set in HttpRouteAction. If timeout in HttpRouteAction
 	is not set, will use the largest timeout among all backend services associated with the route. */
-	PerTryTimeout PerTryTimeout `json:"perTryTimeout,omitempty"`
+	PerTryTimeout UrlmapPerTryTimeout `json:"perTryTimeout,omitempty"`
 	/* Specfies one or more conditions when this retry rule applies. Valid values are:
 
 	* 5xx: Loadbalancer will attempt a retry if the backend service responds with
@@ -467,10 +472,10 @@ type RetryPolicy struct {
 	RetryConditions []string `json:"retryConditions,omitempty"`
 }
 
-type RouteAction struct {
+type UrlmapRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see W3C
 	Recommendation for Cross Origin Resource Sharing */
-	CorsPolicy CorsPolicy `json:"corsPolicy,omitempty"`
+	CorsPolicy UrlmapCorsPolicy `json:"corsPolicy,omitempty"`
 	/* The specification for fault injection introduced into traffic to test the
 	resiliency of clients to backend service failure. As part of fault injection,
 	when clients send requests to a backend service, delays can be introduced by
@@ -478,22 +483,22 @@ type RouteAction struct {
 	backend service. Similarly requests from clients can be aborted by the
 	Loadbalancer for a percentage of requests. timeout and retry_policy will be
 	ignored by clients that are configured with a fault_injection_policy. */
-	FaultInjectionPolicy FaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
+	FaultInjectionPolicy UrlmapFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 	/* Specifies the policy on how requests intended for the route's backends are
 	shadowed to a separate mirrored backend service. Loadbalancer does not wait for
 	responses from the shadow service. Prior to sending traffic to the shadow
 	service, the host / authority header is suffixed with -shadow. */
-	RequestMirrorPolicy RequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
+	RequestMirrorPolicy UrlmapRequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
 	/* Specifies the retry policy associated with this route. */
-	RetryPolicy RetryPolicy `json:"retryPolicy,omitempty"`
+	RetryPolicy UrlmapRetryPolicy `json:"retryPolicy,omitempty"`
 	/* Specifies the timeout for the selected route. Timeout is computed from the time
 	the request is has been fully processed (i.e. end-of-stream) up until the
 	response has been completely processed. Timeout includes all retries. If not
 	specified, the default value is 15 seconds. */
-	Timeout Timeout `json:"timeout,omitempty"`
+	Timeout UrlmapTimeout `json:"timeout,omitempty"`
 	/* The spec to modify the URL of the request, prior to forwarding the request to
 	the matched service */
-	UrlRewrite UrlRewrite `json:"urlRewrite,omitempty"`
+	UrlRewrite UrlmapUrlRewrite `json:"urlRewrite,omitempty"`
 	/* A list of weighted backend services to send traffic to when a route match
 	occurs. The weights determine the fraction of traffic that flows to their
 	corresponding backend service. If all traffic needs to go to a single backend
@@ -502,17 +507,17 @@ type RouteAction struct {
 	the backend service, advanced routing actions like Url rewrites and header
 	transformations are applied depending on additional settings specified in this
 	HttpRouteAction. */
-	WeightedBackendServices []WeightedBackendServices `json:"weightedBackendServices,omitempty"`
+	WeightedBackendServices []UrlmapWeightedBackendServices `json:"weightedBackendServices,omitempty"`
 }
 
-type RouteRules struct {
+type UrlmapRouteRules struct {
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. The headerAction specified here are applied before
 	the matching pathMatchers[].headerAction and after pathMatchers[].routeRules[].r
 	outeAction.weightedBackendService.backendServiceWeightAction[].headerAction */
-	HeaderAction HeaderAction `json:"headerAction,omitempty"`
+	HeaderAction UrlmapHeaderAction `json:"headerAction,omitempty"`
 	/* The rules for determining a match. */
-	MatchRules []MatchRules `json:"matchRules,omitempty"`
+	MatchRules []UrlmapMatchRules `json:"matchRules,omitempty"`
 	/* For routeRules within a given pathMatcher, priority determines the order
 	in which load balancer will interpret routeRules. RouteRules are evaluated
 	in order of priority, from the lowest to highest number. The priority of
@@ -535,7 +540,7 @@ type RouteRules struct {
 	weightedBackendServices, service must not be set. Conversely if service is set,
 	routeAction cannot contain any  weightedBackendServices. Only one of routeAction
 	or urlRedirect must be set. */
-	RouteAction RouteAction `json:"routeAction,omitempty"`
+	RouteAction UrlmapRouteAction `json:"routeAction,omitempty"`
 	/* The backend service resource to which traffic is
 	directed if this rule is matched. If routeAction is additionally specified,
 	advanced routing actions like URL Rewrites, etc. take effect prior to sending
@@ -547,17 +552,17 @@ type RouteRules struct {
 	/* When this rule is matched, the request is redirected to a URL specified by
 	urlRedirect. If urlRedirect is specified, service or routeAction must not be
 	set. */
-	UrlRedirect UrlRedirect `json:"urlRedirect,omitempty"`
+	UrlRedirect UrlmapUrlRedirect `json:"urlRedirect,omitempty"`
 }
 
-type Service struct {
+type UrlmapService struct {
 	/*  */
 	BackendBucketRef v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 	/*  */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
-type Test struct {
+type UrlmapTest struct {
 	/* Description of this test case. */
 	Description string `json:"description,omitempty"`
 	/* Host portion of the URL. */
@@ -566,10 +571,10 @@ type Test struct {
 	Path string `json:"path,omitempty"`
 	/* The backend service or backend bucket link that should be matched
 	by this test. */
-	Service Service `json:"service,omitempty"`
+	Service UrlmapService `json:"service,omitempty"`
 }
 
-type Timeout struct {
+type UrlmapTimeout struct {
 	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
 	less than one second are represented with a 0 'seconds' field and a positive
 	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
@@ -579,7 +584,7 @@ type Timeout struct {
 	Seconds string `json:"seconds,omitempty"`
 }
 
-type UrlRedirect struct {
+type UrlmapUrlRedirect struct {
 	/* The host that will be used in the redirect response instead of the one that was
 	supplied in the request. The value must be between 1 and 255 characters. */
 	HostRedirect string `json:"hostRedirect,omitempty"`
@@ -613,7 +618,7 @@ type UrlRedirect struct {
 	StripQuery bool `json:"stripQuery,omitempty"`
 }
 
-type UrlRewrite struct {
+type UrlmapUrlRewrite struct {
 	/* Prior to forwarding the request to the selected service, the request's host
 	header is replaced with contents of hostRewrite. The value must be between 1 and
 	255 characters. */
@@ -624,7 +629,7 @@ type UrlRewrite struct {
 	PathPrefixRewrite string `json:"pathPrefixRewrite,omitempty"`
 }
 
-type WeightedBackendServices struct {
+type UrlmapWeightedBackendServices struct {
 	/* The default backend service. Before forwarding the request to the
 	backend service, the loadbalancer applies any relevant
 	headerActions specified as part of this backendServiceWeight. */
@@ -632,7 +637,7 @@ type WeightedBackendServices struct {
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. headerAction specified here take effect before
 	headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap. */
-	HeaderAction HeaderAction `json:"headerAction,omitempty"`
+	HeaderAction UrlmapHeaderAction `json:"headerAction,omitempty"`
 	/* Specifies the fraction of traffic sent to backendService, computed as weight /
 	(sum of all weightedBackendService weights in routeAction) . The selection of a
 	backend service is determined only for new traffic. Once a user's request has
@@ -649,37 +654,37 @@ type ComputeURLMapSpec struct {
 	is set, defaultRouteAction cannot contain any weightedBackendServices.
 
 	Only one of defaultRouteAction or defaultUrlRedirect must be set. */
-	DefaultRouteAction DefaultRouteAction `json:"defaultRouteAction,omitempty"`
+	DefaultRouteAction UrlmapDefaultRouteAction `json:"defaultRouteAction,omitempty"`
 	/* The backend service or backend bucket to use when none of the given
 	rules match. */
-	DefaultService DefaultService `json:"defaultService,omitempty"`
+	DefaultService UrlmapDefaultService `json:"defaultService,omitempty"`
 	/* When none of the specified hostRules match, the request is redirected to a URL specified
 	by defaultUrlRedirect. If defaultUrlRedirect is specified, defaultService or
 	defaultRouteAction must not be set. */
-	DefaultUrlRedirect DefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
+	DefaultUrlRedirect UrlmapDefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
 	/* An optional description of this resource. Provide this property when you create
 	the resource. */
 	Description string `json:"description,omitempty"`
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. The headerAction specified here take effect after
 	headerAction specified under pathMatcher. */
-	HeaderAction HeaderAction `json:"headerAction,omitempty"`
+	HeaderAction UrlmapHeaderAction `json:"headerAction,omitempty"`
 	/* The list of HostRules to use against the URL. */
-	HostRule []HostRule `json:"hostRule,omitempty"`
+	HostRule []UrlmapHostRule `json:"hostRule,omitempty"`
 	/* Location represents the geographical location of the ComputeURLMap. Specify "global" for global resources. */
 	Location string `json:"location,omitempty"`
 	/* The list of named PathMatchers to use against the URL. */
-	PathMatcher []PathMatcher `json:"pathMatcher,omitempty"`
+	PathMatcher []UrlmapPathMatcher `json:"pathMatcher,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* The list of expected URL mapping tests. Request to update this UrlMap will
 	succeed only if all of the test cases pass. You can specify a maximum of 100
 	tests per UrlMap. */
-	Test []Test `json:"test,omitempty"`
+	Test []UrlmapTest `json:"test,omitempty"`
 }
 
 type ComputeURLMapStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeURLMap's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -710,9 +715,9 @@ type ComputeURLMap struct {
 
 // ComputeURLMapList contains a list of ComputeURLMap
 type ComputeURLMapList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeURLMap `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeURLMap `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,14 +35,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputerouternatLogConfig struct {
+type RouternatLogConfig struct {
 	/* Indicates whether or not to export logs. */
 	Enable bool `json:"enable,omitempty"`
 	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"] */
 	Filter string `json:"filter,omitempty"`
 }
 
-type Subnetwork struct {
+type RouternatSubnetwork struct {
 	/* List of the secondary ranges of the subnetwork that are allowed
 	to use NAT. This can be populated only if
 	'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
@@ -61,7 +66,7 @@ type ComputeRouterNATSpec struct {
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	IcmpIdleTimeoutSec int `json:"icmpIdleTimeoutSec,omitempty"`
 	/* Configuration for logging on NAT */
-	LogConfig ComputerouternatLogConfig `json:"logConfig,omitempty"`
+	LogConfig RouternatLogConfig `json:"logConfig,omitempty"`
 	/* Minimum number of ports allocated to a VM from this NAT. */
 	MinPortsPerVm int `json:"minPortsPerVm,omitempty"`
 	/* How external IPs should be allocated for this NAT. Valid values are
@@ -89,7 +94,7 @@ type ComputeRouterNATSpec struct {
 	SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat,omitempty"`
 	/* One or more subnetwork NAT configurations. Only used if
 	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS' */
-	Subnetwork []Subnetwork `json:"subnetwork,omitempty"`
+	Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
 	/* Timeout (in seconds) for TCP established connections.
 	Defaults to 1200s if not set. */
 	TcpEstablishedIdleTimeoutSec int `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
@@ -101,7 +106,7 @@ type ComputeRouterNATSpec struct {
 }
 
 type ComputeRouterNATStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeRouterNAT's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -123,9 +128,9 @@ type ComputeRouterNAT struct {
 
 // ComputeRouterNATList contains a list of ComputeRouterNAT
 type ComputeRouterNATList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeRouterNAT `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeRouterNAT `json:"items"`
 }
 
 func init() {

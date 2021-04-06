@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,15 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Bgp struct {
+type RouterAdvertisedIpRanges struct {
+	/* User-specified description for the IP range. */
+	Description string `json:"description,omitempty"`
+	/* The IP range to advertise. The value must be a
+	CIDR-formatted string. */
+	Range string `json:"range,omitempty"`
+}
+
+type RouterBgp struct {
 	/* User-specified flag to indicate which mode to use for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
 	AdvertiseMode string `json:"advertiseMode,omitempty"`
 	/* User-specified list of prefix groups to advertise in custom mode.
@@ -46,7 +59,7 @@ type Bgp struct {
 	is CUSTOM and is advertised to all peers of the router. These IP
 	ranges will be advertised in addition to any specified groups.
 	Leave this field blank to advertise no custom IP ranges. */
-	AdvertisedIpRanges ComputerouterAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
+	AdvertisedIpRanges []RouterAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
 	/* Local BGP Autonomous System Number (ASN). Must be an RFC6996
 	private ASN, either 16-bit or 32-bit. The value will be fixed for
 	this router resource. All VPN tunnels that link to this router
@@ -54,17 +67,9 @@ type Bgp struct {
 	Asn int `json:"asn,omitempty"`
 }
 
-type ComputerouterAdvertisedIpRanges struct {
-	/* User-specified description for the IP range. */
-	Description string `json:"description,omitempty"`
-	/* The IP range to advertise. The value must be a
-	CIDR-formatted string. */
-	Range string `json:"range,omitempty"`
-}
-
 type ComputeRouterSpec struct {
 	/* BGP information specific to this router. */
-	Bgp Bgp `json:"bgp,omitempty"`
+	Bgp RouterBgp `json:"bgp,omitempty"`
 	/* An optional description of this resource. */
 	Description string `json:"description,omitempty"`
 	/* A reference to the network to which this router belongs. */
@@ -76,7 +81,7 @@ type ComputeRouterSpec struct {
 }
 
 type ComputeRouterStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeRouter's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -102,9 +107,9 @@ type ComputeRouter struct {
 
 // ComputeRouterList contains a list of ComputeRouter
 type ComputeRouterList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeRouter `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeRouter `json:"items"`
 }
 
 func init() {

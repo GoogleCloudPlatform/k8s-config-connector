@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -61,6 +66,9 @@ type ComputeInterconnectAttachmentSpec struct {
 	traffic will traverse through. Required if type is DEDICATED, must not
 	be set if type is PARTNER. */
 	Interconnect string `json:"interconnect,omitempty"`
+	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
+	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
+	Mtu string `json:"mtu,omitempty"`
 	/* Region where the regional interconnect attachment resides. */
 	Region string `json:"region,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -79,14 +87,14 @@ type ComputeInterconnectAttachmentSpec struct {
 	VlanTag8021q int `json:"vlanTag8021q,omitempty"`
 }
 
-type PrivateInterconnectInfo struct {
+type InterconnectattachmentPrivateInterconnectInfoStatus struct {
 	/* 802.1q encapsulation tag to be used for traffic between
 	Google and the customer, going to and from this network and region. */
 	Tag8021q int `json:"tag8021q,omitempty"`
 }
 
 type ComputeInterconnectAttachmentStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeInterconnectAttachment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* IPv4 address + prefix length to be configured on Cloud Router
@@ -110,7 +118,7 @@ type ComputeInterconnectAttachmentStatus struct {
 	PartnerAsn string `json:"partnerAsn,omitempty"`
 	/* Information specific to an InterconnectAttachment. This property
 	is populated if the interconnect that this is attached to is of type DEDICATED. */
-	PrivateInterconnectInfo PrivateInterconnectInfo `json:"privateInterconnectInfo,omitempty"`
+	PrivateInterconnectInfo InterconnectattachmentPrivateInterconnectInfoStatus `json:"privateInterconnectInfo,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* [Output Only] The current state of this attachment's functionality. */
@@ -134,9 +142,9 @@ type ComputeInterconnectAttachment struct {
 
 // ComputeInterconnectAttachmentList contains a list of ComputeInterconnectAttachment
 type ComputeInterconnectAttachmentList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeInterconnectAttachment `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeInterconnectAttachment `json:"items"`
 }
 
 func init() {

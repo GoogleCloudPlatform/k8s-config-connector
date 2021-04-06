@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 // Package v1beta1 contains API Schema definitions for the storage v1beta1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
@@ -31,5 +36,5 @@
 // +groupName=storage.cnrm.cloud.google.com
 
 // Generate deepcopy object for storage/v1beta1 API group
-//go:generate go run ../../../../../../deepcopy-gen/main.go -O zz_generated.deepcopy -i . -h ../../../../../../../hack/boilerplate.go.txt
+//go:generate go run ../../../../../../deepcopy-gen/main.go -O zz_generated.deepcopy -i . -h ../../../../../../../hack/boilerplate_client_alpha.go.txt
 package v1beta1

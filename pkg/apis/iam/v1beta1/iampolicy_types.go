@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,30 +35,30 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AuditConfigs struct {
+type PolicyAuditConfigs struct {
 	/* Required. The configuration for logging of each type of permission. */
-	AuditLogConfigs []AuditLogConfigs `json:"auditLogConfigs,omitempty"`
+	AuditLogConfigs []PolicyAuditLogConfigs `json:"auditLogConfigs,omitempty"`
 	/* Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfg' are exempted. */
 	Service string `json:"service,omitempty"`
 }
 
-type AuditLogConfigs struct {
+type PolicyAuditLogConfigs struct {
 	/* Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember. */
 	ExemptedMembers []string `json:"exemptedMembers,omitempty"`
 	/* Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'. */
 	LogType string `json:"logType,omitempty"`
 }
 
-type Bindings struct {
+type PolicyBindings struct {
 	/* Optional. The condition under which the binding applies. */
-	Condition Condition `json:"condition,omitempty"`
+	Condition PolicyCondition `json:"condition,omitempty"`
 	/* Optional. The list of IAM users to be bound to the role. */
 	Members []string `json:"members,omitempty"`
 	/* Required. The role to bind the users to. */
 	Role string `json:"role,omitempty"`
 }
 
-type Condition struct {
+type PolicyCondition struct {
 	/*  */
 	Description string `json:"description,omitempty"`
 	/*  */
@@ -64,15 +69,15 @@ type Condition struct {
 
 type IAMPolicySpec struct {
 	/* Optional. The list of IAM audit configs. */
-	AuditConfigs []AuditConfigs `json:"auditConfigs,omitempty"`
+	AuditConfigs []PolicyAuditConfigs `json:"auditConfigs,omitempty"`
 	/* Optional. The list of IAM bindings. */
-	Bindings []Bindings `json:"bindings,omitempty"`
+	Bindings []PolicyBindings `json:"bindings,omitempty"`
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
 	ResourceRef v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
 }
 
 type IAMPolicyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   IAMPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -94,9 +99,9 @@ type IAMPolicy struct {
 
 // IAMPolicyList contains a list of IAMPolicy
 type IAMPolicyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []IAMPolicy `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMPolicy `json:"items"`
 }
 
 func init() {

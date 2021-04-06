@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -33,12 +38,21 @@ import (
 type ProjectSpec struct {
 	/*  */
 	BillingAccountRef v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+	/* The folder that this resource belongs to. Changing this forces the
+	resource to be migrated to the newly specified folder. Only one of
+	folderRef or organizationRef may be specified. */
+	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 	/* The display name of the project. */
 	Name string `json:"name,omitempty"`
+	/* The organization that this resource belongs to. Changing this
+	forces the resource to be migrated to the newly specified
+	organization. Only one of folderRef or organizationRef may be
+	specified. */
+	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 }
 
 type ProjectStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   Project's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The numeric identifier of the project. */
@@ -62,9 +76,9 @@ type Project struct {
 
 // ProjectList contains a list of Project
 type ProjectList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []Project `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []Project `json:"items"`
 }
 
 func init() {

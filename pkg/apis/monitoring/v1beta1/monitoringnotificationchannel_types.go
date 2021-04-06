@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,37 +35,37 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AuthToken struct {
+type NotificationchannelAuthToken struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
-type Password struct {
+type NotificationchannelPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
-type SensitiveLabels struct {
+type NotificationchannelSensitiveLabels struct {
 	/* An authorization token for a notification channel. Channel types that support this field include: slack */
-	AuthToken AuthToken `json:"authToken,omitempty"`
+	AuthToken NotificationchannelAuthToken `json:"authToken,omitempty"`
 	/* An password for a notification channel. Channel types that support this field include: webhook_basicauth */
-	Password Password `json:"password,omitempty"`
+	Password NotificationchannelPassword `json:"password,omitempty"`
 	/* An servicekey token for a notification channel. Channel types that support this field include: pagerduty */
-	ServiceKey ServiceKey `json:"serviceKey,omitempty"`
+	ServiceKey NotificationchannelServiceKey `json:"serviceKey,omitempty"`
 }
 
-type ServiceKey struct {
+type NotificationchannelServiceKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
-type ValueFrom struct {
+type NotificationchannelValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
@@ -81,13 +86,13 @@ type MonitoringNotificationChannelSpec struct {
 
 	Credentials may not be specified in both locations and will cause an error. Changing from one location
 	to a different credential configuration in the config will require an apply to update state. */
-	SensitiveLabels SensitiveLabels `json:"sensitiveLabels,omitempty"`
+	SensitiveLabels NotificationchannelSensitiveLabels `json:"sensitiveLabels,omitempty"`
 	/* The type of the notification channel. This field matches the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list to get the list of valid values such as "email", "slack", etc... */
 	Type string `json:"type,omitempty"`
 }
 
 type MonitoringNotificationChannelStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   MonitoringNotificationChannel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The full REST resource name for this channel. The syntax is:
@@ -115,9 +120,9 @@ type MonitoringNotificationChannel struct {
 
 // MonitoringNotificationChannelList contains a list of MonitoringNotificationChannel
 type MonitoringNotificationChannelList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []MonitoringNotificationChannel `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []MonitoringNotificationChannel `json:"items"`
 }
 
 func init() {

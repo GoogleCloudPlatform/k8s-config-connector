@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,20 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DataflowflextemplatejobParameters struct {
+type FlextemplatejobParameters struct {
 }
 
 type DataflowFlexTemplateJobSpec struct {
 	/* Immutable. */
 	ContainerSpecGcsPath string `json:"containerSpecGcsPath,omitempty"`
 	/* Immutable. */
-	Parameters DataflowflextemplatejobParameters `json:"parameters,omitempty"`
+	Parameters FlextemplatejobParameters `json:"parameters,omitempty"`
 	/* Immutable. The region in which the created job should run. */
 	Region string `json:"region,omitempty"`
 }
 
 type DataflowFlexTemplateJobStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   DataflowFlexTemplateJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
@@ -69,9 +74,9 @@ type DataflowFlexTemplateJob struct {
 
 // DataflowFlexTemplateJobList contains a list of DataflowFlexTemplateJob
 type DataflowFlexTemplateJobList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []DataflowFlexTemplateJob `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataflowFlexTemplateJob `json:"items"`
 }
 
 func init() {

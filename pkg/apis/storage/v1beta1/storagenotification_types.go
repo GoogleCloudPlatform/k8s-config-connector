@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -48,7 +53,7 @@ type StorageNotificationSpec struct {
 }
 
 type StorageNotificationStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   StorageNotification's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The ID of the created notification. */
@@ -74,9 +79,9 @@ type StorageNotification struct {
 
 // StorageNotificationList contains a list of StorageNotification
 type StorageNotificationList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []StorageNotification `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageNotification `json:"items"`
 }
 
 func init() {

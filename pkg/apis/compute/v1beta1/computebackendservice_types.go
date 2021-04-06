@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Backend struct {
+type BackendserviceBackend struct {
 	/* Specifies the balancing mode for this backend.
 
 	For global HTTP(S) or TCP/SSL load balancing, the default is
@@ -64,7 +69,7 @@ type Backend struct {
 
 	When the 'load_balancing_scheme' is INTERNAL, only instance groups
 	are supported. */
-	Group Group `json:"group,omitempty"`
+	Group BackendserviceGroup `json:"group,omitempty"`
 	/* The max number of simultaneous connections for the group. Can
 	be used with either CONNECTION or UTILIZATION balancing modes.
 
@@ -111,7 +116,7 @@ type Backend struct {
 	MaxUtilization float64 `json:"maxUtilization,omitempty"`
 }
 
-type BaseEjectionTime struct {
+type BackendserviceBaseEjectionTime struct {
 	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
 	less than one second are represented with a 0 'seconds' field and a positive
 	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
@@ -121,7 +126,7 @@ type BaseEjectionTime struct {
 	Seconds int `json:"seconds,omitempty"`
 }
 
-type CacheKeyPolicy struct {
+type BackendserviceCacheKeyPolicy struct {
 	/* If true requests to different hosts will be cached separately. */
 	IncludeHost bool `json:"includeHost,omitempty"`
 	/* If true, http and https requests will be cached separately. */
@@ -150,9 +155,9 @@ type CacheKeyPolicy struct {
 	QueryStringWhitelist []string `json:"queryStringWhitelist,omitempty"`
 }
 
-type CdnPolicy struct {
+type BackendserviceCdnPolicy struct {
 	/* The CacheKeyPolicy for this CdnPolicy. */
-	CacheKeyPolicy CacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
+	CacheKeyPolicy BackendserviceCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
 	/* Specifies the cache setting for all responses from this backend.
 	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"] */
 	CacheMode string `json:"cacheMode,omitempty"`
@@ -167,7 +172,7 @@ type CdnPolicy struct {
 	NegativeCaching bool `json:"negativeCaching,omitempty"`
 	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
 	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
-	NegativeCachingPolicy []NegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
+	NegativeCachingPolicy []BackendserviceNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
 	ServeWhileStale int `json:"serveWhileStale,omitempty"`
 	/* Maximum number of seconds the response to a signed URL request
@@ -183,9 +188,9 @@ type CdnPolicy struct {
 	SignedUrlCacheMaxAgeSec int `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
-type CircuitBreakers struct {
+type BackendserviceCircuitBreakers struct {
 	/* The timeout for new network connections to hosts. */
-	ConnectTimeout ConnectTimeout `json:"connectTimeout,omitempty"`
+	ConnectTimeout BackendserviceConnectTimeout `json:"connectTimeout,omitempty"`
 	/* The maximum number of connections to the backend cluster.
 	Defaults to 1024. */
 	MaxConnections int `json:"maxConnections,omitempty"`
@@ -205,22 +210,7 @@ type CircuitBreakers struct {
 	MaxRetries int `json:"maxRetries,omitempty"`
 }
 
-type ComputebackendserviceLogConfig struct {
-	/* Whether to enable logging for the load balancer traffic served by this backend service. */
-	Enable bool `json:"enable,omitempty"`
-	/* This field can only be specified if logging is enabled for this backend service. The value of
-	the field must be in [0, 1]. This configures the sampling rate of requests to the load balancer
-	where 1.0 means all logged requests are reported and 0.0 means no logged requests are reported.
-	The default value is 1.0. */
-	SampleRate float64 `json:"sampleRate,omitempty"`
-}
-
-type ComputebackendserviceValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
-}
-
-type ConnectTimeout struct {
+type BackendserviceConnectTimeout struct {
 	/* Span of time that's a fraction of a second at nanosecond
 	resolution. Durations less than one second are represented
 	with a 0 seconds field and a positive nanos field. Must
@@ -231,12 +221,12 @@ type ConnectTimeout struct {
 	Seconds int `json:"seconds,omitempty"`
 }
 
-type ConsistentHash struct {
+type BackendserviceConsistentHash struct {
 	/* Hash is based on HTTP Cookie. This field describes a HTTP cookie
 	that will be used as the hash key for the consistent hash load
 	balancer. If the cookie is not present, it will be generated.
 	This field is applicable if the sessionAffinity is set to HTTP_COOKIE. */
-	HttpCookie HttpCookie `json:"httpCookie,omitempty"`
+	HttpCookie BackendserviceHttpCookie `json:"httpCookie,omitempty"`
 	/* The hash based on the value of the specified header field.
 	This field is applicable if the sessionAffinity is set to HEADER_FIELD. */
 	HttpHeaderName string `json:"httpHeaderName,omitempty"`
@@ -249,7 +239,7 @@ type ConsistentHash struct {
 	MinimumRingSize int `json:"minimumRingSize,omitempty"`
 }
 
-type FailoverPolicy struct {
+type BackendserviceFailoverPolicy struct {
 	/* On failover or failback, this field indicates whether connection drain
 	will be honored. Setting this to true has the following effect: connections
 	to the old active pool are not drained. Connections to the new active pool
@@ -275,39 +265,39 @@ type FailoverPolicy struct {
 	FailoverRatio float64 `json:"failoverRatio,omitempty"`
 }
 
-type Group struct {
+type BackendserviceGroup struct {
 	/*  */
 	InstanceGroupRef v1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
 	/*  */
 	NetworkEndpointGroupRef v1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
 }
 
-type HealthChecks struct {
+type BackendserviceHealthChecks struct {
 	/*  */
 	HealthCheckRef v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 	/*  */
 	HttpHealthCheckRef v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
-type HttpCookie struct {
+type BackendserviceHttpCookie struct {
 	/* Name of the cookie. */
 	Name string `json:"name,omitempty"`
 	/* Path to set for the cookie. */
 	Path string `json:"path,omitempty"`
 	/* Lifetime of the cookie. */
-	Ttl Ttl `json:"ttl,omitempty"`
+	Ttl BackendserviceTtl `json:"ttl,omitempty"`
 }
 
-type Iap struct {
+type BackendserviceIap struct {
 	/* OAuth2 Client ID for IAP */
 	Oauth2ClientId string `json:"oauth2ClientId,omitempty"`
 	/* OAuth2 Client Secret for IAP */
-	Oauth2ClientSecret Oauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
+	Oauth2ClientSecret BackendserviceOauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
 	/* OAuth2 Client Secret SHA-256 for IAP */
 	Oauth2ClientSecretSha256 string `json:"oauth2ClientSecretSha256,omitempty"`
 }
 
-type Interval struct {
+type BackendserviceInterval struct {
 	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
 	less than one second are represented with a 0 'seconds' field and a positive
 	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
@@ -317,7 +307,17 @@ type Interval struct {
 	Seconds int `json:"seconds,omitempty"`
 }
 
-type NegativeCachingPolicy struct {
+type BackendserviceLogConfig struct {
+	/* Whether to enable logging for the load balancer traffic served by this backend service. */
+	Enable bool `json:"enable,omitempty"`
+	/* This field can only be specified if logging is enabled for this backend service. The value of
+	the field must be in [0, 1]. This configures the sampling rate of requests to the load balancer
+	where 1.0 means all logged requests are reported and 0.0 means no logged requests are reported.
+	The default value is 1.0. */
+	SampleRate float64 `json:"sampleRate,omitempty"`
+}
+
+type BackendserviceNegativeCachingPolicy struct {
 	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
 	can be specified as values, and you cannot specify a status code more than once. */
 	Code int `json:"code,omitempty"`
@@ -326,18 +326,18 @@ type NegativeCachingPolicy struct {
 	Ttl int `json:"ttl,omitempty"`
 }
 
-type Oauth2ClientSecret struct {
+type BackendserviceOauth2ClientSecret struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	Value string `json:"value,omitempty"`
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom ComputebackendserviceValueFrom `json:"valueFrom,omitempty"`
+	ValueFrom BackendserviceValueFrom `json:"valueFrom,omitempty"`
 }
 
-type OutlierDetection struct {
+type BackendserviceOutlierDetection struct {
 	/* The base time that a host is ejected for. The real time is equal to the base
 	time multiplied by the number of times the host has been ejected. Defaults to
 	30000ms or 30s. */
-	BaseEjectionTime BaseEjectionTime `json:"baseEjectionTime,omitempty"`
+	BaseEjectionTime BackendserviceBaseEjectionTime `json:"baseEjectionTime,omitempty"`
 	/* Number of errors before a host is ejected from the connection pool. When the
 	backend host is accessed over HTTP, a 5xx return code qualifies as an error.
 	Defaults to 5. */
@@ -360,7 +360,7 @@ type OutlierDetection struct {
 	EnforcingSuccessRate int `json:"enforcingSuccessRate,omitempty"`
 	/* Time interval between ejection sweep analysis. This can result in both new
 	ejections as well as hosts being returned to service. Defaults to 10 seconds. */
-	Interval Interval `json:"interval,omitempty"`
+	Interval BackendserviceInterval `json:"interval,omitempty"`
 	/* Maximum percentage of hosts in the load balancing pool for the backend service
 	that can be ejected. Defaults to 10%. */
 	MaxEjectionPercent int `json:"maxEjectionPercent,omitempty"`
@@ -384,7 +384,7 @@ type OutlierDetection struct {
 	SuccessRateStdevFactor int `json:"successRateStdevFactor,omitempty"`
 }
 
-type Ttl struct {
+type BackendserviceTtl struct {
 	/* Span of time that's a fraction of a second at nanosecond
 	resolution. Durations less than one second are represented
 	with a 0 seconds field and a positive nanos field. Must
@@ -393,6 +393,11 @@ type Ttl struct {
 	/* Span of time at a resolution of a second.
 	Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int `json:"seconds,omitempty"`
+}
+
+type BackendserviceValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSpec struct {
@@ -404,12 +409,12 @@ type ComputeBackendServiceSpec struct {
 	When the load balancing scheme is INTERNAL, this field is not used. */
 	AffinityCookieTtlSec int `json:"affinityCookieTtlSec,omitempty"`
 	/* The set of backends that serve this BackendService. */
-	Backend []Backend `json:"backend,omitempty"`
+	Backend []BackendserviceBackend `json:"backend,omitempty"`
 	/* Cloud CDN configuration for this BackendService. */
-	CdnPolicy CdnPolicy `json:"cdnPolicy,omitempty"`
+	CdnPolicy BackendserviceCdnPolicy `json:"cdnPolicy,omitempty"`
 	/* Settings controlling the volume of connections to a backend service. This field
 	is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGED. */
-	CircuitBreakers CircuitBreakers `json:"circuitBreakers,omitempty"`
+	CircuitBreakers BackendserviceCircuitBreakers `json:"circuitBreakers,omitempty"`
 	/* Time for which instance will be drained (not accept new
 	connections, but still work to finish started). */
 	ConnectionDrainingTimeoutSec int `json:"connectionDrainingTimeoutSec,omitempty"`
@@ -421,7 +426,7 @@ type ComputeBackendServiceSpec struct {
 	hashing. This field only applies if the load_balancing_scheme is set to
 	INTERNAL_SELF_MANAGED. This field is only applicable when locality_lb_policy is
 	set to MAGLEV or RING_HASH. */
-	ConsistentHash ConsistentHash `json:"consistentHash,omitempty"`
+	ConsistentHash BackendserviceConsistentHash `json:"consistentHash,omitempty"`
 	/* Headers that the HTTP/S load balancer should add to proxied
 	requests. */
 	CustomRequestHeaders []string `json:"customRequestHeaders,omitempty"`
@@ -433,11 +438,11 @@ type ComputeBackendServiceSpec struct {
 	/* If true, enable Cloud CDN for this BackendService. */
 	EnableCdn bool `json:"enableCdn,omitempty"`
 	/* Policy for failovers. */
-	FailoverPolicy FailoverPolicy `json:"failoverPolicy,omitempty"`
+	FailoverPolicy BackendserviceFailoverPolicy `json:"failoverPolicy,omitempty"`
 	/*  */
-	HealthChecks []HealthChecks `json:"healthChecks,omitempty"`
+	HealthChecks []BackendserviceHealthChecks `json:"healthChecks,omitempty"`
 	/* Settings for enabling Cloud Identity Aware Proxy */
-	Iap Iap `json:"iap,omitempty"`
+	Iap BackendserviceIap `json:"iap,omitempty"`
 	/* Immutable. Indicates whether the backend service will be used with internal or
 	external load balancing. A backend service created for one type of
 	load balancing cannot be used with the other. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED"] */
@@ -476,7 +481,7 @@ type ComputeBackendServiceSpec struct {
 	Location string `json:"location,omitempty"`
 	/* This field denotes the logging options for the load balancer traffic served by this backend service.
 	If logging is enabled, logs will be exported to Stackdriver. */
-	LogConfig ComputebackendserviceLogConfig `json:"logConfig,omitempty"`
+	LogConfig BackendserviceLogConfig `json:"logConfig,omitempty"`
 	/* The network to which this backend service belongs.  This field can
 	only be specified when the load balancing scheme is set to
 	INTERNAL. */
@@ -484,7 +489,7 @@ type ComputeBackendServiceSpec struct {
 	/* Settings controlling eviction of unhealthy hosts from the load balancing pool.
 	This field is applicable only when the load_balancing_scheme is set
 	to INTERNAL_SELF_MANAGED. */
-	OutlierDetection OutlierDetection `json:"outlierDetection,omitempty"`
+	OutlierDetection BackendserviceOutlierDetection `json:"outlierDetection,omitempty"`
 	/* Name of backend port. The same name should appear in the instance
 	groups referenced by this service. Required when the load balancing
 	scheme is EXTERNAL. */
@@ -506,7 +511,7 @@ type ComputeBackendServiceSpec struct {
 }
 
 type ComputeBackendServiceStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeBackendService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
@@ -535,9 +540,9 @@ type ComputeBackendService struct {
 
 // ComputeBackendServiceList contains a list of ComputeBackendService
 type ComputeBackendServiceList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeBackendService `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeBackendService `json:"items"`
 }
 
 func init() {

@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,30 +35,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type BigqueryjobTimePartitioning struct {
-	/* Immutable. Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value. */
-	ExpirationMs string `json:"expirationMs,omitempty"`
-	/* Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field.
-	The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED.
-	A wrapper is used here because an empty string is an invalid value. */
-	Field string `json:"field,omitempty"`
-	/* Immutable. The only type supported is DAY, which will generate one partition per day. Providing an empty string used to cause an error,
-	but in OnePlatform the field will be treated as unset. */
-	Type string `json:"type,omitempty"`
-}
-
-type Copy struct {
+type JobCopy struct {
 	/* Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 	CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
 	CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
 	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
 	CreateDisposition string `json:"createDisposition,omitempty"`
 	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
-	DestinationEncryptionConfiguration DestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
+	DestinationEncryptionConfiguration JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 	/* Immutable. The destination table. */
-	DestinationTable DestinationTable `json:"destinationTable,omitempty"`
+	DestinationTable JobDestinationTable `json:"destinationTable,omitempty"`
 	/* Immutable. Source tables to copy. */
-	SourceTables []SourceTables `json:"sourceTables,omitempty"`
+	SourceTables []JobSourceTables `json:"sourceTables,omitempty"`
 	/* Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 	WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
@@ -63,24 +56,24 @@ type Copy struct {
 	WriteDisposition string `json:"writeDisposition,omitempty"`
 }
 
-type DefaultDataset struct {
+type JobDefaultDataset struct {
 	/* A reference to the dataset. */
 	DatasetRef v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 }
 
-type DestinationEncryptionConfiguration struct {
+type JobDestinationEncryptionConfiguration struct {
 	/* Describes the Cloud KMS encryption key that will be used to protect
 	destination BigQuery table. The BigQuery Service Account associated
 	with your project requires access to this encryption key. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
-type DestinationTable struct {
+type JobDestinationTable struct {
 	/* A reference to the table. */
 	TableRef v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
-type Extract struct {
+type JobExtract struct {
 	/* Immutable. The compression type to use for exported files. Possible values include GZIP, DEFLATE, SNAPPY, and NONE.
 	The default value is NONE. DEFLATE and SNAPPY are only supported for Avro. */
 	Compression string `json:"compression,omitempty"`
@@ -96,12 +89,12 @@ type Extract struct {
 	/* Immutable. Whether to print out a header row in the results. Default is true. */
 	PrintHeader bool `json:"printHeader,omitempty"`
 	/* Immutable. A reference to the table being exported. */
-	SourceTable SourceTable `json:"sourceTable,omitempty"`
+	SourceTable JobSourceTable `json:"sourceTable,omitempty"`
 	/* Immutable. Whether to use logical types when extracting to AVRO format. */
 	UseAvroLogicalTypes bool `json:"useAvroLogicalTypes,omitempty"`
 }
 
-type Load struct {
+type JobLoad struct {
 	/* Immutable. Accept rows that are missing trailing optional columns. The missing values are treated as nulls.
 	If false, records with missing trailing columns are treated as bad records, and if there are too many bad records,
 	an invalid error is returned in the job result. The default value is false. Only applicable to CSV, ignored for other formats. */
@@ -117,9 +110,9 @@ type Load struct {
 	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
 	CreateDisposition string `json:"createDisposition,omitempty"`
 	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
-	DestinationEncryptionConfiguration DestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
+	DestinationEncryptionConfiguration JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 	/* Immutable. The destination table to load the data into. */
-	DestinationTable DestinationTable `json:"destinationTable,omitempty"`
+	DestinationTable JobDestinationTable `json:"destinationTable,omitempty"`
 	/* Immutable. The character encoding of the data. The supported values are UTF-8 or ISO-8859-1.
 	The default value is UTF-8. BigQuery decodes the data after the raw, binary data
 	has been split using the values of the quote and fieldDelimiter properties. */
@@ -182,7 +175,7 @@ type Load struct {
 	For Google Cloud Datastore backups: Exactly one URI can be specified. Also, the '*' wildcard character is not allowed. */
 	SourceUris []string `json:"sourceUris,omitempty"`
 	/* Immutable. Time-based partitioning specification for the destination table. */
-	TimePartitioning BigqueryjobTimePartitioning `json:"timePartitioning,omitempty"`
+	TimePartitioning JobTimePartitioning `json:"timePartitioning,omitempty"`
 	/* Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 	WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
@@ -192,7 +185,7 @@ type Load struct {
 	WriteDisposition string `json:"writeDisposition,omitempty"`
 }
 
-type Query struct {
+type JobQuery struct {
 	/* Immutable. If true and query uses legacy SQL dialect, allows the query to produce arbitrarily large result tables at a slight cost in performance.
 	Requires destinationTable to be set. For standard SQL queries, this flag is ignored and large results are always allowed.
 	However, you must still set destinationTable when result size exceeds the allowed maximum response size. */
@@ -203,13 +196,13 @@ type Query struct {
 	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
 	CreateDisposition string `json:"createDisposition,omitempty"`
 	/* Immutable. Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names. */
-	DefaultDataset DefaultDataset `json:"defaultDataset,omitempty"`
+	DefaultDataset JobDefaultDataset `json:"defaultDataset,omitempty"`
 	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
-	DestinationEncryptionConfiguration DestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
+	DestinationEncryptionConfiguration JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 	/* Immutable. Describes the table where the query results should be stored.
 	This property must be set for large results that exceed the maximum response size.
 	For queries that produce anonymous (cached) results, this field will be populated by BigQuery. */
-	DestinationTable DestinationTable `json:"destinationTable,omitempty"`
+	DestinationTable JobDestinationTable `json:"destinationTable,omitempty"`
 	/* Immutable. If true and query uses legacy SQL dialect, flattens all nested and repeated fields in the query results.
 	allowLargeResults must be true if this is set to false. For standard SQL queries, this flag is ignored and results are never flattened. */
 	FlattenResults bool `json:"flattenResults,omitempty"`
@@ -236,7 +229,7 @@ type Query struct {
 	ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable. */
 	SchemaUpdateOptions []string `json:"schemaUpdateOptions,omitempty"`
 	/* Immutable. Options controlling the execution of scripts. */
-	ScriptOptions ScriptOptions `json:"scriptOptions,omitempty"`
+	ScriptOptions JobScriptOptions `json:"scriptOptions,omitempty"`
 	/* Immutable. Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true.
 	If set to false, the query will use BigQuery's standard SQL. */
 	UseLegacySql bool `json:"useLegacySql,omitempty"`
@@ -245,7 +238,7 @@ type Query struct {
 	The default value is true. */
 	UseQueryCache bool `json:"useQueryCache,omitempty"`
 	/* Immutable. Describes user-defined function resources used in the query. */
-	UserDefinedFunctionResources []UserDefinedFunctionResources `json:"userDefinedFunctionResources,omitempty"`
+	UserDefinedFunctionResources []JobUserDefinedFunctionResources `json:"userDefinedFunctionResources,omitempty"`
 	/* Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 	WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
@@ -255,7 +248,7 @@ type Query struct {
 	WriteDisposition string `json:"writeDisposition,omitempty"`
 }
 
-type ScriptOptions struct {
+type JobScriptOptions struct {
 	/* Immutable. Determines which statement in the script represents the "key result",
 	used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"] */
 	KeyResultStatement string `json:"keyResultStatement,omitempty"`
@@ -265,17 +258,29 @@ type ScriptOptions struct {
 	StatementTimeoutMs string `json:"statementTimeoutMs,omitempty"`
 }
 
-type SourceTable struct {
+type JobSourceTable struct {
 	/* A reference to the table. */
 	TableRef v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
-type SourceTables struct {
+type JobSourceTables struct {
 	/* A reference to the table. */
 	TableRef v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
-type UserDefinedFunctionResources struct {
+type JobTimePartitioning struct {
+	/* Immutable. Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value. */
+	ExpirationMs string `json:"expirationMs,omitempty"`
+	/* Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field.
+	The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED.
+	A wrapper is used here because an empty string is an invalid value. */
+	Field string `json:"field,omitempty"`
+	/* Immutable. The only type supported is DAY, which will generate one partition per day. Providing an empty string used to cause an error,
+	but in OnePlatform the field will be treated as unset. */
+	Type string `json:"type,omitempty"`
+}
+
+type JobUserDefinedFunctionResources struct {
 	/* Immutable. An inline resource that contains code for a user-defined function (UDF).
 	Providing a inline code resource is equivalent to providing a URI for a file containing the same code. */
 	InlineCode string `json:"inlineCode,omitempty"`
@@ -285,27 +290,64 @@ type UserDefinedFunctionResources struct {
 
 type BigQueryJobSpec struct {
 	/* Immutable. Copies a table. */
-	Copy Copy `json:"copy,omitempty"`
+	Copy JobCopy `json:"copy,omitempty"`
 	/* Immutable. Configures an extract job. */
-	Extract Extract `json:"extract,omitempty"`
+	Extract JobExtract `json:"extract,omitempty"`
 	/* Immutable. Job timeout in milliseconds. If this time limit is exceeded, BigQuery may attempt to terminate the job. */
 	JobTimeoutMs string `json:"jobTimeoutMs,omitempty"`
 	/* Immutable. Configures a load job. */
-	Load Load `json:"load,omitempty"`
+	Load JobLoad `json:"load,omitempty"`
 	/* Immutable. The geographic location of the job. The default value is US. */
 	Location string `json:"location,omitempty"`
 	/* Immutable. Configures a query job. */
-	Query Query `json:"query,omitempty"`
+	Query JobQuery `json:"query,omitempty"`
 	/* Immutable. Optional. The jobId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
+type JobErrorResultStatus struct {
+	/* Specifies where the error occurred, if present. */
+	Location string `json:"location,omitempty"`
+
+	/* A human-readable description of the error. */
+	Message string `json:"message,omitempty"`
+
+	/* A short error code that summarizes the error. */
+	Reason string `json:"reason,omitempty"`
+}
+
+type JobErrorsStatus struct {
+	/* Specifies where the error occurred, if present. */
+	Location string `json:"location,omitempty"`
+
+	/* A human-readable description of the error. */
+	Message string `json:"message,omitempty"`
+
+	/* A short error code that summarizes the error. */
+	Reason string `json:"reason,omitempty"`
+}
+
+type JobStatusStatus struct {
+	/* Final error result of the job. If present, indicates that the job has completed and was unsuccessful. */
+	ErrorResult []JobErrorResultStatus `json:"errorResult,omitempty"`
+
+	/* The first errors encountered during the running of the job. The final message
+	includes the number of errors that caused the process to stop. Errors here do
+	not necessarily mean that the job has not completed or was unsuccessful. */
+	Errors []JobErrorsStatus `json:"errors,omitempty"`
+
+	/* Running state of the job. Valid states include 'PENDING', 'RUNNING', and 'DONE'. */
+	State string `json:"state,omitempty"`
+}
+
 type BigQueryJobStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   BigQueryJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The type of the job. */
 	JobType string `json:"jobType,omitempty"`
+	/* The status of this job. Examine this value when polling an asynchronous job to see if the job is complete. */
+	Status []JobStatusStatus `json:"status,omitempty"`
 	/* Email address of the user who ran the job. */
 	UserEmail string `json:"userEmail,omitempty"`
 }
@@ -327,9 +369,9 @@ type BigQueryJob struct {
 
 // BigQueryJobList contains a list of BigQueryJob
 type BigQueryJobList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []BigQueryJob `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BigQueryJob `json:"items"`
 }
 
 func init() {

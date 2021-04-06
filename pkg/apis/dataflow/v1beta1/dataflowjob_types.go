@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,15 +35,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Parameters struct {
+type JobParameters struct {
 }
 
-type TransformNameMapping struct {
+type JobTransformNameMapping struct {
 }
 
 type DataflowJobSpec struct {
 	/* List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"]. */
 	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
+	/* Indicates if the job should use the streaming engine feature. */
+	EnableStreamingEngine bool `json:"enableStreamingEngine,omitempty"`
 	/* The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE". */
 	IpConfiguration string `json:"ipConfiguration,omitempty"`
 	/* The name for the Cloud KMS key for the job. */
@@ -50,7 +57,7 @@ type DataflowJobSpec struct {
 	/*  */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 	/* Key/Value pairs to be passed to the Dataflow job (as used in the template). */
-	Parameters Parameters `json:"parameters,omitempty"`
+	Parameters JobParameters `json:"parameters,omitempty"`
 	/* Immutable. The region in which the created job should run. */
 	Region string `json:"region,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -64,13 +71,13 @@ type DataflowJobSpec struct {
 	/* The Google Cloud Storage path to the Dataflow job template. */
 	TemplateGcsPath string `json:"templateGcsPath,omitempty"`
 	/* Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. */
-	TransformNameMapping TransformNameMapping `json:"transformNameMapping,omitempty"`
+	TransformNameMapping JobTransformNameMapping `json:"transformNameMapping,omitempty"`
 	/* Immutable. The zone in which the created job should run. If it is not provided, the provider zone is used. */
 	Zone string `json:"zone,omitempty"`
 }
 
 type DataflowJobStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   DataflowJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique ID of this job. */
@@ -98,9 +105,9 @@ type DataflowJob struct {
 
 // DataflowJobList contains a list of DataflowJob
 type DataflowJobList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []DataflowJob `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataflowJob `json:"items"`
 }
 
 func init() {

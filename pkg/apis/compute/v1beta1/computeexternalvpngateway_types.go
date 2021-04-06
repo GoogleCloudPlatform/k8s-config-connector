@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Interface struct {
+type ExternalvpngatewayInterface struct {
 	/* Immutable. The numeric ID for this interface. Allowed values are based on the redundancy type
 	of this external VPN gateway
 	* '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
@@ -48,7 +53,7 @@ type ComputeExternalVPNGatewaySpec struct {
 	/* Immutable. An optional description of this resource. */
 	Description string `json:"description,omitempty"`
 	/* Immutable. A list of interfaces on this external VPN gateway. */
-	Interface []Interface `json:"interface,omitempty"`
+	Interface []ExternalvpngatewayInterface `json:"interface,omitempty"`
 	/* Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"] */
 	RedundancyType string `json:"redundancyType,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -56,7 +61,7 @@ type ComputeExternalVPNGatewaySpec struct {
 }
 
 type ComputeExternalVPNGatewayStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeExternalVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
@@ -80,9 +85,9 @@ type ComputeExternalVPNGateway struct {
 
 // ComputeExternalVPNGatewayList contains a list of ComputeExternalVPNGateway
 type ComputeExternalVPNGatewayList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeExternalVPNGateway `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeExternalVPNGateway `json:"items"`
 }
 
 func init() {

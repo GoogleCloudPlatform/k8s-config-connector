@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type NamedPort struct {
+type InstancegroupNamedPort struct {
 	/* The name which the port will be mapped to. */
 	Name string `json:"name,omitempty"`
 	/* The port number to map the name to. */
@@ -43,7 +48,7 @@ type ComputeInstanceGroupSpec struct {
 	/*  */
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 	/* The named port configuration. */
-	NamedPort []NamedPort `json:"namedPort,omitempty"`
+	NamedPort []InstancegroupNamedPort `json:"namedPort,omitempty"`
 	/*  */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -53,7 +58,7 @@ type ComputeInstanceGroupSpec struct {
 }
 
 type ComputeInstanceGroupStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeInstanceGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The URI of the created resource. */
@@ -79,9 +84,9 @@ type ComputeInstanceGroup struct {
 
 // ComputeInstanceGroupList contains a list of ComputeInstanceGroup
 type ComputeInstanceGroupList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeInstanceGroup `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeInstanceGroup `json:"items"`
 }
 
 func init() {

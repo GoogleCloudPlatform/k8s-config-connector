@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ComputeinstancetemplateAccessConfig struct {
+type InstancetemplateAccessConfig struct {
 	/*  */
 	NatIpRef v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
 	/* Immutable. The networking tier used for configuring this instance template. This field can take the following values: PREMIUM or STANDARD. If this field is not specified, it is assumed to be PREMIUM. */
@@ -39,92 +44,19 @@ type ComputeinstancetemplateAccessConfig struct {
 	PublicPtrDomainName string `json:"publicPtrDomainName,omitempty"`
 }
 
-type ComputeinstancetemplateAliasIpRange struct {
+type InstancetemplateAliasIpRange struct {
 	/* Immutable. The IP CIDR range represented by this alias IP range. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. At the time of writing only a netmask (e.g. /24) may be supplied, with a CIDR format resulting in an API error. */
 	IpCidrRange string `json:"ipCidrRange,omitempty"`
 	/* Immutable. The subnetwork secondary range name specifying the secondary range from which to allocate the IP CIDR range for this alias IP range. If left unspecified, the primary range of the subnetwork will be used. */
 	SubnetworkRangeName string `json:"subnetworkRangeName,omitempty"`
 }
 
-type ComputeinstancetemplateConfidentialInstanceConfig struct {
+type InstancetemplateConfidentialInstanceConfig struct {
 	/* Defines whether the instance should have confidential compute enabled. */
 	EnableConfidentialCompute bool `json:"enableConfidentialCompute,omitempty"`
 }
 
-type ComputeinstancetemplateDiskEncryptionKey struct {
-	/*  */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
-}
-
-type ComputeinstancetemplateGuestAccelerator struct {
-	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
-	Count int `json:"count,omitempty"`
-	/* Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80. */
-	Type string `json:"type,omitempty"`
-}
-
-type ComputeinstancetemplateMetadata struct {
-	/*  */
-	Key string `json:"key,omitempty"`
-	/*  */
-	Value ComputeinstancetemplateValue `json:"value,omitempty"`
-}
-
-type ComputeinstancetemplateNetworkInterface struct {
-	/*  */
-	AccessConfig ComputeinstancetemplateAccessConfig `json:"accessConfig,omitempty"`
-	/* Immutable. An array of alias IP ranges for this network interface. Can only be specified for network interfaces on subnet-mode networks. */
-	AliasIpRange ComputeinstancetemplateAliasIpRange `json:"aliasIpRange,omitempty"`
-	/* The name of the network_interface. */
-	Name string `json:"name,omitempty"`
-	/* Immutable. The private IP address to assign to the instance. If empty, the address will be automatically assigned. */
-	NetworkIp string `json:"networkIp,omitempty"`
-	/*  */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
-	/* Immutable. The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used. */
-	SubnetworkProject string `json:"subnetworkProject,omitempty"`
-	/*  */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
-}
-
-type ComputeinstancetemplateNodeAffinities struct {
-	/*  */
-	Value ComputeinstancetemplateValue `json:"value,omitempty"`
-}
-
-type ComputeinstancetemplateScheduling struct {
-	/* Immutable. Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). This defaults to true. */
-	AutomaticRestart bool `json:"automaticRestart,omitempty"`
-	/* Minimum number of cpus for the instance. */
-	MinNodeCpus int `json:"minNodeCpus,omitempty"`
-	/*  */
-	NodeAffinities ComputeinstancetemplateNodeAffinities `json:"nodeAffinities,omitempty"`
-	/* Immutable. Defines the maintenance behavior for this instance. */
-	OnHostMaintenance string `json:"onHostMaintenance,omitempty"`
-	/* Immutable. Allows instance to be preempted. This defaults to false. */
-	Preemptible bool `json:"preemptible,omitempty"`
-}
-
-type ComputeinstancetemplateServiceAccount struct {
-	/* Immutable. A list of service scopes. Both OAuth2 URLs and gcloud short names are supported. To allow full access to all Cloud APIs, use the cloud-platform scope. */
-	Scopes []string `json:"scopes,omitempty"`
-	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
-}
-
-type ComputeinstancetemplateShieldedInstanceConfig struct {
-	/* Immutable. Compare the most recent boot measurements to the integrity policy baseline and return a pair of pass/fail results depending on whether they match or not. Defaults to true. */
-	EnableIntegrityMonitoring bool `json:"enableIntegrityMonitoring,omitempty"`
-	/* Immutable. Verify the digital signature of all boot components, and halt the boot process if signature verification fails. Defaults to false. */
-	EnableSecureBoot bool `json:"enableSecureBoot,omitempty"`
-	/* Immutable. Use a virtualized trusted platform module, which is a specialized computer chip you can use to encrypt objects like keys and certificates. Defaults to true. */
-	EnableVtpm bool `json:"enableVtpm,omitempty"`
-}
-
-type ComputeinstancetemplateValue struct {
-}
-
-type Disk struct {
+type InstancetemplateDisk struct {
 	/* Immutable. Whether or not the disk should be auto-deleted. This defaults to true. */
 	AutoDelete bool `json:"autoDelete,omitempty"`
 	/* Immutable. Indicates that this is a boot disk. */
@@ -132,7 +64,7 @@ type Disk struct {
 	/* Immutable. A unique device name that is reflected into the /dev/ tree of a Linux operating system running within the instance. If not specified, the server chooses a default device name to apply to this disk. */
 	DeviceName string `json:"deviceName,omitempty"`
 	/* Immutable. Encrypts or decrypts a disk using a customer-supplied encryption key. */
-	DiskEncryptionKey ComputeinstancetemplateDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
+	DiskEncryptionKey InstancetemplateDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
 	/* Immutable. Name of the disk. When not provided, this defaults to the name of the instance. */
 	DiskName string `json:"diskName,omitempty"`
 	/* Immutable. The size of the image in gigabytes. If not specified, it will inherit the size of its base image. For SCRATCH disks, the size must be exactly 375GB. */
@@ -146,6 +78,8 @@ type Disk struct {
 	/* Immutable. The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If you are attaching or creating a boot disk, this must read-write mode. */
 	Mode string `json:"mode,omitempty"`
 	/*  */
+	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	/*  */
 	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 	/*  */
 	SourceImageRef v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
@@ -153,25 +87,100 @@ type Disk struct {
 	Type string `json:"type,omitempty"`
 }
 
+type InstancetemplateDiskEncryptionKey struct {
+	/*  */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+}
+
+type InstancetemplateGuestAccelerator struct {
+	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
+	Count int `json:"count,omitempty"`
+	/* Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80. */
+	Type string `json:"type,omitempty"`
+}
+
+type InstancetemplateMetadata struct {
+	/*  */
+	Key string `json:"key,omitempty"`
+	/*  */
+	Value string `json:"value,omitempty"`
+}
+
+type InstancetemplateNetworkInterface struct {
+	/*  */
+	AccessConfig []InstancetemplateAccessConfig `json:"accessConfig,omitempty"`
+	/* Immutable. An array of alias IP ranges for this network interface. Can only be specified for network interfaces on subnet-mode networks. */
+	AliasIpRange []InstancetemplateAliasIpRange `json:"aliasIpRange,omitempty"`
+	/* The name of the network_interface. */
+	Name string `json:"name,omitempty"`
+	/* Immutable. The private IP address to assign to the instance. If empty, the address will be automatically assigned. */
+	NetworkIp string `json:"networkIp,omitempty"`
+	/*  */
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	/* DEPRECATED — This value is no longer honored, and preserved for backwards compatibility. Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
+	NicType string `json:"nicType,omitempty"`
+	/* Immutable. The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used. */
+	SubnetworkProject string `json:"subnetworkProject,omitempty"`
+	/*  */
+	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+}
+
+type InstancetemplateNodeAffinities struct {
+	/*  */
+	Value InstancetemplateValue `json:"value,omitempty"`
+}
+
+type InstancetemplateScheduling struct {
+	/* Immutable. Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). This defaults to true. */
+	AutomaticRestart bool `json:"automaticRestart,omitempty"`
+	/* Minimum number of cpus for the instance. */
+	MinNodeCpus int `json:"minNodeCpus,omitempty"`
+	/*  */
+	NodeAffinities []InstancetemplateNodeAffinities `json:"nodeAffinities,omitempty"`
+	/* Immutable. Defines the maintenance behavior for this instance. */
+	OnHostMaintenance string `json:"onHostMaintenance,omitempty"`
+	/* Immutable. Allows instance to be preempted. This defaults to false. */
+	Preemptible bool `json:"preemptible,omitempty"`
+}
+
+type InstancetemplateServiceAccount struct {
+	/* Immutable. A list of service scopes. Both OAuth2 URLs and gcloud short names are supported. To allow full access to all Cloud APIs, use the cloud-platform scope. */
+	Scopes []string `json:"scopes,omitempty"`
+	/*  */
+	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+}
+
+type InstancetemplateShieldedInstanceConfig struct {
+	/* Immutable. Compare the most recent boot measurements to the integrity policy baseline and return a pair of pass/fail results depending on whether they match or not. Defaults to true. */
+	EnableIntegrityMonitoring bool `json:"enableIntegrityMonitoring,omitempty"`
+	/* Immutable. Verify the digital signature of all boot components, and halt the boot process if signature verification fails. Defaults to false. */
+	EnableSecureBoot bool `json:"enableSecureBoot,omitempty"`
+	/* Immutable. Use a virtualized trusted platform module, which is a specialized computer chip you can use to encrypt objects like keys and certificates. Defaults to true. */
+	EnableVtpm bool `json:"enableVtpm,omitempty"`
+}
+
+type InstancetemplateValue struct {
+}
+
 type ComputeInstanceTemplateSpec struct {
 	/* Immutable. Whether to allow sending and receiving of packets with non-matching source or destination IPs. This defaults to false. */
 	CanIpForward bool `json:"canIpForward,omitempty"`
 	/* Immutable. The Confidential VM config being used by the instance. on_host_maintenance has to be set to TERMINATE or this will fail to create. */
-	ConfidentialInstanceConfig ComputeinstancetemplateConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+	ConfidentialInstanceConfig InstancetemplateConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
 	/* Immutable. A brief description of this resource. */
 	Description string `json:"description,omitempty"`
 	/* Immutable. Disks to attach to instances created from this template. This can be specified multiple times for multiple disks. */
-	Disk []Disk `json:"disk,omitempty"`
+	Disk []InstancetemplateDisk `json:"disk,omitempty"`
 	/* Immutable. Enable Virtual Displays on this instance. Note: allow_stopping_for_update must be set to true in order to update this field. */
 	EnableDisplay bool `json:"enableDisplay,omitempty"`
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
-	GuestAccelerator ComputeinstancetemplateGuestAccelerator `json:"guestAccelerator,omitempty"`
+	GuestAccelerator []InstancetemplateGuestAccelerator `json:"guestAccelerator,omitempty"`
 	/* Immutable. A description of the instance. */
 	InstanceDescription string `json:"instanceDescription,omitempty"`
 	/* Immutable. The machine type to create. To create a machine with a custom type (such as extended memory), format the value like custom-VCPUS-MEM_IN_MB like custom-6-20480 for 6 vCPU and 20GB of RAM. */
 	MachineType string `json:"machineType,omitempty"`
 	/*  */
-	Metadata ComputeinstancetemplateMetadata `json:"metadata,omitempty"`
+	Metadata []InstancetemplateMetadata `json:"metadata,omitempty"`
 	/* Immutable. An alternative to using the startup-script metadata key, mostly to match the compute_instance resource. This replaces the startup-script metadata key on the created instance and thus the two mechanisms are not allowed to be used simultaneously. */
 	MetadataStartupScript string `json:"metadataStartupScript,omitempty"`
 	/* Immutable. Specifies a minimum CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell or Intel Skylake. */
@@ -179,23 +188,23 @@ type ComputeInstanceTemplateSpec struct {
 	/* Immutable. Creates a unique name beginning with the specified prefix. Conflicts with name. */
 	NamePrefix string `json:"namePrefix,omitempty"`
 	/* Immutable. Networks to attach to instances created from this template. This can be specified multiple times for multiple networks. */
-	NetworkInterface ComputeinstancetemplateNetworkInterface `json:"networkInterface,omitempty"`
+	NetworkInterface []InstancetemplateNetworkInterface `json:"networkInterface,omitempty"`
 	/* Immutable. An instance template is a global resource that is not bound to a zone or a region. However, you can still specify some regional resources in an instance template, which restricts the template to the region where that resource resides. For example, a custom subnetwork resource is tied to a specific region. Defaults to the region of the Provider if no value is given. */
 	Region string `json:"region,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Immutable. The scheduling strategy to use. */
-	Scheduling ComputeinstancetemplateScheduling `json:"scheduling,omitempty"`
+	Scheduling InstancetemplateScheduling `json:"scheduling,omitempty"`
 	/* Immutable. Service account to attach to the instance. */
-	ServiceAccount ComputeinstancetemplateServiceAccount `json:"serviceAccount,omitempty"`
+	ServiceAccount InstancetemplateServiceAccount `json:"serviceAccount,omitempty"`
 	/* Immutable. Enable Shielded VM on this instance. Shielded VM provides verifiable integrity to prevent against malware and rootkits. Defaults to disabled. Note: shielded_instance_config can only be used with boot images with shielded vm support. */
-	ShieldedInstanceConfig ComputeinstancetemplateShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+	ShieldedInstanceConfig InstancetemplateShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 	/* Immutable. Tags to attach to the instance. */
 	Tags []string `json:"tags,omitempty"`
 }
 
 type ComputeInstanceTemplateStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   ComputeInstanceTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique fingerprint of the metadata. */
@@ -223,9 +232,9 @@ type ComputeInstanceTemplate struct {
 
 // ComputeInstanceTemplateList contains a list of ComputeInstanceTemplate
 type ComputeInstanceTemplateList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []ComputeInstanceTemplate `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeInstanceTemplate `json:"items"`
 }
 
 func init() {

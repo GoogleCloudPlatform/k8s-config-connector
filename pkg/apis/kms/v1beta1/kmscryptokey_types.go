@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type VersionTemplate struct {
+type CryptokeyVersionTemplate struct {
 	/* The algorithm to use when creating a version based on this template.
 	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
 	Algorithm string `json:"algorithm,omitempty"`
@@ -55,14 +60,14 @@ type KMSCryptoKeySpec struct {
 	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. */
 	SkipInitialVersionCreation bool `json:"skipInitialVersionCreation,omitempty"`
 	/* A template describing settings for new crypto key versions. */
-	VersionTemplate VersionTemplate `json:"versionTemplate,omitempty"`
+	VersionTemplate CryptokeyVersionTemplate `json:"versionTemplate,omitempty"`
 }
 
 type KMSCryptoKeyStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   KMSCryptoKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
+	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider. The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }
 
@@ -83,9 +88,9 @@ type KMSCryptoKey struct {
 
 // KMSCryptoKeyList contains a list of KMSCryptoKey
 type KMSCryptoKeyList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []KMSCryptoKey `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []KMSCryptoKey `json:"items"`
 }
 
 func init() {

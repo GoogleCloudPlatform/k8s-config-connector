@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DeadLetterPolicy struct {
+type SubscriptionDeadLetterPolicy struct {
 	/*  */
 	DeadLetterTopicRef v1alpha1.ResourceRef `json:"deadLetterTopicRef,omitempty"`
 	/* The maximum number of delivery attempts for any message. The value must be
@@ -48,7 +53,7 @@ type DeadLetterPolicy struct {
 	MaxDeliveryAttempts int `json:"maxDeliveryAttempts,omitempty"`
 }
 
-type ExpirationPolicy struct {
+type SubscriptionExpirationPolicy struct {
 	/* Specifies the "time-to-live" duration for an associated resource. The
 	resource expires if it is not active for a period of ttl.
 	If ttl is not set, the associated resource never expires.
@@ -57,7 +62,7 @@ type ExpirationPolicy struct {
 	Ttl string `json:"ttl,omitempty"`
 }
 
-type OidcToken struct {
+type SubscriptionOidcToken struct {
 	/* Audience to be used when generating OIDC token. The audience claim
 	identifies the recipients that the JWT is intended for. The audience
 	value is a single case-sensitive string. Having multiple values (array)
@@ -72,7 +77,7 @@ type OidcToken struct {
 	ServiceAccountEmail string `json:"serviceAccountEmail,omitempty"`
 }
 
-type PushConfig struct {
+type SubscriptionPushConfig struct {
 	/* Endpoint configuration attributes.
 
 	Every endpoint has a set of API supported attributes that can
@@ -99,14 +104,14 @@ type PushConfig struct {
 	Attributes map[string]string `json:"attributes,omitempty"`
 	/* If specified, Pub/Sub will generate and attach an OIDC JWT token as
 	an Authorization header in the HTTP request for every pushed message. */
-	OidcToken OidcToken `json:"oidcToken,omitempty"`
+	OidcToken SubscriptionOidcToken `json:"oidcToken,omitempty"`
 	/* A URL locating the endpoint to which messages should be pushed.
 	For example, a Webhook endpoint might use
 	"https://example.com/push". */
 	PushEndpoint string `json:"pushEndpoint,omitempty"`
 }
 
-type RetryPolicy struct {
+type SubscriptionRetryPolicy struct {
 	/* The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
 	MaximumBackoff string `json:"maximumBackoff,omitempty"`
@@ -143,7 +148,7 @@ type PubSubSubscriptionSpec struct {
 	parent project (i.e.,
 	service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
 	permission to Acknowledge() messages on this subscription. */
-	DeadLetterPolicy DeadLetterPolicy `json:"deadLetterPolicy,omitempty"`
+	DeadLetterPolicy SubscriptionDeadLetterPolicy `json:"deadLetterPolicy,omitempty"`
 	/* Immutable. If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to
 	the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they
 	may be delivered in any order. */
@@ -155,7 +160,7 @@ type PubSubSubscriptionSpec struct {
 	policy with ttl of 31 days will be used.  If it is set but ttl is "", the
 	resource never expires.  The minimum allowed value for expirationPolicy.ttl
 	is 1 day. */
-	ExpirationPolicy ExpirationPolicy `json:"expirationPolicy,omitempty"`
+	ExpirationPolicy SubscriptionExpirationPolicy `json:"expirationPolicy,omitempty"`
 	/* Immutable. The subscription only delivers the messages that match the filter.
 	Pub/Sub automatically acknowledges the messages that don't match the filter. You can filter messages
 	by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription,
@@ -174,7 +179,7 @@ type PubSubSubscriptionSpec struct {
 	/* If push delivery is used with this subscription, this field is used to
 	configure it. An empty pushConfig signifies that the subscriber will
 	pull and ack messages using API methods. */
-	PushConfig PushConfig `json:"pushConfig,omitempty"`
+	PushConfig SubscriptionPushConfig `json:"pushConfig,omitempty"`
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 	/* Indicates whether to retain acknowledged messages. If 'true', then
@@ -186,16 +191,16 @@ type PubSubSubscriptionSpec struct {
 
 	If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers.
 	RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message */
-	RetryPolicy RetryPolicy `json:"retryPolicy,omitempty"`
+	RetryPolicy SubscriptionRetryPolicy `json:"retryPolicy,omitempty"`
 	/* Reference to a PubSubTopic. */
 	TopicRef v1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type PubSubSubscriptionStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   PubSubSubscription's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
+	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider.  Path of the subscription in the format projects/{project}/subscriptions/{name}. */
 	Path string `json:"path,omitempty"`
 }
 
@@ -216,9 +221,9 @@ type PubSubSubscription struct {
 
 // PubSubSubscriptionList contains a list of PubSubSubscription
 type PubSubSubscriptionList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []PubSubSubscription `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []PubSubSubscription `json:"items"`
 }
 
 func init() {

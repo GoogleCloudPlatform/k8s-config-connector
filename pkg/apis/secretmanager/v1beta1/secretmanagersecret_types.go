@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,33 +35,33 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Replicas struct {
+type SecretReplicas struct {
 	/* The canonical IDs of the location to replicate data. For example: "us-east1". */
 	Location string `json:"location,omitempty"`
 }
 
-type Replication struct {
+type SecretReplication struct {
 	/* The Secret will automatically be replicated without any restrictions. */
 	Automatic bool `json:"automatic,omitempty"`
 	/* The Secret will automatically be replicated without any restrictions. */
-	UserManaged UserManaged `json:"userManaged,omitempty"`
+	UserManaged SecretUserManaged `json:"userManaged,omitempty"`
 }
 
-type UserManaged struct {
+type SecretUserManaged struct {
 	/* The list of Replicas for this Secret. Cannot be empty. */
-	Replicas []Replicas `json:"replicas,omitempty"`
+	Replicas []SecretReplicas `json:"replicas,omitempty"`
 }
 
 type SecretManagerSecretSpec struct {
 	/* Immutable. The replication policy of the secret data attached to the Secret. It cannot be changed
 	after the Secret has been created. */
-	Replication Replication `json:"replication,omitempty"`
+	Replication SecretReplication `json:"replication,omitempty"`
 	/* Immutable. Optional. The secretId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID string `json:"resourceID,omitempty"`
 }
 
 type SecretManagerSecretStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   SecretManagerSecret's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time at which the Secret was created. */
@@ -83,9 +88,9 @@ type SecretManagerSecret struct {
 
 // SecretManagerSecretList contains a list of SecretManagerSecret
 type SecretManagerSecretList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []SecretManagerSecret `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SecretManagerSecret `json:"items"`
 }
 
 func init() {

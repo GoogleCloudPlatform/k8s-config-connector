@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,12 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type BigqueryOptions struct {
+type LogsinkBigqueryOptions struct {
 	/* Whether to use BigQuery's partition tables. By default, Logging creates dated tables based on the log entries' timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone. */
 	UsePartitionedTables bool `json:"usePartitionedTables,omitempty"`
 }
 
-type Destination struct {
+type LogsinkDestination struct {
 	/*  */
 	BigQueryDatasetRef v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 	/*  */
@@ -44,7 +49,7 @@ type Destination struct {
 	StorageBucketRef v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
 
-type Exclusions struct {
+type LogsinkExclusions struct {
 	/* A description of this exclusion. */
 	Description string `json:"description,omitempty"`
 	/* If set to True, then this exclusion is disabled and it does not exclude any log entries */
@@ -57,15 +62,15 @@ type Exclusions struct {
 
 type LoggingLogSinkSpec struct {
 	/* Options that affect sinks exporting data to BigQuery. */
-	BigqueryOptions BigqueryOptions `json:"bigqueryOptions,omitempty"`
+	BigqueryOptions LogsinkBigqueryOptions `json:"bigqueryOptions,omitempty"`
 	/* A description of this sink. The maximum length of the description is 8000 characters. */
 	Description string `json:"description,omitempty"`
 	/*  */
-	Destination Destination `json:"destination,omitempty"`
+	Destination LogsinkDestination `json:"destination,omitempty"`
 	/* If set to True, then this sink is disabled and it does not export any log entries. */
 	Disabled bool `json:"disabled,omitempty"`
 	/* Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion_filters it will not be exported. */
-	Exclusions []Exclusions `json:"exclusions,omitempty"`
+	Exclusions []LogsinkExclusions `json:"exclusions,omitempty"`
 	/* The filter to apply when exporting logs. Only log entries that match the filter are exported. */
 	Filter string `json:"filter,omitempty"`
 	/* The folder in which to create the sink. Only one of projectRef,
@@ -86,7 +91,7 @@ type LoggingLogSinkSpec struct {
 }
 
 type LoggingLogSinkStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   LoggingLogSink's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The identity associated with this sink. This identity must be granted write access to the configured destination. */
@@ -110,9 +115,9 @@ type LoggingLogSink struct {
 
 // LoggingLogSinkList contains a list of LoggingLogSink
 type LoggingLogSinkList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []LoggingLogSink `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []LoggingLogSink `json:"items"`
 }
 
 func init() {

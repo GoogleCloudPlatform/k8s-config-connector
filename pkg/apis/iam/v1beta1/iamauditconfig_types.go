@@ -23,6 +23,11 @@
 //
 // ----------------------------------------------------------------------------
 
+// *** DISCLAIMER ***
+// Config Connector's go-client for CRDs is currently in ALPHA, which means
+// that future versions of the go-client may include breaking changes.
+// Please try it out and give us feedback!
+
 package v1beta1
 
 import (
@@ -30,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type IamauditconfigAuditLogConfigs struct {
+type AuditconfigAuditLogConfigs struct {
 	/* Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember. */
 	ExemptedMembers []string `json:"exemptedMembers,omitempty"`
 	/* Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'. */
@@ -39,7 +44,7 @@ type IamauditconfigAuditLogConfigs struct {
 
 type IAMAuditConfigSpec struct {
 	/* Required. The configuration for logging of each type of permission. */
-	AuditLogConfigs IamauditconfigAuditLogConfigs `json:"auditLogConfigs,omitempty"`
+	AuditLogConfigs []AuditconfigAuditLogConfigs `json:"auditLogConfigs,omitempty"`
 	/* Immutable. Required. The GCP resource to set the IAMAuditConfig on (e.g. project). */
 	ResourceRef v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
 	/* Immutable. Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfg' are exempted. */
@@ -47,7 +52,7 @@ type IAMAuditConfigSpec struct {
 }
 
 type IAMAuditConfigStatus struct {
-	/* Conditions represents the latest available observations of the
+	/* Conditions represent the latest available observations of the
 	   IAMAuditConfig's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 }
@@ -69,9 +74,9 @@ type IAMAuditConfig struct {
 
 // IAMAuditConfigList contains a list of IAMAuditConfig
 type IAMAuditConfigList struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Items             []IAMAuditConfig `json:"items"`
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []IAMAuditConfig `json:"items"`
 }
 
 func init() {
