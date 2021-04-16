@@ -37,32 +37,49 @@ import (
 
 type TargetpoolHealthChecks struct {
 	/*  */
-	HttpHealthCheckRef v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
+	// +optional
+	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type ComputeTargetPoolSpec struct {
 	/*  */
-	BackupTargetPoolRef v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
+	// +optional
+	BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
+
 	/* Immutable. Textual description field. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Ratio (0 to 1) of failed nodes before using the backup pool (which must also be set). */
-	FailoverRatio float64 `json:"failoverRatio,omitempty"`
+	// +optional
+	FailoverRatio *float64 `json:"failoverRatio,omitempty"`
+
 	/*  */
+	// +optional
 	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
+
 	/*  */
+	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+
 	/* Immutable. Where the target pool resides. Defaults to project region. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE"). */
-	SessionAffinity string `json:"sessionAffinity,omitempty"`
+	// +optional
+	SessionAffinity *string `json:"sessionAffinity,omitempty"`
 }
 
 type ComputeTargetPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeTargetPool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 }

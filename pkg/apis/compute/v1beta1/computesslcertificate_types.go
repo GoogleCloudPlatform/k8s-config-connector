@@ -37,36 +37,49 @@ import (
 
 type SslcertificateCertificate struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom SslcertificateValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *SslcertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SslcertificatePrivateKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom SslcertificateValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *SslcertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SslcertificateValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeSSLCertificateSpec struct {
 	/* Immutable. The certificate in PEM format.
 	The certificate chain must be no greater than 5 certs long.
 	The chain must include at least one intermediate cert. */
-	Certificate SslcertificateCertificate `json:"certificate,omitempty"`
+	Certificate SslcertificateCertificate `json:"certificate"`
+
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Location represents the geographical location of the ComputeSSLCertificate. Specify "global" for global resources. */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. The write-only private key in PEM format. */
-	PrivateKey SslcertificatePrivateKey `json:"privateKey,omitempty"`
+	PrivateKey SslcertificatePrivateKey `json:"privateKey"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeSSLCertificateStatus struct {
@@ -77,6 +90,8 @@ type ComputeSSLCertificateStatus struct {
 	CertificateId int `json:"certificateId,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

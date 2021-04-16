@@ -38,15 +38,19 @@ import (
 type KMSKeyRingSpec struct {
 	/* Immutable. The location for the KeyRing.
 	A full list of valid locations can be found by running 'gcloud kms locations list'. */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type KMSKeyRingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   KMSKeyRing's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider. The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }

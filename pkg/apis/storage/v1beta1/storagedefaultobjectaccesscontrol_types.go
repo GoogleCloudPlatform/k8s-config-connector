@@ -37,7 +37,8 @@ import (
 
 type StorageDefaultObjectAccessControlSpec struct {
 	/* Reference to the bucket. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
 	/* The entity holding the permission, in one of the following forms:
 	 * user-{{userId}}
 	 * user-{{email}} (such as "user-liz@example.com")
@@ -47,11 +48,14 @@ type StorageDefaultObjectAccessControlSpec struct {
 	 * project-team-{{projectId}}
 	 * allUsers
 	 * allAuthenticatedUsers */
-	Entity string `json:"entity,omitempty"`
+	Entity string `json:"entity"`
+
 	/* The name of the object, if applied to an object. */
-	Object string `json:"object,omitempty"`
+	// +optional
+	Object *string `json:"object,omitempty"`
+
 	/* The access permission for the entity. Possible values: ["OWNER", "READER"] */
-	Role string `json:"role,omitempty"`
+	Role string `json:"role"`
 }
 
 type DefaultobjectaccesscontrolProjectTeamStatus struct {
@@ -74,6 +78,8 @@ type StorageDefaultObjectAccessControlStatus struct {
 	EntityId string `json:"entityId,omitempty"`
 	/* The content generation of the object, if applied to an object. */
 	Generation int `json:"generation,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The project team associated with the entity */
 	ProjectTeam DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omitempty"`
 }

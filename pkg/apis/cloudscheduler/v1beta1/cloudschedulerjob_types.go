@@ -37,98 +37,159 @@ import (
 
 type JobAppEngineHttpTarget struct {
 	/* Appengine Routing setting for the job. */
-	AppEngineRouting JobAppEngineRouting `json:"appEngineRouting,omitempty"`
+	// +optional
+	AppEngineRouting *JobAppEngineRouting `json:"appEngineRouting,omitempty"`
+
 	/* Body. HTTP request body. A request body is allowed only if the HTTP method is POST or PUT. It will result in invalid argument error to set a body on a job with an incompatible HttpMethod. */
-	Body string `json:"body,omitempty"`
+	// +optional
+	Body *string `json:"body,omitempty"`
+
 	/* HTTP request headers. This map contains the header field names and values. Headers can be set when the job is created. Cloud Scheduler sets some headers to default values: * `User-Agent`: By default, this header is `"Appengine-Google; (+http://code.google.com/appengine)"`. This header can be modified, but Cloud Scheduler will append `"Appengine-Google; (+http://code.google.com/appengine)"` to the modified `User-Agent`. * `X-CloudScheduler`: This header will be set to true. The headers below are output only. They cannot be set or overridden: * `X-Google-*`: For Google internal use only. * `X-Appengine-*`: For Google internal use only. In addition, some Appengine headers, which contain job-specific information, are also be sent to the job handler. */
+	// +optional
 	Headers map[string]string `json:"headers,omitempty"`
+
 	/* The HTTP method to use for the request. PATCH and OPTIONS are not permitted. Possible values: HTTP_METHOD_UNSPECIFIED, POST, GET, HEAD, PUT, DELETE, PATCH, OPTIONS */
-	HttpMethod string `json:"httpMethod,omitempty"`
+	// +optional
+	HttpMethod *string `json:"httpMethod,omitempty"`
+
 	/* The relative URI. The relative URL must begin with "/" and must be a valid HTTP relative URL. It can contain a path, query string arguments, and `#` fragments. If the relative URL is empty, then the root path "/" will be used. No spaces are allowed, and the maximum length allowed is 2083 characters. */
-	RelativeUri string `json:"relativeUri,omitempty"`
+	// +optional
+	RelativeUri *string `json:"relativeUri,omitempty"`
 }
 
 type JobAppEngineRouting struct {
 	/* App instance. By default, the job is sent to an instance which is available when the job is attempted. Requests can only be sent to a specific instance if manual scaling is used in App Engine Standard. For more information, see App Engine Flex does not support instances. For more information, see App Engine Standard request routing and App Engine Flex request routing. */
-	Instance string `json:"instance,omitempty"`
+	// +optional
+	Instance *string `json:"instance,omitempty"`
+
 	/* App service. By default, the job is sent to the service which is the default service when the job is attempted. */
-	Service string `json:"service,omitempty"`
+	// +optional
+	Service *string `json:"service,omitempty"`
+
 	/* App version. By default, the job is sent to the version which is the default version when the job is attempted. */
-	Version string `json:"version,omitempty"`
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 type JobHttpTarget struct {
 	/* HTTP request body. A request body is allowed only if the HTTP method is POST, PUT, or PATCH. It is an error to set body on a job with an incompatible HttpMethod. */
-	Body string `json:"body,omitempty"`
+	// +optional
+	Body *string `json:"body,omitempty"`
+
 	/* The user can specify HTTP request headers to send with the job's HTTP request. This map contains the header field names and values. Repeated headers are not supported, but a header value can contain commas. These headers represent a subset of the headers that will accompany the job's HTTP request. Some HTTP request headers will be ignored or replaced. A partial list of headers that will be ignored or replaced is below: - Host: This will be computed by Cloud Scheduler and derived from uri. * `Content-Length`: This will be computed by Cloud Scheduler. * `User-Agent`: This will be set to `"Google-Cloud-Scheduler"`. * `X-Google-*`: Google internal use only. * `X-Appengine-*`: Google internal use only. The total size of headers must be less than 80KB. */
+	// +optional
 	Headers map[string]string `json:"headers,omitempty"`
+
 	/* Which HTTP method to use for the request. Possible values: HTTP_METHOD_UNSPECIFIED, POST, GET, HEAD, PUT, DELETE, PATCH, OPTIONS */
-	HttpMethod string `json:"httpMethod,omitempty"`
+	// +optional
+	HttpMethod *string `json:"httpMethod,omitempty"`
+
 	/* If specified, an (https://developers.google.com/identity/protocols/OAuth2) will be generated and attached as an `Authorization` header in the HTTP request. This type of authorization should generally only be used when calling Google APIs hosted on *.googleapis.com. */
-	OauthToken JobOauthToken `json:"oauthToken,omitempty"`
+	// +optional
+	OauthToken *JobOauthToken `json:"oauthToken,omitempty"`
+
 	/* If specified, an (https://developers.google.com/identity/protocols/OpenIDConnect) token will be generated and attached as an `Authorization` header in the HTTP request. This type of authorization can be used for many scenarios, including calling Cloud Run, or endpoints where you intend to validate the token yourself. */
-	OidcToken JobOidcToken `json:"oidcToken,omitempty"`
+	// +optional
+	OidcToken *JobOidcToken `json:"oidcToken,omitempty"`
+
 	/* Required. The full URI path that the request will be sent to. This string must begin with either "http://" or "https://". Some examples of valid values for are: `http://acme.com` and `https://acme.com/sales:8080`. Cloud Scheduler will encode some characters for safety and compatibility. The maximum allowed URL length is 2083 characters after encoding. */
-	Uri string `json:"uri,omitempty"`
+	Uri string `json:"uri"`
 }
 
 type JobOauthToken struct {
 	/* OAuth scope to be used for generating OAuth access token. If not specified, "https://www.googleapis.com/auth/cloud-platform" will be used. */
-	Scope string `json:"scope,omitempty"`
+	// +optional
+	Scope *string `json:"scope,omitempty"`
+
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type JobOidcToken struct {
 	/* Audience to be used when generating OIDC token. If not specified, the URI specified in target will be used. */
-	Audience string `json:"audience,omitempty"`
+	// +optional
+	Audience *string `json:"audience,omitempty"`
+
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type JobPubsubTarget struct {
 	/* Attributes for PubsubMessage. Pubsub message must contain either non-empty data, or at least one attribute. */
+	// +optional
 	Attributes map[string]string `json:"attributes,omitempty"`
+
 	/* The message payload for PubsubMessage. Pubsub message must contain either non-empty data, or at least one attribute. */
-	Data string `json:"data,omitempty"`
+	// +optional
+	Data *string `json:"data,omitempty"`
+
 	/*  */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type JobRetryConfig struct {
 	/* The maximum amount of time to wait before retrying a job after it fails. The default value of this field is 1 hour. */
-	MaxBackoffDuration string `json:"maxBackoffDuration,omitempty"`
+	// +optional
+	MaxBackoffDuration *string `json:"maxBackoffDuration,omitempty"`
+
 	/* The time between retries will double `max_doublings` times. A job's retry interval starts at times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, .... The default value of this field is 5. */
-	MaxDoublings int `json:"maxDoublings,omitempty"`
+	// +optional
+	MaxDoublings *int `json:"maxDoublings,omitempty"`
+
 	/* The time limit for retrying a failed job, measured from time when an execution was first attempted. If specified with retryCount, the job will be retried until both limits are reached. The default value for max_retry_duration is zero, which means retry duration is unlimited. */
-	MaxRetryDuration string `json:"maxRetryDuration,omitempty"`
+	// +optional
+	MaxRetryDuration *string `json:"maxRetryDuration,omitempty"`
+
 	/* The minimum amount of time to wait before retrying a job after it fails. The default value of this field is 5 seconds. */
-	MinBackoffDuration string `json:"minBackoffDuration,omitempty"`
+	// +optional
+	MinBackoffDuration *string `json:"minBackoffDuration,omitempty"`
+
 	/* The number of attempts that the system will make to run a job using the exponential backoff procedure described by maxDoublings. The default value of retry_count is zero. If retry_count is zero, a job attempt will *not* be retried if it fails. Instead the Cloud Scheduler system will wait for the next scheduled execution time. If retry_count is set to a non-zero number then Cloud Scheduler will retry failed attempts, using exponential backoff, retry_count times, or until the next scheduled execution time, whichever comes first. Values greater than 5 and negative values are not allowed. */
-	RetryCount int `json:"retryCount,omitempty"`
+	// +optional
+	RetryCount *int `json:"retryCount,omitempty"`
 }
 
 type CloudSchedulerJobSpec struct {
 	/* Appengine HTTP target. */
-	AppEngineHttpTarget JobAppEngineHttpTarget `json:"appEngineHttpTarget,omitempty"`
+	// +optional
+	AppEngineHttpTarget *JobAppEngineHttpTarget `json:"appEngineHttpTarget,omitempty"`
+
 	/* The deadline for job attempts. If the request handler does not respond by this deadline then the request is cancelled and the attempt is marked as a `DEADLINE_EXCEEDED` failure. The failed attempt can be viewed in execution logs. Cloud Scheduler will retry the job according to the RetryConfig, between 15 seconds and 24 hours. */
-	AttemptDeadline string `json:"attemptDeadline,omitempty"`
+	// +optional
+	AttemptDeadline *string `json:"attemptDeadline,omitempty"`
+
 	/* Optionally caller-specified in jobs.create or jobs.patch. A human-readable description for the job. This string must not contain more than 500 characters. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* HTTP target. */
-	HttpTarget JobHttpTarget `json:"httpTarget,omitempty"`
+	// +optional
+	HttpTarget *JobHttpTarget `json:"httpTarget,omitempty"`
+
 	/* The location for the resource */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Pub/Sub target. */
-	PubsubTarget JobPubsubTarget `json:"pubsubTarget,omitempty"`
+	// +optional
+	PubsubTarget *JobPubsubTarget `json:"pubsubTarget,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Settings that determine the retry behavior. */
-	RetryConfig JobRetryConfig `json:"retryConfig,omitempty"`
+	// +optional
+	RetryConfig *JobRetryConfig `json:"retryConfig,omitempty"`
+
 	/* Required, except when used with times, with exponential backoff, until the next scheduled start time. */
-	Schedule string `json:"schedule,omitempty"`
+	// +optional
+	Schedule *string `json:"schedule,omitempty"`
+
 	/* Specifies the time zone to be used in interpreting (http://en.wikipedia.org/wiki/Tz_database). Note that some time zones include a provision for daylight savings time. The rules for daylight saving time are determined by the chosen tz. For UTC use the string "utc". If a time zone is not specified, the default will be in UTC (also known as GMT). */
-	TimeZone string `json:"timeZone,omitempty"`
+	// +optional
+	TimeZone *string `json:"timeZone,omitempty"`
 }
 
 type JobAppEngineHttpTargetStatus struct {
@@ -168,6 +229,8 @@ type CloudSchedulerJobStatus struct {
 	AppEngineHttpTarget JobAppEngineHttpTargetStatus `json:"appEngineHttpTarget,omitempty"`
 	/* Output only. The time the last job attempt started. */
 	LastAttemptTime string `json:"lastAttemptTime,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. The next time the job is scheduled. Note that this may be a retry of a previously failed attempt or the next execution time according to the schedule. */
 	ScheduleTime string `json:"scheduleTime,omitempty"`
 	/* Output only. State of the job. Possible values: STATE_UNSPECIFIED, ENABLED, PAUSED, DISABLED, UPDATE_FAILED */

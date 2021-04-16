@@ -38,35 +38,50 @@ import (
 type NodegroupAutoscalingPolicy struct {
 	/* Immutable. Maximum size of the node group. Set to a value less than or equal
 	to 100 and greater than or equal to min-nodes. */
-	MaxNodes int `json:"maxNodes,omitempty"`
+	// +optional
+	MaxNodes *int `json:"maxNodes,omitempty"`
+
 	/* Immutable. Minimum size of the node group. Must be less
 	than or equal to max-nodes. The default value is 0. */
-	MinNodes int `json:"minNodes,omitempty"`
+	// +optional
+	MinNodes *int `json:"minNodes,omitempty"`
+
 	/* Immutable. The autoscaling mode. Set to one of the following:
 	- OFF: Disables the autoscaler.
 	- ON: Enables scaling in and scaling out.
 	- ONLY_SCALE_OUT: Enables only scaling out.
 	You must use this mode if your node groups are configured to
 	restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"] */
-	Mode string `json:"mode,omitempty"`
+	// +optional
+	Mode *string `json:"mode,omitempty"`
 }
 
 type ComputeNodeGroupSpec struct {
 	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
 	group autoscaler to automatically manage the sizes of your node groups. */
-	AutoscalingPolicy NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+	// +optional
+	AutoscalingPolicy *NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+
 	/* Immutable. An optional textual description of the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
-	MaintenancePolicy string `json:"maintenancePolicy,omitempty"`
+	// +optional
+	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+
 	/* The node template to which this node group belongs. */
-	NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef,omitempty"`
+	NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The total number of nodes in the node group. */
-	Size int `json:"size,omitempty"`
+	Size int `json:"size"`
+
 	/* Immutable. Zone where this node group is located */
-	Zone string `json:"zone,omitempty"`
+	Zone string `json:"zone"`
 }
 
 type ComputeNodeGroupStatus struct {
@@ -75,6 +90,8 @@ type ComputeNodeGroupStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

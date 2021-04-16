@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.45.0
+    cnrm.cloud.google.com/version: 1.46.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -275,6 +275,9 @@ spec:
             description:
               description: Immutable.  Description of the cluster.
               type: string
+            enableAutopilot:
+              description: Immutable. Enable Autopilot for this cluster.
+              type: boolean
             enableBinaryAuthorization:
               description: Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization.
               type: boolean
@@ -284,11 +287,14 @@ spec:
             enableKubernetesAlpha:
               description: Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days.
               type: boolean
+            enableL4IlbSubsetting:
+              description: Whether L4ILB Subsetting is enabled for this cluster.
+              type: boolean
             enableLegacyAbac:
               description: Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false.
               type: boolean
             enableShieldedNodes:
-              description: Enable Shielded Nodes features on all nodes in this cluster. Defaults to false.
+              description: Enable Shielded Nodes features on all nodes in this cluster.
               type: boolean
             enableTpu:
               description: Immutable. Whether to enable Cloud TPU resources in this cluster.
@@ -772,6 +778,9 @@ spec:
               required:
               - enablePrivateEndpoint
               type: object
+            privateIpv6GoogleAccess:
+              description: The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4).
+              type: string
             releaseChannel:
               description: Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the "UNSPECIFIED" channel.
               properties:
@@ -894,6 +903,9 @@ spec:
             masterVersion:
               description: The current version of the master in the cluster. This may be different than the min_master_version set in the config if the master has been updated by GKE.
               type: string
+            observedGeneration:
+              description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+              type: integer
             operation:
               type: string
             selfLink:

@@ -37,12 +37,18 @@ import (
 
 type ComputeTargetGRPCProxySpec struct {
 	/* An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The UrlMap resource that defines the mapping from URL to the BackendService.
 	The protocol field in the BackendService must be set to GRPC. */
-	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
+	// +optional
+	UrlMapRef *v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
+
 	/* Immutable. If true, indicates that the BackendServices referenced by
 	the urlMap may be accessed by gRPC applications without using
 	a sidecar proxy. This will enable configuration checks on urlMap
@@ -53,7 +59,8 @@ type ComputeTargetGRPCProxySpec struct {
 	applications via a sidecar proxy. In this case, a gRPC application
 	must not use "xds:///" scheme in the target URI of the service
 	it is connecting to */
-	ValidateForProxyless bool `json:"validateForProxyless,omitempty"`
+	// +optional
+	ValidateForProxyless *bool `json:"validateForProxyless,omitempty"`
 }
 
 type ComputeTargetGRPCProxyStatus struct {
@@ -70,6 +77,8 @@ type ComputeTargetGRPCProxyStatus struct {
 	412 conditionNotMet. To see the latest fingerprint, make a get()
 	request to retrieve the TargetGrpcProxy. A base64-encoded string. */
 	Fingerprint string `json:"fingerprint,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* Server-defined URL with id for the resource. */

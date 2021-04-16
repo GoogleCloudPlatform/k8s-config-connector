@@ -37,20 +37,29 @@ import (
 
 type ComputeTargetInstanceSpec struct {
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The ComputeInstance handling traffic for this target instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. NAT option controlling how IPs are NAT'ed to the instance.
 	Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"] */
-	NatPolicy string `json:"natPolicy,omitempty"`
+	// +optional
+	NatPolicy *string `json:"natPolicy,omitempty"`
+
 	/* The network this target instance uses to forward
 	traffic. If not specified, the traffic will be forwarded to the network
 	that the default network interface belongs to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. URL of the zone where the target instance resides. */
-	Zone string `json:"zone,omitempty"`
+	Zone string `json:"zone"`
 }
 
 type ComputeTargetInstanceStatus struct {
@@ -59,6 +68,8 @@ type ComputeTargetInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

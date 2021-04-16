@@ -37,11 +37,14 @@ import (
 
 type SQLSSLCertSpec struct {
 	/* Immutable. The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created. */
-	CommonName string `json:"commonName,omitempty"`
+	CommonName string `json:"commonName"`
+
 	/* The Cloud SQL instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. Optional. The service-generated sha1Fingerprint of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SQLSSLCertStatus struct {
@@ -56,6 +59,8 @@ type SQLSSLCertStatus struct {
 	CreateTime string `json:"createTime,omitempty"`
 	/* The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
 	ExpirationTime string `json:"expirationTime,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The private key associated with the client certificate. */
 	PrivateKey string `json:"privateKey,omitempty"`
 	/* The CA cert of the server this client cert was generated from. */

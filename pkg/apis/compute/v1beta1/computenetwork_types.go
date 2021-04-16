@@ -42,23 +42,34 @@ type ComputeNetworkSpec struct {
 
 	When set to 'false', the network is created in "custom subnet mode" so
 	the user can explicitly connect subnetwork resources. */
-	AutoCreateSubnetworks bool `json:"autoCreateSubnetworks,omitempty"`
+	// +optional
+	AutoCreateSubnetworks *bool `json:"autoCreateSubnetworks,omitempty"`
+
 	/*  */
-	DeleteDefaultRoutesOnCreate bool `json:"deleteDefaultRoutesOnCreate,omitempty"`
+	// +optional
+	DeleteDefaultRoutesOnCreate *bool `json:"deleteDefaultRoutesOnCreate,omitempty"`
+
 	/* Immutable. An optional description of this resource. The resource must be
 	recreated to modify this field. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Maximum Transmission Unit in bytes. The minimum value for this field is 1460
 	and the maximum value is 1500 bytes. */
-	Mtu int `json:"mtu,omitempty"`
+	// +optional
+	Mtu *int `json:"mtu,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The network-wide routing mode to use. If set to 'REGIONAL', this
 	network's cloud routers will only advertise routes with subnetworks
 	of this network in the same region as the router. If set to 'GLOBAL',
 	this network's cloud routers will advertise routes with all
 	subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"] */
-	RoutingMode string `json:"routingMode,omitempty"`
+	// +optional
+	RoutingMode *string `json:"routingMode,omitempty"`
 }
 
 type ComputeNetworkStatus struct {
@@ -68,6 +79,8 @@ type ComputeNetworkStatus struct {
 	/* The gateway address for default routing out of the network. This value
 	is selected by GCP. */
 	GatewayIpv4 string `json:"gatewayIpv4,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

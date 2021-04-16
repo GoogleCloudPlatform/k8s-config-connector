@@ -37,23 +37,30 @@ import (
 
 type SecretversionSecretData struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom SecretversionValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *SecretversionValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SecretversionValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type SecretManagerSecretVersionSpec struct {
 	/* The current state of the SecretVersion. */
-	Enabled bool `json:"enabled,omitempty"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/* Immutable. The secret data. Must be no larger than 64KiB. */
-	SecretData SecretversionSecretData `json:"secretData,omitempty"`
+	SecretData SecretversionSecretData `json:"secretData"`
+
 	/* Secret Manager secret resource */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type SecretManagerSecretVersionStatus struct {
@@ -67,6 +74,8 @@ type SecretManagerSecretVersionStatus struct {
 	/* The resource name of the SecretVersion. Format:
 	'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}' */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

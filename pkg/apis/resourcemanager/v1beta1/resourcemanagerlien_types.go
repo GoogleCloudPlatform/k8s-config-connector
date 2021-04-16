@@ -37,27 +37,33 @@ import (
 
 type LienParent struct {
 	/*  */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type ResourceManagerLienSpec struct {
 	/* Immutable. A stable, user-visible/meaningful string identifying the origin
 	of the Lien, intended to be inspected programmatically. Maximum length of
 	200 characters. */
-	Origin string `json:"origin,omitempty"`
+	Origin string `json:"origin"`
+
 	/*  */
-	Parent LienParent `json:"parent,omitempty"`
+	Parent LienParent `json:"parent"`
+
 	/* Immutable. Concise user-visible strings indicating why an action cannot be performed
 	on a resource. Maximum length of 200 characters. */
-	Reason string `json:"reason,omitempty"`
+	Reason string `json:"reason"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The types of operations which should be blocked as a result of this Lien.
 	Each value should correspond to an IAM permission. The server will validate
 	the permissions against those for which Liens are supported.  An empty
 	list is meaningless and will be rejected.
 	e.g. ['resourcemanager.projects.delete'] */
-	Restrictions []string `json:"restrictions,omitempty"`
+	Restrictions []string `json:"restrictions"`
 }
 
 type ResourceManagerLienStatus struct {
@@ -68,6 +74,8 @@ type ResourceManagerLienStatus struct {
 	CreateTime string `json:"createTime,omitempty"`
 	/* A system-generated unique identifier for this Lien. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

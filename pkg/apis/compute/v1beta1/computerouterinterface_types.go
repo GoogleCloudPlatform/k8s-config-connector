@@ -37,23 +37,34 @@ import (
 
 type ComputeRouterInterfaceSpec struct {
 	/*  */
-	InterconnectAttachmentRef v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+	// +optional
+	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+
 	/* Immutable. IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created. */
-	IpRange string `json:"ipRange,omitempty"`
+	// +optional
+	IpRange *string `json:"ipRange,omitempty"`
+
 	/* Immutable. The region this interface's router sits in. If not specified, the project region will be used. Changing this forces a new interface to be created. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef,omitempty"`
+	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+
 	/*  */
-	VpnTunnelRef v1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
+	// +optional
+	VpnTunnelRef *v1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
 }
 
 type ComputeRouterInterfaceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterInterface's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

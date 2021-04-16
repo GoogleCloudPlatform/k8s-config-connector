@@ -38,59 +38,78 @@ import (
 type ReservationGuestAccelerators struct {
 	/* Immutable. The number of the guest accelerator cards exposed to
 	this instance. */
-	AcceleratorCount int `json:"acceleratorCount,omitempty"`
+	AcceleratorCount int `json:"acceleratorCount"`
+
 	/* Immutable. The full or partial URL of the accelerator type to
 	attach to this instance. For example:
 	'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100'
 
 	If you are creating an instance template, specify only the accelerator name. */
-	AcceleratorType string `json:"acceleratorType,omitempty"`
+	AcceleratorType string `json:"acceleratorType"`
 }
 
 type ReservationInstanceProperties struct {
 	/* Immutable. Guest accelerator type and count. */
+	// +optional
 	GuestAccelerators []ReservationGuestAccelerators `json:"guestAccelerators,omitempty"`
+
 	/* Immutable. The amount of local ssd to reserve with each instance. This
 	reserves disks of type 'local-ssd'. */
+	// +optional
 	LocalSsds []ReservationLocalSsds `json:"localSsds,omitempty"`
+
 	/* Immutable. The name of the machine type to reserve. */
-	MachineType string `json:"machineType,omitempty"`
+	MachineType string `json:"machineType"`
+
 	/* Immutable. The minimum CPU platform for the reservation. For example,
 	'"Intel Skylake"'. See
 	the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones)
 	for information on available CPU platforms. */
-	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
+	// +optional
+	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 }
 
 type ReservationLocalSsds struct {
 	/* Immutable. The size of the disk in base-2 GB. */
-	DiskSizeGb int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb int `json:"diskSizeGb"`
+
 	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"] */
-	Interface string `json:"interface,omitempty"`
+	// +optional
+	Interface *string `json:"interface,omitempty"`
 }
 
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
-	Count int `json:"count,omitempty"`
+	Count int `json:"count"`
+
 	/* How many instances are in use. */
-	InUseCount int `json:"inUseCount,omitempty"`
+	// +optional
+	InUseCount *int `json:"inUseCount,omitempty"`
+
 	/* Immutable. The instance properties for the reservation. */
-	InstanceProperties ReservationInstanceProperties `json:"instanceProperties,omitempty"`
+	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
 }
 
 type ComputeReservationSpec struct {
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Reservation for instances with specific machine shapes. */
-	SpecificReservation ReservationSpecificReservation `json:"specificReservation,omitempty"`
+	SpecificReservation ReservationSpecificReservation `json:"specificReservation"`
+
 	/* Immutable. When set to true, only VMs that target this reservation by name can
 	consume this reservation. Otherwise, it can be consumed by VMs with
 	affinity for any reservation. Defaults to false. */
-	SpecificReservationRequired bool `json:"specificReservationRequired,omitempty"`
+	// +optional
+	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
+
 	/* Immutable. The zone where the reservation is made. */
-	Zone string `json:"zone,omitempty"`
+	Zone string `json:"zone"`
 }
 
 type ComputeReservationStatus struct {
@@ -102,6 +121,8 @@ type ComputeReservationStatus struct {
 	Commitment string `json:"commitment,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The status of the reservation. */

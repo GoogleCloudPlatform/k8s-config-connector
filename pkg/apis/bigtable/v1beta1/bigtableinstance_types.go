@@ -37,32 +37,48 @@ import (
 
 type InstanceCluster struct {
 	/* The ID of the Cloud Bigtable cluster. */
-	ClusterId string `json:"clusterId,omitempty"`
+	ClusterId string `json:"clusterId"`
+
 	/* The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset. */
-	NumNodes int `json:"numNodes,omitempty"`
+	// +optional
+	NumNodes *int `json:"numNodes,omitempty"`
+
 	/* The storage type to use. One of "SSD" or "HDD". Defaults to "SSD". */
-	StorageType string `json:"storageType,omitempty"`
+	// +optional
+	StorageType *string `json:"storageType,omitempty"`
+
 	/* The zone to create the Cloud Bigtable cluster in. Each cluster must have a different zone in the same region. Zones that support Bigtable instances are noted on the Cloud Bigtable locations page. */
-	Zone string `json:"zone,omitempty"`
+	Zone string `json:"zone"`
 }
 
 type BigtableInstanceSpec struct {
 	/* A block of cluster configuration options. This can be specified at least once. */
+	// +optional
 	Cluster []InstanceCluster `json:"cluster,omitempty"`
+
 	/*  */
-	DeletionProtection bool `json:"deletionProtection,omitempty"`
+	// +optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+
 	/* The human-readable display name of the Bigtable instance. Defaults to the instance name. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* DEPRECATED — It is recommended to leave this field unspecified since the distinction between "DEVELOPMENT" and "PRODUCTION" instances is going away, and all instances will become "PRODUCTION" instances. This means that new and existing "DEVELOPMENT" instances will be converted to "PRODUCTION" instances. It is recommended for users to use "PRODUCTION" instances in any case, since a 1-node "PRODUCTION" instance is functionally identical to a "DEVELOPMENT" instance, but without the accompanying restrictions. The instance type to create. One of "DEVELOPMENT" or "PRODUCTION". Defaults to "PRODUCTION". */
-	InstanceType string `json:"instanceType,omitempty"`
+	// +optional
+	InstanceType *string `json:"instanceType,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BigtableInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

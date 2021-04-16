@@ -37,15 +37,19 @@ import (
 
 type RouterAdvertisedIpRanges struct {
 	/* User-specified description for the IP range. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The IP range to advertise. The value must be a
 	CIDR-formatted string. */
-	Range string `json:"range,omitempty"`
+	Range string `json:"range"`
 }
 
 type RouterBgp struct {
 	/* User-specified flag to indicate which mode to use for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
-	AdvertiseMode string `json:"advertiseMode,omitempty"`
+	// +optional
+	AdvertiseMode *string `json:"advertiseMode,omitempty"`
+
 	/* User-specified list of prefix groups to advertise in custom mode.
 	This field can only be populated if advertiseMode is CUSTOM and
 	is advertised to all peers of the router. These groups will be
@@ -53,31 +57,42 @@ type RouterBgp struct {
 	blank to advertise no custom groups.
 
 	This enum field has the one valid value: ALL_SUBNETS */
+	// +optional
 	AdvertisedGroups []string `json:"advertisedGroups,omitempty"`
+
 	/* User-specified list of individual IP ranges to advertise in
 	custom mode. This field can only be populated if advertiseMode
 	is CUSTOM and is advertised to all peers of the router. These IP
 	ranges will be advertised in addition to any specified groups.
 	Leave this field blank to advertise no custom IP ranges. */
+	// +optional
 	AdvertisedIpRanges []RouterAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
+
 	/* Local BGP Autonomous System Number (ASN). Must be an RFC6996
 	private ASN, either 16-bit or 32-bit. The value will be fixed for
 	this router resource. All VPN tunnels that link to this router
 	will have the same local ASN. */
-	Asn int `json:"asn,omitempty"`
+	Asn int `json:"asn"`
 }
 
 type ComputeRouterSpec struct {
 	/* BGP information specific to this router. */
-	Bgp RouterBgp `json:"bgp,omitempty"`
+	// +optional
+	Bgp *RouterBgp `json:"bgp,omitempty"`
+
 	/* An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* A reference to the network to which this router belongs. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+
 	/* Immutable. Region where the router resides. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeRouterStatus struct {
@@ -86,6 +101,8 @@ type ComputeRouterStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

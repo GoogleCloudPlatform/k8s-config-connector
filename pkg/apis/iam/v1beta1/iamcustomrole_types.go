@@ -37,15 +37,22 @@ import (
 
 type IAMCustomRoleSpec struct {
 	/* A human-readable description for the role. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The names of the permissions this role grants when bound in an IAM policy. At least one permission must be specified. */
-	Permissions []string `json:"permissions,omitempty"`
+	Permissions []string `json:"permissions"`
+
 	/* Immutable. Optional. The roleId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The current launch stage of the role. Defaults to GA. */
-	Stage string `json:"stage,omitempty"`
+	// +optional
+	Stage *string `json:"stage,omitempty"`
+
 	/* A human-readable title for the role. */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
 
 type IAMCustomRoleStatus struct {
@@ -56,6 +63,8 @@ type IAMCustomRoleStatus struct {
 	Deleted bool `json:"deleted,omitempty"`
 	/* The full name of the role. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

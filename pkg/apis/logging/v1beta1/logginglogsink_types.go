@@ -37,63 +37,97 @@ import (
 
 type LogsinkBigqueryOptions struct {
 	/* Whether to use BigQuery's partition tables. By default, Logging creates dated tables based on the log entries' timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone. */
-	UsePartitionedTables bool `json:"usePartitionedTables,omitempty"`
+	UsePartitionedTables bool `json:"usePartitionedTables"`
 }
 
 type LogsinkDestination struct {
 	/*  */
-	BigQueryDatasetRef v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
+	// +optional
+	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
+
 	/*  */
-	PubSubTopicRef v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
+	// +optional
+	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
+
 	/*  */
-	StorageBucketRef v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
+	// +optional
+	StorageBucketRef *v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
 
 type LogsinkExclusions struct {
 	/* A description of this exclusion. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* If set to True, then this exclusion is disabled and it does not exclude any log entries */
-	Disabled bool `json:"disabled,omitempty"`
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
 	/* An advanced logs filter that matches the log entries to be excluded. By using the sample function, you can exclude less than 100% of the matching log entries */
-	Filter string `json:"filter,omitempty"`
+	Filter string `json:"filter"`
+
 	/* A client-assigned identifier, such as "load-balancer-exclusion". Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 }
 
 type LoggingLogSinkSpec struct {
 	/* Options that affect sinks exporting data to BigQuery. */
-	BigqueryOptions LogsinkBigqueryOptions `json:"bigqueryOptions,omitempty"`
+	// +optional
+	BigqueryOptions *LogsinkBigqueryOptions `json:"bigqueryOptions,omitempty"`
+
 	/* A description of this sink. The maximum length of the description is 8000 characters. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/*  */
-	Destination LogsinkDestination `json:"destination,omitempty"`
+	Destination LogsinkDestination `json:"destination"`
+
 	/* If set to True, then this sink is disabled and it does not export any log entries. */
-	Disabled bool `json:"disabled,omitempty"`
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
 	/* Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion_filters it will not be exported. */
+	// +optional
 	Exclusions []LogsinkExclusions `json:"exclusions,omitempty"`
+
 	/* The filter to apply when exporting logs. Only log entries that match the filter are exported. */
-	Filter string `json:"filter,omitempty"`
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
 	/* The folder in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
 	/* Immutable. Whether or not to include children organizations in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided organization are included. */
-	IncludeChildren bool `json:"includeChildren,omitempty"`
+	// +optional
+	IncludeChildren *bool `json:"includeChildren,omitempty"`
+
 	/* The organization in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* The project in which to create the sink. Only one of projectRef,
 	folderRef, or organizationRef may be specified. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. Whether or not to create a unique identity associated with this sink. If false (the default), then the writer_identity used is serviceAccount:cloud-logs@system.gserviceaccount.com. If true, then a unique service account is created and used for this sink. If you wish to publish logs across projects, you must set unique_writer_identity to true. */
-	UniqueWriterIdentity bool `json:"uniqueWriterIdentity,omitempty"`
+	// +optional
+	UniqueWriterIdentity *bool `json:"uniqueWriterIdentity,omitempty"`
 }
 
 type LoggingLogSinkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLogSink's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The identity associated with this sink. This identity must be granted write access to the configured destination. */
 	WriterIdentity string `json:"writerIdentity,omitempty"`
 }

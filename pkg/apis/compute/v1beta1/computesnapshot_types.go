@@ -37,57 +37,83 @@ import (
 
 type SnapshotRawKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom SnapshotValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *SnapshotValueFrom `json:"valueFrom,omitempty"`
 }
 
 type SnapshotSnapshotEncryptionKey struct {
 	/* The encryption key that is stored in Google Cloud KMS. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
-	KmsKeyServiceAccountRef v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	// +optional
+	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-	RawKey SnapshotRawKey `json:"rawKey,omitempty"`
+	// +optional
+	RawKey *SnapshotRawKey `json:"rawKey,omitempty"`
+
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
 	encryption key that protects this resource. */
-	Sha256 string `json:"sha256,omitempty"`
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
 }
 
 type SnapshotSourceDiskEncryptionKey struct {
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
-	KmsKeyServiceAccountRef v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+	// +optional
+	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+
 	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
 	RFC 4648 base64 to either encrypt or decrypt this resource. */
-	RawKey SnapshotRawKey `json:"rawKey,omitempty"`
+	// +optional
+	RawKey *SnapshotRawKey `json:"rawKey,omitempty"`
 }
 
 type SnapshotValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeSnapshotSpec struct {
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The customer-supplied encryption key of the snapshot. Required if the
 	source snapshot is protected by a customer-supplied encryption key. */
-	SnapshotEncryptionKey SnapshotSnapshotEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
+	// +optional
+	SnapshotEncryptionKey *SnapshotSnapshotEncryptionKey `json:"snapshotEncryptionKey,omitempty"`
+
 	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
 	if the source snapshot is protected by a customer-supplied encryption
 	key. */
-	SourceDiskEncryptionKey SnapshotSourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
+	// +optional
+	SourceDiskEncryptionKey *SnapshotSourceDiskEncryptionKey `json:"sourceDiskEncryptionKey,omitempty"`
+
 	/* A reference to the disk used to create this snapshot. */
-	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef"`
+
 	/* Immutable. Cloud Storage bucket storage location of the snapshot (regional or multi-regional). */
+	// +optional
 	StorageLocations []string `json:"storageLocations,omitempty"`
+
 	/* Immutable. A reference to the zone where the disk is hosted. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type ComputeSnapshotStatus struct {
@@ -106,6 +132,8 @@ type ComputeSnapshotStatus struct {
 	Windows image).  snapshotEncryptionKey nested object Encrypts the
 	snapshot using a customer-supplied encryption key. */
 	Licenses []string `json:"licenses,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The unique identifier for the resource. */

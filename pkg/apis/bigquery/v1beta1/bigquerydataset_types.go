@@ -38,15 +38,21 @@ import (
 type DatasetAccess struct {
 	/* A domain to grant access to. Any users signed in with the
 	domain specified will be granted the specified access */
-	Domain string `json:"domain,omitempty"`
+	// +optional
+	Domain *string `json:"domain,omitempty"`
+
 	/* An email address of a Google Group to grant access to. */
-	GroupByEmail string `json:"groupByEmail,omitempty"`
+	// +optional
+	GroupByEmail *string `json:"groupByEmail,omitempty"`
+
 	/* Describes the rights granted to the user specified by the other
 	member of the access object. Basic, predefined, and custom roles
 	are supported. Predefined roles that have equivalent basic roles
 	are swapped by the API to their basic counterparts. See
 	[official docs](https://cloud.google.com/bigquery/docs/access-control). */
-	Role string `json:"role,omitempty"`
+	// +optional
+	Role *string `json:"role,omitempty"`
+
 	/* A special group to grant access to. Possible values include:
 
 
@@ -60,43 +66,54 @@ type DatasetAccess struct {
 
 
 	* 'allAuthenticatedUsers': All authenticated BigQuery users. */
-	SpecialGroup string `json:"specialGroup,omitempty"`
+	// +optional
+	SpecialGroup *string `json:"specialGroup,omitempty"`
+
 	/* An email address of a user to grant access to. For example:
 	fred@example.com */
-	UserByEmail string `json:"userByEmail,omitempty"`
+	// +optional
+	UserByEmail *string `json:"userByEmail,omitempty"`
+
 	/* A view from a different dataset to grant access to. Queries
 	executed against that view will have read access to tables in
 	this dataset. The role field is not required when this field is
 	set. If that view is updated by any user, access to the view
 	needs to be granted again via an update operation. */
-	View DatasetView `json:"view,omitempty"`
+	// +optional
+	View *DatasetView `json:"view,omitempty"`
 }
 
 type DatasetDefaultEncryptionConfiguration struct {
 	/* Describes the Cloud KMS encryption key that will be used to protect destination
 	BigQuery table. The BigQuery Service Account associated with your project requires
 	access to this encryption key. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type DatasetView struct {
 	/* The ID of the dataset containing this table. */
-	DatasetId string `json:"datasetId,omitempty"`
+	DatasetId string `json:"datasetId"`
+
 	/* The ID of the project containing this table. */
-	ProjectId string `json:"projectId,omitempty"`
+	ProjectId string `json:"projectId"`
+
 	/* The ID of the table. The ID must contain only letters (a-z,
 	A-Z), numbers (0-9), or underscores (_). The maximum length
 	is 1,024 characters. */
-	TableId string `json:"tableId,omitempty"`
+	TableId string `json:"tableId"`
 }
 
 type BigQueryDatasetSpec struct {
 	/* An array of objects that define dataset access for one or more entities. */
+	// +optional
 	Access []DatasetAccess `json:"access,omitempty"`
+
 	/* The default encryption key for all tables in the dataset. Once this property is set,
 	all newly-created partitioned tables in the dataset will have encryption key set to
 	this value, unless table creation request (or query) overrides the key. */
-	DefaultEncryptionConfiguration DatasetDefaultEncryptionConfiguration `json:"defaultEncryptionConfiguration,omitempty"`
+	// +optional
+	DefaultEncryptionConfiguration *DatasetDefaultEncryptionConfiguration `json:"defaultEncryptionConfiguration,omitempty"`
+
 	/* The default partition expiration for all partitioned tables in
 	the dataset, in milliseconds.
 
@@ -112,7 +129,9 @@ type BigQueryDatasetSpec struct {
 	table. If you provide an explicit 'timePartitioning.expirationMs' when
 	creating or updating a partitioned table, that value takes precedence
 	over the default partition expiration time indicated by this property. */
-	DefaultPartitionExpirationMs int `json:"defaultPartitionExpirationMs,omitempty"`
+	// +optional
+	DefaultPartitionExpirationMs *int `json:"defaultPartitionExpirationMs,omitempty"`
+
 	/* The default lifetime of all tables in the dataset, in milliseconds.
 	The minimum value is 3600000 milliseconds (one hour).
 
@@ -126,11 +145,17 @@ type BigQueryDatasetSpec struct {
 	table expires, or if you provide an explicit 'expirationTime' when
 	creating a table, that value takes precedence over the default
 	expiration time indicated by this property. */
-	DefaultTableExpirationMs int `json:"defaultTableExpirationMs,omitempty"`
+	// +optional
+	DefaultTableExpirationMs *int `json:"defaultTableExpirationMs,omitempty"`
+
 	/* A user-friendly description of the dataset */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* A descriptive name for the dataset */
-	FriendlyName string `json:"friendlyName,omitempty"`
+	// +optional
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
 	/* Immutable. The geographic location where the dataset should reside.
 	See [official docs](https://cloud.google.com/bigquery/docs/dataset-locations).
 
@@ -143,9 +168,15 @@ type BigQueryDatasetSpec struct {
 
 	The default value is multi-regional location 'US'.
 	Changing this forces a new resource to be created. */
-	Location string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
 	/* Immutable. Optional. The datasetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BigQueryDatasetStatus struct {
@@ -160,6 +191,8 @@ type BigQueryDatasetStatus struct {
 	/* The date when this dataset or any of its tables was last modified, in
 	milliseconds since the epoch. */
 	LastModifiedTime int `json:"lastModifiedTime,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

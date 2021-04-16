@@ -38,12 +38,16 @@ import (
 type ComputeRouteSpec struct {
 	/* Immutable. An optional description of this resource. Provide this property
 	when you create the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. The destination range of outgoing packets that this route applies to.
 	Only IPv4 is supported. */
-	DestRange string `json:"destRange,omitempty"`
+	DestRange string `json:"destRange"`
+
 	/* The network that this route applies to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+
 	/* Immutable. URL to a gateway that should handle matching packets.
 	Currently, you can only specify the internet gateway, using a full or
 	partial valid URL:
@@ -51,17 +55,27 @@ type ComputeRouteSpec struct {
 	* 'projects/project/global/gateways/default-internet-gateway'
 	* 'global/gateways/default-internet-gateway'
 	* The string 'default-internet-gateway'. */
-	NextHopGateway string `json:"nextHopGateway,omitempty"`
+	// +optional
+	NextHopGateway *string `json:"nextHopGateway,omitempty"`
+
 	/* A forwarding rule of type loadBalancingScheme=INTERNAL that should
 	handle matching packets.  Note that this can only be used when the
 	destinationRange is a public (non-RFC 1918) IP CIDR range. */
-	NextHopILBRef v1alpha1.ResourceRef `json:"nextHopILBRef,omitempty"`
+	// +optional
+	NextHopILBRef *v1alpha1.ResourceRef `json:"nextHopILBRef,omitempty"`
+
 	/* Instance that should handle matching packets. */
-	NextHopInstanceRef v1alpha1.ResourceRef `json:"nextHopInstanceRef,omitempty"`
+	// +optional
+	NextHopInstanceRef *v1alpha1.ResourceRef `json:"nextHopInstanceRef,omitempty"`
+
 	/* Immutable. Network IP address of an instance that should handle matching packets. */
-	NextHopIp string `json:"nextHopIp,omitempty"`
+	// +optional
+	NextHopIp *string `json:"nextHopIp,omitempty"`
+
 	/* The ComputeVPNTunnel that should handle matching packets */
-	NextHopVPNTunnelRef v1alpha1.ResourceRef `json:"nextHopVPNTunnelRef,omitempty"`
+	// +optional
+	NextHopVPNTunnelRef *v1alpha1.ResourceRef `json:"nextHopVPNTunnelRef,omitempty"`
+
 	/* Immutable. The priority of this route. Priority is used to break ties in cases
 	where there is more than one matching route of equal prefix length.
 
@@ -69,10 +83,15 @@ type ComputeRouteSpec struct {
 	lowest-numbered priority value wins.
 
 	Default value is 1000. Valid range is 0 through 65535. */
-	Priority int `json:"priority,omitempty"`
+	// +optional
+	Priority *int `json:"priority,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. A list of instance tags to which this route applies. */
+	// +optional
 	Tags []string `json:"tags,omitempty"`
 }
 
@@ -82,6 +101,8 @@ type ComputeRouteStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* URL to a Network that should handle matching packets. */
 	NextHopNetwork string `json:"nextHopNetwork,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

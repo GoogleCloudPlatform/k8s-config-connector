@@ -37,30 +37,43 @@ import (
 
 type InstancegroupNamedPort struct {
 	/* The name which the port will be mapped to. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
+
 	/* The port number to map the name to. */
-	Port int `json:"port,omitempty"`
+	Port int `json:"port"`
 }
 
 type ComputeInstanceGroupSpec struct {
 	/* Immutable. An optional textual description of the instance group. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/*  */
+	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+
 	/* The named port configuration. */
+	// +optional
 	NamedPort []InstancegroupNamedPort `json:"namedPort,omitempty"`
+
 	/*  */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The zone that this instance group should be created in. */
-	Zone string `json:"zone,omitempty"`
+	Zone string `json:"zone"`
 }
 
 type ComputeInstanceGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstanceGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The number of instances in the group. */

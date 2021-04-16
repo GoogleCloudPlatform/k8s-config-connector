@@ -37,21 +37,27 @@ import (
 
 type DNSRecordSetSpec struct {
 	/*  */
-	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef,omitempty"`
+	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
+
 	/* Immutable. The DNS name this record set will apply to. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
+
 	/*  */
-	Rrdatas []string `json:"rrdatas,omitempty"`
+	Rrdatas []string `json:"rrdatas"`
+
 	/* The time-to-live of this record set (seconds). */
-	Ttl int `json:"ttl,omitempty"`
+	Ttl int `json:"ttl"`
+
 	/* The DNS record set type. */
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 }
 
 type DNSRecordSetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSRecordSet's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

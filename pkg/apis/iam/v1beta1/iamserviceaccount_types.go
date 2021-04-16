@@ -37,9 +37,12 @@ import (
 
 type IAMServiceAccountSpec struct {
 	/* A text description of the service account. Must be less than or equal to 256 UTF-8 bytes. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The display name for the service account. Can be updated without creating a new resource. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 type IAMServiceAccountStatus struct {
@@ -50,6 +53,8 @@ type IAMServiceAccountStatus struct {
 	Email string `json:"email,omitempty"`
 	/* The fully-qualified name of the service account. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The unique id of the service account. */
 	UniqueId string `json:"uniqueId,omitempty"`
 }

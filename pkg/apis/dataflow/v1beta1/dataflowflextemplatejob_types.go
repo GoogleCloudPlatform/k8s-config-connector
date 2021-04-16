@@ -40,11 +40,15 @@ type FlextemplatejobParameters struct {
 
 type DataflowFlexTemplateJobSpec struct {
 	/* Immutable. */
-	ContainerSpecGcsPath string `json:"containerSpecGcsPath,omitempty"`
+	ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
+
 	/* Immutable. */
-	Parameters FlextemplatejobParameters `json:"parameters,omitempty"`
+	// +optional
+	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
+
 	/* Immutable. The region in which the created job should run. */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
 }
 
 type DataflowFlexTemplateJobStatus struct {
@@ -53,6 +57,8 @@ type DataflowFlexTemplateJobStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/*  */
 	JobId string `json:"jobId,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	State string `json:"state,omitempty"`
 }

@@ -37,48 +37,71 @@ import (
 
 type NotificationchannelAuthToken struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
 type NotificationchannelPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
 type NotificationchannelSensitiveLabels struct {
 	/* An authorization token for a notification channel. Channel types that support this field include: slack */
-	AuthToken NotificationchannelAuthToken `json:"authToken,omitempty"`
+	// +optional
+	AuthToken *NotificationchannelAuthToken `json:"authToken,omitempty"`
+
 	/* An password for a notification channel. Channel types that support this field include: webhook_basicauth */
-	Password NotificationchannelPassword `json:"password,omitempty"`
+	// +optional
+	Password *NotificationchannelPassword `json:"password,omitempty"`
+
 	/* An servicekey token for a notification channel. Channel types that support this field include: pagerduty */
-	ServiceKey NotificationchannelServiceKey `json:"serviceKey,omitempty"`
+	// +optional
+	ServiceKey *NotificationchannelServiceKey `json:"serviceKey,omitempty"`
 }
 
 type NotificationchannelServiceKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom NotificationchannelValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *NotificationchannelValueFrom `json:"valueFrom,omitempty"`
 }
 
 type NotificationchannelValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type MonitoringNotificationChannelSpec struct {
 	/* An optional human-readable description of this notification channel. This description may provide additional details, beyond the display name, for the channel. This may not exceed 1024 Unicode characters. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Whether notifications are forwarded to the described channel. This makes it possible to disable delivery of notifications to a particular channel without removing the channel from all alerting policies that reference the channel. This is a more convenient approach when the change is temporary and you want to receive notifications from the same set of alerting policies on the channel at some point in the future. */
-	Enabled bool `json:"enabled,omitempty"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/*  */
+	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Different notification type behaviors are configured primarily using the the 'labels' field on this
 	resource. This block contains the labels which contain secrets or passwords so that they can be marked
 	sensitive and hidden from plan output. The name of the field, eg: password, will be the key
@@ -86,9 +109,11 @@ type MonitoringNotificationChannelSpec struct {
 
 	Credentials may not be specified in both locations and will cause an error. Changing from one location
 	to a different credential configuration in the config will require an apply to update state. */
-	SensitiveLabels NotificationchannelSensitiveLabels `json:"sensitiveLabels,omitempty"`
+	// +optional
+	SensitiveLabels *NotificationchannelSensitiveLabels `json:"sensitiveLabels,omitempty"`
+
 	/* The type of the notification channel. This field matches the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list to get the list of valid values such as "email", "slack", etc... */
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 }
 
 type MonitoringNotificationChannelStatus struct {
@@ -99,6 +124,8 @@ type MonitoringNotificationChannelStatus struct {
 	projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
 	The [CHANNEL_ID] is automatically assigned by the server on creation. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Indicates whether this channel has been verified or not. On a ListNotificationChannels or GetNotificationChannel operation, this field is expected to be populated.If the value is UNVERIFIED, then it indicates that the channel is non-functioning (it both requires verification and lacks verification); otherwise, it is assumed that the channel works.If the channel is neither VERIFIED nor UNVERIFIED, it implies that the channel is of a type that does not require verification or that this specific channel has been exempted from verification because it was created prior to verification being required for channels of this type.This field cannot be modified using a standard UpdateNotificationChannel operation. To change the value of this field, you must call VerifyNotificationChannel. */
 	VerificationStatus string `json:"verificationStatus,omitempty"`
 }

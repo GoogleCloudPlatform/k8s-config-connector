@@ -37,37 +37,52 @@ import (
 
 type PolicymemberCondition struct {
 	/*  */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/*  */
-	Expression string `json:"expression,omitempty"`
+	Expression string `json:"expression"`
+
 	/*  */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
 
 type PolicymemberMemberFrom struct {
 	/* Immutable. The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
-	LogSinkRef v1alpha1.ResourceRef `json:"logSinkRef,omitempty"`
+	// +optional
+	LogSinkRef *v1alpha1.ResourceRef `json:"logSinkRef,omitempty"`
+
 	/* Immutable. The IAMServiceAccount to be bound to the role. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type IAMPolicyMemberSpec struct {
 	/* Immutable. Optional. The condition under which the binding applies. */
-	Condition PolicymemberCondition `json:"condition,omitempty"`
+	// +optional
+	Condition *PolicymemberCondition `json:"condition,omitempty"`
+
 	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
-	Member string `json:"member,omitempty"`
+	// +optional
+	Member *string `json:"member,omitempty"`
+
 	/* Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
-	MemberFrom PolicymemberMemberFrom `json:"memberFrom,omitempty"`
+	// +optional
+	MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
+
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
+	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
+
 	/* Immutable. Required. The role for which the Member will be bound. */
-	Role string `json:"role,omitempty"`
+	Role string `json:"role"`
 }
 
 type IAMPolicyMemberStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMPolicyMember's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -37,136 +37,185 @@ import (
 
 type JobAccessKeyId struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom JobValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *JobValueFrom `json:"valueFrom,omitempty"`
 }
 
 type JobAwsAccessKey struct {
 	/* AWS Key ID. */
-	AccessKeyId JobAccessKeyId `json:"accessKeyId,omitempty"`
+	AccessKeyId JobAccessKeyId `json:"accessKeyId"`
+
 	/* AWS Secret Access Key. */
-	SecretAccessKey JobSecretAccessKey `json:"secretAccessKey,omitempty"`
+	SecretAccessKey JobSecretAccessKey `json:"secretAccessKey"`
 }
 
 type JobAwsS3DataSource struct {
 	/* AWS credentials block. */
-	AwsAccessKey JobAwsAccessKey `json:"awsAccessKey,omitempty"`
+	AwsAccessKey JobAwsAccessKey `json:"awsAccessKey"`
+
 	/* S3 Bucket name. */
-	BucketName string `json:"bucketName,omitempty"`
+	BucketName string `json:"bucketName"`
 }
 
 type JobGcsDataSink struct {
 	/*  */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 }
 
 type JobGcsDataSource struct {
 	/*  */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 }
 
 type JobHttpDataSource struct {
 	/* The URL that points to the file that stores the object list entries. This file must allow public access. Currently, only URLs with HTTP and HTTPS schemes are supported. */
-	ListUrl string `json:"listUrl,omitempty"`
+	ListUrl string `json:"listUrl"`
 }
 
 type JobObjectConditions struct {
 	/* exclude_prefixes must follow the requirements described for include_prefixes. */
+	// +optional
 	ExcludePrefixes []string `json:"excludePrefixes,omitempty"`
+
 	/* If include_refixes is specified, objects that satisfy the object conditions must have names that start with one of the include_prefixes and that do not start with any of the exclude_prefixes. If include_prefixes is not specified, all objects except those that have names starting with one of the exclude_prefixes must satisfy the object conditions. */
+	// +optional
 	IncludePrefixes []string `json:"includePrefixes,omitempty"`
+
 	/* A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
-	MaxTimeElapsedSinceLastModification string `json:"maxTimeElapsedSinceLastModification,omitempty"`
+	// +optional
+	MaxTimeElapsedSinceLastModification *string `json:"maxTimeElapsedSinceLastModification,omitempty"`
+
 	/* A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
-	MinTimeElapsedSinceLastModification string `json:"minTimeElapsedSinceLastModification,omitempty"`
+	// +optional
+	MinTimeElapsedSinceLastModification *string `json:"minTimeElapsedSinceLastModification,omitempty"`
 }
 
 type JobSchedule struct {
 	/* Immutable. The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once. */
-	ScheduleEndDate JobScheduleEndDate `json:"scheduleEndDate,omitempty"`
+	// +optional
+	ScheduleEndDate *JobScheduleEndDate `json:"scheduleEndDate,omitempty"`
+
 	/* Immutable. The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day. */
-	ScheduleStartDate JobScheduleStartDate `json:"scheduleStartDate,omitempty"`
+	ScheduleStartDate JobScheduleStartDate `json:"scheduleStartDate"`
+
 	/* Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone. */
-	StartTimeOfDay JobStartTimeOfDay `json:"startTimeOfDay,omitempty"`
+	// +optional
+	StartTimeOfDay *JobStartTimeOfDay `json:"startTimeOfDay,omitempty"`
 }
 
 type JobScheduleEndDate struct {
 	/* Immutable. Day of month. Must be from 1 to 31 and valid for the year and month. */
-	Day int `json:"day,omitempty"`
+	Day int `json:"day"`
+
 	/* Immutable. Month of year. Must be from 1 to 12. */
-	Month int `json:"month,omitempty"`
+	Month int `json:"month"`
+
 	/* Immutable. Year of date. Must be from 1 to 9999. */
-	Year int `json:"year,omitempty"`
+	Year int `json:"year"`
 }
 
 type JobScheduleStartDate struct {
 	/* Immutable. Day of month. Must be from 1 to 31 and valid for the year and month. */
-	Day int `json:"day,omitempty"`
+	Day int `json:"day"`
+
 	/* Immutable. Month of year. Must be from 1 to 12. */
-	Month int `json:"month,omitempty"`
+	Month int `json:"month"`
+
 	/* Immutable. Year of date. Must be from 1 to 9999. */
-	Year int `json:"year,omitempty"`
+	Year int `json:"year"`
 }
 
 type JobSecretAccessKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom JobValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *JobValueFrom `json:"valueFrom,omitempty"`
 }
 
 type JobStartTimeOfDay struct {
 	/* Immutable. Hours of day in 24 hour format. Should be from 0 to 23. */
-	Hours int `json:"hours,omitempty"`
+	Hours int `json:"hours"`
+
 	/* Immutable. Minutes of hour of day. Must be from 0 to 59. */
-	Minutes int `json:"minutes,omitempty"`
+	Minutes int `json:"minutes"`
+
 	/* Immutable. Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
-	Nanos int `json:"nanos,omitempty"`
+	Nanos int `json:"nanos"`
+
 	/* Immutable. Seconds of minutes of the time. Must normally be from 0 to 59. */
-	Seconds int `json:"seconds,omitempty"`
+	Seconds int `json:"seconds"`
 }
 
 type JobTransferOptions struct {
 	/* Whether objects should be deleted from the source after they are transferred to the sink. Note that this option and delete_objects_unique_in_sink are mutually exclusive. */
-	DeleteObjectsFromSourceAfterTransfer bool `json:"deleteObjectsFromSourceAfterTransfer,omitempty"`
+	// +optional
+	DeleteObjectsFromSourceAfterTransfer *bool `json:"deleteObjectsFromSourceAfterTransfer,omitempty"`
+
 	/* Whether objects that exist only in the sink should be deleted. Note that this option and delete_objects_from_source_after_transfer are mutually exclusive. */
-	DeleteObjectsUniqueInSink bool `json:"deleteObjectsUniqueInSink,omitempty"`
+	// +optional
+	DeleteObjectsUniqueInSink *bool `json:"deleteObjectsUniqueInSink,omitempty"`
+
 	/* Whether overwriting objects that already exist in the sink is allowed. */
-	OverwriteObjectsAlreadyExistingInSink bool `json:"overwriteObjectsAlreadyExistingInSink,omitempty"`
+	// +optional
+	OverwriteObjectsAlreadyExistingInSink *bool `json:"overwriteObjectsAlreadyExistingInSink,omitempty"`
 }
 
 type JobTransferSpec struct {
 	/* An AWS S3 data source. */
-	AwsS3DataSource JobAwsS3DataSource `json:"awsS3DataSource,omitempty"`
+	// +optional
+	AwsS3DataSource *JobAwsS3DataSource `json:"awsS3DataSource,omitempty"`
+
 	/* A Google Cloud Storage data sink. */
-	GcsDataSink JobGcsDataSink `json:"gcsDataSink,omitempty"`
+	// +optional
+	GcsDataSink *JobGcsDataSink `json:"gcsDataSink,omitempty"`
+
 	/* A Google Cloud Storage data source. */
-	GcsDataSource JobGcsDataSource `json:"gcsDataSource,omitempty"`
+	// +optional
+	GcsDataSource *JobGcsDataSource `json:"gcsDataSource,omitempty"`
+
 	/* An HTTP URL data source. */
-	HttpDataSource JobHttpDataSource `json:"httpDataSource,omitempty"`
+	// +optional
+	HttpDataSource *JobHttpDataSource `json:"httpDataSource,omitempty"`
+
 	/* Only objects that satisfy these object conditions are included in the set of data source and data sink objects. Object conditions based on objects' last_modification_time do not exclude objects in a data sink. */
-	ObjectConditions JobObjectConditions `json:"objectConditions,omitempty"`
+	// +optional
+	ObjectConditions *JobObjectConditions `json:"objectConditions,omitempty"`
+
 	/* Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects' last_modification_time are ignored and do not exclude objects in a data source or a data sink. */
-	TransferOptions JobTransferOptions `json:"transferOptions,omitempty"`
+	// +optional
+	TransferOptions *JobTransferOptions `json:"transferOptions,omitempty"`
 }
 
 type JobValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type StorageTransferJobSpec struct {
 	/* Unique description to identify the Transfer Job. */
-	Description string `json:"description,omitempty"`
+	Description string `json:"description"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Schedule specification defining when the Transfer Job should be scheduled to start, end and what time to run. */
-	Schedule JobSchedule `json:"schedule,omitempty"`
+	Schedule JobSchedule `json:"schedule"`
+
 	/* Status of the job. Default: ENABLED. NOTE: The effect of the new job status takes place during a subsequent job run. For example, if you change the job status from ENABLED to DISABLED, and an operation spawned by the transfer is running, the status change would not affect the current operation. */
-	Status string `json:"status,omitempty"`
+	// +optional
+	Status *string `json:"status,omitempty"`
+
 	/* Transfer specification. */
-	TransferSpec JobTransferSpec `json:"transferSpec,omitempty"`
+	TransferSpec JobTransferSpec `json:"transferSpec"`
 }
 
 type StorageTransferJobStatus struct {
@@ -181,6 +230,8 @@ type StorageTransferJobStatus struct {
 	LastModificationTime string `json:"lastModificationTime,omitempty"`
 	/* The name of the Transfer Job. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

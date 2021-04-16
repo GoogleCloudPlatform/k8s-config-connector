@@ -37,19 +37,29 @@ import (
 
 type StorageNotificationSpec struct {
 	/*  */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
 	/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription */
+	// +optional
 	CustomAttributes map[string]string `json:"customAttributes,omitempty"`
+
 	/* Immutable. List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE", "OBJECT_DELETE", "OBJECT_ARCHIVE" */
+	// +optional
 	EventTypes []string `json:"eventTypes,omitempty"`
+
 	/* Immutable. Specifies a prefix path filter for this notification config. Cloud Storage will only send notifications for objects in this bucket whose names begin with the specified prefix. */
-	ObjectNamePrefix string `json:"objectNamePrefix,omitempty"`
+	// +optional
+	ObjectNamePrefix *string `json:"objectNamePrefix,omitempty"`
+
 	/* Immutable. The desired content of the Payload. One of "JSON_API_V1" or "NONE". */
-	PayloadFormat string `json:"payloadFormat,omitempty"`
+	PayloadFormat string `json:"payloadFormat"`
+
 	/* Immutable. Optional. The service-generated notificationId of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type StorageNotificationStatus struct {
@@ -58,6 +68,8 @@ type StorageNotificationStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The ID of the created notification. */
 	NotificationId string `json:"notificationId,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 }

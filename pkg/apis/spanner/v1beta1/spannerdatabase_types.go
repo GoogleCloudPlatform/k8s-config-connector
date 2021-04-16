@@ -40,17 +40,23 @@ type SpannerDatabaseSpec struct {
 	database. Statements can create tables, indexes, etc. These statements
 	execute atomically with the creation of the database: if there is an
 	error in any statement, the database is not created. */
+	// +optional
 	Ddl []string `json:"ddl,omitempty"`
+
 	/* The instance to create the database on. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SpannerDatabaseStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SpannerDatabase's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* An explanation of the status of the database. */
 	State string `json:"state,omitempty"`
 }

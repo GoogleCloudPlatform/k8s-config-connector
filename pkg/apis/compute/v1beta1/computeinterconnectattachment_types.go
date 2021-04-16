@@ -38,13 +38,17 @@ import (
 type ComputeInterconnectAttachmentSpec struct {
 	/* Whether the VLAN attachment is enabled or disabled.  When using
 	PARTNER type this will Pre-Activate the interconnect attachment */
-	AdminEnabled bool `json:"adminEnabled,omitempty"`
+	// +optional
+	AdminEnabled *bool `json:"adminEnabled,omitempty"`
+
 	/* Provisioned bandwidth capacity for the interconnect attachment.
 	For attachments of type DEDICATED, the user can set the bandwidth.
 	For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
 	Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
 	Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"] */
-	Bandwidth string `json:"bandwidth,omitempty"`
+	// +optional
+	Bandwidth *string `json:"bandwidth,omitempty"`
+
 	/* Immutable. Up to 16 candidate prefixes that can be used to restrict the allocation
 	of cloudRouterIpAddress and customerRouterIpAddress for this attachment.
 	All prefixes must be within link-local address space (169.254.0.0/16)
@@ -52,39 +56,56 @@ type ComputeInterconnectAttachmentSpec struct {
 	an unused /29 from the supplied candidate prefix(es). The request will
 	fail if all possible /29s are in use on Google's edge. If not supplied,
 	Google will randomly select an unused /29 from all of link-local space. */
+	// +optional
 	CandidateSubnets []string `json:"candidateSubnets,omitempty"`
+
 	/* An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Desired availability domain for the attachment. Only available for type
 	PARTNER, at creation time. For improved reliability, customers should
 	configure a pair of attachments with one per availability domain. The
 	selected availability domain will be provided to the Partner via the
 	pairing key so that the provisioned circuit will lie in the specified
 	domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY. */
-	EdgeAvailabilityDomain string `json:"edgeAvailabilityDomain,omitempty"`
+	// +optional
+	EdgeAvailabilityDomain *string `json:"edgeAvailabilityDomain,omitempty"`
+
 	/* Immutable. URL of the underlying Interconnect object that this attachment's
 	traffic will traverse through. Required if type is DEDICATED, must not
 	be set if type is PARTNER. */
-	Interconnect string `json:"interconnect,omitempty"`
+	// +optional
+	Interconnect *string `json:"interconnect,omitempty"`
+
 	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
 	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
-	Mtu string `json:"mtu,omitempty"`
+	// +optional
+	Mtu *string `json:"mtu,omitempty"`
+
 	/* Region where the regional interconnect attachment resides. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The Cloud Router to be used for dynamic routing. This router must
 	be in the same region as this ComputeInterconnectAttachment. The
 	ComputeInterconnectAttachment will automatically connect the
 	interconnect to the network & region within which the Cloud Router
 	is configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef,omitempty"`
+	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+
 	/* Immutable. The type of InterconnectAttachment you wish to create. Defaults to
 	DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"] */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
+
 	/* Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When
 	using PARTNER type this will be managed upstream. */
-	VlanTag8021q int `json:"vlanTag8021q,omitempty"`
+	// +optional
+	VlanTag8021q *int `json:"vlanTag8021q,omitempty"`
 }
 
 type InterconnectattachmentPrivateInterconnectInfoStatus struct {
@@ -108,6 +129,8 @@ type ComputeInterconnectAttachmentStatus struct {
 	/* Google reference ID, to be used when raising support tickets with
 	Google or otherwise to debug backend connectivity issues. */
 	GoogleReferenceId string `json:"googleReferenceId,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
 	identifier of an PARTNER attachment used to initiate provisioning with
 	a selected partner. Of the form "XXXXX/region/domain" */

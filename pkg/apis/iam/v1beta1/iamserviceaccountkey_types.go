@@ -37,15 +37,23 @@ import (
 
 type IAMServiceAccountKeySpec struct {
 	/* Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: "KEY_ALG_RSA_1024", "KEY_ALG_RSA_2048". */
-	KeyAlgorithm string `json:"keyAlgorithm,omitempty"`
+	// +optional
+	KeyAlgorithm *string `json:"keyAlgorithm,omitempty"`
+
 	/* Immutable. */
-	PrivateKeyType string `json:"privateKeyType,omitempty"`
+	// +optional
+	PrivateKeyType *string `json:"privateKeyType,omitempty"`
+
 	/* Immutable. A field that allows clients to upload their own public key. If set, use this public key data to create a service account key for given service account. Please note, the expected format for this field is a base64 encoded X509_PEM. */
-	PublicKeyData string `json:"publicKeyData,omitempty"`
+	// +optional
+	PublicKeyData *string `json:"publicKeyData,omitempty"`
+
 	/* Immutable. */
-	PublicKeyType string `json:"publicKeyType,omitempty"`
+	// +optional
+	PublicKeyType *string `json:"publicKeyType,omitempty"`
+
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
 }
 
 type IAMServiceAccountKeyStatus struct {
@@ -54,6 +62,8 @@ type IAMServiceAccountKeyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Immutable. The name used for this key pair */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The private key in JSON format, base64 encoded. This is what you normally get as a file when creating service account keys through the CLI or web console. This is only populated when creating a new key. */
 	PrivateKey string `json:"privateKey,omitempty"`
 	/* Immutable. The public key, base64 encoded */

@@ -37,49 +37,65 @@ import (
 
 type PolicyAuditConfigs struct {
 	/* Required. The configuration for logging of each type of permission. */
-	AuditLogConfigs []PolicyAuditLogConfigs `json:"auditLogConfigs,omitempty"`
+	AuditLogConfigs []PolicyAuditLogConfigs `json:"auditLogConfigs"`
+
 	/* Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfg' are exempted. */
-	Service string `json:"service,omitempty"`
+	Service string `json:"service"`
 }
 
 type PolicyAuditLogConfigs struct {
 	/* Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember. */
+	// +optional
 	ExemptedMembers []string `json:"exemptedMembers,omitempty"`
+
 	/* Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'. */
-	LogType string `json:"logType,omitempty"`
+	LogType string `json:"logType"`
 }
 
 type PolicyBindings struct {
 	/* Optional. The condition under which the binding applies. */
-	Condition PolicyCondition `json:"condition,omitempty"`
+	// +optional
+	Condition *PolicyCondition `json:"condition,omitempty"`
+
 	/* Optional. The list of IAM users to be bound to the role. */
+	// +optional
 	Members []string `json:"members,omitempty"`
+
 	/* Required. The role to bind the users to. */
-	Role string `json:"role,omitempty"`
+	Role string `json:"role"`
 }
 
 type PolicyCondition struct {
 	/*  */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/*  */
-	Expression string `json:"expression,omitempty"`
+	Expression string `json:"expression"`
+
 	/*  */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
 
 type IAMPolicySpec struct {
 	/* Optional. The list of IAM audit configs. */
+	// +optional
 	AuditConfigs []PolicyAuditConfigs `json:"auditConfigs,omitempty"`
+
 	/* Optional. The list of IAM bindings. */
+	// +optional
 	Bindings []PolicyBindings `json:"bindings,omitempty"`
+
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
+	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
 }
 
 type IAMPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

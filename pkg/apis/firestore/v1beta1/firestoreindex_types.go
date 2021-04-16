@@ -38,28 +38,38 @@ import (
 type IndexFields struct {
 	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
 	be specified. Possible values: ["CONTAINS"] */
-	ArrayConfig string `json:"arrayConfig,omitempty"`
+	// +optional
+	ArrayConfig *string `json:"arrayConfig,omitempty"`
+
 	/* Immutable. Name of the field. */
-	FieldPath string `json:"fieldPath,omitempty"`
+	// +optional
+	FieldPath *string `json:"fieldPath,omitempty"`
+
 	/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
 	Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"] */
-	Order string `json:"order,omitempty"`
+	// +optional
+	Order *string `json:"order,omitempty"`
 }
 
 type FirestoreIndexSpec struct {
 	/* Immutable. The collection being indexed. */
-	Collection string `json:"collection,omitempty"`
+	Collection string `json:"collection"`
+
 	/* Immutable. The Firestore database id. Defaults to '"(default)"'. */
-	Database string `json:"database,omitempty"`
+	// +optional
+	Database *string `json:"database,omitempty"`
+
 	/* Immutable. The fields supported by this index. The last field entry is always for
 	the field path '__name__'. If, on creation, '__name__' was not
 	specified as the last field, it will be added automatically with the
 	same direction as that of the last field defined. If the final field
 	in a composite index is not directional, the '__name__' will be
 	ordered '"ASCENDING"' (unless explicitly specified otherwise). */
-	Fields []IndexFields `json:"fields,omitempty"`
+	Fields []IndexFields `json:"fields"`
+
 	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"] */
-	QueryScope string `json:"queryScope,omitempty"`
+	// +optional
+	QueryScope *string `json:"queryScope,omitempty"`
 }
 
 type FirestoreIndexStatus struct {
@@ -69,6 +79,8 @@ type FirestoreIndexStatus struct {
 	/* A server defined name for this index. Format:
 	'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}' */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

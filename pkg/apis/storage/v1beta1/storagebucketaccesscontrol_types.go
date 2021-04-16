@@ -37,7 +37,8 @@ import (
 
 type StorageBucketAccessControlSpec struct {
 	/* Reference to the bucket. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
 	/* Immutable. The entity holding the permission, in one of the following forms:
 	  user-userId
 	  user-email
@@ -53,9 +54,11 @@ type StorageBucketAccessControlSpec struct {
 	  group-example@googlegroups.com.
 	  To refer to all members of the Google Apps for Business domain
 	  example.com, the entity would be domain-example.com. */
-	Entity string `json:"entity,omitempty"`
+	Entity string `json:"entity"`
+
 	/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"] */
-	Role string `json:"role,omitempty"`
+	// +optional
+	Role *string `json:"role,omitempty"`
 }
 
 type StorageBucketAccessControlStatus struct {
@@ -66,6 +69,8 @@ type StorageBucketAccessControlStatus struct {
 	Domain string `json:"domain,omitempty"`
 	/* The email address associated with the entity. */
 	Email string `json:"email,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

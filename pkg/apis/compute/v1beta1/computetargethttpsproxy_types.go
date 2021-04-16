@@ -37,30 +37,42 @@ import (
 
 type ComputeTargetHTTPSProxySpec struct {
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify "global" for global resources. */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. This field only applies when the forwarding rule that references
 	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
-	ProxyBind bool `json:"proxyBind,omitempty"`
+	// +optional
+	ProxyBind *bool `json:"proxyBind,omitempty"`
+
 	/* Specifies the QUIC override policy for this resource. This determines
 	whether the load balancer will attempt to negotiate QUIC with clients
 	or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
 	specified, uses the QUIC policy with no user overrides, which is
 	equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"] */
-	QuicOverride string `json:"quicOverride,omitempty"`
+	// +optional
+	QuicOverride *string `json:"quicOverride,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
+	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates"`
+
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the ComputeTargetHTTPSProxy resource. If not set,
 	the ComputeTargetHTTPSProxy resource will not have any SSL policy
 	configured. */
-	SslPolicyRef v1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
+	// +optional
+	SslPolicyRef *v1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
+
 	/* A reference to the ComputeURLMap resource that defines the mapping
 	from URL to the BackendService. */
-	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef,omitempty"`
+	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef"`
 }
 
 type ComputeTargetHTTPSProxyStatus struct {
@@ -69,6 +81,8 @@ type ComputeTargetHTTPSProxyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The unique identifier for the resource. */
 	ProxyId int `json:"proxyId,omitempty"`
 	/*  */

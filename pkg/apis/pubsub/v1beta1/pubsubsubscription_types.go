@@ -37,7 +37,9 @@ import (
 
 type SubscriptionDeadLetterPolicy struct {
 	/*  */
-	DeadLetterTopicRef v1alpha1.ResourceRef `json:"deadLetterTopicRef,omitempty"`
+	// +optional
+	DeadLetterTopicRef *v1alpha1.ResourceRef `json:"deadLetterTopicRef,omitempty"`
+
 	/* The maximum number of delivery attempts for any message. The value must be
 	between 5 and 100.
 
@@ -50,7 +52,8 @@ type SubscriptionDeadLetterPolicy struct {
 	This field will be honored on a best effort basis.
 
 	If this parameter is 0, a default value of 5 is used. */
-	MaxDeliveryAttempts int `json:"maxDeliveryAttempts,omitempty"`
+	// +optional
+	MaxDeliveryAttempts *int `json:"maxDeliveryAttempts,omitempty"`
 }
 
 type SubscriptionExpirationPolicy struct {
@@ -59,7 +62,7 @@ type SubscriptionExpirationPolicy struct {
 	If ttl is not set, the associated resource never expires.
 	A duration in seconds with up to nine fractional digits, terminated by 's'.
 	Example - "3.5s". */
-	Ttl string `json:"ttl,omitempty"`
+	Ttl string `json:"ttl"`
 }
 
 type SubscriptionOidcToken struct {
@@ -69,12 +72,14 @@ type SubscriptionOidcToken struct {
 	for the audience field is not supported. More info about the OIDC JWT
 	token audience here: https://tools.ietf.org/html/rfc7519#section-4.1.3
 	Note: if not specified, the Push endpoint URL will be used. */
-	Audience string `json:"audience,omitempty"`
+	// +optional
+	Audience *string `json:"audience,omitempty"`
+
 	/* Service account email to be used for generating the OIDC token.
 	The caller (for subscriptions.create, subscriptions.patch, and
 	subscriptions.modifyPushConfig RPCs) must have the
 	iam.serviceAccounts.actAs permission for the service account. */
-	ServiceAccountEmail string `json:"serviceAccountEmail,omitempty"`
+	ServiceAccountEmail string `json:"serviceAccountEmail"`
 }
 
 type SubscriptionPushConfig struct {
@@ -101,23 +106,30 @@ type SubscriptionPushConfig struct {
 
 	- v1beta1: uses the push format defined in the v1beta1 Pub/Sub API.
 	- v1 or v1beta2: uses the push format defined in the v1 Pub/Sub API. */
+	// +optional
 	Attributes map[string]string `json:"attributes,omitempty"`
+
 	/* If specified, Pub/Sub will generate and attach an OIDC JWT token as
 	an Authorization header in the HTTP request for every pushed message. */
-	OidcToken SubscriptionOidcToken `json:"oidcToken,omitempty"`
+	// +optional
+	OidcToken *SubscriptionOidcToken `json:"oidcToken,omitempty"`
+
 	/* A URL locating the endpoint to which messages should be pushed.
 	For example, a Webhook endpoint might use
 	"https://example.com/push". */
-	PushEndpoint string `json:"pushEndpoint,omitempty"`
+	PushEndpoint string `json:"pushEndpoint"`
 }
 
 type SubscriptionRetryPolicy struct {
 	/* The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
-	MaximumBackoff string `json:"maximumBackoff,omitempty"`
+	// +optional
+	MaximumBackoff *string `json:"maximumBackoff,omitempty"`
+
 	/* The minimum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
-	MinimumBackoff string `json:"minimumBackoff,omitempty"`
+	// +optional
+	MinimumBackoff *string `json:"minimumBackoff,omitempty"`
 }
 
 type PubSubSubscriptionSpec struct {
@@ -139,7 +151,9 @@ type PubSubSubscriptionSpec struct {
 
 	If the subscriber never acknowledges the message, the Pub/Sub system
 	will eventually redeliver the message. */
-	AckDeadlineSeconds int `json:"ackDeadlineSeconds,omitempty"`
+	// +optional
+	AckDeadlineSeconds *int `json:"ackDeadlineSeconds,omitempty"`
+
 	/* A policy that specifies the conditions for dead lettering messages in
 	this subscription. If dead_letter_policy is not set, dead lettering
 	is disabled.
@@ -148,11 +162,15 @@ type PubSubSubscriptionSpec struct {
 	parent project (i.e.,
 	service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
 	permission to Acknowledge() messages on this subscription. */
-	DeadLetterPolicy SubscriptionDeadLetterPolicy `json:"deadLetterPolicy,omitempty"`
+	// +optional
+	DeadLetterPolicy *SubscriptionDeadLetterPolicy `json:"deadLetterPolicy,omitempty"`
+
 	/* Immutable. If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to
 	the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they
 	may be delivered in any order. */
-	EnableMessageOrdering bool `json:"enableMessageOrdering,omitempty"`
+	// +optional
+	EnableMessageOrdering *bool `json:"enableMessageOrdering,omitempty"`
+
 	/* A policy that specifies the conditions for this subscription's expiration.
 	A subscription is considered active as long as any connected subscriber
 	is successfully consuming messages from the subscription or is issuing
@@ -160,12 +178,16 @@ type PubSubSubscriptionSpec struct {
 	policy with ttl of 31 days will be used.  If it is set but ttl is "", the
 	resource never expires.  The minimum allowed value for expirationPolicy.ttl
 	is 1 day. */
-	ExpirationPolicy SubscriptionExpirationPolicy `json:"expirationPolicy,omitempty"`
+	// +optional
+	ExpirationPolicy *SubscriptionExpirationPolicy `json:"expirationPolicy,omitempty"`
+
 	/* Immutable. The subscription only delivers the messages that match the filter.
 	Pub/Sub automatically acknowledges the messages that don't match the filter. You can filter messages
 	by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription,
 	you can't modify the filter. */
-	Filter string `json:"filter,omitempty"`
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
 	/* How long to retain unacknowledged messages in the subscription's
 	backlog, from the moment a message is published. If
 	retainAckedMessages is true, then this also configures the retention
@@ -175,31 +197,43 @@ type PubSubSubscriptionSpec struct {
 
 	A duration in seconds with up to nine fractional digits, terminated
 	by 's'. Example: '"600.5s"'. */
-	MessageRetentionDuration string `json:"messageRetentionDuration,omitempty"`
+	// +optional
+	MessageRetentionDuration *string `json:"messageRetentionDuration,omitempty"`
+
 	/* If push delivery is used with this subscription, this field is used to
 	configure it. An empty pushConfig signifies that the subscriber will
 	pull and ack messages using API methods. */
-	PushConfig SubscriptionPushConfig `json:"pushConfig,omitempty"`
+	// +optional
+	PushConfig *SubscriptionPushConfig `json:"pushConfig,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Indicates whether to retain acknowledged messages. If 'true', then
 	messages are not expunged from the subscription's backlog, even if
 	they are acknowledged, until they fall out of the
 	messageRetentionDuration window. */
-	RetainAckedMessages bool `json:"retainAckedMessages,omitempty"`
+	// +optional
+	RetainAckedMessages *bool `json:"retainAckedMessages,omitempty"`
+
 	/* A policy that specifies how Pub/Sub retries message delivery for this subscription.
 
 	If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers.
 	RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message */
-	RetryPolicy SubscriptionRetryPolicy `json:"retryPolicy,omitempty"`
+	// +optional
+	RetryPolicy *SubscriptionRetryPolicy `json:"retryPolicy,omitempty"`
+
 	/* Reference to a PubSubTopic. */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type PubSubSubscriptionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubSubscription's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider.  Path of the subscription in the format projects/{project}/subscriptions/{name}. */
 	Path string `json:"path,omitempty"`
 }

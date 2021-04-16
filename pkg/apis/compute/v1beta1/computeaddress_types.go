@@ -40,30 +40,45 @@ type ComputeAddressSpec struct {
 	IPv4 is supported. An address may only be specified for INTERNAL
 	address types. The IP address must be inside the specified subnetwork,
 	if any. */
-	Address string `json:"address,omitempty"`
+	// +optional
+	Address *string `json:"address,omitempty"`
+
 	/* Immutable. The type of address to reserve. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"] */
-	AddressType string `json:"addressType,omitempty"`
+	// +optional
+	AddressType *string `json:"addressType,omitempty"`
+
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"] */
-	IpVersion string `json:"ipVersion,omitempty"`
+	// +optional
+	IpVersion *string `json:"ipVersion,omitempty"`
+
 	/* Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* The network in which to reserve the IP range. The IP range must be
 	in the RFC1918 space. The network cannot be deleted if there are
 	any reserved IP ranges referring to it.
 
 	This should only be set when using an Internal address. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. The networking tier used for configuring this address. If this field is not
 	specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"] */
-	NetworkTier string `json:"networkTier,omitempty"`
+	// +optional
+	NetworkTier *string `json:"networkTier,omitempty"`
+
 	/* Immutable. The prefix length of the IP range. If not present, it means the
 	address field is a single IP address.
 
 	This field is not applicable to addresses with addressType=EXTERNAL,
 	or addressType=INTERNAL when purpose=PRIVATE_SERVICE_CONNECT */
-	PrefixLength int `json:"prefixLength,omitempty"`
+	// +optional
+	PrefixLength *int `json:"prefixLength,omitempty"`
+
 	/* Immutable. The purpose of this resource, which can be one of the following values:
 
 	* GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
@@ -73,14 +88,19 @@ type ComputeAddressSpec struct {
 	* VPC_PEERING for addresses that are reserved for VPC peer networks.
 
 	This should only be set when using an Internal address. Possible values: ["GCE_ENDPOINT", "VPC_PEERING", "SHARED_LOADBALANCER_VIP"] */
-	Purpose string `json:"purpose,omitempty"`
+	// +optional
+	Purpose *string `json:"purpose,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The subnetwork in which to reserve the address. If an IP address is
 	specified, it must be within the subnetwork's IP range.  This field
 	can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
 	purposes. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ComputeAddressStatus struct {
@@ -92,6 +112,8 @@ type ComputeAddressStatus struct {
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The URLs of the resources that are using this address. */

@@ -39,30 +39,38 @@ type RepositoryPubsubConfigs struct {
 	/* The format of the Cloud Pub/Sub messages.
 	- PROTOBUF: The message payload is a serialized protocol buffer of SourceRepoEvent.
 	- JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"] */
-	MessageFormat string `json:"messageFormat,omitempty"`
+	MessageFormat string `json:"messageFormat"`
+
 	/* Service account used for publishing Cloud Pub/Sub messages. This
 	service account needs to be in the same project as the
 	pubsubConfig. When added, the caller needs to have
 	iam.serviceAccounts.actAs permission on this service account. If
 	unspecified, it defaults to the compute engine default service
 	account. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
 	/*  */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type SourceRepoRepositorySpec struct {
 	/* How this repository publishes a change in the repository through Cloud Pub/Sub.
 	Keyed by the topic names. */
+	// +optional
 	PubsubConfigs []RepositoryPubsubConfigs `json:"pubsubConfigs,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SourceRepoRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SourceRepoRepository's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The disk usage of the repo, in bytes. */
 	Size int `json:"size,omitempty"`
 	/* URL to clone the repository from Google Cloud Source Repositories. */

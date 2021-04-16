@@ -41,29 +41,41 @@ type ExternalvpngatewayInterface struct {
 	* '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
 	* '0, 1 - TWO_IPS_REDUNDANCY'
 	* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY' */
-	Id int `json:"id,omitempty"`
+	// +optional
+	Id *int `json:"id,omitempty"`
+
 	/* Immutable. IP address of the interface in the external VPN gateway.
 	Only IPv4 is supported. This IP address can be either from
 	your on-premise gateway or another Cloud provider's VPN gateway,
 	it cannot be an IP address from Google Compute Engine. */
-	IpAddress string `json:"ipAddress,omitempty"`
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
 }
 
 type ComputeExternalVPNGatewaySpec struct {
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. A list of interfaces on this external VPN gateway. */
+	// +optional
 	Interface []ExternalvpngatewayInterface `json:"interface,omitempty"`
+
 	/* Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"] */
-	RedundancyType string `json:"redundancyType,omitempty"`
+	// +optional
+	RedundancyType *string `json:"redundancyType,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeExternalVPNGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeExternalVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

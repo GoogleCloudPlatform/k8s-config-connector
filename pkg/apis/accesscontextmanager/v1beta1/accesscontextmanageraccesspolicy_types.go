@@ -37,9 +37,11 @@ import (
 
 type AccessContextManagerAccessPolicySpec struct {
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Human readable title. Does not affect behavior. */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
 
 type AccessContextManagerAccessPolicyStatus struct {
@@ -50,6 +52,8 @@ type AccessContextManagerAccessPolicyStatus struct {
 	CreateTime string `json:"createTime,omitempty"`
 	/* Resource name of the AccessPolicy. Format: {policy_id} */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Time the AccessPolicy was updated in UTC. */
 	UpdateTime string `json:"updateTime,omitempty"`
 }

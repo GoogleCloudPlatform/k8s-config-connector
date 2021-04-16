@@ -37,82 +37,125 @@ import (
 
 type InstanceAccessConfig struct {
 	/*  */
-	NatIpRef v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
+	// +optional
+	NatIpRef *v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
+
 	/* The networking tier used for configuring this instance. One of PREMIUM or STANDARD. */
-	NetworkTier string `json:"networkTier,omitempty"`
+	// +optional
+	NetworkTier *string `json:"networkTier,omitempty"`
+
 	/* The DNS domain name for the public PTR record. */
-	PublicPtrDomainName string `json:"publicPtrDomainName,omitempty"`
+	// +optional
+	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
 }
 
 type InstanceAliasIpRange struct {
 	/* The IP CIDR range represented by this alias IP range. */
-	IpCidrRange string `json:"ipCidrRange,omitempty"`
+	IpCidrRange string `json:"ipCidrRange"`
+
 	/* The subnetwork secondary range name specifying the secondary range from which to allocate the IP CIDR range for this alias IP range. */
-	SubnetworkRangeName string `json:"subnetworkRangeName,omitempty"`
+	// +optional
+	SubnetworkRangeName *string `json:"subnetworkRangeName,omitempty"`
 }
 
 type InstanceAttachedDisk struct {
 	/* Name with which the attached disk is accessible under /dev/disk/by-id/ */
-	DeviceName string `json:"deviceName,omitempty"`
+	// +optional
+	DeviceName *string `json:"deviceName,omitempty"`
+
 	/* A 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link and disk_encryption_key_raw may be set. */
-	DiskEncryptionKeyRaw InstanceDiskEncryptionKeyRaw `json:"diskEncryptionKeyRaw,omitempty"`
+	// +optional
+	DiskEncryptionKeyRaw *InstanceDiskEncryptionKeyRaw `json:"diskEncryptionKeyRaw,omitempty"`
+
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
-	DiskEncryptionKeySha256 string `json:"diskEncryptionKeySha256,omitempty"`
+	// +optional
+	DiskEncryptionKeySha256 *string `json:"diskEncryptionKeySha256,omitempty"`
+
 	/*  */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE". */
-	Mode string `json:"mode,omitempty"`
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
 	/*  */
-	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef"`
 }
 
 type InstanceBootDisk struct {
 	/* Immutable. Whether the disk will be auto-deleted when the instance is deleted. */
-	AutoDelete bool `json:"autoDelete,omitempty"`
+	// +optional
+	AutoDelete *bool `json:"autoDelete,omitempty"`
+
 	/* Immutable. Name with which attached disk will be accessible under /dev/disk/by-id/ */
-	DeviceName string `json:"deviceName,omitempty"`
+	// +optional
+	DeviceName *string `json:"deviceName,omitempty"`
+
 	/* Immutable. A 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link and disk_encryption_key_raw may be set. */
-	DiskEncryptionKeyRaw InstanceDiskEncryptionKeyRaw `json:"diskEncryptionKeyRaw,omitempty"`
+	// +optional
+	DiskEncryptionKeyRaw *InstanceDiskEncryptionKeyRaw `json:"diskEncryptionKeyRaw,omitempty"`
+
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
-	DiskEncryptionKeySha256 string `json:"diskEncryptionKeySha256,omitempty"`
+	// +optional
+	DiskEncryptionKeySha256 *string `json:"diskEncryptionKeySha256,omitempty"`
+
 	/* Immutable. Parameters with which a disk was created alongside the instance. */
-	InitializeParams InstanceInitializeParams `json:"initializeParams,omitempty"`
+	// +optional
+	InitializeParams *InstanceInitializeParams `json:"initializeParams,omitempty"`
+
 	/*  */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Immutable. Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE". */
-	Mode string `json:"mode,omitempty"`
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
 	/*  */
-	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+	// +optional
+	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 }
 
 type InstanceConfidentialInstanceConfig struct {
 	/* Defines whether the instance should have confidential compute enabled. */
-	EnableConfidentialCompute bool `json:"enableConfidentialCompute,omitempty"`
+	EnableConfidentialCompute bool `json:"enableConfidentialCompute"`
 }
 
 type InstanceDiskEncryptionKeyRaw struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom InstanceValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
 type InstanceGuestAccelerator struct {
 	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
-	Count int `json:"count,omitempty"`
+	Count int `json:"count"`
+
 	/* Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80. */
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 }
 
 type InstanceInitializeParams struct {
 	/* Immutable. A set of key/value label pairs assigned to the disk. */
-	Labels InstanceLabels `json:"labels,omitempty"`
+	// +optional
+	Labels *InstanceLabels `json:"labels,omitempty"`
+
 	/* Immutable. The size of the image in gigabytes. */
-	Size int `json:"size,omitempty"`
+	// +optional
+	Size *int `json:"size,omitempty"`
+
 	/*  */
-	SourceImageRef v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+	// +optional
+	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+
 	/* Immutable. The Google Compute Engine disk type. One of pd-standard, pd-ssd or pd-balanced. */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type InstanceLabels struct {
@@ -120,67 +163,100 @@ type InstanceLabels struct {
 
 type InstanceMetadata struct {
 	/*  */
-	Key string `json:"key,omitempty"`
+	Key string `json:"key"`
+
 	/*  */
-	Value string `json:"value,omitempty"`
+	Value string `json:"value"`
 }
 
 type InstanceNetworkInterface struct {
 	/* Access configurations, i.e. IPs via which this instance can be accessed via the Internet. */
+	// +optional
 	AccessConfig []InstanceAccessConfig `json:"accessConfig,omitempty"`
+
 	/* An array of alias IP ranges for this network interface. */
+	// +optional
 	AliasIpRange []InstanceAliasIpRange `json:"aliasIpRange,omitempty"`
+
 	/* The name of the interface */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* The private IP address assigned to the instance. */
-	NetworkIp string `json:"networkIp,omitempty"`
+	// +optional
+	NetworkIp *string `json:"networkIp,omitempty"`
+
 	/*  */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET */
-	NicType string `json:"nicType,omitempty"`
+	// +optional
+	NicType *string `json:"nicType,omitempty"`
+
 	/* The project in which the subnetwork belongs. */
-	SubnetworkProject string `json:"subnetworkProject,omitempty"`
+	// +optional
+	SubnetworkProject *string `json:"subnetworkProject,omitempty"`
+
 	/*  */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type InstanceNodeAffinities struct {
 	/*  */
-	Value InstanceValue `json:"value,omitempty"`
+	// +optional
+	Value *InstanceValue `json:"value,omitempty"`
 }
 
 type InstanceScheduling struct {
 	/* Specifies if the instance should be restarted if it was terminated by Compute Engine (not a user). */
-	AutomaticRestart bool `json:"automaticRestart,omitempty"`
+	// +optional
+	AutomaticRestart *bool `json:"automaticRestart,omitempty"`
+
 	/*  */
-	MinNodeCpus int `json:"minNodeCpus,omitempty"`
+	// +optional
+	MinNodeCpus *int `json:"minNodeCpus,omitempty"`
+
 	/*  */
+	// +optional
 	NodeAffinities []InstanceNodeAffinities `json:"nodeAffinities,omitempty"`
+
 	/* Describes maintenance behavior for the instance. One of MIGRATE or TERMINATE, */
-	OnHostMaintenance string `json:"onHostMaintenance,omitempty"`
+	// +optional
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty"`
+
 	/* Immutable. Whether the instance is preemptible. */
-	Preemptible bool `json:"preemptible,omitempty"`
+	// +optional
+	Preemptible *bool `json:"preemptible,omitempty"`
 }
 
 type InstanceScratchDisk struct {
 	/* The disk interface used for attaching this disk. One of SCSI or NVME. */
-	Interface string `json:"interface,omitempty"`
+	Interface string `json:"interface"`
 }
 
 type InstanceServiceAccount struct {
 	/* A list of service scopes. */
-	Scopes []string `json:"scopes,omitempty"`
+	Scopes []string `json:"scopes"`
+
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type InstanceShieldedInstanceConfig struct {
 	/* Whether integrity monitoring is enabled for the instance. */
-	EnableIntegrityMonitoring bool `json:"enableIntegrityMonitoring,omitempty"`
+	// +optional
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+
 	/* Whether secure boot is enabled for the instance. */
-	EnableSecureBoot bool `json:"enableSecureBoot,omitempty"`
+	// +optional
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
 	/* Whether the instance uses vTPM. */
-	EnableVtpm bool `json:"enableVtpm,omitempty"`
+	// +optional
+	EnableVtpm *bool `json:"enableVtpm,omitempty"`
 }
 
 type InstanceValue struct {
@@ -188,58 +264,106 @@ type InstanceValue struct {
 
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeInstanceSpec struct {
 	/* List of disks attached to the instance */
+	// +optional
 	AttachedDisk []InstanceAttachedDisk `json:"attachedDisk,omitempty"`
+
 	/* Immutable. The boot disk for the instance. */
-	BootDisk InstanceBootDisk `json:"bootDisk,omitempty"`
+	// +optional
+	BootDisk *InstanceBootDisk `json:"bootDisk,omitempty"`
+
 	/* Immutable. Whether sending and receiving of packets with non-matching source or destination IPs is allowed. */
-	CanIpForward bool `json:"canIpForward,omitempty"`
+	// +optional
+	CanIpForward *bool `json:"canIpForward,omitempty"`
+
 	/* Immutable. The Confidential VM config being used by the instance.  on_host_maintenance has to be set to TERMINATE or this will fail to create. */
-	ConfidentialInstanceConfig InstanceConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+	// +optional
+	ConfidentialInstanceConfig *InstanceConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+
 	/* Whether deletion protection is enabled on this instance. */
-	DeletionProtection bool `json:"deletionProtection,omitempty"`
+	// +optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+
 	/* Immutable. A brief description of the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Desired status of the instance. Either "RUNNING" or "TERMINATED". */
-	DesiredStatus string `json:"desiredStatus,omitempty"`
+	// +optional
+	DesiredStatus *string `json:"desiredStatus,omitempty"`
+
 	/* Whether the instance has virtual displays enabled. */
-	EnableDisplay bool `json:"enableDisplay,omitempty"`
+	// +optional
+	EnableDisplay *bool `json:"enableDisplay,omitempty"`
+
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
+	// +optional
 	GuestAccelerator []InstanceGuestAccelerator `json:"guestAccelerator,omitempty"`
+
 	/* Immutable. A custom hostname for the instance. Must be a fully qualified DNS name and RFC-1035-valid. Valid format is a series of labels 1-63 characters long matching the regular expression [a-z]([-a-z0-9]*[a-z0-9]), concatenated with periods. The entire hostname must not exceed 253 characters. Changing this forces a new resource to be created. */
-	Hostname string `json:"hostname,omitempty"`
+	// +optional
+	Hostname *string `json:"hostname,omitempty"`
+
 	/*  */
-	InstanceTemplateRef v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
+	// +optional
+	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
+
 	/* The machine type to create. */
-	MachineType string `json:"machineType,omitempty"`
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+
 	/*  */
+	// +optional
 	Metadata []InstanceMetadata `json:"metadata,omitempty"`
+
 	/* Immutable. Metadata startup scripts made available within the instance. */
-	MetadataStartupScript string `json:"metadataStartupScript,omitempty"`
+	// +optional
+	MetadataStartupScript *string `json:"metadataStartupScript,omitempty"`
+
 	/* The minimum CPU platform specified for the VM instance. */
-	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
+	// +optional
+	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
+
 	/* Immutable. The networks attached to the instance. */
+	// +optional
 	NetworkInterface []InstanceNetworkInterface `json:"networkInterface,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
+	// +optional
 	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+
 	/* The scheduling strategy being used by the instance. */
-	Scheduling InstanceScheduling `json:"scheduling,omitempty"`
+	// +optional
+	Scheduling *InstanceScheduling `json:"scheduling,omitempty"`
+
 	/* Immutable. The scratch disks attached to the instance. */
+	// +optional
 	ScratchDisk []InstanceScratchDisk `json:"scratchDisk,omitempty"`
+
 	/* The service account to attach to the instance. */
-	ServiceAccount InstanceServiceAccount `json:"serviceAccount,omitempty"`
+	// +optional
+	ServiceAccount *InstanceServiceAccount `json:"serviceAccount,omitempty"`
+
 	/* The shielded vm config being used by the instance. */
-	ShieldedInstanceConfig InstanceShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+	// +optional
+	ShieldedInstanceConfig *InstanceShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
 	/* The list of tags attached to the instance. */
+	// +optional
 	Tags []string `json:"tags,omitempty"`
+
 	/* Immutable. The zone of the instance. If self_link is provided, this value is ignored. If neither self_link nor zone are provided, the provider zone is used. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type ComputeInstanceStatus struct {
@@ -256,6 +380,8 @@ type ComputeInstanceStatus struct {
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
 	/* The unique fingerprint of the metadata. */
 	MetadataFingerprint string `json:"metadataFingerprint,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The unique fingerprint of the tags. */

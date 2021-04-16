@@ -37,18 +37,24 @@ import (
 
 type FolderSpec struct {
 	/* The folder's display name. A folder's display name must be unique amongst its siblings, e.g. no two folders with the same parent can share the same display name. The display name must start and end with a letter or digit, may contain letters, digits, spaces, hyphens and underscores and can be no longer than 30 characters. */
-	DisplayName string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
+
 	/* The folder that this resource belongs to. Changing this forces the
 	resource to be migrated to the newly specified folder. Only one of
 	folderRef or organizationRef may be specified. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
 	/* The organization that this resource belongs to. Changing this
 	forces the resource to be migrated to the newly specified
 	organization. Only one of folderRef or organizationRef may be
 	specified. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type FolderStatus struct {
@@ -63,6 +69,8 @@ type FolderStatus struct {
 	LifecycleState string `json:"lifecycleState,omitempty"`
 	/* The resource name of the Folder. Its format is folders/{folder_id}. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -37,35 +37,48 @@ import (
 
 type GcpolicyMaxAge struct {
 	/* DEPRECATED — Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
-	Days int `json:"days,omitempty"`
+	// +optional
+	Days *int `json:"days,omitempty"`
+
 	/* Immutable. Duration before applying GC policy */
-	Duration string `json:"duration,omitempty"`
+	// +optional
+	Duration *string `json:"duration,omitempty"`
 }
 
 type GcpolicyMaxVersion struct {
 	/* Immutable. Number of version before applying the GC policy. */
-	Number int `json:"number,omitempty"`
+	Number int `json:"number"`
 }
 
 type BigtableGCPolicySpec struct {
 	/* Immutable. The name of the column family. */
-	ColumnFamily string `json:"columnFamily,omitempty"`
+	ColumnFamily string `json:"columnFamily"`
+
 	/* The name of the Bigtable instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. GC policy that applies to all cells older than the given age. */
+	// +optional
 	MaxAge []GcpolicyMaxAge `json:"maxAge,omitempty"`
+
 	/* Immutable. GC policy that applies to all versions of a cell except for the most recent. */
+	// +optional
 	MaxVersion []GcpolicyMaxVersion `json:"maxVersion,omitempty"`
+
 	/* Immutable. If multiple policies are set, you should choose between UNION OR INTERSECTION. */
-	Mode string `json:"mode,omitempty"`
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
 	/* The name of the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type BigtableGCPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableGCPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

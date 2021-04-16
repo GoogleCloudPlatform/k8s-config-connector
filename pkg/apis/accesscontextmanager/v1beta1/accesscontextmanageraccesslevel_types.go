@@ -41,16 +41,20 @@ type AccesslevelBasic struct {
 	conditions must be satisfied for the AccessLevel to be applied. If
 	OR is used, at least one Condition in conditions must be satisfied
 	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"] */
-	CombiningFunction string `json:"combiningFunction,omitempty"`
+	// +optional
+	CombiningFunction *string `json:"combiningFunction,omitempty"`
+
 	/* A set of requirements for the AccessLevel to be granted. */
-	Conditions []AccesslevelConditions `json:"conditions,omitempty"`
+	Conditions []AccesslevelConditions `json:"conditions"`
 }
 
 type AccesslevelConditions struct {
 	/* Device specific restrictions, all restrictions must hold for
 	the Condition to be true. If not specified, all devices are
 	allowed. */
-	DevicePolicy AccesslevelDevicePolicy `json:"devicePolicy,omitempty"`
+	// +optional
+	DevicePolicy *AccesslevelDevicePolicy `json:"devicePolicy,omitempty"`
+
 	/* A list of CIDR block IP subnetwork specification. May be IPv4
 	or IPv6.
 	Note that for a CIDR IP address block, the specified IP address
@@ -61,18 +65,27 @@ type AccesslevelConditions struct {
 	is not. The originating IP of a request must be in one of the
 	listed subnets in order for this Condition to be true.
 	If empty, all IP addresses are allowed. */
+	// +optional
 	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
+
 	/*  */
+	// +optional
 	Members []AccesslevelMembers `json:"members,omitempty"`
+
 	/* Whether to negate the Condition. If true, the Condition becomes
 	a NAND over its non-empty fields, each field must be false for
 	the Condition overall to be satisfied. Defaults to false. */
-	Negate bool `json:"negate,omitempty"`
+	// +optional
+	Negate *bool `json:"negate,omitempty"`
+
 	/* The request must originate from one of the provided
 	countries/regions.
 	Format: A valid ISO 3166-1 alpha-2 code. */
+	// +optional
 	Regions []string `json:"regions,omitempty"`
+
 	/*  */
+	// +optional
 	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
 }
 
@@ -80,76 +93,109 @@ type AccesslevelCustom struct {
 	/* Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.
 	This page details the objects and attributes that are used to the build the CEL expressions for
 	custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec. */
-	Expr AccesslevelExpr `json:"expr,omitempty"`
+	Expr AccesslevelExpr `json:"expr"`
 }
 
 type AccesslevelDevicePolicy struct {
 	/* A list of allowed device management levels.
 	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"] */
+	// +optional
 	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
+
 	/* A list of allowed encryptions statuses.
 	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"] */
+	// +optional
 	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
+
 	/* A list of allowed OS versions.
 	An empty list allows all types and all versions. */
+	// +optional
 	OsConstraints []AccesslevelOsConstraints `json:"osConstraints,omitempty"`
+
 	/* Whether the device needs to be approved by the customer admin. */
-	RequireAdminApproval bool `json:"requireAdminApproval,omitempty"`
+	// +optional
+	RequireAdminApproval *bool `json:"requireAdminApproval,omitempty"`
+
 	/* Whether the device needs to be corp owned. */
-	RequireCorpOwned bool `json:"requireCorpOwned,omitempty"`
+	// +optional
+	RequireCorpOwned *bool `json:"requireCorpOwned,omitempty"`
+
 	/* Whether or not screenlock is required for the DevicePolicy
 	to be true. Defaults to false. */
-	RequireScreenLock bool `json:"requireScreenLock,omitempty"`
+	// +optional
+	RequireScreenLock *bool `json:"requireScreenLock,omitempty"`
 }
 
 type AccesslevelExpr struct {
 	/* Description of the expression */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Textual representation of an expression in Common Expression Language syntax. */
-	Expression string `json:"expression,omitempty"`
+	Expression string `json:"expression"`
+
 	/* String indicating the location of the expression for error reporting, e.g. a file name and a position in the file */
-	Location string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* Title for the expression, i.e. a short string describing its purpose. */
-	Title string `json:"title,omitempty"`
+	// +optional
+	Title *string `json:"title,omitempty"`
 }
 
 type AccesslevelMembers struct {
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
 	/*  */
-	User string `json:"user,omitempty"`
+	// +optional
+	User *string `json:"user,omitempty"`
 }
 
 type AccesslevelOsConstraints struct {
 	/* The minimum allowed OS version. If not set, any version
 	of this OS satisfies the constraint.
 	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
-	MinimumVersion string `json:"minimumVersion,omitempty"`
+	// +optional
+	MinimumVersion *string `json:"minimumVersion,omitempty"`
+
 	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS"] */
-	OsType string `json:"osType,omitempty"`
+	OsType string `json:"osType"`
 }
 
 type AccessContextManagerAccessLevelSpec struct {
 	/* The AccessContextManagerAccessPolicy this
 	AccessContextManagerAccessLevel lives in. */
-	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef,omitempty"`
+	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef"`
+
 	/* A set of predefined conditions for the access level and a combining function. */
-	Basic AccesslevelBasic `json:"basic,omitempty"`
+	// +optional
+	Basic *AccesslevelBasic `json:"basic,omitempty"`
+
 	/* Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request.
 	See CEL spec at: https://github.com/google/cel-spec. */
-	Custom AccesslevelCustom `json:"custom,omitempty"`
+	// +optional
+	Custom *AccesslevelCustom `json:"custom,omitempty"`
+
 	/* Description of the AccessLevel and its use. Does not affect behavior. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Human readable title. Must be unique within the Policy. */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
 
 type AccessContextManagerAccessLevelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessLevel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

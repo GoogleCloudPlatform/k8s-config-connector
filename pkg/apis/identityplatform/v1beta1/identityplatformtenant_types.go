@@ -37,27 +37,45 @@ import (
 
 type TenantMfaConfig struct {
 	/* A list of usable second factors for this project. */
+	// +optional
 	EnabledProviders []string `json:"enabledProviders,omitempty"`
+
 	/* Whether MultiFactor Authentication has been enabled for this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED, MANDATORY */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type IdentityPlatformTenantSpec struct {
 	/* Whether to allow email/password user authentication. */
-	AllowPasswordSignup bool `json:"allowPasswordSignup,omitempty"`
+	// +optional
+	AllowPasswordSignup *bool `json:"allowPasswordSignup,omitempty"`
+
 	/* Whether authentication is disabled for the tenant. If true, the users under the disabled tenant are not allowed to sign-in. Admins of the disabled tenant are not able to manage its users. */
-	DisableAuth bool `json:"disableAuth,omitempty"`
+	// +optional
+	DisableAuth *bool `json:"disableAuth,omitempty"`
+
 	/* Display name of the tenant. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* Whether to enable anonymous user authentication. */
-	EnableAnonymousUser bool `json:"enableAnonymousUser,omitempty"`
+	// +optional
+	EnableAnonymousUser *bool `json:"enableAnonymousUser,omitempty"`
+
 	/* Whether to enable email link user authentication. */
-	EnableEmailLinkSignin bool `json:"enableEmailLinkSignin,omitempty"`
+	// +optional
+	EnableEmailLinkSignin *bool `json:"enableEmailLinkSignin,omitempty"`
+
 	/* The tenant-level configuration of MFA options. */
-	MfaConfig TenantMfaConfig `json:"mfaConfig,omitempty"`
+	// +optional
+	MfaConfig *TenantMfaConfig `json:"mfaConfig,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* A map of <test phone number, fake code> pairs that can be used for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/) and a maximum of 10 pairs can be added (error will be thrown once exceeded). */
+	// +optional
 	TestPhoneNumbers map[string]string `json:"testPhoneNumbers,omitempty"`
 }
 
@@ -65,6 +83,8 @@ type IdentityPlatformTenantStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IdentityPlatformTenant's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -37,16 +37,23 @@ import (
 
 type ArtifactRegistryRepositorySpec struct {
 	/* The user-provided description of the repository. */
-	Description string `json:"description,omitempty"`
-	/* Immutable. The format of packages that are stored in the repository. Possible values: ["DOCKER"] */
-	Format string `json:"format,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Immutable. The format of packages that are stored in the repository. */
+	Format string `json:"format"`
+
 	/* The customer managed encryption key that’s used to encrypt the
 	contents of the Repository. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Immutable. The name of the location this repository is located in. */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. Optional. The repositoryId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ArtifactRegistryRepositoryStatus struct {
@@ -58,6 +65,8 @@ type ArtifactRegistryRepositoryStatus struct {
 	/* The name of the repository, for example:
 	"projects/p1/locations/us-central1/repositories/repo1" */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The time when the repository was last updated. */
 	UpdateTime string `json:"updateTime,omitempty"`
 }

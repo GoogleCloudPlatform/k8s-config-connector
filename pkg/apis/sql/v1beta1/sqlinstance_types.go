@@ -37,181 +37,295 @@ import (
 
 type InstanceAuthorizedNetworks struct {
 	/*  */
-	ExpirationTime string `json:"expirationTime,omitempty"`
+	// +optional
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
 	/*  */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/*  */
-	Value string `json:"value,omitempty"`
+	Value string `json:"value"`
 }
 
 type InstanceBackupConfiguration struct {
 	/*  */
-	BackupRetentionSettings InstanceBackupRetentionSettings `json:"backupRetentionSettings,omitempty"`
+	// +optional
+	BackupRetentionSettings *InstanceBackupRetentionSettings `json:"backupRetentionSettings,omitempty"`
+
 	/* True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Cannot be used with Postgres. */
-	BinaryLogEnabled bool `json:"binaryLogEnabled,omitempty"`
+	// +optional
+	BinaryLogEnabled *bool `json:"binaryLogEnabled,omitempty"`
+
 	/* True if backup configuration is enabled. */
-	Enabled bool `json:"enabled,omitempty"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/* Location of the backup configuration. */
-	Location string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* True if Point-in-time recovery is enabled. */
-	PointInTimeRecoveryEnabled bool `json:"pointInTimeRecoveryEnabled,omitempty"`
+	// +optional
+	PointInTimeRecoveryEnabled *bool `json:"pointInTimeRecoveryEnabled,omitempty"`
+
 	/* HH:MM format time indicating when backup configuration starts. */
-	StartTime string `json:"startTime,omitempty"`
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+
 	/* The number of days of transaction logs we retain for point in time restore, from 1-7. */
-	TransactionLogRetentionDays int `json:"transactionLogRetentionDays,omitempty"`
+	// +optional
+	TransactionLogRetentionDays *int `json:"transactionLogRetentionDays,omitempty"`
 }
 
 type InstanceBackupRetentionSettings struct {
 	/* Number of backups to retain. */
-	RetainedBackups int `json:"retainedBackups,omitempty"`
+	RetainedBackups int `json:"retainedBackups"`
+
 	/* The unit that 'retainedBackups' represents. Defaults to COUNT */
-	RetentionUnit string `json:"retentionUnit,omitempty"`
+	// +optional
+	RetentionUnit *string `json:"retentionUnit,omitempty"`
 }
 
 type InstanceDatabaseFlags struct {
 	/* Name of the flag. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
+
 	/* Value of the flag. */
-	Value string `json:"value,omitempty"`
+	Value string `json:"value"`
 }
 
 type InstanceInsightsConfig struct {
 	/* True if Query Insights feature is enabled. */
-	QueryInsightsEnabled bool `json:"queryInsightsEnabled,omitempty"`
+	// +optional
+	QueryInsightsEnabled *bool `json:"queryInsightsEnabled,omitempty"`
+
 	/* Maximum query length stored in bytes. Between 256 and 4500. Default to 1024. */
-	QueryStringLength int `json:"queryStringLength,omitempty"`
+	// +optional
+	QueryStringLength *int `json:"queryStringLength,omitempty"`
+
 	/* True if Query Insights will record application tags from query when enabled. */
-	RecordApplicationTags bool `json:"recordApplicationTags,omitempty"`
+	// +optional
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
 	/* True if Query Insights will record client address when enabled. */
-	RecordClientAddress bool `json:"recordClientAddress,omitempty"`
+	// +optional
+	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
 }
 
 type InstanceIpConfiguration struct {
 	/*  */
+	// +optional
 	AuthorizedNetworks []InstanceAuthorizedNetworks `json:"authorizedNetworks,omitempty"`
+
 	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. Either ipv4_enabled must be enabled or a private_network must be configured. */
-	Ipv4Enabled bool `json:"ipv4Enabled,omitempty"`
+	// +optional
+	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
+
 	/*  */
-	PrivateNetworkRef v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
+	// +optional
+	PrivateNetworkRef *v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
+
 	/*  */
-	RequireSsl bool `json:"requireSsl,omitempty"`
+	// +optional
+	RequireSsl *bool `json:"requireSsl,omitempty"`
 }
 
 type InstanceLocationPreference struct {
 	/* A Google App Engine application whose zone to remain in. Must be in the same region as this instance. */
-	FollowGaeApplication string `json:"followGaeApplication,omitempty"`
+	// +optional
+	FollowGaeApplication *string `json:"followGaeApplication,omitempty"`
+
 	/* The preferred compute engine zone. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type InstanceMaintenanceWindow struct {
 	/* Day of week (1-7), starting on Monday */
-	Day int `json:"day,omitempty"`
+	// +optional
+	Day *int `json:"day,omitempty"`
+
 	/* Hour of day (0-23), ignored if day not set */
-	Hour int `json:"hour,omitempty"`
+	// +optional
+	Hour *int `json:"hour,omitempty"`
+
 	/* Receive updates earlier (canary) or later (stable) */
-	UpdateTrack string `json:"updateTrack,omitempty"`
+	// +optional
+	UpdateTrack *string `json:"updateTrack,omitempty"`
 }
 
 type InstancePassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom InstanceValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
 type InstanceReplicaConfiguration struct {
 	/* Immutable. PEM representation of the trusted CA's x509 certificate. */
-	CaCertificate string `json:"caCertificate,omitempty"`
+	// +optional
+	CaCertificate *string `json:"caCertificate,omitempty"`
+
 	/* Immutable. PEM representation of the replica's x509 certificate. */
-	ClientCertificate string `json:"clientCertificate,omitempty"`
+	// +optional
+	ClientCertificate *string `json:"clientCertificate,omitempty"`
+
 	/* Immutable. PEM representation of the replica's private key. The corresponding public key in encoded in the client_certificate. */
-	ClientKey string `json:"clientKey,omitempty"`
+	// +optional
+	ClientKey *string `json:"clientKey,omitempty"`
+
 	/* Immutable. The number of seconds between connect retries. */
-	ConnectRetryInterval int `json:"connectRetryInterval,omitempty"`
+	// +optional
+	ConnectRetryInterval *int `json:"connectRetryInterval,omitempty"`
+
 	/* Immutable. Path to a SQL file in Google Cloud Storage from which replica instances are created. Format is gs://bucket/filename. */
-	DumpFilePath string `json:"dumpFilePath,omitempty"`
+	// +optional
+	DumpFilePath *string `json:"dumpFilePath,omitempty"`
+
 	/* Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance. */
-	FailoverTarget bool `json:"failoverTarget,omitempty"`
+	// +optional
+	FailoverTarget *bool `json:"failoverTarget,omitempty"`
+
 	/* Immutable. Time in ms between replication heartbeats. */
-	MasterHeartbeatPeriod int `json:"masterHeartbeatPeriod,omitempty"`
+	// +optional
+	MasterHeartbeatPeriod *int `json:"masterHeartbeatPeriod,omitempty"`
+
 	/* Immutable. Password for the replication connection. */
-	Password InstancePassword `json:"password,omitempty"`
+	// +optional
+	Password *InstancePassword `json:"password,omitempty"`
+
 	/* Immutable. Permissible ciphers for use in SSL encryption. */
-	SslCipher string `json:"sslCipher,omitempty"`
+	// +optional
+	SslCipher *string `json:"sslCipher,omitempty"`
+
 	/* Immutable. Username for replication connection. */
-	Username string `json:"username,omitempty"`
+	// +optional
+	Username *string `json:"username,omitempty"`
+
 	/* Immutable. True if the master's common name value is checked during the SSL handshake. */
-	VerifyServerCertificate bool `json:"verifyServerCertificate,omitempty"`
+	// +optional
+	VerifyServerCertificate *bool `json:"verifyServerCertificate,omitempty"`
 }
 
 type InstanceRootPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom InstanceValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
 type InstanceSettings struct {
 	/* This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND. */
-	ActivationPolicy string `json:"activationPolicy,omitempty"`
+	// +optional
+	ActivationPolicy *string `json:"activationPolicy,omitempty"`
+
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. A list of Google App Engine project names that are allowed to access this instance. */
+	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
+
 	/* The availability type of the Cloud SQL instance, high availability
 	(REGIONAL) or single zone (ZONAL). For MySQL instances, ensure that
 	settings.backup_configuration.enabled and
 	settings.backup_configuration.binary_log_enabled are both set to true. */
-	AvailabilityType string `json:"availabilityType,omitempty"`
+	// +optional
+	AvailabilityType *string `json:"availabilityType,omitempty"`
+
 	/*  */
-	BackupConfiguration InstanceBackupConfiguration `json:"backupConfiguration,omitempty"`
+	// +optional
+	BackupConfiguration *InstanceBackupConfiguration `json:"backupConfiguration,omitempty"`
+
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled. */
-	CrashSafeReplication bool `json:"crashSafeReplication,omitempty"`
+	// +optional
+	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
+
 	/*  */
+	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
+
 	/*  */
-	DiskAutoresize bool `json:"diskAutoresize,omitempty"`
+	// +optional
+	DiskAutoresize *bool `json:"diskAutoresize,omitempty"`
+
 	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. */
-	DiskSize int `json:"diskSize,omitempty"`
+	// +optional
+	DiskSize *int `json:"diskSize,omitempty"`
+
 	/* The type of data disk: PD_SSD or PD_HDD. */
-	DiskType string `json:"diskType,omitempty"`
+	// +optional
+	DiskType *string `json:"diskType,omitempty"`
+
 	/* Configuration of Query Insights. */
-	InsightsConfig InstanceInsightsConfig `json:"insightsConfig,omitempty"`
+	// +optional
+	InsightsConfig *InstanceInsightsConfig `json:"insightsConfig,omitempty"`
+
 	/*  */
-	IpConfiguration InstanceIpConfiguration `json:"ipConfiguration,omitempty"`
+	// +optional
+	IpConfiguration *InstanceIpConfiguration `json:"ipConfiguration,omitempty"`
+
 	/*  */
-	LocationPreference InstanceLocationPreference `json:"locationPreference,omitempty"`
+	// +optional
+	LocationPreference *InstanceLocationPreference `json:"locationPreference,omitempty"`
+
 	/* Declares a one-hour maintenance window when an Instance can automatically restart to apply updates. The maintenance window is specified in UTC time. */
-	MaintenanceWindow InstanceMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+	// +optional
+	MaintenanceWindow *InstanceMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
 	/* Pricing plan for this instance, can only be PER_USE. */
-	PricingPlan string `json:"pricingPlan,omitempty"`
+	// +optional
+	PricingPlan *string `json:"pricingPlan,omitempty"`
+
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Replication type for this instance, can be one of ASYNCHRONOUS or SYNCHRONOUS. */
-	ReplicationType string `json:"replicationType,omitempty"`
+	// +optional
+	ReplicationType *string `json:"replicationType,omitempty"`
+
 	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types such as db-f1-micro, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
-	Tier string `json:"tier,omitempty"`
+	Tier string `json:"tier"`
 }
 
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {
 	/* Immutable. The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,POSTGRES_11, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
-	DatabaseVersion string `json:"databaseVersion,omitempty"`
+	// +optional
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
 	/*  */
-	EncryptionKMSCryptoKeyRef v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+	// +optional
+	EncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+
 	/*  */
-	MasterInstanceRef v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
+	// +optional
+	MasterInstanceRef *v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
+
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* The configuration for replication. */
-	ReplicaConfiguration InstanceReplicaConfiguration `json:"replicaConfiguration,omitempty"`
+	// +optional
+	ReplicaConfiguration *InstanceReplicaConfiguration `json:"replicaConfiguration,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. Initial root password. Required for MS SQL Server, ignored by MySQL and PostgreSQL. */
-	RootPassword InstanceRootPassword `json:"rootPassword,omitempty"`
+	// +optional
+	RootPassword *InstanceRootPassword `json:"rootPassword,omitempty"`
+
 	/* The settings to use for the database. The configuration is detailed below. */
-	Settings InstanceSettings `json:"settings,omitempty"`
+	Settings InstanceSettings `json:"settings"`
 }
 
 type InstanceIpAddressStatus struct {
@@ -252,6 +366,8 @@ type SQLInstanceStatus struct {
 	FirstIpAddress string `json:"firstIpAddress,omitempty"`
 	/*  */
 	IpAddress []InstanceIpAddressStatus `json:"ipAddress,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	PrivateIpAddress string `json:"privateIpAddress,omitempty"`
 	/*  */

@@ -50,7 +50,9 @@ type AlertpolicyAggregations struct {
 	does not equal ALIGN_NONE, then
 	this field must be defined;
 	otherwise an error is returned. */
-	AlignmentPeriod string `json:"alignmentPeriod,omitempty"`
+	// +optional
+	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
+
 	/* The approach to be used to combine
 	time series. Not all reducer
 	functions may be applied to all
@@ -68,7 +70,9 @@ type AlertpolicyAggregations struct {
 	and alignmentPeriod must be
 	specified; otherwise, an error is
 	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"] */
-	CrossSeriesReducer string `json:"crossSeriesReducer,omitempty"`
+	// +optional
+	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
+
 	/* The set of fields to preserve when
 	crossSeriesReducer is specified.
 	The groupByFields determine how
@@ -94,7 +98,9 @@ type AlertpolicyAggregations struct {
 	time series. If crossSeriesReducer
 	is not defined, this field is
 	ignored. */
+	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
+
 	/* The approach to be used to align
 	individual time series. Not all
 	alignment functions may be applied
@@ -112,7 +118,8 @@ type AlertpolicyAggregations struct {
 	and alignmentPeriod must be
 	specified; otherwise, an error is
 	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"] */
-	PerSeriesAligner string `json:"perSeriesAligner,omitempty"`
+	// +optional
+	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
 type AlertpolicyConditionAbsent struct {
@@ -125,13 +132,16 @@ type AlertpolicyConditionAbsent struct {
 	all members of a group of resources).
 	Multiple aggregations are applied in the
 	order specified. */
+	// +optional
 	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
+
 	/* The amount of time that a time series must
 	fail to report new data to be considered
 	failing. Currently, only values that are a
 	multiple of a minute--e.g. 60s, 120s, or 300s
 	--are supported. */
-	Duration string `json:"duration,omitempty"`
+	Duration string `json:"duration"`
+
 	/* A filter that identifies which time series
 	should be compared with the threshold.The
 	filter is similar to the one that is
@@ -144,14 +154,17 @@ type AlertpolicyConditionAbsent struct {
 	resource labels, and metric labels. This
 	field may not exceed 2048 Unicode characters
 	in length. */
-	Filter string `json:"filter,omitempty"`
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
 	/* The number/percent of time series for which
 	the comparison must hold in order for the
 	condition to trigger. If unspecified, then
 	the condition will trigger if the comparison
 	is true for any of the time series that have
 	been identified by filter and aggregations. */
-	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
+	// +optional
+	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
 type AlertpolicyConditionMonitoringQueryLanguage struct {
@@ -170,9 +183,11 @@ type AlertpolicyConditionMonitoringQueryLanguage struct {
 	generate spurious alerts, but short enough
 	that unhealthy states are detected and
 	alerted on quickly. */
-	Duration string `json:"duration,omitempty"`
+	Duration string `json:"duration"`
+
 	/* Monitoring Query Language query that outputs a boolean stream. */
-	Query string `json:"query,omitempty"`
+	Query string `json:"query"`
+
 	/* The number/percent of time series for which
 	the comparison must hold in order for the
 	condition to trigger. If unspecified, then
@@ -181,7 +196,8 @@ type AlertpolicyConditionMonitoringQueryLanguage struct {
 	been identified by filter and aggregations,
 	or by the ratio, if denominator_filter and
 	denominator_aggregations are specified. */
-	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
+	// +optional
+	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
 type AlertpolicyConditionThreshold struct {
@@ -198,7 +214,9 @@ type AlertpolicyConditionThreshold struct {
 	request. It is advisable to use the
 	ListTimeSeries method when debugging this
 	field. */
+	// +optional
 	Aggregations []AlertpolicyAggregations `json:"aggregations,omitempty"`
+
 	/* The comparison to apply between the time
 	series (indicated by filter and aggregation)
 	and the threshold (indicated by
@@ -207,7 +225,8 @@ type AlertpolicyConditionThreshold struct {
 	the left-hand side and the threshold on the
 	right-hand side. Only COMPARISON_LT and
 	COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"] */
-	Comparison string `json:"comparison,omitempty"`
+	Comparison string `json:"comparison"`
+
 	/* Specifies the alignment of data points in
 	individual time series selected by
 	denominatorFilter as well as how to combine
@@ -224,7 +243,9 @@ type AlertpolicyConditionThreshold struct {
 	the MetricService.ListTimeSeries request. It
 	is advisable to use the ListTimeSeries
 	method when debugging this field. */
+	// +optional
 	DenominatorAggregations []AlertpolicyDenominatorAggregations `json:"denominatorAggregations,omitempty"`
+
 	/* A filter that identifies a time series that
 	should be used as the denominator of a ratio
 	that will be compared with the threshold. If
@@ -240,7 +261,9 @@ type AlertpolicyConditionThreshold struct {
 	resource labels, and metric labels. This
 	field may not exceed 2048 Unicode characters
 	in length. */
-	DenominatorFilter string `json:"denominatorFilter,omitempty"`
+	// +optional
+	DenominatorFilter *string `json:"denominatorFilter,omitempty"`
+
 	/* The amount of time that a time series must
 	violate the threshold to be considered
 	failing. Currently, only values that are a
@@ -256,7 +279,8 @@ type AlertpolicyConditionThreshold struct {
 	generate spurious alerts, but short enough
 	that unhealthy states are detected and
 	alerted on quickly. */
-	Duration string `json:"duration,omitempty"`
+	Duration string `json:"duration"`
+
 	/* A filter that identifies which time series
 	should be compared with the threshold.The
 	filter is similar to the one that is
@@ -269,10 +293,14 @@ type AlertpolicyConditionThreshold struct {
 	resource labels, and metric labels. This
 	field may not exceed 2048 Unicode characters
 	in length. */
-	Filter string `json:"filter,omitempty"`
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
 	/* A value against which to compare the time
 	series. */
-	ThresholdValue float64 `json:"thresholdValue,omitempty"`
+	// +optional
+	ThresholdValue *float64 `json:"thresholdValue,omitempty"`
+
 	/* The number/percent of time series for which
 	the comparison must hold in order for the
 	condition to trigger. If unspecified, then
@@ -281,31 +309,40 @@ type AlertpolicyConditionThreshold struct {
 	been identified by filter and aggregations,
 	or by the ratio, if denominator_filter and
 	denominator_aggregations are specified. */
-	Trigger AlertpolicyTrigger `json:"trigger,omitempty"`
+	// +optional
+	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
 type AlertpolicyConditions struct {
 	/* A condition that checks that a time series
 	continues to receive new data points. */
-	ConditionAbsent AlertpolicyConditionAbsent `json:"conditionAbsent,omitempty"`
+	// +optional
+	ConditionAbsent *AlertpolicyConditionAbsent `json:"conditionAbsent,omitempty"`
+
 	/* A Monitoring Query Language query that outputs a boolean stream */
-	ConditionMonitoringQueryLanguage AlertpolicyConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
+	// +optional
+	ConditionMonitoringQueryLanguage *AlertpolicyConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
+
 	/* A condition that compares a time series against a
 	threshold. */
-	ConditionThreshold AlertpolicyConditionThreshold `json:"conditionThreshold,omitempty"`
+	// +optional
+	ConditionThreshold *AlertpolicyConditionThreshold `json:"conditionThreshold,omitempty"`
+
 	/* A short name or phrase used to identify the
 	condition in dashboards, notifications, and
 	incidents. To avoid confusion, don't use the same
 	display name for multiple conditions in the same
 	policy. */
-	DisplayName string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
+
 	/* The unique resource name for this condition.
 	Its syntax is:
 	projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
 	[CONDITION_ID] is assigned by Stackdriver Monitoring when
 	the condition is created as part of a new or updated alerting
 	policy. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 }
 
 type AlertpolicyDenominatorAggregations struct {
@@ -323,7 +360,9 @@ type AlertpolicyDenominatorAggregations struct {
 	does not equal ALIGN_NONE, then
 	this field must be defined;
 	otherwise an error is returned. */
-	AlignmentPeriod string `json:"alignmentPeriod,omitempty"`
+	// +optional
+	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
+
 	/* The approach to be used to combine
 	time series. Not all reducer
 	functions may be applied to all
@@ -341,7 +380,9 @@ type AlertpolicyDenominatorAggregations struct {
 	and alignmentPeriod must be
 	specified; otherwise, an error is
 	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"] */
-	CrossSeriesReducer string `json:"crossSeriesReducer,omitempty"`
+	// +optional
+	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
+
 	/* The set of fields to preserve when
 	crossSeriesReducer is specified.
 	The groupByFields determine how
@@ -367,7 +408,9 @@ type AlertpolicyDenominatorAggregations struct {
 	time series. If crossSeriesReducer
 	is not defined, this field is
 	ignored. */
+	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
+
 	/* The approach to be used to align
 	individual time series. Not all
 	alignment functions may be applied
@@ -385,7 +428,8 @@ type AlertpolicyDenominatorAggregations struct {
 	and alignmentPeriod must be
 	specified; otherwise, an error is
 	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"] */
-	PerSeriesAligner string `json:"perSeriesAligner,omitempty"`
+	// +optional
+	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
 type AlertpolicyDocumentation struct {
@@ -393,49 +437,65 @@ type AlertpolicyDocumentation struct {
 	The content may not exceed 8,192 Unicode characters and may not
 	exceed more than 10,240 bytes when encoded in UTF-8 format,
 	whichever is smaller. */
-	Content string `json:"content,omitempty"`
+	// +optional
+	Content *string `json:"content,omitempty"`
+
 	/* The format of the content field. Presently, only the value
 	"text/markdown" is supported. */
-	MimeType string `json:"mimeType,omitempty"`
+	// +optional
+	MimeType *string `json:"mimeType,omitempty"`
 }
 
 type AlertpolicyTrigger struct {
 	/* The absolute number of time series
 	that must fail the predicate for the
 	condition to be triggered. */
-	Count int `json:"count,omitempty"`
+	// +optional
+	Count *int `json:"count,omitempty"`
+
 	/* The percentage of time series that
 	must fail the predicate for the
 	condition to be triggered. */
-	Percent float64 `json:"percent,omitempty"`
+	// +optional
+	Percent *float64 `json:"percent,omitempty"`
 }
 
 type MonitoringAlertPolicySpec struct {
 	/* How to combine the results of multiple conditions to
 	determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"] */
-	Combiner string `json:"combiner,omitempty"`
+	Combiner string `json:"combiner"`
+
 	/* A list of conditions for the policy. The conditions are combined by
 	AND or OR according to the combiner field. If the combined conditions
 	evaluate to true, then an incident is created. A policy can have from
 	one to six conditions. */
-	Conditions []AlertpolicyConditions `json:"conditions,omitempty"`
+	Conditions []AlertpolicyConditions `json:"conditions"`
+
 	/* A short name or phrase used to identify the policy in
 	dashboards, notifications, and incidents. To avoid confusion, don't use
 	the same display name for multiple policies in the same project. The
 	name is limited to 512 Unicode characters. */
-	DisplayName string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
+
 	/* Documentation that is included with notifications and incidents related
 	to this policy. Best practice is for the documentation to include information
 	to help responders understand, mitigate, escalate, and correct the underlying
 	problems detected by the alerting policy. Notification channels that have
 	limited capacity might not show this documentation. */
-	Documentation AlertpolicyDocumentation `json:"documentation,omitempty"`
+	// +optional
+	Documentation *AlertpolicyDocumentation `json:"documentation,omitempty"`
+
 	/* Whether or not the policy is enabled. The default is true. */
-	Enabled bool `json:"enabled,omitempty"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/*  */
+	// +optional
 	NotificationChannels []v1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type AlertpolicyCreationRecordStatus struct {
@@ -457,6 +517,8 @@ type MonitoringAlertPolicyStatus struct {
 	/* The unique resource name for this policy.
 	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID] */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -41,23 +41,31 @@ type SQLDatabaseSpec struct {
 	and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
 	for more details and supported values. Postgres databases only support
 	a value of 'UTF8' at creation time. */
-	Charset string `json:"charset,omitempty"`
+	// +optional
+	Charset *string `json:"charset,omitempty"`
+
 	/* The collation value. See MySQL's
 	[Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
 	and Postgres' [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html)
 	for more details and supported values. Postgres databases only support
 	a value of 'en_US.UTF8' at creation time. */
-	Collation string `json:"collation,omitempty"`
+	// +optional
+	Collation *string `json:"collation,omitempty"`
+
 	/* The Cloud SQL instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SQLDatabaseStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLDatabase's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

@@ -37,57 +37,78 @@ import (
 
 type ServiceperimeterResources struct {
 	/*  */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type ServiceperimeterSpec struct {
 	/*  */
+	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+
 	/*  */
+	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
+
 	/* GCP services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
 	'storage.googleapis.com' is specified, access to the storage
 	buckets inside the perimeter must meet the perimeter's access
 	restrictions. */
+	// +optional
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
+
 	/* Specifies how APIs are allowed to communicate within the Service
 	Perimeter. */
-	VpcAccessibleServices ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
+	// +optional
+	VpcAccessibleServices *ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
 }
 
 type ServiceperimeterStatus struct {
 	/*  */
+	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+
 	/*  */
+	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
+
 	/* GCP services that are subject to the Service Perimeter
 	restrictions. Must contain a list of services. For example, if
 	'storage.googleapis.com' is specified, access to the storage
 	buckets inside the perimeter must meet the perimeter's access
 	restrictions. */
+	// +optional
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
+
 	/* Specifies how APIs are allowed to communicate within the Service
 	Perimeter. */
-	VpcAccessibleServices ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
+	// +optional
+	VpcAccessibleServices *ServiceperimeterVpcAccessibleServices `json:"vpcAccessibleServices,omitempty"`
 }
 
 type ServiceperimeterVpcAccessibleServices struct {
 	/* The list of APIs usable within the Service Perimeter.
 	Must be empty unless 'enableRestriction' is True. */
+	// +optional
 	AllowedServices []string `json:"allowedServices,omitempty"`
+
 	/* Whether to restrict API calls within the Service Perimeter to the
 	list of APIs specified in 'allowedServices'. */
-	EnableRestriction bool `json:"enableRestriction,omitempty"`
+	// +optional
+	EnableRestriction *bool `json:"enableRestriction,omitempty"`
 }
 
 type AccessContextManagerServicePerimeterSpec struct {
 	/* The AccessContextManagerAccessPolicy this
 	AccessContextManagerServicePerimeter lives in. */
-	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef,omitempty"`
+	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef"`
+
 	/* Description of the ServicePerimeter and its use. Does not affect
 	behavior. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Specifies the type of the Perimeter. There are two types: regular and
 	bridge. Regular Service Perimeter contains resources, access levels,
 	and restricted services. Every resource can be in at most
@@ -104,20 +125,29 @@ type AccessContextManagerServicePerimeterSpec struct {
 	topologies with many independent perimeters that need to share some data
 	with a common perimeter, but should not be able to share data among
 	themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER_TYPE_REGULAR", "PERIMETER_TYPE_BRIDGE"] */
-	PerimeterType string `json:"perimeterType,omitempty"`
+	// +optional
+	PerimeterType *string `json:"perimeterType,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Proposed (or dry run) ServicePerimeter configuration.
 	This configuration allows to specify and test ServicePerimeter configuration
 	without enforcing actual access restrictions. Only allowed to be set when
 	the 'useExplicitDryRunSpec' flag is set. */
-	Spec ServiceperimeterSpec `json:"spec,omitempty"`
+	// +optional
+	Spec *ServiceperimeterSpec `json:"spec,omitempty"`
+
 	/* ServicePerimeter configuration. Specifies sets of resources,
 	restricted services and access levels that determine
 	perimeter content and boundaries. */
-	Status ServiceperimeterStatus `json:"status,omitempty"`
+	// +optional
+	Status *ServiceperimeterStatus `json:"status,omitempty"`
+
 	/* Human readable title. Must be unique within the Policy. */
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
+
 	/* Use explicit dry run spec flag. Ordinarily, a dry-run spec implicitly exists
 	for all Service Perimeters, and that spec is identical to the status for those
 	Service Perimeters. When this flag is set, it inhibits the generation of the
@@ -127,7 +157,8 @@ type AccessContextManagerServicePerimeterSpec struct {
 	actually enforcing them. This testing is done through analyzing the differences
 	between currently enforced and suggested restrictions. useExplicitDryRunSpec must
 	bet set to True if any of the fields in the spec are set to non-default values. */
-	UseExplicitDryRunSpec bool `json:"useExplicitDryRunSpec,omitempty"`
+	// +optional
+	UseExplicitDryRunSpec *bool `json:"useExplicitDryRunSpec,omitempty"`
 }
 
 type AccessContextManagerServicePerimeterStatus struct {
@@ -136,6 +167,8 @@ type AccessContextManagerServicePerimeterStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the AccessPolicy was created in UTC. */
 	CreateTime string `json:"createTime,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Time the AccessPolicy was updated in UTC. */
 	UpdateTime string `json:"updateTime,omitempty"`
 }

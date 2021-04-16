@@ -37,17 +37,23 @@ import (
 
 type TableColumnFamily struct {
 	/* The name of the column family. */
-	Family string `json:"family,omitempty"`
+	Family string `json:"family"`
 }
 
 type BigtableTableSpec struct {
 	/* A group of columns within a table which share a common configuration. This can be specified multiple times. */
+	// +optional
 	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
+
 	/* The name of the Bigtable instance. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
+	// +optional
 	SplitKeys []string `json:"splitKeys,omitempty"`
 }
 
@@ -55,6 +61,8 @@ type BigtableTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableTable's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

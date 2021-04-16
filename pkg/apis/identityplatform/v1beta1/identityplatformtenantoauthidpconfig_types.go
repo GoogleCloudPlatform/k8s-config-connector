@@ -37,48 +37,73 @@ import (
 
 type TenantoauthidpconfigClientSecret struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom TenantoauthidpconfigValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *TenantoauthidpconfigValueFrom `json:"valueFrom,omitempty"`
 }
 
 type TenantoauthidpconfigResponseType struct {
 	/* If true, authorization code is returned from IdP's authorization endpoint. */
-	Code bool `json:"code,omitempty"`
+	// +optional
+	Code *bool `json:"code,omitempty"`
+
 	/* If true, ID token is returned from IdP's authorization endpoint. */
-	IdToken bool `json:"idToken,omitempty"`
+	// +optional
+	IdToken *bool `json:"idToken,omitempty"`
+
 	/* If true, access token is returned from IdP's authorization endpoint. */
-	Token bool `json:"token,omitempty"`
+	// +optional
+	Token *bool `json:"token,omitempty"`
 }
 
 type TenantoauthidpconfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type IdentityPlatformTenantOAuthIDPConfigSpec struct {
 	/* The client id of an OAuth client. */
-	ClientId string `json:"clientId,omitempty"`
+	// +optional
+	ClientId *string `json:"clientId,omitempty"`
+
 	/* The client secret of the OAuth client, to enable OIDC code flow. */
-	ClientSecret TenantoauthidpconfigClientSecret `json:"clientSecret,omitempty"`
+	// +optional
+	ClientSecret *TenantoauthidpconfigClientSecret `json:"clientSecret,omitempty"`
+
 	/* The config's display name set by developers. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* True if allows the user to sign in with the provider. */
-	Enabled bool `json:"enabled,omitempty"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/* For OIDC Idps, the issuer identifier. */
-	Issuer string `json:"issuer,omitempty"`
+	// +optional
+	Issuer *string `json:"issuer,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g. {id\_token, token}). */
-	ResponseType TenantoauthidpconfigResponseType `json:"responseType,omitempty"`
+	// +optional
+	ResponseType *TenantoauthidpconfigResponseType `json:"responseType,omitempty"`
+
 	/*  */
-	TenantRef v1alpha1.ResourceRef `json:"tenantRef,omitempty"`
+	TenantRef v1alpha1.ResourceRef `json:"tenantRef"`
 }
 
 type IdentityPlatformTenantOAuthIDPConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IdentityPlatformTenantOAuthIDPConfig's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -37,11 +37,16 @@ import (
 
 type NodetemplateNodeTypeFlexibility struct {
 	/* Immutable. Number of virtual CPUs to use. */
-	Cpus string `json:"cpus,omitempty"`
+	// +optional
+	Cpus *string `json:"cpus,omitempty"`
+
 	/* Use local SSD */
-	LocalSsd string `json:"localSsd,omitempty"`
+	// +optional
+	LocalSsd *string `json:"localSsd,omitempty"`
+
 	/* Immutable. Physical memory available to the node, defined in MB. */
-	Memory string `json:"memory,omitempty"`
+	// +optional
+	Memory *string `json:"memory,omitempty"`
 }
 
 type NodetemplateServerBinding struct {
@@ -57,30 +62,42 @@ type NodetemplateServerBinding struct {
 	such as physical sockets or cores, to avoid the need for
 	additional licenses when maintenance occurs. However, VMs on such
 	nodes will experience outages while maintenance is applied. Possible values: ["RESTART_NODE_ON_ANY_SERVER", "RESTART_NODE_ON_MINIMAL_SERVERS"] */
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 }
 
 type ComputeNodeTemplateSpec struct {
 	/* Immutable. CPU overcommit. Default value: "NONE" Possible values: ["ENABLED", "NONE"] */
-	CpuOvercommitType string `json:"cpuOvercommitType,omitempty"`
+	// +optional
+	CpuOvercommitType *string `json:"cpuOvercommitType,omitempty"`
+
 	/* Immutable. An optional textual description of the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Node type to use for nodes group that are created from this template.
 	Only one of nodeTypeFlexibility and nodeType can be specified. */
-	NodeType string `json:"nodeType,omitempty"`
+	// +optional
+	NodeType *string `json:"nodeType,omitempty"`
+
 	/* Immutable. Flexible properties for the desired node type. Node groups that
 	use this node template will create nodes of a type that matches
 	these properties. Only one of nodeTypeFlexibility and nodeType can
 	be specified. */
-	NodeTypeFlexibility NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
+	// +optional
+	NodeTypeFlexibility *NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
+
 	/* Immutable. Region where nodes using the node template will be created.
 	If it is not provided, the provider region is used. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The server binding policy for nodes using this template. Determines
 	where the nodes should restart following a maintenance event. */
-	ServerBinding NodetemplateServerBinding `json:"serverBinding,omitempty"`
+	// +optional
+	ServerBinding *NodetemplateServerBinding `json:"serverBinding,omitempty"`
 }
 
 type ComputeNodeTemplateStatus struct {
@@ -89,6 +106,8 @@ type ComputeNodeTemplateStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

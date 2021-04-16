@@ -38,24 +38,35 @@ import (
 type AppprofileSingleClusterRouting struct {
 	/* If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
 	It is unsafe to send these requests to the same table/row/column in multiple clusters. */
-	AllowTransactionalWrites bool `json:"allowTransactionalWrites,omitempty"`
+	// +optional
+	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
+
 	/* The cluster to which read/write requests should be routed. */
-	ClusterId string `json:"clusterId,omitempty"`
+	ClusterId string `json:"clusterId"`
 }
 
 type BigtableAppProfileSpec struct {
 	/* Long form description of the use case for this app profile. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The instance to create the app profile within. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+
 	/* Immutable. If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
 	in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
 	consistency to improve availability. */
-	MultiClusterRoutingUseAny bool `json:"multiClusterRoutingUseAny,omitempty"`
+	// +optional
+	MultiClusterRoutingUseAny *bool `json:"multiClusterRoutingUseAny,omitempty"`
+
 	/* Immutable. Optional. The appProfileId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Use a single-cluster routing policy. */
-	SingleClusterRouting AppprofileSingleClusterRouting `json:"singleClusterRouting,omitempty"`
+	// +optional
+	SingleClusterRouting *AppprofileSingleClusterRouting `json:"singleClusterRouting,omitempty"`
 }
 
 type BigtableAppProfileStatus struct {
@@ -64,6 +75,8 @@ type BigtableAppProfileStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique name of the requested app profile. Values are of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'. */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

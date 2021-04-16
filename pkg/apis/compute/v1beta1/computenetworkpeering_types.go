@@ -37,25 +37,38 @@ import (
 
 type ComputeNetworkPeeringSpec struct {
 	/* Whether to export the custom routes to the peer network. Defaults to false. */
-	ExportCustomRoutes bool `json:"exportCustomRoutes,omitempty"`
+	// +optional
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+
 	/* Immutable. */
-	ExportSubnetRoutesWithPublicIp bool `json:"exportSubnetRoutesWithPublicIp,omitempty"`
+	// +optional
+	ExportSubnetRoutesWithPublicIp *bool `json:"exportSubnetRoutesWithPublicIp,omitempty"`
+
 	/* Whether to export the custom routes from the peer network. Defaults to false. */
-	ImportCustomRoutes bool `json:"importCustomRoutes,omitempty"`
+	// +optional
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+
 	/* Immutable. */
-	ImportSubnetRoutesWithPublicIp bool `json:"importSubnetRoutesWithPublicIp,omitempty"`
+	// +optional
+	ImportSubnetRoutesWithPublicIp *bool `json:"importSubnetRoutesWithPublicIp,omitempty"`
+
 	/*  */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+
 	/*  */
-	PeerNetworkRef v1alpha1.ResourceRef `json:"peerNetworkRef,omitempty"`
+	PeerNetworkRef v1alpha1.ResourceRef `json:"peerNetworkRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeNetworkPeeringStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkPeering's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network. */
 	State string `json:"state,omitempty"`
 	/* Details about the current state of the peering. */

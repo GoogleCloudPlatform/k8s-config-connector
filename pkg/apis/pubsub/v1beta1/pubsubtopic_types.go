@@ -42,7 +42,7 @@ type TopicMessageStoragePolicy struct {
 	of GCP altogether) will be routed for storage in one of the
 	allowed regions. An empty list means that no regions are allowed,
 	and is not a valid configuration. */
-	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions,omitempty"`
+	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
 }
 
 type PubSubTopicSpec struct {
@@ -51,19 +51,26 @@ type PubSubTopicSpec struct {
 	('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
 	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 	feature. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Policy constraining the set of Google Cloud Platform regions where
 	messages published to the topic may be stored. If not present, then no
 	constraints are in effect. */
-	MessageStoragePolicy TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
+	// +optional
+	MessageStoragePolicy *TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type PubSubTopicStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubTopic's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

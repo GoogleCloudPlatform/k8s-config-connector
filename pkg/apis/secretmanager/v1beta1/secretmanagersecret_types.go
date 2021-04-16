@@ -37,27 +37,32 @@ import (
 
 type SecretReplicas struct {
 	/* The canonical IDs of the location to replicate data. For example: "us-east1". */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
 }
 
 type SecretReplication struct {
 	/* The Secret will automatically be replicated without any restrictions. */
-	Automatic bool `json:"automatic,omitempty"`
+	// +optional
+	Automatic *bool `json:"automatic,omitempty"`
+
 	/* The Secret will automatically be replicated without any restrictions. */
-	UserManaged SecretUserManaged `json:"userManaged,omitempty"`
+	// +optional
+	UserManaged *SecretUserManaged `json:"userManaged,omitempty"`
 }
 
 type SecretUserManaged struct {
 	/* The list of Replicas for this Secret. Cannot be empty. */
-	Replicas []SecretReplicas `json:"replicas,omitempty"`
+	Replicas []SecretReplicas `json:"replicas"`
 }
 
 type SecretManagerSecretSpec struct {
 	/* Immutable. The replication policy of the secret data attached to the Secret. It cannot be changed
 	after the Secret has been created. */
-	Replication SecretReplication `json:"replication,omitempty"`
+	Replication SecretReplication `json:"replication"`
+
 	/* Immutable. Optional. The secretId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SecretManagerSecretStatus struct {
@@ -69,6 +74,8 @@ type SecretManagerSecretStatus struct {
 	/* The resource name of the Secret. Format:
 	'projects/{{project}}/secrets/{{secret_id}}' */
 	Name string `json:"name,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

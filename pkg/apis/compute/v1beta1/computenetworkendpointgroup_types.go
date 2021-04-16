@@ -38,27 +38,40 @@ import (
 type ComputeNetworkEndpointGroupSpec struct {
 	/* Immutable. The default port used if the port number is not specified in the
 	network endpoint. */
-	DefaultPort int `json:"defaultPort,omitempty"`
+	// +optional
+	DefaultPort *int `json:"defaultPort,omitempty"`
+
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. Type of network endpoints in this network endpoint group. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT"] */
-	NetworkEndpointType string `json:"networkEndpointType,omitempty"`
+	// +optional
+	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
+
 	/* The network to which all network endpoints in the NEG belong. Uses
 	"default" project network if unspecified. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Optional subnetwork to which all network endpoints in the NEG belong. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ComputeNetworkEndpointGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkEndpointGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* Number of network endpoints in the network endpoint group. */

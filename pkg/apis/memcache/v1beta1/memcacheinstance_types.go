@@ -37,39 +37,57 @@ import (
 
 type InstanceMemcacheParameters struct {
 	/* This is a unique ID associated with this set of parameters. */
-	Id string `json:"id,omitempty"`
+	// +optional
+	Id *string `json:"id,omitempty"`
+
 	/* User-defined set of parameters to use in the memcache process. */
+	// +optional
 	Params map[string]string `json:"params,omitempty"`
 }
 
 type InstanceNodeConfig struct {
 	/* Number of CPUs per node. */
-	CpuCount int `json:"cpuCount,omitempty"`
+	CpuCount int `json:"cpuCount"`
+
 	/* Memory size in Mebibytes for each memcache node. */
-	MemorySizeMb int `json:"memorySizeMb,omitempty"`
+	MemorySizeMb int `json:"memorySizeMb"`
 }
 
 type MemcacheInstanceSpec struct {
 	/* A user-visible name for the instance. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* Immutable. User-specified parameters for this memcache instance. */
-	MemcacheParameters InstanceMemcacheParameters `json:"memcacheParameters,omitempty"`
+	// +optional
+	MemcacheParameters *InstanceMemcacheParameters `json:"memcacheParameters,omitempty"`
+
 	/* The major version of Memcached software. If not provided, latest supported version will be used.
 	Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically
 	determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"] */
-	MemcacheVersion string `json:"memcacheVersion,omitempty"`
+	// +optional
+	MemcacheVersion *string `json:"memcacheVersion,omitempty"`
+
 	/* The full name of the network to connect the instance to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. Configuration for memcache nodes. */
-	NodeConfig InstanceNodeConfig `json:"nodeConfig,omitempty"`
+	NodeConfig InstanceNodeConfig `json:"nodeConfig"`
+
 	/* Number of nodes in the memcache instance. */
-	NodeCount int `json:"nodeCount,omitempty"`
+	NodeCount int `json:"nodeCount"`
+
 	/* Immutable. The region of the Memcache instance. If it is not provided, the provider region is used. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. Zones where memcache nodes should be provisioned.  If not
 	provided, all zones will be used. */
+	// +optional
 	Zones []string `json:"zones,omitempty"`
 }
 
@@ -102,6 +120,8 @@ type MemcacheInstanceStatus struct {
 	MemcacheFullVersion string `json:"memcacheFullVersion,omitempty"`
 	/* Additional information about the instance state, if available. */
 	MemcacheNodes []InstanceMemcacheNodesStatus `json:"memcacheNodes,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

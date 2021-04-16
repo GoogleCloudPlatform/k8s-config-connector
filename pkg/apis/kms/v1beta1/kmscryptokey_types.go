@@ -38,35 +38,49 @@ import (
 type CryptokeyVersionTemplate struct {
 	/* The algorithm to use when creating a version based on this template.
 	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
-	Algorithm string `json:"algorithm,omitempty"`
+	Algorithm string `json:"algorithm"`
+
 	/* Immutable. The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"] */
-	ProtectionLevel string `json:"protectionLevel,omitempty"`
+	// +optional
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
 
 type KMSCryptoKeySpec struct {
 	/* The KMSKeyRing that this key belongs to. */
-	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef,omitempty"`
+	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef"`
+
 	/* Immutable. The immutable purpose of this CryptoKey. See the
 	[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
 	for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"] */
-	Purpose string `json:"purpose,omitempty"`
+	// +optional
+	Purpose *string `json:"purpose,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
 	The first rotation will take place after the specified period. The rotation period has
 	the format of a decimal number with up to 9 fractional digits, followed by the
 	letter 's' (seconds). It must be greater than a day (ie, 86400). */
-	RotationPeriod string `json:"rotationPeriod,omitempty"`
+	// +optional
+	RotationPeriod *string `json:"rotationPeriod,omitempty"`
+
 	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. */
-	SkipInitialVersionCreation bool `json:"skipInitialVersionCreation,omitempty"`
+	// +optional
+	SkipInitialVersionCreation *bool `json:"skipInitialVersionCreation,omitempty"`
+
 	/* A template describing settings for new crypto key versions. */
-	VersionTemplate CryptokeyVersionTemplate `json:"versionTemplate,omitempty"`
+	// +optional
+	VersionTemplate *CryptokeyVersionTemplate `json:"versionTemplate,omitempty"`
 }
 
 type KMSCryptoKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   KMSCryptoKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider. The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }

@@ -37,42 +37,58 @@ import (
 
 type SecuritypolicyConfig struct {
 	/* Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior). */
-	SrcIpRanges []string `json:"srcIpRanges,omitempty"`
+	SrcIpRanges []string `json:"srcIpRanges"`
 }
 
 type SecuritypolicyExpr struct {
 	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
-	Expression string `json:"expression,omitempty"`
+	Expression string `json:"expression"`
 }
 
 type SecuritypolicyMatch struct {
 	/* The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified. */
-	Config SecuritypolicyConfig `json:"config,omitempty"`
+	// +optional
+	Config *SecuritypolicyConfig `json:"config,omitempty"`
+
 	/* User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. */
-	Expr SecuritypolicyExpr `json:"expr,omitempty"`
+	// +optional
+	Expr *SecuritypolicyExpr `json:"expr,omitempty"`
+
 	/* Predefined rule expression. If this field is specified, config must also be specified. Available options:   SRC_IPS_V1: Must specify the corresponding src_ip_ranges field in config. */
-	VersionedExpr string `json:"versionedExpr,omitempty"`
+	// +optional
+	VersionedExpr *string `json:"versionedExpr,omitempty"`
 }
 
 type SecuritypolicyRule struct {
 	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502) */
-	Action string `json:"action,omitempty"`
+	Action string `json:"action"`
+
 	/* An optional description of this rule. Max size is 64. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding action is enforced. */
-	Match SecuritypolicyMatch `json:"match,omitempty"`
+	Match SecuritypolicyMatch `json:"match"`
+
 	/* When set to true, the action specified above is not enforced. Stackdriver logs for requests that trigger a preview action are annotated as such. */
-	Preview bool `json:"preview,omitempty"`
+	// +optional
+	Preview *bool `json:"preview,omitempty"`
+
 	/* An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order. */
-	Priority int `json:"priority,omitempty"`
+	Priority int `json:"priority"`
 }
 
 type ComputeSecurityPolicySpec struct {
 	/* An optional description of this security policy. Max size is 2048. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added. */
+	// +optional
 	Rule []SecuritypolicyRule `json:"rule,omitempty"`
 }
 
@@ -82,6 +98,8 @@ type ComputeSecurityPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Fingerprint of this resource. */
 	Fingerprint string `json:"fingerprint,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The URI of the created resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 }

@@ -42,20 +42,27 @@ type SpannerInstanceSpec struct {
 	is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc.
 	In order to obtain a valid list please consult the
 	[Configuration section of the docs](https://cloud.google.com/spanner/docs/instances). */
-	Config string `json:"config,omitempty"`
+	Config string `json:"config"`
+
 	/* The descriptive name for this instance as it appears in UIs. Must be
 	unique per project and between 4 and 30 characters in length. */
-	DisplayName string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
+
 	/* The number of nodes allocated to this instance. */
-	NumNodes int `json:"numNodes,omitempty"`
+	// +optional
+	NumNodes *int `json:"numNodes,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type SpannerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SpannerInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Instance status: 'CREATING' or 'READY'. */
 	State string `json:"state,omitempty"`
 }

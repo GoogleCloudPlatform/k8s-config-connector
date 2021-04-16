@@ -37,59 +37,86 @@ import (
 
 type PolicyAllow struct {
 	/* The policy allows or denies all values. */
-	All bool `json:"all,omitempty"`
+	// +optional
+	All *bool `json:"all,omitempty"`
+
 	/* The policy can define specific values that are allowed or denied. */
+	// +optional
 	Values []string `json:"values,omitempty"`
 }
 
 type PolicyBooleanPolicy struct {
 	/* If true, then the Policy is enforced. If false, then any configuration is acceptable. */
-	Enforced bool `json:"enforced,omitempty"`
+	Enforced bool `json:"enforced"`
 }
 
 type PolicyDeny struct {
 	/* The policy allows or denies all values. */
-	All bool `json:"all,omitempty"`
+	// +optional
+	All *bool `json:"all,omitempty"`
+
 	/* The policy can define specific values that are allowed or denied. */
+	// +optional
 	Values []string `json:"values,omitempty"`
 }
 
 type PolicyListPolicy struct {
 	/* One or the other must be set. */
-	Allow PolicyAllow `json:"allow,omitempty"`
+	// +optional
+	Allow *PolicyAllow `json:"allow,omitempty"`
+
 	/* One or the other must be set. */
-	Deny PolicyDeny `json:"deny,omitempty"`
+	// +optional
+	Deny *PolicyDeny `json:"deny,omitempty"`
+
 	/* If set to true, the values from the effective Policy of the parent resource are inherited, meaning the values set in this Policy are added to the values inherited up the hierarchy. */
-	InheritFromParent bool `json:"inheritFromParent,omitempty"`
+	// +optional
+	InheritFromParent *bool `json:"inheritFromParent,omitempty"`
+
 	/* The Google Cloud Console will try to default to a configuration that matches the value specified in this field. */
-	SuggestedValue string `json:"suggestedValue,omitempty"`
+	// +optional
+	SuggestedValue *string `json:"suggestedValue,omitempty"`
 }
 
 type PolicyRestorePolicy struct {
 	/* May only be set to true. If set, then the default Policy is restored. */
-	Default bool `json:"default,omitempty"`
+	Default bool `json:"default"`
 }
 
 type ResourceManagerPolicySpec struct {
 	/* A boolean policy is a constraint that is either enforced or not. */
-	BooleanPolicy PolicyBooleanPolicy `json:"booleanPolicy,omitempty"`
+	// +optional
+	BooleanPolicy *PolicyBooleanPolicy `json:"booleanPolicy,omitempty"`
+
 	/* Immutable. The name of the Constraint the Policy is configuring, for example, serviceuser.services. */
-	Constraint string `json:"constraint,omitempty"`
+	Constraint string `json:"constraint"`
+
 	/* The folder on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
 	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values.  */
-	ListPolicy PolicyListPolicy `json:"listPolicy,omitempty"`
+	// +optional
+	ListPolicy *PolicyListPolicy `json:"listPolicy,omitempty"`
+
 	/* The organization on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* The project on which to configure the constraint. Only one of
 	projectRef, folderRef, or organizationRef may be specified. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
 	/* A restore policy is a constraint to restore the default policy. */
-	RestorePolicy PolicyRestorePolicy `json:"restorePolicy,omitempty"`
+	// +optional
+	RestorePolicy *PolicyRestorePolicy `json:"restorePolicy,omitempty"`
+
 	/* Version of the Policy. Default version is 0. */
-	Version int `json:"version,omitempty"`
+	// +optional
+	Version *int `json:"version,omitempty"`
 }
 
 type ResourceManagerPolicyStatus struct {
@@ -98,6 +125,8 @@ type ResourceManagerPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
 	Etag string `json:"etag,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
 	UpdateTime string `json:"updateTime,omitempty"`
 }

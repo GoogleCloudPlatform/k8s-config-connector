@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.45.0
+    cnrm.cloud.google.com/version: 1.46.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -67,7 +67,7 @@ spec:
         spec:
           properties:
             autoscaling:
-              description: Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage.
+              description: Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0.
               properties:
                 maxNodeCount:
                   description: Maximum number of nodes in the NodePool. Must be >= min_node_count.
@@ -379,6 +379,9 @@ spec:
               items:
                 type: string
               type: array
+            observedGeneration:
+              description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+              type: integer
             operation:
               type: string
           type: object

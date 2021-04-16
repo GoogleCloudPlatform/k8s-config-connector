@@ -40,58 +40,85 @@ type RedisInstanceSpec struct {
 	against zonal failures by provisioning it across two zones.
 	If provided, it must be a different zone from the one provided in
 	[locationId]. */
-	AlternativeLocationId string `json:"alternativeLocationId,omitempty"`
+	// +optional
+	AlternativeLocationId *string `json:"alternativeLocationId,omitempty"`
+
 	/* Optional. Indicates whether OSS Redis AUTH is enabled for the
 	instance. If set to "true" AUTH is enabled on the instance.
 	Default value is "false" meaning AUTH is disabled. */
-	AuthEnabled bool `json:"authEnabled,omitempty"`
+	// +optional
+	AuthEnabled *bool `json:"authEnabled,omitempty"`
+
 	/* AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
-	AuthString string `json:"authString,omitempty"`
+	// +optional
+	AuthString *string `json:"authString,omitempty"`
+
 	/* The network to which the instance is connected. If left
 	unspecified, the default network will be used. */
-	AuthorizedNetworkRef v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
+	// +optional
+	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
+
 	/* Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"] */
-	ConnectMode string `json:"connectMode,omitempty"`
+	// +optional
+	ConnectMode *string `json:"connectMode,omitempty"`
+
 	/* An arbitrary and optional user-provided name for the instance. */
-	DisplayName string `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* Immutable. The zone where the instance will be provisioned. If not provided,
 	the service will choose a zone for the instance. For STANDARD_HA tier,
 	instances will be created across two zones for protection against
 	zonal failures. If [alternativeLocationId] is also provided, it must
 	be different from [locationId]. */
-	LocationId string `json:"locationId,omitempty"`
+	// +optional
+	LocationId *string `json:"locationId,omitempty"`
+
 	/* Redis memory size in GiB. */
-	MemorySizeGb int `json:"memorySizeGb,omitempty"`
+	MemorySizeGb int `json:"memorySizeGb"`
+
 	/* Redis configuration parameters, according to http://redis.io/topics/config.
 	Please check Memorystore documentation for the list of supported parameters:
 	https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs */
+	// +optional
 	RedisConfigs map[string]string `json:"redisConfigs,omitempty"`
+
 	/* Immutable. The version of Redis software. If not provided, latest supported
 	version will be used. Currently, the supported values are:
 
 	- REDIS_5_0 for Redis 5.0 compatibility
 	- REDIS_4_0 for Redis 4.0 compatibility
 	- REDIS_3_2 for Redis 3.2 compatibility */
-	RedisVersion string `json:"redisVersion,omitempty"`
+	// +optional
+	RedisVersion *string `json:"redisVersion,omitempty"`
+
 	/* Immutable. The name of the Redis region of the instance. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. The CIDR range of internal addresses that are reserved for this
 	instance. If not provided, the service will choose an unused /29
 	block, for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be
 	unique and non-overlapping with existing subnets in an authorized
 	network. */
-	ReservedIpRange string `json:"reservedIpRange,omitempty"`
+	// +optional
+	ReservedIpRange *string `json:"reservedIpRange,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The service tier of the instance. Must be one of these values:
 
 	- BASIC: standalone instance
 	- STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"] */
-	Tier string `json:"tier,omitempty"`
+	// +optional
+	Tier *string `json:"tier,omitempty"`
+
 	/* Immutable. The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
 
 	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentcation Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"] */
-	TransitEncryptionMode string `json:"transitEncryptionMode,omitempty"`
+	// +optional
+	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {
@@ -127,6 +154,8 @@ type RedisInstanceStatus struct {
 	/* Hostname or IP address of the exposed Redis endpoint used by clients
 	to connect to the service. */
 	Host string `json:"host,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. Cloud IAM identity used by import / export operations
 	to transfer data to/from Cloud Storage. Format is "serviceAccount:".
 	The value may change over time for a given instance so should be

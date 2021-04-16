@@ -37,18 +37,24 @@ import (
 
 type ProjectSpec struct {
 	/*  */
-	BillingAccountRef v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+	// +optional
+	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+
 	/* The folder that this resource belongs to. Changing this forces the
 	resource to be migrated to the newly specified folder. Only one of
 	folderRef or organizationRef may be specified. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
 	/* The display name of the project. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
+
 	/* The organization that this resource belongs to. Changing this
 	forces the resource to be migrated to the newly specified
 	organization. Only one of folderRef or organizationRef may be
 	specified. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 }
 
 type ProjectStatus struct {
@@ -57,6 +63,8 @@ type ProjectStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The numeric identifier of the project. */
 	Number string `json:"number,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

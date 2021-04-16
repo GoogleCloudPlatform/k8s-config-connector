@@ -43,37 +43,66 @@ type JobTransformNameMapping struct {
 
 type DataflowJobSpec struct {
 	/* List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"]. */
+	// +optional
 	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
+
 	/* Indicates if the job should use the streaming engine feature. */
-	EnableStreamingEngine bool `json:"enableStreamingEngine,omitempty"`
+	// +optional
+	EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
+
 	/* The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE". */
-	IpConfiguration string `json:"ipConfiguration,omitempty"`
+	// +optional
+	IpConfiguration *string `json:"ipConfiguration,omitempty"`
+
 	/* The name for the Cloud KMS key for the job. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* The machine type to use for the job. */
-	MachineType string `json:"machineType,omitempty"`
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+
 	/* Immutable. The number of workers permitted to work on the job. More workers may improve processing speed at additional cost. */
-	MaxWorkers int `json:"maxWorkers,omitempty"`
+	// +optional
+	MaxWorkers *int `json:"maxWorkers,omitempty"`
+
 	/*  */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Key/Value pairs to be passed to the Dataflow job (as used in the template). */
-	Parameters JobParameters `json:"parameters,omitempty"`
+	// +optional
+	Parameters *JobParameters `json:"parameters,omitempty"`
+
 	/* Immutable. The region in which the created job should run. */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/*  */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
 	/*  */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+
 	/* A writeable location on Google Cloud Storage for the Dataflow job to dump its temporary data. */
-	TempGcsLocation string `json:"tempGcsLocation,omitempty"`
+	TempGcsLocation string `json:"tempGcsLocation"`
+
 	/* The Google Cloud Storage path to the Dataflow job template. */
-	TemplateGcsPath string `json:"templateGcsPath,omitempty"`
+	TemplateGcsPath string `json:"templateGcsPath"`
+
 	/* Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. */
-	TransformNameMapping JobTransformNameMapping `json:"transformNameMapping,omitempty"`
+	// +optional
+	TransformNameMapping *JobTransformNameMapping `json:"transformNameMapping,omitempty"`
+
 	/* Immutable. The zone in which the created job should run. If it is not provided, the provider zone is used. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type DataflowJobStatus struct {
@@ -82,6 +111,8 @@ type DataflowJobStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique ID of this job. */
 	JobId string `json:"jobId,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The current state of the resource, selected from the JobState enum. */
 	State string `json:"state,omitempty"`
 	/* The type of this job, selected from the JobType enum. */

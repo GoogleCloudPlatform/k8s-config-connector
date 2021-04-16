@@ -37,100 +37,132 @@ import (
 
 type ResourcepolicyDailySchedule struct {
 	/* Immutable. The number of days between snapshots. */
-	DaysInCycle int `json:"daysInCycle,omitempty"`
+	DaysInCycle int `json:"daysInCycle"`
+
 	/* Immutable. This must be in UTC format that resolves to one of
 	00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example,
 	both 13:00-5 and 08:00 are valid. */
-	StartTime string `json:"startTime,omitempty"`
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyDayOfWeeks struct {
 	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"] */
-	Day string `json:"day,omitempty"`
+	Day string `json:"day"`
+
 	/* Immutable. Time within the window to start the operations.
 	It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
-	StartTime string `json:"startTime,omitempty"`
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyGroupPlacementPolicy struct {
 	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
 	availability domain, they will not be put in the same low latency network */
-	AvailabilityDomainCount int `json:"availabilityDomainCount,omitempty"`
+	// +optional
+	AvailabilityDomainCount *int `json:"availabilityDomainCount,omitempty"`
+
 	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
 	Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
 	with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
 	attached. Possible values: ["COLLOCATED"] */
-	Collocation string `json:"collocation,omitempty"`
+	// +optional
+	Collocation *string `json:"collocation,omitempty"`
+
 	/* Immutable. Number of vms in this placement group. */
-	VmCount int `json:"vmCount,omitempty"`
+	// +optional
+	VmCount *int `json:"vmCount,omitempty"`
 }
 
 type ResourcepolicyHourlySchedule struct {
 	/* Immutable. The number of hours between snapshots. */
-	HoursInCycle int `json:"hoursInCycle,omitempty"`
+	HoursInCycle int `json:"hoursInCycle"`
+
 	/* Immutable. Time within the window to start the operations.
 	It must be in an hourly format "HH:MM",
 	where HH : [00-23] and MM : [00] GMT.
 	eg: 21:00 */
-	StartTime string `json:"startTime,omitempty"`
+	StartTime string `json:"startTime"`
 }
 
 type ResourcepolicyRetentionPolicy struct {
 	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
-	MaxRetentionDays int `json:"maxRetentionDays,omitempty"`
+	MaxRetentionDays int `json:"maxRetentionDays"`
+
 	/* Immutable. Specifies the behavior to apply to scheduled snapshots when
 	the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"] */
-	OnSourceDiskDelete string `json:"onSourceDiskDelete,omitempty"`
+	// +optional
+	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
 }
 
 type ResourcepolicySchedule struct {
 	/* Immutable. The policy will execute every nth day at the specified time. */
-	DailySchedule ResourcepolicyDailySchedule `json:"dailySchedule,omitempty"`
+	// +optional
+	DailySchedule *ResourcepolicyDailySchedule `json:"dailySchedule,omitempty"`
+
 	/* Immutable. The policy will execute every nth hour starting at the specified time. */
-	HourlySchedule ResourcepolicyHourlySchedule `json:"hourlySchedule,omitempty"`
+	// +optional
+	HourlySchedule *ResourcepolicyHourlySchedule `json:"hourlySchedule,omitempty"`
+
 	/* Immutable. Allows specifying a snapshot time for each day of the week. */
-	WeeklySchedule ResourcepolicyWeeklySchedule `json:"weeklySchedule,omitempty"`
+	// +optional
+	WeeklySchedule *ResourcepolicyWeeklySchedule `json:"weeklySchedule,omitempty"`
 }
 
 type ResourcepolicySnapshotProperties struct {
 	/* Immutable. Whether to perform a 'guest aware' snapshot. */
-	GuestFlush bool `json:"guestFlush,omitempty"`
+	// +optional
+	GuestFlush *bool `json:"guestFlush,omitempty"`
+
 	/* Immutable. A set of key-value pairs. */
+	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Immutable. Cloud Storage bucket location to store the auto snapshot
 	(regional or multi-regional) */
+	// +optional
 	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 
 type ResourcepolicySnapshotSchedulePolicy struct {
 	/* Immutable. Retention policy applied to snapshots created by this resource policy. */
-	RetentionPolicy ResourcepolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
+	// +optional
+	RetentionPolicy *ResourcepolicyRetentionPolicy `json:"retentionPolicy,omitempty"`
+
 	/* Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'. */
-	Schedule ResourcepolicySchedule `json:"schedule,omitempty"`
+	Schedule ResourcepolicySchedule `json:"schedule"`
+
 	/* Immutable. Properties with which the snapshots are created, such as labels. */
-	SnapshotProperties ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
+	// +optional
+	SnapshotProperties *ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
 }
 
 type ResourcepolicyWeeklySchedule struct {
 	/* Immutable. May contain up to seven (one for each day of the week) snapshot times. */
-	DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks,omitempty"`
+	DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks"`
 }
 
 type ComputeResourcePolicySpec struct {
 	/* Immutable. Resource policy for instances used for placement configuration. */
-	GroupPlacementPolicy ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+	// +optional
+	GroupPlacementPolicy *ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+
 	/* Immutable. Region where resource policy resides. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. Policy for creating snapshots of persistent disks. */
-	SnapshotSchedulePolicy ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
+	// +optional
+	SnapshotSchedulePolicy *ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
 }
 
 type ComputeResourcePolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeResourcePolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

@@ -37,17 +37,24 @@ import (
 
 type IAPBrandSpec struct {
 	/* Application name displayed on OAuth consent screen. */
-	ApplicationTitle string `json:"applicationTitle,omitempty"`
+	// +optional
+	ApplicationTitle *string `json:"applicationTitle,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Support email displayed on the OAuth consent screen. */
-	SupportEmail string `json:"supportEmail,omitempty"`
+	// +optional
+	SupportEmail *string `json:"supportEmail,omitempty"`
 }
 
 type IAPBrandStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAPBrand's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. Whether the brand is only intended for usage inside the G Suite organization only. */
 	OrgInternalOnly bool `json:"orgInternalOnly,omitempty"`
 }

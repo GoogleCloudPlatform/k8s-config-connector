@@ -37,35 +37,49 @@ import (
 
 type UserPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
+
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	ValueFrom UserValueFrom `json:"valueFrom,omitempty"`
+	// +optional
+	ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
 }
 
 type UserValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	SecretKeyRef v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
 }
 
 type SQLUserSpec struct {
 	/* Immutable. The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
+
 	/*  */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+
 	/* The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
 	   either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT. */
-	Password UserPassword `json:"password,omitempty"`
+	// +optional
+	Password *UserPassword `json:"password,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The user type. It determines the method to authenticate the user during login.
 	   The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT". */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type SQLUserStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLUser's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -38,17 +38,21 @@ import (
 type ForwardingruleFilterLabels struct {
 	/* Immutable. Name of the metadata label. The length must be between
 	1 and 1024 characters, inclusive. */
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
+
 	/* Immutable. The value that the label must match. The value has a maximum
 	length of 1024 characters. */
-	Value string `json:"value,omitempty"`
+	Value string `json:"value"`
 }
 
 type ForwardingruleIpAddress struct {
 	/*  */
-	AddressRef v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	// +optional
+	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+
 	/*  */
-	Ip string `json:"ip,omitempty"`
+	// +optional
+	Ip *string `json:"ip,omitempty"`
 }
 
 type ForwardingruleMetadataFilters struct {
@@ -56,7 +60,8 @@ type ForwardingruleMetadataFilters struct {
 	provided metadata based on filterMatchCriteria
 
 	This list must not be empty and can have at the most 64 entries. */
-	FilterLabels []ForwardingruleFilterLabels `json:"filterLabels,omitempty"`
+	FilterLabels []ForwardingruleFilterLabels `json:"filterLabels"`
+
 	/* Immutable. Specifies how individual filterLabel matches within the list of
 	filterLabels contribute towards the overall metadataFilter match.
 
@@ -64,22 +69,33 @@ type ForwardingruleMetadataFilters struct {
 	label in the provided metadata.
 	MATCH_ALL - All filterLabels must have matching labels in the
 	provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"] */
-	FilterMatchCriteria string `json:"filterMatchCriteria,omitempty"`
+	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
 type ForwardingruleTarget struct {
 	/*  */
-	TargetGRPCProxyRef v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
+	// +optional
+	TargetGRPCProxyRef *v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
+
 	/*  */
-	TargetHTTPProxyRef v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
+	// +optional
+	TargetHTTPProxyRef *v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
+
 	/*  */
-	TargetHTTPSProxyRef v1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
+	// +optional
+	TargetHTTPSProxyRef *v1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
+
 	/*  */
-	TargetSSLProxyRef v1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
+	// +optional
+	TargetSSLProxyRef *v1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
+
 	/*  */
-	TargetTCPProxyRef v1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
+	// +optional
+	TargetTCPProxyRef *v1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
+
 	/*  */
-	TargetVPNGatewayRef v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
+	// +optional
+	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
 type ComputeForwardingRuleSpec struct {
@@ -88,16 +104,24 @@ type ComputeForwardingRuleSpec struct {
 	addressed to any ports to be forwarded to the backends configured
 	with this forwarding rule. Used with backend service. Cannot be set
 	if port or portRange are set. */
-	AllPorts bool `json:"allPorts,omitempty"`
+	// +optional
+	AllPorts *bool `json:"allPorts,omitempty"`
+
 	/* If true, clients can access ILB from all regions.
 	Otherwise only allows from the local region the ILB is located at. */
-	AllowGlobalAccess bool `json:"allowGlobalAccess,omitempty"`
+	// +optional
+	AllowGlobalAccess *bool `json:"allowGlobalAccess,omitempty"`
+
 	/* A ComputeBackendService to receive the matched traffic. This is
 	used only for internal load balancing. */
-	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	// +optional
+	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The IP address that this forwarding rule is serving on behalf of.
 
 	Addresses are restricted based on the forwarding rule's load
@@ -117,21 +141,29 @@ type ComputeForwardingRuleSpec struct {
 	forwarding rule. By default, if this field is empty, an ephemeral
 	internal IP address will be automatically allocated from the IP
 	range of the subnet or network configured for this forwarding rule. */
-	IpAddress ForwardingruleIpAddress `json:"ipAddress,omitempty"`
+	// +optional
+	IpAddress *ForwardingruleIpAddress `json:"ipAddress,omitempty"`
+
 	/* Immutable. The IP protocol to which this rule applies.
 
 	When the load balancing scheme is INTERNAL, only TCP and UDP are
 	valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP"] */
-	IpProtocol string `json:"ipProtocol,omitempty"`
+	// +optional
+	IpProtocol *string `json:"ipProtocol,omitempty"`
+
 	/* Immutable. The IP Version that will be used by this global forwarding rule. Possible values: ["IPV4", "IPV6"] */
-	IpVersion string `json:"ipVersion,omitempty"`
+	// +optional
+	IpVersion *string `json:"ipVersion,omitempty"`
+
 	/* Immutable. Indicates whether or not this load balancer can be used
 	as a collector for packet mirroring. To prevent mirroring loops,
 	instances behind this load balancer will not have their traffic
 	mirrored even if a PacketMirroring rule applies to them. This
 	can only be set to true for load balancers that have their
 	loadBalancingScheme set to INTERNAL. */
-	IsMirroringCollector bool `json:"isMirroringCollector,omitempty"`
+	// +optional
+	IsMirroringCollector *bool `json:"isMirroringCollector,omitempty"`
+
 	/* Immutable. This signifies what the ForwardingRule will be used for and can be
 	EXTERNAL, INTERNAL, or INTERNAL_MANAGED. EXTERNAL is used for Classic
 	Cloud VPN gateways, protocol forwarding to VMs from an external IP address,
@@ -139,9 +171,12 @@ type ComputeForwardingRuleSpec struct {
 	INTERNAL is used for protocol forwarding to VMs from an internal IP address,
 	and internal TCP/UDP load balancers.
 	INTERNAL_MANAGED is used for internal HTTP(S) load balancers. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL", "INTERNAL_MANAGED"] */
-	LoadBalancingScheme string `json:"loadBalancingScheme,omitempty"`
+	// +optional
+	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+
 	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
 	configuration to a limited set xDS compliant clients. In their xDS
 	requests to Loadbalancer, xDS clients present node metadata. If a
@@ -159,15 +194,21 @@ type ComputeForwardingRuleSpec struct {
 
 	metadataFilters only applies to Loadbalancers that have their
 	loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	// +optional
 	MetadataFilters []ForwardingruleMetadataFilters `json:"metadataFilters,omitempty"`
+
 	/* This field is not used for external load balancing. For internal
 	load balancing, this field identifies the network that the load
 	balanced IP should belong to for this forwarding rule. If this
 	field is not specified, the default network will be used. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. The networking tier used for configuring this address. If this field is not
 	specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"] */
-	NetworkTier string `json:"networkTier,omitempty"`
+	// +optional
+	NetworkTier *string `json:"networkTier,omitempty"`
+
 	/* Immutable. This field is used along with the target field for TargetHttpProxy,
 	TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway,
 	TargetPool, TargetInstance.
@@ -187,7 +228,9 @@ type ComputeForwardingRuleSpec struct {
 	* TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
 	                  1883, 5222
 	* TargetVpnGateway: 500, 4500 */
-	PortRange string `json:"portRange,omitempty"`
+	// +optional
+	PortRange *string `json:"portRange,omitempty"`
+
 	/* Immutable. This field is used along with the backend_service field for internal
 	load balancing.
 
@@ -197,9 +240,13 @@ type ComputeForwardingRuleSpec struct {
 	forwarding rule.
 
 	You may specify a maximum of up to 5 ports. */
+	// +optional
 	Ports []string `json:"ports,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. An optional prefix to the service name for this Forwarding Rule.
 	If specified, will be the first label of the fully qualified service
 	name.
@@ -212,7 +259,9 @@ type ComputeForwardingRuleSpec struct {
 	character, which cannot be a dash.
 
 	This field is only used for INTERNAL load balancing. */
-	ServiceLabel string `json:"serviceLabel,omitempty"`
+	// +optional
+	ServiceLabel *string `json:"serviceLabel,omitempty"`
+
 	/* The subnetwork that the load balanced IP should belong to for this
 	forwarding rule. This field is only used for internal load
 	balancing.
@@ -220,12 +269,15 @@ type ComputeForwardingRuleSpec struct {
 	If the network specified is in auto subnet mode, this field is
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+
 	/* The target resource to receive the matched traffic. The forwarded
 	traffic must be of a type appropriate to the target object. For
 	INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
 	are valid. */
-	Target ForwardingruleTarget `json:"target,omitempty"`
+	// +optional
+	Target *ForwardingruleTarget `json:"target,omitempty"`
 }
 
 type ComputeForwardingRuleStatus struct {
@@ -237,6 +289,8 @@ type ComputeForwardingRuleStatus struct {
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The internal fully qualified service name for this Forwarding Rule.

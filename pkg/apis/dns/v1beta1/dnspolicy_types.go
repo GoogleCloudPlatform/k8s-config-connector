@@ -39,48 +39,63 @@ type PolicyAlternativeNameServerConfig struct {
 	/* Sets an alternative name server for the associated networks. When specified,
 	all DNS queries are forwarded to a name server that you choose. Names such as .internal
 	are not available when an alternative name server is specified. */
-	TargetNameServers []PolicyTargetNameServers `json:"targetNameServers,omitempty"`
+	TargetNameServers []PolicyTargetNameServers `json:"targetNameServers"`
 }
 
 type PolicyNetworks struct {
 	/* VPC network to bind to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type PolicyTargetNameServers struct {
 	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
 	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
 	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"] */
-	ForwardingPath string `json:"forwardingPath,omitempty"`
+	// +optional
+	ForwardingPath *string `json:"forwardingPath,omitempty"`
+
 	/* IPv4 address to forward to. */
-	Ipv4Address string `json:"ipv4Address,omitempty"`
+	Ipv4Address string `json:"ipv4Address"`
 }
 
 type DNSPolicySpec struct {
 	/* Sets an alternative name server for the associated networks.
 	When specified, all DNS queries are forwarded to a name server that you choose.
 	Names such as .internal are not available when an alternative name server is specified. */
-	AlternativeNameServerConfig PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+	// +optional
+	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+
 	/* A textual description field. Defaults to 'Managed by Config Connector'. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Allows networks bound to this policy to receive DNS queries sent
 	by VMs or applications over VPN connections. When enabled, a
 	virtual IP address will be allocated from each of the sub-networks
 	that are bound to this policy. */
-	EnableInboundForwarding bool `json:"enableInboundForwarding,omitempty"`
+	// +optional
+	EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
+
 	/* Controls whether logging is enabled for the networks bound to this policy.
 	Defaults to no logging if not set. */
-	EnableLogging bool `json:"enableLogging,omitempty"`
+	// +optional
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
 	/* List of network names specifying networks to which this policy is applied. */
+	// +optional
 	Networks []PolicyNetworks `json:"networks,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DNSPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

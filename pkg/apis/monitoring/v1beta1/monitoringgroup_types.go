@@ -37,21 +37,30 @@ import (
 
 type MonitoringGroupSpec struct {
 	/* A user-assigned name for this group, used only for display purposes. */
-	DisplayName string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
+
 	/* The filter used to determine which monitored resources belong to this group. */
-	Filter string `json:"filter,omitempty"`
+	Filter string `json:"filter"`
+
 	/* If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters. */
-	IsCluster bool `json:"isCluster,omitempty"`
+	// +optional
+	IsCluster *bool `json:"isCluster,omitempty"`
+
 	/*  */
-	ParentRef v1alpha1.ResourceRef `json:"parentRef,omitempty"`
+	// +optional
+	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type MonitoringGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

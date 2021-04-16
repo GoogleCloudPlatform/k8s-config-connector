@@ -40,23 +40,32 @@ type SubnetworkLogConfig struct {
 	Toggles the aggregation interval for collecting flow logs. Increasing the
 	interval time will reduce the amount of generated flow logs for long
 	lasting connections. Default is an interval of 5 seconds per connection. Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"] */
-	AggregationInterval string `json:"aggregationInterval,omitempty"`
+	// +optional
+	AggregationInterval *string `json:"aggregationInterval,omitempty"`
+
 	/* Export filter used to define which VPC flow logs should be logged, as as CEL expression. See
 	https://cloud.google.com/vpc/docs/flow-logs#filtering for details on how to format this field.
 	The default value is 'true', which evaluates to include everything. */
-	FilterExpr string `json:"filterExpr,omitempty"`
+	// +optional
+	FilterExpr *string `json:"filterExpr,omitempty"`
+
 	/* Can only be specified if VPC flow logging for this subnetwork is enabled.
 	The value of the field must be in [0, 1]. Set the sampling rate of VPC
 	flow logs within the subnetwork where 1.0 means all collected logs are
 	reported and 0.0 means no logs are reported. Default is 0.5 which means
 	half of all collected logs are reported. */
-	FlowSampling float64 `json:"flowSampling,omitempty"`
+	// +optional
+	FlowSampling *float64 `json:"flowSampling,omitempty"`
+
 	/* Can only be specified if VPC flow logging for this subnetwork is enabled.
 	Configures whether metadata fields should be added to the reported VPC
 	flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"] */
-	Metadata string `json:"metadata,omitempty"`
+	// +optional
+	Metadata *string `json:"metadata,omitempty"`
+
 	/* List of metadata fields that should be added to reported logs.
 	Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" is set to CUSTOM_METADATA. */
+	// +optional
 	MetadataFields []string `json:"metadataFields,omitempty"`
 }
 
@@ -65,36 +74,47 @@ type SubnetworkSecondaryIpRange struct {
 	range. Provide this property when you create the subnetwork.
 	Ranges must be unique and non-overlapping with all primary and
 	secondary IP ranges within a network. Only IPv4 is supported. */
-	IpCidrRange string `json:"ipCidrRange,omitempty"`
+	IpCidrRange string `json:"ipCidrRange"`
+
 	/* The name associated with this subnetwork secondary range, used
 	when adding an alias IP range to a VM instance. The name must
 	be 1-63 characters long, and comply with RFC1035. The name
 	must be unique within the subnetwork. */
-	RangeName string `json:"rangeName,omitempty"`
+	RangeName string `json:"rangeName"`
 }
 
 type ComputeSubnetworkSpec struct {
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. This field can be set only at resource
 	creation time. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The range of internal addresses that are owned by this subnetwork.
 	Provide this property when you create the subnetwork. For example,
 	10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
 	non-overlapping within a network. Only IPv4 is supported. */
-	IpCidrRange string `json:"ipCidrRange,omitempty"`
+	IpCidrRange string `json:"ipCidrRange"`
+
 	/* Denotes the logging options for the subnetwork flow logs. If logging is enabled
 	logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
 	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER' */
-	LogConfig SubnetworkLogConfig `json:"logConfig,omitempty"`
+	// +optional
+	LogConfig *SubnetworkLogConfig `json:"logConfig,omitempty"`
+
 	/* The network this subnet belongs to. Only networks that are in the
 	distributed mode can have subnetworks. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+
 	/* When enabled, VMs in this subnetwork without external IP addresses can
 	access Google APIs and services by using Private Google Access. */
-	PrivateIpGoogleAccess bool `json:"privateIpGoogleAccess,omitempty"`
+	// +optional
+	PrivateIpGoogleAccess *bool `json:"privateIpGoogleAccess,omitempty"`
+
 	/* The private IPv6 google access type for the VMs in this subnet. */
-	PrivateIpv6GoogleAccess string `json:"privateIpv6GoogleAccess,omitempty"`
+	// +optional
+	PrivateIpv6GoogleAccess *string `json:"privateIpv6GoogleAccess,omitempty"`
+
 	/* Immutable. The purpose of the resource. This field can be either PRIVATE
 	or INTERNAL_HTTPS_LOAD_BALANCER. A subnetwork with purpose set to
 	INTERNAL_HTTPS_LOAD_BALANCER is a user-created subnetwork that is
@@ -102,18 +122,26 @@ type ComputeSubnetworkSpec struct {
 	purpose defaults to PRIVATE.
 
 	If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set 'role'. */
-	Purpose string `json:"purpose,omitempty"`
+	// +optional
+	Purpose *string `json:"purpose,omitempty"`
+
 	/* Immutable. The GCP region for this subnetwork. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The role of subnetwork. Currently, this field is only used when
 	purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE
 	or BACKUP. An ACTIVE subnetwork is one that is currently being used
 	for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that
 	is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"] */
-	Role string `json:"role,omitempty"`
+	// +optional
+	Role *string `json:"role,omitempty"`
+
 	/*  */
+	// +optional
 	SecondaryIpRange []SubnetworkSecondaryIpRange `json:"secondaryIpRange,omitempty"`
 }
 
@@ -128,6 +156,8 @@ type ComputeSubnetworkStatus struct {
 	/* The gateway address for default routes to reach destination addresses
 	outside this subnetwork. */
 	GatewayAddress string `json:"gatewayAddress,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }

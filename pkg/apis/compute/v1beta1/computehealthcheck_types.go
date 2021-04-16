@@ -41,14 +41,20 @@ type HealthcheckGrpcHealthCheck struct {
 	  - Empty serviceName means the overall status of all services at the backend.
 	  - Non-empty serviceName means the health of that gRPC service, as defined by the owner of the service.
 	The grpcServiceName can only be ASCII. */
-	GrpcServiceName string `json:"grpcServiceName,omitempty"`
+	// +optional
+	GrpcServiceName *string `json:"grpcServiceName,omitempty"`
+
 	/* The port number for the health check request.
 	Must be specified if portName and portSpecification are not set
 	or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -63,20 +69,27 @@ type HealthcheckGrpcHealthCheck struct {
 
 	If not specified, gRPC health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
 }
 
 type HealthcheckHttp2HealthCheck struct {
 	/* The value of the host header in the HTTP2 health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
+
 	/* The TCP port number for the HTTP2 health check request.
 	The default value is 443. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -91,30 +104,43 @@ type HealthcheckHttp2HealthCheck struct {
 
 	If not specified, HTTP2 health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to the
 	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* The request path of the HTTP2 health check request.
 	The default value is /. */
-	RequestPath string `json:"requestPath,omitempty"`
+	// +optional
+	RequestPath *string `json:"requestPath,omitempty"`
+
 	/* The bytes to match against the beginning of the response data. If left empty
 	(the default value), any response will indicate health. The response data
 	can only be ASCII. */
-	Response string `json:"response,omitempty"`
+	// +optional
+	Response *string `json:"response,omitempty"`
 }
 
 type HealthcheckHttpHealthCheck struct {
 	/* The value of the host header in the HTTP health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
+
 	/* The TCP port number for the HTTP health check request.
 	The default value is 80. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -129,30 +155,43 @@ type HealthcheckHttpHealthCheck struct {
 
 	If not specified, HTTP health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to the
 	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* The request path of the HTTP health check request.
 	The default value is /. */
-	RequestPath string `json:"requestPath,omitempty"`
+	// +optional
+	RequestPath *string `json:"requestPath,omitempty"`
+
 	/* The bytes to match against the beginning of the response data. If left empty
 	(the default value), any response will indicate health. The response data
 	can only be ASCII. */
-	Response string `json:"response,omitempty"`
+	// +optional
+	Response *string `json:"response,omitempty"`
 }
 
 type HealthcheckHttpsHealthCheck struct {
 	/* The value of the host header in the HTTPS health check request.
 	If left empty (default value), the public IP on behalf of which this health
 	check is performed will be used. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
+
 	/* The TCP port number for the HTTPS health check request.
 	The default value is 443. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -167,32 +206,44 @@ type HealthcheckHttpsHealthCheck struct {
 
 	If not specified, HTTPS health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to the
 	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* The request path of the HTTPS health check request.
 	The default value is /. */
-	RequestPath string `json:"requestPath,omitempty"`
+	// +optional
+	RequestPath *string `json:"requestPath,omitempty"`
+
 	/* The bytes to match against the beginning of the response data. If left empty
 	(the default value), any response will indicate health. The response data
 	can only be ASCII. */
-	Response string `json:"response,omitempty"`
+	// +optional
+	Response *string `json:"response,omitempty"`
 }
 
 type HealthcheckLogConfig struct {
 	/* Indicates whether or not to export logs. This is false by default,
 	which means no health check logging will be done. */
-	Enable bool `json:"enable,omitempty"`
+	// +optional
+	Enable *bool `json:"enable,omitempty"`
 }
 
 type HealthcheckSslHealthCheck struct {
 	/* The TCP port number for the SSL health check request.
 	The default value is 443. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -207,28 +258,39 @@ type HealthcheckSslHealthCheck struct {
 
 	If not specified, SSL health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to the
 	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* The application data to send once the SSL connection has been
 	established (default value is empty). If both request and response are
 	empty, the connection establishment alone will indicate health. The request
 	data can only be ASCII. */
-	Request string `json:"request,omitempty"`
+	// +optional
+	Request *string `json:"request,omitempty"`
+
 	/* The bytes to match against the beginning of the response data. If left empty
 	(the default value), any response will indicate health. The response data
 	can only be ASCII. */
-	Response string `json:"response,omitempty"`
+	// +optional
+	Response *string `json:"response,omitempty"`
 }
 
 type HealthcheckTcpHealthCheck struct {
 	/* The TCP port number for the TCP health check request.
 	The default value is 443. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	port_name are defined, port takes precedence. */
-	PortName string `json:"portName,omitempty"`
+	// +optional
+	PortName *string `json:"portName,omitempty"`
+
 	/* Specifies how port is selected for health checking, can be one of the
 	following values:
 
@@ -243,56 +305,89 @@ type HealthcheckTcpHealthCheck struct {
 
 	If not specified, TCP health check follows behavior specified in 'port' and
 	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
-	PortSpecification string `json:"portSpecification,omitempty"`
+	// +optional
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to the
 	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* The application data to send once the TCP connection has been
 	established (default value is empty). If both request and response are
 	empty, the connection establishment alone will indicate health. The request
 	data can only be ASCII. */
-	Request string `json:"request,omitempty"`
+	// +optional
+	Request *string `json:"request,omitempty"`
+
 	/* The bytes to match against the beginning of the response data. If left empty
 	(the default value), any response will indicate health. The response data
 	can only be ASCII. */
-	Response string `json:"response,omitempty"`
+	// +optional
+	Response *string `json:"response,omitempty"`
 }
 
 type ComputeHealthCheckSpec struct {
 	/* How often (in seconds) to send a health check. The default value is 5
 	seconds. */
-	CheckIntervalSec int `json:"checkIntervalSec,omitempty"`
+	// +optional
+	CheckIntervalSec *int `json:"checkIntervalSec,omitempty"`
+
 	/* An optional description of this resource. Provide this property when
 	you create the resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* A nested object resource */
-	GrpcHealthCheck HealthcheckGrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
+	// +optional
+	GrpcHealthCheck *HealthcheckGrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
+
 	/* A so-far unhealthy instance will be marked healthy after this many
 	consecutive successes. The default value is 2. */
-	HealthyThreshold int `json:"healthyThreshold,omitempty"`
+	// +optional
+	HealthyThreshold *int `json:"healthyThreshold,omitempty"`
+
 	/* A nested object resource */
-	Http2HealthCheck HealthcheckHttp2HealthCheck `json:"http2HealthCheck,omitempty"`
+	// +optional
+	Http2HealthCheck *HealthcheckHttp2HealthCheck `json:"http2HealthCheck,omitempty"`
+
 	/* A nested object resource */
-	HttpHealthCheck HealthcheckHttpHealthCheck `json:"httpHealthCheck,omitempty"`
+	// +optional
+	HttpHealthCheck *HealthcheckHttpHealthCheck `json:"httpHealthCheck,omitempty"`
+
 	/* A nested object resource */
-	HttpsHealthCheck HealthcheckHttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
+	// +optional
+	HttpsHealthCheck *HealthcheckHttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
+
 	/* Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Configure logging on this health check. */
-	LogConfig HealthcheckLogConfig `json:"logConfig,omitempty"`
+	// +optional
+	LogConfig *HealthcheckLogConfig `json:"logConfig,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* A nested object resource */
-	SslHealthCheck HealthcheckSslHealthCheck `json:"sslHealthCheck,omitempty"`
+	// +optional
+	SslHealthCheck *HealthcheckSslHealthCheck `json:"sslHealthCheck,omitempty"`
+
 	/* A nested object resource */
-	TcpHealthCheck HealthcheckTcpHealthCheck `json:"tcpHealthCheck,omitempty"`
+	// +optional
+	TcpHealthCheck *HealthcheckTcpHealthCheck `json:"tcpHealthCheck,omitempty"`
+
 	/* How long (in seconds) to wait before claiming failure.
 	The default value is 5 seconds.  It is invalid for timeoutSec to have
 	greater value than checkIntervalSec. */
-	TimeoutSec int `json:"timeoutSec,omitempty"`
+	// +optional
+	TimeoutSec *int `json:"timeoutSec,omitempty"`
+
 	/* A so-far healthy instance will be marked unhealthy after this many
 	consecutive failures. The default value is 2. */
-	UnhealthyThreshold int `json:"unhealthyThreshold,omitempty"`
+	// +optional
+	UnhealthyThreshold *int `json:"unhealthyThreshold,omitempty"`
 }
 
 type ComputeHealthCheckStatus struct {
@@ -301,6 +396,8 @@ type ComputeHealthCheckStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */

@@ -37,16 +37,20 @@ import (
 
 type RouterpeerAdvertisedIpRanges struct {
 	/* User-specified description for the IP range. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The IP range to advertise. The value must be a
 	CIDR-formatted string. */
-	Range string `json:"range,omitempty"`
+	Range string `json:"range"`
 }
 
 type ComputeRouterPeerSpec struct {
 	/* Immutable. User-specified flag to indicate which mode to use for advertisement.
 	Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
-	AdvertiseMode string `json:"advertiseMode,omitempty"`
+	// +optional
+	AdvertiseMode *string `json:"advertiseMode,omitempty"`
+
 	/* Immutable. User-specified list of prefix groups to advertise in custom
 	mode, which can take one of the following options:
 
@@ -59,32 +63,44 @@ type ComputeRouterPeerSpec struct {
 	and overrides the list defined for the router (in the "bgp" message).
 	These groups are advertised in addition to any specified prefixes.
 	Leave this field blank to advertise no custom groups. */
+	// +optional
 	AdvertisedGroups []string `json:"advertisedGroups,omitempty"`
+
 	/* User-specified list of individual IP ranges to advertise in
 	custom mode. This field can only be populated if advertiseMode
 	is 'CUSTOM' and is advertised to all peers of the router. These IP
 	ranges will be advertised in addition to any specified groups.
 	Leave this field blank to advertise no custom IP ranges. */
+	// +optional
 	AdvertisedIpRanges []RouterpeerAdvertisedIpRanges `json:"advertisedIpRanges,omitempty"`
+
 	/* The priority of routes advertised to this BGP peer.
 	Where there is more than one matching route of maximum
 	length, the routes with the lowest priority value win. */
-	AdvertisedRoutePriority int `json:"advertisedRoutePriority,omitempty"`
+	// +optional
+	AdvertisedRoutePriority *int `json:"advertisedRoutePriority,omitempty"`
+
 	/* Immutable. Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
-	PeerAsn int `json:"peerAsn,omitempty"`
+	PeerAsn int `json:"peerAsn"`
+
 	/* Immutable. IP address of the BGP interface outside Google Cloud Platform.
 	Only IPv4 is supported. */
-	PeerIpAddress string `json:"peerIpAddress,omitempty"`
+	PeerIpAddress string `json:"peerIpAddress"`
+
 	/* Immutable. Region where the router and BgpPeer reside.
 	If it is not provided, the provider region is used. */
-	Region string `json:"region,omitempty"`
+	Region string `json:"region"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* The interface the BGP peer is associated with. */
-	RouterInterfaceRef v1alpha1.ResourceRef `json:"routerInterfaceRef,omitempty"`
+	RouterInterfaceRef v1alpha1.ResourceRef `json:"routerInterfaceRef"`
+
 	/* The Cloud Router in which this BGP peer will be configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef,omitempty"`
+	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 }
 
 type ComputeRouterPeerStatus struct {
@@ -105,6 +121,8 @@ type ComputeRouterPeerStatus struct {
 	PARTNER InterconnectAttachment is created, updated,
 	or deleted. */
 	ManagementType string `json:"managementType,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

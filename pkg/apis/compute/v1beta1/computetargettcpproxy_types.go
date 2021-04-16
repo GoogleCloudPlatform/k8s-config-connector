@@ -37,17 +37,25 @@ import (
 
 type ComputeTargetTCPProxySpec struct {
 	/* A reference to the ComputeBackendService resource. */
-	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
+
 	/* Immutable. An optional description of this resource. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. This field only applies when the forwarding rule that references
 	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
-	ProxyBind bool `json:"proxyBind,omitempty"`
+	// +optional
+	ProxyBind *bool `json:"proxyBind,omitempty"`
+
 	/* Specifies the type of proxy header to append before sending data to
 	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
-	ProxyHeader string `json:"proxyHeader,omitempty"`
+	// +optional
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeTargetTCPProxyStatus struct {
@@ -56,6 +64,8 @@ type ComputeTargetTCPProxyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The unique identifier for the resource. */
 	ProxyId int `json:"proxyId,omitempty"`
 	/*  */

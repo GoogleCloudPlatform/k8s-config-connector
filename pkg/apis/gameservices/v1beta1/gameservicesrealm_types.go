@@ -37,13 +37,18 @@ import (
 
 type GameServicesRealmSpec struct {
 	/* Human readable description of the realm. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* The location for this realm. */
-	Location string `json:"location,omitempty"`
+	Location string `json:"location"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Required. Time zone where all policies targeting this realm are evaluated. The value of this field must be from the IANA time zone database: https://www.iana.org/time-zones. */
-	TimeZone string `json:"timeZone,omitempty"`
+	TimeZone string `json:"timeZone"`
 }
 
 type GameServicesRealmStatus struct {
@@ -52,6 +57,8 @@ type GameServicesRealmStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation time. */
 	CreateTime string `json:"createTime,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. The last-modified time. */
 	UpdateTime string `json:"updateTime,omitempty"`
 }

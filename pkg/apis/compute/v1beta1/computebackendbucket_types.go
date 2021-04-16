@@ -38,21 +38,35 @@ import (
 type BackendbucketCdnPolicy struct {
 	/* Specifies the cache setting for all responses from this backend.
 	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"] */
-	CacheMode string `json:"cacheMode,omitempty"`
+	// +optional
+	CacheMode *string `json:"cacheMode,omitempty"`
+
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
-	ClientTtl int `json:"clientTtl,omitempty"`
+	// +optional
+	ClientTtl *int `json:"clientTtl,omitempty"`
+
 	/* Specifies the default TTL for cached content served by this origin for responses
 	that do not have an existing valid TTL (max-age or s-max-age). */
-	DefaultTtl int `json:"defaultTtl,omitempty"`
+	// +optional
+	DefaultTtl *int `json:"defaultTtl,omitempty"`
+
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
-	MaxTtl int `json:"maxTtl,omitempty"`
+	// +optional
+	MaxTtl *int `json:"maxTtl,omitempty"`
+
 	/* Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. */
-	NegativeCaching bool `json:"negativeCaching,omitempty"`
+	// +optional
+	NegativeCaching *bool `json:"negativeCaching,omitempty"`
+
 	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
 	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
+	// +optional
 	NegativeCachingPolicy []BackendbucketNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
+
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
-	ServeWhileStale int `json:"serveWhileStale,omitempty"`
+	// +optional
+	ServeWhileStale *int `json:"serveWhileStale,omitempty"`
+
 	/* Maximum number of seconds the response to a signed URL request will
 	be considered fresh. After this time period,
 	the response will be revalidated before being served.
@@ -61,32 +75,46 @@ type BackendbucketCdnPolicy struct {
 	all responses from this backend had a "Cache-Control: public,
 	max-age=[TTL]" header, regardless of any existing Cache-Control
 	header. The actual headers served in responses will not be altered. */
-	SignedUrlCacheMaxAgeSec int `json:"signedUrlCacheMaxAgeSec,omitempty"`
+	// +optional
+	SignedUrlCacheMaxAgeSec *int `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
 type BackendbucketNegativeCachingPolicy struct {
 	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
 	can be specified as values, and you cannot specify a status code more than once. */
-	Code int `json:"code,omitempty"`
+	// +optional
+	Code *int `json:"code,omitempty"`
+
 	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
 	(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
-	Ttl int `json:"ttl,omitempty"`
+	// +optional
+	Ttl *int `json:"ttl,omitempty"`
 }
 
 type ComputeBackendBucketSpec struct {
 	/* Reference to the bucket. */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
 	/* Cloud CDN configuration for this Backend Bucket. */
-	CdnPolicy BackendbucketCdnPolicy `json:"cdnPolicy,omitempty"`
+	// +optional
+	CdnPolicy *BackendbucketCdnPolicy `json:"cdnPolicy,omitempty"`
+
 	/* Headers that the HTTP/S load balancer should add to proxied responses. */
+	// +optional
 	CustomResponseHeaders []string `json:"customResponseHeaders,omitempty"`
+
 	/* An optional textual description of the resource; provided by the
 	client when the resource is created. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* If true, enable Cloud CDN for this BackendBucket. */
-	EnableCdn bool `json:"enableCdn,omitempty"`
+	// +optional
+	EnableCdn *bool `json:"enableCdn,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	ResourceID string `json:"resourceID,omitempty"`
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeBackendBucketStatus struct {
@@ -95,6 +123,8 @@ type ComputeBackendBucketStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
 }
