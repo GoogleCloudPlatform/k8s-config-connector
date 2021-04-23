@@ -22,7 +22,7 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: computesslpolicies.compute.cnrm.cloud.google.com
+  name: cloudidentitygroups.cloudidentity.cnrm.cloud.google.com
 spec:
   additionalPrinterColumns:
   - JSONPath: .metadata.creationTimestamp
@@ -40,16 +40,16 @@ spec:
     description: The last transition time for the value in 'Status'
     name: Status Age
     type: date
-  group: compute.cnrm.cloud.google.com
+  group: cloudidentity.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeSSLPolicy
-    plural: computesslpolicies
+    kind: CloudIdentityGroup
+    plural: cloudidentitygroups
     shortNames:
-    - gcpcomputesslpolicy
-    - gcpcomputesslpolicies
-    singular: computesslpolicy
+    - gcpcloudidentitygroup
+    - gcpcloudidentitygroups
+    singular: cloudidentitygroup
   scope: Namespaced
   subresources:
     status: {}
@@ -66,43 +66,68 @@ spec:
           type: object
         spec:
           properties:
-            customFeatures:
-              description: |-
-                Profile specifies the set of SSL features that can be used by the
-                load balancer when negotiating SSL with clients. This can be one of
-                'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
-                the set of SSL features to enable must be specified in the
-                'customFeatures' field.
-
-                See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
-                for which ciphers are available to use. **Note**: this argument
-                *must* be present when using the 'CUSTOM' profile. This argument
-                *must not* be present when using any other profile.
-              items:
-                type: string
-              type: array
             description:
-              description: Immutable. An optional description of this resource.
-              type: string
-            minTlsVersion:
               description: |-
-                The minimum version of SSL protocol that can be used by the clients
-                to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]
+                An extended description to help users determine the purpose of a Group.
+                Must not be longer than 4,096 characters.
               type: string
-            profile:
-              description: |-
-                Profile specifies the set of SSL features that can be used by the
-                load balancer when negotiating SSL with clients. If using 'CUSTOM',
-                the set of SSL features to enable must be specified in the
-                'customFeatures' field.
+            displayName:
+              description: The display name of the Group.
+              type: string
+            groupKey:
+              description: Immutable. EntityKey of the Group.
+              properties:
+                id:
+                  description: |-
+                    Immutable. The ID of the entity.
 
-                See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
-                for information on what cipher suites each profile provides. If
-                'CUSTOM' is used, the 'custom_features' attribute **must be set**. Default value: "COMPATIBLE" Possible values: ["COMPATIBLE", "MODERN", "RESTRICTED", "CUSTOM"]
+                    For Google-managed entities, the id must be the email address of an existing
+                    group or user.
+
+                    For external-identity-mapped entities, the id must be a string conforming
+                    to the Identity Source's requirements.
+
+                    Must be unique within a namespace.
+                  type: string
+                namespace:
+                  description: |-
+                    Immutable. The namespace in which the entity exists.
+
+                    If not specified, the EntityKey represents a Google-managed entity
+                    such as a Google user or a Google Group.
+
+                    If specified, the EntityKey represents an external-identity-mapped group.
+                    The namespace must correspond to an identity source created in Admin Console
+                    and must be in the form of 'identitysources/{identity_source_id}'.
+                  type: string
+              required:
+              - id
+              type: object
+            labels:
+              additionalProperties:
+                type: string
+              description: |-
+                Immutable. The labels that apply to the Group.
+
+                Must not contain more than one entry. Must contain the entry
+                'cloudidentity.googleapis.com/groups.discussion_forum': '' if the Group is a Google Group or
+                'system/groups/external': '' if the Group is an external-identity-mapped group.
+              type: object
+            parent:
+              description: |-
+                Immutable. The resource name of the entity under which this Group resides in the
+                Cloud Identity resource hierarchy.
+
+                Must be of the form identitysources/{identity_source_id} for external-identity-mapped
+                groups or customers/{customer_id} for Google Groups.
               type: string
             resourceID:
-              description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+              description: Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
               type: string
+          required:
+          - groupKey
+          - labels
+          - parent
           type: object
         status:
           properties:
@@ -127,25 +152,23 @@ spec:
                     type: string
                 type: object
               type: array
-            creationTimestamp:
-              description: Creation timestamp in RFC3339 text format.
+            createTime:
+              description: The time when the Group was created.
               type: string
-            enabledFeatures:
-              description: The list of features enabled in the SSL policy.
-              items:
-                type: string
-              type: array
-            fingerprint:
+            name:
               description: |-
-                Fingerprint of this resource. A hash of the contents stored in this
-                object. This field is used in optimistic locking.
+                Resource name of the Group in the format: groups/{group_id}, where group_id
+                is the unique ID assigned to the Group.
               type: string
             observedGeneration:
               description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
               type: integer
-            selfLink:
+            updateTime:
+              description: The time when the Group was last updated.
               type: string
           type: object
+      required:
+      - spec
       type: object
   version: v1beta1
 status:
