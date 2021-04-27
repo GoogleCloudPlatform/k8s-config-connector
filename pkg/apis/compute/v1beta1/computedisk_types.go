@@ -173,6 +173,9 @@ type ComputeDiskSpec struct {
 	// +optional
 	PhysicalBlockSizeBytes *int `json:"physicalBlockSizeBytes,omitempty"`
 
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
 	/* Immutable. URLs of the zones where the disk should be replicated to. */
 	// +optional
 	ReplicaZones []string `json:"replicaZones,omitempty"`

@@ -33,6 +33,8 @@ import (
 	fakebigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	fakecloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1/fake"
+	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
+	fakecloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1"
@@ -51,6 +53,8 @@ import (
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gameservices/v1beta1"
 	fakegameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gameservices/v1beta1/fake"
+	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gkehub/v1beta1"
+	fakegkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gkehub/v1beta1/fake"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/iam/v1beta1"
 	fakeiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/iam/v1beta1/fake"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/iap/v1beta1"
@@ -170,6 +174,11 @@ func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Inter
 	return &fakecloudbuildv1beta1.FakeCloudbuildV1beta1{Fake: &c.Fake}
 }
 
+// CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client
+func (c *Clientset) CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface {
+	return &fakecloudidentityv1beta1.FakeCloudidentityV1beta1{Fake: &c.Fake}
+}
+
 // CloudschedulerV1beta1 retrieves the CloudschedulerV1beta1Client
 func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface {
 	return &fakecloudschedulerv1beta1.FakeCloudschedulerV1beta1{Fake: &c.Fake}
@@ -213,6 +222,11 @@ func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interfac
 // GameservicesV1beta1 retrieves the GameservicesV1beta1Client
 func (c *Clientset) GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface {
 	return &fakegameservicesv1beta1.FakeGameservicesV1beta1{Fake: &c.Fake}
+}
+
+// GkehubV1beta1 retrieves the GkehubV1beta1Client
+func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
+	return &fakegkehubv1beta1.FakeGkehubV1beta1{Fake: &c.Fake}
 }
 
 // IamV1beta1 retrieves the IamV1beta1Client

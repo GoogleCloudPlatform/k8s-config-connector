@@ -27,6 +27,7 @@ import (
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/bigtable/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudbuild/v1beta1"
+	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/container/v1beta1"
@@ -36,6 +37,7 @@ import (
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dns/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/gameservices/v1beta1"
+	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/gkehub/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iap/v1beta1"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/identityplatform/v1beta1"
@@ -72,6 +74,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryv1beta1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
+	cloudidentityv1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	computev1beta1.AddToScheme,
 	containerv1beta1.AddToScheme,
@@ -81,6 +84,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	dnsv1beta1.AddToScheme,
 	firestorev1beta1.AddToScheme,
 	gameservicesv1beta1.AddToScheme,
+	gkehubv1beta1.AddToScheme,
 	iamv1beta1.AddToScheme,
 	iapv1beta1.AddToScheme,
 	identityplatformv1beta1.AddToScheme,

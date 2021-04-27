@@ -375,7 +375,8 @@ type BackendserviceIap struct {
 	Oauth2ClientId string `json:"oauth2ClientId"`
 
 	/* OAuth2 Client Secret for IAP */
-	Oauth2ClientSecret BackendserviceOauth2ClientSecret `json:"oauth2ClientSecret"`
+	// +optional
+	Oauth2ClientSecret *BackendserviceOauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
 
 	/* OAuth2 Client Secret SHA-256 for IAP */
 	// +optional

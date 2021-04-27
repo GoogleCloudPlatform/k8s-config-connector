@@ -29,6 +29,7 @@ import (
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
+	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/container/v1beta1"
@@ -38,6 +39,7 @@ import (
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dns/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gameservices/v1beta1"
+	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gkehub/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/iap/v1beta1"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/identityplatform/v1beta1"
@@ -70,6 +72,7 @@ type Interface interface {
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
+	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
@@ -79,6 +82,7 @@ type Interface interface {
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
 	GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface
+	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
 	IdentityplatformV1beta1() identityplatformv1beta1.IdentityplatformV1beta1Interface
@@ -110,6 +114,7 @@ type Clientset struct {
 	bigqueryV1beta1             *bigqueryv1beta1.BigqueryV1beta1Client
 	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
 	cloudbuildV1beta1           *cloudbuildv1beta1.CloudbuildV1beta1Client
+	cloudidentityV1beta1        *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudschedulerV1beta1       *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	computeV1beta1              *computev1beta1.ComputeV1beta1Client
 	containerV1beta1            *containerv1beta1.ContainerV1beta1Client
@@ -119,6 +124,7 @@ type Clientset struct {
 	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
 	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
 	gameservicesV1beta1         *gameservicesv1beta1.GameservicesV1beta1Client
+	gkehubV1beta1               *gkehubv1beta1.GkehubV1beta1Client
 	iamV1beta1                  *iamv1beta1.IamV1beta1Client
 	iapV1beta1                  *iapv1beta1.IapV1beta1Client
 	identityplatformV1beta1     *identityplatformv1beta1.IdentityplatformV1beta1Client
@@ -166,6 +172,11 @@ func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Inter
 	return c.cloudbuildV1beta1
 }
 
+// CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client
+func (c *Clientset) CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface {
+	return c.cloudidentityV1beta1
+}
+
 // CloudschedulerV1beta1 retrieves the CloudschedulerV1beta1Client
 func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface {
 	return c.cloudschedulerV1beta1
@@ -209,6 +220,11 @@ func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interfac
 // GameservicesV1beta1 retrieves the GameservicesV1beta1Client
 func (c *Clientset) GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface {
 	return c.gameservicesV1beta1
+}
+
+// GkehubV1beta1 retrieves the GkehubV1beta1Client
+func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
+	return c.gkehubV1beta1
 }
 
 // IamV1beta1 retrieves the IamV1beta1Client
@@ -352,6 +368,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudidentityV1beta1, err = cloudidentityv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudschedulerV1beta1, err = cloudschedulerv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -385,6 +405,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 		return nil, err
 	}
 	cs.gameservicesV1beta1, err = gameservicesv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.gkehubV1beta1, err = gkehubv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -485,6 +509,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.bigqueryV1beta1 = bigqueryv1beta1.NewForConfigOrDie(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.NewForConfigOrDie(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.NewForConfigOrDie(c)
+	cs.cloudidentityV1beta1 = cloudidentityv1beta1.NewForConfigOrDie(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.NewForConfigOrDie(c)
 	cs.computeV1beta1 = computev1beta1.NewForConfigOrDie(c)
 	cs.containerV1beta1 = containerv1beta1.NewForConfigOrDie(c)
@@ -494,6 +519,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.dnsV1beta1 = dnsv1beta1.NewForConfigOrDie(c)
 	cs.firestoreV1beta1 = firestorev1beta1.NewForConfigOrDie(c)
 	cs.gameservicesV1beta1 = gameservicesv1beta1.NewForConfigOrDie(c)
+	cs.gkehubV1beta1 = gkehubv1beta1.NewForConfigOrDie(c)
 	cs.iamV1beta1 = iamv1beta1.NewForConfigOrDie(c)
 	cs.iapV1beta1 = iapv1beta1.NewForConfigOrDie(c)
 	cs.identityplatformV1beta1 = identityplatformv1beta1.NewForConfigOrDie(c)
@@ -527,6 +553,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
+	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
@@ -536,6 +563,7 @@ func New(c rest.Interface) *Clientset {
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
 	cs.gameservicesV1beta1 = gameservicesv1beta1.New(c)
+	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
 	cs.iapV1beta1 = iapv1beta1.New(c)
 	cs.identityplatformV1beta1 = identityplatformv1beta1.New(c)

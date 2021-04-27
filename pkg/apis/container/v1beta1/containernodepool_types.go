@@ -210,7 +210,7 @@ type NodepoolWorkloadMetadataConfig struct {
 }
 
 type ContainerNodePoolSpec struct {
-	/* Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. */
+	/* Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0. */
 	// +optional
 	Autoscaling *NodepoolAutoscaling `json:"autoscaling,omitempty"`
 
