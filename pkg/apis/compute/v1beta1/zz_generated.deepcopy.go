@@ -1347,7 +1347,11 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 		*out = new(int)
 		**out = **in
 	}
-	out.ProjectRef = in.ProjectRef
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ReplicaZones != nil {
 		in, out := &in.ReplicaZones, &out.ReplicaZones
 		*out = make([]string, len(*in))

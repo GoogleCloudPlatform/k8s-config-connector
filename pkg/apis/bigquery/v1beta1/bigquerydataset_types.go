@@ -172,7 +172,8 @@ type BigQueryDatasetSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The datasetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
