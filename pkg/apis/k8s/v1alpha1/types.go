@@ -64,3 +64,16 @@ type ResourceRef struct {
 	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type IAMResourceRef struct {
+	/* Kind of the referenced resource */
+	Kind string `json:"kind"`
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	Namespace string `json:"namespace,omitempty"`
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	Name string `json:"name,omitempty"`
+	/* APIVersion of the referenced resource */
+	APIVersion string `json:"apiVersion,omitempty"`
+	/* The external name of the referenced resource */
+	External string `json:"external,omitempty"`
+}

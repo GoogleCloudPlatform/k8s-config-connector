@@ -844,12 +844,12 @@ func (in *PolicymemberMemberFrom) DeepCopyInto(out *PolicymemberMemberFrom) {
 	*out = *in
 	if in.LogSinkRef != nil {
 		in, out := &in.LogSinkRef, &out.LogSinkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.IAMResourceRef)
 		**out = **in
 	}
 	return

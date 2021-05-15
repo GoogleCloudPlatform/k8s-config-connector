@@ -50,11 +50,11 @@ type PolicymemberCondition struct {
 type PolicymemberMemberFrom struct {
 	/* Immutable. The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	// +optional
-	LogSinkRef *v1alpha1.ResourceRef `json:"logSinkRef,omitempty"`
+	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
 
 	/* Immutable. The IAMServiceAccount to be bound to the role. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type IAMPolicyMemberSpec struct {
@@ -71,7 +71,7 @@ type IAMPolicyMemberSpec struct {
 	MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
 
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
+	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 
 	/* Immutable. Required. The role for which the Member will be bound. */
 	Role string `json:"role"`

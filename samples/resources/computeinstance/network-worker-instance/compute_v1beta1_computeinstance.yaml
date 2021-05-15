@@ -23,7 +23,7 @@ metadata:
     network-type: "global"
 spec:
   machineType: n1-standard-1
-  zone: us-west1-b
+  zone: us-west2-a
   bootDisk:
     sourceDiskRef:
       name: computeinstance-dep-networkworker
@@ -44,9 +44,6 @@ spec:
       accessConfig:
         - natIpRef:
             name: computeinstance-dep-networkworker
-  guestAccelerator:
-    - type: nvidia-tesla-t4
-      count: 1
   scratchDisk:
     - interface: SCSI
     - interface: NVME

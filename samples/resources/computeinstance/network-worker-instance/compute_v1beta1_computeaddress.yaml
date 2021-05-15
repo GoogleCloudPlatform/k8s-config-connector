@@ -18,4 +18,4 @@ metadata:
   name: computeinstance-dep-networkworker
 spec:
   description: a sample external address
-  location: us-west1
+  location: us-west2

@@ -21,7 +21,7 @@ spec:
   physicalBlockSizeBytes: 4096
   size: 1
   type: pd-ssd
-  location: us-west1-b
+  location: us-west2-a
   diskEncryptionKey:
     rawKey:
       valueFrom:

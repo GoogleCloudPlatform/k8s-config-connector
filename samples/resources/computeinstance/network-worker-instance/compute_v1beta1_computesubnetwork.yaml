@@ -18,7 +18,7 @@ metadata:
   name: computeinstance-dep-networkworker
 spec:
   ipCidrRange: 10.2.0.0/16
-  region: us-west1
+  region: us-west2
   description: a sample subnetwork
   privateIpGoogleAccess: false
   networkRef:
