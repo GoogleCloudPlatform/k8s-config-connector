@@ -184,7 +184,7 @@ type TriggerOptions struct {
 	// +optional
 	Logging *string `json:"logging,omitempty"`
 
-	/* Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32"] */
+	/* Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"] */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 

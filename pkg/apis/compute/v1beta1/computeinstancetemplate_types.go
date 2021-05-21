@@ -163,7 +163,7 @@ type InstancetemplateNetworkInterface struct {
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* DEPRECATED — This value is no longer honored, and preserved for backwards compatibility. Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
+	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET */
 	// +optional
 	NicType *string `json:"nicType,omitempty"`
 

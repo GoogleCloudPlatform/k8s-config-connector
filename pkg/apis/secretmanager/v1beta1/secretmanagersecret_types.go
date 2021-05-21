@@ -35,7 +35,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SecretCustomerManagedEncryption struct {
+	/* Customer Managed Encryption for the secret. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
 type SecretReplicas struct {
+	/* Customer Managed Encryption for the secret. */
+	// +optional
+	CustomerManagedEncryption *SecretCustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
+
 	/* The canonical IDs of the location to replicate data. For example: "us-east1". */
 	Location string `json:"location"`
 }

@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type DatabaseEncryptionConfig struct {
+	/* Fully qualified name of the KMS key to use to encrypt this database. This key
+	must exist in the same location as the Spanner Database. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
 type SpannerDatabaseSpec struct {
 	/* An optional list of DDL statements to run inside the newly created
 	database. Statements can create tables, indexes, etc. These statements
@@ -42,6 +48,10 @@ type SpannerDatabaseSpec struct {
 	error in any statement, the database is not created. */
 	// +optional
 	Ddl []string `json:"ddl,omitempty"`
+
+	/* Immutable. Encryption configuration for the database */
+	// +optional
+	EncryptionConfig *DatabaseEncryptionConfig `json:"encryptionConfig,omitempty"`
 
 	/* The instance to create the database on. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`

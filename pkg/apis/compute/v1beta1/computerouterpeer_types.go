@@ -46,12 +46,12 @@ type RouterpeerAdvertisedIpRanges struct {
 }
 
 type ComputeRouterPeerSpec struct {
-	/* Immutable. User-specified flag to indicate which mode to use for advertisement.
+	/* User-specified flag to indicate which mode to use for advertisement.
 	Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
 	// +optional
 	AdvertiseMode *string `json:"advertiseMode,omitempty"`
 
-	/* Immutable. User-specified list of prefix groups to advertise in custom
+	/* User-specified list of prefix groups to advertise in custom
 	mode, which can take one of the following options:
 
 	* 'ALL_SUBNETS': Advertises all available subnets, including peer VPC subnets.
@@ -80,11 +80,11 @@ type ComputeRouterPeerSpec struct {
 	// +optional
 	AdvertisedRoutePriority *int `json:"advertisedRoutePriority,omitempty"`
 
-	/* Immutable. Peer BGP Autonomous System Number (ASN).
+	/* Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
 	PeerAsn int `json:"peerAsn"`
 
-	/* Immutable. IP address of the BGP interface outside Google Cloud Platform.
+	/* IP address of the BGP interface outside Google Cloud Platform.
 	Only IPv4 is supported. */
 	PeerIpAddress string `json:"peerIpAddress"`
 

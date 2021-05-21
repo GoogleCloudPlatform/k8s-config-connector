@@ -72,6 +72,14 @@ type CloudIdentityGroupSpec struct {
 	/* Immutable. EntityKey of the Group. */
 	GroupKey GroupGroupKey `json:"groupKey"`
 
+	/* Immutable. The initial configuration options for creating a Group.
+
+	See the
+	[API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig)
+	for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"] */
+	// +optional
+	InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
+
 	/* Immutable. The labels that apply to the Group.
 
 	Must not contain more than one entry. Must contain the entry

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.50.0
+    cnrm.cloud.google.com/version: 1.51.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -338,7 +338,7 @@ spec:
                           type: object
                         type: array
                       ipv4Enabled:
-                        description: Whether this Cloud SQL instance should be assigned a public IPV4 address. Either ipv4_enabled must be enabled or a private_network must be configured.
+                        description: Whether this Cloud SQL instance should be assigned a public IPV4 address. At least ipv4_enabled must be enabled or a private_network must be configured.
                         type: boolean
                       privateNetworkRef:
                         oneOf:

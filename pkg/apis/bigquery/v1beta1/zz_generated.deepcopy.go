@@ -1222,6 +1222,11 @@ func (in *TableHivePartitioningOptions) DeepCopyInto(out *TableHivePartitioningO
 		*out = new(string)
 		**out = **in
 	}
+	if in.RequirePartitionFilter != nil {
+		in, out := &in.RequirePartitionFilter, &out.RequirePartitionFilter
+		*out = new(bool)
+		**out = **in
+	}
 	if in.SourceUriPrefix != nil {
 		in, out := &in.SourceUriPrefix, &out.SourceUriPrefix
 		*out = new(string)

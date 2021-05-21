@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.50.0
+    cnrm.cloud.google.com/version: 1.51.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -529,10 +529,10 @@ spec:
                     description: Immutable. Type of the disk attached to each node.
                     type: string
                   ephemeralStorageConfig:
-                    description: Immutable.
+                    description: Immutable. Parameters for the ephemeral storage filesystem.
                     properties:
                       localSsdCount:
-                        description: Immutable.
+                        description: Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size.
                         type: integer
                     required:
                     - localSsdCount

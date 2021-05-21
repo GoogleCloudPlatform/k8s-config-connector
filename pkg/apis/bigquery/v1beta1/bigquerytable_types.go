@@ -119,6 +119,10 @@ type TableHivePartitioningOptions struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
+	/* If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
+	// +optional
+	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
+
 	/* When hive partition detection is requested, a common for all source uris must be required. The prefix must end immediately before the partition key encoding begins. */
 	// +optional
 	SourceUriPrefix *string `json:"sourceUriPrefix,omitempty"`

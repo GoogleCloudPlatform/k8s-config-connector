@@ -181,7 +181,7 @@ type ClusterDnsCacheConfig struct {
 }
 
 type ClusterEphemeralStorageConfig struct {
-	/* Immutable. */
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
@@ -347,7 +347,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Parameters for the ephemeral storage filesystem. */
 	// +optional
 	EphemeralStorageConfig *ClusterEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
 

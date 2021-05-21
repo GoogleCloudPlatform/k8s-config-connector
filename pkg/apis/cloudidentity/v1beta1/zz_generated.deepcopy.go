@@ -103,6 +103,11 @@ func (in *CloudIdentityGroupSpec) DeepCopyInto(out *CloudIdentityGroupSpec) {
 		**out = **in
 	}
 	in.GroupKey.DeepCopyInto(&out.GroupKey)
+	if in.InitialGroupConfig != nil {
+		in, out := &in.InitialGroupConfig, &out.InitialGroupConfig
+		*out = new(string)
+		**out = **in
+	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))

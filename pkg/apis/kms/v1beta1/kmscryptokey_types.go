@@ -66,7 +66,8 @@ type KMSCryptoKeySpec struct {
 	// +optional
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 
-	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. */
+	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
+	You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion. */
 	// +optional
 	SkipInitialVersionCreation *bool `json:"skipInitialVersionCreation,omitempty"`
 

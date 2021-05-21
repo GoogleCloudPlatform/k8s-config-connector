@@ -585,6 +585,11 @@ func (in *AccesslevelOsConstraints) DeepCopyInto(out *AccesslevelOsConstraints) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.RequireVerifiedChromeOs != nil {
+		in, out := &in.RequireVerifiedChromeOs, &out.RequireVerifiedChromeOs
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 

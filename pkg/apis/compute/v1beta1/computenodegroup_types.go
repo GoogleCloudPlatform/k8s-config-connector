@@ -56,6 +56,11 @@ type NodegroupAutoscalingPolicy struct {
 	Mode *string `json:"mode,omitempty"`
 }
 
+type NodegroupMaintenanceWindow struct {
+	/* Immutable. instances.start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
+	StartTime string `json:"startTime"`
+}
+
 type ComputeNodeGroupSpec struct {
 	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
 	group autoscaler to automatically manage the sizes of your node groups. */
@@ -66,9 +71,17 @@ type ComputeNodeGroupSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	// +optional
+	InitialSize *int `json:"initialSize,omitempty"`
+
 	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
 	// +optional
 	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+
+	/* Immutable. contains properties for the timeframe of maintenance */
+	// +optional
+	MaintenanceWindow *NodegroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
 	/* The node template to which this node group belongs. */
 	NodeTemplateRef v1alpha1.ResourceRef `json:"nodeTemplateRef"`
@@ -77,8 +90,9 @@ type ComputeNodeGroupSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The total number of nodes in the node group. */
-	Size int `json:"size"`
+	/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
+	// +optional
+	Size *int `json:"size,omitempty"`
 
 	/* Immutable. Zone where this node group is located */
 	Zone string `json:"zone"`

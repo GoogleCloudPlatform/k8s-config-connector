@@ -44,7 +44,7 @@ type NodepoolAutoscaling struct {
 }
 
 type NodepoolEphemeralStorageConfig struct {
-	/* Immutable. */
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
@@ -97,7 +97,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Parameters for the ephemeral storage filesystem. */
 	// +optional
 	EphemeralStorageConfig *NodepoolEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
 

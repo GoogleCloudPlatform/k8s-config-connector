@@ -160,8 +160,12 @@ type AccesslevelOsConstraints struct {
 	// +optional
 	MinimumVersion *string `json:"minimumVersion,omitempty"`
 
-	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS"] */
+	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"] */
 	OsType string `json:"osType"`
+
+	/* If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access. */
+	// +optional
+	RequireVerifiedChromeOs *bool `json:"requireVerifiedChromeOs,omitempty"`
 }
 
 type AccessContextManagerAccessLevelSpec struct {

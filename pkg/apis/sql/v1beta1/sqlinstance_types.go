@@ -118,7 +118,7 @@ type InstanceIpConfiguration struct {
 	// +optional
 	AuthorizedNetworks []InstanceAuthorizedNetworks `json:"authorizedNetworks,omitempty"`
 
-	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. Either ipv4_enabled must be enabled or a private_network must be configured. */
+	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. At least ipv4_enabled must be enabled or a private_network must be configured. */
 	// +optional
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 

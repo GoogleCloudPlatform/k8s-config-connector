@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.50.0
+    cnrm.cloud.google.com/version: 1.51.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -143,8 +143,11 @@ spec:
                                       Format: "major.minor.patch" such as "10.5.301", "9.2.1".
                                     type: string
                                   osType:
-                                    description: 'The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS"]'
+                                    description: 'The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]'
                                     type: string
+                                  requireVerifiedChromeOs:
+                                    description: If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access.
+                                    type: boolean
                                 required:
                                 - osType
                                 type: object
