@@ -693,6 +693,11 @@ func (in *IAMServiceAccountSpec) DeepCopyInto(out *IAMServiceAccountSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceID != nil {
+		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

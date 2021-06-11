@@ -31,6 +31,10 @@ type FakeLoggingV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeLoggingV1beta1) LoggingLogExclusions(namespace string) v1beta1.LoggingLogExclusionInterface {
+	return &FakeLoggingLogExclusions{c, namespace}
+}
+
 func (c *FakeLoggingV1beta1) LoggingLogSinks(namespace string) v1beta1.LoggingLogSinkInterface {
 	return &FakeLoggingLogSinks{c, namespace}
 }

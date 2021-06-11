@@ -130,6 +130,11 @@ func (in *BackendserviceBackend) DeepCopyInto(out *BackendserviceBackend) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Failover != nil {
+		in, out := &in.Failover, &out.Failover
+		*out = new(bool)
+		**out = **in
+	}
 	in.Group.DeepCopyInto(&out.Group)
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections

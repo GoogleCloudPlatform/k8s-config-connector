@@ -59,6 +59,11 @@ type BackendserviceBackend struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* This field designates whether this is a failover backend. More
+	than one failover backend can be configured for a given RegionBackendService. */
+	// +optional
+	Failover *bool `json:"failover,omitempty"`
+
 	/* Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
 	resource. In case of instance group this defines the list of
 	instances that serve traffic. Member virtual machine instances from

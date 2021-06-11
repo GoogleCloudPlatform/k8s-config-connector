@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34,6 +34,7 @@ spec:
     - gcpaccesscontextmanageraccesslevel
     - gcpaccesscontextmanageraccesslevels
     singular: accesscontextmanageraccesslevel
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -394,7 +395,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -412,6 +413,7 @@ spec:
     - gcpaccesscontextmanageraccesspolicy
     - gcpaccesscontextmanageraccesspolicies
     singular: accesscontextmanageraccesspolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -522,7 +524,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -540,6 +542,7 @@ spec:
     - gcpaccesscontextmanagerserviceperimeter
     - gcpaccesscontextmanagerserviceperimeters
     singular: accesscontextmanagerserviceperimeter
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -924,7 +927,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -942,6 +945,7 @@ spec:
     - gcpartifactregistryrepository
     - gcpartifactregistryrepositories
     singular: artifactregistryrepository
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -1092,7 +1096,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1110,6 +1114,7 @@ spec:
     - gcpbigquerydataset
     - gcpbigquerydatasets
     singular: bigquerydataset
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -1410,7 +1415,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1428,6 +1433,7 @@ spec:
     - gcpbigqueryjob
     - gcpbigqueryjobs
     singular: bigqueryjob
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -2222,7 +2228,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2240,6 +2246,7 @@ spec:
     - gcpbigquerytable
     - gcpbigquerytables
     singular: bigquerytable
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -2655,7 +2662,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2673,6 +2680,7 @@ spec:
     - gcpbigtableappprofile
     - gcpbigtableappprofiles
     singular: bigtableappprofile
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -2822,7 +2830,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2840,6 +2848,7 @@ spec:
     - gcpbigtablegcpolicy
     - gcpbigtablegcpolicies
     singular: bigtablegcpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -3023,7 +3032,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3041,6 +3050,7 @@ spec:
     - gcpbigtableinstance
     - gcpbigtableinstances
     singular: bigtableinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -3183,7 +3193,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3201,6 +3211,7 @@ spec:
     - gcpbigtabletable
     - gcpbigtabletables
     singular: bigtabletable
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -3342,7 +3353,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3360,6 +3371,7 @@ spec:
     - gcpcloudbuildtrigger
     - gcpcloudbuildtriggers
     singular: cloudbuildtrigger
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -4169,7 +4181,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4187,6 +4199,7 @@ spec:
     - gcpcloudidentitygroup
     - gcpcloudidentitygroups
     singular: cloudidentitygroup
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -4361,7 +4374,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -4379,6 +4392,7 @@ spec:
     - gcpcloudschedulerjob
     - gcpcloudschedulerjobs
     singular: cloudschedulerjob
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -4856,7 +4870,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4874,6 +4888,7 @@ spec:
     - gcpcomputeaddress
     - gcpcomputeaddresses
     singular: computeaddress
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -5097,7 +5112,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5115,6 +5130,7 @@ spec:
     - gcpcomputebackendbucket
     - gcpcomputebackendbuckets
     singular: computebackendbucket
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -5320,7 +5336,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5338,6 +5354,7 @@ spec:
     - gcpcomputebackendservice
     - gcpcomputebackendservices
     singular: computebackendservice
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -5410,6 +5427,11 @@ spec:
                         An optional description of this resource.
                         Provide this property when you create the resource.
                       type: string
+                    failover:
+                      description: |-
+                        This field designates whether this is a failover backend. More
+                        than one failover backend can be configured for a given RegionBackendService.
+                      type: boolean
                     group:
                       description: |-
                         Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
@@ -6258,7 +6280,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6276,6 +6298,7 @@ spec:
     - gcpcomputedisk
     - gcpcomputedisks
     singular: computedisk
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -6858,7 +6881,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6876,6 +6899,7 @@ spec:
     - gcpcomputeexternalvpngateway
     - gcpcomputeexternalvpngateways
     singular: computeexternalvpngateway
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -7002,7 +7026,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7020,6 +7044,7 @@ spec:
     - gcpcomputefirewall
     - gcpcomputefirewalls
     singular: computefirewall
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -7374,7 +7399,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7392,6 +7417,7 @@ spec:
     - gcpcomputeforwardingrule
     - gcpcomputeforwardingrules
     singular: computeforwardingrule
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -8000,7 +8026,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8018,6 +8044,7 @@ spec:
     - gcpcomputehealthcheck
     - gcpcomputehealthchecks
     singular: computehealthcheck
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -8462,7 +8489,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8480,6 +8507,7 @@ spec:
     - gcpcomputehttphealthcheck
     - gcpcomputehttphealthchecks
     singular: computehttphealthcheck
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -8621,7 +8649,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8639,6 +8667,7 @@ spec:
     - gcpcomputehttpshealthcheck
     - gcpcomputehttpshealthchecks
     singular: computehttpshealthcheck
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -8780,7 +8809,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8798,6 +8827,7 @@ spec:
     - gcpcomputeimage
     - gcpcomputeimages
     singular: computeimage
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -9054,7 +9084,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9072,6 +9102,7 @@ spec:
     - gcpcomputeinstancegroup
     - gcpcomputeinstancegroups
     singular: computeinstancegroup
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -9253,7 +9284,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9271,6 +9302,7 @@ spec:
     - gcpcomputeinstance
     - gcpcomputeinstances
     singular: computeinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -10023,7 +10055,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10041,6 +10073,7 @@ spec:
     - gcpcomputeinstancetemplate
     - gcpcomputeinstancetemplates
     singular: computeinstancetemplate
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -10641,7 +10674,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10659,6 +10692,7 @@ spec:
     - gcpcomputeinterconnectattachment
     - gcpcomputeinterconnectattachments
     singular: computeinterconnectattachment
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -10898,7 +10932,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10916,6 +10950,7 @@ spec:
     - gcpcomputenetworkendpointgroup
     - gcpcomputenetworkendpointgroups
     singular: computenetworkendpointgroup
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11097,7 +11132,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11115,6 +11150,7 @@ spec:
     - gcpcomputenetworkpeering
     - gcpcomputenetworkpeerings
     singular: computenetworkpeering
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11288,7 +11324,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11306,6 +11342,7 @@ spec:
     - gcpcomputenetwork
     - gcpcomputenetworks
     singular: computenetwork
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11436,7 +11473,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11454,6 +11491,7 @@ spec:
     - gcpcomputenodegroup
     - gcpcomputenodegroups
     singular: computenodegroup
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11642,7 +11680,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11660,6 +11698,7 @@ spec:
     - gcpcomputenodetemplate
     - gcpcomputenodetemplates
     singular: computenodetemplate
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11821,7 +11860,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11839,6 +11878,7 @@ spec:
     - gcpcomputeprojectmetadata
     - gcpcomputeprojectmetadatas
     singular: computeprojectmetadata
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -11937,7 +11977,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11955,6 +11995,7 @@ spec:
     - gcpcomputereservation
     - gcpcomputereservations
     singular: computereservation
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -12149,7 +12190,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12167,6 +12208,7 @@ spec:
     - gcpcomputeresourcepolicy
     - gcpcomputeresourcepolicies
     singular: computeresourcepolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -12402,7 +12444,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12420,6 +12462,7 @@ spec:
     - gcpcomputerouterinterface
     - gcpcomputerouterinterfaces
     singular: computerouterinterface
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -12607,7 +12650,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12625,6 +12668,7 @@ spec:
     - gcpcomputerouternat
     - gcpcomputerouternats
     singular: computerouternat
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -12932,7 +12976,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12950,6 +12994,7 @@ spec:
     - gcpcomputerouterpeer
     - gcpcomputerouterpeers
     singular: computerouterpeer
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -13188,7 +13233,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13206,6 +13251,7 @@ spec:
     - gcpcomputerouter
     - gcpcomputerouters
     singular: computerouter
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -13394,7 +13440,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13412,6 +13458,7 @@ spec:
     - gcpcomputeroute
     - gcpcomputeroutes
     singular: computeroute
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -13667,7 +13714,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13685,6 +13732,7 @@ spec:
     - gcpcomputesecuritypolicy
     - gcpcomputesecuritypolicies
     singular: computesecuritypolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -13867,7 +13915,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13885,6 +13933,7 @@ spec:
     - gcpcomputesharedvpchostproject
     - gcpcomputesharedvpchostprojects
     singular: computesharedvpchostproject
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -13971,7 +14020,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13989,6 +14038,7 @@ spec:
     - gcpcomputesharedvpcserviceproject
     - gcpcomputesharedvpcserviceprojects
     singular: computesharedvpcserviceproject
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -14108,7 +14158,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14126,6 +14176,7 @@ spec:
     - gcpcomputesnapshot
     - gcpcomputesnapshots
     singular: computesnapshot
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -14483,7 +14534,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14501,6 +14552,7 @@ spec:
     - gcpcomputesslcertificate
     - gcpcomputesslcertificates
     singular: computesslcertificate
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -14695,7 +14747,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14713,6 +14765,7 @@ spec:
     - gcpcomputesslpolicy
     - gcpcomputesslpolicies
     singular: computesslpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -14856,7 +14909,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14874,6 +14927,7 @@ spec:
     - gcpcomputesubnetwork
     - gcpcomputesubnetworks
     singular: computesubnetwork
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -15124,7 +15178,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15142,6 +15196,7 @@ spec:
     - gcpcomputetargetgrpcproxy
     - gcpcomputetargetgrpcproxies
     singular: computetargetgrpcproxy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -15299,7 +15354,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15317,6 +15372,7 @@ spec:
     - gcpcomputetargethttpproxy
     - gcpcomputetargethttpproxies
     singular: computetargethttpproxy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -15465,7 +15521,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15483,6 +15539,7 @@ spec:
     - gcpcomputetargethttpsproxy
     - gcpcomputetargethttpsproxies
     singular: computetargethttpsproxy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -15703,7 +15760,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15721,6 +15778,7 @@ spec:
     - gcpcomputetargetinstance
     - gcpcomputetargetinstances
     singular: computetargetinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -15895,7 +15953,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15913,6 +15971,7 @@ spec:
     - gcpcomputetargetpool
     - gcpcomputetargetpools
     singular: computetargetpool
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -16116,7 +16175,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16134,6 +16193,7 @@ spec:
     - gcpcomputetargetsslproxy
     - gcpcomputetargetsslproxies
     singular: computetargetsslproxy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -16339,7 +16399,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16357,6 +16417,7 @@ spec:
     - gcpcomputetargettcpproxy
     - gcpcomputetargettcpproxies
     singular: computetargettcpproxy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -16503,7 +16564,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16521,6 +16582,7 @@ spec:
     - gcpcomputetargetvpngateway
     - gcpcomputetargetvpngateways
     singular: computetargetvpngateway
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -16661,7 +16723,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16679,6 +16741,7 @@ spec:
     - gcpcomputeurlmap
     - gcpcomputeurlmaps
     singular: computeurlmap
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -16835,7 +16898,8 @@ spec:
                       the host / authority header is suffixed with -shadow.
                     properties:
                       backendServiceRef:
-                        description: The backend service resource being mirrored to.
+                        description: Required. The backend service resource being
+                          mirrored to.
                         oneOf:
                         - not:
                             required:
@@ -16962,9 +17026,10 @@ spec:
                       properties:
                         backendServiceRef:
                           description: |-
-                            The default backend service. Before forwarding the request to the
-                            backend service, the loadbalancer applies any relevant
-                            headerActions specified as part of this backendServiceWeight.
+                            The default backend service resource.
+                            Before forwarding the request to backendService, the loadbalancer
+                            applies any relevant headerActions specified as part of this
+                            backendServiceWeight.
                           oneOf:
                           - not:
                               required:
@@ -17066,8 +17131,20 @@ spec:
                 type: object
               defaultService:
                 description: |-
-                  The backend service or backend bucket to use when none of the given
-                  rules match.
+                  The defaultService resource to which traffic is directed if none of
+                  the hostRules match.
+                  For the Global URL Map, it should be a reference to the backend
+                  service or backend bucket.
+                  For the Regional URL Map, it should be a reference to the backend
+                  service.
+                  If defaultRouteAction is additionally specified, advanced routing
+                  actions like URL Rewrites, etc. take effect prior to sending the
+                  request to the backend. However, if defaultService is specified,
+                  defaultRouteAction cannot contain any weightedBackendServices.
+                  Conversely, if routeAction specifies any weightedBackendServices,
+                  service must not be specified. Only one of defaultService,
+                  defaultUrlRedirect or defaultRouteAction.weightedBackendService
+                  must be set.
                 oneOf:
                 - required:
                   - backendBucketRef
@@ -17181,7 +17258,7 @@ spec:
                     description: |-
                       If set to true, any accompanying query portion of the original URL is removed prior
                       to redirecting the request. If set to false, the query portion of the original URL is
-                      retained. The default is set to false.
+                      retained.
                        This field is required to ensure an empty block is not set. The normal default value is false.
                     type: boolean
                 required:
@@ -17189,8 +17266,8 @@ spec:
                 type: object
               description:
                 description: |-
-                  An optional description of this resource. Provide this property when you create
-                  the resource.
+                  An optional description of this resource. Provide this property when
+                  you create the resource.
                 type: string
               headerAction:
                 description: |-
@@ -17266,21 +17343,22 @@ spec:
                   properties:
                     description:
                       description: |-
-                        An optional description of this resource. Provide this property when you create
-                        the resource.
+                        An optional description of this HostRule. Provide this property
+                        when you create the resource.
                       type: string
                     hosts:
                       description: |-
-                        The list of host patterns to match. They must be valid hostnames, except * will
-                        match any string of ([a-z0-9-.]*). In that case, * must be the first character
-                        and must be followed in the pattern by either - or ..
+                        The list of host patterns to match. They must be valid
+                        hostnames, except * will match any string of ([a-z0-9-.]*). In
+                        that case, * must be the first character and must be followed in
+                        the pattern by either - or ..
                       items:
                         type: string
                       type: array
                     pathMatcher:
                       description: |-
-                        The name of the PathMatcher to use to match the path portion of the URL if the
-                        hostRule matches the URL's host portion.
+                        The name of the PathMatcher to use to match the path portion of
+                        the URL if the hostRule matches the URL's host portion.
                       type: string
                   required:
                   - hosts
@@ -17288,8 +17366,9 @@ spec:
                   type: object
                 type: array
               location:
-                description: Location represents the geographical location of the
-                  ComputeURLMap. Specify "global" for global resources.
+                description: 'Location represents the geographical location of the
+                  ComputeURLMap. Specify a region name or "global" for global resources.
+                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               pathMatcher:
                 description: The list of named PathMatchers to use against the URL.
@@ -17416,8 +17495,8 @@ spec:
                             the host / authority header is suffixed with -shadow.
                           properties:
                             backendServiceRef:
-                              description: The backend service resource being mirrored
-                                to.
+                              description: Required. The backend service resource
+                                being mirrored to.
                               oneOf:
                               - not:
                                   required:
@@ -17547,9 +17626,10 @@ spec:
                             properties:
                               backendServiceRef:
                                 description: |-
-                                  The default backend service. Before forwarding the request to the
-                                  backend service, the loadbalancer applies any relevant
-                                  headerActions specified as part of this backendServiceWeight.
+                                  The default backend service resource.
+                                  Before forwarding the request to backendService, the loadbalancer
+                                  applies any relevant headerActions specified as part of this
+                                  backendServiceWeight.
                                 oneOf:
                                 - not:
                                     required:
@@ -17654,8 +17734,12 @@ spec:
                       type: object
                     defaultService:
                       description: |-
-                        The backend service or backend bucket to use when none of the given
-                        paths match.
+                        The default service to use if none of the pathRules defined by this
+                        PathMatcher is matched by the URL's path portion.
+                        For the Global URL Map, it should be a reference to the backend
+                        service or backend bucket.
+                        For the Regional URL Map, it should be a reference to the backend
+                        service.
                       oneOf:
                       - required:
                         - backendBucketRef
@@ -17778,9 +17862,7 @@ spec:
                       - stripQuery
                       type: object
                     description:
-                      description: |-
-                        An optional description of this resource. Provide this property when you create
-                        the resource.
+                      description: An optional description of this resource.
                       type: string
                     headerAction:
                       description: |-
@@ -18010,8 +18092,8 @@ spec:
                                   service, the host / authority header is suffixed with -shadow.
                                 properties:
                                   backendServiceRef:
-                                    description: The backend service resource being
-                                      mirrored to.
+                                    description: Required. The backend service resource
+                                      being mirrored to.
                                     oneOf:
                                     - not:
                                         required:
@@ -18028,7 +18110,7 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The name of a ComputeBackendService.
+                                        description: The selfLink of a ComputeBackendService.
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -18072,25 +18154,25 @@ spec:
                                     description: |-
                                       Specifies one or more conditions when this retry rule applies. Valid values are:
 
-                                      * 5xx: Loadbalancer will attempt a retry if the backend service responds with
+                                      - 5xx: Loadbalancer will attempt a retry if the backend service responds with
                                       any 5xx response code, or if the backend service does not respond at all,
                                       example: disconnects, reset, read timeout, connection failure, and refused
                                       streams.
-                                      * gateway-error: Similar to 5xx, but only applies to response codes
+                                      - gateway-error: Similar to 5xx, but only applies to response codes
                                       502, 503 or 504.
-                                      * connect-failure: Loadbalancer will retry on failures
+                                      - connect-failure: Loadbalancer will retry on failures
                                       connecting to backend services, for example due to connection timeouts.
-                                      * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
+                                      - retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
                                       Currently the only retriable error supported is 409.
-                                      * refused-stream: Loadbalancer will retry if the backend service resets the stream with a
+                                      - refused-stream: Loadbalancer will retry if the backend service resets the stream with a
                                       REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
-                                      * cancelled: Loadbalancer will retry if the gRPC status code in the response
+                                      - cancelled: Loadbalancer will retry if the gRPC status code in the response
                                       header is set to cancelled
-                                      * deadline-exceeded: Loadbalancer will retry if the
+                                      - deadline-exceeded: Loadbalancer will retry if the
                                       gRPC status code in the response header is set to deadline-exceeded
-                                      * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
+                                      - resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
                                       header is set to resource-exhausted
-                                      * unavailable: Loadbalancer will retry if
+                                      - unavailable: Loadbalancer will retry if
                                       the gRPC status code in the response header is set to unavailable
                                     items:
                                       type: string
@@ -18149,8 +18231,8 @@ spec:
                                   properties:
                                     backendServiceRef:
                                       description: |-
-                                        The default backend service. Before forwarding the request to the
-                                        backend service, the loadbalancer applies any relevant
+                                        Required. The default backend service resource. Before forwarding
+                                        the request to backendService, the loadbalancer applies any relevant
                                         headerActions specified as part of this backendServiceWeight.
                                       oneOf:
                                       - not:
@@ -18168,7 +18250,7 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The name of a ComputeBackendService.
+                                          description: The selfLink of a ComputeBackendService.
                                           type: string
                                         name:
                                           description: 'Name of the referent. More
@@ -18267,8 +18349,19 @@ spec:
                             type: object
                           service:
                             description: |-
-                              The backend service or backend bucket to use if any of the given
-                              paths match.
+                              The backend service to which traffic is directed if this rule is
+                              matched.
+                              For the Global URL Map, it should be a reference to the backend
+                              service or backend bucket.
+                              For the Regional URL Map, it should be a reference to the backend
+                              service.
+                              If routeAction is additionally specified, advanced routing actions
+                              like URL Rewrites, etc. take effect prior to sending the request to
+                              the backend. However, if service is specified, routeAction cannot
+                              contain any weightedBackendServices. Conversely, if routeAction
+                              specifies any weightedBackendServices, service must not be
+                              specified. Only one of urlRedirect, service or
+                              routeAction.weightedBackendService must be set.
                             oneOf:
                             - required:
                               - backendBucketRef
@@ -18387,9 +18480,9 @@ spec:
                                 type: string
                               stripQuery:
                                 description: |-
-                                  If set to true, any accompanying query portion of the original URL is
-                                  removed prior to redirecting the request. If set to false, the query
-                                  portion of the original URL is retained.
+                                  If set to true, any accompanying query portion of the original URL is removed
+                                  prior to redirecting the request. If set to false, the query portion of the
+                                  original URL is retained.
                                    This field is required to ensure an empty block is not set. The normal default value is false.
                                 type: boolean
                             required:
@@ -18529,10 +18622,15 @@ spec:
                                         description: |-
                                           The header value must be an integer and its value must be in the range specified
                                           in rangeMatch. If the header does not contain an integer, number or is empty,
-                                          the match fails. For example for a range [-5, 0]   - -3 will match.  - 0 will
-                                          not match.  - 0.25 will not match.  - -3someString will not match.   Only one of
-                                          exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch
-                                          must be set.
+                                          the match fails. For example for a range [-5, 0]
+
+                                          * -3 will match
+                                          * 0 will not match
+                                          * 0.25 will not match
+                                          * -3someString will not match.
+
+                                          Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or
+                                          rangeMatch must be set.
                                         properties:
                                           rangeEnd:
                                             description: The end of the range (exclusive).
@@ -18610,9 +18708,10 @@ spec:
                                         description: |-
                                           Specifies how individual filterLabel matches within the list of filterLabels
                                           contribute towards the overall metadataFilter match. Supported values are:
-                                            - MATCH_ANY: At least one of the filterLabels must have a matching label in the
+
+                                          * MATCH_ANY: At least one of the filterLabels must have a matching label in the
                                           provided metadata.
-                                            - MATCH_ALL: All filterLabels must have matching labels in
+                                          * MATCH_ALL: All filterLabels must have matching labels in
                                           the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"]
                                         type: string
                                     required:
@@ -18819,8 +18918,8 @@ spec:
                                   service, the host / authority header is suffixed with -shadow.
                                 properties:
                                   backendServiceRef:
-                                    description: The backend service resource being
-                                      mirrored to.
+                                    description: Required. The backend service resource
+                                      being mirrored to.
                                     oneOf:
                                     - not:
                                         required:
@@ -18837,7 +18936,7 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The name of a ComputeBackendService.
+                                        description: The selfLink of a ComputeBackendService.
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -18860,10 +18959,8 @@ spec:
                                       This number must be > 0.
                                     type: integer
                                   perTryTimeout:
-                                    description: |-
-                                      Specifies a non-zero timeout per retry attempt.
-                                      If not specified, will use the timeout set in HttpRouteAction. If timeout in HttpRouteAction
-                                      is not set, will use the largest timeout among all backend services associated with the route.
+                                    description: Specifies a non-zero timeout per
+                                      retry attempt.
                                     properties:
                                       nanos:
                                         description: |-
@@ -18881,7 +18978,7 @@ spec:
                                     type: object
                                   retryConditions:
                                     description: |-
-                                      Specfies one or more conditions when this retry rule applies. Valid values are:
+                                      Specifies one or more conditions when this retry rule applies. Valid values are:
 
                                       * 5xx: Loadbalancer will attempt a retry if the backend service responds with
                                         any 5xx response code, or if the backend service does not respond at all,
@@ -18962,8 +19059,8 @@ spec:
                                   properties:
                                     backendServiceRef:
                                       description: |-
-                                        The default backend service. Before forwarding the request to the
-                                        backend service, the loadbalancer applies any relevant
+                                        Required. The default backend service resource. Before forwarding
+                                        the request to backendService, the loadbalancer applies any relevant
                                         headerActions specified as part of this backendServiceWeight.
                                       oneOf:
                                       - not:
@@ -18981,7 +19078,7 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The name of a ComputeBackendService.
+                                          description: The selfLink of a ComputeBackendService.
                                           type: string
                                         name:
                                           description: 'Name of the referent. More
@@ -19080,7 +19177,7 @@ spec:
                             type: object
                           service:
                             description: |-
-                              The backend service resource to which traffic is
+                              The region backend service resource to which traffic is
                               directed if this rule is matched. If routeAction is additionally specified,
                               advanced routing actions like URL Rewrites, etc. take effect prior to sending
                               the request to the backend. However, if service is specified, routeAction cannot
@@ -19096,26 +19193,34 @@ spec:
                             properties:
                               hostRedirect:
                                 description: |-
-                                  The host that will be used in the redirect response instead of the one that was
-                                  supplied in the request. The value must be between 1 and 255 characters.
+                                  The host that will be used in the redirect response instead of the one
+                                  that was supplied in the request. The value must be between 1 and 255
+                                  characters.
                                 type: string
                               httpsRedirect:
                                 description: |-
-                                  If set to true, the URL scheme in the redirected request is set to https. If set
-                                  to false, the URL scheme of the redirected request will remain the same as that
-                                  of the request. This must only be set for UrlMaps used in TargetHttpProxys.
-                                  Setting this true for TargetHttpsProxy is not permitted. Defaults to false.
+                                  If set to true, the URL scheme in the redirected request is set to https.
+                                  If set to false, the URL scheme of the redirected request will remain the
+                                  same as that of the request. This must only be set for UrlMaps used in
+                                  TargetHttpProxys. Setting this true for TargetHttpsProxy is not
+                                  permitted. The default is set to false.
                                 type: boolean
                               pathRedirect:
                                 description: |-
-                                  The path that will be used in the redirect response instead of the one that was
-                                  supplied in the request. Only one of pathRedirect or prefixRedirect must be
-                                  specified. The value must be between 1 and 1024 characters.
+                                  The path that will be used in the redirect response instead of the one
+                                  that was supplied in the request. pathRedirect cannot be supplied
+                                  together with prefixRedirect. Supply one alone or neither. If neither is
+                                  supplied, the path of the original request will be used for the redirect.
+                                  The value must be between 1 and 1024 characters.
                                 type: string
                               prefixRedirect:
                                 description: |-
-                                  The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
-                                  retaining the remaining portion of the URL before redirecting the request.
+                                  The prefix that replaces the prefixMatch specified in the
+                                  HttpRouteRuleMatch, retaining the remaining portion of the URL before
+                                  redirecting the request. prefixRedirect cannot be supplied together with
+                                  pathRedirect. Supply one alone or neither. If neither is supplied, the
+                                  path of the original request will be used for the redirect. The value
+                                  must be between 1 and 1024 characters.
                                 type: string
                               redirectResponseCode:
                                 description: |-
@@ -19127,15 +19232,17 @@ spec:
 
                                   * SEE_OTHER which corresponds to 303.
 
-                                  * TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method will be retained.
+                                  * TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
+                                  will be retained.
 
-                                  * PERMANENT_REDIRECT, which corresponds to 308. In this case, the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
+                                  * PERMANENT_REDIRECT, which corresponds to 308. In this case,
+                                  the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]
                                 type: string
                               stripQuery:
                                 description: |-
-                                  If set to true, any accompanying query portion of the original URL is removed
-                                  prior to redirecting the request. If set to false, the query portion of the
-                                  original URL is retained. Defaults to false.
+                                  If set to true, any accompanying query portion of the original URL is
+                                  removed prior to redirecting the request. If set to false, the query
+                                  portion of the original URL is retained. The default value is false.
                                 type: boolean
                             type: object
                         required:
@@ -19153,9 +19260,8 @@ spec:
                 type: string
               test:
                 description: |-
-                  The list of expected URL mapping tests. Request to update this UrlMap will
-                  succeed only if all of the test cases pass. You can specify a maximum of 100
-                  tests per UrlMap.
+                  The list of expected URL mappings. Requests to update this UrlMap will
+                  succeed only if all of the test cases pass.
                 items:
                   properties:
                     description:
@@ -19169,8 +19275,11 @@ spec:
                       type: string
                     service:
                       description: |-
-                        The backend service or backend bucket link that should be matched
-                        by this test.
+                        The backend service resource that should be matched by this test.
+                        For the Global URL Map, it should be a reference to the backend
+                        service or backend bucket.
+                        For the Regional URL Map, it should be a reference to the backend
+                        service.
                       oneOf:
                       - required:
                         - backendBucketRef
@@ -19274,8 +19383,8 @@ spec:
                 type: string
               fingerprint:
                 description: |-
-                  Fingerprint of this resource. A hash of the contents stored in this object. This
-                  field is used in optimistic locking.
+                  Fingerprint of this resource. This field is used internally during
+                  updates of this resource.
                 type: string
               mapId:
                 description: The unique identifier for the resource.
@@ -19308,7 +19417,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19326,6 +19435,7 @@ spec:
     - gcpcomputevpngateway
     - gcpcomputevpngateways
     singular: computevpngateway
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -19472,7 +19582,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19490,6 +19600,7 @@ spec:
     - gcpcomputevpntunnel
     - gcpcomputevpntunnels
     singular: computevpntunnel
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -19837,7 +19948,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -19855,6 +19966,7 @@ spec:
     - gcpcontaineranalysisnote
     - gcpcontaineranalysisnotes
     singular: containeranalysisnote
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -20424,7 +20536,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20442,6 +20554,7 @@ spec:
     - gcpcontainercluster
     - gcpcontainerclusters
     singular: containercluster
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -21563,7 +21676,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21581,6 +21694,7 @@ spec:
     - gcpcontainernodepool
     - gcpcontainernodepools
     singular: containernodepool
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -22014,7 +22128,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22032,6 +22146,7 @@ spec:
     - gcpdataflowflextemplatejob
     - gcpdataflowflextemplatejobs
     singular: dataflowflextemplatejob
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -22140,7 +22255,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22158,6 +22273,7 @@ spec:
     - gcpdataflowjob
     - gcpdataflowjobs
     singular: dataflowjob
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -22420,7 +22536,285 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: datafusioninstances.datafusion.cnrm.cloud.google.com
+spec:
+  group: datafusion.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataFusionInstance
+    plural: datafusioninstances
+    shortNames:
+    - gcpdatafusioninstance
+    - gcpdatafusioninstances
+    singular: datafusioninstance
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              dataprocServiceAccountRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: User-managed service account to set on Dataproc when
+                      Cloud Data Fusion creates Dataproc to run data processing pipelines.
+                      This allows users to have fine-grained access control on Dataproc's
+                      accesses to cloud resources.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              description:
+                description: A description of this instance.
+                type: string
+              displayName:
+                description: Display name for an instance.
+                type: string
+              enableStackdriverLogging:
+                description: Option to enable Stackdriver Logging.
+                type: boolean
+              enableStackdriverMonitoring:
+                description: Option to enable Stackdriver Monitoring.
+                type: boolean
+              location:
+                description: The location for the resource
+                type: string
+              networkConfig:
+                description: Network configuration options. These are required when
+                  a private Data Fusion instance is to be created.
+                properties:
+                  ipAllocation:
+                    description: The IP range in CIDR notation to use for the managed
+                      Data Fusion instance nodes. This range must not overlap with
+                      any other ranges used in the customer network.
+                    type: string
+                  networkRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: Name of the network in the customer project with
+                          which the Tenant Project will be peered for executing pipelines.
+                          In case of shared VPC where the network resides in another
+                          host project the network should specified in the form of
+                          projects/{host-project-id}/global/networks/{network}
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                type: object
+              options:
+                additionalProperties:
+                  type: string
+                description: Map of additional options used to configure the behavior
+                  of Data Fusion instance.
+                type: object
+              privateInstance:
+                description: Specifies whether the Data Fusion instance should be
+                  private. If set to true, all Data Fusion nodes will have private
+                  IP addresses and will not be able to access the public internet.
+                type: boolean
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              type:
+                description: 'Required. Instance type. Possible values: TYPE_UNSPECIFIED,
+                  BASIC, ENTERPRISE, DEVELOPER'
+                type: string
+              version:
+                description: Current version of the Data Fusion.
+                type: string
+              zone:
+                description: Name of the zone in which the Data Fusion instance will
+                  be created. Only DEVELOPER instances use this field.
+                type: string
+            required:
+            - location
+            - type
+            type: object
+          status:
+            properties:
+              apiEndpoint:
+                description: Output only. Endpoint on which the REST APIs is accessible.
+                type: string
+              availableVersion:
+                description: Available versions that the instance can be upgraded
+                  to.
+                items:
+                  properties:
+                    availableFeatures:
+                      description: Represents a list of available feature names for
+                        a given version.
+                      items:
+                        type: string
+                      type: array
+                    defaultVersion:
+                      description: Whether this is currently the default version for
+                        Cloud Data Fusion
+                      type: boolean
+                    versionNumber:
+                      description: The version number of the Data Fusion instance,
+                        such as '6.0.1.0'.
+                      type: string
+                  type: object
+                type: array
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Output only. The time the instance was created.
+                format: date-time
+                type: string
+              gcsBucket:
+                description: Output only. Cloud Storage bucket generated by Data Fusion
+                  in the customer project.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              p4ServiceAccount:
+                description: Output only. P4 service account for the customer project.
+                type: string
+              serviceEndpoint:
+                description: Output only. Endpoint on which the Data Fusion UI is
+                  accessible.
+                type: string
+              state:
+                description: 'Output only. The current state of this Data Fusion instance.
+                  Possible values: STATE_UNSPECIFIED, ENABLED, DISABLED, UNKNOWN'
+                type: string
+              stateMessage:
+                description: Output only. Additional information about the current
+                  state of this Data Fusion instance if available.
+                type: string
+              tenantProjectId:
+                description: Output only. The name of the tenant project.
+                type: string
+              updateTime:
+                description: Output only. The time the instance was last updated.
+                format: date-time
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -22438,6 +22832,7 @@ spec:
     - gcpdataprocautoscalingpolicy
     - gcpdataprocautoscalingpolicies
     singular: dataprocautoscalingpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -22683,7 +23078,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -22701,6 +23096,7 @@ spec:
     - gcpdataproccluster
     - gcpdataprocclusters
     singular: dataproccluster
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -23810,7 +24206,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -23828,6 +24224,7 @@ spec:
     - gcpdataprocworkflowtemplate
     - gcpdataprocworkflowtemplates
     singular: dataprocworkflowtemplate
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -25596,7 +25993,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25614,6 +26011,7 @@ spec:
     - gcpdnsmanagedzone
     - gcpdnsmanagedzones
     singular: dnsmanagedzone
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -25920,7 +26318,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25938,6 +26336,7 @@ spec:
     - gcpdnspolicy
     - gcpdnspolicies
     singular: dnspolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -26113,7 +26512,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26131,6 +26530,7 @@ spec:
     - gcpdnsrecordset
     - gcpdnsrecordsets
     singular: dnsrecordset
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -26269,7 +26669,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26287,6 +26687,7 @@ spec:
     - gcpfirestoreindex
     - gcpfirestoreindexes
     singular: firestoreindex
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -26421,7 +26822,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26439,6 +26840,7 @@ spec:
     - gcpfolder
     - gcpfolders
     singular: folder
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -26630,7 +27032,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -26648,6 +27050,7 @@ spec:
     - gcpgameservicesrealm
     - gcpgameservicesrealms
     singular: gameservicesrealm
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -26766,7 +27169,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -26784,6 +27187,7 @@ spec:
     - gcpgkehubmembership
     - gcpgkehubmemberships
     singular: gkehubmembership
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -27128,7 +27532,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -27145,6 +27549,7 @@ spec:
     - gcpiamauditconfig
     - gcpiamauditconfigs
     singular: iamauditconfig
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -27289,7 +27694,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -27307,6 +27712,7 @@ spec:
     - gcpiamcustomrole
     - gcpiamcustomroles
     singular: iamcustomrole
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -27427,7 +27833,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -27444,6 +27850,7 @@ spec:
     - gcpiampolicy
     - gcpiampolicies
     singular: iampolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -27656,7 +28063,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -27673,6 +28080,7 @@ spec:
     - gcpiampolicymember
     - gcpiampolicymembers
     singular: iampolicymember
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -27871,7 +28279,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -27889,6 +28297,7 @@ spec:
     - gcpiamserviceaccountkey
     - gcpiamserviceaccountkeys
     singular: iamserviceaccountkey
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28047,7 +28456,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -28065,6 +28474,7 @@ spec:
     - gcpiamserviceaccount
     - gcpiamserviceaccounts
     singular: iamserviceaccount
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28108,6 +28518,11 @@ spec:
               displayName:
                 description: The display name for the service account. Can be updated
                   without creating a new resource.
+                type: string
+              resourceID:
+                description: Immutable. Optional. The accountId of the resource. Used
+                  for creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
             type: object
           status:
@@ -28173,7 +28588,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28191,6 +28606,7 @@ spec:
     - gcpiapbrand
     - gcpiapbrands
     singular: iapbrand
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28295,7 +28711,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28313,6 +28729,7 @@ spec:
     - gcpiapidentityawareproxyclient
     - gcpiapidentityawareproxyclients
     singular: iapidentityawareproxyclient
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28443,7 +28860,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28461,6 +28878,7 @@ spec:
     - gcpidentityplatformoauthidpconfig
     - gcpidentityplatformoauthidpconfigs
     singular: identityplatformoauthidpconfig
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28624,7 +29042,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28642,6 +29060,7 @@ spec:
     - gcpidentityplatformtenantoauthidpconfig
     - gcpidentityplatformtenantoauthidpconfigs
     singular: identityplatformtenantoauthidpconfig
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28835,7 +29254,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28853,6 +29272,7 @@ spec:
     - gcpidentityplatformtenant
     - gcpidentityplatformtenants
     singular: identityplatformtenant
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28986,7 +29406,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29004,6 +29424,7 @@ spec:
     - gcpkmscryptokey
     - gcpkmscryptokeys
     singular: kmscryptokey
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -29169,7 +29590,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29187,6 +29608,7 @@ spec:
     - gcpkmskeyring
     - gcpkmskeyrings
     singular: kmskeyring
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -29296,7 +29718,276 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: logginglogexclusions.logging.cnrm.cloud.google.com
+spec:
+  group: logging.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: LoggingLogExclusion
+    plural: logginglogexclusions
+    shortNames:
+    - gcplogginglogexclusion
+    - gcplogginglogexclusions
+    singular: logginglogexclusion
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            oneOf:
+            - required:
+              - projectRef
+            - required:
+              - folderRef
+            - required:
+              - organizationRef
+            - required:
+              - billingAccountRef
+            properties:
+              billingAccountRef:
+                description: The BillingAccount that this resource belongs to. Only
+                  one of [projectRef, folderRef, organizationRef, billingAccountRef]
+                  may be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The ID of a BillingAccount in format billingAccounts/{billingaccount_id}.
+                    type: string
+                  name:
+                    description: '[WARNING] BillingAccount is not yet supported in
+                      Config Connector, use ''external'' field to reference existing
+                      resources.'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              description:
+                description: Optional. A description of this exclusion.
+                type: string
+              disabled:
+                description: Optional. If set to True, then this exclusion is disabled
+                  and it does not exclude any log entries. You can update an exclusion
+                  to change the value of this field.
+                type: boolean
+              filter:
+                description: 'Required. An (https://cloud.google.com/logging/docs/view/advanced-queries#sample),
+                  you can exclude less than 100% of the matching log entries. For
+                  example, the following query matches 99% of low-severity log entries
+                  from Google Cloud Storage buckets: `"resource.type=gcs_bucket severity'
+                type: string
+              folderRef:
+                description: The Folder that this resource belongs to. Only one of
+                  [projectRef, folderRef, organizationRef, billingAccountRef] may
+                  be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The ID of a Folder in format folders/{folder_id}.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              organizationRef:
+                description: The Organization that this resource belongs to. Only
+                  one of [projectRef, folderRef, organizationRef, billingAccountRef]
+                  may be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The ID of an Organization in format organizations/{organization_id}.
+                    type: string
+                  name:
+                    description: '[WARNING] Organization is not yet supported in Config
+                      Connector, use ''external'' field to reference existing resources.'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to. Only one of
+                  [projectRef, folderRef, organizationRef, billingAccountRef] may
+                  be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The ID of a Project in format projects/{project_id}.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+            required:
+            - filter
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Output only. The creation timestamp of the exclusion.
+                  This field may not be present for older exclusions.
+                format: date-time
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              updateTime:
+                description: Output only. The last update timestamp of the exclusion.
+                  This field may not be present for older exclusions.
+                format: date-time
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29314,6 +30005,7 @@ spec:
     - gcplogginglogsink
     - gcplogginglogsinks
     singular: logginglogsink
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -29659,7 +30351,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29677,6 +30369,7 @@ spec:
     - gcpmemcacheinstance
     - gcpmemcacheinstances
     singular: memcacheinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -29891,7 +30584,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29909,6 +30602,7 @@ spec:
     - gcpmonitoringalertpolicy
     - gcpmonitoringalertpolicies
     singular: monitoringalertpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -30650,7 +31344,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -30668,6 +31362,7 @@ spec:
     - gcpmonitoringgroup
     - gcpmonitoringgroups
     singular: monitoringgroup
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -30808,7 +31503,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30826,6 +31521,7 @@ spec:
     - gcpmonitoringnotificationchannel
     - gcpmonitoringnotificationchannels
     singular: monitoringnotificationchannel
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -31099,7 +31795,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -31117,6 +31813,7 @@ spec:
     - gcposconfigguestpolicy
     - gcposconfigguestpolicies
     singular: osconfigguestpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -31849,7 +32546,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31867,6 +32564,7 @@ spec:
     - gcpproject
     - gcpprojects
     singular: project
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -32069,7 +32767,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32087,6 +32785,7 @@ spec:
     - gcppubsubsubscription
     - gcppubsubsubscriptions
     singular: pubsubsubscription
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -32428,7 +33127,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32446,6 +33145,7 @@ spec:
     - gcppubsubtopic
     - gcppubsubtopics
     singular: pubsubtopic
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -32592,7 +33292,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32610,6 +33310,7 @@ spec:
     - gcpredisinstance
     - gcpredisinstances
     singular: redisinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -32865,7 +33566,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32883,6 +33584,7 @@ spec:
     - gcpresourcemanagerlien
     - gcpresourcemanagerliens
     singular: resourcemanagerlien
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33040,7 +33742,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33058,6 +33760,7 @@ spec:
     - gcpresourcemanagerpolicy
     - gcpresourcemanagerpolicies
     singular: resourcemanagerpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33318,7 +34021,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33336,6 +34039,7 @@ spec:
     - gcpsecretmanagersecret
     - gcpsecretmanagersecrets
     singular: secretmanagersecret
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33508,7 +34212,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33526,6 +34230,7 @@ spec:
     - gcpsecretmanagersecretversion
     - gcpsecretmanagersecretversions
     singular: secretmanagersecretversion
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33700,7 +34405,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33718,6 +34423,7 @@ spec:
     - gcpservicenetworkingconnection
     - gcpservicenetworkingconnections
     singular: servicenetworkingconnection
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33874,7 +34580,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33892,6 +34598,7 @@ spec:
     - gcpservice
     - gcpservices
     singular: service
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -33986,7 +34693,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34004,6 +34711,7 @@ spec:
     - gcpsourcereporepository
     - gcpsourcereporepositories
     singular: sourcereporepository
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -34181,7 +34889,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34199,6 +34907,7 @@ spec:
     - gcpspannerdatabase
     - gcpspannerdatabases
     singular: spannerdatabase
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -34371,7 +35080,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34389,6 +35098,7 @@ spec:
     - gcpspannerinstance
     - gcpspannerinstances
     singular: spannerinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -34508,7 +35218,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34526,6 +35236,7 @@ spec:
     - gcpsqldatabase
     - gcpsqldatabases
     singular: sqldatabase
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -34669,7 +35380,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34687,6 +35398,7 @@ spec:
     - gcpsqlinstance
     - gcpsqlinstances
     singular: sqlinstance
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -35230,7 +35942,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35248,6 +35960,7 @@ spec:
     - gcpsqlsslcert
     - gcpsqlsslcerts
     singular: sqlsslcert
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -35403,7 +36116,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35421,6 +36134,7 @@ spec:
     - gcpsqluser
     - gcpsqlusers
     singular: sqluser
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -35596,7 +36310,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35614,6 +36328,7 @@ spec:
     - gcpstoragebucketaccesscontrol
     - gcpstoragebucketaccesscontrols
     singular: storagebucketaccesscontrol
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -35763,7 +36478,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35781,6 +36496,7 @@ spec:
     - gcpstoragebucket
     - gcpstoragebuckets
     singular: storagebucket
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -36087,7 +36803,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -36105,6 +36821,7 @@ spec:
     - gcpstoragedefaultobjectaccesscontrol
     - gcpstoragedefaultobjectaccesscontrols
     singular: storagedefaultobjectaccesscontrol
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -36270,7 +36987,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -36288,6 +37005,7 @@ spec:
     - gcpstoragenotification
     - gcpstoragenotifications
     singular: storagenotification
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -36469,7 +37187,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.51.2
+    cnrm.cloud.google.com/version: 1.52.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -36487,6 +37205,7 @@ spec:
     - gcpstoragetransferjob
     - gcpstoragetransferjobs
     singular: storagetransferjob
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:

@@ -35,6 +35,7 @@ import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dataflow/v1beta1"
+	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dns/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1"
@@ -78,6 +79,7 @@ type Interface interface {
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
+	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
@@ -120,6 +122,7 @@ type Clientset struct {
 	containerV1beta1            *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1beta1    *containeranalysisv1beta1.ContaineranalysisV1beta1Client
 	dataflowV1beta1             *dataflowv1beta1.DataflowV1beta1Client
+	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
 	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
 	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
@@ -200,6 +203,11 @@ func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.Containe
 // DataflowV1beta1 retrieves the DataflowV1beta1Client
 func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return c.dataflowV1beta1
+}
+
+// DatafusionV1beta1 retrieves the DatafusionV1beta1Client
+func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface {
+	return c.datafusionV1beta1
 }
 
 // DataprocV1beta1 retrieves the DataprocV1beta1Client
@@ -392,6 +400,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.datafusionV1beta1, err = datafusionv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.dataprocV1beta1, err = dataprocv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -515,6 +527,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.containerV1beta1 = containerv1beta1.NewForConfigOrDie(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.NewForConfigOrDie(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.NewForConfigOrDie(c)
+	cs.datafusionV1beta1 = datafusionv1beta1.NewForConfigOrDie(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.NewForConfigOrDie(c)
 	cs.dnsV1beta1 = dnsv1beta1.NewForConfigOrDie(c)
 	cs.firestoreV1beta1 = firestorev1beta1.NewForConfigOrDie(c)
@@ -559,6 +572,7 @@ func New(c rest.Interface) *Clientset {
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
+	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)

@@ -297,10 +297,15 @@ type UrlmapHeaderMatches struct {
 
 	/* The header value must be an integer and its value must be in the range specified
 	in rangeMatch. If the header does not contain an integer, number or is empty,
-	the match fails. For example for a range [-5, 0]   - -3 will match.  - 0 will
-	not match.  - 0.25 will not match.  - -3someString will not match.   Only one of
-	exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch
-	must be set. */
+	the match fails. For example for a range [-5, 0]
+
+	* -3 will match
+	* 0 will not match
+	* 0.25 will not match
+	* -3someString will not match.
+
+	Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or
+	rangeMatch must be set. */
 	// +optional
 	RangeMatch *UrlmapRangeMatch `json:"rangeMatch,omitempty"`
 
@@ -322,18 +327,19 @@ type UrlmapHeaderMatches struct {
 }
 
 type UrlmapHostRule struct {
-	/* An optional description of this resource. Provide this property when you create
-	the resource. */
+	/* An optional description of this HostRule. Provide this property
+	when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The list of host patterns to match. They must be valid hostnames, except * will
-	match any string of ([a-z0-9-.]*). In that case, * must be the first character
-	and must be followed in the pattern by either - or .. */
+	/* The list of host patterns to match. They must be valid
+	hostnames, except * will match any string of ([a-z0-9-.]*). In
+	that case, * must be the first character and must be followed in
+	the pattern by either - or .. */
 	Hosts []string `json:"hosts"`
 
-	/* The name of the PathMatcher to use to match the path portion of the URL if the
-	hostRule matches the URL's host portion. */
+	/* The name of the PathMatcher to use to match the path portion of
+	the URL if the hostRule matches the URL's host portion. */
 	PathMatcher string `json:"pathMatcher"`
 }
 
@@ -399,9 +405,10 @@ type UrlmapMetadataFilters struct {
 
 	/* Specifies how individual filterLabel matches within the list of filterLabels
 	contribute towards the overall metadataFilter match. Supported values are:
-	  - MATCH_ANY: At least one of the filterLabels must have a matching label in the
+
+	* MATCH_ANY: At least one of the filterLabels must have a matching label in the
 	provided metadata.
-	  - MATCH_ALL: All filterLabels must have matching labels in
+	* MATCH_ALL: All filterLabels must have matching labels in
 	the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"] */
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
@@ -416,8 +423,12 @@ type UrlmapPathMatcher struct {
 	// +optional
 	DefaultRouteAction *UrlmapDefaultRouteAction `json:"defaultRouteAction,omitempty"`
 
-	/* The backend service or backend bucket to use when none of the given
-	paths match. */
+	/* The default service to use if none of the pathRules defined by this
+	PathMatcher is matched by the URL's path portion.
+	For the Global URL Map, it should be a reference to the backend
+	service or backend bucket.
+	For the Regional URL Map, it should be a reference to the backend
+	service. */
 	// +optional
 	DefaultService *UrlmapDefaultService `json:"defaultService,omitempty"`
 
@@ -427,8 +438,7 @@ type UrlmapPathMatcher struct {
 	// +optional
 	DefaultUrlRedirect *UrlmapDefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
 
-	/* An optional description of this resource. Provide this property when you create
-	the resource. */
+	/* An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -476,8 +486,19 @@ type UrlmapPathRule struct {
 	// +optional
 	RouteAction *UrlmapRouteAction `json:"routeAction,omitempty"`
 
-	/* The backend service or backend bucket to use if any of the given
-	paths match. */
+	/* The backend service to which traffic is directed if this rule is
+	matched.
+	For the Global URL Map, it should be a reference to the backend
+	service or backend bucket.
+	For the Regional URL Map, it should be a reference to the backend
+	service.
+	If routeAction is additionally specified, advanced routing actions
+	like URL Rewrites, etc. take effect prior to sending the request to
+	the backend. However, if service is specified, routeAction cannot
+	contain any weightedBackendServices. Conversely, if routeAction
+	specifies any weightedBackendServices, service must not be
+	specified. Only one of urlRedirect, service or
+	routeAction.weightedBackendService must be set. */
 	// +optional
 	Service *UrlmapService `json:"service,omitempty"`
 
@@ -547,7 +568,7 @@ type UrlmapRequestHeadersToAdd struct {
 }
 
 type UrlmapRequestMirrorPolicy struct {
-	/* The backend service resource being mirrored to. */
+	/* Required. The backend service resource being mirrored to. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 }
 
@@ -568,13 +589,11 @@ type UrlmapRetryPolicy struct {
 	/* Specifies the allowed number retries. This number must be > 0. */
 	NumRetries int `json:"numRetries"`
 
-	/* Specifies a non-zero timeout per retry attempt.
-	If not specified, will use the timeout set in HttpRouteAction. If timeout in HttpRouteAction
-	is not set, will use the largest timeout among all backend services associated with the route. */
+	/* Specifies a non-zero timeout per retry attempt. */
 	// +optional
 	PerTryTimeout *UrlmapPerTryTimeout `json:"perTryTimeout,omitempty"`
 
-	/* Specfies one or more conditions when this retry rule applies. Valid values are:
+	/* Specifies one or more conditions when this retry rule applies. Valid values are:
 
 	* 5xx: Loadbalancer will attempt a retry if the backend service responds with
 	  any 5xx response code, or if the backend service does not respond at all,
@@ -689,7 +708,7 @@ type UrlmapRouteRules struct {
 	// +optional
 	RouteAction *UrlmapRouteAction `json:"routeAction,omitempty"`
 
-	/* The backend service resource to which traffic is
+	/* The region backend service resource to which traffic is
 	directed if this rule is matched. If routeAction is additionally specified,
 	advanced routing actions like URL Rewrites, etc. take effect prior to sending
 	the request to the backend. However, if service is specified, routeAction cannot
@@ -727,8 +746,11 @@ type UrlmapTest struct {
 	/* Path portion of the URL. */
 	Path string `json:"path"`
 
-	/* The backend service or backend bucket link that should be matched
-	by this test. */
+	/* The backend service resource that should be matched by this test.
+	For the Global URL Map, it should be a reference to the backend
+	service or backend bucket.
+	For the Regional URL Map, it should be a reference to the backend
+	service. */
 	Service UrlmapService `json:"service"`
 }
 
@@ -745,26 +767,34 @@ type UrlmapTimeout struct {
 }
 
 type UrlmapUrlRedirect struct {
-	/* The host that will be used in the redirect response instead of the one that was
-	supplied in the request. The value must be between 1 and 255 characters. */
+	/* The host that will be used in the redirect response instead of the one
+	that was supplied in the request. The value must be between 1 and 255
+	characters. */
 	// +optional
 	HostRedirect *string `json:"hostRedirect,omitempty"`
 
-	/* If set to true, the URL scheme in the redirected request is set to https. If set
-	to false, the URL scheme of the redirected request will remain the same as that
-	of the request. This must only be set for UrlMaps used in TargetHttpProxys.
-	Setting this true for TargetHttpsProxy is not permitted. Defaults to false. */
+	/* If set to true, the URL scheme in the redirected request is set to https.
+	If set to false, the URL scheme of the redirected request will remain the
+	same as that of the request. This must only be set for UrlMaps used in
+	TargetHttpProxys. Setting this true for TargetHttpsProxy is not
+	permitted. The default is set to false. */
 	// +optional
 	HttpsRedirect *bool `json:"httpsRedirect,omitempty"`
 
-	/* The path that will be used in the redirect response instead of the one that was
-	supplied in the request. Only one of pathRedirect or prefixRedirect must be
-	specified. The value must be between 1 and 1024 characters. */
+	/* The path that will be used in the redirect response instead of the one
+	that was supplied in the request. pathRedirect cannot be supplied
+	together with prefixRedirect. Supply one alone or neither. If neither is
+	supplied, the path of the original request will be used for the redirect.
+	The value must be between 1 and 1024 characters. */
 	// +optional
 	PathRedirect *string `json:"pathRedirect,omitempty"`
 
-	/* The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch,
-	retaining the remaining portion of the URL before redirecting the request. */
+	/* The prefix that replaces the prefixMatch specified in the
+	HttpRouteRuleMatch, retaining the remaining portion of the URL before
+	redirecting the request. prefixRedirect cannot be supplied together with
+	pathRedirect. Supply one alone or neither. If neither is supplied, the
+	path of the original request will be used for the redirect. The value
+	must be between 1 and 1024 characters. */
 	// +optional
 	PrefixRedirect *string `json:"prefixRedirect,omitempty"`
 
@@ -776,15 +806,17 @@ type UrlmapUrlRedirect struct {
 
 	* SEE_OTHER which corresponds to 303.
 
-	* TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method will be retained.
+	* TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method
+	will be retained.
 
-	* PERMANENT_REDIRECT, which corresponds to 308. In this case, the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"] */
+	* PERMANENT_REDIRECT, which corresponds to 308. In this case,
+	the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"] */
 	// +optional
 	RedirectResponseCode *string `json:"redirectResponseCode,omitempty"`
 
-	/* If set to true, any accompanying query portion of the original URL is removed
-	prior to redirecting the request. If set to false, the query portion of the
-	original URL is retained. Defaults to false. */
+	/* If set to true, any accompanying query portion of the original URL is
+	removed prior to redirecting the request. If set to false, the query
+	portion of the original URL is retained. The default value is false. */
 	// +optional
 	StripQuery *bool `json:"stripQuery,omitempty"`
 }
@@ -804,8 +836,8 @@ type UrlmapUrlRewrite struct {
 }
 
 type UrlmapWeightedBackendServices struct {
-	/* The default backend service. Before forwarding the request to the
-	backend service, the loadbalancer applies any relevant
+	/* Required. The default backend service resource. Before forwarding
+	the request to backendService, the loadbalancer applies any relevant
 	headerActions specified as part of this backendServiceWeight. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
@@ -834,8 +866,20 @@ type ComputeURLMapSpec struct {
 	// +optional
 	DefaultRouteAction *UrlmapDefaultRouteAction `json:"defaultRouteAction,omitempty"`
 
-	/* The backend service or backend bucket to use when none of the given
-	rules match. */
+	/* The defaultService resource to which traffic is directed if none of
+	the hostRules match.
+	For the Global URL Map, it should be a reference to the backend
+	service or backend bucket.
+	For the Regional URL Map, it should be a reference to the backend
+	service.
+	If defaultRouteAction is additionally specified, advanced routing
+	actions like URL Rewrites, etc. take effect prior to sending the
+	request to the backend. However, if defaultService is specified,
+	defaultRouteAction cannot contain any weightedBackendServices.
+	Conversely, if routeAction specifies any weightedBackendServices,
+	service must not be specified. Only one of defaultService,
+	defaultUrlRedirect or defaultRouteAction.weightedBackendService
+	must be set. */
 	// +optional
 	DefaultService *UrlmapDefaultService `json:"defaultService,omitempty"`
 
@@ -845,8 +889,8 @@ type ComputeURLMapSpec struct {
 	// +optional
 	DefaultUrlRedirect *UrlmapDefaultUrlRedirect `json:"defaultUrlRedirect,omitempty"`
 
-	/* An optional description of this resource. Provide this property when you create
-	the resource. */
+	/* An optional description of this resource. Provide this property when
+	you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -860,7 +904,7 @@ type ComputeURLMapSpec struct {
 	// +optional
 	HostRule []UrlmapHostRule `json:"hostRule,omitempty"`
 
-	/* Location represents the geographical location of the ComputeURLMap. Specify "global" for global resources. */
+	/* Location represents the geographical location of the ComputeURLMap. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* The list of named PathMatchers to use against the URL. */
@@ -871,9 +915,8 @@ type ComputeURLMapSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The list of expected URL mapping tests. Request to update this UrlMap will
-	succeed only if all of the test cases pass. You can specify a maximum of 100
-	tests per UrlMap. */
+	/* The list of expected URL mappings. Requests to update this UrlMap will
+	succeed only if all of the test cases pass. */
 	// +optional
 	Test []UrlmapTest `json:"test,omitempty"`
 }
@@ -884,8 +927,8 @@ type ComputeURLMapStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
-	/* Fingerprint of this resource. A hash of the contents stored in this object. This
-	field is used in optimistic locking. */
+	/* Fingerprint of this resource. This field is used internally during
+	updates of this resource. */
 	Fingerprint string `json:"fingerprint,omitempty"`
 	/* The unique identifier for the resource. */
 	MapId int `json:"mapId,omitempty"`

@@ -43,6 +43,10 @@ type IAMServiceAccountSpec struct {
 	/* The display name for the service account. Can be updated without creating a new resource. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Immutable. Optional. The accountId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type IAMServiceAccountStatus struct {

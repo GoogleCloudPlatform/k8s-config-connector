@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type LoggingLogExclusionExpansion interface{}
+
 type LoggingLogSinkExpansion interface{}

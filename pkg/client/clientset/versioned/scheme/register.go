@@ -33,6 +33,7 @@ import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/containeranalysis/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dataflow/v1beta1"
+	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dns/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/firestore/v1beta1"
@@ -80,6 +81,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	containerv1beta1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
+	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
 	dnsv1beta1.AddToScheme,
 	firestorev1beta1.AddToScheme,
