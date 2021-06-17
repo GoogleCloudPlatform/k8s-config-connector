@@ -50,6 +50,10 @@ type MonitoringGroupSpec struct {
 	// +optional
 	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 
+	/* The Project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`

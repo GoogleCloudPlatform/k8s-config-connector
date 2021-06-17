@@ -1082,6 +1082,11 @@ func (in *DataprocAutoscalingPolicyList) DeepCopyObject() runtime.Object {
 func (in *DataprocAutoscalingPolicySpec) DeepCopyInto(out *DataprocAutoscalingPolicySpec) {
 	*out = *in
 	in.BasicAlgorithm.DeepCopyInto(&out.BasicAlgorithm)
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -1195,6 +1200,11 @@ func (in *DataprocClusterSpec) DeepCopyInto(out *DataprocClusterSpec) {
 		in, out := &in.Config, &out.Config
 		*out = new(ClusterConfig)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
 	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -1322,6 +1332,11 @@ func (in *DataprocWorkflowTemplateSpec) DeepCopyInto(out *DataprocWorkflowTempla
 		}
 	}
 	in.Placement.DeepCopyInto(&out.Placement)
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
