@@ -39,6 +39,10 @@ func (c *FakeIamV1beta1) IAMCustomRoles(namespace string) v1beta1.IAMCustomRoleI
 	return &FakeIAMCustomRoles{c, namespace}
 }
 
+func (c *FakeIamV1beta1) IAMPartialPolicies(namespace string) v1beta1.IAMPartialPolicyInterface {
+	return &FakeIAMPartialPolicies{c, namespace}
+}
+
 func (c *FakeIamV1beta1) IAMPolicies(namespace string) v1beta1.IAMPolicyInterface {
 	return &FakeIAMPolicies{c, namespace}
 }

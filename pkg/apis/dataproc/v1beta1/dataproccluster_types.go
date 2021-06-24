@@ -76,11 +76,11 @@ type ClusterConfig struct {
 	// +optional
 	LifecycleConfig *ClusterLifecycleConfig `json:"lifecycleConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for the master instance in a cluster. */
 	// +optional
 	MasterConfig *ClusterMasterConfig `json:"masterConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for the master instance in a cluster. */
 	// +optional
 	SecondaryWorkerConfig *ClusterSecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 
@@ -100,7 +100,7 @@ type ClusterConfig struct {
 	// +optional
 	TempBucketRef *v1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for the master instance in a cluster. */
 	// +optional
 	WorkerConfig *ClusterWorkerConfig `json:"workerConfig,omitempty"`
 }

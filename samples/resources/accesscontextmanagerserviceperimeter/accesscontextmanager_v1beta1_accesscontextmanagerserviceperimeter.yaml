@@ -39,6 +39,25 @@ spec:
       - "storage.googleapis.com"
       - "pubsub.googleapis.com"
       enableRestriction: true
+    egressPolicies:
+    - egressFrom:
+        identities:
+        - name: serviceperimeterengressdep
+    - egressTo:
+        resources:
+        - projectRef:
+            external: "projects/${PROJECT_NUMBER1}"
+    ingressPolicies:
+    - ingressFrom:
+        identities:
+        - name: serviceperimeteringressdep
+        sources:
+        - accessLevelRef:
+            name: serviceperimeterdep2
+      ingressTo:
+        resources:
+        - projectRef:
+            external: "projects/${PROJECT_NUMBER2}"
   # Config to ENFORCE
   # Config items are repeated as above for DRY-RUN
   # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy

@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type GKEHubFeatureExpansion interface{}
+
 type GKEHubMembershipExpansion interface{}

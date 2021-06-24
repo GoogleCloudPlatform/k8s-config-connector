@@ -26,6 +26,7 @@ import (
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/bigtable/v1beta1"
+	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudbuild/v1beta1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudscheduler/v1beta1"
@@ -75,6 +76,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	artifactregistryv1beta1.AddToScheme,
 	bigqueryv1beta1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
+	binaryauthorizationv1beta1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	cloudidentityv1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,

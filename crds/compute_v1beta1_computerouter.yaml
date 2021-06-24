@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.53.0
+    cnrm.cloud.google.com/version: 1.54.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -118,6 +118,13 @@ spec:
               description:
                 description: An optional description of this resource.
                 type: string
+              encryptedInterconnectRouter:
+                description: |-
+                  Immutable. Field to indicate if a router is dedicated to use with encrypted
+                  Interconnect Attachment (IPsec-encrypted Cloud Interconnect feature).
+
+                  Not currently available publicly.
+                type: boolean
               networkRef:
                 description: A reference to the network to which this router belongs.
                 oneOf:

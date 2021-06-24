@@ -253,6 +253,10 @@ type InstanceSettings struct {
 	// +optional
 	DiskAutoresize *bool `json:"diskAutoresize,omitempty"`
 
+	/* The maximum size, in GB, to which storage capacity can be automatically increased. The default value is 0, which specifies that there is no limit. */
+	// +optional
+	DiskAutoresizeLimit *int `json:"diskAutoresizeLimit,omitempty"`
+
 	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. */
 	// +optional
 	DiskSize *int `json:"diskSize,omitempty"`
@@ -285,7 +289,7 @@ type InstanceSettings struct {
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 
-	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types such as db-f1-micro, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
+	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
 	Tier string `json:"tier"`
 }
 
@@ -296,7 +300,7 @@ type InstanceValueFrom struct {
 }
 
 type SQLInstanceSpec struct {
-	/* Immutable. The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,POSTGRES_11, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
+	/* Immutable. The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 

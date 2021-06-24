@@ -83,6 +83,28 @@ type ResourcepolicyHourlySchedule struct {
 	StartTime string `json:"startTime"`
 }
 
+type ResourcepolicyInstanceSchedulePolicy struct {
+	/* Immutable. The expiration time of the schedule. The timestamp is an RFC3339 string. */
+	// +optional
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
+	/* Immutable. The start time of the schedule. The timestamp is an RFC3339 string. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+
+	/* Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name
+	from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
+	TimeZone string `json:"timeZone"`
+
+	/* Immutable. Specifies the schedule for starting instances. */
+	// +optional
+	VmStartSchedule *ResourcepolicyVmStartSchedule `json:"vmStartSchedule,omitempty"`
+
+	/* Immutable. Specifies the schedule for stopping instances. */
+	// +optional
+	VmStopSchedule *ResourcepolicyVmStopSchedule `json:"vmStopSchedule,omitempty"`
+}
+
 type ResourcepolicyRetentionPolicy struct {
 	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
 	MaxRetentionDays int `json:"maxRetentionDays"`
@@ -135,15 +157,33 @@ type ResourcepolicySnapshotSchedulePolicy struct {
 	SnapshotProperties *ResourcepolicySnapshotProperties `json:"snapshotProperties,omitempty"`
 }
 
+type ResourcepolicyVmStartSchedule struct {
+	/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
+	Schedule string `json:"schedule"`
+}
+
+type ResourcepolicyVmStopSchedule struct {
+	/* Immutable. Specifies the frequency for the operation, using the unix-cron format. */
+	Schedule string `json:"schedule"`
+}
+
 type ResourcepolicyWeeklySchedule struct {
 	/* Immutable. May contain up to seven (one for each day of the week) snapshot times. */
 	DayOfWeeks []ResourcepolicyDayOfWeeks `json:"dayOfWeeks"`
 }
 
 type ComputeResourcePolicySpec struct {
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
 	/* Immutable. Resource policy for instances used for placement configuration. */
 	// +optional
 	GroupPlacementPolicy *ResourcepolicyGroupPlacementPolicy `json:"groupPlacementPolicy,omitempty"`
+
+	/* Immutable. Resource policy for scheduling instance operations. */
+	// +optional
+	InstanceSchedulePolicy *ResourcepolicyInstanceSchedulePolicy `json:"instanceSchedulePolicy,omitempty"`
 
 	/* Immutable. Region where resource policy resides. */
 	Region string `json:"region"`

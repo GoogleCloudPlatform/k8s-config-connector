@@ -28,6 +28,7 @@ import (
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1"
+	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
@@ -73,6 +74,7 @@ type Interface interface {
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
+	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
@@ -117,6 +119,7 @@ type Clientset struct {
 	artifactregistryV1beta1     *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	bigqueryV1beta1             *bigqueryv1beta1.BigqueryV1beta1Client
 	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
+	binaryauthorizationV1beta1  *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	cloudbuildV1beta1           *cloudbuildv1beta1.CloudbuildV1beta1Client
 	cloudidentityV1beta1        *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudschedulerV1beta1       *cloudschedulerv1beta1.CloudschedulerV1beta1Client
@@ -171,6 +174,11 @@ func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 // BigtableV1beta1 retrieves the BigtableV1beta1Client
 func (c *Clientset) BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface {
 	return c.bigtableV1beta1
+}
+
+// BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
+func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface {
+	return c.binaryauthorizationV1beta1
 }
 
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client
@@ -380,6 +388,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudbuildV1beta1, err = cloudbuildv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -532,6 +544,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.NewForConfigOrDie(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.NewForConfigOrDie(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.NewForConfigOrDie(c)
+	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.NewForConfigOrDie(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.NewForConfigOrDie(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.NewForConfigOrDie(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.NewForConfigOrDie(c)
@@ -578,6 +591,7 @@ func New(c rest.Interface) *Clientset {
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
+	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)

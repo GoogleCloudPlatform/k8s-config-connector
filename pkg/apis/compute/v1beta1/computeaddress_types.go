@@ -58,11 +58,11 @@ type ComputeAddressSpec struct {
 	/* Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* The network in which to reserve the IP range. The IP range must be
-	in the RFC1918 space. The network cannot be deleted if there are
-	any reserved IP ranges referring to it.
-
-	This should only be set when using an Internal address. */
+	/* The network in which to reserve the address. If global, the address
+	must be within the RFC1918 IP space. The network cannot be deleted
+	if there are any reserved IP ranges referring to it. This field can
+	only be used with INTERNAL type with the VPC_PEERING and
+	IPSEC_INTERCONNECT purposes. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -71,21 +71,25 @@ type ComputeAddressSpec struct {
 	// +optional
 	NetworkTier *string `json:"networkTier,omitempty"`
 
-	/* Immutable. The prefix length of the IP range. If not present, it means the
-	address field is a single IP address.
-
-	This field is not applicable to addresses with addressType=EXTERNAL,
-	or addressType=INTERNAL when purpose=PRIVATE_SERVICE_CONNECT */
+	/* Immutable. The prefix length if the resource represents an IP range. */
 	// +optional
 	PrefixLength *int `json:"prefixLength,omitempty"`
 
-	/* Immutable. The purpose of this resource. Possible values include:
+	/* Immutable. The purpose of this resource, which can be one of the following values:
 
-	* GCE_ENDPOINT for addresses that are used by VM instances, alias IP ranges, internal load balancers, and similar resources.
+	* GCE_ENDPOINT for addresses that are used by VM instances, alias IP
+	  ranges, internal load balancers, and similar resources.
 
-	* SHARED_LOADBALANCER_VIP for an address that can be used by multiple internal load balancers.
+	* SHARED_LOADBALANCER_VIP for an address that can be used by multiple
+	  internal load balancers.
 
-	* VPC_PEERING for addresses that are reserved for VPC peer networks. */
+	* VPC_PEERING for addresses that are reserved for VPC peer networks.
+
+	* IPSEC_INTERCONNECT for addresses created from a private IP range
+	  that are reserved for a VLAN attachment in an IPsec-encrypted Cloud
+	  Interconnect configuration. These addresses are regional resources.
+
+	This should only be set when using an Internal address. */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 

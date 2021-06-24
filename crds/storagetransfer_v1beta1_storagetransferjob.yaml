@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.53.0
+    cnrm.cloud.google.com/version: 1.54.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -226,6 +226,64 @@ spec:
                     - awsAccessKey
                     - bucketName
                     type: object
+                  azureBlobStorageDataSource:
+                    description: An Azure Blob Storage data source.
+                    properties:
+                      azureCredentials:
+                        description: ' Credentials used to authenticate API requests to Azure.'
+                        properties:
+                          sasToken:
+                            description: Azure shared access signature.
+                            oneOf:
+                            - not:
+                                required:
+                                - valueFrom
+                              required:
+                              - value
+                            - not:
+                                required:
+                                - value
+                              required:
+                              - valueFrom
+                            properties:
+                              value:
+                                description: Value of the field. Cannot be used if 'valueFrom' is specified.
+                                type: string
+                              valueFrom:
+                                description: Source for the field's value. Cannot be used if 'value' is specified.
+                                properties:
+                                  secretKeyRef:
+                                    description: Reference to a value with the given key in the given Secret in the resource's namespace.
+                                    properties:
+                                      key:
+                                        description: Key that identifies the value to be extracted.
+                                        type: string
+                                      name:
+                                        description: Name of the Secret to extract a value from.
+                                        type: string
+                                    required:
+                                    - name
+                                    - key
+                                    type: object
+                                type: object
+                            type: object
+                        required:
+                        - sasToken
+                        type: object
+                      container:
+                        description: The container to transfer from the Azure Storage account.
+                        type: string
+                      path:
+                        description: Root path to transfer objects. Must be an empty string or full path name that ends with a '/'. This field is treated as an object prefix. As such, it should generally not begin with a '/'.
+                        type: string
+                      storageAccount:
+                        description: The name of the Azure Storage account.
+                        type: string
+                    required:
+                    - azureCredentials
+                    - container
+                    - storageAccount
+                    type: object
                   gcsDataSink:
                     description: A Google Cloud Storage data sink.
                     properties:
@@ -291,7 +349,7 @@ spec:
                     - bucketRef
                     type: object
                   httpDataSource:
-                    description: An HTTP URL data source.
+                    description: A HTTP URL data source.
                     properties:
                       listUrl:
                         description: The URL that points to the file that stores the object list entries. This file must allow public access. Currently, only URLs with HTTP and HTTPS schemes are supported.

@@ -39,10 +39,10 @@ type FlextemplatejobParameters struct {
 }
 
 type DataflowFlexTemplateJobSpec struct {
-	/* Immutable. */
+	/*  */
 	ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
 
-	/* Immutable. */
+	/*  */
 	// +optional
 	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
 

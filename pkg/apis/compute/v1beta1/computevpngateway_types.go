@@ -35,6 +35,23 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type VpngatewayVpnInterfaces struct {
+	/* Immutable. The numeric ID of this VPN gateway interface. */
+	// +optional
+	Id *int `json:"id,omitempty"`
+
+	/* Immutable. When this value is present, the VPN Gateway will be used
+	for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
+	traffic for this VPN Gateway interface will go through the specified
+	interconnect attachment resource. Not currently available publicly. */
+	// +optional
+	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+
+	/* The external IP address for this VPN gateway interface. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+}
+
 type ComputeVPNGatewaySpec struct {
 	/* Immutable. An optional description of this resource. */
 	// +optional
@@ -49,14 +66,10 @@ type ComputeVPNGatewaySpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-}
 
-type VpngatewayVpnInterfacesStatus struct {
-	/* The numeric ID of this VPN gateway interface. */
-	Id int `json:"id,omitempty"`
-
-	/* The external IP address for this VPN gateway interface. */
-	IpAddress string `json:"ipAddress,omitempty"`
+	/* Immutable. A list of interfaces on this VPN gateway. */
+	// +optional
+	VpnInterfaces []VpngatewayVpnInterfaces `json:"vpnInterfaces,omitempty"`
 }
 
 type ComputeVPNGatewayStatus struct {
@@ -67,8 +80,6 @@ type ComputeVPNGatewayStatus struct {
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
-	/* A list of interfaces on this VPN gateway. */
-	VpnInterfaces []VpngatewayVpnInterfacesStatus `json:"vpnInterfaces,omitempty"`
 }
 
 // +genclient

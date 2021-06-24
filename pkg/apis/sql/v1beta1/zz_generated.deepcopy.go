@@ -466,6 +466,11 @@ func (in *InstanceSettings) DeepCopyInto(out *InstanceSettings) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.DiskAutoresizeLimit != nil {
+		in, out := &in.DiskAutoresizeLimit, &out.DiskAutoresizeLimit
+		*out = new(int)
+		**out = **in
+	}
 	if in.DiskSize != nil {
 		in, out := &in.DiskSize, &out.DiskSize
 		*out = new(int)

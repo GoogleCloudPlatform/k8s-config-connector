@@ -61,6 +61,26 @@ type JobAwsS3DataSource struct {
 	BucketName string `json:"bucketName"`
 }
 
+type JobAzureBlobStorageDataSource struct {
+	/*  Credentials used to authenticate API requests to Azure. */
+	AzureCredentials JobAzureCredentials `json:"azureCredentials"`
+
+	/* The container to transfer from the Azure Storage account. */
+	Container string `json:"container"`
+
+	/* Root path to transfer objects. Must be an empty string or full path name that ends with a '/'. This field is treated as an object prefix. As such, it should generally not begin with a '/'. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* The name of the Azure Storage account. */
+	StorageAccount string `json:"storageAccount"`
+}
+
+type JobAzureCredentials struct {
+	/* Azure shared access signature. */
+	SasToken JobSasToken `json:"sasToken"`
+}
+
 type JobGcsDataSink struct {
 	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
@@ -92,6 +112,16 @@ type JobObjectConditions struct {
 	/* A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
 	// +optional
 	MinTimeElapsedSinceLastModification *string `json:"minTimeElapsedSinceLastModification,omitempty"`
+}
+
+type JobSasToken struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *JobValueFrom `json:"valueFrom,omitempty"`
 }
 
 type JobSchedule struct {
@@ -172,6 +202,10 @@ type JobTransferSpec struct {
 	// +optional
 	AwsS3DataSource *JobAwsS3DataSource `json:"awsS3DataSource,omitempty"`
 
+	/* An Azure Blob Storage data source. */
+	// +optional
+	AzureBlobStorageDataSource *JobAzureBlobStorageDataSource `json:"azureBlobStorageDataSource,omitempty"`
+
 	/* A Google Cloud Storage data sink. */
 	// +optional
 	GcsDataSink *JobGcsDataSink `json:"gcsDataSink,omitempty"`
@@ -180,7 +214,7 @@ type JobTransferSpec struct {
 	// +optional
 	GcsDataSource *JobGcsDataSource `json:"gcsDataSource,omitempty"`
 
-	/* An HTTP URL data source. */
+	/* A HTTP URL data source. */
 	// +optional
 	HttpDataSource *JobHttpDataSource `json:"httpDataSource,omitempty"`
 

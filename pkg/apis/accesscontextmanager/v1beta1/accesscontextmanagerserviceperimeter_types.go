@@ -35,8 +35,139 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ServiceperimeterEgressFrom struct {
+	/*  */
+	// +optional
+	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
+
+	/* Specifies the type of identities that are allowed access to outside the
+	perimeter. If left unspecified, then members of 'identities' field will
+	be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"] */
+	// +optional
+	IdentityType *string `json:"identityType,omitempty"`
+}
+
+type ServiceperimeterEgressPolicies struct {
+	/* Defines conditions on the source of a request causing this 'EgressPolicy' to apply. */
+	// +optional
+	EgressFrom *ServiceperimeterEgressFrom `json:"egressFrom,omitempty"`
+
+	/* Defines the conditions on the 'ApiOperation' and destination resources that
+	cause this 'EgressPolicy' to apply. */
+	// +optional
+	EgressTo *ServiceperimeterEgressTo `json:"egressTo,omitempty"`
+}
+
+type ServiceperimeterEgressTo struct {
+	/* A list of 'ApiOperations' that this egress rule applies to. A request matches
+	if it contains an operation/service in this list. */
+	// +optional
+	Operations []ServiceperimeterOperations `json:"operations,omitempty"`
+
+	/*  */
+	// +optional
+	Resources []ServiceperimeterResources `json:"resources,omitempty"`
+}
+
+type ServiceperimeterIdentities struct {
+	/*  */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/*  */
+	// +optional
+	User *string `json:"user,omitempty"`
+}
+
+type ServiceperimeterIngressFrom struct {
+	/*  */
+	// +optional
+	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
+
+	/* Specifies the type of identities that are allowed access from outside the
+	perimeter. If left unspecified, then members of 'identities' field will be
+	allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"] */
+	// +optional
+	IdentityType *string `json:"identityType,omitempty"`
+
+	/* Sources that this 'IngressPolicy' authorizes access from. */
+	// +optional
+	Sources []ServiceperimeterSources `json:"sources,omitempty"`
+}
+
+type ServiceperimeterIngressPolicies struct {
+	/* Defines the conditions on the source of a request causing this 'IngressPolicy'
+	to apply. */
+	// +optional
+	IngressFrom *ServiceperimeterIngressFrom `json:"ingressFrom,omitempty"`
+
+	/* Defines the conditions on the 'ApiOperation' and request destination that cause
+	this 'IngressPolicy' to apply. */
+	// +optional
+	IngressTo *ServiceperimeterIngressTo `json:"ingressTo,omitempty"`
+}
+
+type ServiceperimeterIngressTo struct {
+	/* A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
+	are allowed to perform in this 'ServicePerimeter'. */
+	// +optional
+	Operations []ServiceperimeterOperations `json:"operations,omitempty"`
+
+	/*  */
+	// +optional
+	Resources []ServiceperimeterResources `json:"resources,omitempty"`
+}
+
+type ServiceperimeterMethodSelectors struct {
+	/* Value for method should be a valid method name for the corresponding
+	serviceName in 'ApiOperation'. If '*' used as value for 'method', then
+	ALL methods and permissions are allowed. */
+	// +optional
+	Method *string `json:"method,omitempty"`
+
+	/* Value for permission should be a valid Cloud IAM permission for the
+	corresponding 'serviceName' in 'ApiOperation'. */
+	// +optional
+	Permission *string `json:"permission,omitempty"`
+}
+
+type ServiceperimeterOperations struct {
+	/* API methods or permissions to allow. Method or permission must belong to
+	the service specified by serviceName field. A single 'MethodSelector' entry
+	with '*' specified for the method field will allow all methods AND
+	permissions for the service specified in 'serviceName'. */
+	// +optional
+	MethodSelectors []ServiceperimeterMethodSelectors `json:"methodSelectors,omitempty"`
+
+	/* The name of the API whose methods or permissions the 'IngressPolicy' or
+	'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName'
+	field set to '*' will allow all methods AND permissions for all services. */
+	// +optional
+	ServiceName *string `json:"serviceName,omitempty"`
+}
+
 type ServiceperimeterResources struct {
 	/*  */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+}
+
+type ServiceperimeterSources struct {
+	/* An AccessLevel resource name that allow resources within the
+	ServicePerimeters to be accessed from the internet. AccessLevels
+	listed must be in the same policy as this ServicePerimeter.
+	Referencing a nonexistent AccessLevel will cause an error. If no
+	AccessLevel names are listed, resources within the perimeter can
+	only be accessed via Google Cloud calls with request origins within
+	the perimeter. */
+	// +optional
+	AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
+
+	/* (Optional) A Google Cloud resource that is allowed to ingress the
+	perimeter. Requests from these resources will be allowed to access
+	perimeter data. Currently only projects are allowed. Format
+	"projects/{project_number}" The project may be in any Google Cloud
+	organization, not just the organization that the perimeter is defined in. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
@@ -45,6 +176,20 @@ type ServiceperimeterSpec struct {
 	/*  */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+
+	/* List of EgressPolicies to apply to the perimeter. A perimeter may
+	have multiple EgressPolicies, each of which is evaluated separately.
+	Access is granted if any EgressPolicy grants it. Must be empty for
+	a perimeter bridge. */
+	// +optional
+	EgressPolicies []ServiceperimeterEgressPolicies `json:"egressPolicies,omitempty"`
+
+	/* List of 'IngressPolicies' to apply to the perimeter. A perimeter may
+	have multiple 'IngressPolicies', each of which is evaluated
+	separately. Access is granted if any 'Ingress Policy' grants it.
+	Must be empty for a perimeter bridge. */
+	// +optional
+	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
 	/*  */
 	// +optional
@@ -68,6 +213,20 @@ type ServiceperimeterStatus struct {
 	/*  */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+
+	/* List of EgressPolicies to apply to the perimeter. A perimeter may
+	have multiple EgressPolicies, each of which is evaluated separately.
+	Access is granted if any EgressPolicy grants it. Must be empty for
+	a perimeter bridge. */
+	// +optional
+	EgressPolicies []ServiceperimeterEgressPolicies `json:"egressPolicies,omitempty"`
+
+	/* List of 'IngressPolicies' to apply to the perimeter. A perimeter may
+	have multiple 'IngressPolicies', each of which is evaluated
+	separately. Access is granted if any 'Ingress Policy' grants it.
+	Must be empty for a perimeter bridge. */
+	// +optional
+	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
 	/*  */
 	// +optional

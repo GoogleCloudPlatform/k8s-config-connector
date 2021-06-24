@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(MonitoringAlertPolicy{}).Name(),
 	}
 
+	MonitoringDashboardGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringDashboard{}).Name(),
+	}
+
 	MonitoringGroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

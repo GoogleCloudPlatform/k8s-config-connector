@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(IAMCustomRole{}).Name(),
 	}
 
+	IAMPartialPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
+	}
+
 	IAMPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

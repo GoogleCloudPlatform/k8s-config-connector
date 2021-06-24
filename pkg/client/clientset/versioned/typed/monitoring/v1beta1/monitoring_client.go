@@ -30,6 +30,7 @@ import (
 type MonitoringV1beta1Interface interface {
 	RESTClient() rest.Interface
 	MonitoringAlertPoliciesGetter
+	MonitoringDashboardsGetter
 	MonitoringGroupsGetter
 	MonitoringNotificationChannelsGetter
 }
@@ -41,6 +42,10 @@ type MonitoringV1beta1Client struct {
 
 func (c *MonitoringV1beta1Client) MonitoringAlertPolicies(namespace string) MonitoringAlertPolicyInterface {
 	return newMonitoringAlertPolicies(c, namespace)
+}
+
+func (c *MonitoringV1beta1Client) MonitoringDashboards(namespace string) MonitoringDashboardInterface {
+	return newMonitoringDashboards(c, namespace)
 }
 
 func (c *MonitoringV1beta1Client) MonitoringGroups(namespace string) MonitoringGroupInterface {

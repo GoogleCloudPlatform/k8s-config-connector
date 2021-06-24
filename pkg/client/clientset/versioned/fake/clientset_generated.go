@@ -31,6 +31,8 @@ import (
 	fakebigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigquery/v1beta1/fake"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1"
 	fakebigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1/fake"
+	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/binaryauthorization/v1beta1"
+	fakebinaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/binaryauthorization/v1beta1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	fakecloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1/fake"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
@@ -171,6 +173,11 @@ func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 // BigtableV1beta1 retrieves the BigtableV1beta1Client
 func (c *Clientset) BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface {
 	return &fakebigtablev1beta1.FakeBigtableV1beta1{Fake: &c.Fake}
+}
+
+// BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
+func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface {
+	return &fakebinaryauthorizationv1beta1.FakeBinaryauthorizationV1beta1{Fake: &c.Fake}
 }
 
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client

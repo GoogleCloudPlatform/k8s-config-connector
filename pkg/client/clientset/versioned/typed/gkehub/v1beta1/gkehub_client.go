@@ -29,12 +29,17 @@ import (
 
 type GkehubV1beta1Interface interface {
 	RESTClient() rest.Interface
+	GKEHubFeaturesGetter
 	GKEHubMembershipsGetter
 }
 
 // GkehubV1beta1Client is used to interact with features provided by the gkehub.cnrm.cloud.google.com group.
 type GkehubV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *GkehubV1beta1Client) GKEHubFeatures(namespace string) GKEHubFeatureInterface {
+	return newGKEHubFeatures(c, namespace)
 }
 
 func (c *GkehubV1beta1Client) GKEHubMemberships(namespace string) GKEHubMembershipInterface {

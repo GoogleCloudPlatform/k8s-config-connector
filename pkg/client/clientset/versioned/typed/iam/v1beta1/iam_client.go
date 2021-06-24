@@ -31,6 +31,7 @@ type IamV1beta1Interface interface {
 	RESTClient() rest.Interface
 	IAMAuditConfigsGetter
 	IAMCustomRolesGetter
+	IAMPartialPoliciesGetter
 	IAMPoliciesGetter
 	IAMPolicyMembersGetter
 	IAMServiceAccountsGetter
@@ -48,6 +49,10 @@ func (c *IamV1beta1Client) IAMAuditConfigs(namespace string) IAMAuditConfigInter
 
 func (c *IamV1beta1Client) IAMCustomRoles(namespace string) IAMCustomRoleInterface {
 	return newIAMCustomRoles(c, namespace)
+}
+
+func (c *IamV1beta1Client) IAMPartialPolicies(namespace string) IAMPartialPolicyInterface {
+	return newIAMPartialPolicies(c, namespace)
 }
 
 func (c *IamV1beta1Client) IAMPolicies(namespace string) IAMPolicyInterface {

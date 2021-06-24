@@ -182,6 +182,15 @@ type InstancetemplateNodeAffinities struct {
 	Value *InstancetemplateValue `json:"value,omitempty"`
 }
 
+type InstancetemplateReservationAffinity struct {
+	/* Immutable. Specifies the label selector for the reservation to use. */
+	// +optional
+	SpecificReservation *InstancetemplateSpecificReservation `json:"specificReservation,omitempty"`
+
+	/* Immutable. The type of reservation from which this instance can consume resources. */
+	Type string `json:"type"`
+}
+
 type InstancetemplateScheduling struct {
 	/* Immutable. Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). This defaults to true. */
 	// +optional
@@ -225,6 +234,14 @@ type InstancetemplateShieldedInstanceConfig struct {
 	/* Immutable. Use a virtualized trusted platform module, which is a specialized computer chip you can use to encrypt objects like keys and certificates. Defaults to true. */
 	// +optional
 	EnableVtpm *bool `json:"enableVtpm,omitempty"`
+}
+
+type InstancetemplateSpecificReservation struct {
+	/* Immutable. Corresponds to the label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify compute.googleapis.com/reservation-name as the key and specify the name of your reservation as the only value. */
+	Key string `json:"key"`
+
+	/* Immutable. Corresponds to the label values of a reservation resource. */
+	Values []string `json:"values"`
 }
 
 type InstancetemplateValue struct {
@@ -284,6 +301,10 @@ type ComputeInstanceTemplateSpec struct {
 	/* Immutable. An instance template is a global resource that is not bound to a zone or a region. However, you can still specify some regional resources in an instance template, which restricts the template to the region where that resource resides. For example, a custom subnetwork resource is tied to a specific region. Defaults to the region of the Provider if no value is given. */
 	// +optional
 	Region *string `json:"region,omitempty"`
+
+	/* Immutable. Specifies the reservations that this instance can consume from. */
+	// +optional
+	ReservationAffinity *InstancetemplateReservationAffinity `json:"reservationAffinity,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

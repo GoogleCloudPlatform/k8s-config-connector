@@ -21,7 +21,7 @@ metadata:
 spec:
   location: global
   authority:
-    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one, to use it, replace ${PROJECT_ID?} with your project ID.
+    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one. To use it, replace ${PROJECT_ID?} with your project ID.
     issuer: https://container.googleapis.com/v1/projects/${PROJECT_ID?}/locations/us-central1-a/clusters/gkehubmembership-dep
   description: A sample GKE Hub membership
   endpoint:

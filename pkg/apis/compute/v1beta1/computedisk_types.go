@@ -177,6 +177,10 @@ type ComputeDiskSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
+	/* Immutable. Indicates how many IOPS must be provisioned for the disk. */
+	// +optional
+	ProvisionedIops *int `json:"provisionedIops,omitempty"`
+
 	/* Immutable. URLs of the zones where the disk should be replicated to. */
 	// +optional
 	ReplicaZones []string `json:"replicaZones,omitempty"`

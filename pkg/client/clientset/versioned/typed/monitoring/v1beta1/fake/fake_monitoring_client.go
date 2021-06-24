@@ -35,6 +35,10 @@ func (c *FakeMonitoringV1beta1) MonitoringAlertPolicies(namespace string) v1beta
 	return &FakeMonitoringAlertPolicies{c, namespace}
 }
 
+func (c *FakeMonitoringV1beta1) MonitoringDashboards(namespace string) v1beta1.MonitoringDashboardInterface {
+	return &FakeMonitoringDashboards{c, namespace}
+}
+
 func (c *FakeMonitoringV1beta1) MonitoringGroups(namespace string) v1beta1.MonitoringGroupInterface {
 	return &FakeMonitoringGroups{c, namespace}
 }

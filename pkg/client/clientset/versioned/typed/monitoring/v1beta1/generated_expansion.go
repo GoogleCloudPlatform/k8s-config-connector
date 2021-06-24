@@ -23,6 +23,8 @@ package v1beta1
 
 type MonitoringAlertPolicyExpansion interface{}
 
+type MonitoringDashboardExpansion interface{}
+
 type MonitoringGroupExpansion interface{}
 
 type MonitoringNotificationChannelExpansion interface{}

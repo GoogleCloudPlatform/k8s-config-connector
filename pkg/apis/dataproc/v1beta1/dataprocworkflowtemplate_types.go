@@ -85,11 +85,11 @@ type WorkflowtemplateConfig struct {
 	// +optional
 	LifecycleConfig *WorkflowtemplateLifecycleConfig `json:"lifecycleConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
 	// +optional
 	MasterConfig *WorkflowtemplateMasterConfig `json:"masterConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
 	// +optional
 	SecondaryWorkerConfig *WorkflowtemplateSecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 
@@ -109,7 +109,7 @@ type WorkflowtemplateConfig struct {
 	// +optional
 	TempBucketRef *v1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
 	// +optional
 	WorkerConfig *WorkflowtemplateWorkerConfig `json:"workerConfig,omitempty"`
 }
@@ -768,6 +768,10 @@ type WorkflowtemplateWorkerConfig struct {
 }
 
 type DataprocWorkflowTemplateSpec struct {
+	/* Optional. Timeout duration for the DAG of jobs. You can use "s", "m", "h", and "d" suffixes for second, minute, hour, and day duration values, respectively. The timeout duration must be from 10 minutes ("10m") to 24 hours ("24h" or "1d"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a (/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted. */
+	// +optional
+	DagTimeout *string `json:"dagTimeout,omitempty"`
+
 	/* Required. The Directed Acyclic Graph of Jobs to submit. */
 	Jobs []WorkflowtemplateJobs `json:"jobs"`
 

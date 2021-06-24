@@ -25,6 +25,8 @@ type IAMAuditConfigExpansion interface{}
 
 type IAMCustomRoleExpansion interface{}
 
+type IAMPartialPolicyExpansion interface{}
+
 type IAMPolicyExpansion interface{}
 
 type IAMPolicyMemberExpansion interface{}

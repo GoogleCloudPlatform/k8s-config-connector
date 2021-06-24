@@ -72,11 +72,32 @@ type ComputeInterconnectAttachmentSpec struct {
 	// +optional
 	EdgeAvailabilityDomain *string `json:"edgeAvailabilityDomain,omitempty"`
 
+	/* Immutable. Indicates the user-supplied encryption option of this interconnect
+	attachment:
+
+	NONE is the default value, which means that the attachment carries
+	unencrypted traffic. VMs can send traffic to, or receive traffic
+	from, this type of attachment.
+
+	IPSEC indicates that the attachment carries only traffic encrypted by
+	an IPsec device such as an HA VPN gateway. VMs cannot directly send
+	traffic to, or receive traffic from, such an attachment. To use
+	IPsec-encrypted Cloud Interconnect create the attachment using this
+	option.
+
+	Not currently available publicly. Default value: "NONE" Possible values: ["NONE", "IPSEC"] */
+	// +optional
+	Encryption *string `json:"encryption,omitempty"`
+
 	/* Immutable. URL of the underlying Interconnect object that this attachment's
 	traffic will traverse through. Required if type is DEDICATED, must not
 	be set if type is PARTNER. */
 	// +optional
 	Interconnect *string `json:"interconnect,omitempty"`
+
+	/*  */
+	// +optional
+	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
 
 	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
 	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */

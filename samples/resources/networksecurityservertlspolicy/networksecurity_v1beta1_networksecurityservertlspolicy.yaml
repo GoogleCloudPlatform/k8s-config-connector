@@ -29,6 +29,3 @@ spec:
     clientValidationCa:
       - certificateProviderInstance:
           pluginInstance: google_cloud_private_spiffe
-  projectRef:
-    # Replace "${PROJECT_ID?}" with your project id
-    external: "projects/${PROJECT_ID?}"

@@ -209,6 +209,15 @@ type InstanceNodeAffinities struct {
 	Value *InstanceValue `json:"value,omitempty"`
 }
 
+type InstanceReservationAffinity struct {
+	/* Immutable. Specifies the label selector for the reservation to use. */
+	// +optional
+	SpecificReservation *InstanceSpecificReservation `json:"specificReservation,omitempty"`
+
+	/* Immutable. The type of reservation from which this instance can consume resources. */
+	Type string `json:"type"`
+}
+
 type InstanceScheduling struct {
 	/* Specifies if the instance should be restarted if it was terminated by Compute Engine (not a user). */
 	// +optional
@@ -257,6 +266,14 @@ type InstanceShieldedInstanceConfig struct {
 	/* Whether the instance uses vTPM. */
 	// +optional
 	EnableVtpm *bool `json:"enableVtpm,omitempty"`
+}
+
+type InstanceSpecificReservation struct {
+	/* Immutable. Corresponds to the label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, specify compute.googleapis.com/reservation-name as the key and specify the name of your reservation as the only value. */
+	Key string `json:"key"`
+
+	/* Immutable. Corresponds to the label values of a reservation resource. */
+	Values []string `json:"values"`
 }
 
 type InstanceValue struct {
@@ -332,6 +349,10 @@ type ComputeInstanceSpec struct {
 	/* Immutable. The networks attached to the instance. */
 	// +optional
 	NetworkInterface []InstanceNetworkInterface `json:"networkInterface,omitempty"`
+
+	/* Immutable. Specifies the reservations that this instance can consume from. */
+	// +optional
+	ReservationAffinity *InstanceReservationAffinity `json:"reservationAffinity,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
