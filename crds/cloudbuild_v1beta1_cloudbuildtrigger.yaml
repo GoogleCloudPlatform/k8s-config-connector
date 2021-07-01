@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,20 +57,26 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
               build:
-                description: Contents of the build template. Either a filename or build template must be provided.
+                description: Contents of the build template. Either a filename or
+                  build template must be provided.
                 properties:
                   artifacts:
-                    description: Artifacts produced by the build that should be uploaded upon successful completion of all build steps.
+                    description: Artifacts produced by the build that should be uploaded
+                      upon successful completion of all build steps.
                     properties:
                       images:
                         description: |-
@@ -103,12 +109,14 @@ spec:
                               this location as a prefix.
                             type: string
                           paths:
-                            description: Path globs used to match files in the build's workspace.
+                            description: Path globs used to match files in the build's
+                              workspace.
                             items:
                               type: string
                             type: array
                           timing:
-                            description: Output only. Stores timing information for pushing all artifact objects.
+                            description: Output only. Stores timing information for
+                              pushing all artifact objects.
                             items:
                               properties:
                                 endTime:
@@ -195,16 +203,23 @@ spec:
                           type: string
                         type: array
                       logStreamingOption:
-                        description: 'Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"]'
+                        description: 'Option to define build log streaming behavior
+                          to Google Cloud Storage. Possible values: ["STREAM_DEFAULT",
+                          "STREAM_ON", "STREAM_OFF"]'
                         type: string
                       logging:
-                        description: 'Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"]'
+                        description: 'Option to specify the logging mode, which determines
+                          if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED",
+                          "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"]'
                         type: string
                       machineType:
-                        description: 'Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]'
+                        description: 'Compute Engine machine type on which to run
+                          the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8",
+                          "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]'
                         type: string
                       requestedVerifyOption:
-                        description: 'Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"]'
+                        description: 'Requested verifiability options. Possible values:
+                          ["NOT_VERIFIED", "VERIFIED"]'
                         type: string
                       secretEnv:
                         description: |-
@@ -215,7 +230,8 @@ spec:
                           type: string
                         type: array
                       sourceProvenanceHash:
-                        description: 'Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"]'
+                        description: 'Requested hash for SourceProvenance. Possible
+                          values: ["NONE", "SHA256", "MD5"]'
                         items:
                           type: string
                         type: array
@@ -262,7 +278,11 @@ spec:
                         type: string
                     type: object
                   queueTtl:
-                    description: "TTL in queue for this build. If provided and the build is enqueued longer than this value, \nthe build will expire and the build status will be EXPIRED.\nThe TTL starts ticking from createTime.\nA duration in seconds with up to nine fractional digits, terminated by 's'. Example: \"3.5s\"."
+                    description: "TTL in queue for this build. If provided and the
+                      build is enqueued longer than this value, \nthe build will expire
+                      and the build status will be EXPIRED.\nThe TTL starts ticking
+                      from createTime.\nA duration in seconds with up to nine fractional
+                      digits, terminated by 's'. Example: \"3.5s\"."
                     type: string
                   secret:
                     description: Secrets to decrypt using Cloud Key Management Service.
@@ -292,13 +312,19 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                         secretEnv:
                           additionalProperties:
                             type: string
-                          description: "Map of environment variable name to its encrypted value.\nSecret environment variables must be unique across all of a build's secrets, \nand must be used by at least one build step. Values can be at most 64 KB in size. \nThere can be at most 100 secret values across all of a build's secrets."
+                          description: "Map of environment variable name to its encrypted
+                            value.\nSecret environment variables must be unique across
+                            all of a build's secrets, \nand must be used by at least
+                            one build step. Values can be at most 64 KB in size. \nThere
+                            can be at most 100 secret values across all of a build's
+                            secrets."
                           type: object
                       required:
                       - kmsKeyRef
@@ -311,22 +337,33 @@ spec:
                       One of 'storageSource' or 'repoSource' must be provided.
                     properties:
                       repoSource:
-                        description: Location of the source in a Google Cloud Source Repository.
+                        description: Location of the source in a Google Cloud Source
+                          Repository.
                         properties:
                           branchName:
-                            description: "Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided.\nThe syntax of the regular expressions accepted is the syntax accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
+                            description: "Regex matching branches to build. Exactly
+                              one a of branch name, tag, or commit SHA must be provided.\nThe
+                              syntax of the regular expressions accepted is the syntax
+                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
                             type: string
                           commitSha:
-                            description: Explicit commit SHA to build. Exactly one a of branch name, tag, or commit SHA must be provided.
+                            description: Explicit commit SHA to build. Exactly one
+                              a of branch name, tag, or commit SHA must be provided.
                             type: string
                           dir:
-                            description: "Directory, relative to the source root, in which to run the build.\nThis must be a relative path. If a step's dir is specified and is an absolute path, \nthis value is ignored for that step's execution."
+                            description: "Directory, relative to the source root,
+                              in which to run the build.\nThis must be a relative
+                              path. If a step's dir is specified and is an absolute
+                              path, \nthis value is ignored for that step's execution."
                             type: string
                           invertRegex:
-                            description: Only trigger a build if the revision regex does NOT match the revision regex.
+                            description: Only trigger a build if the revision regex
+                              does NOT match the revision regex.
                             type: boolean
                           projectId:
-                            description: "ID of the project that owns the Cloud Source Repository. \nIf omitted, the project ID requesting the build is assumed."
+                            description: "ID of the project that owns the Cloud Source
+                              Repository. \nIf omitted, the project ID requesting
+                              the build is assumed."
                             type: string
                           repoRef:
                             description: |-
@@ -354,25 +391,32 @@ spec:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                 type: string
                             type: object
                           substitutions:
                             additionalProperties:
                               type: string
-                            description: Substitutions to use in a triggered build. Should only be used with triggers.run
+                            description: Substitutions to use in a triggered build.
+                              Should only be used with triggers.run
                             type: object
                           tagName:
-                            description: "Regex matching tags to build. Exactly one a of branch name, tag, or commit SHA must be provided.\nThe syntax of the regular expressions accepted is the syntax accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
+                            description: "Regex matching tags to build. Exactly one
+                              a of branch name, tag, or commit SHA must be provided.\nThe
+                              syntax of the regular expressions accepted is the syntax
+                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
                             type: string
                         required:
                         - repoRef
                         type: object
                       storageSource:
-                        description: Location of the source in an archive file in Google Cloud Storage.
+                        description: Location of the source in an archive file in
+                          Google Cloud Storage.
                         properties:
                           bucketRef:
-                            description: Google Cloud Storage bucket containing the source.
+                            description: Google Cloud Storage bucket containing the
+                              source.
                             oneOf:
                             - not:
                                 required:
@@ -395,11 +439,14 @@ spec:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                 type: string
                             type: object
                           generation:
-                            description: "Google Cloud Storage generation for the object. \nIf the generation is omitted, the latest generation will be used"
+                            description: "Google Cloud Storage generation for the
+                              object. \nIf the generation is omitted, the latest generation
+                              will be used"
                             type: string
                           object:
                             description: |-
@@ -462,7 +509,20 @@ spec:
                             reference this build step as a dependency.
                           type: string
                         name:
-                          description: "The name of the container image that will run this particular build step.\n\nIf the image is available in the host's Docker daemon's cache, it will be\nrun directly. If not, the host will attempt to pull the image first, using\nthe builder service account's credentials if necessary.\n\nThe Docker daemon's cache will already have the latest versions of all of\nthe officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders \nfor images and examples).\nThe Docker daemon will also have cached many of the layers for some popular\nimages, like \"ubuntu\", \"debian\", but they will be refreshed at the time\nyou attempt to use them.\n\nIf you built an image in a previous build step, it will be stored in the\nhost's Docker daemon's cache and is available to use as the name for a\nlater build step."
+                          description: "The name of the container image that will
+                            run this particular build step.\n\nIf the image is available
+                            in the host's Docker daemon's cache, it will be\nrun directly.
+                            If not, the host will attempt to pull the image first,
+                            using\nthe builder service account's credentials if necessary.\n\nThe
+                            Docker daemon's cache will already have the latest versions
+                            of all of\nthe officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders
+                            \nfor images and examples).\nThe Docker daemon will also
+                            have cached many of the layers for some popular\nimages,
+                            like \"ubuntu\", \"debian\", but they will be refreshed
+                            at the time\nyou attempt to use them.\n\nIf you built
+                            an image in a previous build step, it will be stored in
+                            the\nhost's Docker daemon's cache and is available to
+                            use as the name for a\nlater build step."
                           type: string
                         secretEnv:
                           description: |-
@@ -537,7 +597,8 @@ spec:
                     description: Substitutions data for Build resource.
                     type: object
                   tags:
-                    description: Tags for annotation of a Build. These are not docker tags.
+                    description: Tags for annotation of a Build. These are not docker
+                      tags.
                     items:
                       type: string
                     type: array
@@ -556,10 +617,13 @@ spec:
                 description: Human-readable description of the trigger.
                 type: string
               disabled:
-                description: Whether the trigger is disabled or not. If true, the trigger will never result in a build.
+                description: Whether the trigger is disabled or not. If true, the
+                  trigger will never result in a build.
                 type: boolean
               filename:
-                description: Path, from the source root, to a file whose contents is used for the template. Either a filename or build template must be provided.
+                description: Path, from the source root, to a file whose contents
+                  is used for the template. Either a filename or build template must
+                  be provided.
                 type: string
               github:
                 description: |-
@@ -578,31 +642,39 @@ spec:
                       https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform".
                     type: string
                   pullRequest:
-                    description: filter to match changes in pull requests.  Specify only one of pullRequest or push.
+                    description: filter to match changes in pull requests.  Specify
+                      only one of pullRequest or push.
                     properties:
                       branch:
                         description: Regex of branches to match.
                         type: string
                       commentControl:
-                        description: 'Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]'
+                        description: 'Whether to block builds on a "/gcbrun" comment
+                          from a repository owner or collaborator. Possible values:
+                          ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]'
                         type: string
                       invertRegex:
-                        description: If true, branches that do NOT match the git_ref will trigger a build.
+                        description: If true, branches that do NOT match the git_ref
+                          will trigger a build.
                         type: boolean
                     required:
                     - branch
                     type: object
                   push:
-                    description: filter to match changes in refs, like branches or tags.  Specify only one of pullRequest or push.
+                    description: filter to match changes in refs, like branches or
+                      tags.  Specify only one of pullRequest or push.
                     properties:
                       branch:
-                        description: Regex of branches to match.  Specify only one of branch or tag.
+                        description: Regex of branches to match.  Specify only one
+                          of branch or tag.
                         type: string
                       invertRegex:
-                        description: When true, only trigger a build if the revision regex does NOT match the git_ref regex.
+                        description: When true, only trigger a build if the revision
+                          regex does NOT match the git_ref regex.
                         type: boolean
                       tag:
-                        description: Regex of tags to match.  Specify only one of branch or tag.
+                        description: Regex of tags to match.  Specify only one of
+                          branch or tag.
                         type: string
                     type: object
                 type: object
@@ -662,7 +734,8 @@ spec:
                       This field is a regular expression.
                     type: string
                   commitSha:
-                    description: Explicit commit SHA to build. Exactly one of a branch name, tag, or commit SHA must be provided.
+                    description: Explicit commit SHA to build. Exactly one of a branch
+                      name, tag, or commit SHA must be provided.
                     type: string
                   dir:
                     description: |-
@@ -673,7 +746,8 @@ spec:
                       execution.
                     type: string
                   invertRegex:
-                    description: Only trigger a build if the revision regex does NOT match the revision regex.
+                    description: Only trigger a build if the revision regex does NOT
+                      match the revision regex.
                     type: boolean
                   repoRef:
                     description: |-
@@ -714,20 +788,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -738,7 +817,11 @@ spec:
                 description: Time when the trigger was created.
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               triggerId:
                 description: The unique identifier for the trigger.

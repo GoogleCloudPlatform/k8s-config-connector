@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -85,7 +89,8 @@ spec:
                   type: string
                 type: array
               peerExternalGatewayInterface:
-                description: Immutable. The interface ID of the external VPN gateway to which this VPN tunnel is connected.
+                description: Immutable. The interface ID of the external VPN gateway
+                  to which this VPN tunnel is connected.
                 type: integer
               peerExternalGatewayRef:
                 description: |-
@@ -147,10 +152,12 @@ spec:
                     type: string
                 type: object
               peerIp:
-                description: Immutable. IP address of the peer VPN gateway. Only IPv4 is supported.
+                description: Immutable. IP address of the peer VPN gateway. Only IPv4
+                  is supported.
                 type: string
               region:
-                description: Immutable. The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'.
+                description: Immutable. The region where the tunnel is located. If
+                  unset, is set to the region of 'target_vpn_gateway'.
                 type: string
               remoteTrafficSelector:
                 description: |-
@@ -162,7 +169,9 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               routerRef:
                 description: The router to be used for dynamic routing.
@@ -208,13 +217,16 @@ spec:
                   - valueFrom
                 properties:
                   value:
-                    description: Value of the field. Cannot be used if 'valueFrom' is specified.
+                    description: Value of the field. Cannot be used if 'valueFrom'
+                      is specified.
                     type: string
                   valueFrom:
-                    description: Source for the field's value. Cannot be used if 'value' is specified.
+                    description: Source for the field's value. Cannot be used if 'value'
+                      is specified.
                     properties:
                       secretKeyRef:
-                        description: Reference to a value with the given key in the given Secret in the resource's namespace.
+                        description: Reference to a value with the given key in the
+                          given Secret in the resource's namespace.
                         properties:
                           key:
                             description: Key that identifies the value to be extracted.
@@ -258,7 +270,8 @@ spec:
                     type: string
                 type: object
               vpnGatewayInterface:
-                description: Immutable. The interface ID of the VPN gateway with which this VPN tunnel is associated.
+                description: Immutable. The interface ID of the VPN gateway with which
+                  this VPN tunnel is associated.
                 type: integer
               vpnGatewayRef:
                 description: |-
@@ -297,20 +310,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -329,7 +347,11 @@ spec:
                   internally during updates.
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               selfLink:
                 type: string
@@ -337,7 +359,8 @@ spec:
                 description: Hash of the shared secret.
                 type: string
               tunnelId:
-                description: The unique identifier for the resource. This identifier is defined by the server.
+                description: The unique identifier for the resource. This identifier
+                  is defined by the server.
                 type: string
             type: object
         required:

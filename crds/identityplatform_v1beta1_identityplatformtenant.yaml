@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -70,7 +74,9 @@ spec:
                 description: Whether to allow email/password user authentication.
                 type: boolean
               disableAuth:
-                description: Whether authentication is disabled for the tenant. If true, the users under the disabled tenant are not allowed to sign-in. Admins of the disabled tenant are not able to manage its users.
+                description: Whether authentication is disabled for the tenant. If
+                  true, the users under the disabled tenant are not allowed to sign-in.
+                  Admins of the disabled tenant are not able to manage its users.
                 type: boolean
               displayName:
                 description: Display name of the tenant.
@@ -90,35 +96,47 @@ spec:
                       type: string
                     type: array
                   state:
-                    description: 'Whether MultiFactor Authentication has been enabled for this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED, MANDATORY'
+                    description: 'Whether MultiFactor Authentication has been enabled
+                      for this project. Possible values: STATE_UNSPECIFIED, DISABLED,
+                      ENABLED, MANDATORY'
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
               testPhoneNumbers:
                 additionalProperties:
                   type: string
-                description: A map of <test phone number, fake code> pairs that can be used for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/) and a maximum of 10 pairs can be added (error will be thrown once exceeded).
+                description: A map of <test phone number, fake code> pairs that can
+                  be used for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/)
+                  and a maximum of 10 pairs can be added (error will be thrown once
+                  exceeded).
                 type: object
             type: object
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -126,7 +144,11 @@ spec:
                   type: object
                 type: array
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
             type: object
         type: object

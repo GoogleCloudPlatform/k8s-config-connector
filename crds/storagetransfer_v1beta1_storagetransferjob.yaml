@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -70,16 +74,22 @@ spec:
                 description: Unique description to identify the Transfer Job.
                 type: string
               resourceID:
-                description: Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
               schedule:
-                description: Schedule specification defining when the Transfer Job should be scheduled to start, end and what time to run.
+                description: Schedule specification defining when the Transfer Job
+                  should be scheduled to start, end and what time to run.
                 properties:
                   scheduleEndDate:
-                    description: Immutable. The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once.
+                    description: Immutable. The last day the recurring transfer will
+                      be run. If schedule_end_date is the same as schedule_start_date,
+                      the transfer will be executed only once.
                     properties:
                       day:
-                        description: Immutable. Day of month. Must be from 1 to 31 and valid for the year and month.
+                        description: Immutable. Day of month. Must be from 1 to 31
+                          and valid for the year and month.
                         type: integer
                       month:
                         description: Immutable. Month of year. Must be from 1 to 12.
@@ -93,10 +103,13 @@ spec:
                     - year
                     type: object
                   scheduleStartDate:
-                    description: Immutable. The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day.
+                    description: Immutable. The first day the recurring transfer is
+                      scheduled to run. If schedule_start_date is in the past, the
+                      transfer will run for the first time on the following day.
                     properties:
                       day:
-                        description: Immutable. Day of month. Must be from 1 to 31 and valid for the year and month.
+                        description: Immutable. Day of month. Must be from 1 to 31
+                          and valid for the year and month.
                         type: integer
                       month:
                         description: Immutable. Month of year. Must be from 1 to 12.
@@ -110,19 +123,30 @@ spec:
                     - year
                     type: object
                   startTimeOfDay:
-                    description: Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone.
+                    description: Immutable. The time in UTC at which the transfer
+                      will be scheduled to start in a day. Transfers may start later
+                      than this time. If not specified, recurring and one-time transfers
+                      that are scheduled to run today will run immediately; recurring
+                      transfers that are scheduled to run on a future date will start
+                      at approximately midnight UTC on that date. Note that when configuring
+                      a transfer with the Cloud Platform Console, the transfer's start
+                      time in a day is specified in your local timezone.
                     properties:
                       hours:
-                        description: Immutable. Hours of day in 24 hour format. Should be from 0 to 23.
+                        description: Immutable. Hours of day in 24 hour format. Should
+                          be from 0 to 23.
                         type: integer
                       minutes:
-                        description: Immutable. Minutes of hour of day. Must be from 0 to 59.
+                        description: Immutable. Minutes of hour of day. Must be from
+                          0 to 59.
                         type: integer
                       nanos:
-                        description: Immutable. Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+                        description: Immutable. Fractions of seconds in nanoseconds.
+                          Must be from 0 to 999,999,999.
                         type: integer
                       seconds:
-                        description: Immutable. Seconds of minutes of the time. Must normally be from 0 to 59.
+                        description: Immutable. Seconds of minutes of the time. Must
+                          normally be from 0 to 59.
                         type: integer
                     required:
                     - hours
@@ -134,7 +158,11 @@ spec:
                 - scheduleStartDate
                 type: object
               status:
-                description: 'Status of the job. Default: ENABLED. NOTE: The effect of the new job status takes place during a subsequent job run. For example, if you change the job status from ENABLED to DISABLED, and an operation spawned by the transfer is running, the status change would not affect the current operation.'
+                description: 'Status of the job. Default: ENABLED. NOTE: The effect
+                  of the new job status takes place during a subsequent job run. For
+                  example, if you change the job status from ENABLED to DISABLED,
+                  and an operation spawned by the transfer is running, the status
+                  change would not affect the current operation.'
                 type: string
               transferSpec:
                 description: Transfer specification.
@@ -160,19 +188,24 @@ spec:
                               - valueFrom
                             properties:
                               value:
-                                description: Value of the field. Cannot be used if 'valueFrom' is specified.
+                                description: Value of the field. Cannot be used if
+                                  'valueFrom' is specified.
                                 type: string
                               valueFrom:
-                                description: Source for the field's value. Cannot be used if 'value' is specified.
+                                description: Source for the field's value. Cannot
+                                  be used if 'value' is specified.
                                 properties:
                                   secretKeyRef:
-                                    description: Reference to a value with the given key in the given Secret in the resource's namespace.
+                                    description: Reference to a value with the given
+                                      key in the given Secret in the resource's namespace.
                                     properties:
                                       key:
-                                        description: Key that identifies the value to be extracted.
+                                        description: Key that identifies the value
+                                          to be extracted.
                                         type: string
                                       name:
-                                        description: Name of the Secret to extract a value from.
+                                        description: Name of the Secret to extract
+                                          a value from.
                                         type: string
                                     required:
                                     - name
@@ -195,19 +228,24 @@ spec:
                               - valueFrom
                             properties:
                               value:
-                                description: Value of the field. Cannot be used if 'valueFrom' is specified.
+                                description: Value of the field. Cannot be used if
+                                  'valueFrom' is specified.
                                 type: string
                               valueFrom:
-                                description: Source for the field's value. Cannot be used if 'value' is specified.
+                                description: Source for the field's value. Cannot
+                                  be used if 'value' is specified.
                                 properties:
                                   secretKeyRef:
-                                    description: Reference to a value with the given key in the given Secret in the resource's namespace.
+                                    description: Reference to a value with the given
+                                      key in the given Secret in the resource's namespace.
                                     properties:
                                       key:
-                                        description: Key that identifies the value to be extracted.
+                                        description: Key that identifies the value
+                                          to be extracted.
                                         type: string
                                       name:
-                                        description: Name of the Secret to extract a value from.
+                                        description: Name of the Secret to extract
+                                          a value from.
                                         type: string
                                     required:
                                     - name
@@ -230,7 +268,8 @@ spec:
                     description: An Azure Blob Storage data source.
                     properties:
                       azureCredentials:
-                        description: ' Credentials used to authenticate API requests to Azure.'
+                        description: ' Credentials used to authenticate API requests
+                          to Azure.'
                         properties:
                           sasToken:
                             description: Azure shared access signature.
@@ -247,19 +286,24 @@ spec:
                               - valueFrom
                             properties:
                               value:
-                                description: Value of the field. Cannot be used if 'valueFrom' is specified.
+                                description: Value of the field. Cannot be used if
+                                  'valueFrom' is specified.
                                 type: string
                               valueFrom:
-                                description: Source for the field's value. Cannot be used if 'value' is specified.
+                                description: Source for the field's value. Cannot
+                                  be used if 'value' is specified.
                                 properties:
                                   secretKeyRef:
-                                    description: Reference to a value with the given key in the given Secret in the resource's namespace.
+                                    description: Reference to a value with the given
+                                      key in the given Secret in the resource's namespace.
                                     properties:
                                       key:
-                                        description: Key that identifies the value to be extracted.
+                                        description: Key that identifies the value
+                                          to be extracted.
                                         type: string
                                       name:
-                                        description: Name of the Secret to extract a value from.
+                                        description: Name of the Secret to extract
+                                          a value from.
                                         type: string
                                     required:
                                     - name
@@ -271,10 +315,14 @@ spec:
                         - sasToken
                         type: object
                       container:
-                        description: The container to transfer from the Azure Storage account.
+                        description: The container to transfer from the Azure Storage
+                          account.
                         type: string
                       path:
-                        description: Root path to transfer objects. Must be an empty string or full path name that ends with a '/'. This field is treated as an object prefix. As such, it should generally not begin with a '/'.
+                        description: Root path to transfer objects. Must be an empty
+                          string or full path name that ends with a '/'. This field
+                          is treated as an object prefix. As such, it should generally
+                          not begin with a '/'.
                         type: string
                       storageAccount:
                         description: The name of the Azure Storage account.
@@ -352,42 +400,65 @@ spec:
                     description: A HTTP URL data source.
                     properties:
                       listUrl:
-                        description: The URL that points to the file that stores the object list entries. This file must allow public access. Currently, only URLs with HTTP and HTTPS schemes are supported.
+                        description: The URL that points to the file that stores the
+                          object list entries. This file must allow public access.
+                          Currently, only URLs with HTTP and HTTPS schemes are supported.
                         type: string
                     required:
                     - listUrl
                     type: object
                   objectConditions:
-                    description: Only objects that satisfy these object conditions are included in the set of data source and data sink objects. Object conditions based on objects' last_modification_time do not exclude objects in a data sink.
+                    description: Only objects that satisfy these object conditions
+                      are included in the set of data source and data sink objects.
+                      Object conditions based on objects' last_modification_time do
+                      not exclude objects in a data sink.
                     properties:
                       excludePrefixes:
-                        description: exclude_prefixes must follow the requirements described for include_prefixes.
+                        description: exclude_prefixes must follow the requirements
+                          described for include_prefixes.
                         items:
                           type: string
                         type: array
                       includePrefixes:
-                        description: If include_refixes is specified, objects that satisfy the object conditions must have names that start with one of the include_prefixes and that do not start with any of the exclude_prefixes. If include_prefixes is not specified, all objects except those that have names starting with one of the exclude_prefixes must satisfy the object conditions.
+                        description: If include_refixes is specified, objects that
+                          satisfy the object conditions must have names that start
+                          with one of the include_prefixes and that do not start with
+                          any of the exclude_prefixes. If include_prefixes is not
+                          specified, all objects except those that have names starting
+                          with one of the exclude_prefixes must satisfy the object
+                          conditions.
                         items:
                           type: string
                         type: array
                       maxTimeElapsedSinceLastModification:
-                        description: 'A duration in seconds with up to nine fractional digits, terminated by ''s''. Example: "3.5s".'
+                        description: 'A duration in seconds with up to nine fractional
+                          digits, terminated by ''s''. Example: "3.5s".'
                         type: string
                       minTimeElapsedSinceLastModification:
-                        description: 'A duration in seconds with up to nine fractional digits, terminated by ''s''. Example: "3.5s".'
+                        description: 'A duration in seconds with up to nine fractional
+                          digits, terminated by ''s''. Example: "3.5s".'
                         type: string
                     type: object
                   transferOptions:
-                    description: Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects' last_modification_time are ignored and do not exclude objects in a data source or a data sink.
+                    description: Characteristics of how to treat files from datasource
+                      and sink during job. If the option delete_objects_unique_in_sink
+                      is true, object conditions based on objects' last_modification_time
+                      are ignored and do not exclude objects in a data source or a
+                      data sink.
                     properties:
                       deleteObjectsFromSourceAfterTransfer:
-                        description: Whether objects should be deleted from the source after they are transferred to the sink. Note that this option and delete_objects_unique_in_sink are mutually exclusive.
+                        description: Whether objects should be deleted from the source
+                          after they are transferred to the sink. Note that this option
+                          and delete_objects_unique_in_sink are mutually exclusive.
                         type: boolean
                       deleteObjectsUniqueInSink:
-                        description: Whether objects that exist only in the sink should be deleted. Note that this option and delete_objects_from_source_after_transfer are mutually exclusive.
+                        description: Whether objects that exist only in the sink should
+                          be deleted. Note that this option and delete_objects_from_source_after_transfer
+                          are mutually exclusive.
                         type: boolean
                       overwriteObjectsAlreadyExistingInSink:
-                        description: Whether overwriting objects that already exist in the sink is allowed.
+                        description: Whether overwriting objects that already exist
+                          in the sink is allowed.
                         type: boolean
                     type: object
                 type: object
@@ -399,20 +470,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -432,7 +508,11 @@ spec:
                 description: The name of the Transfer Job.
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
             type: object
         required:

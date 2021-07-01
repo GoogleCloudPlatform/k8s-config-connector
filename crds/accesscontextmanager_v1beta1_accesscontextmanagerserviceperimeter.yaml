@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -120,7 +124,9 @@ spec:
                   themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER_TYPE_REGULAR", "PERIMETER_TYPE_BRIDGE"]
                 type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               spec:
                 description: |-
@@ -131,7 +137,14 @@ spec:
                 properties:
                   accessLevels:
                     items:
-                      description: "(Optional) A list of AccessLevel resource names that allow resources within \nthe ServicePerimeter to be accessed from the internet. AccessLevels listed \nmust be in the same policy as this ServicePerimeter. \nReferencing a nonexistent AccessLevel is a syntax error. If no \nAccessLevel names are listed, resources within the perimeter can \nonly be accessed via GCP calls with request origins within the \nperimeter. For Service Perimeter Bridge, must be empty."
+                      description: "(Optional) A list of AccessLevel resource names
+                        that allow resources within \nthe ServicePerimeter to be accessed
+                        from the internet. AccessLevels listed \nmust be in the same
+                        policy as this ServicePerimeter. \nReferencing a nonexistent
+                        AccessLevel is a syntax error. If no \nAccessLevel names are
+                        listed, resources within the perimeter can \nonly be accessed
+                        via GCP calls with request origins within the \nperimeter.
+                        For Service Perimeter Bridge, must be empty."
                       oneOf:
                       - not:
                           required:
@@ -159,11 +172,15 @@ spec:
                       type: object
                     type: array
                   egressPolicies:
-                    description: "List of EgressPolicies to apply to the perimeter. A perimeter may \nhave multiple EgressPolicies, each of which is evaluated separately.\nAccess is granted if any EgressPolicy grants it. Must be empty for \na perimeter bridge."
+                    description: "List of EgressPolicies to apply to the perimeter.
+                      A perimeter may \nhave multiple EgressPolicies, each of which
+                      is evaluated separately.\nAccess is granted if any EgressPolicy
+                      grants it. Must be empty for \na perimeter bridge."
                     items:
                       properties:
                         egressFrom:
-                          description: Defines conditions on the source of a request causing this 'EgressPolicy' to apply.
+                          description: Defines conditions on the source of a request
+                            causing this 'EgressPolicy' to apply.
                           properties:
                             identities:
                               items:
@@ -197,10 +214,12 @@ spec:
                                         description: The email of an IAMServiceAccount.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   user:
@@ -208,30 +227,53 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that are allowed access to outside the \nperimeter. If left unspecified, then members of 'identities' field will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\", \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
+                              description: "Specifies the type of identities that
+                                are allowed access to outside the \nperimeter. If
+                                left unspecified, then members of 'identities' field
+                                will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
+                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
                               type: string
                           type: object
                         egressTo:
-                          description: "Defines the conditions on the 'ApiOperation' and destination resources that \ncause this 'EgressPolicy' to apply."
+                          description: "Defines the conditions on the 'ApiOperation'
+                            and destination resources that \ncause this 'EgressPolicy'
+                            to apply."
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' that this egress rule applies to. A request matches \nif it contains an operation/service in this list."
+                              description: "A list of 'ApiOperations' that this egress
+                                rule applies to. A request matches \nif it contains
+                                an operation/service in this list."
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow. Method or permission must belong \nto the service specified by 'serviceName' field. A single MethodSelector \nentry with '*' specified for the 'method' field will allow all methods \nAND permissions for the service specified in 'serviceName'."
+                                    description: "API methods or permissions to allow.
+                                      Method or permission must belong \nto the service
+                                      specified by 'serviceName' field. A single MethodSelector
+                                      \nentry with '*' specified for the 'method'
+                                      field will allow all methods \nAND permissions
+                                      for the service specified in 'serviceName'."
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for 'method' should be a valid method name for the corresponding \n'serviceName' in 'ApiOperation'. If '*' used as value for method, \nthen ALL methods and permissions are allowed."
+                                          description: "Value for 'method' should
+                                            be a valid method name for the corresponding
+                                            \n'serviceName' in 'ApiOperation'. If
+                                            '*' used as value for method, \nthen ALL
+                                            methods and permissions are allowed."
                                           type: string
                                         permission:
-                                          description: "Value for permission should be a valid Cloud IAM permission for the \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: "Value for permission should
+                                            be a valid Cloud IAM permission for the
+                                            \ncorresponding 'serviceName' in 'ApiOperation'."
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods or permissions the 'IngressPolicy' or \n'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName \nfield set to '*' will allow all methods AND permissions for all services."
+                                    description: "The name of the API whose methods
+                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
+                                      want to allow. A single 'ApiOperation' with
+                                      serviceName \nfield set to '*' will allow all
+                                      methods AND permissions for all services."
                                     type: string
                                 type: object
                               type: array
@@ -262,10 +304,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -318,10 +362,12 @@ spec:
                                         description: The email of an IAMServiceAccount.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   user:
@@ -329,10 +375,15 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that are allowed access from outside the \nperimeter. If left unspecified, then members of 'identities' field will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\", \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
+                              description: "Specifies the type of identities that
+                                are allowed access from outside the \nperimeter. If
+                                left unspecified, then members of 'identities' field
+                                will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
+                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
                               type: string
                             sources:
-                              description: Sources that this 'IngressPolicy' authorizes access from.
+                              description: Sources that this 'IngressPolicy' authorizes
+                                access from.
                               items:
                                 properties:
                                   accessLevelRef:
@@ -363,10 +414,12 @@ spec:
                                         description: The name of an AccessContextManagerAccessLevel.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   projectRef:
@@ -395,10 +448,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -410,23 +465,40 @@ spec:
                             this 'IngressPolicy' to apply.
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' \nare allowed to perform in this 'ServicePerimeter'."
+                              description: "A list of 'ApiOperations' the sources
+                                specified in corresponding 'IngressFrom' \nare allowed
+                                to perform in this 'ServicePerimeter'."
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow. Method or permission must belong to \nthe service specified by serviceName field. A single 'MethodSelector' entry \nwith '*' specified for the method field will allow all methods AND \npermissions for the service specified in 'serviceName'."
+                                    description: "API methods or permissions to allow.
+                                      Method or permission must belong to \nthe service
+                                      specified by serviceName field. A single 'MethodSelector'
+                                      entry \nwith '*' specified for the method field
+                                      will allow all methods AND \npermissions for
+                                      the service specified in 'serviceName'."
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for method should be a valid method name for the corresponding \nserviceName in 'ApiOperation'. If '*' used as value for 'method', then \nALL methods and permissions are allowed."
+                                          description: "Value for method should be
+                                            a valid method name for the corresponding
+                                            \nserviceName in 'ApiOperation'. If '*'
+                                            used as value for 'method', then \nALL
+                                            methods and permissions are allowed."
                                           type: string
                                         permission:
-                                          description: "Value for permission should be a valid Cloud IAM permission for the \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: "Value for permission should
+                                            be a valid Cloud IAM permission for the
+                                            \ncorresponding 'serviceName' in 'ApiOperation'."
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods or permissions the 'IngressPolicy' or \n'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' \nfield set to '*' will allow all methods AND permissions for all services."
+                                    description: "The name of the API whose methods
+                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
+                                      want to allow. A single 'ApiOperation' with
+                                      'serviceName' \nfield set to '*' will allow
+                                      all methods AND permissions for all services."
                                     type: string
                                 type: object
                               type: array
@@ -459,10 +531,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -472,7 +546,8 @@ spec:
                     type: array
                   resources:
                     items:
-                      description: "(Optional) A list of GCP resources that are inside of the service perimeter. \nCurrently only projects are allowed."
+                      description: "(Optional) A list of GCP resources that are inside
+                        of the service perimeter. \nCurrently only projects are allowed."
                       properties:
                         projectRef:
                           oneOf:
@@ -497,7 +572,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       type: object
@@ -539,7 +615,14 @@ spec:
                 properties:
                   accessLevels:
                     items:
-                      description: "(Optional) A list of AccessLevel resource names that allow resources within \nthe ServicePerimeter to be accessed from the internet. AccessLevels listed \nmust be in the same policy as this ServicePerimeter. \nReferencing a nonexistent AccessLevel is a syntax error. If no \nAccessLevel names are listed, resources within the perimeter can \nonly be accessed via GCP calls with request origins within the \nperimeter. For Service Perimeter Bridge, must be empty."
+                      description: "(Optional) A list of AccessLevel resource names
+                        that allow resources within \nthe ServicePerimeter to be accessed
+                        from the internet. AccessLevels listed \nmust be in the same
+                        policy as this ServicePerimeter. \nReferencing a nonexistent
+                        AccessLevel is a syntax error. If no \nAccessLevel names are
+                        listed, resources within the perimeter can \nonly be accessed
+                        via GCP calls with request origins within the \nperimeter.
+                        For Service Perimeter Bridge, must be empty."
                       oneOf:
                       - not:
                           required:
@@ -567,11 +650,15 @@ spec:
                       type: object
                     type: array
                   egressPolicies:
-                    description: "List of EgressPolicies to apply to the perimeter. A perimeter may \nhave multiple EgressPolicies, each of which is evaluated separately.\nAccess is granted if any EgressPolicy grants it. Must be empty for \na perimeter bridge."
+                    description: "List of EgressPolicies to apply to the perimeter.
+                      A perimeter may \nhave multiple EgressPolicies, each of which
+                      is evaluated separately.\nAccess is granted if any EgressPolicy
+                      grants it. Must be empty for \na perimeter bridge."
                     items:
                       properties:
                         egressFrom:
-                          description: Defines conditions on the source of a request causing this 'EgressPolicy' to apply.
+                          description: Defines conditions on the source of a request
+                            causing this 'EgressPolicy' to apply.
                           properties:
                             identities:
                               items:
@@ -605,10 +692,12 @@ spec:
                                         description: The email of an IAMServiceAccount.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   user:
@@ -616,30 +705,53 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that are allowed access to outside the \nperimeter. If left unspecified, then members of 'identities' field will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\", \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
+                              description: "Specifies the type of identities that
+                                are allowed access to outside the \nperimeter. If
+                                left unspecified, then members of 'identities' field
+                                will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
+                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
                               type: string
                           type: object
                         egressTo:
-                          description: "Defines the conditions on the 'ApiOperation' and destination resources that \ncause this 'EgressPolicy' to apply."
+                          description: "Defines the conditions on the 'ApiOperation'
+                            and destination resources that \ncause this 'EgressPolicy'
+                            to apply."
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' that this egress rule applies to. A request matches \nif it contains an operation/service in this list."
+                              description: "A list of 'ApiOperations' that this egress
+                                rule applies to. A request matches \nif it contains
+                                an operation/service in this list."
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow. Method or permission must belong \nto the service specified by 'serviceName' field. A single MethodSelector \nentry with '*' specified for the 'method' field will allow all methods \nAND permissions for the service specified in 'serviceName'."
+                                    description: "API methods or permissions to allow.
+                                      Method or permission must belong \nto the service
+                                      specified by 'serviceName' field. A single MethodSelector
+                                      \nentry with '*' specified for the 'method'
+                                      field will allow all methods \nAND permissions
+                                      for the service specified in 'serviceName'."
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for 'method' should be a valid method name for the corresponding \n'serviceName' in 'ApiOperation'. If '*' used as value for method, \nthen ALL methods and permissions are allowed."
+                                          description: "Value for 'method' should
+                                            be a valid method name for the corresponding
+                                            \n'serviceName' in 'ApiOperation'. If
+                                            '*' used as value for method, \nthen ALL
+                                            methods and permissions are allowed."
                                           type: string
                                         permission:
-                                          description: "Value for permission should be a valid Cloud IAM permission for the \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: "Value for permission should
+                                            be a valid Cloud IAM permission for the
+                                            \ncorresponding 'serviceName' in 'ApiOperation'."
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods or permissions the 'IngressPolicy' or \n'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName \nfield set to '*' will allow all methods AND permissions for all services."
+                                    description: "The name of the API whose methods
+                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
+                                      want to allow. A single 'ApiOperation' with
+                                      serviceName \nfield set to '*' will allow all
+                                      methods AND permissions for all services."
                                     type: string
                                 type: object
                               type: array
@@ -670,10 +782,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -726,10 +840,12 @@ spec:
                                         description: The email of an IAMServiceAccount.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   user:
@@ -737,10 +853,15 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that are allowed access from outside the \nperimeter. If left unspecified, then members of 'identities' field will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\", \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
+                              description: "Specifies the type of identities that
+                                are allowed access from outside the \nperimeter. If
+                                left unspecified, then members of 'identities' field
+                                will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
+                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]"
                               type: string
                             sources:
-                              description: Sources that this 'IngressPolicy' authorizes access from.
+                              description: Sources that this 'IngressPolicy' authorizes
+                                access from.
                               items:
                                 properties:
                                   accessLevelRef:
@@ -771,10 +892,12 @@ spec:
                                         description: The name of an AccessContextManagerAccessLevel.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                   projectRef:
@@ -803,10 +926,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -818,23 +943,40 @@ spec:
                             this 'IngressPolicy' to apply.
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' \nare allowed to perform in this 'ServicePerimeter'."
+                              description: "A list of 'ApiOperations' the sources
+                                specified in corresponding 'IngressFrom' \nare allowed
+                                to perform in this 'ServicePerimeter'."
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow. Method or permission must belong to \nthe service specified by serviceName field. A single 'MethodSelector' entry \nwith '*' specified for the method field will allow all methods AND \npermissions for the service specified in 'serviceName'."
+                                    description: "API methods or permissions to allow.
+                                      Method or permission must belong to \nthe service
+                                      specified by serviceName field. A single 'MethodSelector'
+                                      entry \nwith '*' specified for the method field
+                                      will allow all methods AND \npermissions for
+                                      the service specified in 'serviceName'."
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for method should be a valid method name for the corresponding \nserviceName in 'ApiOperation'. If '*' used as value for 'method', then \nALL methods and permissions are allowed."
+                                          description: "Value for method should be
+                                            a valid method name for the corresponding
+                                            \nserviceName in 'ApiOperation'. If '*'
+                                            used as value for 'method', then \nALL
+                                            methods and permissions are allowed."
                                           type: string
                                         permission:
-                                          description: "Value for permission should be a valid Cloud IAM permission for the \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: "Value for permission should
+                                            be a valid Cloud IAM permission for the
+                                            \ncorresponding 'serviceName' in 'ApiOperation'."
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods or permissions the 'IngressPolicy' or \n'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' \nfield set to '*' will allow all methods AND permissions for all services."
+                                    description: "The name of the API whose methods
+                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
+                                      want to allow. A single 'ApiOperation' with
+                                      'serviceName' \nfield set to '*' will allow
+                                      all methods AND permissions for all services."
                                     type: string
                                 type: object
                               type: array
@@ -867,10 +1009,12 @@ spec:
                                         description: The number of a Project.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 type: object
@@ -880,7 +1024,8 @@ spec:
                     type: array
                   resources:
                     items:
-                      description: "(Optional) A list of GCP resources that are inside of the service perimeter. \nCurrently only projects are allowed."
+                      description: "(Optional) A list of GCP resources that are inside
+                        of the service perimeter. \nCurrently only projects are allowed."
                       properties:
                         projectRef:
                           oneOf:
@@ -905,7 +1050,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       type: object
@@ -961,20 +1107,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -985,7 +1136,11 @@ spec:
                 description: Time the AccessPolicy was created in UTC.
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               updateTime:
                 description: Time the AccessPolicy was updated in UTC.

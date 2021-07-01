@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -70,13 +74,18 @@ spec:
                 description: Options that affect sinks exporting data to BigQuery.
                 properties:
                   usePartitionedTables:
-                    description: Whether to use BigQuery's partition tables. By default, Logging creates dated tables based on the log entries' timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone.
+                    description: Whether to use BigQuery's partition tables. By default,
+                      Logging creates dated tables based on the log entries' timestamps,
+                      e.g. syslog_20170523. With partitioned tables the date suffix
+                      is no longer present and special query syntax has to be used
+                      instead. In both cases, tables are sharded based on UTC timezone.
                     type: boolean
                 required:
                 - usePartitionedTables
                 type: object
               description:
-                description: A description of this sink. The maximum length of the description is 8000 characters.
+                description: A description of this sink. The maximum length of the
+                  description is 8000 characters.
                 type: string
               destination:
                 oneOf:
@@ -167,23 +176,32 @@ spec:
                     type: object
                 type: object
               disabled:
-                description: If set to True, then this sink is disabled and it does not export any log entries.
+                description: If set to True, then this sink is disabled and it does
+                  not export any log entries.
                 type: boolean
               exclusions:
-                description: Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion_filters it will not be exported.
+                description: Log entries that match any of the exclusion filters will
+                  not be exported. If a log entry is matched by both filter and one
+                  of exclusion_filters it will not be exported.
                 items:
                   properties:
                     description:
                       description: A description of this exclusion.
                       type: string
                     disabled:
-                      description: If set to True, then this exclusion is disabled and it does not exclude any log entries
+                      description: If set to True, then this exclusion is disabled
+                        and it does not exclude any log entries
                       type: boolean
                     filter:
-                      description: An advanced logs filter that matches the log entries to be excluded. By using the sample function, you can exclude less than 100% of the matching log entries
+                      description: An advanced logs filter that matches the log entries
+                        to be excluded. By using the sample function, you can exclude
+                        less than 100% of the matching log entries
                       type: string
                     name:
-                      description: A client-assigned identifier, such as "load-balancer-exclusion". Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric.
+                      description: A client-assigned identifier, such as "load-balancer-exclusion".
+                        Identifiers are limited to 100 characters and can include
+                        only letters, digits, underscores, hyphens, and periods. First
+                        character has to be alphanumeric.
                       type: string
                   required:
                   - filter
@@ -191,7 +209,8 @@ spec:
                   type: object
                 type: array
               filter:
-                description: The filter to apply when exporting logs. Only log entries that match the filter are exported.
+                description: The filter to apply when exporting logs. Only log entries
+                  that match the filter are exported.
                 type: string
               folderRef:
                 description: |-
@@ -223,7 +242,10 @@ spec:
                     type: string
                 type: object
               includeChildren:
-                description: Immutable. Whether or not to include children organizations in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided organization are included.
+                description: Immutable. Whether or not to include children organizations
+                  in the sink export. If true, logs associated with child projects
+                  are also exported; otherwise only logs relating to the provided
+                  organization are included.
                 type: boolean
               organizationRef:
                 description: |-
@@ -284,10 +306,17 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               uniqueWriterIdentity:
-                description: Immutable. Whether or not to create a unique identity associated with this sink. If false (the default), then the writer_identity used is serviceAccount:cloud-logs@system.gserviceaccount.com. If true, then a unique service account is created and used for this sink. If you wish to publish logs across projects, you must set unique_writer_identity to true.
+                description: Immutable. Whether or not to create a unique identity
+                  associated with this sink. If false (the default), then the writer_identity
+                  used is serviceAccount:cloud-logs@system.gserviceaccount.com. If
+                  true, then a unique service account is created and used for this
+                  sink. If you wish to publish logs across projects, you must set
+                  unique_writer_identity to true.
                 type: boolean
             required:
             - destination
@@ -295,20 +324,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -316,10 +350,15 @@ spec:
                   type: object
                 type: array
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               writerIdentity:
-                description: The identity associated with this sink. This identity must be granted write access to the configured destination.
+                description: The identity associated with this sink. This identity
+                  must be granted write access to the configured destination.
                 type: string
             type: object
         required:

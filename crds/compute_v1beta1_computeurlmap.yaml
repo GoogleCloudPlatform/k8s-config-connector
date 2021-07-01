@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -86,12 +90,14 @@ spec:
                           This translates to the Access-Control-Allow-Credentials header.
                         type: boolean
                       allowHeaders:
-                        description: Specifies the content for the Access-Control-Allow-Headers header.
+                        description: Specifies the content for the Access-Control-Allow-Headers
+                          header.
                         items:
                           type: string
                         type: array
                       allowMethods:
-                        description: Specifies the content for the Access-Control-Allow-Methods header.
+                        description: Specifies the content for the Access-Control-Allow-Methods
+                          header.
                         items:
                           type: string
                         type: array
@@ -111,10 +117,13 @@ spec:
                           type: string
                         type: array
                       disabled:
-                        description: If true, specifies the CORS policy is disabled. The default value is false, which indicates that the CORS policy is in effect.
+                        description: If true, specifies the CORS policy is disabled.
+                          The default value is false, which indicates that the CORS
+                          policy is in effect.
                         type: boolean
                       exposeHeaders:
-                        description: Specifies the content for the Access-Control-Expose-Headers header.
+                        description: Specifies the content for the Access-Control-Expose-Headers
+                          header.
                         items:
                           type: string
                         type: array
@@ -134,7 +143,8 @@ spec:
                       timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy.
                     properties:
                       abort:
-                        description: The specification for how client requests are aborted as part of fault injection.
+                        description: The specification for how client requests are
+                          aborted as part of fault injection.
                         properties:
                           httpStatus:
                             description: |-
@@ -148,7 +158,9 @@ spec:
                             type: number
                         type: object
                       delay:
-                        description: The specification for how client requests are delayed as part of fault injection, before being sent to a backend service.
+                        description: The specification for how client requests are
+                          delayed as part of fault injection, before being sent to
+                          a backend service.
                         properties:
                           fixedDelay:
                             description: Specifies the value of the fixed delay interval.
@@ -178,7 +190,8 @@ spec:
                       the host / authority header is suffixed with -shadow.
                     properties:
                       backendServiceRef:
-                        description: Required. The backend service resource being mirrored to.
+                        description: Required. The backend service resource being
+                          mirrored to.
                         oneOf:
                         - not:
                             required:
@@ -211,7 +224,8 @@ spec:
                     description: Specifies the retry policy associated with this route.
                     properties:
                       numRetries:
-                        description: Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.
+                        description: Specifies the allowed number retries. This number
+                          must be > 0. If not specified, defaults to 1.
                         type: integer
                       perTryTimeout:
                         description: |-
@@ -272,7 +286,8 @@ spec:
                         type: string
                     type: object
                   urlRewrite:
-                    description: The spec to modify the URL of the request, prior to forwarding the request to the matched service.
+                    description: The spec to modify the URL of the request, prior
+                      to forwarding the request to the matched service.
                     properties:
                       hostRewrite:
                         description: |-
@@ -329,7 +344,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                         headerAction:
@@ -341,7 +357,8 @@ spec:
                             HttpRouteRule, PathMatcher and UrlMap.
                           properties:
                             requestHeadersToAdd:
-                              description: Headers to add to a matching request prior to forwarding the request to the backendService.
+                              description: Headers to add to a matching request prior
+                                to forwarding the request to the backendService.
                               items:
                                 properties:
                                   headerName:
@@ -365,7 +382,8 @@ spec:
                                 type: string
                               type: array
                             responseHeadersToAdd:
-                              description: Headers to add the response prior to sending the response back to the client.
+                              description: Headers to add the response prior to sending
+                                the response back to the client.
                               items:
                                 properties:
                                   headerName:
@@ -581,7 +599,8 @@ spec:
                       type: string
                     type: array
                   responseHeadersToAdd:
-                    description: Headers to add the response prior to sending the response back to the client.
+                    description: Headers to add the response prior to sending the
+                      response back to the client.
                     items:
                       properties:
                         headerName:
@@ -639,7 +658,9 @@ spec:
                   type: object
                 type: array
               location:
-                description: 'Location represents the geographical location of the ComputeURLMap. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                description: 'Location represents the geographical location of the
+                  ComputeURLMap. Specify a region name or "global" for global resources.
+                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               pathMatcher:
                 description: The list of named PathMatchers to use against the URL.
@@ -665,12 +686,14 @@ spec:
                                 This translates to the Access-Control-Allow-Credentials header.
                               type: boolean
                             allowHeaders:
-                              description: Specifies the content for the Access-Control-Allow-Headers header.
+                              description: Specifies the content for the Access-Control-Allow-Headers
+                                header.
                               items:
                                 type: string
                               type: array
                             allowMethods:
-                              description: Specifies the content for the Access-Control-Allow-Methods header.
+                              description: Specifies the content for the Access-Control-Allow-Methods
+                                header.
                               items:
                                 type: string
                               type: array
@@ -690,10 +713,13 @@ spec:
                                 type: string
                               type: array
                             disabled:
-                              description: If true, specifies the CORS policy is disabled. The default value is false, which indicates that the CORS policy is in effect.
+                              description: If true, specifies the CORS policy is disabled.
+                                The default value is false, which indicates that the
+                                CORS policy is in effect.
                               type: boolean
                             exposeHeaders:
-                              description: Specifies the content for the Access-Control-Expose-Headers header.
+                              description: Specifies the content for the Access-Control-Expose-Headers
+                                header.
                               items:
                                 type: string
                               type: array
@@ -713,7 +739,8 @@ spec:
                             timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy.
                           properties:
                             abort:
-                              description: The specification for how client requests are aborted as part of fault injection.
+                              description: The specification for how client requests
+                                are aborted as part of fault injection.
                               properties:
                                 httpStatus:
                                   description: |-
@@ -727,10 +754,13 @@ spec:
                                   type: number
                               type: object
                             delay:
-                              description: The specification for how client requests are delayed as part of fault injection, before being sent to a backend service.
+                              description: The specification for how client requests
+                                are delayed as part of fault injection, before being
+                                sent to a backend service.
                               properties:
                                 fixedDelay:
-                                  description: Specifies the value of the fixed delay interval.
+                                  description: Specifies the value of the fixed delay
+                                    interval.
                                   properties:
                                     nanos:
                                       description: |-
@@ -757,7 +787,8 @@ spec:
                             the host / authority header is suffixed with -shadow.
                           properties:
                             backendServiceRef:
-                              description: Required. The backend service resource being mirrored to.
+                              description: Required. The backend service resource
+                                being mirrored to.
                               oneOf:
                               - not:
                                   required:
@@ -780,17 +811,21 @@ spec:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                   type: string
                                 namespace:
-                                  description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                  description: 'Namespace of the referent. More info:
+                                    https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                   type: string
                               type: object
                           required:
                           - backendServiceRef
                           type: object
                         retryPolicy:
-                          description: Specifies the retry policy associated with this route.
+                          description: Specifies the retry policy associated with
+                            this route.
                           properties:
                             numRetries:
-                              description: Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.
+                              description: Specifies the allowed number retries. This
+                                number must be > 0. If not specified, defaults to
+                                1.
                               type: integer
                             perTryTimeout:
                               description: |-
@@ -851,7 +886,8 @@ spec:
                               type: string
                           type: object
                         urlRewrite:
-                          description: The spec to modify the URL of the request, prior to forwarding the request to the matched service.
+                          description: The spec to modify the URL of the request,
+                            prior to forwarding the request to the matched service.
                           properties:
                             hostRewrite:
                               description: |-
@@ -905,10 +941,12 @@ spec:
                                     description: The name of a ComputeBackendService.
                                     type: string
                                   name:
-                                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                     type: string
                                   namespace:
-                                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                     type: string
                                 type: object
                               headerAction:
@@ -920,14 +958,16 @@ spec:
                                   HttpRouteRule, PathMatcher and UrlMap.
                                 properties:
                                   requestHeadersToAdd:
-                                    description: Headers to add to a matching request prior to forwarding the request to the backendService.
+                                    description: Headers to add to a matching request
+                                      prior to forwarding the request to the backendService.
                                     items:
                                       properties:
                                         headerName:
                                           description: The name of the header to add.
                                           type: string
                                         headerValue:
-                                          description: The value of the header to add.
+                                          description: The value of the header to
+                                            add.
                                           type: string
                                         replace:
                                           description: |-
@@ -944,14 +984,16 @@ spec:
                                       type: string
                                     type: array
                                   responseHeadersToAdd:
-                                    description: Headers to add the response prior to sending the response back to the client.
+                                    description: Headers to add the response prior
+                                      to sending the response back to the client.
                                     items:
                                       properties:
                                         headerName:
                                           description: The name of the header to add.
                                           type: string
                                         headerValue:
-                                          description: The value of the header to add.
+                                          description: The value of the header to
+                                            add.
                                           type: string
                                         replace:
                                           description: |-
@@ -1019,7 +1061,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                         backendServiceRef:
@@ -1045,7 +1088,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       type: object
@@ -1150,7 +1194,8 @@ spec:
                             type: string
                           type: array
                         responseHeadersToAdd:
-                          description: Headers to add the response prior to sending the response back to the client.
+                          description: Headers to add the response prior to sending
+                            the response back to the client.
                           items:
                             properties:
                               headerName:
@@ -1180,7 +1225,8 @@ spec:
                           type: array
                       type: object
                     name:
-                      description: The name to which this PathMatcher is referred by the HostRule.
+                      description: The name to which this PathMatcher is referred
+                        by the HostRule.
                       type: string
                     pathRule:
                       description: |-
@@ -1222,12 +1268,14 @@ spec:
                                       Control-Allow-Credentials header. Defaults to false.
                                     type: boolean
                                   allowHeaders:
-                                    description: Specifies the content for the Access-Control-Allow-Headers header.
+                                    description: Specifies the content for the Access-Control-Allow-Headers
+                                      header.
                                     items:
                                       type: string
                                     type: array
                                   allowMethods:
-                                    description: Specifies the content for the Access-Control-Allow-Methods header.
+                                    description: Specifies the content for the Access-Control-Allow-Methods
+                                      header.
                                     items:
                                       type: string
                                     type: array
@@ -1247,10 +1295,12 @@ spec:
                                       type: string
                                     type: array
                                   disabled:
-                                    description: If true, specifies the CORS policy is disabled.
+                                    description: If true, specifies the CORS policy
+                                      is disabled.
                                     type: boolean
                                   exposeHeaders:
-                                    description: Specifies the content for the Access-Control-Expose-Headers header.
+                                    description: Specifies the content for the Access-Control-Expose-Headers
+                                      header.
                                     items:
                                       type: string
                                     type: array
@@ -1298,7 +1348,8 @@ spec:
                                       injection, before being sent to a backend service.
                                     properties:
                                       fixedDelay:
-                                        description: Specifies the value of the fixed delay interval.
+                                        description: Specifies the value of the fixed
+                                          delay interval.
                                         properties:
                                           nanos:
                                             description: |-
@@ -1333,7 +1384,8 @@ spec:
                                   service, the host / authority header is suffixed with -shadow.
                                 properties:
                                   backendServiceRef:
-                                    description: Required. The backend service resource being mirrored to.
+                                    description: Required. The backend service resource
+                                      being mirrored to.
                                     oneOf:
                                     - not:
                                         required:
@@ -1353,23 +1405,28 @@ spec:
                                         description: The selfLink of a ComputeBackendService.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 required:
                                 - backendServiceRef
                                 type: object
                               retryPolicy:
-                                description: Specifies the retry policy associated with this route.
+                                description: Specifies the retry policy associated
+                                  with this route.
                                 properties:
                                   numRetries:
-                                    description: Specifies the allowed number retries. This number must be > 0.
+                                    description: Specifies the allowed number retries.
+                                      This number must be > 0.
                                     type: integer
                                   perTryTimeout:
-                                    description: Specifies a non-zero timeout per retry attempt.
+                                    description: Specifies a non-zero timeout per
+                                      retry attempt.
                                     properties:
                                       nanos:
                                         description: |-
@@ -1488,10 +1545,12 @@ spec:
                                           description: The selfLink of a ComputeBackendService.
                                           type: string
                                         name:
-                                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                          description: 'Name of the referent. More
+                                            info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                           type: string
                                         namespace:
-                                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                          description: 'Namespace of the referent.
+                                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                           type: string
                                       type: object
                                     headerAction:
@@ -1510,7 +1569,8 @@ spec:
                                                 description: The name of the header.
                                                 type: string
                                               headerValue:
-                                                description: The value of the header to add.
+                                                description: The value of the header
+                                                  to add.
                                                 type: string
                                               replace:
                                                 description: |-
@@ -1532,14 +1592,17 @@ spec:
                                             type: string
                                           type: array
                                         responseHeadersToAdd:
-                                          description: Headers to add the response prior to sending the response back to the client.
+                                          description: Headers to add the response
+                                            prior to sending the response back to
+                                            the client.
                                           items:
                                             properties:
                                               headerName:
                                                 description: The name of the header.
                                                 type: string
                                               headerValue:
-                                                description: The value of the header to add.
+                                                description: The value of the header
+                                                  to add.
                                                 type: string
                                               replace:
                                                 description: |-
@@ -1617,10 +1680,12 @@ spec:
                                     description: The selfLink of a ComputeBackendBucket.
                                     type: string
                                   name:
-                                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                     type: string
                                   namespace:
-                                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                     type: string
                                 type: object
                               backendServiceRef:
@@ -1643,10 +1708,12 @@ spec:
                                     description: The selfLink of a ComputeBackendService.
                                     type: string
                                   name:
-                                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                     type: string
                                   namespace:
-                                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                     type: string
                                 type: object
                             type: object
@@ -1766,7 +1833,8 @@ spec:
                                   type: string
                                 type: array
                               responseHeadersToAdd:
-                                description: Headers to add the response prior to sending the response back to the client.
+                                description: Headers to add the response prior to
+                                  sending the response back to the client.
                                 items:
                                   properties:
                                     headerName:
@@ -2033,12 +2101,14 @@ spec:
                                       Control-Allow-Credentials header. Defaults to false.
                                     type: boolean
                                   allowHeaders:
-                                    description: Specifies the content for the Access-Control-Allow-Headers header.
+                                    description: Specifies the content for the Access-Control-Allow-Headers
+                                      header.
                                     items:
                                       type: string
                                     type: array
                                   allowMethods:
-                                    description: Specifies the content for the Access-Control-Allow-Methods header.
+                                    description: Specifies the content for the Access-Control-Allow-Methods
+                                      header.
                                     items:
                                       type: string
                                     type: array
@@ -2063,7 +2133,8 @@ spec:
                                       which indicates that the CORS policy is in effect. Defaults to false.
                                     type: boolean
                                   exposeHeaders:
-                                    description: Specifies the content for the Access-Control-Expose-Headers header.
+                                    description: Specifies the content for the Access-Control-Expose-Headers
+                                      header.
                                     items:
                                       type: string
                                     type: array
@@ -2106,7 +2177,8 @@ spec:
                                       injection, before being sent to a backend service.
                                     properties:
                                       fixedDelay:
-                                        description: Specifies the value of the fixed delay interval.
+                                        description: Specifies the value of the fixed
+                                          delay interval.
                                         properties:
                                           nanos:
                                             description: |-
@@ -2138,7 +2210,8 @@ spec:
                                   service, the host / authority header is suffixed with -shadow.
                                 properties:
                                   backendServiceRef:
-                                    description: Required. The backend service resource being mirrored to.
+                                    description: Required. The backend service resource
+                                      being mirrored to.
                                     oneOf:
                                     - not:
                                         required:
@@ -2158,23 +2231,28 @@ spec:
                                         description: The selfLink of a ComputeBackendService.
                                         type: string
                                       name:
-                                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                         type: string
                                       namespace:
-                                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                         type: string
                                     type: object
                                 required:
                                 - backendServiceRef
                                 type: object
                               retryPolicy:
-                                description: Specifies the retry policy associated with this route.
+                                description: Specifies the retry policy associated
+                                  with this route.
                                 properties:
                                   numRetries:
-                                    description: Specifies the allowed number retries. This number must be > 0.
+                                    description: Specifies the allowed number retries.
+                                      This number must be > 0.
                                     type: integer
                                   perTryTimeout:
-                                    description: Specifies a non-zero timeout per retry attempt.
+                                    description: Specifies a non-zero timeout per
+                                      retry attempt.
                                     properties:
                                       nanos:
                                         description: |-
@@ -2295,10 +2373,12 @@ spec:
                                           description: The selfLink of a ComputeBackendService.
                                           type: string
                                         name:
-                                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                          description: 'Name of the referent. More
+                                            info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                           type: string
                                         namespace:
-                                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                          description: 'Namespace of the referent.
+                                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                           type: string
                                       type: object
                                     headerAction:
@@ -2317,7 +2397,8 @@ spec:
                                                 description: The name of the header.
                                                 type: string
                                               headerValue:
-                                                description: The value of the header to add.
+                                                description: The value of the header
+                                                  to add.
                                                 type: string
                                               replace:
                                                 description: |-
@@ -2339,14 +2420,17 @@ spec:
                                             type: string
                                           type: array
                                         responseHeadersToAdd:
-                                          description: Headers to add the response prior to sending the response back to the client.
+                                          description: Headers to add the response
+                                            prior to sending the response back to
+                                            the client.
                                           items:
                                             properties:
                                               headerName:
                                                 description: The name of the header.
                                                 type: string
                                               headerValue:
-                                                description: The value of the header to add.
+                                                description: The value of the header
+                                                  to add.
                                                 type: string
                                               replace:
                                                 description: |-
@@ -2462,7 +2546,9 @@ spec:
                   type: object
                 type: array
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               test:
                 description: |-
@@ -2515,7 +2601,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                         backendServiceRef:
@@ -2541,7 +2628,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       type: object
@@ -2557,20 +2645,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -2589,7 +2682,11 @@ spec:
                 description: The unique identifier for the resource.
                 type: integer
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               selfLink:
                 type: string

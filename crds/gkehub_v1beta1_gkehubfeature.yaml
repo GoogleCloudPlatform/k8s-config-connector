@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -97,10 +101,13 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               spec:
-                description: Optional. Hub-wide Feature configuration. If this Feature does not support any Hub-wide configuration, this field may be unused.
+                description: Optional. Hub-wide Feature configuration. If this Feature
+                  does not support any Hub-wide configuration, this field may be unused.
                 properties:
                   multiclusteringress:
                     description: Multicluster Ingress-specific spec.
@@ -122,7 +129,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Fully-qualified Membership name which hosts the MultiClusterIngress CRD. Example: `projects/foo-proj/locations/global/memberships/bar`'
+                            description: 'Fully-qualified Membership name which hosts
+                              the MultiClusterIngress CRD. Example: `projects/foo-proj/locations/global/memberships/bar`'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -142,20 +150,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -171,32 +184,45 @@ spec:
                 format: date-time
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               resourceState:
                 description: State of the Feature resource itself.
                 properties:
                   hasResources:
-                    description: Whether this Feature has outstanding resources that need to be cleaned up before it can be disabled.
+                    description: Whether this Feature has outstanding resources that
+                      need to be cleaned up before it can be disabled.
                     type: boolean
                   state:
-                    description: 'The current state of the Feature resource in the Hub API. Possible values: STATE_UNSPECIFIED, ENABLING, ACTIVE, DISABLING, UPDATING, SERVICE_UPDATING'
+                    description: 'The current state of the Feature resource in the
+                      Hub API. Possible values: STATE_UNSPECIFIED, ENABLING, ACTIVE,
+                      DISABLING, UPDATING, SERVICE_UPDATING'
                     type: string
                 type: object
               state:
                 description: Output only. The Hub-wide Feature state
                 properties:
                   state:
-                    description: Output only. The "running state" of the Feature in this Hub.
+                    description: Output only. The "running state" of the Feature in
+                      this Hub.
                     properties:
                       code:
-                        description: 'The high-level, machine-readable status of this Feature. Possible values: CODE_UNSPECIFIED, OK, WARNING, ERROR'
+                        description: 'The high-level, machine-readable status of this
+                          Feature. Possible values: CODE_UNSPECIFIED, OK, WARNING,
+                          ERROR'
                         type: string
                       description:
                         description: A human-readable description of the current status.
                         type: string
                       updateTime:
-                        description: 'The time this status and any related Feature-specific details were updated. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z"'
+                        description: 'The time this status and any related Feature-specific
+                          details were updated. A timestamp in RFC3339 UTC "Zulu"
+                          format, with nanosecond resolution and up to nine fractional
+                          digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z"'
                         type: string
                     type: object
                 type: object

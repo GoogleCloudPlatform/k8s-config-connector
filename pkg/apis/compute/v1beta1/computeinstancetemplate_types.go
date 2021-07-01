@@ -49,6 +49,16 @@ type InstancetemplateAccessConfig struct {
 	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
 }
 
+type InstancetemplateAdvancedMachineFeatures struct {
+	/* Immutable. Whether to enable nested virtualization or not. */
+	// +optional
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
+	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
+	// +optional
+	ThreadsPerCore *int `json:"threadsPerCore,omitempty"`
+}
+
 type InstancetemplateAliasIpRange struct {
 	/* Immutable. The IP CIDR range represented by this alias IP range. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. At the time of writing only a netmask (e.g. /24) may be supplied, with a CIDR format resulting in an API error. */
 	IpCidrRange string `json:"ipCidrRange"`
@@ -59,7 +69,7 @@ type InstancetemplateAliasIpRange struct {
 }
 
 type InstancetemplateConfidentialInstanceConfig struct {
-	/* Defines whether the instance should have confidential compute enabled. */
+	/* Immutable. Defines whether the instance should have confidential compute enabled. */
 	EnableConfidentialCompute bool `json:"enableConfidentialCompute"`
 }
 
@@ -176,6 +186,11 @@ type InstancetemplateNetworkInterface struct {
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
+type InstancetemplateNetworkPerformanceConfig struct {
+	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT */
+	TotalEgressBandwidthTier string `json:"totalEgressBandwidthTier"`
+}
+
 type InstancetemplateNodeAffinities struct {
 	/*  */
 	// +optional
@@ -248,6 +263,10 @@ type InstancetemplateValue struct {
 }
 
 type ComputeInstanceTemplateSpec struct {
+	/* Immutable. Controls for advanced machine-related behavior features. */
+	// +optional
+	AdvancedMachineFeatures *InstancetemplateAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
 	/* Immutable. Whether to allow sending and receiving of packets with non-matching source or destination IPs. This defaults to false. */
 	// +optional
 	CanIpForward *bool `json:"canIpForward,omitempty"`
@@ -297,6 +316,10 @@ type ComputeInstanceTemplateSpec struct {
 	/* Immutable. Networks to attach to instances created from this template. This can be specified multiple times for multiple networks. */
 	// +optional
 	NetworkInterface []InstancetemplateNetworkInterface `json:"networkInterface,omitempty"`
+
+	/* Immutable. Configures network performance settings for the instance. If not specified, the instance will be created with its default network performance configuration. */
+	// +optional
+	NetworkPerformanceConfig *InstancetemplateNetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
 
 	/* Immutable. An instance template is a global resource that is not bound to a zone or a region. However, you can still specify some regional resources in an instance template, which restricts the template to the region where that resource resides. For example, a custom subnetwork resource is tied to a specific region. Defaults to the region of the Provider if no value is given. */
 	// +optional

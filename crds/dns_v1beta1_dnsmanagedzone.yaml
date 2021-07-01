@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,20 +57,26 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
               description:
-                description: A textual description field. Defaults to 'Managed by Config Connector'.
+                description: A textual description field. Defaults to 'Managed by
+                  Config Connector'.
                 type: string
               dnsName:
-                description: Immutable. The DNS name of this managed zone, for instance "example.com.".
+                description: Immutable. The DNS name of this managed zone, for instance
+                  "example.com.".
                 type: string
               dnssecConfig:
                 description: DNSSEC configuration
@@ -84,7 +90,9 @@ spec:
                     items:
                       properties:
                         algorithm:
-                          description: 'String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"]'
+                          description: 'String mnemonic specifying the DNSSEC algorithm
+                            of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384",
+                            "rsasha1", "rsasha256", "rsasha512"]'
                           type: string
                         keyLength:
                           description: Length of the keys in bits
@@ -112,7 +120,8 @@ spec:
                       non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]
                     type: string
                   state:
-                    description: 'Specifies whether DNSSEC is enabled, and what mode it is in Possible values: ["off", "on", "transfer"]'
+                    description: 'Specifies whether DNSSEC is enabled, and what mode
+                      it is in Possible values: ["off", "on", "transfer"]'
                     type: string
                 type: object
               forwardingConfig:
@@ -217,7 +226,8 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       required:
@@ -228,7 +238,9 @@ spec:
                 - networks
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               reverseLookup:
                 description: |-
@@ -237,7 +249,10 @@ spec:
                   to networks listed under 'private_visibility_config'.
                 type: boolean
               serviceDirectoryConfig:
-                description: Immutable. The presence of this field indicates that this zone is backed by Service Directory. The value of this field contains information related to the namespace associated with the zone.
+                description: Immutable. The presence of this field indicates that
+                  this zone is backed by Service Directory. The value of this field
+                  contains information related to the namespace associated with the
+                  zone.
                 properties:
                   namespace:
                     description: The namespace associated with the zone.
@@ -267,20 +282,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -295,7 +315,11 @@ spec:
                   type: string
                 type: array
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
             type: object
         required:

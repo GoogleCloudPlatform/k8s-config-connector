@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SecuritypolicyAdaptiveProtectionConfig struct {
+	/* Layer 7 DDoS Defense Config of this security policy */
+	// +optional
+	Layer7DdosDefenseConfig *SecuritypolicyLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
+}
+
 type SecuritypolicyConfig struct {
 	/* Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior). */
 	SrcIpRanges []string `json:"srcIpRanges"`
@@ -43,6 +49,16 @@ type SecuritypolicyConfig struct {
 type SecuritypolicyExpr struct {
 	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
 	Expression string `json:"expression"`
+}
+
+type SecuritypolicyLayer7DdosDefenseConfig struct {
+	/* If set to true, enables CAAP for L7 DDoS detection. */
+	// +optional
+	Enable *bool `json:"enable,omitempty"`
+
+	/* Rule visibility. Supported values include: "STANDARD", "PREMIUM". */
+	// +optional
+	RuleVisibility *string `json:"ruleVisibility,omitempty"`
 }
 
 type SecuritypolicyMatch struct {
@@ -79,6 +95,10 @@ type SecuritypolicyRule struct {
 }
 
 type ComputeSecurityPolicySpec struct {
+	/* Adaptive Protection Config of this security policy. */
+	// +optional
+	AdaptiveProtectionConfig *SecuritypolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
+
 	/* An optional description of this security policy. Max size is 2048. */
 	// +optional
 	Description *string `json:"description,omitempty"`

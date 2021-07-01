@@ -203,6 +203,11 @@ type InstanceNetworkInterface struct {
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
+type InstanceNetworkPerformanceConfig struct {
+	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT */
+	TotalEgressBandwidthTier string `json:"totalEgressBandwidthTier"`
+}
+
 type InstanceNodeAffinities struct {
 	/*  */
 	// +optional
@@ -349,6 +354,10 @@ type ComputeInstanceSpec struct {
 	/* Immutable. The networks attached to the instance. */
 	// +optional
 	NetworkInterface []InstanceNetworkInterface `json:"networkInterface,omitempty"`
+
+	/* Immutable. Configures network performance settings for the instance. If not specified, the instance will be created with its default network performance configuration. */
+	// +optional
+	NetworkPerformanceConfig *InstanceNetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
 
 	/* Immutable. Specifies the reservations that this instance can consume from. */
 	// +optional

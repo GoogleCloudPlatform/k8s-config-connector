@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -57,17 +57,23 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
               action:
-                description: 'Required. The action to take when a rule match is found. Possible values are "ALLOW" or "DENY". Possible values: ACTION_UNSPECIFIED, ALLOW, DENY'
+                description: 'Required. The action to take when a rule match is found.
+                  Possible values are "ALLOW" or "DENY". Possible values: ACTION_UNSPECIFIED,
+                  ALLOW, DENY'
                 type: string
               description:
                 description: Optional. Free-text description of the resource.
@@ -103,36 +109,59 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               rules:
-                description: Optional. List of rules to match. If not set, the action specified in the ‘action’ field will be applied without any additional rule checks.
+                description: Optional. List of rules to match. If not set, the action
+                  specified in the ‘action’ field will be applied without any additional
+                  rule checks.
                 items:
                   properties:
                     destinations:
-                      description: Optional. List of attributes for the traffic destination. If not set, the action specified in the ‘action’ field will be applied without any rule checks for the destination.
+                      description: Optional. List of attributes for the traffic destination.
+                        If not set, the action specified in the ‘action’ field will
+                        be applied without any rule checks for the destination.
                       items:
                         properties:
                           hosts:
-                            description: Required. List of host names to match. Matched against HOST header in http requests. Each host can be an exact match, or a prefix match (example, “mydomain.*”) or a suffix match (example, *.myorg.com”) or a presence(any) match “*”.
+                            description: Required. List of host names to match. Matched
+                              against HOST header in http requests. Each host can
+                              be an exact match, or a prefix match (example, “mydomain.*”)
+                              or a suffix match (example, *.myorg.com”) or a presence(any)
+                              match “*”.
                             items:
                               type: string
                             type: array
                           httpHeaderMatch:
-                            description: Optional. Match against key:value pair in http header. Provides a flexible match based on HTTP headers, for potentially advanced use cases.
+                            description: Optional. Match against key:value pair in
+                              http header. Provides a flexible match based on HTTP
+                              headers, for potentially advanced use cases.
                             properties:
                               headerName:
-                                description: Required. The name of the HTTP header to match. For matching against the HTTP request's authority, use a headerMatch with the header name ":authority". For matching a request's method, use the headerName ":method".
+                                description: Required. The name of the HTTP header
+                                  to match. For matching against the HTTP request's
+                                  authority, use a headerMatch with the header name
+                                  ":authority". For matching a request's method, use
+                                  the headerName ":method".
                                 type: string
                               regexMatch:
-                                description: 'Required. The value of the header must match the regular expression specified in regexMatch. For regular expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript For matching against a port specified in the HTTP request, use a headerMatch with headerName set to Host and a regular expression that satisfies the RFC2616 Host header''s port specifier.'
+                                description: 'Required. The value of the header must
+                                  match the regular expression specified in regexMatch.
+                                  For regular expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript
+                                  For matching against a port specified in the HTTP
+                                  request, use a headerMatch with headerName set to
+                                  Host and a regular expression that satisfies the
+                                  RFC2616 Host header''s port specifier.'
                                 type: string
                             required:
                             - headerName
                             - regexMatch
                             type: object
                           methods:
-                            description: Optional. A list of HTTP methods to match. Should not be set for gRPC services.
+                            description: Optional. A list of HTTP methods to match.
+                              Should not be set for gRPC services.
                             items:
                               type: string
                             type: array
@@ -148,16 +177,24 @@ spec:
                         type: object
                       type: array
                     sources:
-                      description: Optional. List of attributes for the traffic source. If not set, the action specified in the ‘action’ field will be applied without any rule checks for the source.
+                      description: Optional. List of attributes for the traffic source.
+                        If not set, the action specified in the ‘action’ field will
+                        be applied without any rule checks for the source.
                       items:
                         properties:
                           ipBlocks:
-                            description: Optional. List of CIDR ranges to match based on source IP address. Single IP (e.g., "1.2.3.4") and CIDR (e.g., "1.2.3.0/24") are supported.
+                            description: Optional. List of CIDR ranges to match based
+                              on source IP address. Single IP (e.g., "1.2.3.4") and
+                              CIDR (e.g., "1.2.3.0/24") are supported.
                             items:
                               type: string
                             type: array
                           principals:
-                            description: Optional. List of peer identities to match for authorization. Each peer can be an exact match, or a prefix match (example, “namespace/*”) or a suffix match (example, */service-account”) or a presence match “*”.
+                            description: Optional. List of peer identities to match
+                              for authorization. Each peer can be an exact match,
+                              or a prefix match (example, “namespace/*”) or a suffix
+                              match (example, */service-account”) or a presence match
+                              “*”.
                             items:
                               type: string
                             type: array
@@ -173,20 +210,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -198,7 +240,11 @@ spec:
                 format: date-time
                 type: string
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
               updateTime:
                 description: Output only. The timestamp when the resource was updated.

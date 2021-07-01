@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -103,7 +107,8 @@ spec:
                   see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).
                 type: boolean
               icmpIdleTimeoutSec:
-                description: Timeout (in seconds) for ICMP connections. Defaults to 30s if not set.
+                description: Timeout (in seconds) for ICMP connections. Defaults to
+                  30s if not set.
                 type: integer
               logConfig:
                 description: Configuration for logging on NAT
@@ -112,7 +117,8 @@ spec:
                     description: Indicates whether or not to export logs.
                     type: boolean
                   filter:
-                    description: 'Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]'
+                    description: 'Specifies the desired filtering of logs on this
+                      NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]'
                     type: string
                 required:
                 - enable
@@ -129,7 +135,8 @@ spec:
                 type: string
               natIps:
                 items:
-                  description: NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY.
+                  description: NAT IPs. Only valid if natIpAllocateOption is set to
+                    MANUAL_ONLY.
                   oneOf:
                   - not:
                       required:
@@ -160,7 +167,9 @@ spec:
                 description: Immutable. Region where the router and NAT reside.
                 type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               routerRef:
                 description: The Cloud Router in which this NAT will be configured.
@@ -269,7 +278,8 @@ spec:
                   Defaults to 30s if not set.
                 type: integer
               udpIdleTimeoutSec:
-                description: Timeout (in seconds) for UDP connections. Defaults to 30s if not set.
+                description: Timeout (in seconds) for UDP connections. Defaults to
+                  30s if not set.
                 type: integer
             required:
             - natIpAllocateOption
@@ -280,20 +290,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -301,7 +316,11 @@ spec:
                   type: object
                 type: array
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
             type: object
         required:

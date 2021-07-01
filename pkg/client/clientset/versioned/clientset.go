@@ -51,6 +51,7 @@ import (
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/memcache/v1beta1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/monitoring/v1beta1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networksecurity/v1beta1"
+	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkservices/v1beta1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/osconfig/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
@@ -97,6 +98,7 @@ type Interface interface {
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
+	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
@@ -142,6 +144,7 @@ type Clientset struct {
 	memcacheV1beta1             *memcachev1beta1.MemcacheV1beta1Client
 	monitoringV1beta1           *monitoringv1beta1.MonitoringV1beta1Client
 	networksecurityV1beta1      *networksecurityv1beta1.NetworksecurityV1beta1Client
+	networkservicesV1beta1      *networkservicesv1beta1.NetworkservicesV1beta1Client
 	osconfigV1beta1             *osconfigv1beta1.OsconfigV1beta1Client
 	pubsubV1beta1               *pubsubv1beta1.PubsubV1beta1Client
 	redisV1beta1                *redisv1beta1.RedisV1beta1Client
@@ -289,6 +292,11 @@ func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Inter
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
 func (c *Clientset) NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface {
 	return c.networksecurityV1beta1
+}
+
+// NetworkservicesV1beta1 retrieves the NetworkservicesV1beta1Client
+func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface {
+	return c.networkservicesV1beta1
 }
 
 // OsconfigV1beta1 retrieves the OsconfigV1beta1Client
@@ -480,6 +488,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.networkservicesV1beta1, err = networkservicesv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.osconfigV1beta1, err = osconfigv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -567,6 +579,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.memcacheV1beta1 = memcachev1beta1.NewForConfigOrDie(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.NewForConfigOrDie(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.NewForConfigOrDie(c)
+	cs.networkservicesV1beta1 = networkservicesv1beta1.NewForConfigOrDie(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.NewForConfigOrDie(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.NewForConfigOrDie(c)
 	cs.redisV1beta1 = redisv1beta1.NewForConfigOrDie(c)
@@ -614,6 +627,7 @@ func New(c rest.Interface) *Clientset {
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)
+	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)

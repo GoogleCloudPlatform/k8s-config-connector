@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.54.0
+    cnrm.cloud.google.com/version: 1.55.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -57,10 +57,14 @@ spec:
       openAPIV3Schema:
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -96,7 +100,8 @@ spec:
                     type: string
                 type: object
               basic:
-                description: A set of predefined conditions for the access level and a combining function.
+                description: A set of predefined conditions for the access level and
+                  a combining function.
                 properties:
                   combiningFunction:
                     description: |-
@@ -143,17 +148,23 @@ spec:
                                       Format: "major.minor.patch" such as "10.5.301", "9.2.1".
                                     type: string
                                   osType:
-                                    description: 'The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]'
+                                    description: 'The operating system type of the
+                                      device. Possible values: ["OS_UNSPECIFIED",
+                                      "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX",
+                                      "DESKTOP_CHROME_OS", "ANDROID", "IOS"]'
                                     type: string
                                   requireVerifiedChromeOs:
-                                    description: If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access.
+                                    description: If you specify DESKTOP_CHROME_OS
+                                      for osType, you can optionally include requireVerifiedChromeOs
+                                      to require Chrome Verified Access.
                                     type: boolean
                                 required:
                                 - osType
                                 type: object
                               type: array
                             requireAdminApproval:
-                              description: Whether the device needs to be approved by the customer admin.
+                              description: Whether the device needs to be approved
+                                by the customer admin.
                               type: boolean
                             requireCorpOwned:
                               description: Whether the device needs to be corp owned.
@@ -215,10 +226,12 @@ spec:
                                     description: The email of an IAMServiceAccount.
                                     type: string
                                   name:
-                                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                     type: string
                                   namespace:
-                                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                     type: string
                                 type: object
                               user:
@@ -268,7 +281,8 @@ spec:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                 type: string
                             type: object
                           type: array
@@ -278,22 +292,31 @@ spec:
                 - conditions
                 type: object
               custom:
-                description: "Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request. \nSee CEL spec at: https://github.com/google/cel-spec."
+                description: "Custom access level conditions are set using the Cloud
+                  Common Expression Language to represent the necessary conditions
+                  for the level to apply to a request. \nSee CEL spec at: https://github.com/google/cel-spec."
                 properties:
                   expr:
-                    description: "Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.\nThis page details the objects and attributes that are used to the build the CEL expressions for \ncustom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec."
+                    description: "Represents a textual expression in the Common Expression
+                      Language (CEL) syntax. CEL is a C-like expression language.\nThis
+                      page details the objects and attributes that are used to the
+                      build the CEL expressions for \ncustom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec."
                     properties:
                       description:
                         description: Description of the expression
                         type: string
                       expression:
-                        description: Textual representation of an expression in Common Expression Language syntax.
+                        description: Textual representation of an expression in Common
+                          Expression Language syntax.
                         type: string
                       location:
-                        description: String indicating the location of the expression for error reporting, e.g. a file name and a position in the file
+                        description: String indicating the location of the expression
+                          for error reporting, e.g. a file name and a position in
+                          the file
                         type: string
                       title:
-                        description: Title for the expression, i.e. a short string describing its purpose.
+                        description: Title for the expression, i.e. a short string
+                          describing its purpose.
                         type: string
                     required:
                     - expression
@@ -302,10 +325,13 @@ spec:
                 - expr
                 type: object
               description:
-                description: Description of the AccessLevel and its use. Does not affect behavior.
+                description: Description of the AccessLevel and its use. Does not
+                  affect behavior.
                 type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               title:
                 description: Human readable title. Must be unique within the Policy.
@@ -317,20 +343,25 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation of the resource's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
-                      description: Last time the condition transitioned from one status to another.
+                      description: Last time the condition transitioned from one status
+                        to another.
                       type: string
                     message:
-                      description: Human-readable message indicating details about last transition.
+                      description: Human-readable message indicating details about
+                        last transition.
                       type: string
                     reason:
-                      description: Unique, one-word, CamelCase reason for the condition's last transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
-                      description: Status is the status of the condition. Can be True, False, Unknown.
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
                       type: string
                     type:
                       description: Type is the type of the condition.
@@ -338,7 +369,11 @@ spec:
                   type: object
                 type: array
               observedGeneration:
-                description: ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
                 type: integer
             type: object
         required:

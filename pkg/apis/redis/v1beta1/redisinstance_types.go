@@ -83,7 +83,7 @@ type RedisInstanceSpec struct {
 	// +optional
 	RedisConfigs map[string]string `json:"redisConfigs,omitempty"`
 
-	/* Immutable. The version of Redis software. If not provided, latest supported
+	/* The version of Redis software. If not provided, latest supported
 	version will be used. Currently, the supported values are:
 
 	- REDIS_5_0 for Redis 5.0 compatibility
