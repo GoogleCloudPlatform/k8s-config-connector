@@ -131,6 +131,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeInstanceGroup{}).Name(),
 	}
 
+	ComputeInstanceGroupManagerGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeInstanceGroupManager{}).Name(),
+	}
+
 	ComputeInstanceTemplateGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

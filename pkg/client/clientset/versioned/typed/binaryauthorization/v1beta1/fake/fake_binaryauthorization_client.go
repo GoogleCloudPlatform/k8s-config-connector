@@ -35,6 +35,10 @@ func (c *FakeBinaryauthorizationV1beta1) BinaryAuthorizationAttestors(namespace 
 	return &FakeBinaryAuthorizationAttestors{c, namespace}
 }
 
+func (c *FakeBinaryauthorizationV1beta1) BinaryAuthorizationPolicies(namespace string) v1beta1.BinaryAuthorizationPolicyInterface {
+	return &FakeBinaryAuthorizationPolicies{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBinaryauthorizationV1beta1) RESTClient() rest.Interface {

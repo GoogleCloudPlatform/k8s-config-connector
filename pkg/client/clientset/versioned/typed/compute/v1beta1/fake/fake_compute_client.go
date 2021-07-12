@@ -83,6 +83,10 @@ func (c *FakeComputeV1beta1) ComputeInstanceGroups(namespace string) v1beta1.Com
 	return &FakeComputeInstanceGroups{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeInstanceGroupManagers(namespace string) v1beta1.ComputeInstanceGroupManagerInterface {
+	return &FakeComputeInstanceGroupManagers{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeInstanceTemplates(namespace string) v1beta1.ComputeInstanceTemplateInterface {
 	return &FakeComputeInstanceTemplates{c, namespace}
 }

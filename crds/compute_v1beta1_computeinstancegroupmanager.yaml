@@ -1,0 +1,523 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.56.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeInstanceGroupManager
+    plural: computeinstancegroupmanagers
+    shortNames:
+    - gcpcomputeinstancegroupmanager
+    - gcpcomputeinstancegroupmanagers
+    singular: computeinstancegroupmanager
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              autoHealingPolicies:
+                description: The autohealing policy for this managed instance group.
+                items:
+                  properties:
+                    healthCheckRef:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The healthcheck that signals autohealing
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                    initialDelaySec:
+                      description: The number of seconds that the managed instance
+                        group waits before it applies autohealing policies to new
+                        instances or recently recreated instances.
+                      format: int64
+                      type: integer
+                  type: object
+                type: array
+              baseInstanceName:
+                description: 'The base instance name to use for instances in this
+                  group. The value must be 1-58 characters long. Instances are named
+                  by appending a hyphen and a random four-character string to the
+                  base instance name. The base instance name must comply with RFC1035. '
+                type: string
+              description:
+                description: 'An optional description of this resource. Provide this
+                  property when you create the resource. '
+                type: string
+              distributionPolicy:
+                description: Policy specifying intended distribution of instances
+                  in regional managed instance group.
+                properties:
+                  zones:
+                    description: Zones where the regional managed instance group will
+                      create and manage instances.
+                    items:
+                      properties:
+                        zone:
+                          description: The URL of the zone. The zone must exist in
+                            the region where the managed instance group is located.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              instanceTemplateRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'The instance template that is specified for this
+                      managed instance group. The group uses this template to create
+                      all new instances in the managed instance group. '
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              namedPorts:
+                description: Named ports configured for the Instance Groups complementary
+                  to this Instance Group Manager.
+                items:
+                  properties:
+                    name:
+                      description: 'The name for this named port. The name must be
+                        1-63 characters long, and comply with RFC1035. '
+                      type: string
+                    port:
+                      description: The port number, which can be a value between 1
+                        and 65535.
+                      format: int64
+                      type: integer
+                  type: object
+                type: array
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project id of the resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              targetPools:
+                items:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
+                type: array
+              targetSize:
+                description: 'The target number of running instances for this managed
+                  instance group. Deleting or abandoning instances reduces this number.
+                  Resizing the group changes this number. '
+                format: int64
+                type: integer
+              updatePolicy:
+                description: The update policy for this managed instance group.
+                properties:
+                  instanceRedistributionType:
+                    description: 'The instance redistribution policy for regional
+                      managed instance groups. Possible values: PROACTIVE, NONE'
+                    type: string
+                  maxSurge:
+                    description: The maximum number of instances that can be created
+                      above the specified targetSize during the update process
+                    properties:
+                      fixed:
+                        description: Specifies a fixed number of VM instances. This
+                          must be a positive integer.
+                        format: int64
+                        type: integer
+                      percent:
+                        description: Specifies a percentage of instances between 0
+                          to 100%, inclusive. For example, specify 80 for 80%.
+                        format: int64
+                        type: integer
+                    type: object
+                  maxUnavailable:
+                    description: The maximum number of instances that can be unavailable
+                      during the update process
+                    properties:
+                      fixed:
+                        description: Specifies a fixed number of VM instances. This
+                          must be a positive integer.
+                        format: int64
+                        type: integer
+                      percent:
+                        description: Specifies a percentage of instances between 0
+                          to 100%, inclusive. For example, specify 80 for 80%.
+                        format: int64
+                        type: integer
+                    type: object
+                  minimalAction:
+                    description: 'Minimal action to be taken on an instance. Possible
+                      values: RESTART, REPLACE'
+                    type: string
+                type: object
+              versions:
+                description: Specifies the instance templates used by this managed
+                  instance group to create instances.
+                items:
+                  properties:
+                    instanceTemplateRef:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The group uses this template to create new
+                            instances in the managed instance group until the targetSize
+                            for this version is reached.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                    name:
+                      description: Name of the version. Unique among all versions
+                        in the scope of this managed instance group.
+                      type: string
+                    targetSize:
+                      description: Specifies the intended number of instances to be
+                        created from the instanceTemplate.
+                      properties:
+                        calculated:
+                          description: Absolute value of VM instances calculated based
+                            on the specific mode.
+                          format: int64
+                          type: integer
+                        fixed:
+                          description: Specifies a fixed number of VM instances. This
+                            must be a positive integer.
+                          format: int64
+                          type: integer
+                        percent:
+                          description: Specifies a percentage of instances between
+                            0 to 100%, inclusive. For example, specify 80 for 80%.
+                          format: int64
+                          type: integer
+                      type: object
+                  type: object
+                type: array
+            required:
+            - baseInstanceName
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              creationTimestamp:
+                description: 'The creation timestamp for this managed instance group
+                  in RFC3339 text format. '
+                format: date-time
+                type: string
+              currentActions:
+                description: 'The list of instance actions and the number of instances
+                  in this managed instance group that are scheduled for each of those
+                  actions. '
+                properties:
+                  abandoning:
+                    description: 'The total number of instances in the managed instance
+                      group that are scheduled to be abandoned. Abandoning an instance
+                      removes it from the managed instance group without deleting
+                      it. '
+                    format: int64
+                    type: integer
+                  creating:
+                    description: 'The number of instances in the managed instance
+                      group that are scheduled to be created or are currently being
+                      created. If the group fails to create any of these instances,
+                      it tries again until it creates the instance successfully.  If
+                      you have disabled creation retries, this field will not be populated;
+                      instead, the creatingWithoutRetries field will be populated. '
+                    format: int64
+                    type: integer
+                  creatingWithoutRetries:
+                    description: 'The number of instances that the managed instance
+                      group will attempt to create. The group attempts to create each
+                      instance only once. If the group fails to create any of these
+                      instances, it decreases the group''s targetSize value accordingly. '
+                    format: int64
+                    type: integer
+                  deleting:
+                    description: 'The number of instances in the managed instance
+                      group that are scheduled to be deleted or are currently being
+                      deleted. '
+                    format: int64
+                    type: integer
+                  none:
+                    description: 'The number of instances in the managed instance
+                      group that are running and have no scheduled actions. '
+                    format: int64
+                    type: integer
+                  recreating:
+                    description: 'The number of instances in the managed instance
+                      group that are scheduled to be recreated or are currently being
+                      being recreated. Recreating an instance deletes the existing
+                      root persistent disk and creates a new disk from the image that
+                      is defined in the instance template. '
+                    format: int64
+                    type: integer
+                  refreshing:
+                    description: 'The number of instances in the managed instance
+                      group that are being reconfigured with properties that do not
+                      require a restart or a recreate action. For example, setting
+                      or removing target pools for the instance. '
+                    format: int64
+                    type: integer
+                  restarting:
+                    description: 'The number of instances in the managed instance
+                      group that are scheduled to be restarted or are currently being
+                      restarted. '
+                    format: int64
+                    type: integer
+                type: object
+              id:
+                description: A unique identifier for this resource
+                format: int64
+                type: integer
+              instanceGroup:
+                description: The instance group being managed
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              region:
+                description: The region the managed instance group resides in
+                type: string
+              status:
+                description: The status of this managed instance group.
+                properties:
+                  autoscalar:
+                    description: The autoscalar that targets this instance group manager
+                    type: string
+                  isStable:
+                    description: A bit indicating whether the managed instance group
+                      is in a stable state.
+                    type: boolean
+                  versionTarget:
+                    description: A status of consistency of Instances' versions with
+                      their target version specified by version field on Instance
+                      Group Manager.
+                    properties:
+                      isReached:
+                        description: A bit indicating whether version target has been
+                          reached in this managed instance group, i.e. all instances
+                          are in their target version. Instances' target version are
+                          specified by version field on Instance Group Manager.
+                        type: boolean
+                    type: object
+                type: object
+              updatePolicy:
+                properties:
+                  maxSurge:
+                    properties:
+                      calculated:
+                        description: Absolute value of VM instances calculated based
+                          on the specific mode.
+                        format: int64
+                        type: integer
+                    type: object
+                  maxUnavailable:
+                    properties:
+                      calculated:
+                        description: Absolute value of VM instances calculated based
+                          on the specific mode.
+                        format: int64
+                        type: integer
+                    type: object
+                type: object
+              zone:
+                description: The zone the managed instance group resides.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

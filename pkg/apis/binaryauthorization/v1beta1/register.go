@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(BinaryAuthorizationAttestor{}).Name(),
 	}
 
+	BinaryAuthorizationPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BinaryAuthorizationPolicy{}).Name(),
+	}
+
 	binaryauthorizationAPIVersion = SchemeGroupVersion.String()
 )

@@ -58,7 +58,7 @@ type ComputeHTTPSHealthCheckSpec struct {
 	Host *string `json:"host,omitempty"`
 
 	/* The TCP port number for the HTTPS health check request.
-	The default value is 80. */
+	The default value is 443. */
 	// +optional
 	Port *int `json:"port,omitempty"`
 

@@ -22,3 +22,5 @@
 package v1beta1
 
 type BinaryAuthorizationAttestorExpansion interface{}
+
+type BinaryAuthorizationPolicyExpansion interface{}

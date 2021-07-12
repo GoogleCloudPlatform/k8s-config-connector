@@ -39,6 +39,14 @@ type InstanceCluster struct {
 	/* The ID of the Cloud Bigtable cluster. */
 	ClusterId string `json:"clusterId"`
 
+	/* Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
+	cluster. The requirements for this key are: 1) The Cloud Bigtable service account associated with the project that contains
+	this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
+	2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
+	3) All clusters within an instance must use the same CMEK key access to this encryption key. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset. */
 	// +optional
 	NumNodes *int `json:"numNodes,omitempty"`

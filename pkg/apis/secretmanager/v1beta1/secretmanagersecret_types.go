@@ -59,12 +59,29 @@ type SecretReplication struct {
 	UserManaged *SecretUserManaged `json:"userManaged,omitempty"`
 }
 
+type SecretRotation struct {
+	/* Timestamp in UTC at which the Secret is scheduled to rotate.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	// +optional
+	NextRotationTime *string `json:"nextRotationTime,omitempty"`
+
+	/* Immutable. The Duration between rotation notifications. Must be in seconds and at least 3600s (1h) and at most 3153600000s (100 years).
+	If rotationPeriod is set, 'next_rotation_time' must be set. 'next_rotation_time' will be advanced by this period when the service automatically sends rotation notifications. */
+	// +optional
+	RotationPeriod *string `json:"rotationPeriod,omitempty"`
+}
+
 type SecretUserManaged struct {
 	/* The list of Replicas for this Secret. Cannot be empty. */
 	Replicas []SecretReplicas `json:"replicas"`
 }
 
 type SecretManagerSecretSpec struct {
+	/* Timestamp in UTC when the Secret is scheduled to expire. This is always provided on output, regardless of what was sent on input.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
 	/* Immutable. The replication policy of the secret data attached to the Secret. It cannot be changed
 	after the Secret has been created. */
 	Replication SecretReplication `json:"replication"`
@@ -72,6 +89,19 @@ type SecretManagerSecretSpec struct {
 	/* Immutable. Optional. The secretId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The rotation time and period for a Secret. At 'next_rotation_time', Secret Manager will send a Pub/Sub notification to the topics configured on the Secret. 'topics' must be set to configure rotation. */
+	// +optional
+	Rotation *SecretRotation `json:"rotation,omitempty"`
+
+	/*  */
+	// +optional
+	Topics []v1alpha1.ResourceRef `json:"topics,omitempty"`
+
+	/* Immutable. The TTL for the Secret.
+	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	// +optional
+	Ttl *string `json:"ttl,omitempty"`
 }
 
 type SecretManagerSecretStatus struct {

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.55.0
+    cnrm.cloud.google.com/version: 1.56.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -78,6 +78,38 @@ spec:
                     clusterId:
                       description: The ID of the Cloud Bigtable cluster.
                       type: string
+                    kmsKeyRef:
+                      description: |-
+                        Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
+                        cluster. The requirements for this key are: 1) The Cloud Bigtable service account associated with the project that contains
+                        this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
+                        2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
+                        3) All clusters within an instance must use the same CMEK key access to this encryption key.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The selfLink of a KMSCryptoKey.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
                     numNodes:
                       description: The number of nodes in your Cloud Bigtable cluster.
                         For PRODUCTION instances where the numNodes will be managed

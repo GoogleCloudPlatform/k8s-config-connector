@@ -47,6 +47,8 @@ type ComputeInstanceExpansion interface{}
 
 type ComputeInstanceGroupExpansion interface{}
 
+type ComputeInstanceGroupManagerExpansion interface{}
+
 type ComputeInstanceTemplateExpansion interface{}
 
 type ComputeInterconnectAttachmentExpansion interface{}

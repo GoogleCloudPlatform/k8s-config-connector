@@ -42,6 +42,7 @@ type ComputeV1beta1Interface interface {
 	ComputeImagesGetter
 	ComputeInstancesGetter
 	ComputeInstanceGroupsGetter
+	ComputeInstanceGroupManagersGetter
 	ComputeInstanceTemplatesGetter
 	ComputeInterconnectAttachmentsGetter
 	ComputeNetworksGetter
@@ -132,6 +133,10 @@ func (c *ComputeV1beta1Client) ComputeInstances(namespace string) ComputeInstanc
 
 func (c *ComputeV1beta1Client) ComputeInstanceGroups(namespace string) ComputeInstanceGroupInterface {
 	return newComputeInstanceGroups(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeInstanceGroupManagers(namespace string) ComputeInstanceGroupManagerInterface {
+	return newComputeInstanceGroupManagers(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeInstanceTemplates(namespace string) ComputeInstanceTemplateInterface {

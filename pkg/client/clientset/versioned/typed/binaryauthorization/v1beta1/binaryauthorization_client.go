@@ -30,6 +30,7 @@ import (
 type BinaryauthorizationV1beta1Interface interface {
 	RESTClient() rest.Interface
 	BinaryAuthorizationAttestorsGetter
+	BinaryAuthorizationPoliciesGetter
 }
 
 // BinaryauthorizationV1beta1Client is used to interact with features provided by the binaryauthorization.cnrm.cloud.google.com group.
@@ -39,6 +40,10 @@ type BinaryauthorizationV1beta1Client struct {
 
 func (c *BinaryauthorizationV1beta1Client) BinaryAuthorizationAttestors(namespace string) BinaryAuthorizationAttestorInterface {
 	return newBinaryAuthorizationAttestors(c, namespace)
+}
+
+func (c *BinaryauthorizationV1beta1Client) BinaryAuthorizationPolicies(namespace string) BinaryAuthorizationPolicyInterface {
+	return newBinaryAuthorizationPolicies(c, namespace)
 }
 
 // NewForConfig creates a new BinaryauthorizationV1beta1Client for the given config.
