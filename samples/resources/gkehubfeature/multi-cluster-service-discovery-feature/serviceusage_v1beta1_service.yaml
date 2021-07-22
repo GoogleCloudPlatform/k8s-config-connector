@@ -15,6 +15,21 @@
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
-  name: gkehubfeature-dep-mcsdfeature
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeature-dep-mcsdfeature-1
+spec:
+  resourceID: gkehub.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcsdfeature
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeature-dep-mcsdfeature-2
 spec:
   resourceID: multiclusterservicediscovery.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcsdfeature

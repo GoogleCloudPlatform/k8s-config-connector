@@ -30,6 +30,7 @@ import (
 type GkehubV1beta1Interface interface {
 	RESTClient() rest.Interface
 	GKEHubFeaturesGetter
+	GKEHubFeatureMembershipsGetter
 	GKEHubMembershipsGetter
 }
 
@@ -40,6 +41,10 @@ type GkehubV1beta1Client struct {
 
 func (c *GkehubV1beta1Client) GKEHubFeatures(namespace string) GKEHubFeatureInterface {
 	return newGKEHubFeatures(c, namespace)
+}
+
+func (c *GkehubV1beta1Client) GKEHubFeatureMemberships(namespace string) GKEHubFeatureMembershipInterface {
+	return newGKEHubFeatureMemberships(c, namespace)
 }
 
 func (c *GkehubV1beta1Client) GKEHubMemberships(namespace string) GKEHubMembershipInterface {

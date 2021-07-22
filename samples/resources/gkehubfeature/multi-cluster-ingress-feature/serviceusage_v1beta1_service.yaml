@@ -15,13 +15,43 @@
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
   name: gkehubfeature-dep-mcifeature-1
 spec:
-  resourceID: multiclusteringress.googleapis.com
+  resourceID: container.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcifeature
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
   name: gkehubfeature-dep-mcifeature-2
 spec:
+  resourceID: gkehub.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcifeature
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeature-dep-mcifeature-3
+spec:
+  resourceID: multiclusteringress.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcifeature
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeature-dep-mcifeature-4
+spec:
   resourceID: multiclusterservicediscovery.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-mcifeature

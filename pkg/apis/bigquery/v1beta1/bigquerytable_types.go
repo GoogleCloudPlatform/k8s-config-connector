@@ -63,6 +63,10 @@ type TableCsvOptions struct {
 type TableEncryptionConfiguration struct {
 	/*  */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+
+	/* The self link or full name of the kms key version used to encrypt this table. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }
 
 type TableExternalDataConfiguration struct {

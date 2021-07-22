@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(GKEHubFeature{}).Name(),
 	}
 
+	GKEHubFeatureMembershipGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(GKEHubFeatureMembership{}).Name(),
+	}
+
 	GKEHubMembershipGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

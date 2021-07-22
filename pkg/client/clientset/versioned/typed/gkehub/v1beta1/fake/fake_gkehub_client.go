@@ -35,6 +35,10 @@ func (c *FakeGkehubV1beta1) GKEHubFeatures(namespace string) v1beta1.GKEHubFeatu
 	return &FakeGKEHubFeatures{c, namespace}
 }
 
+func (c *FakeGkehubV1beta1) GKEHubFeatureMemberships(namespace string) v1beta1.GKEHubFeatureMembershipInterface {
+	return &FakeGKEHubFeatureMemberships{c, namespace}
+}
+
 func (c *FakeGkehubV1beta1) GKEHubMemberships(namespace string) v1beta1.GKEHubMembershipInterface {
 	return &FakeGKEHubMemberships{c, namespace}
 }

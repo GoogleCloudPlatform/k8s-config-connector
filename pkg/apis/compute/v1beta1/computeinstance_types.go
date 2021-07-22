@@ -49,6 +49,16 @@ type InstanceAccessConfig struct {
 	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
 }
 
+type InstanceAdvancedMachineFeatures struct {
+	/* Whether to enable nested virtualization or not. */
+	// +optional
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
+	/* The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
+	// +optional
+	ThreadsPerCore *int `json:"threadsPerCore,omitempty"`
+}
+
 type InstanceAliasIpRange struct {
 	/* The IP CIDR range represented by this alias IP range. */
 	IpCidrRange string `json:"ipCidrRange"`
@@ -291,6 +301,10 @@ type InstanceValueFrom struct {
 }
 
 type ComputeInstanceSpec struct {
+	/* Controls for advanced machine-related behavior features. */
+	// +optional
+	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
 	/* List of disks attached to the instance */
 	// +optional
 	AttachedDisk []InstanceAttachedDisk `json:"attachedDisk,omitempty"`

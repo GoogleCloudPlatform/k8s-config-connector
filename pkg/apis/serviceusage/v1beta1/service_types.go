@@ -36,6 +36,10 @@ import (
 )
 
 type ServiceSpec struct {
+	/* The project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
 	/* Immutable. Optional. The service of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`

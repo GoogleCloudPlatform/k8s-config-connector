@@ -391,7 +391,7 @@ func (in *BigQueryTableSpec) DeepCopyInto(out *BigQueryTableSpec) {
 	if in.EncryptionConfiguration != nil {
 		in, out := &in.EncryptionConfiguration, &out.EncryptionConfiguration
 		*out = new(TableEncryptionConfiguration)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ExpirationTime != nil {
 		in, out := &in.ExpirationTime, &out.ExpirationTime
@@ -562,7 +562,7 @@ func (in *JobCopy) DeepCopyInto(out *JobCopy) {
 	if in.DestinationEncryptionConfiguration != nil {
 		in, out := &in.DestinationEncryptionConfiguration, &out.DestinationEncryptionConfiguration
 		*out = new(JobDestinationEncryptionConfiguration)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DestinationTable != nil {
 		in, out := &in.DestinationTable, &out.DestinationTable
@@ -613,6 +613,11 @@ func (in *JobDefaultDataset) DeepCopy() *JobDefaultDataset {
 func (in *JobDestinationEncryptionConfiguration) DeepCopyInto(out *JobDestinationEncryptionConfiguration) {
 	*out = *in
 	out.KmsKeyRef = in.KmsKeyRef
+	if in.KmsKeyVersion != nil {
+		in, out := &in.KmsKeyVersion, &out.KmsKeyVersion
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -752,7 +757,7 @@ func (in *JobLoad) DeepCopyInto(out *JobLoad) {
 	if in.DestinationEncryptionConfiguration != nil {
 		in, out := &in.DestinationEncryptionConfiguration, &out.DestinationEncryptionConfiguration
 		*out = new(JobDestinationEncryptionConfiguration)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	out.DestinationTable = in.DestinationTable
 	if in.Encoding != nil {
@@ -854,7 +859,7 @@ func (in *JobQuery) DeepCopyInto(out *JobQuery) {
 	if in.DestinationEncryptionConfiguration != nil {
 		in, out := &in.DestinationEncryptionConfiguration, &out.DestinationEncryptionConfiguration
 		*out = new(JobDestinationEncryptionConfiguration)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DestinationTable != nil {
 		in, out := &in.DestinationTable, &out.DestinationTable
@@ -1119,6 +1124,11 @@ func (in *TableCsvOptions) DeepCopy() *TableCsvOptions {
 func (in *TableEncryptionConfiguration) DeepCopyInto(out *TableEncryptionConfiguration) {
 	*out = *in
 	out.KmsKeyRef = in.KmsKeyRef
+	if in.KmsKeyVersion != nil {
+		in, out := &in.KmsKeyVersion, &out.KmsKeyVersion
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

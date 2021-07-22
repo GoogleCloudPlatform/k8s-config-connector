@@ -74,6 +74,10 @@ type JobDestinationEncryptionConfiguration struct {
 	destination BigQuery table. The BigQuery Service Account associated
 	with your project requires access to this encryption key. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+
+	/* Describes the Cloud KMS encryption key version used to protect destination BigQuery table. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }
 
 type JobDestinationTable struct {

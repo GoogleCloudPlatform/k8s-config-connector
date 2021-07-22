@@ -39,19 +39,16 @@ type DNSRecordSetSpec struct {
 	/*  */
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
 
-	/* Immutable. For example, www.example.com. */
+	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
 
 	/*  */
-	// +optional
-	Rrdatas []string `json:"rrdatas,omitempty"`
+	Rrdatas []string `json:"rrdatas"`
 
-	/* Number of seconds that this ResourceRecordSet can be cached by
-	resolvers. */
-	// +optional
-	Ttl *int `json:"ttl,omitempty"`
+	/* The time-to-live of this record set (seconds). */
+	Ttl int `json:"ttl"`
 
-	/* One of valid DNS resource types. Possible values: ["A", "AAAA", "CAA", "CNAME", "DNSKEY", "DS", "IPSECVPNKEY", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "SSHFP", "TLSA", "TXT"] */
+	/* The DNS record set type. */
 	Type string `json:"type"`
 }
 

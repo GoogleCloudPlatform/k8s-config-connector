@@ -19,6 +19,8 @@ metadata:
   labels:
     label-one: value-one
 spec:
+  projectRef:
+    name: gkehubfeature-dep-acmfeature
   location: global
   # The resourceID must be "configmanagement" if you want to use Anthos config
   # management feature.

@@ -19,6 +19,8 @@ metadata:
   labels:
     label-one: value-one
 spec:
+  projectRef:
+    name: gkehubfeature-dep-mcifeature
   location: global
   # The resourceID must be "multiclusteringress" if you want to use multi-cluster
   # ingress feature.
