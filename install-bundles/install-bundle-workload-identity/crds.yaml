@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -395,7 +395,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -524,7 +524,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1673,7 +1673,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1842,7 +1842,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2161,7 +2161,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2986,7 +2986,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3424,7 +3424,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3592,7 +3592,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3794,7 +3794,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3987,7 +3987,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4147,7 +4147,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -4412,7 +4412,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -4831,7 +4831,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5445,7 +5445,7 @@ spec:
                 description: |-
                   Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
-                  One of 'trigger_template' or 'github' must be provided.
+                  One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided.
                 properties:
                   name:
                     description: |-
@@ -5524,6 +5524,79 @@ spec:
                 items:
                   type: string
                 type: array
+              pubsubConfig:
+                description: "PubsubConfig describes the configuration of a trigger
+                  that creates \na build whenever a Pub/Sub message is published.\n\nOne
+                  of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config'
+                  must be provided."
+                properties:
+                  serviceAccountRef:
+                    description: Service account that will make the push request.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The email of an IAMServiceAccount.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  state:
+                    description: |-
+                      Potential issues with the underlying Pub/Sub subscription configuration.
+                      Only populated on get requests.
+                    type: string
+                  subscription:
+                    description: Output only. Name of the subscription.
+                    type: string
+                  topicRef:
+                    description: |-
+                      The name of the topic from which this subscription
+                      is receiving messages.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The name of a PubSubTopic.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                required:
+                - topicRef
+                type: object
               substitutions:
                 additionalProperties:
                   type: string
@@ -5542,7 +5615,7 @@ spec:
                   expressions. Any branch or tag change that matches that regular
                   expression will trigger a build.
 
-                  One of 'trigger_template' or 'github' must be provided.
+                  One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided.
                 properties:
                   branchName:
                     description: |-
@@ -5599,6 +5672,47 @@ spec:
                       Name of the tag to build. Exactly one of a branch name, tag, or commit SHA must be provided.
                       This field is a regular expression.
                     type: string
+                type: object
+              webhookConfig:
+                description: "WebhookConfig describes the configuration of a trigger
+                  that creates \na build whenever a webhook is sent to a trigger's
+                  webhook URL.\n\nOne of 'trigger_template', 'github', 'pubsub_config'
+                  or 'webhook_config' must be provided."
+                properties:
+                  secretRef:
+                    description: The secret required
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The name of a SecretManagerSecret.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  state:
+                    description: |-
+                      Potential issues with the underlying Pub/Sub subscription configuration.
+                      Only populated on get requests.
+                    type: string
+                required:
+                - secretRef
                 type: object
             type: object
           status:
@@ -5659,7 +5773,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5852,7 +5966,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -6348,7 +6462,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6594,7 +6708,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6818,7 +6932,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7762,7 +7876,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8367,7 +8481,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8512,7 +8626,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8885,7 +8999,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9512,7 +9626,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9975,7 +10089,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10135,7 +10249,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10295,7 +10409,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10570,7 +10684,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -10627,6 +10741,7 @@ spec:
             properties:
               autoHealingPolicies:
                 description: The autohealing policy for this managed instance group.
+                  You can specify only one value.
                 items:
                   properties:
                     healthCheckRef:
@@ -10646,7 +10761,7 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The healthcheck that signals autohealing
+                          description: The URL for the health check that signals autohealing.
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -10658,37 +10773,53 @@ spec:
                     initialDelaySec:
                       description: The number of seconds that the managed instance
                         group waits before it applies autohealing policies to new
-                        instances or recently recreated instances.
+                        instances or recently recreated instances. This initial delay
+                        allows instances to initialize and run their startup scripts
+                        before the instance group determines that they are UNHEALTHY.
+                        This prevents the managed instance group from recreating its
+                        instances prematurely. This value must be from range .
                       format: int64
                       type: integer
                   type: object
                 type: array
               baseInstanceName:
-                description: 'The base instance name to use for instances in this
-                  group. The value must be 1-58 characters long. Instances are named
-                  by appending a hyphen and a random four-character string to the
-                  base instance name. The base instance name must comply with RFC1035. '
+                description: The base instance name to use for instances in this group.
+                  The value must be 1-58 characters long. Instances are named by appending
+                  a hyphen and a random four-character string to the base instance
+                  name. The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
                 type: string
               description:
-                description: 'An optional description of this resource. Provide this
-                  property when you create the resource. '
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
                 type: string
               distributionPolicy:
-                description: Policy specifying intended distribution of instances
-                  in regional managed instance group.
+                description: Policy specifying the intended distribution of managed
+                  instances across zones in a regional managed instance group.
                 properties:
+                  targetShape:
+                    description: 'The distribution shape to which the group converges
+                      either proactively or on resize events (depending on the value
+                      set in `updatePolicy.instanceRedistributionType`). Possible
+                      values: TARGET_SHAPE_UNSPECIFIED, ANY, BALANCED, ANY_SINGLE_ZONE'
+                    type: string
                   zones:
                     description: Zones where the regional managed instance group will
-                      create and manage instances.
+                      create and manage its instances.
                     items:
                       properties:
                         zone:
-                          description: The URL of the zone. The zone must exist in
-                            the region where the managed instance group is located.
+                          description: The URL of the zone (/compute/docs/regions-zones/#available).
+                            The zone must exist in the region where the managed instance
+                            group is located.
                           type: string
                       type: object
                     type: array
                 type: object
+              failoverAction:
+                description: 'The action to perform in case of zone failure. Only
+                  one value is supported, `NO_FAILOVER`. The default is `NO_FAILOVER`.
+                  Possible values: UNKNOWN, NO_FAILOVER'
+                type: string
               instanceTemplateRef:
                 oneOf:
                 - not:
@@ -10706,9 +10837,12 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The instance template that is specified for this
-                      managed instance group. The group uses this template to create
-                      all new instances in the managed instance group. '
+                    description: The URL of the instance template that is specified
+                      for this managed instance group. The group uses this template
+                      to create all new instances in the managed instance group. The
+                      templates for existing instances in the group do not change
+                      unless you run `recreateInstances`, run `applyUpdatesToInstances`,
+                      or set the group's `updatePolicy.type` to `PROACTIVE`.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -10726,8 +10860,8 @@ spec:
                 items:
                   properties:
                     name:
-                      description: 'The name for this named port. The name must be
-                        1-63 characters long, and comply with RFC1035. '
+                      description: The name for this named port. The name must be
+                        1-63 characters long, and comply with RFC1035 (https://www.ietf.org/rfc/rfc1035.txt).
                       type: string
                     port:
                       description: The port number, which can be a value between 1
@@ -10754,7 +10888,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project id of the resource.
+                    description: The project for the resource
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -10768,6 +10902,61 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              serviceAccountRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The service account to be used as credentials for
+                      all operations performed by the managed instance group on instances.
+                      The service accounts needs all permissions required to create
+                      and delete instances. By default, the service account {projectNumber}@cloudservices.gserviceaccount.com
+                      is used.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              statefulPolicy:
+                description: Stateful configuration for this Instanced Group Manager
+                properties:
+                  preservedState:
+                    properties:
+                      disks:
+                        additionalProperties:
+                          properties:
+                            autoDelete:
+                              description: 'These stateful disks will never be deleted
+                                during autohealing, update or VM instance recreate
+                                operations. This flag is used to configure if the
+                                disk should be deleted after it is no longer used
+                                by the group, e.g. when the given instance or the
+                                whole group is deleted. Note: disks attached in READ_ONLY
+                                mode cannot be auto-deleted. Possible values: NEVER,
+                                ON_PERMANENT_INSTANCE_DELETION'
+                              type: string
+                          type: object
+                        description: Disks created on the instances that will be preserved
+                          on instance delete, update, etc. This map is keyed with
+                          the device names of the disks.
+                        type: object
+                    type: object
+                type: object
               targetPools:
                 items:
                   oneOf:
@@ -10796,21 +10985,33 @@ spec:
                   type: object
                 type: array
               targetSize:
-                description: 'The target number of running instances for this managed
-                  instance group. Deleting or abandoning instances reduces this number.
-                  Resizing the group changes this number. '
+                description: The target number of running instances for this managed
+                  instance group. You can reduce this number by using the instanceGroupManager
+                  deleteInstances or abandonInstances methods. Resizing the group
+                  also changes this number.
                 format: int64
                 type: integer
               updatePolicy:
                 description: The update policy for this managed instance group.
                 properties:
                   instanceRedistributionType:
-                    description: 'The instance redistribution policy for regional
-                      managed instance groups. Possible values: PROACTIVE, NONE'
+                    description: 'The instance redistribution policy (/compute/docs/instance-groups/regional-migs#proactive_instance_redistribution)
+                      for regional managed instance groups. Valid values are: - `PROACTIVE`
+                      (default): The group attempts to maintain an even distribution
+                      of VM instances across zones in the region. - `NONE`: For non-autoscaled
+                      groups, proactive redistribution is disabled.'
                     type: string
                   maxSurge:
-                    description: The maximum number of instances that can be created
-                      above the specified targetSize during the update process
+                    description: 'Specifies the intended number of instances to be
+                      created from the `instanceTemplate`. The final number of instances
+                      created from the template will be equal to: - If expressed as
+                      a fixed number, the minimum of either `targetSize.fixed` or
+                      `instanceGroupManager.targetSize` is used. - if expressed as
+                      a `percent`, the `targetSize` would be `(targetSize.percent/100
+                      * InstanceGroupManager.targetSize)` If there is a remainder,
+                      the number is rounded. If unset, this version will update any
+                      remaining instances not updated by another `version`. Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                      for more information.'
                     properties:
                       fixed:
                         description: Specifies a fixed number of VM instances. This
@@ -10819,13 +11020,21 @@ spec:
                         type: integer
                       percent:
                         description: Specifies a percentage of instances between 0
-                          to 100%, inclusive. For example, specify 80 for 80%.
+                          to 100%, inclusive. For example, specify `80` for 80%.
                         format: int64
                         type: integer
                     type: object
                   maxUnavailable:
-                    description: The maximum number of instances that can be unavailable
-                      during the update process
+                    description: 'Specifies the intended number of instances to be
+                      created from the `instanceTemplate`. The final number of instances
+                      created from the template will be equal to: - If expressed as
+                      a fixed number, the minimum of either `targetSize.fixed` or
+                      `instanceGroupManager.targetSize` is used. - if expressed as
+                      a `percent`, the `targetSize` would be `(targetSize.percent/100
+                      * InstanceGroupManager.targetSize)` If there is a remainder,
+                      the number is rounded. If unset, this version will update any
+                      remaining instances not updated by another `version`. Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                      for more information.'
                     properties:
                       fixed:
                         description: Specifies a fixed number of VM instances. This
@@ -10834,18 +11043,57 @@ spec:
                         type: integer
                       percent:
                         description: Specifies a percentage of instances between 0
-                          to 100%, inclusive. For example, specify 80 for 80%.
+                          to 100%, inclusive. For example, specify `80` for 80%.
                         format: int64
                         type: integer
                     type: object
+                  minReadySec:
+                    description: Minimum number of seconds to wait for after a newly
+                      created instance becomes available. This value must be from
+                      range .
+                    format: int64
+                    type: integer
                   minimalAction:
-                    description: 'Minimal action to be taken on an instance. Possible
-                      values: RESTART, REPLACE'
+                    description: Minimal action to be taken on an instance. You can
+                      specify either `RESTART` to restart existing instances or `REPLACE`
+                      to delete and create new instances from the target template.
+                      If you specify a `RESTART`, the Updater will attempt to perform
+                      that action only. However, if the Updater determines that the
+                      minimal action you specify is not enough to perform the update,
+                      it might perform a more disruptive action.
+                    type: string
+                  mostDisruptiveAllowedAction:
+                    description: Most disruptive action that is allowed to be taken
+                      on an instance. You can specify either `NONE` to forbid any
+                      actions, `REFRESH` to allow actions that do not need instance
+                      restart, `RESTART` to allow actions that can be applied without
+                      instance replacing or `REPLACE` to allow all possible actions.
+                      If the Updater determines that the minimal update action needed
+                      is more disruptive than most disruptive allowed action you specify
+                      it will not perform the update at all.
+                    type: string
+                  replacementMethod:
+                    description: 'What action should be used to replace instances.
+                      See minimal_action.REPLACE Possible values: SUBSTITUTE, RECREATE'
+                    type: string
+                  type:
+                    description: The type of update process. You can specify either
+                      `PROACTIVE` so that the instance group manager proactively executes
+                      actions in order to bring instances to their target versions
+                      or `OPPORTUNISTIC` so that no action is proactively executed
+                      but the update will be performed as part of other actions (for
+                      example, resizes or `recreateInstances` calls).
                     type: string
                 type: object
               versions:
                 description: Specifies the instance templates used by this managed
-                  instance group to create instances.
+                  instance group to create instances. Each version is defined by an
+                  `instanceTemplate` and a `name`. Every version can appear at most
+                  once per instance group. This field overrides the top-level `instanceTemplate`
+                  field. Read more about the [relationships between these fields](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#relationship_between_versions_and_instancetemplate_properties_for_a_managed_instance_group).
+                  Exactly one `version` must leave the `targetSize` field unset. That
+                  version will be applied to all remaining instances. For more information,
+                  read about [canary updates](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update).
                 items:
                   properties:
                     instanceTemplateRef:
@@ -10865,9 +11113,15 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The group uses this template to create new
-                            instances in the managed instance group until the targetSize
-                            for this version is reached.
+                          description: The URL of the instance template that is specified
+                            for this managed instance group. The group uses this template
+                            to create new instances in the managed instance group
+                            until the `targetSize` for this version is reached. The
+                            templates for existing instances in the group do not change
+                            unless you run `recreateInstances`, run `applyUpdatesToInstances`,
+                            or set the group's `updatePolicy.type` to `PROACTIVE`;
+                            in those cases, existing instances are updated until the
+                            `targetSize` for this version is reached.
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -10881,12 +11135,27 @@ spec:
                         in the scope of this managed instance group.
                       type: string
                     targetSize:
-                      description: Specifies the intended number of instances to be
-                        created from the instanceTemplate.
+                      description: 'Specifies the intended number of instances to
+                        be created from the `instanceTemplate`. The final number of
+                        instances created from the template will be equal to: - If
+                        expressed as a fixed number, the minimum of either `targetSize.fixed`
+                        or `instanceGroupManager.targetSize` is used. - if expressed
+                        as a `percent`, the `targetSize` would be `(targetSize.percent/100
+                        * InstanceGroupManager.targetSize)` If there is a remainder,
+                        the number is rounded. If unset, this version will update
+                        any remaining instances not updated by another `version`.
+                        Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                        for more information.'
                       properties:
                         calculated:
                           description: Absolute value of VM instances calculated based
-                            on the specific mode.
+                            on the specific mode. - If the value is `fixed`, then
+                            the `calculated` value is equal to the `fixed` value.
+                            - If the value is a `percent`, then the `calculated` value
+                            is `percent`/100 * `targetSize`. For example, the `calculated`
+                            value of a 80% of a managed instance group with 150 instances
+                            would be (80/100 * 150) = 120 VM instances. If there is
+                            a remainder, the number is rounded.
                           format: int64
                           type: integer
                         fixed:
@@ -10896,14 +11165,13 @@ spec:
                           type: integer
                         percent:
                           description: Specifies a percentage of instances between
-                            0 to 100%, inclusive. For example, specify 80 for 80%.
+                            0 to 100%, inclusive. For example, specify `80` for 80%.
                           format: int64
                           type: integer
                       type: object
                   type: object
                 type: array
             required:
-            - baseInstanceName
             - projectRef
             type: object
           status:
@@ -10935,77 +11203,88 @@ spec:
                   type: object
                 type: array
               creationTimestamp:
-                description: 'The creation timestamp for this managed instance group
-                  in RFC3339 text format. '
-                format: date-time
+                description: The creation timestamp for this managed instance group
+                  in \[RFC3339\](https://www.ietf.org/rfc/rfc3339.txt) text format.
                 type: string
               currentActions:
-                description: 'The list of instance actions and the number of instances
+                description: The list of instance actions and the number of instances
                   in this managed instance group that are scheduled for each of those
-                  actions. '
+                  actions.
                 properties:
                   abandoning:
-                    description: 'The total number of instances in the managed instance
+                    description: The total number of instances in the managed instance
                       group that are scheduled to be abandoned. Abandoning an instance
                       removes it from the managed instance group without deleting
-                      it. '
+                      it.
                     format: int64
                     type: integer
                   creating:
-                    description: 'The number of instances in the managed instance
-                      group that are scheduled to be created or are currently being
-                      created. If the group fails to create any of these instances,
-                      it tries again until it creates the instance successfully.  If
-                      you have disabled creation retries, this field will not be populated;
-                      instead, the creatingWithoutRetries field will be populated. '
+                    description: The number of instances in the managed instance group
+                      that are scheduled to be created or are currently being created.
+                      If the group fails to create any of these instances, it tries
+                      again until it creates the instance successfully. If you have
+                      disabled creation retries, this field will not be populated;
+                      instead, the `creatingWithoutRetries` field will be populated.
                     format: int64
                     type: integer
                   creatingWithoutRetries:
-                    description: 'The number of instances that the managed instance
+                    description: The number of instances that the managed instance
                       group will attempt to create. The group attempts to create each
                       instance only once. If the group fails to create any of these
-                      instances, it decreases the group''s targetSize value accordingly. '
+                      instances, it decreases the group's `targetSize` value accordingly.
                     format: int64
                     type: integer
                   deleting:
-                    description: 'The number of instances in the managed instance
-                      group that are scheduled to be deleted or are currently being
-                      deleted. '
+                    description: The number of instances in the managed instance group
+                      that are scheduled to be deleted or are currently being deleted.
                     format: int64
                     type: integer
                   none:
-                    description: 'The number of instances in the managed instance
-                      group that are running and have no scheduled actions. '
+                    description: The number of instances in the managed instance group
+                      that are running and have no scheduled actions.
                     format: int64
                     type: integer
                   recreating:
-                    description: 'The number of instances in the managed instance
-                      group that are scheduled to be recreated or are currently being
-                      being recreated. Recreating an instance deletes the existing
-                      root persistent disk and creates a new disk from the image that
-                      is defined in the instance template. '
+                    description: The number of instances in the managed instance group
+                      that are scheduled to be recreated or are currently being being
+                      recreated. Recreating an instance deletes the existing root
+                      persistent disk and creates a new disk from the image that is
+                      defined in the instance template.
                     format: int64
                     type: integer
                   refreshing:
-                    description: 'The number of instances in the managed instance
-                      group that are being reconfigured with properties that do not
-                      require a restart or a recreate action. For example, setting
-                      or removing target pools for the instance. '
+                    description: The number of instances in the managed instance group
+                      that are being reconfigured with properties that do not require
+                      a restart or a recreate action. For example, setting or removing
+                      target pools for the instance.
                     format: int64
                     type: integer
                   restarting:
-                    description: 'The number of instances in the managed instance
-                      group that are scheduled to be restarted or are currently being
-                      restarted. '
+                    description: The number of instances in the managed instance group
+                      that are scheduled to be restarted or are currently being restarted.
+                    format: int64
+                    type: integer
+                  verifying:
+                    description: .currentAction property in the `listManagedInstances`
+                      method documentation.
                     format: int64
                     type: integer
                 type: object
+              fingerprint:
+                description: Fingerprint of this resource. This field may be used
+                  in optimistic locking. It will be ignored when inserting an InstanceGroupManager.
+                  An up-to-date fingerprint must be provided in order to update the
+                  InstanceGroupManager, otherwise the request will fail with error
+                  `412 conditionNotMet`. To see the latest fingerprint, make a `get()`
+                  request to retrieve an InstanceGroupManager.
+                type: string
               id:
-                description: A unique identifier for this resource
+                description: A unique identifier for this resource type. The server
+                  generates this identifier.
                 format: int64
                 type: integer
               instanceGroup:
-                description: The instance group being managed
+                description: The URL of the Instance Group resource.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -11015,28 +11294,70 @@ spec:
                   the resource.
                 type: integer
               region:
-                description: The region the managed instance group resides in
+                description: The URL of the [region](/compute/docs/regions-zones/#available)
+                  where the managed instance group resides (for regional resources).
+                type: string
+              selfLink:
+                description: The URL for this managed instance group. The server defines
+                  this URL.
                 type: string
               status:
                 description: The status of this managed instance group.
                 properties:
-                  autoscalar:
-                    description: The autoscalar that targets this instance group manager
+                  autoscaler:
+                    description: The URL of the Autoscaler (/compute/docs/autoscaler/)
+                      that targets this instance group manager.
                     type: string
                   isStable:
-                    description: A bit indicating whether the managed instance group
-                      is in a stable state.
+                    description: 'A bit indicating whether the managed instance group
+                      is in a stable state. A stable state means that: none of the
+                      instances in the managed instance group is currently undergoing
+                      any type of change (for example, creation, restart, or deletion);
+                      no future changes are scheduled for instances in the managed
+                      instance group; and the managed instance group itself is not
+                      being modified.'
                     type: boolean
+                  stateful:
+                    description: Stateful status of the given Instance Group Manager.
+                    properties:
+                      hasStatefulConfig:
+                        description: A bit indicating whether the managed instance
+                          group has stateful configuration, that is, if you have configured
+                          any items in a stateful policy or in per-instance configs.
+                          The group might report that it has no stateful config even
+                          when there is still some preserved state on a managed instance,
+                          for example, if you have deleted all PICs but not yet applied
+                          those deletions.
+                        type: boolean
+                      isStateful:
+                        description: A bit indicating whether the managed instance
+                          group has stateful configuration, that is, if you have configured
+                          any items in a stateful policy or in per-instance configs.
+                          The group might report that it has no stateful config even
+                          when there is still some preserved state on a managed instance,
+                          for example, if you have deleted all PICs but not yet applied
+                          those deletions. This field is deprecated in favor of has_stateful_config.
+                        type: boolean
+                      perInstanceConfigs:
+                        description: Status of per-instance configs on the instance.
+                        properties:
+                          allEffective:
+                            description: A bit indicating if all of the group's per-instance
+                              configs (listed in the output of a listPerInstanceConfigs
+                              API call) have status `EFFECTIVE` or there are no per-instance-configs.
+                            type: boolean
+                        type: object
+                    type: object
                   versionTarget:
                     description: A status of consistency of Instances' versions with
-                      their target version specified by version field on Instance
+                      their target version specified by `version` field on Instance
                       Group Manager.
                     properties:
                       isReached:
                         description: A bit indicating whether version target has been
                           reached in this managed instance group, i.e. all instances
                           are in their target version. Instances' target version are
-                          specified by version field on Instance Group Manager.
+                          specified by `version` field on Instance Group Manager.
                         type: boolean
                     type: object
                 type: object
@@ -11046,7 +11367,13 @@ spec:
                     properties:
                       calculated:
                         description: Absolute value of VM instances calculated based
-                          on the specific mode.
+                          on the specific mode. - If the value is `fixed`, then the
+                          `calculated` value is equal to the `fixed` value. - If the
+                          value is a `percent`, then the `calculated` value is `percent`/100
+                          * `targetSize`. For example, the `calculated` value of a
+                          80% of a managed instance group with 150 instances would
+                          be (80/100 * 150) = 120 VM instances. If there is a remainder,
+                          the number is rounded.
                         format: int64
                         type: integer
                     type: object
@@ -11054,13 +11381,20 @@ spec:
                     properties:
                       calculated:
                         description: Absolute value of VM instances calculated based
-                          on the specific mode.
+                          on the specific mode. - If the value is `fixed`, then the
+                          `calculated` value is equal to the `fixed` value. - If the
+                          value is a `percent`, then the `calculated` value is `percent`/100
+                          * `targetSize`. For example, the `calculated` value of a
+                          80% of a managed instance group with 150 instances would
+                          be (80/100 * 150) = 120 VM instances. If there is a remainder,
+                          the number is rounded.
                         format: int64
                         type: integer
                     type: object
                 type: object
               zone:
-                description: The zone the managed instance group resides.
+                description: The URL of a [zone](/compute/docs/regions-zones/#available)
+                  where the managed instance group is located (for zonal resources).
                 type: string
             type: object
         required:
@@ -11081,7 +11415,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11281,7 +11615,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12109,7 +12443,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12787,7 +13121,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13110,7 +13444,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13310,7 +13644,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13502,7 +13836,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13651,7 +13985,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13858,7 +14192,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14038,7 +14372,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14155,7 +14489,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14368,7 +14702,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14665,7 +14999,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14871,7 +15205,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15197,7 +15531,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15454,7 +15788,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15668,7 +16002,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15942,7 +16276,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16158,7 +16492,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16263,7 +16597,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16401,7 +16735,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16777,7 +17111,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16990,7 +17324,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17152,7 +17486,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17421,7 +17755,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17597,7 +17931,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17764,7 +18098,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18003,7 +18337,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18196,7 +18530,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18418,7 +18752,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18642,7 +18976,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18807,7 +19141,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18966,7 +19300,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21660,7 +21994,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -21856,7 +22190,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -22222,7 +22556,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -22810,7 +23144,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23950,7 +24284,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24402,7 +24736,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24527,7 +24861,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -24808,7 +25142,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -25086,7 +25420,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -25377,7 +25711,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -26533,7 +26867,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28357,7 +28691,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -28682,7 +29016,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -28876,7 +29210,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29031,7 +29365,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29184,7 +29518,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -29394,7 +29728,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -29531,7 +29865,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -29829,7 +30163,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -30063,7 +30397,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -30426,7 +30760,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30588,7 +30922,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30727,7 +31061,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30961,7 +31295,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31191,7 +31525,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31407,7 +31741,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31584,7 +31918,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31716,7 +32050,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -31839,7 +32173,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -31988,7 +32322,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32170,7 +32504,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32382,7 +32716,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32534,7 +32868,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32718,7 +33052,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -32846,7 +33180,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -33115,7 +33449,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33479,7 +33813,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33712,7 +34046,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34472,7 +34806,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -41189,7 +41523,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -41375,7 +41709,269 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: monitoringmetricdescriptors.monitoring.cnrm.cloud.google.com
+spec:
+  group: monitoring.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: MonitoringMetricDescriptor
+    plural: monitoringmetricdescriptors
+    shortNames:
+    - gcpmonitoringmetricdescriptor
+    - gcpmonitoringmetricdescriptors
+    singular: monitoringmetricdescriptor
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              description:
+                description: A detailed description of the metric, which can be used
+                  in documentation.
+                type: string
+              displayName:
+                description: A concise name for the metric, which can be displayed
+                  in user interfaces. Use sentence case without an ending period,
+                  for example "Request count". This field is optional but it is recommended
+                  to be set for any metrics associated with user-visible concepts,
+                  such as Quota.
+                type: string
+              labels:
+                description: The set of labels that can be used to describe a specific
+                  instance of this metric type. For example, the `appengine.googleapis.com/http/server/response_latencies`
+                  metric type has a label for the HTTP response code, `response_code`,
+                  so you can look at latencies for successful responses or just for
+                  responses that failed.
+                items:
+                  properties:
+                    description:
+                      description: A human-readable description for the label.
+                      type: string
+                    key:
+                      description: 'The key for this label. The key must meet the
+                        following criteria: * Does not exceed 100 characters. * Matches
+                        the following regular expression: `[a-zA-Z][a-zA-Z0-9_]*`
+                        * The first character must be an upper- or lower-case letter.
+                        * The remaining characters must be letters, digits, or underscores.'
+                      type: string
+                    valueType:
+                      description: 'The type of data that can be assigned to the label.
+                        Possible values: STRING, BOOL, INT64'
+                      type: string
+                  type: object
+                type: array
+              launchStage:
+                description: 'Optional. The launch stage of the metric definition.
+                  Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED, PRELAUNCH,
+                  EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
+                type: string
+              metadata:
+                description: Optional. Metadata which can be used to guide usage of
+                  the metric.
+                properties:
+                  ingestDelay:
+                    description: The delay of data points caused by ingestion. Data
+                      points older than this age are guaranteed to be ingested and
+                      available to be read, excluding data loss due to errors.
+                    type: string
+                  launchStage:
+                    description: 'Deprecated. Must use the `MetricDescriptor.launch_stage`
+                      instead. Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED,
+                      PRELAUNCH, EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
+                    type: string
+                  samplePeriod:
+                    description: The sampling period of metric data points. For metrics
+                      which are written periodically, consecutive data points are
+                      stored at this time interval, excluding data loss due to errors.
+                      Metrics with a higher granularity have a smaller sampling period.
+                    type: string
+                type: object
+              metricKind:
+                description: 'Whether the metric records instantaneous values, changes
+                  to a value, etc. Some combinations of `metric_kind` and `value_type`
+                  might not be supported. Possible values: METRIC_KIND_UNSPECIFIED,
+                  GAUGE, DELTA, CUMULATIVE'
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              type:
+                description: 'The metric type, including its DNS name prefix. The
+                  type is not URL-encoded. All user-defined metric types have the
+                  DNS name `custom.googleapis.com` or `external.googleapis.com`. Metric
+                  types should use a natural hierarchical grouping. For example: "custom.googleapis.com/invoice/paid/amount"
+                  "external.googleapis.com/prometheus/up" "appengine.googleapis.com/http/server/response_latencies"'
+                type: string
+              unit:
+                description: The units in which the metric value is reported. It is
+                  only applicable if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`.
+                  The `unit` defines the representation of the stored metric values.
+                  Different systems may scale the values to be more easily displayed
+                  (so a value of `0.02KBy` _might_ be displayed as `20By`, and a value
+                  of `3523KBy` _might_ be displayed as `3.5MBy`). However, if the
+                  `unit` is `KBy`, then the value of the metric is always in thousands
+                  of bytes, no matter how it may be displayed.. If you want a custom
+                  metric to record the exact number of CPU-seconds used by a job,
+                  you can create an `INT64 CUMULATIVE` metric whose `unit` is `s{CPU}`
+                  (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
+                  CPU-seconds, then the value is written as `12005`. Alternatively,
+                  if you want a custom metric to record data in a more granular way,
+                  you can create a `DOUBLE CUMULATIVE` metric whose `unit` is `ks{CPU}`,
+                  and then write the value `12.005` (which is `12005/1000`), or use
+                  `Kis{CPU}` and write `11.723` (which is `12005/1024`). The supported
+                  units are a subset of (https://en.wikipedia.org/wiki/Dimensionless_quantity)
+                  of 1, such as in `1/s`. It is typically used when none of the basic
+                  units are appropriate. For example, "new users per day" can be represented
+                  as `1/d` or `{new-users}/d` (and a metric value `5` would mean "5
+                  new users). Alternatively, "thousands of page views per day" would
+                  be represented as `1000/d` or `k1/d` or `k{page_views}/d` (and a
+                  metric value of `5.3` would mean "5300 page views per day"). * `%`
+                  represents dimensionless value of 1/100, and annotates values giving
+                  a percentage (so the metric values are typically in the range of
+                  0..100, and a metric value `3` means "3 percent"). * `10^2.%` indicates
+                  a metric contains a ratio, typically in the range 0..1, that will
+                  be multiplied by 100 and displayed as a percentage (so a metric
+                  value `0.03` means "3 percent").
+                type: string
+              valueType:
+                description: 'Whether the measurement is an integer, a floating-point
+                  number, etc. Some combinations of `metric_kind` and `value_type`
+                  might not be supported. Possible values: STRING, BOOL, INT64'
+                type: string
+            required:
+            - metricKind
+            - projectRef
+            - type
+            - valueType
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              monitoredResourceTypes:
+                description: Read-only. If present, then a , that is associated with
+                  this metric type can only be associated with one of the monitored
+                  resource types listed here.
+                items:
+                  type: string
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              selfLink:
+                description: The resource name of the metric descriptor.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -41667,7 +42263,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -41921,7 +42517,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -42146,7 +42742,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -42386,7 +42982,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -42711,7 +43307,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -43462,7 +44058,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -43683,7 +44279,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44043,7 +44639,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44208,7 +44804,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44482,7 +45078,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44658,7 +45254,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44937,7 +45533,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -45186,7 +45782,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -45379,7 +45975,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -45554,7 +46150,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -45694,7 +46290,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -45890,7 +46486,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -46081,7 +46677,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -46219,7 +46815,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -46381,7 +46977,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -46949,7 +47545,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47123,7 +47719,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47317,7 +47913,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47485,7 +48081,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47810,7 +48406,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47994,7 +48590,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48194,7 +48790,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.57.0
+    cnrm.cloud.google.com/version: 1.58.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"

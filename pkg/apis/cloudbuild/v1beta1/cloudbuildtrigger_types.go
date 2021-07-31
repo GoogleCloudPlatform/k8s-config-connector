@@ -227,6 +227,25 @@ type TriggerOptions struct {
 	WorkerPool *string `json:"workerPool,omitempty"`
 }
 
+type TriggerPubsubConfig struct {
+	/* Service account that will make the push request. */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/* Potential issues with the underlying Pub/Sub subscription configuration.
+	Only populated on get requests. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Output only. Name of the subscription. */
+	// +optional
+	Subscription *string `json:"subscription,omitempty"`
+
+	/* The name of the topic from which this subscription
+	is receiving messages. */
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+}
+
 type TriggerPullRequest struct {
 	/* Regex of branches to match. */
 	Branch string `json:"branch"`
@@ -495,6 +514,16 @@ type TriggerVolumes struct {
 	Path string `json:"path"`
 }
 
+type TriggerWebhookConfig struct {
+	/* The secret required */
+	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+
+	/* Potential issues with the underlying Pub/Sub subscription configuration.
+	Only populated on get requests. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
 type CloudBuildTriggerSpec struct {
 	/* Contents of the build template. Either a filename or build template must be provided. */
 	// +optional
@@ -514,7 +543,7 @@ type CloudBuildTriggerSpec struct {
 
 	/* Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
-	One of 'trigger_template' or 'github' must be provided. */
+	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
 	// +optional
 	Github *TriggerGithub `json:"github,omitempty"`
 
@@ -544,6 +573,13 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	IncludedFiles []string `json:"includedFiles,omitempty"`
 
+	/* PubsubConfig describes the configuration of a trigger that creates
+	a build whenever a Pub/Sub message is published.
+
+	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
+	// +optional
+	PubsubConfig *TriggerPubsubConfig `json:"pubsubConfig,omitempty"`
+
 	/* Substitutions data for Build resource. */
 	// +optional
 	Substitutions map[string]string `json:"substitutions,omitempty"`
@@ -558,9 +594,16 @@ type CloudBuildTriggerSpec struct {
 	expressions. Any branch or tag change that matches that regular
 	expression will trigger a build.
 
-	One of 'trigger_template' or 'github' must be provided. */
+	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
 	// +optional
 	TriggerTemplate *TriggerTriggerTemplate `json:"triggerTemplate,omitempty"`
+
+	/* WebhookConfig describes the configuration of a trigger that creates
+	a build whenever a webhook is sent to a trigger's webhook URL.
+
+	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
+	// +optional
+	WebhookConfig *TriggerWebhookConfig `json:"webhookConfig,omitempty"`
 }
 
 type CloudBuildTriggerStatus struct {

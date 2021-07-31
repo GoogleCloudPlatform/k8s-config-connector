@@ -27,4 +27,6 @@ type MonitoringDashboardExpansion interface{}
 
 type MonitoringGroupExpansion interface{}
 
+type MonitoringMetricDescriptorExpansion interface{}
+
 type MonitoringNotificationChannelExpansion interface{}

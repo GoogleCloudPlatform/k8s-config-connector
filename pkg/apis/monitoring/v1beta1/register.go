@@ -71,6 +71,12 @@ var (
 		Kind:    reflect.TypeOf(MonitoringGroup{}).Name(),
 	}
 
+	MonitoringMetricDescriptorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringMetricDescriptor{}).Name(),
+	}
+
 	MonitoringNotificationChannelGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -43,6 +43,10 @@ func (c *FakeMonitoringV1beta1) MonitoringGroups(namespace string) v1beta1.Monit
 	return &FakeMonitoringGroups{c, namespace}
 }
 
+func (c *FakeMonitoringV1beta1) MonitoringMetricDescriptors(namespace string) v1beta1.MonitoringMetricDescriptorInterface {
+	return &FakeMonitoringMetricDescriptors{c, namespace}
+}
+
 func (c *FakeMonitoringV1beta1) MonitoringNotificationChannels(namespace string) v1beta1.MonitoringNotificationChannelInterface {
 	return &FakeMonitoringNotificationChannels{c, namespace}
 }
