@@ -40,7 +40,15 @@ type ArtifactRegistryRepositorySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The format of packages that are stored in the repository. */
+	/* Immutable. The format of packages that are stored in the repository. You can only create
+	alpha formats if you are a member of the [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
+
+	- DOCKER
+	- MAVEN ([Preview](https://cloud.google.com/products#product-launch-stages))
+	- NPM ([Preview](https://cloud.google.com/products#product-launch-stages))
+	- PYTHON ([Preview](https://cloud.google.com/products#product-launch-stages))
+	- APT ([alpha](https://cloud.google.com/products#product-launch-stages))
+	- YUM ([alpha](https://cloud.google.com/products#product-launch-stages)) */
 	Format string `json:"format"`
 
 	/* The customer managed encryption key that’s used to encrypt the

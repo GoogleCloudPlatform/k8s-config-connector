@@ -48,9 +48,13 @@ type SpannerInstanceSpec struct {
 	unique per project and between 4 and 30 characters in length. */
 	DisplayName string `json:"displayName"`
 
-	/* The number of nodes allocated to this instance. */
+	/*  */
 	// +optional
 	NumNodes *int `json:"numNodes,omitempty"`
+
+	/*  */
+	// +optional
+	ProcessingUnits *int `json:"processingUnits,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

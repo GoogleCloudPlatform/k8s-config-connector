@@ -84,6 +84,19 @@ type NodepoolManagement struct {
 	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
 }
 
+type NodepoolNetworkConfig struct {
+	/* Immutable. Whether to create a new range for pod IPs in this node pool. Defaults are provided for pod_range and pod_ipv4_cidr_block if they are not specified. */
+	// +optional
+	CreatePodRange *bool `json:"createPodRange,omitempty"`
+
+	/* Immutable. The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use. */
+	// +optional
+	PodIpv4CidrBlock *string `json:"podIpv4CidrBlock,omitempty"`
+
+	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
+	PodRange string `json:"podRange"`
+}
+
 type NodepoolNodeConfig struct {
 	/*  */
 	// +optional
@@ -235,6 +248,10 @@ type ContainerNodePoolSpec struct {
 	/* Immutable. Creates a unique name for the node pool beginning with the specified prefix. Conflicts with name. */
 	// +optional
 	NamePrefix *string `json:"namePrefix,omitempty"`
+
+	/* Networking configuration for this NodePool. If specified, it overrides the cluster-level defaults. */
+	// +optional
+	NetworkConfig *NodepoolNetworkConfig `json:"networkConfig,omitempty"`
 
 	/* Immutable. The configuration of the nodepool */
 	// +optional

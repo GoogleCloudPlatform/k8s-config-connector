@@ -228,6 +228,11 @@ func (in *SpannerInstanceSpec) DeepCopyInto(out *SpannerInstanceSpec) {
 		*out = new(int)
 		**out = **in
 	}
+	if in.ProcessingUnits != nil {
+		in, out := &in.ProcessingUnits, &out.ProcessingUnits
+		*out = new(int)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

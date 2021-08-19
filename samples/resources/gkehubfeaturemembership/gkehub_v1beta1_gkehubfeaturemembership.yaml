@@ -36,7 +36,7 @@ spec:
         syncRev: "HEAD"
     policyController:
       enabled: true
-      exemtableNamespaces:
+      exemptableNamespaces:
         - "test-namespace"
       referentialRulesEnabled: true
       logDeniesEnabled: true
@@ -44,7 +44,7 @@ spec:
       auditIntervalSeconds: "20"
     binauthz:
       enabled: true
-    hierarchicalController:
+    hierarchyController:
       enabled: true
       enablePodTreeLabels: true
       enableHierarchicalResourceQuota: true
