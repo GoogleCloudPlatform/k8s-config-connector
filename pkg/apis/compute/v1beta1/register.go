@@ -89,6 +89,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeFirewall{}).Name(),
 	}
 
+	ComputeFirewallPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeFirewallPolicy{}).Name(),
+	}
+
 	ComputeForwardingRuleGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

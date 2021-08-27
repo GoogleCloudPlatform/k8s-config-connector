@@ -35,6 +35,7 @@ type ComputeV1beta1Interface interface {
 	ComputeDisksGetter
 	ComputeExternalVPNGatewaysGetter
 	ComputeFirewallsGetter
+	ComputeFirewallPoliciesGetter
 	ComputeForwardingRulesGetter
 	ComputeHTTPHealthChecksGetter
 	ComputeHTTPSHealthChecksGetter
@@ -105,6 +106,10 @@ func (c *ComputeV1beta1Client) ComputeExternalVPNGateways(namespace string) Comp
 
 func (c *ComputeV1beta1Client) ComputeFirewalls(namespace string) ComputeFirewallInterface {
 	return newComputeFirewalls(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeFirewallPolicies(namespace string) ComputeFirewallPolicyInterface {
+	return newComputeFirewallPolicies(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeForwardingRules(namespace string) ComputeForwardingRuleInterface {

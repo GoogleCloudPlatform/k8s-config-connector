@@ -19,21 +19,21 @@ metadata:
     cnrm.cloud.google.com/version: 1.60.0
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: computetargetinstances.compute.cnrm.cloud.google.com
+  name: computefirewallpolicies.compute.cnrm.cloud.google.com
 spec:
   group: compute.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeTargetInstance
-    plural: computetargetinstances
+    kind: ComputeFirewallPolicy
+    plural: computefirewallpolicies
     shortNames:
-    - gcpcomputetargetinstance
-    - gcpcomputetargetinstances
-    singular: computetargetinstance
+    - gcpcomputefirewallpolicy
+    - gcpcomputefirewallpolicies
+    singular: computefirewallpolicy
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -69,13 +69,19 @@ spec:
           metadata:
             type: object
           spec:
+            oneOf:
+            - required:
+              - folderRef
+            - required:
+              - organizationRef
             properties:
               description:
-                description: Immutable. An optional description of this resource.
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
                 type: string
-              instanceRef:
-                description: The ComputeInstance handling traffic for this target
-                  instance.
+              folderRef:
+                description: The Folder that this resource belongs to. Only one of
+                  [folderRef, organizationRef] may be specified.
                 oneOf:
                 - not:
                     required:
@@ -92,7 +98,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeInstance.
+                    description: The ID of a Folder in format folders/{folder_id}.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -101,16 +107,9 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-              natPolicy:
-                description: |-
-                  Immutable. NAT option controlling how IPs are NAT'ed to the instance.
-                  Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"]
-                type: string
-              networkRef:
-                description: |-
-                  The network this target instance uses to forward
-                  traffic. If not specified, the traffic will be forwarded to the network
-                  that the default network interface belongs to.
+              organizationRef:
+                description: The Organization that this resource belongs to. Only
+                  one of [folderRef, organizationRef] may be specified.
                 oneOf:
                 - not:
                     required:
@@ -127,27 +126,33 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeNetwork.
+                    description: The ID of an Organization in format organizations/{organization_id}.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: '[WARNING] Organization is not yet supported in Config
+                      Connector, use ''external'' field to reference existing resources.'
                     type: string
                   namespace:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
-              zone:
-                description: Immutable. URL of the zone where the target instance
-                  resides.
+              shortName:
+                description: User-provided name of the Organization firewall policy.
+                  The name should be unique in the organization in which the firewall
+                  policy is created. The name must be 1-63 characters long, and comply
+                  with RFC1035. Specifically, the name must be 1-63 characters long
+                  and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which
+                  means the first character must be a lowercase letter, and all following
+                  characters must be a dash, lowercase letter, or digit, except the
+                  last character, which cannot be a dash.
                 type: string
             required:
-            - instanceRef
-            - zone
+            - shortName
             type: object
           status:
             properties:
@@ -180,6 +185,14 @@ spec:
               creationTimestamp:
                 description: Creation timestamp in RFC3339 text format.
                 type: string
+              fingerprint:
+                description: Fingerprint of the resource. This field is used internally
+                  during updates of this resource.
+                type: string
+              id:
+                description: The unique identifier for the resource. This identifier
+                  is defined by the server.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -187,7 +200,17 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              ruleTupleCount:
+                description: Total count of all firewall policy rule tuples. A firewall
+                  policy can not exceed a set number of tuples.
+                format: int64
+                type: integer
               selfLink:
+                description: Server-defined URL for the resource.
+                type: string
+              selfLinkWithId:
+                description: Server-defined URL for this resource with the resource
+                  id.
                 type: string
             type: object
         required:

@@ -33,6 +33,8 @@ type ComputeExternalVPNGatewayExpansion interface{}
 
 type ComputeFirewallExpansion interface{}
 
+type ComputeFirewallPolicyExpansion interface{}
+
 type ComputeForwardingRuleExpansion interface{}
 
 type ComputeHTTPHealthCheckExpansion interface{}
