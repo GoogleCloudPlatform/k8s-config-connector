@@ -41,20 +41,20 @@ type SecretCustomerManagedEncryption struct {
 }
 
 type SecretReplicas struct {
-	/* Customer Managed Encryption for the secret. */
+	/* Immutable. Customer Managed Encryption for the secret. */
 	// +optional
 	CustomerManagedEncryption *SecretCustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
 
-	/* The canonical IDs of the location to replicate data. For example: "us-east1". */
+	/* Immutable. The canonical IDs of the location to replicate data. For example: "us-east1". */
 	Location string `json:"location"`
 }
 
 type SecretReplication struct {
-	/* The Secret will automatically be replicated without any restrictions. */
+	/* Immutable. The Secret will automatically be replicated without any restrictions. */
 	// +optional
 	Automatic *bool `json:"automatic,omitempty"`
 
-	/* The Secret will automatically be replicated without any restrictions. */
+	/* Immutable. The Secret will automatically be replicated without any restrictions. */
 	// +optional
 	UserManaged *SecretUserManaged `json:"userManaged,omitempty"`
 }
@@ -72,7 +72,7 @@ type SecretRotation struct {
 }
 
 type SecretUserManaged struct {
-	/* The list of Replicas for this Secret. Cannot be empty. */
+	/* Immutable. The list of Replicas for this Secret. Cannot be empty. */
 	Replicas []SecretReplicas `json:"replicas"`
 }
 

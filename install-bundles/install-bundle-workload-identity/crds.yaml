@@ -16,10 +16,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com
@@ -395,10 +396,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanageraccesspolicies.accesscontextmanager.cnrm.cloud.google.com
@@ -524,10 +526,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com
@@ -1673,10 +1676,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
@@ -1850,10 +1854,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerydatasets.bigquery.cnrm.cloud.google.com
@@ -2169,10 +2174,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigqueryjobs.bigquery.cnrm.cloud.google.com
@@ -2994,10 +3000,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerytables.bigquery.cnrm.cloud.google.com
@@ -3432,10 +3439,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
@@ -3600,10 +3608,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtablegcpolicies.bigtable.cnrm.cloud.google.com
@@ -3802,10 +3811,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableinstances.bigtable.cnrm.cloud.google.com
@@ -3995,10 +4005,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigtabletables.bigtable.cnrm.cloud.google.com
@@ -4155,11 +4166,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com
 spec:
@@ -4420,11 +4432,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com
 spec:
@@ -4839,10 +4852,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com
@@ -5781,10 +5795,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: cloudidentitygroups.cloudidentity.cnrm.cloud.google.com
@@ -5974,11 +5989,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com
 spec:
@@ -6470,10 +6486,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeaddresses.compute.cnrm.cloud.google.com
@@ -6716,10 +6733,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computebackendbuckets.compute.cnrm.cloud.google.com
@@ -6940,10 +6958,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computebackendservices.compute.cnrm.cloud.google.com
@@ -7806,6 +7825,57 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              securitySettings:
+                description: |-
+                  The security settings that apply to this backend service. This field is applicable to either
+                  a regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and
+                  load_balancing_scheme set to INTERNAL_MANAGED; or a global backend service with the
+                  load_balancing_scheme set to INTERNAL_SELF_MANAGED.
+                properties:
+                  clientTLSPolicyRef:
+                    description: |-
+                      ClientTlsPolicy is a resource that specifies how a client should
+                      authenticate connections to backends of a service. This resource itself
+                      does not affect configuration unless it is attached to a backend
+                      service resource. *ConfigConnector only supports `external`
+                      references for this field.*
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The name of a NetworkSecurityClientTLSPolicy.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  subjectAltNames:
+                    description: |-
+                      A list of alternate names to verify the subject identity in the certificate.
+                      If specified, the client will verify that the server certificate's subject
+                      alt name matches one of the specified values.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - clientTLSPolicyRef
+                - subjectAltNames
+                type: object
               sessionAffinity:
                 description: |-
                   Type of session affinity to use. The default is NONE. Session affinity is
@@ -7883,10 +7953,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computedisks.compute.cnrm.cloud.google.com
@@ -8488,10 +8559,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeexternalvpngateways.compute.cnrm.cloud.google.com
@@ -8633,11 +8705,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: computefirewallpolicies.compute.cnrm.cloud.google.com
 spec:
@@ -8849,10 +8922,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computefirewalls.compute.cnrm.cloud.google.com
@@ -9222,10 +9296,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeforwardingrules.compute.cnrm.cloud.google.com
@@ -9279,11 +9354,13 @@ spec:
             properties:
               allPorts:
                 description: |-
-                  Immutable. For internal TCP/UDP load balancing (i.e. load balancing scheme is
-                  INTERNAL and protocol is TCP/UDP), set this to true to allow packets
-                  addressed to any ports to be forwarded to the backends configured
-                  with this forwarding rule. Used with backend service. Cannot be set
-                  if port or portRange are set.
+                  Immutable. This field can be used with internal load balancer or network load balancer
+                  when the forwarding rule references a backend service, or with the target
+                  field when it references a TargetInstance. Set this to true to
+                  allow packets addressed to any ports to be forwarded to the backends configured
+                  with this forwarding rule. This can be used when the protocol is TCP/UDP, and it
+                  must be set to true when the protocol is set to L3_DEFAULT.
+                  Cannot be set if port or portRange are set.
                 type: boolean
               allowGlobalAccess:
                 description: |-
@@ -9385,7 +9462,7 @@ spec:
                   Immutable. The IP protocol to which this rule applies.
 
                   When the load balancing scheme is INTERNAL, only TCP and UDP are
-                  valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP"]
+                  valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"]
                 type: string
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
@@ -9534,15 +9611,18 @@ spec:
                 type: string
               ports:
                 description: |-
-                  Immutable. This field is used along with the backend_service field for internal
-                  load balancing.
+                  Immutable. This field is used along with internal load balancing and network
+                  load balancer when the forwarding rule references a backend service
+                  and when protocol is not L3_DEFAULT.
 
-                  When the load balancing scheme is INTERNAL, a single port or a comma
-                  separated list of ports can be configured. Only packets addressed to
-                  these ports will be forwarded to the backends configured with this
-                  forwarding rule.
+                  A single port or a comma separated list of ports can be configured.
+                  Only packets addressed to these ports will be forwarded to the backends
+                  configured with this forwarding rule.
 
-                  You may specify a maximum of up to 5 ports.
+                  You can only use one of ports and portRange, or allPorts.
+                  The three are mutually exclusive.
+
+                  You may specify a maximum of up to 5 ports, which can be non-contiguous.
                 items:
                   type: string
                 type: array
@@ -9849,10 +9929,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehealthchecks.compute.cnrm.cloud.google.com
@@ -10312,10 +10393,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehttphealthchecks.compute.cnrm.cloud.google.com
@@ -10472,10 +10554,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computehttpshealthchecks.compute.cnrm.cloud.google.com
@@ -10632,10 +10715,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeimages.compute.cnrm.cloud.google.com
@@ -10907,11 +10991,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
 spec:
@@ -11638,10 +11723,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstancegroups.compute.cnrm.cloud.google.com
@@ -11838,10 +11924,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstances.compute.cnrm.cloud.google.com
@@ -12666,10 +12753,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinstancetemplates.compute.cnrm.cloud.google.com
@@ -13344,10 +13432,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeinterconnectattachments.compute.cnrm.cloud.google.com
@@ -13667,10 +13756,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworkendpointgroups.compute.cnrm.cloud.google.com
@@ -13867,10 +13957,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworkpeerings.compute.cnrm.cloud.google.com
@@ -14059,10 +14150,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenetworks.compute.cnrm.cloud.google.com
@@ -14208,10 +14300,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenodegroups.compute.cnrm.cloud.google.com
@@ -14415,10 +14508,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computenodetemplates.compute.cnrm.cloud.google.com
@@ -14595,10 +14689,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeprojectmetadatas.compute.cnrm.cloud.google.com
@@ -14712,10 +14807,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computereservations.compute.cnrm.cloud.google.com
@@ -14925,10 +15021,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeresourcepolicies.compute.cnrm.cloud.google.com
@@ -15222,10 +15319,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouterinterfaces.compute.cnrm.cloud.google.com
@@ -15428,10 +15526,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouternats.compute.cnrm.cloud.google.com
@@ -15754,10 +15853,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouterpeers.compute.cnrm.cloud.google.com
@@ -15858,6 +15958,13 @@ spec:
                   Where there is more than one matching route of maximum
                   length, the routes with the lowest priority value win.
                 type: integer
+              enable:
+                description: |-
+                  The status of the BGP peer connection. If set to false, any active session
+                  with the peer is terminated and all associated routing information is removed.
+                  If set to true, the peer connection can be established with routing information.
+                  The default is true.
+                type: boolean
               peerAsn:
                 description: |-
                   Peer BGP Autonomous System Number (ASN).
@@ -16011,10 +16118,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computerouters.compute.cnrm.cloud.google.com
@@ -16225,10 +16333,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeroutes.compute.cnrm.cloud.google.com
@@ -16499,10 +16608,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesecuritypolicies.compute.cnrm.cloud.google.com
@@ -16715,10 +16825,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesharedvpchostprojects.compute.cnrm.cloud.google.com
@@ -16820,10 +16931,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesharedvpcserviceprojects.compute.cnrm.cloud.google.com
@@ -16958,10 +17070,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesnapshots.compute.cnrm.cloud.google.com
@@ -17334,10 +17447,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesslcertificates.compute.cnrm.cloud.google.com
@@ -17547,10 +17661,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesslpolicies.compute.cnrm.cloud.google.com
@@ -17709,10 +17824,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computesubnetworks.compute.cnrm.cloud.google.com
@@ -17978,10 +18094,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetgrpcproxies.compute.cnrm.cloud.google.com
@@ -18154,10 +18271,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargethttpproxies.compute.cnrm.cloud.google.com
@@ -18321,10 +18439,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargethttpsproxies.compute.cnrm.cloud.google.com
@@ -18560,10 +18679,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetinstances.compute.cnrm.cloud.google.com
@@ -18753,10 +18873,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetpools.compute.cnrm.cloud.google.com
@@ -18975,10 +19096,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetsslproxies.compute.cnrm.cloud.google.com
@@ -19199,10 +19321,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargettcpproxies.compute.cnrm.cloud.google.com
@@ -19364,10 +19487,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computetargetvpngateways.compute.cnrm.cloud.google.com
@@ -19523,10 +19647,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computeurlmaps.compute.cnrm.cloud.google.com
@@ -22217,10 +22342,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computevpngateways.compute.cnrm.cloud.google.com
@@ -22413,10 +22539,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: computevpntunnels.compute.cnrm.cloud.google.com
@@ -22779,11 +22906,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: containeranalysisnotes.containeranalysis.cnrm.cloud.google.com
 spec:
@@ -23367,10 +23495,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: containerclusters.container.cnrm.cloud.google.com
@@ -24507,10 +24636,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: containernodepools.container.cnrm.cloud.google.com
@@ -24985,10 +25115,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com
@@ -25110,10 +25241,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: dataflowjobs.dataflow.cnrm.cloud.google.com
@@ -25391,11 +25523,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: datafusioninstances.datafusion.cnrm.cloud.google.com
 spec:
@@ -25669,11 +25802,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com
 spec:
@@ -25960,11 +26094,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: dataprocclusters.dataproc.cnrm.cloud.google.com
 spec:
@@ -27116,11 +27251,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com
 spec:
@@ -28940,10 +29076,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnsmanagedzones.dns.cnrm.cloud.google.com
@@ -29265,10 +29402,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnspolicies.dns.cnrm.cloud.google.com
@@ -29459,10 +29597,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: dnsrecordsets.dns.cnrm.cloud.google.com
@@ -29614,10 +29753,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: firestoreindexes.firestore.cnrm.cloud.google.com
@@ -29767,10 +29907,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: folders.resourcemanager.cnrm.cloud.google.com
@@ -29977,11 +30118,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: gameservicesrealms.gameservices.cnrm.cloud.google.com
 spec:
@@ -30114,11 +30256,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: gkehubfeaturememberships.gkehub.cnrm.cloud.google.com
 spec:
@@ -30412,11 +30555,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: gkehubfeatures.gkehub.cnrm.cloud.google.com
 spec:
@@ -30646,11 +30790,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: gkehubmemberships.gkehub.cnrm.cloud.google.com
 spec:
@@ -31009,7 +31154,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31171,10 +31316,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamcustomroles.iam.cnrm.cloud.google.com
@@ -31310,7 +31456,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31544,7 +31690,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31774,7 +31920,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31990,10 +32136,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamserviceaccountkeys.iam.cnrm.cloud.google.com
@@ -32167,10 +32314,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: iamserviceaccounts.iam.cnrm.cloud.google.com
@@ -32299,11 +32447,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: iapbrands.iap.cnrm.cloud.google.com
 spec:
@@ -32422,11 +32571,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: iapidentityawareproxyclients.iap.cnrm.cloud.google.com
 spec:
@@ -32571,11 +32721,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com
 spec:
@@ -32753,11 +32904,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: identityplatformtenantoauthidpconfigs.identityplatform.cnrm.cloud.google.com
 spec:
@@ -32965,11 +33117,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: identityplatformtenants.identityplatform.cnrm.cloud.google.com
 spec:
@@ -33117,10 +33270,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: kmscryptokeys.kms.cnrm.cloud.google.com
@@ -33301,10 +33455,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: kmskeyrings.kms.cnrm.cloud.google.com
@@ -33429,11 +33584,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: logginglogexclusions.logging.cnrm.cloud.google.com
 spec:
@@ -33698,10 +33854,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: logginglogsinks.logging.cnrm.cloud.google.com
@@ -34062,10 +34219,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: memcacheinstances.memcache.cnrm.cloud.google.com
@@ -34295,10 +34453,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
@@ -35055,11 +35214,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: monitoringdashboards.monitoring.cnrm.cloud.google.com
 spec:
@@ -41772,11 +41932,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: monitoringgroups.monitoring.cnrm.cloud.google.com
 spec:
@@ -41958,11 +42119,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: monitoringmetricdescriptors.monitoring.cnrm.cloud.google.com
 spec:
@@ -42220,10 +42382,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: monitoringnotificationchannels.monitoring.cnrm.cloud.google.com
@@ -42512,11 +42675,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com
 spec:
@@ -42766,11 +42930,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com
 spec:
@@ -42991,11 +43156,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com
 spec:
@@ -43231,11 +43397,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com
 spec:
@@ -43556,11 +43723,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
 spec:
@@ -44307,10 +44475,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: projects.resourcemanager.cnrm.cloud.google.com
@@ -44528,10 +44697,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
@@ -44888,10 +45058,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: pubsubtopics.pubsub.cnrm.cloud.google.com
@@ -45053,10 +45224,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: redisinstances.redis.cnrm.cloud.google.com
@@ -45323,10 +45495,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: resourcemanagerliens.resourcemanager.cnrm.cloud.google.com
@@ -45499,10 +45672,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com
@@ -45778,10 +45952,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: secretmanagersecrets.secretmanager.cnrm.cloud.google.com
@@ -45844,20 +46019,21 @@ spec:
                   after the Secret has been created.
                 properties:
                   automatic:
-                    description: The Secret will automatically be replicated without
-                      any restrictions.
+                    description: Immutable. The Secret will automatically be replicated
+                      without any restrictions.
                     type: boolean
                   userManaged:
-                    description: The Secret will automatically be replicated without
-                      any restrictions.
+                    description: Immutable. The Secret will automatically be replicated
+                      without any restrictions.
                     properties:
                       replicas:
-                        description: The list of Replicas for this Secret. Cannot
-                          be empty.
+                        description: Immutable. The list of Replicas for this Secret.
+                          Cannot be empty.
                         items:
                           properties:
                             customerManagedEncryption:
-                              description: Customer Managed Encryption for the secret.
+                              description: Immutable. Customer Managed Encryption
+                                for the secret.
                               properties:
                                 kmsKeyRef:
                                   description: Customer Managed Encryption for the
@@ -45893,8 +46069,8 @@ spec:
                               - kmsKeyRef
                               type: object
                             location:
-                              description: 'The canonical IDs of the location to replicate
-                                data. For example: "us-east1".'
+                              description: 'Immutable. The canonical IDs of the location
+                                to replicate data. For example: "us-east1".'
                               type: string
                           required:
                           - location
@@ -46027,10 +46203,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: secretmanagersecretversions.secretmanager.cnrm.cloud.google.com
@@ -46220,10 +46397,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com
@@ -46395,10 +46573,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: services.serviceusage.cnrm.cloud.google.com
@@ -46535,10 +46714,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: sourcereporepositories.sourcerepo.cnrm.cloud.google.com
@@ -46731,10 +46911,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: spannerdatabases.spanner.cnrm.cloud.google.com
@@ -46922,10 +47103,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: spannerinstances.spanner.cnrm.cloud.google.com
@@ -47061,10 +47243,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqldatabases.sql.cnrm.cloud.google.com
@@ -47223,10 +47406,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlinstances.sql.cnrm.cloud.google.com
@@ -47536,6 +47720,9 @@ spec:
                           for point in time restore, from 1-7.
                         type: integer
                     type: object
+                  collation:
+                    description: The name of server instance collation.
+                    type: string
                   crashSafeReplication:
                     description: DEPRECATED — This property is only applicable to
                       First Generation instances, and First Generation instances are
@@ -47791,10 +47978,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlsslcerts.sql.cnrm.cloud.google.com
@@ -47965,10 +48153,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: sqlusers.sql.cnrm.cloud.google.com
@@ -48159,10 +48348,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagebucketaccesscontrols.storage.cnrm.cloud.google.com
@@ -48327,10 +48517,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagebuckets.storage.cnrm.cloud.google.com
@@ -48652,10 +48843,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com
@@ -48836,10 +49028,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagenotifications.storage.cnrm.cloud.google.com
@@ -49036,10 +49229,11 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.60.0
+    cnrm.cloud.google.com/version: 1.61.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: storagetransferjobs.storagetransfer.cnrm.cloud.google.com

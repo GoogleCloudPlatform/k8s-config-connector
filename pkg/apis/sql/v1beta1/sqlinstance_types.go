@@ -241,6 +241,10 @@ type InstanceSettings struct {
 	// +optional
 	BackupConfiguration *InstanceBackupConfiguration `json:"backupConfiguration,omitempty"`
 
+	/* The name of server instance collation. */
+	// +optional
+	Collation *string `json:"collation,omitempty"`
+
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled. */
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`

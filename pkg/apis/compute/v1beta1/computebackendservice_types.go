@@ -506,6 +506,20 @@ type BackendserviceOutlierDetection struct {
 	SuccessRateStdevFactor *int `json:"successRateStdevFactor,omitempty"`
 }
 
+type BackendserviceSecuritySettings struct {
+	/* ClientTlsPolicy is a resource that specifies how a client should
+	authenticate connections to backends of a service. This resource itself
+	does not affect configuration unless it is attached to a backend
+	service resource. *ConfigConnector only supports `external`
+	references for this field.* */
+	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
+
+	/* A list of alternate names to verify the subject identity in the certificate.
+	If specified, the client will verify that the server certificate's subject
+	alt name matches one of the specified values. */
+	SubjectAltNames []string `json:"subjectAltNames"`
+}
+
 type BackendserviceTtl struct {
 	/* Span of time that's a fraction of a second at nanosecond
 	resolution. Durations less than one second are represented
@@ -671,6 +685,13 @@ type ComputeBackendServiceSpec struct {
 	/* The security policy associated with this backend service. */
 	// +optional
 	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+
+	/* The security settings that apply to this backend service. This field is applicable to either
+	a regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and
+	load_balancing_scheme set to INTERNAL_MANAGED; or a global backend service with the
+	load_balancing_scheme set to INTERNAL_SELF_MANAGED. */
+	// +optional
+	SecuritySettings *BackendserviceSecuritySettings `json:"securitySettings,omitempty"`
 
 	/* Type of session affinity to use. The default is NONE. Session affinity is
 	not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"] */

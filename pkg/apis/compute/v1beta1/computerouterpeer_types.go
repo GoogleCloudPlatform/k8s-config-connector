@@ -80,6 +80,13 @@ type ComputeRouterPeerSpec struct {
 	// +optional
 	AdvertisedRoutePriority *int `json:"advertisedRoutePriority,omitempty"`
 
+	/* The status of the BGP peer connection. If set to false, any active session
+	with the peer is terminated and all associated routing information is removed.
+	If set to true, the peer connection can be established with routing information.
+	The default is true. */
+	// +optional
+	Enable *bool `json:"enable,omitempty"`
+
 	/* Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
 	PeerAsn int `json:"peerAsn"`
