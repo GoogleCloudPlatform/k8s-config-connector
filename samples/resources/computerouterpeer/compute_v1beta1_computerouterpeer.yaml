@@ -20,6 +20,8 @@ spec:
   region: us-central1
   peerIpAddress: "169.254.0.2"
   peerAsn: 65513
+  ipAddress:
+    external: "169.254.0.1"
   advertisedRoutePriority: 1
   routerRef:
     name: computerouterpeer-dep

@@ -45,6 +45,12 @@ type RouterpeerAdvertisedIpRanges struct {
 	Range string `json:"range"`
 }
 
+type RouterpeerIpAddress struct {
+	/*  */
+	// +optional
+	External *string `json:"external,omitempty"`
+}
+
 type ComputeRouterPeerSpec struct {
 	/* User-specified flag to indicate which mode to use for advertisement.
 	Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
@@ -87,6 +93,11 @@ type ComputeRouterPeerSpec struct {
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 
+	/* IP address of the interface inside Google Cloud Platform.
+	Only IPv4 is supported. */
+	// +optional
+	IpAddress *RouterpeerIpAddress `json:"ipAddress,omitempty"`
+
 	/* Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
 	PeerAsn int `json:"peerAsn"`
@@ -114,9 +125,6 @@ type ComputeRouterPeerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterPeer's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* IP address of the interface inside Google Cloud Platform.
-	Only IPv4 is supported. */
-	IpAddress string `json:"ipAddress,omitempty"`
 	/* The resource that configures and manages this BGP peer.
 
 	* 'MANAGED_BY_USER' is the default value and can be managed by

@@ -40,7 +40,7 @@ type ClusterAccelerators struct {
 	// +optional
 	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
 
-	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
+	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -68,7 +68,7 @@ type ClusterConfig struct {
 	// +optional
 	GceClusterConfig *ClusterGceClusterConfig `json:"gceClusterConfig,omitempty"`
 
-	/* Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if ; then ... master specific actions ... else ... worker specific actions ... fi */
+	/* Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi */
 	// +optional
 	InitializationActions []ClusterInitializationActions `json:"initializationActions,omitempty"`
 
@@ -110,11 +110,11 @@ type ClusterDiskConfig struct {
 	// +optional
 	BootDiskSizeGb *int `json:"bootDiskSizeGb,omitempty"`
 
-	/* Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or "pd-standard" (Persistent Disk Hard Disk Drive). */
+	/* Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
 	BootDiskType *string `json:"bootDiskType,omitempty"`
 
-	/* Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and (https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
+	/* Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
 	NumLocalSsds *int `json:"numLocalSsds,omitempty"`
 }
@@ -136,7 +136,7 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	InternalIPOnly *bool `json:"internalIPOnly,omitempty"`
 
-	/* The Compute Engine metadata entries to add to all instances (see (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
+	/* The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
 	// +optional
 	Metadata map[string]string `json:"metadata,omitempty"`
 
@@ -168,11 +168,11 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The Compute Engine tags to add to all instances (see (https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
+	/* The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/` * `us-central1-f` */
+	/* Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }
@@ -181,7 +181,7 @@ type ClusterInitializationActions struct {
 	/* Required. Cloud Storage URI of executable file. */
 	ExecutableFile string `json:"executableFile"`
 
-	/* Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
+	/* Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
 	// +optional
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
@@ -249,15 +249,15 @@ type ClusterKerberosConfig struct {
 }
 
 type ClusterLifecycleConfig struct {
-	/* Optional. The time when cluster will be auto-deleted (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTime *string `json:"autoDeleteTime,omitempty"`
 
-	/* Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTtl *string `json:"autoDeleteTtl,omitempty"`
 
-	/* Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json). */
+	/* Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	IdleDeleteTtl *string `json:"idleDeleteTtl,omitempty"`
 }
@@ -275,15 +275,15 @@ type ClusterMasterConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -324,15 +324,15 @@ type ClusterSecondaryWorkerConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -342,13 +342,13 @@ type ClusterSecondaryWorkerConfig struct {
 }
 
 type ClusterSecurityConfig struct {
-	/* Kerberos related configuration. */
+	/* Optional. Kerberos related configuration. */
 	// +optional
 	KerberosConfig *ClusterKerberosConfig `json:"kerberosConfig,omitempty"`
 }
 
 type ClusterSoftwareConfig struct {
-	/* Optional. The version of software inside the cluster. It must be one of the supported (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
+	/* Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
 	// +optional
 	ImageVersion *string `json:"imageVersion,omitempty"`
 
@@ -356,7 +356,7 @@ type ClusterSoftwareConfig struct {
 	// +optional
 	OptionalComponents []string `json:"optionalComponents,omitempty"`
 
-	/* Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see (https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
+	/* Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
 }
@@ -374,15 +374,15 @@ type ClusterWorkerConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -392,7 +392,7 @@ type ClusterWorkerConfig struct {
 }
 
 type DataprocClusterSpec struct {
-	/* The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
+	/* Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 
@@ -431,7 +431,7 @@ type ClusterEndpointConfigStatus struct {
 }
 
 type ClusterLifecycleConfigStatus struct {
-	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	IdleStartTime string `json:"idleStartTime,omitempty"`
 }
 
@@ -480,7 +480,7 @@ type ClusterStatusHistoryStatus struct {
 	/* Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING */
 	State string `json:"state,omitempty"`
 
-	/* Output only. Time when this state was entered (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Output only. Time when this state was entered (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	StateStartTime string `json:"stateStartTime,omitempty"`
 
 	/* Output only. Additional state information that includes status reported by the agent. Possible values: UNSPECIFIED, UNHEALTHY, STALE_STATUS */
@@ -494,7 +494,7 @@ type ClusterStatusStatus struct {
 	/* Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING */
 	State string `json:"state,omitempty"`
 
-	/* Output only. Time when this state was entered (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Output only. Time when this state was entered (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	StateStartTime string `json:"stateStartTime,omitempty"`
 
 	/* Output only. Additional state information that includes status reported by the agent. Possible values: UNSPECIFIED, UNHEALTHY, STALE_STATUS */

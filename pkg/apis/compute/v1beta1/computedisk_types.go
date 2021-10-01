@@ -154,7 +154,7 @@ type ComputeDiskSpec struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. Default value: "SCSI" Possible values: ["SCSI", "NVME"] */
+	/* DEPRECATED — This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. */
 	// +optional
 	Interface *string `json:"interface,omitempty"`
 

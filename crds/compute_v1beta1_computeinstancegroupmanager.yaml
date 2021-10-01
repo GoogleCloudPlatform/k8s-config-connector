@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.62.0
+    cnrm.cloud.google.com/version: 1.63.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -109,7 +109,7 @@ spec:
                         allows instances to initialize and run their startup scripts
                         before the instance group determines that they are UNHEALTHY.
                         This prevents the managed instance group from recreating its
-                        instances prematurely. This value must be from range .
+                        instances prematurely. This value must be from range [0, 3600].
                       format: int64
                       type: integer
                   type: object
@@ -121,8 +121,7 @@ spec:
                   name. The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
                 type: string
               description:
-                description: An optional description of this resource. Provide this
-                  property when you create the resource.
+                description: An optional description of this resource.
                 type: string
               distributionPolicy:
                 description: Policy specifying the intended distribution of managed
@@ -140,7 +139,7 @@ spec:
                     items:
                       properties:
                         zone:
-                          description: The URL of the zone (/compute/docs/regions-zones/#available).
+                          description: The URL of the [zone](/compute/docs/regions-zones/#available).
                             The zone must exist in the region where the managed instance
                             group is located.
                           type: string
@@ -193,7 +192,7 @@ spec:
                   properties:
                     name:
                       description: The name for this named port. The name must be
-                        1-63 characters long, and comply with RFC1035 (https://www.ietf.org/rfc/rfc1035.txt).
+                        1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
                       type: string
                     port:
                       description: The port number, which can be a value between 1
@@ -251,11 +250,11 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The service account to be used as credentials for
+                    description: 'The service account to be used as credentials for
                       all operations performed by the managed instance group on instances.
                       The service accounts needs all permissions required to create
-                      and delete instances. By default, the service account {projectNumber}@cloudservices.gserviceaccount.com
-                      is used.
+                      and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com
+                      is used.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -327,7 +326,7 @@ spec:
                 description: The update policy for this managed instance group.
                 properties:
                   instanceRedistributionType:
-                    description: 'The instance redistribution policy (/compute/docs/instance-groups/regional-migs#proactive_instance_redistribution)
+                    description: 'The [instance redistribution policy](/compute/docs/instance-groups/regional-migs#proactive_instance_redistribution)
                       for regional managed instance groups. Valid values are: - `PROACTIVE`
                       (default): The group attempts to maintain an even distribution
                       of VM instances across zones in the region. - `NONE`: For non-autoscaled
@@ -342,7 +341,8 @@ spec:
                       a `percent`, the `targetSize` would be `(targetSize.percent/100
                       * InstanceGroupManager.targetSize)` If there is a remainder,
                       the number is rounded. If unset, this version will update any
-                      remaining instances not updated by another `version`. Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                      remaining instances not updated by another `version`. Read [Starting
+                      a canary update](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
                       for more information.'
                     properties:
                       fixed:
@@ -365,7 +365,8 @@ spec:
                       a `percent`, the `targetSize` would be `(targetSize.percent/100
                       * InstanceGroupManager.targetSize)` If there is a remainder,
                       the number is rounded. If unset, this version will update any
-                      remaining instances not updated by another `version`. Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                      remaining instances not updated by another `version`. Read [Starting
+                      a canary update](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
                       for more information.'
                     properties:
                       fixed:
@@ -382,7 +383,7 @@ spec:
                   minReadySec:
                     description: Minimum number of seconds to wait for after a newly
                       created instance becomes available. This value must be from
-                      range .
+                      range [0, 3600].
                     format: int64
                     type: integer
                   minimalAction:
@@ -476,18 +477,19 @@ spec:
                         * InstanceGroupManager.targetSize)` If there is a remainder,
                         the number is rounded. If unset, this version will update
                         any remaining instances not updated by another `version`.
-                        Read (/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
+                        Read [Starting a canary update](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update)
                         for more information.'
                       properties:
                         calculated:
-                          description: Absolute value of VM instances calculated based
-                            on the specific mode. - If the value is `fixed`, then
-                            the `calculated` value is equal to the `fixed` value.
-                            - If the value is a `percent`, then the `calculated` value
-                            is `percent`/100 * `targetSize`. For example, the `calculated`
-                            value of a 80% of a managed instance group with 150 instances
-                            would be (80/100 * 150) = 120 VM instances. If there is
-                            a remainder, the number is rounded.
+                          description: '[Output Only] Absolute value of VM instances
+                            calculated based on the specific mode. - If the value
+                            is `fixed`, then the `calculated` value is equal to the
+                            `fixed` value. - If the value is a `percent`, then the
+                            `calculated` value is `percent`/100 * `targetSize`. For
+                            example, the `calculated` value of a 80% of a managed
+                            instance group with 150 instances would be (80/100 * 150)
+                            = 120 VM instances. If there is a remainder, the number
+                            is rounded.'
                           format: int64
                           type: integer
                         fixed:
@@ -539,66 +541,70 @@ spec:
                   in \[RFC3339\](https://www.ietf.org/rfc/rfc3339.txt) text format.
                 type: string
               currentActions:
-                description: The list of instance actions and the number of instances
-                  in this managed instance group that are scheduled for each of those
-                  actions.
+                description: '[Output Only] The list of instance actions and the number
+                  of instances in this managed instance group that are scheduled for
+                  each of those actions.'
                 properties:
                   abandoning:
-                    description: The total number of instances in the managed instance
-                      group that are scheduled to be abandoned. Abandoning an instance
-                      removes it from the managed instance group without deleting
-                      it.
+                    description: '[Output Only] The total number of instances in the
+                      managed instance group that are scheduled to be abandoned. Abandoning
+                      an instance removes it from the managed instance group without
+                      deleting it.'
                     format: int64
                     type: integer
                   creating:
-                    description: The number of instances in the managed instance group
-                      that are scheduled to be created or are currently being created.
-                      If the group fails to create any of these instances, it tries
-                      again until it creates the instance successfully. If you have
-                      disabled creation retries, this field will not be populated;
-                      instead, the `creatingWithoutRetries` field will be populated.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be created or are currently
+                      being created. If the group fails to create any of these instances,
+                      it tries again until it creates the instance successfully. If
+                      you have disabled creation retries, this field will not be populated;
+                      instead, the `creatingWithoutRetries` field will be populated.'
                     format: int64
                     type: integer
                   creatingWithoutRetries:
-                    description: The number of instances that the managed instance
-                      group will attempt to create. The group attempts to create each
-                      instance only once. If the group fails to create any of these
-                      instances, it decreases the group's `targetSize` value accordingly.
+                    description: '[Output Only] The number of instances that the managed
+                      instance group will attempt to create. The group attempts to
+                      create each instance only once. If the group fails to create
+                      any of these instances, it decreases the group''s `targetSize`
+                      value accordingly.'
                     format: int64
                     type: integer
                   deleting:
-                    description: The number of instances in the managed instance group
-                      that are scheduled to be deleted or are currently being deleted.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be deleted or are currently
+                      being deleted.'
                     format: int64
                     type: integer
                   none:
-                    description: The number of instances in the managed instance group
-                      that are running and have no scheduled actions.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are running and have no scheduled actions.'
                     format: int64
                     type: integer
                   recreating:
-                    description: The number of instances in the managed instance group
-                      that are scheduled to be recreated or are currently being being
-                      recreated. Recreating an instance deletes the existing root
-                      persistent disk and creates a new disk from the image that is
-                      defined in the instance template.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be recreated or are currently
+                      being being recreated. Recreating an instance deletes the existing
+                      root persistent disk and creates a new disk from the image that
+                      is defined in the instance template.'
                     format: int64
                     type: integer
                   refreshing:
-                    description: The number of instances in the managed instance group
-                      that are being reconfigured with properties that do not require
-                      a restart or a recreate action. For example, setting or removing
-                      target pools for the instance.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are being reconfigured with properties that
+                      do not require a restart or a recreate action. For example,
+                      setting or removing target pools for the instance.'
                     format: int64
                     type: integer
                   restarting:
-                    description: The number of instances in the managed instance group
-                      that are scheduled to be restarted or are currently being restarted.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be restarted or are currently
+                      being restarted.'
                     format: int64
                     type: integer
                   verifying:
-                    description: .currentAction property in the `listManagedInstances`
-                      method documentation.
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are being verified. See the `managedInstances[].currentAction`
+                      property in the `listManagedInstances` method documentation.'
                     format: int64
                     type: integer
                 type: object
@@ -611,12 +617,12 @@ spec:
                   request to retrieve an InstanceGroupManager.
                 type: string
               id:
-                description: A unique identifier for this resource type. The server
-                  generates this identifier.
+                description: '[Output Only] A unique identifier for this resource
+                  type. The server generates this identifier.'
                 format: int64
                 type: integer
               instanceGroup:
-                description: The URL of the Instance Group resource.
+                description: '[Output Only] The URL of the Instance Group resource.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -626,52 +632,55 @@ spec:
                   the resource.
                 type: integer
               region:
-                description: The URL of the [region](/compute/docs/regions-zones/#available)
-                  where the managed instance group resides (for regional resources).
+                description: '[Output Only] The URL of the [region](/compute/docs/regions-zones/#available)
+                  where the managed instance group resides (for regional resources).'
                 type: string
               selfLink:
-                description: The URL for this managed instance group. The server defines
-                  this URL.
+                description: '[Output Only] The URL for this managed instance group.
+                  The server defines this URL.'
                 type: string
               status:
-                description: The status of this managed instance group.
+                description: '[Output Only] The status of this managed instance group.'
                 properties:
                   autoscaler:
-                    description: The URL of the Autoscaler (/compute/docs/autoscaler/)
-                      that targets this instance group manager.
+                    description: '[Output Only] The URL of the [Autoscaler](/compute/docs/autoscaler/)
+                      that targets this instance group manager.'
                     type: string
                   isStable:
-                    description: 'A bit indicating whether the managed instance group
-                      is in a stable state. A stable state means that: none of the
-                      instances in the managed instance group is currently undergoing
-                      any type of change (for example, creation, restart, or deletion);
-                      no future changes are scheduled for instances in the managed
-                      instance group; and the managed instance group itself is not
-                      being modified.'
+                    description: '[Output Only] A bit indicating whether the managed
+                      instance group is in a stable state. A stable state means that:
+                      none of the instances in the managed instance group is currently
+                      undergoing any type of change (for example, creation, restart,
+                      or deletion); no future changes are scheduled for instances
+                      in the managed instance group; and the managed instance group
+                      itself is not being modified.'
                     type: boolean
                   stateful:
-                    description: Stateful status of the given Instance Group Manager.
+                    description: '[Output Only] Stateful status of the given Instance
+                      Group Manager.'
                     properties:
                       hasStatefulConfig:
-                        description: A bit indicating whether the managed instance
-                          group has stateful configuration, that is, if you have configured
-                          any items in a stateful policy or in per-instance configs.
-                          The group might report that it has no stateful config even
-                          when there is still some preserved state on a managed instance,
-                          for example, if you have deleted all PICs but not yet applied
-                          those deletions.
+                        description: '[Output Only] A bit indicating whether the managed
+                          instance group has stateful configuration, that is, if you
+                          have configured any items in a stateful policy or in per-instance
+                          configs. The group might report that it has no stateful
+                          config even when there is still some preserved state on
+                          a managed instance, for example, if you have deleted all
+                          PICs but not yet applied those deletions.'
                         type: boolean
                       isStateful:
-                        description: A bit indicating whether the managed instance
-                          group has stateful configuration, that is, if you have configured
-                          any items in a stateful policy or in per-instance configs.
-                          The group might report that it has no stateful config even
-                          when there is still some preserved state on a managed instance,
-                          for example, if you have deleted all PICs but not yet applied
-                          those deletions. This field is deprecated in favor of has_stateful_config.
+                        description: '[Output Only] A bit indicating whether the managed
+                          instance group has stateful configuration, that is, if you
+                          have configured any items in a stateful policy or in per-instance
+                          configs. The group might report that it has no stateful
+                          config even when there is still some preserved state on
+                          a managed instance, for example, if you have deleted all
+                          PICs but not yet applied those deletions. This field is
+                          deprecated in favor of has_stateful_config.'
                         type: boolean
                       perInstanceConfigs:
-                        description: Status of per-instance configs on the instance.
+                        description: '[Output Only] Status of per-instance configs
+                          on the instance.'
                         properties:
                           allEffective:
                             description: A bit indicating if all of the group's per-instance
@@ -681,15 +690,16 @@ spec:
                         type: object
                     type: object
                   versionTarget:
-                    description: A status of consistency of Instances' versions with
-                      their target version specified by `version` field on Instance
-                      Group Manager.
+                    description: '[Output Only] A status of consistency of Instances''
+                      versions with their target version specified by `version` field
+                      on Instance Group Manager.'
                     properties:
                       isReached:
-                        description: A bit indicating whether version target has been
-                          reached in this managed instance group, i.e. all instances
-                          are in their target version. Instances' target version are
-                          specified by `version` field on Instance Group Manager.
+                        description: '[Output Only] A bit indicating whether version
+                          target has been reached in this managed instance group,
+                          i.e. all instances are in their target version. Instances''
+                          target version are specified by `version` field on Instance
+                          Group Manager.'
                         type: boolean
                     type: object
                 type: object
@@ -698,35 +708,35 @@ spec:
                   maxSurge:
                     properties:
                       calculated:
-                        description: Absolute value of VM instances calculated based
-                          on the specific mode. - If the value is `fixed`, then the
-                          `calculated` value is equal to the `fixed` value. - If the
-                          value is a `percent`, then the `calculated` value is `percent`/100
-                          * `targetSize`. For example, the `calculated` value of a
-                          80% of a managed instance group with 150 instances would
-                          be (80/100 * 150) = 120 VM instances. If there is a remainder,
-                          the number is rounded.
+                        description: '[Output Only] Absolute value of VM instances
+                          calculated based on the specific mode. - If the value is
+                          `fixed`, then the `calculated` value is equal to the `fixed`
+                          value. - If the value is a `percent`, then the `calculated`
+                          value is `percent`/100 * `targetSize`. For example, the
+                          `calculated` value of a 80% of a managed instance group
+                          with 150 instances would be (80/100 * 150) = 120 VM instances.
+                          If there is a remainder, the number is rounded.'
                         format: int64
                         type: integer
                     type: object
                   maxUnavailable:
                     properties:
                       calculated:
-                        description: Absolute value of VM instances calculated based
-                          on the specific mode. - If the value is `fixed`, then the
-                          `calculated` value is equal to the `fixed` value. - If the
-                          value is a `percent`, then the `calculated` value is `percent`/100
-                          * `targetSize`. For example, the `calculated` value of a
-                          80% of a managed instance group with 150 instances would
-                          be (80/100 * 150) = 120 VM instances. If there is a remainder,
-                          the number is rounded.
+                        description: '[Output Only] Absolute value of VM instances
+                          calculated based on the specific mode. - If the value is
+                          `fixed`, then the `calculated` value is equal to the `fixed`
+                          value. - If the value is a `percent`, then the `calculated`
+                          value is `percent`/100 * `targetSize`. For example, the
+                          `calculated` value of a 80% of a managed instance group
+                          with 150 instances would be (80/100 * 150) = 120 VM instances.
+                          If there is a remainder, the number is rounded.'
                         format: int64
                         type: integer
                     type: object
                 type: object
               zone:
-                description: The URL of a [zone](/compute/docs/regions-zones/#available)
-                  where the managed instance group is located (for zonal resources).
+                description: '[Output Only] The URL of a [zone](/compute/docs/regions-zones/#available)
+                  where the managed instance group is located (for zonal resources).'
                 type: string
             type: object
         required:

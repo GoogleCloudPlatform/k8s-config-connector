@@ -188,16 +188,16 @@ type NoteDetails struct {
 }
 
 type NoteDiscovery struct {
-	/* Required. Immutable. The kind of analysis that is handled by this discovery. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE */
+	/* The kind of analysis that is handled by this discovery. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE */
 	AnalysisKind string `json:"analysisKind"`
 }
 
 type NoteDistribution struct {
-	/* The CPU architecture for which packages in this distribution channel were built. Possible values: ARCHITECTURE_UNSPECIFIED, X86, X64 */
+	/* The CPU architecture for which packages in this distribution channel were built Possible values: ARCHITECTURE_UNSPECIFIED, X86, X64 */
 	// +optional
 	Architecture *string `json:"architecture,omitempty"`
 
-	/* Required. The cpe_uri in (https://cpe.mitre.org/specification/) denoting the package manager version distributing a package. */
+	/* The cpe_uri in [cpe format](https://cpe.mitre.org/specification/) denoting the package manager version distributing a package. */
 	CpeUri string `json:"cpeUri"`
 
 	/* The distribution channel-specific description of this package. */
@@ -278,10 +278,10 @@ type NoteLatestVersion struct {
 	// +optional
 	FullName *string `json:"fullName,omitempty"`
 
-	/* Required. Distinguishes between sentinel MIN/MAX versions and normal versions. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE */
+	/* Distinguish between sentinel MIN/MAX versions and normal versions. If kind is not NORMAL, then the other fields are ignored. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE */
 	Kind string `json:"kind"`
 
-	/* Required only when version kind is NORMAL. The main part of the version name. */
+	/* The main part of the version name. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -295,16 +295,16 @@ type NotePackage struct {
 	// +optional
 	Distribution []NoteDistribution `json:"distribution,omitempty"`
 
-	/* Required. Immutable. The name of the package. */
+	/* The name of the package. */
 	Name string `json:"name"`
 }
 
 type NoteRelatedUrl struct {
-	/* Label to describe usage of the URL. */
+	/* Label to describe usage of the URL */
 	// +optional
 	Label *string `json:"label,omitempty"`
 
-	/* Specific URL associated with the resource. */
+	/* Specific URL to associate with the note */
 	// +optional
 	Url *string `json:"url,omitempty"`
 }

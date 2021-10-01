@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.62.0
+    cnrm.cloud.google.com/version: 1.63.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -127,6 +127,14 @@ spec:
                   If set to true, the peer connection can be established with routing information.
                   The default is true.
                 type: boolean
+              ipAddress:
+                description: |-
+                  IP address of the interface inside Google Cloud Platform.
+                  Only IPv4 is supported.
+                properties:
+                  external:
+                    type: string
+                type: object
               peerAsn:
                 description: |-
                   Peer BGP Autonomous System Number (ASN).
@@ -236,11 +244,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              ipAddress:
-                description: |-
-                  IP address of the interface inside Google Cloud Platform.
-                  Only IPv4 is supported.
-                type: string
               managementType:
                 description: |-
                   The resource that configures and manages this BGP peer.

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.62.0
+    cnrm.cloud.google.com/version: 1.63.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -110,10 +110,9 @@ spec:
                 description: A note describing the initial analysis of a resource.
                 properties:
                   analysisKind:
-                    description: 'Required. Immutable. The kind of analysis that is
-                      handled by this discovery. Possible values: NOTE_KIND_UNSPECIFIED,
-                      VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY,
-                      ATTESTATION, UPGRADE'
+                    description: 'The kind of analysis that is handled by this discovery.
+                      Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD,
+                      IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE'
                     type: string
                 required:
                 - analysisKind
@@ -165,11 +164,11 @@ spec:
                       properties:
                         architecture:
                           description: 'The CPU architecture for which packages in
-                            this distribution channel were built. Possible values:
+                            this distribution channel were built Possible values:
                             ARCHITECTURE_UNSPECIFIED, X86, X64'
                           type: string
                         cpeUri:
-                          description: Required. The cpe_uri in (https://cpe.mitre.org/specification/)
+                          description: The cpe_uri in [cpe format](https://cpe.mitre.org/specification/)
                             denoting the package manager version distributing a package.
                           type: string
                         description:
@@ -190,14 +189,14 @@ spec:
                                 is of the form :- and is only set when kind is NORMAL.
                               type: string
                             kind:
-                              description: 'Required. Distinguishes between sentinel
-                                MIN/MAX versions and normal versions. Possible values:
-                                NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE,
-                                PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE'
+                              description: 'Distinguish between sentinel MIN/MAX versions
+                                and normal versions. If kind is not NORMAL, then the
+                                other fields are ignored. Possible values: NOTE_KIND_UNSPECIFIED,
+                                VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT,
+                                DISCOVERY, ATTESTATION, UPGRADE'
                               type: string
                             name:
-                              description: Required only when version kind is NORMAL.
-                                The main part of the version name.
+                              description: The main part of the version name.
                               type: string
                             revision:
                               description: The iteration of the package build from
@@ -219,7 +218,7 @@ spec:
                       type: object
                     type: array
                   name:
-                    description: Required. Immutable. The name of the package.
+                    description: The name of the package.
                     type: string
                 required:
                 - name
@@ -256,10 +255,10 @@ spec:
                 items:
                   properties:
                     label:
-                      description: Label to describe usage of the URL.
+                      description: Label to describe usage of the URL
                       type: string
                     url:
-                      description: Specific URL associated with the resource.
+                      description: Specific URL to associate with the note
                       type: string
                   type: object
                 type: array

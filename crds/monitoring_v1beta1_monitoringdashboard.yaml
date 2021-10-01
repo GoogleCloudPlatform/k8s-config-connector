@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.62.0
+    cnrm.cloud.google.com/version: 1.63.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -153,7 +153,7 @@ spec:
                                       warning.)  As an example, consider a scorecard
                                       with the following four thresholds: {   value:
                                       90,   category: ''DANGER'',   trigger: ''ABOVE'',
-                                      }, {   value: 70,   category: ''WARNING'',   trigger:
+                                      },: {   value: 70,   category: ''WARNING'',   trigger:
                                       ''ABOVE'', }, {   value: 10,   category: ''DANGER'',   trigger:
                                       ''BELOW'', }, {   value: 20,   category: ''WARNING'',   trigger:
                                       ''BELOW'', }  Then: values less than or equal
@@ -1857,7 +1857,7 @@ spec:
                                 - unless x also puts it in a danger state. (Danger
                                 trumps warning.)  As an example, consider a scorecard
                                 with the following four thresholds: {   value: 90,   category:
-                                ''DANGER'',   trigger: ''ABOVE'', }, {   value: 70,   category:
+                                ''DANGER'',   trigger: ''ABOVE'', },: {   value: 70,   category:
                                 ''WARNING'',   trigger: ''ABOVE'', }, {   value: 10,   category:
                                 ''DANGER'',   trigger: ''BELOW'', }, {   value: 20,   category:
                                 ''WARNING'',   trigger: ''BELOW'', }  Then: values
@@ -3362,7 +3362,7 @@ spec:
                                     warning.)  As an example, consider a scorecard
                                     with the following four thresholds: {   value:
                                     90,   category: ''DANGER'',   trigger: ''ABOVE'',
-                                    }, {   value: 70,   category: ''WARNING'',   trigger:
+                                    },: {   value: 70,   category: ''WARNING'',   trigger:
                                     ''ABOVE'', }, {   value: 10,   category: ''DANGER'',   trigger:
                                     ''BELOW'', }, {   value: 20,   category: ''WARNING'',   trigger:
                                     ''BELOW'', }  Then: values less than or equal
@@ -5038,7 +5038,7 @@ spec:
                                       warning.)  As an example, consider a scorecard
                                       with the following four thresholds: {   value:
                                       90,   category: ''DANGER'',   trigger: ''ABOVE'',
-                                      }, {   value: 70,   category: ''WARNING'',   trigger:
+                                      },: {   value: 70,   category: ''WARNING'',   trigger:
                                       ''ABOVE'', }, {   value: 10,   category: ''DANGER'',   trigger:
                                       ''BELOW'', }, {   value: 20,   category: ''WARNING'',   trigger:
                                       ''BELOW'', }  Then: values less than or equal

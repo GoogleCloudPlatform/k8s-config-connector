@@ -90,7 +90,7 @@ type IdentityPlatformTenantOAuthIDPConfigSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g. {id\_token, token}). */
+	/* The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g.: {id\_token, token}). */
 	// +optional
 	ResponseType *TenantoauthidpconfigResponseType `json:"responseType,omitempty"`
 

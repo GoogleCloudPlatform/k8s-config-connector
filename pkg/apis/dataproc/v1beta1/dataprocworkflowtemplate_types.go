@@ -40,7 +40,7 @@ type WorkflowtemplateAccelerators struct {
 	// +optional
 	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
 
-	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
+	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
@@ -77,7 +77,7 @@ type WorkflowtemplateConfig struct {
 	// +optional
 	GceClusterConfig *WorkflowtemplateGceClusterConfig `json:"gceClusterConfig,omitempty"`
 
-	/* Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if ; then ... master specific actions ... else ... worker specific actions ... fi */
+	/* Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi */
 	// +optional
 	InitializationActions []WorkflowtemplateInitializationActions `json:"initializationActions,omitempty"`
 
@@ -119,11 +119,11 @@ type WorkflowtemplateDiskConfig struct {
 	// +optional
 	BootDiskSizeGb *int `json:"bootDiskSizeGb,omitempty"`
 
-	/* Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or "pd-standard" (Persistent Disk Hard Disk Drive). */
+	/* Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
 	BootDiskType *string `json:"bootDiskType,omitempty"`
 
-	/* Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and (https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
+	/* Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
 	NumLocalSsds *int `json:"numLocalSsds,omitempty"`
 }
@@ -145,7 +145,7 @@ type WorkflowtemplateGceClusterConfig struct {
 	// +optional
 	InternalIPOnly *bool `json:"internalIPOnly,omitempty"`
 
-	/* The Compute Engine metadata entries to add to all instances (see (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
+	/* The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
 	// +optional
 	Metadata map[string]string `json:"metadata,omitempty"`
 
@@ -177,11 +177,11 @@ type WorkflowtemplateGceClusterConfig struct {
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The Compute Engine tags to add to all instances (see (https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
+	/* The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/` * `us-central1-f` */
+	/* Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }
@@ -251,7 +251,7 @@ type WorkflowtemplateInitializationActions struct {
 	// +optional
 	ExecutableFile *string `json:"executableFile,omitempty"`
 
-	/* Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
+	/* Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
 	// +optional
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
@@ -265,7 +265,7 @@ type WorkflowtemplateJobs struct {
 	// +optional
 	HiveJob *WorkflowtemplateHiveJob `json:"hiveJob,omitempty"`
 
-	/* Optional. The labels to associate with this job. Label keys must be between 1 and 63 characters long, and must conform to the following regular expression: {0,63} No more than 32 labels can be associated with a given job. */
+	/* Optional. The labels to associate with this job. Label keys must be between 1 and 63 characters long, and must conform to the following regular expression: p{Ll}p{Lo}{0,62} Label values must be between 1 and 63 characters long, and must conform to the following regular expression: [p{Ll}p{Lo}p{N}_-]{0,63} No more than 32 labels can be associated with a given job. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -301,7 +301,7 @@ type WorkflowtemplateJobs struct {
 	// +optional
 	SparkSqlJob *WorkflowtemplateSparkSqlJob `json:"sparkSqlJob,omitempty"`
 
-	/* Required. The step id. The id must be unique among all jobs within the template. The step id is used as prefix for job id, as job `goog-dataproc-workflow-step-id` label, and in field from other steps. The id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-). Cannot begin or end with underscore or hyphen. Must consist of between 3 and 50 characters. */
+	/* Required. The step id. The id must be unique among all jobs within the template. The step id is used as prefix for job id, as job `goog-dataproc-workflow-step-id` label, and in prerequisiteStepIds field from other steps. The id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-). Cannot begin or end with underscore or hyphen. Must consist of between 3 and 50 characters. */
 	StepId string `json:"stepId"`
 }
 
@@ -368,15 +368,15 @@ type WorkflowtemplateKerberosConfig struct {
 }
 
 type WorkflowtemplateLifecycleConfig struct {
-	/* Optional. The time when cluster will be auto-deleted (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTime *string `json:"autoDeleteTime,omitempty"`
 
-	/* Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTtl *string `json:"autoDeleteTtl,omitempty"`
 
-	/* Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json). */
+	/* Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	IdleDeleteTtl *string `json:"idleDeleteTtl,omitempty"`
 }
@@ -394,7 +394,7 @@ type WorkflowtemplateManagedCluster struct {
 	/* Required. The cluster configuration. */
 	Config WorkflowtemplateConfig `json:"config"`
 
-	/* Optional. The labels to associate with this cluster. Label keys must be between 1 and 63 characters long, and must conform to the following PCRE regular expression: {0,63} No more than 32 labels can be associated with a given cluster. */
+	/* Optional. The labels to associate with this cluster. Label keys must be between 1 and 63 characters long, and must conform to the following PCRE regular expression: p{Ll}p{Lo}{0,62} Label values must be between 1 and 63 characters long, and must conform to the following PCRE regular expression: [p{Ll}p{Lo}p{N}_-]{0,63} No more than 32 labels can be associated with a given cluster. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 }
@@ -412,15 +412,15 @@ type WorkflowtemplateMasterConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -439,7 +439,7 @@ type WorkflowtemplateParameters struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Required. Paths to all fields that the parameter replaces. A field is allowed to appear in at most one parameter's list of field paths. A field path is similar in syntax to a .sparkJob.args */
+	/* Required. Paths to all fields that the parameter replaces. A field is allowed to appear in at most one parameter's list of field paths. A field path is similar in syntax to a google.protobuf.FieldMask. For example, a field path that references the zone field of a workflow template's cluster selector would be specified as `placement.clusterSelector.zone`. Also, field paths can reference fields using the following syntax: * Values in maps can be referenced by key: * labels['key'] * placement.clusterSelector.clusterLabels['key'] * placement.managedCluster.labels['key'] * placement.clusterSelector.clusterLabels['key'] * jobs['step-id'].labels['key'] * Jobs in the jobs list can be referenced by step-id: * jobs['step-id'].hadoopJob.mainJarFileUri * jobs['step-id'].hiveJob.queryFileUri * jobs['step-id'].pySparkJob.mainPythonFileUri * jobs['step-id'].hadoopJob.jarFileUris[0] * jobs['step-id'].hadoopJob.archiveUris[0] * jobs['step-id'].hadoopJob.fileUris[0] * jobs['step-id'].pySparkJob.pythonFileUris[0] * Items in repeated fields can be referenced by a zero-based index: * jobs['step-id'].sparkJob.args[0] * Other examples: * jobs['step-id'].hadoopJob.properties['key'] * jobs['step-id'].hadoopJob.args[0] * jobs['step-id'].hiveJob.scriptVariables['key'] * jobs['step-id'].hadoopJob.mainJarFileUri * placement.clusterSelector.zone It may not be possible to parameterize maps and repeated fields in their entirety since only individual map values and individual items in repeated fields can be referenced. For example, the following field paths are invalid: - placement.clusterSelector.clusterLabels - jobs['step-id'].sparkJob.args */
 	Fields []string `json:"fields"`
 
 	/* Required. Parameter name. The parameter name is used as the key, and paired with the parameter value, which are passed to the template when the template is instantiated. The name must contain only capital letters (A-Z), numbers (0-9), and underscores (_), and must not start with a number. The maximum length is 40 characters. */
@@ -475,7 +475,7 @@ type WorkflowtemplatePigJob struct {
 	// +optional
 	QueryList *WorkflowtemplateQueryList `json:"queryList,omitempty"`
 
-	/* Optional. Mapping of query variable names to values (equivalent to the Pig command: `name=`). */
+	/* Optional. Mapping of query variable names to values (equivalent to the Pig command: `name=[value]`). */
 	// +optional
 	ScriptVariables map[string]string `json:"scriptVariables,omitempty"`
 }
@@ -507,7 +507,7 @@ type WorkflowtemplatePrestoJob struct {
 	// +optional
 	OutputFormat *string `json:"outputFormat,omitempty"`
 
-	/* Optional. A mapping of property names to values. Used to set Presto (https://prestodb.io/docs/current/sql/set-session.html) Equivalent to using the --session flag in the Presto CLI */
+	/* Optional. A mapping of property names to values. Used to set Presto [session properties](https://prestodb.io/docs/current/sql/set-session.html) Equivalent to using the --session flag in the Presto CLI */
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
 
@@ -554,7 +554,7 @@ type WorkflowtemplatePysparkJob struct {
 }
 
 type WorkflowtemplateQueryList struct {
-	/* Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": } } */
+	/* Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } } */
 	Queries []string `json:"queries"`
 }
 
@@ -582,7 +582,7 @@ type WorkflowtemplateScheduling struct {
 	// +optional
 	MaxFailuresPerHour *int `json:"maxFailuresPerHour,omitempty"`
 
-	/* Optional. Maximum number of times in total a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. Maximum value is 240 */
+	/* Optional. Maximum number of times in total a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. Maximum value is 240. */
 	// +optional
 	MaxFailuresTotal *int `json:"maxFailuresTotal,omitempty"`
 }
@@ -600,15 +600,15 @@ type WorkflowtemplateSecondaryWorkerConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -618,13 +618,13 @@ type WorkflowtemplateSecondaryWorkerConfig struct {
 }
 
 type WorkflowtemplateSecurityConfig struct {
-	/* Kerberos related configuration. */
+	/* Optional. Kerberos related configuration. */
 	// +optional
 	KerberosConfig *WorkflowtemplateKerberosConfig `json:"kerberosConfig,omitempty"`
 }
 
 type WorkflowtemplateSoftwareConfig struct {
-	/* Optional. The version of software inside the cluster. It must be one of the supported (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
+	/* Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
 	// +optional
 	ImageVersion *string `json:"imageVersion,omitempty"`
 
@@ -632,7 +632,7 @@ type WorkflowtemplateSoftwareConfig struct {
 	// +optional
 	OptionalComponents []string `json:"optionalComponents,omitempty"`
 
-	/* Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see (https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
+	/* Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
 }
@@ -750,15 +750,15 @@ type WorkflowtemplateWorkerConfig struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/(https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1. */
+	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
@@ -768,7 +768,7 @@ type WorkflowtemplateWorkerConfig struct {
 }
 
 type DataprocWorkflowTemplateSpec struct {
-	/* Optional. Timeout duration for the DAG of jobs. You can use "s", "m", "h", and "d" suffixes for second, minute, hour, and day duration values, respectively. The timeout duration must be from 10 minutes ("10m") to 24 hours ("24h" or "1d"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a (/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted. */
+	/* Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes ("600s") to 24 hours ("86400s"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted. */
 	// +optional
 	DagTimeout *string `json:"dagTimeout,omitempty"`
 
@@ -821,7 +821,7 @@ type WorkflowtemplateEndpointConfigStatus struct {
 }
 
 type WorkflowtemplateLifecycleConfigStatus struct {
-	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of (https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	IdleStartTime string `json:"idleStartTime,omitempty"`
 }
 

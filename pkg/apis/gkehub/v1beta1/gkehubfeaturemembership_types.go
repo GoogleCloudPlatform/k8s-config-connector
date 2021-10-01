@@ -52,7 +52,7 @@ type FeaturemembershipConfigSync struct {
 }
 
 type FeaturemembershipConfigmanagement struct {
-	/* Binauthz conifguration for the cluster. */
+	/* Binauthz configuration for the cluster. */
 	// +optional
 	Binauthz *FeaturemembershipBinauthz `json:"binauthz,omitempty"`
 
@@ -74,6 +74,10 @@ type FeaturemembershipConfigmanagement struct {
 }
 
 type FeaturemembershipGit struct {
+	/*  */
+	// +optional
+	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+
 	/* URL for the HTTPS proxy to be used when communicating with the Git repo. */
 	// +optional
 	HttpsProxy *string `json:"httpsProxy,omitempty"`
@@ -145,8 +149,7 @@ type FeaturemembershipPolicyController struct {
 
 type GKEHubFeatureMembershipSpec struct {
 	/* Config Management-specific spec. */
-	// +optional
-	Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
+	Configmanagement FeaturemembershipConfigmanagement `json:"configmanagement"`
 
 	/*  */
 	FeatureRef v1alpha1.ResourceRef `json:"featureRef"`

@@ -46,6 +46,11 @@ type CryptokeyVersionTemplate struct {
 }
 
 type KMSCryptoKeySpec struct {
+	/* Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
+	If not specified at creation time, the default duration is 24 hours. */
+	// +optional
+	DestroyScheduledDuration *string `json:"destroyScheduledDuration,omitempty"`
+
 	/* The KMSKeyRing that this key belongs to. */
 	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef"`
 

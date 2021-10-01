@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.62.0
+    cnrm.cloud.google.com/version: 1.63.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -72,19 +72,19 @@ spec:
           spec:
             properties:
               appEngineHttpTarget:
-                description: Appengine HTTP target.
+                description: App Engine HTTP target.
                 properties:
                   appEngineRouting:
-                    description: Appengine Routing setting for the job.
+                    description: App Engine Routing setting for the job.
                     properties:
                       instance:
                         description: App instance. By default, the job is sent to
                           an instance which is available when the job is attempted.
-                          Requests can only be sent to a specific instance if manual
-                          scaling is used in App Engine Standard. For more information,
-                          see App Engine Flex does not support instances. For more
-                          information, see App Engine Standard request routing and
-                          App Engine Flex request routing.
+                          Requests can only be sent to a specific instance if [manual
+                          scaling is used in App Engine Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).
+                          App Engine Flex does not support instances. For more information,
+                          see [App Engine Standard request routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
+                          and [App Engine Flex request routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
                         type: string
                       service:
                         description: App service. By default, the job is sent to the
@@ -106,14 +106,14 @@ spec:
                     description: 'HTTP request headers. This map contains the header
                       field names and values. Headers can be set when the job is created.
                       Cloud Scheduler sets some headers to default values: * `User-Agent`:
-                      By default, this header is `"Appengine-Google; (+http://code.google.com/appengine)"`.
+                      By default, this header is `"App Engine-Google; (+http://code.google.com/appengine)"`.
                       This header can be modified, but Cloud Scheduler will append
-                      `"Appengine-Google; (+http://code.google.com/appengine)"` to
+                      `"App Engine-Google; (+http://code.google.com/appengine)"` to
                       the modified `User-Agent`. * `X-CloudScheduler`: This header
                       will be set to true. The headers below are output only. They
                       cannot be set or overridden: * `X-Google-*`: For Google internal
-                      use only. * `X-Appengine-*`: For Google internal use only. In
-                      addition, some Appengine headers, which contain job-specific
+                      use only. * `X-App Engine-*`: For Google internal use only.
+                      In addition, some App Engine headers, which contain job-specific
                       information, are also be sent to the job handler.'
                     type: object
                   httpMethod:
@@ -130,15 +130,17 @@ spec:
                     type: string
                 type: object
               attemptDeadline:
-                description: The deadline for job attempts. If the request handler
+                description: 'The deadline for job attempts. If the request handler
                   does not respond by this deadline then the request is cancelled
                   and the attempt is marked as a `DEADLINE_EXCEEDED` failure. The
                   failed attempt can be viewed in execution logs. Cloud Scheduler
-                  will retry the job according to the RetryConfig, between 15 seconds
-                  and 24 hours.
+                  will retry the job according to the RetryConfig. The allowed duration
+                  for this deadline is: * For HTTP targets, between 15 seconds and
+                  30 minutes. * For App Engine HTTP targets, between 15 seconds and
+                  24 hours.'
                 type: string
               description:
-                description: Optionally caller-specified in jobs.create or jobs.patch.
+                description: Optionally caller-specified in CreateJob or UpdateJob.
                   A human-readable description for the job. This string must not contain
                   more than 500 characters.
                 type: string
@@ -163,7 +165,7 @@ spec:
                       Host: This will be computed by Cloud Scheduler and derived from
                       uri. * `Content-Length`: This will be computed by Cloud Scheduler.
                       * `User-Agent`: This will be set to `"Google-Cloud-Scheduler"`.
-                      * `X-Google-*`: Google internal use only. * `X-Appengine-*`:
+                      * `X-Google-*`: Google internal use only. * `X-appengine-*`:
                       Google internal use only. The total size of headers must be
                       less than 80KB.'
                     type: object
@@ -173,7 +175,7 @@ spec:
                       PATCH, OPTIONS'
                     type: string
                   oauthToken:
-                    description: If specified, an (https://developers.google.com/identity/protocols/OAuth2)
+                    description: If specified, an [OAuth token](https://developers.google.com/identity/protocols/OAuth2)
                       will be generated and attached as an `Authorization` header
                       in the HTTP request. This type of authorization should generally
                       only be used when calling Google APIs hosted on *.googleapis.com.
@@ -200,11 +202,11 @@ spec:
                           - external
                         properties:
                           external:
-                            description: (https://cloud.google.com/iam/docs/service-accounts)
+                            description: '[Service account email](https://cloud.google.com/iam/docs/service-accounts)
                               to be used for generating OAuth token. The service account
                               must be within the same project as the job. The caller
                               must have iam.serviceAccounts.actAs permission for the
-                              service account.
+                              service account.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -215,7 +217,7 @@ spec:
                         type: object
                     type: object
                   oidcToken:
-                    description: If specified, an (https://developers.google.com/identity/protocols/OpenIDConnect)
+                    description: If specified, an [OIDC](https://developers.google.com/identity/protocols/OpenIDConnect)
                       token will be generated and attached as an `Authorization` header
                       in the HTTP request. This type of authorization can be used
                       for many scenarios, including calling Cloud Run, or endpoints
@@ -242,11 +244,11 @@ spec:
                           - external
                         properties:
                           external:
-                            description: (https://cloud.google.com/iam/docs/service-accounts)
+                            description: '[Service account email](https://cloud.google.com/iam/docs/service-accounts)
                               to be used for generating OIDC token. The service account
                               must be within the same project as the job. The caller
                               must have iam.serviceAccounts.actAs permission for the
-                              service account.
+                              service account.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -259,7 +261,7 @@ spec:
                   uri:
                     description: 'Required. The full URI path that the request will
                       be sent to. This string must begin with either "http://" or
-                      "https://". Some examples of valid values for are: `http://acme.com`
+                      "https://". Some examples of valid values for uri are: `http://acme.com`
                       and `https://acme.com/sales:8080`. Cloud Scheduler will encode
                       some characters for safety and compatibility. The maximum allowed
                       URL length is 2083 characters after encoding.'
@@ -303,9 +305,9 @@ spec:
                         description: Required. The name of the Cloud Pub/Sub topic
                           to which messages will be published when a job is delivered.
                           The topic name must be in the same format as required by
-                          Pub/Sub's PublishRequest.name, for example `projects/PROJECT_ID/topics/TOPIC_ID`.
-                          The topic must be in the same project as the Cloud Scheduler
-                          job.
+                          Pub/Sub's [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest),
+                          for example `projects/PROJECT_ID/topics/TOPIC_ID`. The topic
+                          must be in the same project as the Cloud Scheduler job.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -331,17 +333,25 @@ spec:
                     type: string
                   maxDoublings:
                     description: The time between retries will double `max_doublings`
-                      times. A job's retry interval starts at times. Thus, the requests
-                      will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, ....
-                      The default value of this field is 5.
+                      times. A job's retry interval starts at min_backoff_duration,
+                      then doubles `max_doublings` times, then increases linearly,
+                      and finally retries at intervals of max_backoff_duration up
+                      to retry_count times. For example, if min_backoff_duration is
+                      10s, max_backoff_duration is 300s, and `max_doublings` is 3,
+                      then the a job will first be retried in 10s. The retry interval
+                      will double three times, and then increase linearly by 2^3 *
+                      10s. Finally, the job will retry at intervals of max_backoff_duration
+                      until the job has been attempted retry_count times. Thus, the
+                      requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s,
+                      300s, .... The default value of this field is 5.
                     format: int64
                     type: integer
                   maxRetryDuration:
                     description: The time limit for retrying a failed job, measured
                       from time when an execution was first attempted. If specified
-                      with retryCount, the job will be retried until both limits are
-                      reached. The default value for max_retry_duration is zero, which
-                      means retry duration is unlimited.
+                      with retry_count, the job will be retried until both limits
+                      are reached. The default value for max_retry_duration is zero,
+                      which means retry duration is unlimited.
                     type: string
                   minBackoffDuration:
                     description: The minimum amount of time to wait before retrying
@@ -350,23 +360,36 @@ spec:
                   retryCount:
                     description: The number of attempts that the system will make
                       to run a job using the exponential backoff procedure described
-                      by maxDoublings. The default value of retry_count is zero. If
-                      retry_count is zero, a job attempt will *not* be retried if
-                      it fails. Instead the Cloud Scheduler system will wait for the
-                      next scheduled execution time. If retry_count is set to a non-zero
-                      number then Cloud Scheduler will retry failed attempts, using
-                      exponential backoff, retry_count times, or until the next scheduled
-                      execution time, whichever comes first. Values greater than 5
-                      and negative values are not allowed.
+                      by max_doublings. The default value of retry_count is zero.
+                      If retry_count is zero, a job attempt will *not* be retried
+                      if it fails. Instead the Cloud Scheduler system will wait for
+                      the next scheduled execution time. If retry_count is set to
+                      a non-zero number then Cloud Scheduler will retry failed attempts,
+                      using exponential backoff, retry_count times, or until the next
+                      scheduled execution time, whichever comes first. Values greater
+                      than 5 and negative values are not allowed.
                     format: int64
                     type: integer
                 type: object
               schedule:
-                description: Required, except when used with times, with exponential
-                  backoff, until the next scheduled start time.
+                description: 'Required, except when used with UpdateJob. Describes
+                  the schedule on which the job will be executed. The schedule can
+                  be either of the following types: * [Crontab](http://en.wikipedia.org/wiki/Cron#Overview)
+                  * English-like [schedule](https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules)
+                  As a general rule, execution `n + 1` of a job will not begin until
+                  execution `n` has finished. Cloud Scheduler will never allow two
+                  simultaneously outstanding executions. For example, this implies
+                  that if the `n+1`th execution is scheduled to run at 16:00 but the
+                  `n`th execution takes until 16:15, the `n+1`th execution will not
+                  start until `16:15`. A scheduled start time will be delayed if the
+                  previous execution has not ended when its scheduled time occurs.
+                  If retry_count > 0 and a job attempt fails, the job will be tried
+                  a total of retry_count times, with exponential backoff, until the
+                  next scheduled start time.'
                 type: string
               timeZone:
-                description: Specifies the time zone to be used in interpreting (http://en.wikipedia.org/wiki/Tz_database).
+                description: Specifies the time zone to be used in interpreting schedule.
+                  The value of this field must be a time zone name from the [tz database](http://en.wikipedia.org/wiki/Tz_database).
                   Note that some time zones include a provision for daylight savings
                   time. The rules for daylight saving time are determined by the chosen
                   tz. For UTC use the string "utc". If a time zone is not specified,
@@ -383,11 +406,32 @@ spec:
                     properties:
                       host:
                         description: 'Output only. The host that the job is sent to.
-                          For more information about how Appengine requests are routed,
-                          see (https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).
-                          The host is constructed as: * `host = is invalid, then the
-                          job will be sent to the default version of the default service
-                          when the job is attempted.'
+                          For more information about how App Engine requests are routed,
+                          see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).
+                          The host is constructed as: * `host = [application_domain_name]`
+                          `| [service] + ''.'' + [application_domain_name]` `| [version]
+                          + ''.'' + [application_domain_name]` `| [version_dot_service]+
+                          ''.'' + [application_domain_name]` `| [instance] + ''.''
+                          + [application_domain_name]` `| [instance_dot_service] +
+                          ''.'' + [application_domain_name]` `| [instance_dot_version]
+                          + ''.'' + [application_domain_name]` `| [instance_dot_version_dot_service]
+                          + ''.'' + [application_domain_name]` * `application_domain_name`
+                          = The domain name of the app, for example .appspot.com,
+                          which is associated with the job''s project ID. * `service
+                          =` service * `version =` version * `version_dot_service
+                          =` version `+ ''.'' +` service * `instance =` instance *
+                          `instance_dot_service =` instance `+ ''.'' +` service *
+                          `instance_dot_version =` instance `+ ''.'' +` version *
+                          `instance_dot_version_dot_service =` instance `+ ''.'' +`
+                          version `+ ''.'' +` service If service is empty, then the
+                          job will be sent to the service which is the default service
+                          when the job is attempted. If version is empty, then the
+                          job will be sent to the version which is the default version
+                          when the job is attempted. If instance is empty, then the
+                          job will be sent to an instance which is available when
+                          the job is attempted. If service, version, or instance is
+                          invalid, then the job will be sent to the default version
+                          of the default service when the job is attempted.'
                         type: string
                     type: object
                 type: object
@@ -465,17 +509,17 @@ spec:
                             `http`, `https`, or no scheme, one can optionally set
                             up a type server that maps type URLs to message definitions
                             as follows: * If no scheme is provided, `https` is assumed.
-                            * An HTTP GET on the URL must yield a value in binary
-                            format, or produce an error. * Applications are allowed
-                            to cache lookup results based on the URL, or have them
-                            precompiled into a binary to avoid any lookup. Therefore,
-                            binary compatibility needs to be preserved on changes
-                            to types. (Use versioned type names to manage breaking
-                            changes.) Note: this functionality is not currently available
-                            in the official protobuf release, and it is not used for
-                            type URLs beginning with type.googleapis.com. Schemes
-                            other than `http`, `https` (or the empty scheme) might
-                            be used with implementation specific semantics.'
+                            * An HTTP GET on the URL must yield a google.protobuf.Type
+                            value in binary format, or produce an error. * Applications
+                            are allowed to cache lookup results based on the URL,
+                            or have them precompiled into a binary to avoid any lookup.
+                            Therefore, binary compatibility needs to be preserved
+                            on changes to types. (Use versioned type names to manage
+                            breaking changes.) Note: this functionality is not currently
+                            available in the official protobuf release, and it is
+                            not used for type URLs beginning with type.googleapis.com.
+                            Schemes other than `http`, `https` (or the empty scheme)
+                            might be used with implementation specific semantics.'
                           type: string
                         value:
                           description: Must be a valid serialized protocol buffer
@@ -486,7 +530,8 @@ spec:
                   message:
                     description: A developer-facing error message, which should be
                       in English. Any user-facing error message should be localized
-                      and sent in the field, or localized by the client.
+                      and sent in the google.rpc.Status.details field, or localized
+                      by the client.
                     type: string
                 type: object
               userUpdateTime:
