@@ -59,6 +59,10 @@ func (c *FakeComputeV1beta1) ComputeFirewallPolicies(namespace string) v1beta1.C
 	return &FakeComputeFirewallPolicies{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeFirewallPolicyRules(namespace string) v1beta1.ComputeFirewallPolicyRuleInterface {
+	return &FakeComputeFirewallPolicyRules{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeForwardingRules(namespace string) v1beta1.ComputeForwardingRuleInterface {
 	return &FakeComputeForwardingRules{c, namespace}
 }

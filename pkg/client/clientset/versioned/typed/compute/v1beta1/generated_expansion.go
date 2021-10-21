@@ -35,6 +35,8 @@ type ComputeFirewallExpansion interface{}
 
 type ComputeFirewallPolicyExpansion interface{}
 
+type ComputeFirewallPolicyRuleExpansion interface{}
+
 type ComputeForwardingRuleExpansion interface{}
 
 type ComputeHTTPHealthCheckExpansion interface{}

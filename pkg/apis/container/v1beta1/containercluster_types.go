@@ -180,6 +180,20 @@ type ClusterDnsCacheConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterDnsConfig struct {
+	/* Which in-cluster DNS provider should be used. */
+	// +optional
+	ClusterDns *string `json:"clusterDns,omitempty"`
+
+	/* The suffix used for all cluster service records. */
+	// +optional
+	ClusterDnsDomain *string `json:"clusterDnsDomain,omitempty"`
+
+	/* The scope of access to cluster DNS records. */
+	// +optional
+	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
+}
+
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
 	LocalSsdCount int `json:"localSsdCount"`
@@ -258,6 +272,11 @@ type ClusterLinuxNodeConfig struct {
 	Sysctls map[string]string `json:"sysctls"`
 }
 
+type ClusterLoggingConfig struct {
+	/* GKE components exposing logs. Valid values include SYSTEM_COMPONENTS and WORKLOADS. */
+	EnableComponents []string `json:"enableComponents"`
+}
+
 type ClusterMaintenanceExclusion struct {
 	/*  */
 	EndTime string `json:"endTime"`
@@ -318,6 +337,11 @@ type ClusterMasterAuthorizedNetworksConfig struct {
 type ClusterMasterGlobalAccessConfig struct {
 	/* Whether the cluster master is accessible globally or not. */
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterMonitoringConfig struct {
+	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS. */
+	EnableComponents []string `json:"enableComponents"`
 }
 
 type ClusterNetworkPolicy struct {
@@ -567,8 +591,13 @@ type ClusterWorkloadIdentityConfig struct {
 }
 
 type ClusterWorkloadMetadataConfig struct {
-	/* NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
-	NodeMetadata string `json:"nodeMetadata"`
+	/* Mode is the configuration for how to expose metadata to workloads running on the node. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
+	// +optional
+	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }
 
 type ContainerClusterSpec struct {
@@ -616,6 +645,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. Configuration for Cloud DNS for Kubernetes Engine. */
+	// +optional
+	DnsConfig *ClusterDnsConfig `json:"dnsConfig,omitempty"`
+
 	/* Immutable. Enable Autopilot for this cluster. */
 	// +optional
 	EnableAutopilot *bool `json:"enableAutopilot,omitempty"`
@@ -659,6 +692,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. The location (region or zone) in which the cluster master will be created, as well as the default node location. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region, and with default node locations in those zones as well. */
 	Location string `json:"location"`
 
+	/* Logging configuration for the cluster. */
+	// +optional
+	LoggingConfig *ClusterLoggingConfig `json:"loggingConfig,omitempty"`
+
 	/* The logging service that the cluster should write logs to. Available options include logging.googleapis.com(Legacy Stackdriver), logging.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Logging), and none. Defaults to logging.googleapis.com/kubernetes. */
 	// +optional
 	LoggingService *string `json:"loggingService,omitempty"`
@@ -678,6 +715,10 @@ type ContainerClusterSpec struct {
 	/* The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster's version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version). */
 	// +optional
 	MinMasterVersion *string `json:"minMasterVersion,omitempty"`
+
+	/* Monitoring configuration for the cluster. */
+	// +optional
+	MonitoringConfig *ClusterMonitoringConfig `json:"monitoringConfig,omitempty"`
 
 	/* The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com(Legacy Stackdriver), monitoring.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Monitoring), and none. Defaults to monitoring.googleapis.com/kubernetes. */
 	// +optional

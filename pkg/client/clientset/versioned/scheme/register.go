@@ -37,6 +37,7 @@ import (
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dns/v1beta1"
+	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/gameservices/v1beta1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/gkehub/v1beta1"
@@ -88,6 +89,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
 	dnsv1beta1.AddToScheme,
+	filestorev1beta1.AddToScheme,
 	firestorev1beta1.AddToScheme,
 	gameservicesv1beta1.AddToScheme,
 	gkehubv1beta1.AddToScheme,

@@ -18,3 +18,5 @@ metadata:
   labels:
     label-one: "value-one"
   name: pubsubtopic-sample
+spec:
+  resourceID: pubsubtopic-sample

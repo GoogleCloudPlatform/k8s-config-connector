@@ -133,6 +133,11 @@ func (in *JobAzureCredentials) DeepCopy() *JobAzureCredentials {
 func (in *JobGcsDataSink) DeepCopyInto(out *JobGcsDataSink) {
 	*out = *in
 	out.BucketRef = in.BucketRef
+	if in.Path != nil {
+		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -150,6 +155,11 @@ func (in *JobGcsDataSink) DeepCopy() *JobGcsDataSink {
 func (in *JobGcsDataSource) DeepCopyInto(out *JobGcsDataSource) {
 	*out = *in
 	out.BucketRef = in.BucketRef
+	if in.Path != nil {
+		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -389,12 +399,12 @@ func (in *JobTransferSpec) DeepCopyInto(out *JobTransferSpec) {
 	if in.GcsDataSink != nil {
 		in, out := &in.GcsDataSink, &out.GcsDataSink
 		*out = new(JobGcsDataSink)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.GcsDataSource != nil {
 		in, out := &in.GcsDataSource, &out.GcsDataSource
 		*out = new(JobGcsDataSource)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.HttpDataSource != nil {
 		in, out := &in.HttpDataSource, &out.HttpDataSource

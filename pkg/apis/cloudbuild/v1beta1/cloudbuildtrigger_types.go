@@ -580,6 +580,17 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	PubsubConfig *TriggerPubsubConfig `json:"pubsubConfig,omitempty"`
 
+	/* The service account used for all user-controlled operations including
+	triggers.patch, triggers.run, builds.create, and builds.cancel.
+
+	If no service account is set, then the standard Cloud Build service account
+	([PROJECT_NUM]@system.gserviceaccount.com) will be used instead.
+
+	When populating via the external field, the following format is supported:
+	projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL} */
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
 	/* Substitutions data for Build resource. */
 	// +optional
 	Substitutions map[string]string `json:"substitutions,omitempty"`

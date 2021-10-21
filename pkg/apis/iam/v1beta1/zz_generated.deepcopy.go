@@ -809,6 +809,11 @@ func (in *IAMServiceAccountSpec) DeepCopyInto(out *IAMServiceAccountSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Disabled != nil {
+		in, out := &in.Disabled, &out.Disabled
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)

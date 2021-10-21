@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.63.0
+    cnrm.cloud.google.com/version: 1.64.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -781,6 +781,41 @@ spec:
                     type: object
                 required:
                 - topicRef
+                type: object
+              serviceAccountRef:
+                description: |-
+                  The service account used for all user-controlled operations including
+                  triggers.patch, triggers.run, builds.create, and builds.cancel.
+
+                  If no service account is set, then the standard Cloud Build service account
+                  ([PROJECT_NUM]@system.gserviceaccount.com) will be used instead.
+
+                  When populating via the external field, the following format is supported:
+                  projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL}
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The email of an IAMServiceAccount.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
                 type: object
               substitutions:
                 additionalProperties:

@@ -25,7 +25,7 @@ spec:
   featureRef:
     name: gkehubfeaturemembership-dep
   configmanagement:
-    version: 1.6.2
+    version: 1.9.0
     configSync:
       sourceFormat: unstructured
       git:

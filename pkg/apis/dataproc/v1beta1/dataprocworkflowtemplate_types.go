@@ -792,10 +792,6 @@ type DataprocWorkflowTemplateSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Optional. Used to perform a consistent read-modify-write. This field should be left blank for a `CreateWorkflowTemplate` request. It is required for an `UpdateWorkflowTemplate` request, and must match the current server version. A typical update template flow would fetch the current template with a `GetWorkflowTemplate` request, which will return the current template with the `version` field filled in with the current server version. The user updates other fields in the template, then returns it as part of the `UpdateWorkflowTemplate` request. */
-	// +optional
-	Version *int `json:"version,omitempty"`
 }
 
 type WorkflowtemplateConfigStatus struct {
@@ -888,6 +884,8 @@ type DataprocWorkflowTemplateStatus struct {
 	Placement WorkflowtemplatePlacementStatus `json:"placement,omitempty"`
 	/* Output only. The time template was last updated. */
 	UpdateTime string `json:"updateTime,omitempty"`
+	/* Output only. The current version of this workflow template. */
+	Version int `json:"version,omitempty"`
 }
 
 // +genclient

@@ -1348,11 +1348,6 @@ func (in *DataprocWorkflowTemplateSpec) DeepCopyInto(out *DataprocWorkflowTempla
 		*out = new(string)
 		**out = **in
 	}
-	if in.Version != nil {
-		in, out := &in.Version, &out.Version
-		*out = new(int)
-		**out = **in
-	}
 	return
 }
 

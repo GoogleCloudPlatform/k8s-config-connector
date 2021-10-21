@@ -96,6 +96,12 @@ type ComputeSubnetworkSpec struct {
 	non-overlapping within a network. Only IPv4 is supported. */
 	IpCidrRange string `json:"ipCidrRange"`
 
+	/* Immutable. The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
+	or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
+	cannot enable direct path. Possible values: ["EXTERNAL"] */
+	// +optional
+	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
+
 	/* Denotes the logging options for the subnetwork flow logs. If logging is enabled
 	logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
 	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER' */
@@ -143,6 +149,11 @@ type ComputeSubnetworkSpec struct {
 	/*  */
 	// +optional
 	SecondaryIpRange []SubnetworkSecondaryIpRange `json:"secondaryIpRange,omitempty"`
+
+	/* The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
+	If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"] */
+	// +optional
+	StackType *string `json:"stackType,omitempty"`
 }
 
 type ComputeSubnetworkStatus struct {
@@ -151,11 +162,15 @@ type ComputeSubnetworkStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	/* The range of external IPv6 addresses that are owned by this subnetwork. */
+	ExternalIpv6Prefix string `json:"externalIpv6Prefix,omitempty"`
 	/* DEPRECATED — This field is not useful for users, and has been removed as an output. Fingerprint of this resource. This field is used internally during updates of this resource. */
 	Fingerprint string `json:"fingerprint,omitempty"`
 	/* The gateway address for default routes to reach destination addresses
 	outside this subnetwork. */
 	GatewayAddress string `json:"gatewayAddress,omitempty"`
+	/* The range of internal IPv6 addresses that are owned by this subnetwork. */
+	Ipv6CidrRange string `json:"ipv6CidrRange,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */

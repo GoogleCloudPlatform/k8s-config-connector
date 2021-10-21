@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.63.0
+    cnrm.cloud.google.com/version: 1.64.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -83,6 +83,12 @@ spec:
                   Provide this property when you create the subnetwork. For example,
                   10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
                   non-overlapping within a network. Only IPv4 is supported.
+                type: string
+              ipv6AccessType:
+                description: |-
+                  Immutable. The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
+                  or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
+                  cannot enable direct path. Possible values: ["EXTERNAL"]
                 type: string
               logConfig:
                 description: |-
@@ -211,6 +217,11 @@ spec:
                   - rangeName
                   type: object
                 type: array
+              stackType:
+                description: |-
+                  The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
+                  If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]
+                type: string
             required:
             - ipCidrRange
             - networkRef
@@ -247,6 +258,10 @@ spec:
               creationTimestamp:
                 description: Creation timestamp in RFC3339 text format.
                 type: string
+              externalIpv6Prefix:
+                description: The range of external IPv6 addresses that are owned by
+                  this subnetwork.
+                type: string
               fingerprint:
                 description: DEPRECATED — This field is not useful for users, and
                   has been removed as an output. Fingerprint of this resource. This
@@ -256,6 +271,10 @@ spec:
                 description: |-
                   The gateway address for default routes to reach destination addresses
                   outside this subnetwork.
+                type: string
+              ipv6CidrRange:
+                description: The range of internal IPv6 addresses that are owned by
+                  this subnetwork.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

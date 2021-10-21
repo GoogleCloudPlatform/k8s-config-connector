@@ -375,6 +375,11 @@ func (in *DNSRecordSetSpec) DeepCopyInto(out *DNSRecordSetSpec) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.Ttl != nil {
+		in, out := &in.Ttl, &out.Ttl
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 

@@ -144,6 +144,23 @@ type InstancetemplateGuestAccelerator struct {
 	Type string `json:"type"`
 }
 
+type InstancetemplateIpv6AccessConfig struct {
+	/* The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically. */
+	// +optional
+	ExternalIpv6 *string `json:"externalIpv6,omitempty"`
+
+	/* The prefix length of the external IPv6 range. */
+	// +optional
+	ExternalIpv6PrefixLength *string `json:"externalIpv6PrefixLength,omitempty"`
+
+	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6 */
+	NetworkTier string `json:"networkTier"`
+
+	/* The domain name to be used when creating DNSv6 records for the external IPv6 ranges. */
+	// +optional
+	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
+}
+
 type InstancetemplateMetadata struct {
 	/*  */
 	Key string `json:"key"`
@@ -161,6 +178,14 @@ type InstancetemplateNetworkInterface struct {
 	// +optional
 	AliasIpRange []InstancetemplateAliasIpRange `json:"aliasIpRange,omitempty"`
 
+	/* An array of IPv6 access configurations for this interface. Currently, only one IPv6 access config, DIRECT_IPV6, is supported. If there is no ipv6AccessConfig specified, then this instance will have no external IPv6 Internet access. */
+	// +optional
+	Ipv6AccessConfig []InstancetemplateIpv6AccessConfig `json:"ipv6AccessConfig,omitempty"`
+
+	/* One of EXTERNAL, INTERNAL to indicate whether the IP can be accessed from the Internet. This field is always inherited from its subnetwork. */
+	// +optional
+	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
+
 	/* The name of the network_interface. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -176,6 +201,10 @@ type InstancetemplateNetworkInterface struct {
 	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET */
 	// +optional
 	NicType *string `json:"nicType,omitempty"`
+
+	/* The stack type for this network interface to identify whether the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be used. */
+	// +optional
+	StackType *string `json:"stackType,omitempty"`
 
 	/* Immutable. The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used. */
 	// +optional

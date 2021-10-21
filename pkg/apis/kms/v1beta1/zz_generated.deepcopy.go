@@ -119,6 +119,11 @@ func (in *KMSCryptoKeySpec) DeepCopyInto(out *KMSCryptoKeySpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ImportOnly != nil {
+		in, out := &in.ImportOnly, &out.ImportOnly
+		*out = new(bool)
+		**out = **in
+	}
 	out.KeyRingRef = in.KeyRingRef
 	if in.Purpose != nil {
 		in, out := &in.Purpose, &out.Purpose

@@ -51,6 +51,10 @@ type KMSCryptoKeySpec struct {
 	// +optional
 	DestroyScheduledDuration *string `json:"destroyScheduledDuration,omitempty"`
 
+	/* Immutable. Whether this key may contain imported versions only. */
+	// +optional
+	ImportOnly *bool `json:"importOnly,omitempty"`
+
 	/* The KMSKeyRing that this key belongs to. */
 	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef"`
 

@@ -23,3 +23,12 @@ spec:
   description: "BigQuery Dataset Sample"
   friendlyName: bigquerydataset-sample
   location: US
+  access:
+    - role: OWNER
+      # Replace ${PROJECT_ID?} with the ID of the project where your service
+      # account lives.
+      userByEmail: bigquerydataset-dep@${PROJECT_ID?}.iam.gserviceaccount.com
+    - role: WRITER
+      specialGroup: projectWriters
+    - role: READER
+      domain: google.com

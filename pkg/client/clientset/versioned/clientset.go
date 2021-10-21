@@ -39,6 +39,7 @@ import (
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dns/v1beta1"
+	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gameservices/v1beta1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gkehub/v1beta1"
@@ -86,6 +87,7 @@ type Interface interface {
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
+	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
 	GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
@@ -132,6 +134,7 @@ type Clientset struct {
 	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
 	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
+	filestoreV1beta1            *filestorev1beta1.FilestoreV1beta1Client
 	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
 	gameservicesV1beta1         *gameservicesv1beta1.GameservicesV1beta1Client
 	gkehubV1beta1               *gkehubv1beta1.GkehubV1beta1Client
@@ -232,6 +235,11 @@ func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 // DnsV1beta1 retrieves the DnsV1beta1Client
 func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 	return c.dnsV1beta1
+}
+
+// FilestoreV1beta1 retrieves the FilestoreV1beta1Client
+func (c *Clientset) FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface {
+	return c.filestoreV1beta1
 }
 
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
@@ -440,6 +448,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.filestoreV1beta1, err = filestorev1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.firestoreV1beta1, err = firestorev1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -567,6 +579,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.datafusionV1beta1 = datafusionv1beta1.NewForConfigOrDie(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.NewForConfigOrDie(c)
 	cs.dnsV1beta1 = dnsv1beta1.NewForConfigOrDie(c)
+	cs.filestoreV1beta1 = filestorev1beta1.NewForConfigOrDie(c)
 	cs.firestoreV1beta1 = firestorev1beta1.NewForConfigOrDie(c)
 	cs.gameservicesV1beta1 = gameservicesv1beta1.NewForConfigOrDie(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.NewForConfigOrDie(c)
@@ -615,6 +628,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
+	cs.filestoreV1beta1 = filestorev1beta1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
 	cs.gameservicesV1beta1 = gameservicesv1beta1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)

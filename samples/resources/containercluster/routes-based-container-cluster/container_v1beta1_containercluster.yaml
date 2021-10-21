@@ -23,8 +23,6 @@ spec:
   description: A routes-based cluster confined to one zone configured for development.
   location: us-central1-a
   initialNodeCount: 1
-  clusterTelemetry:
-    type: SYSTEM_ONLY
   networkingMode: ROUTES
   clusterIpv4Cidr: 10.96.0.0/14
   masterAuthorizedNetworksConfig:
@@ -40,3 +38,10 @@ spec:
       disabled: true
     httpLoadBalancing:
       disabled: true
+  loggingConfig:
+    enableComponents:
+      - "SYSTEM_COMPONENTS"
+      - "WORKLOADS"
+  monitoringConfig:
+    enableComponents:
+      - "SYSTEM_COMPONENTS"

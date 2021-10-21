@@ -40,6 +40,10 @@ type IAMServiceAccountSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Whether the service account is disabled. Defaults to false */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
 	/* The display name for the service account. Can be updated without creating a new resource. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`

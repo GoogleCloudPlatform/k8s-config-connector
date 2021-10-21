@@ -46,7 +46,8 @@ type DNSRecordSetSpec struct {
 	Rrdatas []string `json:"rrdatas"`
 
 	/* The time-to-live of this record set (seconds). */
-	Ttl int `json:"ttl"`
+	// +optional
+	Ttl *int `json:"ttl,omitempty"`
 
 	/* The DNS record set type. */
 	Type string `json:"type"`

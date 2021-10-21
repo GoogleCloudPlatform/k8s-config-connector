@@ -53,6 +53,8 @@ import (
 	fakedataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dataproc/v1beta1/fake"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dns/v1beta1"
 	fakednsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dns/v1beta1/fake"
+	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/filestore/v1beta1"
+	fakefilestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/filestore/v1beta1/fake"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1"
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/gameservices/v1beta1"
@@ -230,6 +232,11 @@ func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 // DnsV1beta1 retrieves the DnsV1beta1Client
 func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 	return &fakednsv1beta1.FakeDnsV1beta1{Fake: &c.Fake}
+}
+
+// FilestoreV1beta1 retrieves the FilestoreV1beta1Client
+func (c *Clientset) FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface {
+	return &fakefilestorev1beta1.FakeFilestoreV1beta1{Fake: &c.Fake}
 }
 
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client

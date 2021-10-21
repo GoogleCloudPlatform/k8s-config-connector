@@ -133,6 +133,11 @@ func (in *CloudBuildTriggerSpec) DeepCopyInto(out *CloudBuildTriggerSpec) {
 		*out = new(TriggerPubsubConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.Substitutions != nil {
 		in, out := &in.Substitutions, &out.Substitutions
 		*out = make(map[string]string, len(*in))

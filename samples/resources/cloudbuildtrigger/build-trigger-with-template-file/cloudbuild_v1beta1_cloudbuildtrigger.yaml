@@ -31,3 +31,5 @@ spec:
   substitutions:
     "_SERVICE_NAME": "service-name"
   filename: "cloudbuild.yaml"
+  serviceAccountRef:
+    name: cbt-dep-withtemplatefile

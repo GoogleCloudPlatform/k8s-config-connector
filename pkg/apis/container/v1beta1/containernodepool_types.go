@@ -218,8 +218,13 @@ type NodepoolUpgradeSettings struct {
 }
 
 type NodepoolWorkloadMetadataConfig struct {
-	/* NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
-	NodeMetadata string `json:"nodeMetadata"`
+	/* Mode is the configuration for how to expose metadata to workloads running on the node. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
+	// +optional
+	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }
 
 type ContainerNodePoolSpec struct {

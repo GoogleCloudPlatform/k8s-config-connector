@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.63.0
+    cnrm.cloud.google.com/version: 1.64.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -340,6 +340,20 @@ spec:
               description:
                 description: Immutable.  Description of the cluster.
                 type: string
+              dnsConfig:
+                description: Immutable. Configuration for Cloud DNS for Kubernetes
+                  Engine.
+                properties:
+                  clusterDns:
+                    description: Which in-cluster DNS provider should be used.
+                    type: string
+                  clusterDnsDomain:
+                    description: The suffix used for all cluster service records.
+                    type: string
+                  clusterDnsScope:
+                    description: The scope of access to cluster DNS records.
+                    type: string
+                type: object
               enableAutopilot:
                 description: Immutable. Enable Autopilot for this cluster.
                 type: boolean
@@ -424,6 +438,18 @@ spec:
                   with multiple masters spread across zones in the region, and with
                   default node locations in those zones as well.
                 type: string
+              loggingConfig:
+                description: Logging configuration for the cluster.
+                properties:
+                  enableComponents:
+                    description: GKE components exposing logs. Valid values include
+                      SYSTEM_COMPONENTS and WORKLOADS.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - enableComponents
+                type: object
               loggingService:
                 description: The logging service that the cluster should write logs
                   to. Available options include logging.googleapis.com(Legacy Stackdriver),
@@ -584,6 +610,18 @@ spec:
                   version of the most recent official release (which is not necessarily
                   the latest version).
                 type: string
+              monitoringConfig:
+                description: Monitoring configuration for the cluster.
+                properties:
+                  enableComponents:
+                    description: GKE components exposing metrics. Valid values include
+                      SYSTEM_COMPONENTS.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - enableComponents
+                type: object
               monitoringService:
                 description: The monitoring service that the cluster should write
                   metrics to. Automatically send metrics from pods in the cluster
@@ -845,12 +883,15 @@ spec:
                     description: Immutable. The workload metadata configuration for
                       this node.
                     properties:
-                      nodeMetadata:
-                        description: NodeMetadata is the configuration for how to
-                          expose metadata to the workloads running on the node.
+                      mode:
+                        description: Mode is the configuration for how to expose metadata
+                          to workloads running on the node.
                         type: string
-                    required:
-                    - nodeMetadata
+                      nodeMetadata:
+                        description: DEPRECATED — Deprecated in favor of mode. NodeMetadata
+                          is the configuration for how to expose metadata to the workloads
+                          running on the node.
+                        type: string
                     type: object
                 type: object
               nodeLocations:

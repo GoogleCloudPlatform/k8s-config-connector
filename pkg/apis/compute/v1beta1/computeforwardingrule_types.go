@@ -36,12 +36,14 @@ import (
 )
 
 type ForwardingruleFilterLabels struct {
-	/* Immutable. Name of the metadata label. The length must be between
-	1 and 1024 characters, inclusive. */
+	/* Immutable. Name of metadata label.
+
+	The name can have a maximum length of 1024 characters and must be at least 1 character long. */
 	Name string `json:"name"`
 
-	/* Immutable. The value that the label must match. The value has a maximum
-	length of 1024 characters. */
+	/* Immutable. The value of the label must match the specified value.
+
+	value can have a maximum length of 1024 characters. */
 	Value string `json:"value"`
 }
 
@@ -56,19 +58,17 @@ type ForwardingruleIpAddress struct {
 }
 
 type ForwardingruleMetadataFilters struct {
-	/* Immutable. The list of label value pairs that must match labels in the
-	provided metadata based on filterMatchCriteria
+	/* Immutable. The list of label value pairs that must match labels in the provided metadata based on `filterMatchCriteria`
 
 	This list must not be empty and can have at the most 64 entries. */
 	FilterLabels []ForwardingruleFilterLabels `json:"filterLabels"`
 
-	/* Immutable. Specifies how individual filterLabel matches within the list of
-	filterLabels contribute towards the overall metadataFilter match.
+	/* Immutable. Specifies how individual `filterLabel` matches within the list of `filterLabel`s contribute towards the overall `metadataFilter` match.
 
-	MATCH_ANY - At least one of the filterLabels must have a matching
-	label in the provided metadata.
-	MATCH_ALL - All filterLabels must have matching labels in the
-	provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"] */
+	Supported values are:
+
+	*   MATCH_ANY: At least one of the `filterLabels` must have a matching label in the provided metadata.
+	*   MATCH_ALL: All `filterLabels` must have matching labels in the provided metadata. Possible values: NOT_SET, MATCH_ALL, MATCH_ANY */
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
@@ -99,18 +99,11 @@ type ForwardingruleTarget struct {
 }
 
 type ComputeForwardingRuleSpec struct {
-	/* Immutable. This field can be used with internal load balancer or network load balancer
-	when the forwarding rule references a backend service, or with the target
-	field when it references a TargetInstance. Set this to true to
-	allow packets addressed to any ports to be forwarded to the backends configured
-	with this forwarding rule. This can be used when the protocol is TCP/UDP, and it
-	must be set to true when the protocol is set to L3_DEFAULT.
-	Cannot be set if port or portRange are set. */
+	/* Immutable. This field is used along with the `backend_service` field for internal load balancing or with the `target` field for internal TargetInstance. This field cannot be used with `port` or `portRange` fields. When the load balancing scheme is `INTERNAL` and protocol is TCP/UDP, specify this field to allow packets addressed to any ports will be forwarded to the backends configured with this forwarding rule. */
 	// +optional
 	AllPorts *bool `json:"allPorts,omitempty"`
 
-	/* If true, clients can access ILB from all regions.
-	Otherwise only allows from the local region the ILB is located at. */
+	/* This field is used along with the `backend_service` field for internal load balancing or with the `target` field for internal TargetInstance. If the field is set to `TRUE`, clients can access ILB from all regions. Otherwise only allows access from clients in the same region as the internal load balancer. */
 	// +optional
 	AllowGlobalAccess *bool `json:"allowGlobalAccess,omitempty"`
 
@@ -119,8 +112,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 
-	/* Immutable. An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -146,56 +138,46 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	IpAddress *ForwardingruleIpAddress `json:"ipAddress,omitempty"`
 
-	/* Immutable. The IP protocol to which this rule applies.
-
-	When the load balancing scheme is INTERNAL, only TCP and UDP are
-	valid. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"] */
+	/* Immutable. The IP protocol to which this rule applies. For protocol forwarding, valid options are `TCP`, `UDP`, `ESP`, `AH`, `SCTP` or `ICMP`. For Internal TCP/UDP Load Balancing, the load balancing scheme is `INTERNAL`, and one of `TCP` or `UDP` are valid. For Traffic Director, the load balancing scheme is `INTERNAL_SELF_MANAGED`, and only `TCP`is valid. For Internal HTTP(S) Load Balancing, the load balancing scheme is `INTERNAL_MANAGED`, and only `TCP` is valid. For HTTP(S), SSL Proxy, and TCP Proxy Load Balancing, the load balancing scheme is `EXTERNAL` and only `TCP` is valid. For Network TCP/UDP Load Balancing, the load balancing scheme is `EXTERNAL`, and one of `TCP` or `UDP` is valid. */
 	// +optional
 	IpProtocol *string `json:"ipProtocol,omitempty"`
 
-	/* Immutable. The IP Version that will be used by this global forwarding rule. Possible values: ["IPV4", "IPV6"] */
+	/* Immutable. The IP Version that will be used by this forwarding rule. Valid options are `IPV4` or `IPV6`. This can only be specified for an external global forwarding rule. Possible values: UNSPECIFIED_VERSION, IPV4, IPV6 */
 	// +optional
 	IpVersion *string `json:"ipVersion,omitempty"`
 
-	/* Immutable. Indicates whether or not this load balancer can be used
-	as a collector for packet mirroring. To prevent mirroring loops,
-	instances behind this load balancer will not have their traffic
-	mirrored even if a PacketMirroring rule applies to them. This
-	can only be set to true for load balancers that have their
-	loadBalancingScheme set to INTERNAL. */
+	/* Immutable. Indicates whether or not this load balancer can be used as a collector for packet mirroring. To prevent mirroring loops, instances behind this load balancer will not have their traffic mirrored even if a `PacketMirroring` rule applies to them. This can only be set to true for load balancers that have their `loadBalancingScheme` set to `INTERNAL`. */
 	// +optional
 	IsMirroringCollector *bool `json:"isMirroringCollector,omitempty"`
 
-	/* Immutable. This signifies what the ForwardingRule will be used for and can be
-	EXTERNAL, INTERNAL, or INTERNAL_MANAGED. EXTERNAL is used for Classic
-	Cloud VPN gateways, protocol forwarding to VMs from an external IP address,
-	and HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP load balancers.
-	INTERNAL is used for protocol forwarding to VMs from an internal IP address,
-	and internal TCP/UDP load balancers.
-	INTERNAL_MANAGED is used for internal HTTP(S) load balancers. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL", "INTERNAL_MANAGED"] */
+	/* Immutable. Specifies the forwarding rule type.
+
+	*   `EXTERNAL` is used for:
+	    *   Classic Cloud VPN gateways
+	    *   Protocol forwarding to VMs from an external IP address
+	    *   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP
+	*   `INTERNAL` is used for:
+	    *   Protocol forwarding to VMs from an internal IP address
+	    *   Internal TCP/UDP load balancers
+	*   `INTERNAL_MANAGED` is used for:
+	    *   Internal HTTP(S) load balancers
+	*   `INTERNAL_SELF_MANAGED` is used for:
+	    *   Traffic Director
+
+	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
 	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
-	configuration to a limited set xDS compliant clients. In their xDS
-	requests to Loadbalancer, xDS clients present node metadata. If a
-	match takes place, the relevant routing configuration is made available
-	to those proxies.
+	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing configuration to a limited set of [xDS](https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md) compliant clients. In their xDS requests to Loadbalancer, xDS clients present [node metadata](https://github.com/envoyproxy/data-plane-api/search?q=%22message+Node%22+in%3A%2Fenvoy%2Fapi%2Fv2%2Fcore%2Fbase.proto&). If a match takes place, the relevant configuration is made available to those proxies. Otherwise, all the resources (e.g. `TargetHttpProxy`, `UrlMap`) referenced by the `ForwardingRule` will not be visible to those proxies.
 
-	For each metadataFilter in this list, if its filterMatchCriteria is set
-	to MATCH_ANY, at least one of the filterLabels must match the
-	corresponding label provided in the metadata. If its filterMatchCriteria
-	is set to MATCH_ALL, then all of its filterLabels must match with
-	corresponding labels in the provided metadata.
+	For each `metadataFilter` in this list, if its `filterMatchCriteria` is set to MATCH_ANY, at least one of the `filterLabel`s must match the corresponding label provided in the metadata. If its `filterMatchCriteria` is set to MATCH_ALL, then all of its `filterLabel`s must match with corresponding labels provided in the metadata.
 
-	metadataFilters specified here can be overridden by those specified in
-	the UrlMap that this ForwardingRule references.
+	`metadataFilters` specified here will be applifed before those specified in the `UrlMap` that this `ForwardingRule` references.
 
-	metadataFilters only applies to Loadbalancers that have their
-	loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	`metadataFilters` only applies to Loadbalancers that have their loadBalancingScheme set to `INTERNAL_SELF_MANAGED`. */
 	// +optional
 	MetadataFilters []ForwardingruleMetadataFilters `json:"metadataFilters,omitempty"`
 
@@ -206,45 +188,23 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The networking tier used for configuring this address. If this field is not
-	specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"] */
+	/* Immutable. This signifies the networking tier used for configuring this load balancer and can only take the following values: `PREMIUM`, `STANDARD`. For regional ForwardingRule, the valid values are `PREMIUM` and `STANDARD`. For GlobalForwardingRule, the valid value is `PREMIUM`. If this field is not specified, it is assumed to be `PREMIUM`. If `IPAddress` is specified, this value must be equal to the networkTier of the Address. */
 	// +optional
 	NetworkTier *string `json:"networkTier,omitempty"`
 
-	/* Immutable. This field is used along with the target field for TargetHttpProxy,
-	TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway,
-	TargetPool, TargetInstance.
+	/* Immutable. When the load balancing scheme is `EXTERNAL`, `INTERNAL_SELF_MANAGED` and `INTERNAL_MANAGED`, you can specify a `port_range`. Use with a forwarding rule that points to a target proxy or a target pool. Do not use with a forwarding rule that points to a backend service. This field is used along with the `target` field for TargetHttpProxy, TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway, TargetPool, TargetInstance. Applicable only when `IPProtocol` is `TCP`, `UDP`, or `SCTP`, only packets addressed to ports in the specified range will be forwarded to `target`. Forwarding rules with the same `[IPAddress, IPProtocol]` pair must have disjoint port ranges. Some types of forwarding target have constraints on the acceptable ports:
 
-	Applicable only when IPProtocol is TCP, UDP, or SCTP, only packets
-	addressed to ports in the specified range will be forwarded to target.
-	Forwarding rules with the same [IPAddress, IPProtocol] pair must have
-	disjoint port ranges.
+	*   TargetHttpProxy: 80, 8080
+	*   TargetHttpsProxy: 443
+	*   TargetTcpProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
+	*   TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
+	*   TargetVpnGateway: 500, 4500
 
-	Some types of forwarding target have constraints on the acceptable
-	ports:
-
-	* TargetHttpProxy: 80, 8080
-	* TargetHttpsProxy: 443
-	* TargetTcpProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
-	                  1883, 5222
-	* TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
-	                  1883, 5222
-	* TargetVpnGateway: 500, 4500 */
+	@pattern: d+(?:-d+)? */
 	// +optional
 	PortRange *string `json:"portRange,omitempty"`
 
-	/* Immutable. This field is used along with internal load balancing and network
-	load balancer when the forwarding rule references a backend service
-	and when protocol is not L3_DEFAULT.
-
-	A single port or a comma separated list of ports can be configured.
-	Only packets addressed to these ports will be forwarded to the backends
-	configured with this forwarding rule.
-
-	You can only use one of ports and portRange, or allPorts.
-	The three are mutually exclusive.
-
-	You may specify a maximum of up to 5 ports, which can be non-contiguous. */
+	/* Immutable. This field is used along with the `backend_service` field for internal load balancing. When the load balancing scheme is `INTERNAL`, a list of ports can be configured, for example, ['80'], ['8000','9000']. Only packets addressed to these ports are forwarded to the backends configured with the forwarding rule. If the forwarding rule's loadBalancingScheme is INTERNAL, you can specify ports in one of the following ways: * A list of up to five ports, which can be non-contiguous * Keyword `ALL`, which causes the forwarding rule to forward traffic on any port of the forwarding rule's protocol. @pattern: d+(?:-d+)? For more information, refer to [Port specifications](/load-balancing/docs/forwarding-rule-concepts#port_specifications). */
 	// +optional
 	Ports []string `json:"ports,omitempty"`
 
@@ -252,18 +212,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. An optional prefix to the service name for this Forwarding Rule.
-	If specified, will be the first label of the fully qualified service
-	name.
-
-	The label must be 1-63 characters long, and comply with RFC1035.
-	Specifically, the label must be 1-63 characters long and match the
-	regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first
-	character must be a lowercase letter, and all following characters
-	must be a dash, lowercase letter, or digit, except the last
-	character, which cannot be a dash.
-
-	This field is only used for INTERNAL load balancing. */
+	/* Immutable. An optional prefix to the service name for this Forwarding Rule. If specified, the prefix is the first label of the fully qualified service name. The label must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Specifically, the label must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. This field is only used for internal load balancing. */
 	// +optional
 	ServiceLabel *string `json:"serviceLabel,omitempty"`
 
@@ -289,17 +238,15 @@ type ComputeForwardingRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeForwardingRule's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
+	/* [Output Only] Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
-	/* The fingerprint used for optimistic locking of this resource.  Used
-	internally during updates. */
+	/* Used internally during label updates. */
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
+	/* [Output Only] Server-defined URL for the resource. */
 	SelfLink string `json:"selfLink,omitempty"`
-	/* The internal fully qualified service name for this Forwarding Rule.
-	This field is only used for INTERNAL load balancing. */
+	/* [Output Only] The internal fully qualified service name for this Forwarding Rule. This field is only used for internal load balancing. */
 	ServiceName string `json:"serviceName,omitempty"`
 }
 

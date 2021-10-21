@@ -25,3 +25,4 @@ spec:
   versionTemplate:
     algorithm: EC_SIGN_P384_SHA384
     protectionLevel: SOFTWARE
+  importOnly: false
