@@ -63,6 +63,7 @@ type ComputeV1beta1Interface interface {
 	ComputeSSLCertificatesGetter
 	ComputeSSLPoliciesGetter
 	ComputeSecurityPoliciesGetter
+	ComputeServiceAttachmentsGetter
 	ComputeSharedVPCHostProjectsGetter
 	ComputeSharedVPCServiceProjectsGetter
 	ComputeSnapshotsGetter
@@ -219,6 +220,10 @@ func (c *ComputeV1beta1Client) ComputeSSLPolicies(namespace string) ComputeSSLPo
 
 func (c *ComputeV1beta1Client) ComputeSecurityPolicies(namespace string) ComputeSecurityPolicyInterface {
 	return newComputeSecurityPolicies(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeServiceAttachments(namespace string) ComputeServiceAttachmentInterface {
+	return newComputeServiceAttachments(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeSharedVPCHostProjects(namespace string) ComputeSharedVPCHostProjectInterface {

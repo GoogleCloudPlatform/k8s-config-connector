@@ -257,6 +257,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeSecurityPolicy{}).Name(),
 	}
 
+	ComputeServiceAttachmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeServiceAttachment{}).Name(),
+	}
+
 	ComputeSharedVPCHostProjectGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

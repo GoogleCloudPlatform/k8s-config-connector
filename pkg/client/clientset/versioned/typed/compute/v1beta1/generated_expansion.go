@@ -89,6 +89,8 @@ type ComputeSSLPolicyExpansion interface{}
 
 type ComputeSecurityPolicyExpansion interface{}
 
+type ComputeServiceAttachmentExpansion interface{}
+
 type ComputeSharedVPCHostProjectExpansion interface{}
 
 type ComputeSharedVPCServiceProjectExpansion interface{}

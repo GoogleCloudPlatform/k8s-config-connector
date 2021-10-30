@@ -167,6 +167,10 @@ func (c *FakeComputeV1beta1) ComputeSecurityPolicies(namespace string) v1beta1.C
 	return &FakeComputeSecurityPolicies{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeServiceAttachments(namespace string) v1beta1.ComputeServiceAttachmentInterface {
+	return &FakeComputeServiceAttachments{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeSharedVPCHostProjects(namespace string) v1beta1.ComputeSharedVPCHostProjectInterface {
 	return &FakeComputeSharedVPCHostProjects{c, namespace}
 }
