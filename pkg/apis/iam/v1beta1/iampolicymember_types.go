@@ -48,11 +48,11 @@ type PolicymemberCondition struct {
 }
 
 type PolicymemberMemberFrom struct {
-	/* Immutable. The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
+	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	// +optional
 	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
 
-	/* Immutable. The IAMServiceAccount to be bound to the role. */
+	/* The IAMServiceAccount to be bound to the role. */
 	// +optional
 	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
 }

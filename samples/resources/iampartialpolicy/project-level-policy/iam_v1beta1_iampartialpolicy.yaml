@@ -27,3 +27,8 @@ spec:
     - role: roles/storage.admin
       members:
         - member: serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    - role: roles/editor
+      members:
+        - memberFrom:
+            serviceAccountRef:
+              name: iampartialpolicy-dep-project

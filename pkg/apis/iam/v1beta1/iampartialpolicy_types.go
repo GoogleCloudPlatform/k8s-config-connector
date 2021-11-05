@@ -60,10 +60,24 @@ type PartialpolicyCondition struct {
 	Title string `json:"title"`
 }
 
+type PartialpolicyMemberFrom struct {
+	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
+	// +optional
+	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
+
+	/* The IAMServiceAccount to be bound to the role. */
+	// +optional
+	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+}
+
 type PartialpolicyMembers struct {
-	/* The IAM identity to be bound to the role. */
+	/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. */
 	// +optional
 	Member *string `json:"member,omitempty"`
+
+	/* The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used. */
+	// +optional
+	MemberFrom *PartialpolicyMemberFrom `json:"memberFrom,omitempty"`
 }
 
 type IAMPartialPolicySpec struct {
