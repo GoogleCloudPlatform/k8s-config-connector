@@ -39,7 +39,7 @@ type SubnetworkLogConfig struct {
 	/* Can only be specified if VPC flow logging for this subnetwork is enabled.
 	Toggles the aggregation interval for collecting flow logs. Increasing the
 	interval time will reduce the amount of generated flow logs for long
-	lasting connections. Default is an interval of 5 seconds per connection. Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"] */
+	lasting connections. Default is an interval of 5 seconds per connection. Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"]. */
 	// +optional
 	AggregationInterval *string `json:"aggregationInterval,omitempty"`
 
@@ -59,7 +59,7 @@ type SubnetworkLogConfig struct {
 
 	/* Can only be specified if VPC flow logging for this subnetwork is enabled.
 	Configures whether metadata fields should be added to the reported VPC
-	flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"] */
+	flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"]. */
 	// +optional
 	Metadata *string `json:"metadata,omitempty"`
 
@@ -98,13 +98,13 @@ type ComputeSubnetworkSpec struct {
 
 	/* Immutable. The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
 	or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
-	cannot enable direct path. Possible values: ["EXTERNAL"] */
+	cannot enable direct path. Possible values: ["EXTERNAL"]. */
 	// +optional
 	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
 
 	/* Denotes the logging options for the subnetwork flow logs. If logging is enabled
 	logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
-	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER' */
+	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER'. */
 	// +optional
 	LogConfig *SubnetworkLogConfig `json:"logConfig,omitempty"`
 
@@ -142,7 +142,7 @@ type ComputeSubnetworkSpec struct {
 	purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE
 	or BACKUP. An ACTIVE subnetwork is one that is currently being used
 	for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that
-	is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"] */
+	is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"]. */
 	// +optional
 	Role *string `json:"role,omitempty"`
 
@@ -151,7 +151,7 @@ type ComputeSubnetworkSpec struct {
 	SecondaryIpRange []SubnetworkSecondaryIpRange `json:"secondaryIpRange,omitempty"`
 
 	/* The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
-	If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"] */
+	If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
 	// +optional
 	StackType *string `json:"stackType,omitempty"`
 }

@@ -56,15 +56,15 @@ type NotificationchannelPassword struct {
 }
 
 type NotificationchannelSensitiveLabels struct {
-	/* An authorization token for a notification channel. Channel types that support this field include: slack */
+	/* An authorization token for a notification channel. Channel types that support this field include: slack. */
 	// +optional
 	AuthToken *NotificationchannelAuthToken `json:"authToken,omitempty"`
 
-	/* An password for a notification channel. Channel types that support this field include: webhook_basicauth */
+	/* An password for a notification channel. Channel types that support this field include: webhook_basicauth. */
 	// +optional
 	Password *NotificationchannelPassword `json:"password,omitempty"`
 
-	/* An servicekey token for a notification channel. Channel types that support this field include: pagerduty */
+	/* An servicekey token for a notification channel. Channel types that support this field include: pagerduty. */
 	// +optional
 	ServiceKey *NotificationchannelServiceKey `json:"serviceKey,omitempty"`
 }

@@ -39,11 +39,11 @@ type JobCopy struct {
 	/* Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 	CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
 	CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]. */
 	// +optional
 	CreateDisposition *string `json:"createDisposition,omitempty"`
 
-	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
 	// +optional
 	DestinationEncryptionConfiguration *JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 
@@ -59,7 +59,7 @@ type JobCopy struct {
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
 	WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 	Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]. */
 	// +optional
 	WriteDisposition *string `json:"writeDisposition,omitempty"`
 }
@@ -101,7 +101,7 @@ type JobExtract struct {
 	DestinationUris []string `json:"destinationUris"`
 
 	/* Immutable. When extracting data in CSV format, this defines the delimiter to use between fields in the exported data.
-	Default is ',' */
+	Default is ','. */
 	// +optional
 	FieldDelimiter *string `json:"fieldDelimiter,omitempty"`
 
@@ -137,11 +137,11 @@ type JobLoad struct {
 	/* Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 	CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
 	CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]. */
 	// +optional
 	CreateDisposition *string `json:"createDisposition,omitempty"`
 
-	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
 	// +optional
 	DestinationEncryptionConfiguration *JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 
@@ -167,7 +167,7 @@ type JobLoad struct {
 	and if there are too many bad records, an invalid error is returned in the job result.
 	The default value is false. The sourceFormat property determines what BigQuery treats as an extra value:
 	CSV: Trailing columns
-	JSON: Named values that don't match any column names */
+	JSON: Named values that don't match any column names. */
 	// +optional
 	IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
 
@@ -240,7 +240,7 @@ type JobLoad struct {
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
 	WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 	Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]. */
 	// +optional
 	WriteDisposition *string `json:"writeDisposition,omitempty"`
 }
@@ -255,7 +255,7 @@ type JobQuery struct {
 	/* Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 	CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
 	CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]. */
 	// +optional
 	CreateDisposition *string `json:"createDisposition,omitempty"`
 
@@ -263,7 +263,7 @@ type JobQuery struct {
 	// +optional
 	DefaultDataset *JobDefaultDataset `json:"defaultDataset,omitempty"`
 
-	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys) */
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
 	// +optional
 	DestinationEncryptionConfiguration *JobDestinationEncryptionConfiguration `json:"destinationEncryptionConfiguration,omitempty"`
 
@@ -292,7 +292,7 @@ type JobQuery struct {
 	// +optional
 	ParameterMode *string `json:"parameterMode,omitempty"`
 
-	/* Immutable. Specifies a priority for the query. Default value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"] */
+	/* Immutable. Specifies a priority for the query. Default value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"]. */
 	// +optional
 	Priority *string `json:"priority,omitempty"`
 
@@ -335,14 +335,14 @@ type JobQuery struct {
 	WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
 	WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 	Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"] */
+	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]. */
 	// +optional
 	WriteDisposition *string `json:"writeDisposition,omitempty"`
 }
 
 type JobScriptOptions struct {
 	/* Immutable. Determines which statement in the script represents the "key result",
-	used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"] */
+	used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"]. */
 	// +optional
 	KeyResultStatement *string `json:"keyResultStatement,omitempty"`
 

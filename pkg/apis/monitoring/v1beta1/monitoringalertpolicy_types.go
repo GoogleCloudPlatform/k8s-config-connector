@@ -69,7 +69,7 @@ type AlertpolicyAggregations struct {
 	specified and not equal ALIGN_NONE
 	and alignmentPeriod must be
 	specified; otherwise, an error is
-	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"] */
+	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
@@ -117,7 +117,7 @@ type AlertpolicyAggregations struct {
 	specified and not equal ALIGN_NONE
 	and alignmentPeriod must be
 	specified; otherwise, an error is
-	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"] */
+	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
@@ -224,7 +224,7 @@ type AlertpolicyConditionThreshold struct {
 	on each time series, with the time series on
 	the left-hand side and the threshold on the
 	right-hand side. Only COMPARISON_LT and
-	COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"] */
+	COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"]. */
 	Comparison string `json:"comparison"`
 
 	/* Specifies the alignment of data points in
@@ -319,7 +319,7 @@ type AlertpolicyConditions struct {
 	// +optional
 	ConditionAbsent *AlertpolicyConditionAbsent `json:"conditionAbsent,omitempty"`
 
-	/* A Monitoring Query Language query that outputs a boolean stream */
+	/* A Monitoring Query Language query that outputs a boolean stream. */
 	// +optional
 	ConditionMonitoringQueryLanguage *AlertpolicyConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
 
@@ -379,7 +379,7 @@ type AlertpolicyDenominatorAggregations struct {
 	specified and not equal ALIGN_NONE
 	and alignmentPeriod must be
 	specified; otherwise, an error is
-	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"] */
+	returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"]. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
@@ -427,7 +427,7 @@ type AlertpolicyDenominatorAggregations struct {
 	specified and not equal ALIGN_NONE
 	and alignmentPeriod must be
 	specified; otherwise, an error is
-	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"] */
+	returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"]. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
@@ -462,7 +462,7 @@ type AlertpolicyTrigger struct {
 
 type MonitoringAlertPolicySpec struct {
 	/* How to combine the results of multiple conditions to
-	determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"] */
+	determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"]. */
 	Combiner string `json:"combiner"`
 
 	/* A list of conditions for the policy. The conditions are combined by
@@ -515,7 +515,7 @@ type MonitoringAlertPolicyStatus struct {
 	be ignored. */
 	CreationRecord []AlertpolicyCreationRecordStatus `json:"creationRecord,omitempty"`
 	/* The unique resource name for this policy.
-	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID] */
+	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]. */
 	Name string `json:"name,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`

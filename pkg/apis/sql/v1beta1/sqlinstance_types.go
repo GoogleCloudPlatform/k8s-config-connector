@@ -82,7 +82,7 @@ type InstanceBackupRetentionSettings struct {
 	/* Number of backups to retain. */
 	RetainedBackups int `json:"retainedBackups"`
 
-	/* The unit that 'retainedBackups' represents. Defaults to COUNT */
+	/* The unit that 'retainedBackups' represents. Defaults to COUNT. */
 	// +optional
 	RetentionUnit *string `json:"retentionUnit,omitempty"`
 }
@@ -142,15 +142,15 @@ type InstanceLocationPreference struct {
 }
 
 type InstanceMaintenanceWindow struct {
-	/* Day of week (1-7), starting on Monday */
+	/* Day of week (1-7), starting on Monday. */
 	// +optional
 	Day *int `json:"day,omitempty"`
 
-	/* Hour of day (0-23), ignored if day not set */
+	/* Hour of day (0-23), ignored if day not set. */
 	// +optional
 	Hour *int `json:"hour,omitempty"`
 
-	/* Receive updates earlier (canary) or later (stable) */
+	/* Receive updates earlier (canary) or later (stable). */
 	// +optional
 	UpdateTrack *string `json:"updateTrack,omitempty"`
 }

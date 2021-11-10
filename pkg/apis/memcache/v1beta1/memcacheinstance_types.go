@@ -64,7 +64,7 @@ type MemcacheInstanceSpec struct {
 
 	/* The major version of Memcached software. If not provided, latest supported version will be used.
 	Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically
-	determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"] */
+	determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"]. */
 	// +optional
 	MemcacheVersion *string `json:"memcacheVersion,omitempty"`
 
@@ -114,7 +114,7 @@ type MemcacheInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	CreateTime string `json:"createTime,omitempty"`
-	/* Endpoint for Discovery API */
+	/* Endpoint for Discovery API. */
 	DiscoveryEndpoint string `json:"discoveryEndpoint,omitempty"`
 	/* The full version of memcached server running on this instance. */
 	MemcacheFullVersion string `json:"memcacheFullVersion,omitempty"`

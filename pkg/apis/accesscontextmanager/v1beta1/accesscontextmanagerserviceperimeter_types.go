@@ -42,7 +42,7 @@ type ServiceperimeterEgressFrom struct {
 
 	/* Specifies the type of identities that are allowed access to outside the
 	perimeter. If left unspecified, then members of 'identities' field will
-	be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"] */
+	be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"]. */
 	// +optional
 	IdentityType *string `json:"identityType,omitempty"`
 }
@@ -86,7 +86,7 @@ type ServiceperimeterIngressFrom struct {
 
 	/* Specifies the type of identities that are allowed access from outside the
 	perimeter. If left unspecified, then members of 'identities' field will be
-	allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"] */
+	allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"]. */
 	// +optional
 	IdentityType *string `json:"identityType,omitempty"`
 
@@ -283,7 +283,7 @@ type AccessContextManagerServicePerimeterSpec struct {
 	Perimeter Bridges are typically useful when building more complex
 	topologies with many independent perimeters that need to share some data
 	with a common perimeter, but should not be able to share data among
-	themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER_TYPE_REGULAR", "PERIMETER_TYPE_BRIDGE"] */
+	themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER_TYPE_REGULAR", "PERIMETER_TYPE_BRIDGE"]. */
 	// +optional
 	PerimeterType *string `json:"perimeterType,omitempty"`
 

@@ -47,22 +47,22 @@ type StorageDefaultObjectAccessControlSpec struct {
 	 * domain-{{domain}} (such as "domain-example.com")
 	 * project-team-{{projectId}}
 	 * allUsers
-	 * allAuthenticatedUsers */
+	 * allAuthenticatedUsers. */
 	Entity string `json:"entity"`
 
 	/* The name of the object, if applied to an object. */
 	// +optional
 	Object *string `json:"object,omitempty"`
 
-	/* The access permission for the entity. Possible values: ["OWNER", "READER"] */
+	/* The access permission for the entity. Possible values: ["OWNER", "READER"]. */
 	Role string `json:"role"`
 }
 
 type DefaultobjectaccesscontrolProjectTeamStatus struct {
-	/* The project team associated with the entity */
+	/* The project team associated with the entity. */
 	ProjectNumber string `json:"projectNumber,omitempty"`
 
-	/* The team. Possible values: ["editors", "owners", "viewers"] */
+	/* The team. Possible values: ["editors", "owners", "viewers"]. */
 	Team string `json:"team,omitempty"`
 }
 
@@ -74,13 +74,13 @@ type StorageDefaultObjectAccessControlStatus struct {
 	Domain string `json:"domain,omitempty"`
 	/* The email address associated with the entity. */
 	Email string `json:"email,omitempty"`
-	/* The ID for the entity */
+	/* The ID for the entity. */
 	EntityId string `json:"entityId,omitempty"`
 	/* The content generation of the object, if applied to an object. */
 	Generation int `json:"generation,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/* The project team associated with the entity */
+	/* The project team associated with the entity. */
 	ProjectTeam DefaultobjectaccesscontrolProjectTeamStatus `json:"projectTeam,omitempty"`
 }
 

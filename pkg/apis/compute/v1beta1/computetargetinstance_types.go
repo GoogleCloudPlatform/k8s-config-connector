@@ -44,7 +44,7 @@ type ComputeTargetInstanceSpec struct {
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Immutable. NAT option controlling how IPs are NAT'ed to the instance.
-	Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"] */
+	Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"]. */
 	// +optional
 	NatPolicy *string `json:"natPolicy,omitempty"`
 

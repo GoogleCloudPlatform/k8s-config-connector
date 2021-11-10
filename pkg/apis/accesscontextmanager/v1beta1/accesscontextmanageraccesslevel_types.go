@@ -40,7 +40,7 @@ type AccesslevelBasic struct {
 	is granted this AccessLevel. If AND is used, each Condition in
 	conditions must be satisfied for the AccessLevel to be applied. If
 	OR is used, at least one Condition in conditions must be satisfied
-	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"] */
+	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"]. */
 	// +optional
 	CombiningFunction *string `json:"combiningFunction,omitempty"`
 
@@ -98,12 +98,12 @@ type AccesslevelCustom struct {
 
 type AccesslevelDevicePolicy struct {
 	/* A list of allowed device management levels.
-	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"] */
+	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"]. */
 	// +optional
 	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
 
 	/* A list of allowed encryptions statuses.
-	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"] */
+	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"]. */
 	// +optional
 	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
 
@@ -127,14 +127,14 @@ type AccesslevelDevicePolicy struct {
 }
 
 type AccesslevelExpr struct {
-	/* Description of the expression */
+	/* Description of the expression. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
 	/* Textual representation of an expression in Common Expression Language syntax. */
 	Expression string `json:"expression"`
 
-	/* String indicating the location of the expression for error reporting, e.g. a file name and a position in the file */
+	/* String indicating the location of the expression for error reporting, e.g. a file name and a position in the file. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
@@ -160,7 +160,7 @@ type AccesslevelOsConstraints struct {
 	// +optional
 	MinimumVersion *string `json:"minimumVersion,omitempty"`
 
-	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"] */
+	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]. */
 	OsType string `json:"osType"`
 
 	/* If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access. */

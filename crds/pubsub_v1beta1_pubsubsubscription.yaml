@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -272,7 +272,7 @@ spec:
                   policy is applied. This generally implies that messages will be
                   retried as soon as possible for healthy subscribers. \nRetryPolicy
                   will be triggered on NACKs or acknowledgement deadline exceeded
-                  events for a given message"
+                  events for a given message."
                 properties:
                   maximumBackoff:
                     description: "The maximum delay between consecutive deliveries

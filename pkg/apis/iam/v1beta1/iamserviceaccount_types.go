@@ -40,7 +40,7 @@ type IAMServiceAccountSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Whether the service account is disabled. Defaults to false */
+	/* Whether the service account is disabled. Defaults to false. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 

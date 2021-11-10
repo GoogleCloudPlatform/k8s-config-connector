@@ -23,4 +23,4 @@ spec:
   initialNodeCount: 1
   workloadIdentityConfig:
     # Workload Identity supports only a single namespace based on your project name.
-    identityNamespace: gkehubfeaturemembership-dep.svc.id.goog
+    workloadPool: gkehubfeaturemembership-dep.svc.id.goog

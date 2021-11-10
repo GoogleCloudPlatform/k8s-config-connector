@@ -59,11 +59,11 @@ type LogsinkExclusions struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* If set to True, then this exclusion is disabled and it does not exclude any log entries */
+	/* If set to True, then this exclusion is disabled and it does not exclude any log entries. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* An advanced logs filter that matches the log entries to be excluded. By using the sample function, you can exclude less than 100% of the matching log entries */
+	/* An advanced logs filter that matches the log entries to be excluded. By using the sample function, you can exclude less than 100% of the matching log entries. */
 	Filter string `json:"filter"`
 
 	/* A client-assigned identifier, such as "load-balancer-exclusion". Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric. */

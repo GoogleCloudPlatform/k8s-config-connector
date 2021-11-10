@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -79,11 +79,11 @@ spec:
                       Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
                       CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
                       CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].
                     type: string
                   destinationEncryptionConfiguration:
                     description: Immutable. Custom encryption configuration (e.g.,
-                      Cloud KMS keys)
+                      Cloud KMS keys).
                     properties:
                       kmsKeyRef:
                         description: |-
@@ -198,7 +198,7 @@ spec:
                       WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
                       WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
                       Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].
                     type: string
                 required:
                 - sourceTables
@@ -226,7 +226,7 @@ spec:
                   fieldDelimiter:
                     description: |-
                       Immutable. When extracting data in CSV format, this defines the delimiter to use between fields in the exported data.
-                      Default is ','
+                      Default is ','.
                     type: string
                   printHeader:
                     description: Immutable. Whether to print out a header row in the
@@ -299,11 +299,11 @@ spec:
                       Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
                       CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
                       CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].
                     type: string
                   destinationEncryptionConfiguration:
                     description: Immutable. Custom encryption configuration (e.g.,
-                      Cloud KMS keys)
+                      Cloud KMS keys).
                     properties:
                       kmsKeyRef:
                         description: |-
@@ -397,7 +397,7 @@ spec:
                       and if there are too many bad records, an invalid error is returned in the job result.
                       The default value is false. The sourceFormat property determines what BigQuery treats as an extra value:
                       CSV: Trailing columns
-                      JSON: Named values that don't match any column names
+                      JSON: Named values that don't match any column names.
                     type: boolean
                   maxBadRecords:
                     description: |-
@@ -496,7 +496,7 @@ spec:
                       WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
                       WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
                       Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].
                     type: string
                 required:
                 - destinationTable
@@ -520,7 +520,7 @@ spec:
                       Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
                       CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
                       CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
-                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].
                     type: string
                   defaultDataset:
                     description: Immutable. Specifies the default dataset to use for
@@ -559,7 +559,7 @@ spec:
                     type: object
                   destinationEncryptionConfiguration:
                     description: Immutable. Custom encryption configuration (e.g.,
-                      Cloud KMS keys)
+                      Cloud KMS keys).
                     properties:
                       kmsKeyRef:
                         description: |-
@@ -656,7 +656,7 @@ spec:
                     type: string
                   priority:
                     description: 'Immutable. Specifies a priority for the query. Default
-                      value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"]'
+                      value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"].'
                     type: string
                   query:
                     description: |-
@@ -682,7 +682,7 @@ spec:
                       keyResultStatement:
                         description: |-
                           Immutable. Determines which statement in the script represents the "key result",
-                          used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"]
+                          used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"].
                         type: string
                       statementByteBudget:
                         description: Immutable. Limit on the number of bytes billed
@@ -727,7 +727,7 @@ spec:
                       WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
                       WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
                       Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]
+                      Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].
                     type: string
                 required:
                 - query

@@ -38,7 +38,7 @@ import (
 type RepositoryPubsubConfigs struct {
 	/* The format of the Cloud Pub/Sub messages.
 	- PROTOBUF: The message payload is a serialized protocol buffer of SourceRepoEvent.
-	- JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"] */
+	- JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"]. */
 	MessageFormat string `json:"messageFormat"`
 
 	/* Service account used for publishing Cloud Pub/Sub messages. This

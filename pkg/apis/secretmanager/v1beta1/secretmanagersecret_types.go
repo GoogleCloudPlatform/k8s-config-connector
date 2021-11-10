@@ -111,7 +111,7 @@ type SecretManagerSecretStatus struct {
 	/* The time at which the Secret was created. */
 	CreateTime string `json:"createTime,omitempty"`
 	/* The resource name of the Secret. Format:
-	'projects/{{project}}/secrets/{{secret_id}}' */
+	'projects/{{project}}/secrets/{{secret_id}}'. */
 	Name string `json:"name,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`

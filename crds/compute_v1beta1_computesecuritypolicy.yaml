@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -75,7 +75,7 @@ spec:
                 description: Adaptive Protection Config of this security policy.
                 properties:
                   layer7DdosDefenseConfig:
-                    description: Layer 7 DDoS Defense Config of this security policy
+                    description: Layer 7 DDoS Defense Config of this security policy.
                     properties:
                       enable:
                         description: If set to true, enables CAAP for L7 DDoS detection.
@@ -106,7 +106,7 @@ spec:
                       description: 'Action to take when match matches the request.
                         Valid values:   "allow" : allow access to target, "deny(status)"
                         : deny access to target, returns the HTTP response code specified
-                        (valid values are 403, 404 and 502)'
+                        (valid values are 403, 404 and 502).'
                       type: string
                     description:
                       description: An optional description of this rule. Max size

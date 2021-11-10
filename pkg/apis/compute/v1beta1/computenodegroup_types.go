@@ -51,7 +51,7 @@ type NodegroupAutoscalingPolicy struct {
 	- ON: Enables scaling in and scaling out.
 	- ONLY_SCALE_OUT: Enables only scaling out.
 	You must use this mode if your node groups are configured to
-	restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"] */
+	restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 }
@@ -79,7 +79,7 @@ type ComputeNodeGroupSpec struct {
 	// +optional
 	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
 
-	/* Immutable. contains properties for the timeframe of maintenance */
+	/* Immutable. contains properties for the timeframe of maintenance. */
 	// +optional
 	MaintenanceWindow *NodegroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
@@ -94,7 +94,7 @@ type ComputeNodeGroupSpec struct {
 	// +optional
 	Size *int `json:"size,omitempty"`
 
-	/* Immutable. Zone where this node group is located */
+	/* Immutable. Zone where this node group is located. */
 	Zone string `json:"zone"`
 }
 

@@ -106,7 +106,7 @@ type InstancetemplateDisk struct {
 	// +optional
 	Interface *string `json:"interface,omitempty"`
 
-	/* Immutable. A set of key/value label pairs to assign to disks, */
+	/* Immutable. A set of key/value label pairs to assign to disks,. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -153,7 +153,7 @@ type InstancetemplateIpv6AccessConfig struct {
 	// +optional
 	ExternalIpv6PrefixLength *string `json:"externalIpv6PrefixLength,omitempty"`
 
-	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6 */
+	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6. */
 	NetworkTier string `json:"networkTier"`
 
 	/* The domain name to be used when creating DNSv6 records for the external IPv6 ranges. */
@@ -198,7 +198,7 @@ type InstancetemplateNetworkInterface struct {
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET */
+	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
 	// +optional
 	NicType *string `json:"nicType,omitempty"`
 
@@ -216,7 +216,7 @@ type InstancetemplateNetworkInterface struct {
 }
 
 type InstancetemplateNetworkPerformanceConfig struct {
-	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT */
+	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT. */
 	TotalEgressBandwidthTier string `json:"totalEgressBandwidthTier"`
 }
 

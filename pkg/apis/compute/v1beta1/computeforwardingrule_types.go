@@ -68,7 +68,7 @@ type ForwardingruleMetadataFilters struct {
 	Supported values are:
 
 	*   MATCH_ANY: At least one of the `filterLabels` must have a matching label in the provided metadata.
-	*   MATCH_ALL: All `filterLabels` must have matching labels in the provided metadata. Possible values: NOT_SET, MATCH_ALL, MATCH_ANY */
+	*   MATCH_ALL: All `filterLabels` must have matching labels in the provided metadata. Possible values: NOT_SET, MATCH_ALL, MATCH_ANY. */
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
@@ -142,7 +142,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	IpProtocol *string `json:"ipProtocol,omitempty"`
 
-	/* Immutable. The IP Version that will be used by this forwarding rule. Valid options are `IPV4` or `IPV6`. This can only be specified for an external global forwarding rule. Possible values: UNSPECIFIED_VERSION, IPV4, IPV6 */
+	/* Immutable. The IP Version that will be used by this forwarding rule. Valid options are `IPV4` or `IPV6`. This can only be specified for an external global forwarding rule. Possible values: UNSPECIFIED_VERSION, IPV4, IPV6. */
 	// +optional
 	IpVersion *string `json:"ipVersion,omitempty"`
 
@@ -164,7 +164,7 @@ type ComputeForwardingRuleSpec struct {
 	*   `INTERNAL_SELF_MANAGED` is used for:
 	    *   Traffic Director
 
-	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL */
+	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
@@ -200,7 +200,7 @@ type ComputeForwardingRuleSpec struct {
 	*   TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
 	*   TargetVpnGateway: 500, 4500
 
-	@pattern: d+(?:-d+)? */
+	@pattern: d+(?:-d+)?. */
 	// +optional
 	PortRange *string `json:"portRange,omitempty"`
 

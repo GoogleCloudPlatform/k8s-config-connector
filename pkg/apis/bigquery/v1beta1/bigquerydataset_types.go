@@ -37,7 +37,7 @@ import (
 
 type DatasetAccess struct {
 	/* A domain to grant access to. Any users signed in with the
-	domain specified will be granted the specified access */
+	domain specified will be granted the specified access. */
 	// +optional
 	Domain *string `json:"domain,omitempty"`
 
@@ -70,7 +70,7 @@ type DatasetAccess struct {
 	SpecialGroup *string `json:"specialGroup,omitempty"`
 
 	/* An email address of a user to grant access to. For example:
-	fred@example.com */
+	fred@example.com. */
 	// +optional
 	UserByEmail *string `json:"userByEmail,omitempty"`
 
@@ -148,11 +148,11 @@ type BigQueryDatasetSpec struct {
 	// +optional
 	DefaultTableExpirationMs *int `json:"defaultTableExpirationMs,omitempty"`
 
-	/* A user-friendly description of the dataset */
+	/* A user-friendly description of the dataset. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A descriptive name for the dataset */
+	/* A descriptive name for the dataset. */
 	// +optional
 	FriendlyName *string `json:"friendlyName,omitempty"`
 

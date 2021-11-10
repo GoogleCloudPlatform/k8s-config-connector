@@ -85,7 +85,7 @@ type JobGcsDataSink struct {
 	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
-	/* Google Cloud Storage path in bucket to transfer */
+	/* Google Cloud Storage path in bucket to transfer. */
 	// +optional
 	Path *string `json:"path,omitempty"`
 }
@@ -94,7 +94,7 @@ type JobGcsDataSource struct {
 	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
-	/* Google Cloud Storage path in bucket to transfer */
+	/* Google Cloud Storage path in bucket to transfer. */
 	// +optional
 	Path *string `json:"path,omitempty"`
 }

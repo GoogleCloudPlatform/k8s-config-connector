@@ -56,7 +56,7 @@ type StorageBucketAccessControlSpec struct {
 	  example.com, the entity would be domain-example.com. */
 	Entity string `json:"entity"`
 
-	/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"] */
+	/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"]. */
 	// +optional
 	Role *string `json:"role,omitempty"`
 }

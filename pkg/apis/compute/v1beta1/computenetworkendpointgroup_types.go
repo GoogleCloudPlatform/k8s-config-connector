@@ -49,7 +49,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. Type of network endpoints in this network endpoint group. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT"] */
+	/* Immutable. Type of network endpoints in this network endpoint group. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT"]. */
 	// +optional
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
 

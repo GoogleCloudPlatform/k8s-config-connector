@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -206,21 +206,21 @@ spec:
                       logStreamingOption:
                         description: 'Option to define build log streaming behavior
                           to Google Cloud Storage. Possible values: ["STREAM_DEFAULT",
-                          "STREAM_ON", "STREAM_OFF"]'
+                          "STREAM_ON", "STREAM_OFF"].'
                         type: string
                       logging:
                         description: 'Option to specify the logging mode, which determines
                           if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED",
-                          "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"]'
+                          "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"].'
                         type: string
                       machineType:
                         description: 'Compute Engine machine type on which to run
                           the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8",
-                          "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]'
+                          "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"].'
                         type: string
                       requestedVerifyOption:
                         description: 'Requested verifiability options. Possible values:
-                          ["NOT_VERIFIED", "VERIFIED"]'
+                          ["NOT_VERIFIED", "VERIFIED"].'
                         type: string
                       secretEnv:
                         description: |-
@@ -232,7 +232,7 @@ spec:
                         type: array
                       sourceProvenanceHash:
                         description: 'Requested hash for SourceProvenance. Possible
-                          values: ["NONE", "SHA256", "MD5"]'
+                          values: ["NONE", "SHA256", "MD5"].'
                         items:
                           type: string
                         type: array
@@ -241,7 +241,7 @@ spec:
                           Option to specify behavior when there is an error in the substitution checks.
 
                           NOTE this is always set to ALLOW_LOOSE for triggered builds and cannot be overridden
-                          in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"]
+                          in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"].
                         type: string
                       volumes:
                         description: |-
@@ -345,7 +345,7 @@ spec:
                             description: "Regex matching branches to build. Exactly
                               one a of branch name, tag, or commit SHA must be provided.\nThe
                               syntax of the regular expressions accepted is the syntax
-                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
+                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax."
                             type: string
                           commitSha:
                             description: Explicit commit SHA to build. Exactly one
@@ -400,13 +400,13 @@ spec:
                             additionalProperties:
                               type: string
                             description: Substitutions to use in a triggered build.
-                              Should only be used with triggers.run
+                              Should only be used with triggers.run.
                             type: object
                           tagName:
                             description: "Regex matching tags to build. Exactly one
                               a of branch name, tag, or commit SHA must be provided.\nThe
                               syntax of the regular expressions accepted is the syntax
-                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax"
+                              accepted by RE2 and \ndescribed at https://github.com/google/re2/wiki/Syntax."
                             type: string
                         required:
                         - repoRef
@@ -447,7 +447,7 @@ spec:
                           generation:
                             description: "Google Cloud Storage generation for the
                               object. \nIf the generation is omitted, the latest generation
-                              will be used"
+                              will be used."
                             type: string
                           object:
                             description: |-
@@ -492,7 +492,7 @@ spec:
                           description: |-
                             Entrypoint to be used instead of the build step image's
                             default entrypoint.
-                            If unset, the image's default entrypoint is used
+                            If unset, the image's default entrypoint is used.
                           type: string
                         env:
                           description: |-
@@ -652,7 +652,7 @@ spec:
                       commentControl:
                         description: 'Whether to block builds on a "/gcbrun" comment
                           from a repository owner or collaborator. Possible values:
-                          ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]'
+                          ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"].'
                         type: string
                       invertRegex:
                         description: If true, branches that do NOT match the git_ref
@@ -823,7 +823,7 @@ spec:
                 description: Substitutions data for Build resource.
                 type: object
               tags:
-                description: Tags for annotation of a BuildTrigger
+                description: Tags for annotation of a BuildTrigger.
                 items:
                   type: string
                 type: array

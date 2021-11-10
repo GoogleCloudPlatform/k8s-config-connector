@@ -138,7 +138,7 @@ type ComputeSnapshotStatus struct {
 	SelfLink string `json:"selfLink,omitempty"`
 	/* The unique identifier for the resource. */
 	SnapshotId int `json:"snapshotId,omitempty"`
-	/*  */
+	/* DEPRECATED — Deprecated in favor of source_disk, which contains a compatible value. This field will be removed in the next major release of the provider. */
 	SourceDiskLink string `json:"sourceDiskLink,omitempty"`
 	/* A size of the storage used by the snapshot. As snapshots share
 	storage, this number is expected to change with snapshot

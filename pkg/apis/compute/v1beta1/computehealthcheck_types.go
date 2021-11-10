@@ -68,7 +68,7 @@ type HealthcheckGrpcHealthCheck struct {
 	  checking.
 
 	If not specified, gRPC health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 }
@@ -103,12 +103,12 @@ type HealthcheckHttp2HealthCheck struct {
 	  checking.
 
 	If not specified, HTTP2 health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to the
-	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -154,12 +154,12 @@ type HealthcheckHttpHealthCheck struct {
 	  checking.
 
 	If not specified, HTTP health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to the
-	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -205,12 +205,12 @@ type HealthcheckHttpsHealthCheck struct {
 	  checking.
 
 	If not specified, HTTPS health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to the
-	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -257,12 +257,12 @@ type HealthcheckSslHealthCheck struct {
 	  checking.
 
 	If not specified, SSL health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to the
-	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -304,12 +304,12 @@ type HealthcheckTcpHealthCheck struct {
 	  checking.
 
 	If not specified, TCP health check follows behavior specified in 'port' and
-	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"] */
+	'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"]. */
 	// +optional
 	PortSpecification *string `json:"portSpecification,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to the
-	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -338,7 +338,7 @@ type ComputeHealthCheckSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	GrpcHealthCheck *HealthcheckGrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
 
@@ -347,15 +347,15 @@ type ComputeHealthCheckSpec struct {
 	// +optional
 	HealthyThreshold *int `json:"healthyThreshold,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	Http2HealthCheck *HealthcheckHttp2HealthCheck `json:"http2HealthCheck,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	HttpHealthCheck *HealthcheckHttpHealthCheck `json:"httpHealthCheck,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	HttpsHealthCheck *HealthcheckHttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
 
@@ -370,11 +370,11 @@ type ComputeHealthCheckSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	SslHealthCheck *HealthcheckSslHealthCheck `json:"sslHealthCheck,omitempty"`
 
-	/* A nested object resource */
+	/* A nested object resource. */
 	// +optional
 	TcpHealthCheck *HealthcheckTcpHealthCheck `json:"tcpHealthCheck,omitempty"`
 

@@ -58,7 +58,7 @@ type ComputeTargetGRPCProxySpec struct {
 	BackendServices referenced by the urlMap will be accessed by gRPC
 	applications via a sidecar proxy. In this case, a gRPC application
 	must not use "xds:///" scheme in the target URI of the service
-	it is connecting to */
+	it is connecting to. */
 	// +optional
 	ValidateForProxyless *bool `json:"validateForProxyless,omitempty"`
 }

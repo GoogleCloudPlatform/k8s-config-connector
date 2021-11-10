@@ -40,7 +40,7 @@ type ExternalvpngatewayInterface struct {
 	of this external VPN gateway
 	* '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
 	* '0, 1 - TWO_IPS_REDUNDANCY'
-	* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY' */
+	* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'. */
 	// +optional
 	Id *int `json:"id,omitempty"`
 
@@ -61,7 +61,7 @@ type ComputeExternalVPNGatewaySpec struct {
 	// +optional
 	Interface []ExternalvpngatewayInterface `json:"interface,omitempty"`
 
-	/* Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"] */
+	/* Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"]. */
 	// +optional
 	RedundancyType *string `json:"redundancyType,omitempty"`
 

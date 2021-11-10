@@ -32,7 +32,7 @@ spec:
   workloadIdentityConfig:
     # Workload Identity supports only a single namespace based on your project name.
     # Replace ${PROJECT_ID?} below with your project ID.
-    identityNamespace: ${PROJECT_ID?}.svc.id.goog
+    workloadPool: ${PROJECT_ID?}.svc.id.goog
   networkingMode: VPC_NATIVE
   networkRef:
     name: containercluster-dep-vpcnative

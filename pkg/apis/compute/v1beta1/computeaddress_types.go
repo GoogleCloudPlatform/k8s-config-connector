@@ -43,7 +43,7 @@ type ComputeAddressSpec struct {
 	// +optional
 	Address *string `json:"address,omitempty"`
 
-	/* Immutable. The type of address to reserve. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"] */
+	/* Immutable. The type of address to reserve. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"]. */
 	// +optional
 	AddressType *string `json:"addressType,omitempty"`
 
@@ -51,7 +51,7 @@ type ComputeAddressSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"] */
+	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. */
 	// +optional
 	IpVersion *string `json:"ipVersion,omitempty"`
 
@@ -67,7 +67,7 @@ type ComputeAddressSpec struct {
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The networking tier used for configuring this address. If this field is not
-	specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"] */
+	specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"]. */
 	// +optional
 	NetworkTier *string `json:"networkTier,omitempty"`
 
@@ -88,6 +88,10 @@ type ComputeAddressSpec struct {
 	* IPSEC_INTERCONNECT for addresses created from a private IP range
 	  that are reserved for a VLAN attachment in an IPsec-encrypted Cloud
 	  Interconnect configuration. These addresses are regional resources.
+
+	* PRIVATE_SERVICE_CONNECT for a private network address that is used
+	to configure Private Service Connect. Only global internal addresses
+	can use this purpose.
 
 	This should only be set when using an Internal address. */
 	// +optional

@@ -39,11 +39,11 @@ type StorageNotificationSpec struct {
 	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
-	/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription */
+	/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription. */
 	// +optional
 	CustomAttributes map[string]string `json:"customAttributes,omitempty"`
 
-	/* Immutable. List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE", "OBJECT_DELETE", "OBJECT_ARCHIVE" */
+	/* Immutable. List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE", "OBJECT_DELETE", "OBJECT_ARCHIVE". */
 	// +optional
 	EventTypes []string `json:"eventTypes,omitempty"`
 

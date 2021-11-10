@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -82,14 +82,14 @@ spec:
                   availabilityDomainCount:
                     description: |-
                       Immutable. The number of availability domains instances will be spread across. If two instances are in different
-                      availability domain, they will not be put in the same low latency network
+                      availability domain, they will not be put in the same low latency network.
                     type: integer
                   collocation:
                     description: |-
                       Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
                       Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
                       with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
-                      attached. Possible values: ["COLLOCATED"]
+                      attached. Possible values: ["COLLOCATED"].
                     type: string
                   vmCount:
                     description: Immutable. Number of vms in this placement group.
@@ -157,7 +157,7 @@ spec:
                       onSourceDiskDelete:
                         description: |-
                           Immutable. Specifies the behavior to apply to scheduled snapshots when
-                          the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]
+                          the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"].
                         type: string
                     required:
                     - maxRetentionDays
@@ -195,7 +195,7 @@ spec:
                               Immutable. Time within the window to start the operations.
                               It must be in an hourly format "HH:MM",
                               where HH : [00-23] and MM : [00] GMT.
-                              eg: 21:00
+                              eg: 21:00.
                             type: string
                         required:
                         - hoursInCycle
@@ -214,7 +214,7 @@ spec:
                                   description: 'Immutable. The day of the week to
                                     create the snapshot. e.g. MONDAY Possible values:
                                     ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY",
-                                    "FRIDAY", "SATURDAY", "SUNDAY"]'
+                                    "FRIDAY", "SATURDAY", "SUNDAY"].'
                                   type: string
                                 startTime:
                                   description: |-
@@ -246,7 +246,7 @@ spec:
                       storageLocations:
                         description: |-
                           Immutable. Cloud Storage bucket location to store the auto snapshot
-                          (regional or multi-regional)
+                          (regional or multi-regional).
                         items:
                           type: string
                         type: array

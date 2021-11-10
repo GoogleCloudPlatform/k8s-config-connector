@@ -46,7 +46,7 @@ type RouterAdvertisedIpRanges struct {
 }
 
 type RouterBgp struct {
-	/* User-specified flag to indicate which mode to use for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
+	/* User-specified flag to indicate which mode to use for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"]. */
 	// +optional
 	AdvertiseMode *string `json:"advertiseMode,omitempty"`
 
@@ -56,7 +56,7 @@ type RouterBgp struct {
 	advertised in addition to any specified prefixes. Leave this field
 	blank to advertise no custom groups.
 
-	This enum field has the one valid value: ALL_SUBNETS */
+	This enum field has the one valid value: ALL_SUBNETS. */
 	// +optional
 	AdvertisedGroups []string `json:"advertisedGroups,omitempty"`
 

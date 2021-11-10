@@ -220,7 +220,7 @@ type PubSubSubscriptionSpec struct {
 	/* A policy that specifies how Pub/Sub retries message delivery for this subscription.
 
 	If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers.
-	RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message */
+	RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message. */
 	// +optional
 	RetryPolicy *SubscriptionRetryPolicy `json:"retryPolicy,omitempty"`
 

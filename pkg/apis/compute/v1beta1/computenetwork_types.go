@@ -67,7 +67,7 @@ type ComputeNetworkSpec struct {
 	network's cloud routers will only advertise routes with subnetworks
 	of this network in the same region as the router. If set to 'GLOBAL',
 	this network's cloud routers will advertise routes with all
-	subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"] */
+	subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"]. */
 	// +optional
 	RoutingMode *string `json:"routingMode,omitempty"`
 }

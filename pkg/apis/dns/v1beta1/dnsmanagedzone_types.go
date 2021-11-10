@@ -36,11 +36,11 @@ import (
 )
 
 type ManagedzoneDefaultKeySpecs struct {
-	/* String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"] */
+	/* String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"]. */
 	// +optional
 	Algorithm *string `json:"algorithm,omitempty"`
 
-	/* Length of the keys in bits */
+	/* Length of the keys in bits. */
 	// +optional
 	KeyLength *int `json:"keyLength,omitempty"`
 
@@ -49,11 +49,11 @@ type ManagedzoneDefaultKeySpecs struct {
 	Point flag set and, when active, will only be used to sign
 	resource record sets of type DNSKEY. Zone signing keys do
 	not have the Secure Entry Point flag set and will be used
-	to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"] */
+	to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]. */
 	// +optional
 	KeyType *string `json:"keyType,omitempty"`
 
-	/* Identifies what kind of resource this is */
+	/* Identifies what kind of resource this is. */
 	// +optional
 	Kind *string `json:"kind,omitempty"`
 }
@@ -66,16 +66,16 @@ type ManagedzoneDnssecConfig struct {
 	// +optional
 	DefaultKeySpecs []ManagedzoneDefaultKeySpecs `json:"defaultKeySpecs,omitempty"`
 
-	/* Identifies what kind of resource this is */
+	/* Identifies what kind of resource this is. */
 	// +optional
 	Kind *string `json:"kind,omitempty"`
 
 	/* Specifies the mechanism used to provide authenticated denial-of-existence responses.
-	non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"] */
+	non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]. */
 	// +optional
 	NonExistence *string `json:"nonExistence,omitempty"`
 
-	/* Specifies whether DNSSEC is enabled, and what mode it is in Possible values: ["off", "on", "transfer"] */
+	/* Specifies whether DNSSEC is enabled, and what mode it is in Possible values: ["off", "on", "transfer"]. */
 	// +optional
 	State *string `json:"state,omitempty"`
 }
@@ -119,7 +119,7 @@ type ManagedzoneServiceDirectoryConfig struct {
 type ManagedzoneTargetNameServers struct {
 	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
 	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"] */
+	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
 	// +optional
 	ForwardingPath *string `json:"forwardingPath,omitempty"`
 
@@ -140,7 +140,7 @@ type DNSManagedZoneSpec struct {
 	/* Immutable. The DNS name of this managed zone, for instance "example.com.". */
 	DnsName string `json:"dnsName"`
 
-	/* DNSSEC configuration */
+	/* DNSSEC configuration. */
 	// +optional
 	DnssecConfig *ManagedzoneDnssecConfig `json:"dnssecConfig,omitempty"`
 
@@ -175,7 +175,7 @@ type DNSManagedZoneSpec struct {
 	ServiceDirectoryConfig *ManagedzoneServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
 
 	/* Immutable. The zone's visibility: public zones are exposed to the Internet,
-	while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"] */
+	while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]. */
 	// +optional
 	Visibility *string `json:"visibility,omitempty"`
 }
@@ -185,7 +185,7 @@ type DNSManagedZoneStatus struct {
 	   DNSManagedZone's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Delegate your managed_zone to these virtual name servers;
-	defined by the server */
+	defined by the server. */
 	NameServers []string `json:"nameServers,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`

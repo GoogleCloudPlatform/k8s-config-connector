@@ -49,7 +49,7 @@ type ComputeTargetTCPProxySpec struct {
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
 	/* Specifies the type of proxy header to append before sending data to
-	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"] */
+	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 

@@ -53,7 +53,7 @@ type RouterpeerIpAddress struct {
 
 type ComputeRouterPeerSpec struct {
 	/* User-specified flag to indicate which mode to use for advertisement.
-	Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"] */
+	Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"]. */
 	// +optional
 	AdvertiseMode *string `json:"advertiseMode,omitempty"`
 

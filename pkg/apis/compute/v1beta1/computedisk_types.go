@@ -259,7 +259,7 @@ type ComputeDiskStatus struct {
 	used. */
 	SourceSnapshotId string `json:"sourceSnapshotId,omitempty"`
 	/* Links to the users of the disk (attached instances) in form:
-	project/zones/zone/instances/instance */
+	project/zones/zone/instances/instance. */
 	Users []string `json:"users,omitempty"`
 }
 

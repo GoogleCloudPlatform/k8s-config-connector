@@ -33,6 +33,7 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1"
+	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/configcontroller/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/dataflow/v1beta1"
@@ -54,6 +55,7 @@ import (
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networksecurity/v1beta1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkservices/v1beta1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/osconfig/v1beta1"
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/privateca/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/resourcemanager/v1beta1"
@@ -81,6 +83,7 @@ type Interface interface {
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
+	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
@@ -102,6 +105,7 @@ type Interface interface {
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
+	PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
@@ -128,6 +132,7 @@ type Clientset struct {
 	cloudidentityV1beta1        *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudschedulerV1beta1       *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	computeV1beta1              *computev1beta1.ComputeV1beta1Client
+	configcontrollerV1beta1     *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	containerV1beta1            *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1beta1    *containeranalysisv1beta1.ContaineranalysisV1beta1Client
 	dataflowV1beta1             *dataflowv1beta1.DataflowV1beta1Client
@@ -149,6 +154,7 @@ type Clientset struct {
 	networksecurityV1beta1      *networksecurityv1beta1.NetworksecurityV1beta1Client
 	networkservicesV1beta1      *networkservicesv1beta1.NetworkservicesV1beta1Client
 	osconfigV1beta1             *osconfigv1beta1.OsconfigV1beta1Client
+	privatecaV1beta1            *privatecav1beta1.PrivatecaV1beta1Client
 	pubsubV1beta1               *pubsubv1beta1.PubsubV1beta1Client
 	redisV1beta1                *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1      *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
@@ -205,6 +211,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // ComputeV1beta1 retrieves the ComputeV1beta1Client
 func (c *Clientset) ComputeV1beta1() computev1beta1.ComputeV1beta1Interface {
 	return c.computeV1beta1
+}
+
+// ConfigcontrollerV1beta1 retrieves the ConfigcontrollerV1beta1Client
+func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface {
+	return c.configcontrollerV1beta1
 }
 
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
@@ -310,6 +321,11 @@ func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.Networkservi
 // OsconfigV1beta1 retrieves the OsconfigV1beta1Client
 func (c *Clientset) OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface {
 	return c.osconfigV1beta1
+}
+
+// PrivatecaV1beta1 retrieves the PrivatecaV1beta1Client
+func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface {
+	return c.privatecaV1beta1
 }
 
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
@@ -424,6 +440,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.configcontrollerV1beta1, err = configcontrollerv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.containerV1beta1, err = containerv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -508,6 +528,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.privatecaV1beta1, err = privatecav1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.pubsubV1beta1, err = pubsubv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -573,6 +597,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.NewForConfigOrDie(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.NewForConfigOrDie(c)
 	cs.computeV1beta1 = computev1beta1.NewForConfigOrDie(c)
+	cs.configcontrollerV1beta1 = configcontrollerv1beta1.NewForConfigOrDie(c)
 	cs.containerV1beta1 = containerv1beta1.NewForConfigOrDie(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.NewForConfigOrDie(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.NewForConfigOrDie(c)
@@ -594,6 +619,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.networksecurityV1beta1 = networksecurityv1beta1.NewForConfigOrDie(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.NewForConfigOrDie(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.NewForConfigOrDie(c)
+	cs.privatecaV1beta1 = privatecav1beta1.NewForConfigOrDie(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.NewForConfigOrDie(c)
 	cs.redisV1beta1 = redisv1beta1.NewForConfigOrDie(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.NewForConfigOrDie(c)
@@ -622,6 +648,7 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.computeV1beta1 = computev1beta1.New(c)
+	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
@@ -643,6 +670,7 @@ func New(c rest.Interface) *Clientset {
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
+	cs.privatecaV1beta1 = privatecav1beta1.New(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)

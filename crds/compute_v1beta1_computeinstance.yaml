@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -94,12 +94,12 @@ spec:
                     type: integer
                 type: object
               attachedDisk:
-                description: List of disks attached to the instance
+                description: List of disks attached to the instance.
                 items:
                   properties:
                     deviceName:
                       description: Name with which the attached disk is accessible
-                        under /dev/disk/by-id/
+                        under /dev/disk/by-id/.
                       type: string
                     diskEncryptionKeyRaw:
                       description: A 256-bit customer-supplied encryption key, encoded
@@ -216,7 +216,7 @@ spec:
                     type: boolean
                   deviceName:
                     description: Immutable. Name with which attached disk will be
-                      accessible under /dev/disk/by-id/
+                      accessible under /dev/disk/by-id/.
                     type: string
                   diskEncryptionKeyRaw:
                     description: Immutable. A 256-bit customer-supplied encryption
@@ -547,7 +547,7 @@ spec:
                           networkTier:
                             description: The service-level to be provided for IPv6
                               traffic when the subnet has an external subnet. Only
-                              PREMIUM tier is valid for IPv6
+                              PREMIUM tier is valid for IPv6.
                             type: string
                           publicPtrDomainName:
                             description: The domain name to be used when creating
@@ -563,7 +563,7 @@ spec:
                         inherited from its subnetwork.
                       type: string
                     name:
-                      description: The name of the interface
+                      description: The name of the interface.
                       type: string
                     networkIp:
                       description: The private IP address assigned to the instance.
@@ -596,7 +596,7 @@ spec:
                       type: object
                     nicType:
                       description: Immutable. The type of vNIC to be used on this
-                        interface. Possible values:GVNIC, VIRTIO_NET
+                        interface. Possible values:GVNIC, VIRTIO_NET.
                       type: string
                     stackType:
                       description: The stack type for this network interface to identify
@@ -641,7 +641,7 @@ spec:
                 properties:
                   totalEgressBandwidthTier:
                     description: Immutable. The egress bandwidth tier to enable. Possible
-                      values:TIER_1, DEFAULT
+                      values:TIER_1, DEFAULT.
                     type: string
                 required:
                 - totalEgressBandwidthTier
@@ -730,7 +730,7 @@ spec:
                     type: array
                   onHostMaintenance:
                     description: Describes maintenance behavior for the instance.
-                      One of MIGRATE or TERMINATE,
+                      One of MIGRATE or TERMINATE,.
                     type: string
                   preemptible:
                     description: Immutable. Whether the instance is preemptible.

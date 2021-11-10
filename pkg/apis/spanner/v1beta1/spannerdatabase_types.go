@@ -49,7 +49,7 @@ type SpannerDatabaseSpec struct {
 	// +optional
 	Ddl []string `json:"ddl,omitempty"`
 
-	/* Immutable. Encryption configuration for the database */
+	/* Immutable. Encryption configuration for the database. */
 	// +optional
 	EncryptionConfig *DatabaseEncryptionConfig `json:"encryptionConfig,omitempty"`
 

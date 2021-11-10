@@ -46,7 +46,7 @@ type ResourcepolicyDailySchedule struct {
 }
 
 type ResourcepolicyDayOfWeeks struct {
-	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"] */
+	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
 	Day string `json:"day"`
 
 	/* Immutable. Time within the window to start the operations.
@@ -56,14 +56,14 @@ type ResourcepolicyDayOfWeeks struct {
 
 type ResourcepolicyGroupPlacementPolicy struct {
 	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
-	availability domain, they will not be put in the same low latency network */
+	availability domain, they will not be put in the same low latency network. */
 	// +optional
 	AvailabilityDomainCount *int `json:"availabilityDomainCount,omitempty"`
 
 	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
 	Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
 	with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
-	attached. Possible values: ["COLLOCATED"] */
+	attached. Possible values: ["COLLOCATED"]. */
 	// +optional
 	Collocation *string `json:"collocation,omitempty"`
 
@@ -79,7 +79,7 @@ type ResourcepolicyHourlySchedule struct {
 	/* Immutable. Time within the window to start the operations.
 	It must be in an hourly format "HH:MM",
 	where HH : [00-23] and MM : [00] GMT.
-	eg: 21:00 */
+	eg: 21:00. */
 	StartTime string `json:"startTime"`
 }
 
@@ -110,7 +110,7 @@ type ResourcepolicyRetentionPolicy struct {
 	MaxRetentionDays int `json:"maxRetentionDays"`
 
 	/* Immutable. Specifies the behavior to apply to scheduled snapshots when
-	the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"] */
+	the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
 	// +optional
 	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
 }
@@ -139,7 +139,7 @@ type ResourcepolicySnapshotProperties struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Immutable. Cloud Storage bucket location to store the auto snapshot
-	(regional or multi-regional) */
+	(regional or multi-regional). */
 	// +optional
 	StorageLocations []string `json:"storageLocations,omitempty"`
 }

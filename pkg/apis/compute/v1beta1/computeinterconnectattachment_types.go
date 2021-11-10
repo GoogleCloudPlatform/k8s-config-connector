@@ -37,7 +37,7 @@ import (
 
 type ComputeInterconnectAttachmentSpec struct {
 	/* Whether the VLAN attachment is enabled or disabled.  When using
-	PARTNER type this will Pre-Activate the interconnect attachment */
+	PARTNER type this will Pre-Activate the interconnect attachment. */
 	// +optional
 	AdminEnabled *bool `json:"adminEnabled,omitempty"`
 
@@ -45,7 +45,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	For attachments of type DEDICATED, the user can set the bandwidth.
 	For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
 	Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
-	Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"] */
+	Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"]. */
 	// +optional
 	Bandwidth *string `json:"bandwidth,omitempty"`
 
@@ -85,7 +85,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	IPsec-encrypted Cloud Interconnect create the attachment using this
 	option.
 
-	Not currently available publicly. Default value: "NONE" Possible values: ["NONE", "IPSEC"] */
+	Not currently available publicly. Default value: "NONE" Possible values: ["NONE", "IPSEC"]. */
 	// +optional
 	Encryption *string `json:"encryption,omitempty"`
 
@@ -119,7 +119,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 
 	/* Immutable. The type of InterconnectAttachment you wish to create. Defaults to
-	DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"] */
+	DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 
@@ -154,7 +154,7 @@ type ComputeInterconnectAttachmentStatus struct {
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
 	identifier of an PARTNER attachment used to initiate provisioning with
-	a selected partner. Of the form "XXXXX/region/domain" */
+	a selected partner. Of the form "XXXXX/region/domain". */
 	PairingKey string `json:"pairingKey,omitempty"`
 	/* [Output only for type PARTNER. Not present for DEDICATED]. Optional
 	BGP ASN for the router that should be supplied by a layer 3 Partner if

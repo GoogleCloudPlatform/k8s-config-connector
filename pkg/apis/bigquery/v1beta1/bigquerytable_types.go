@@ -109,7 +109,7 @@ type TableExternalDataConfiguration struct {
 }
 
 type TableGoogleSheetsOptions struct {
-	/* Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20" */
+	/* Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20". */
 	// +optional
 	Range *string `json:"range,omitempty"`
 
@@ -140,7 +140,7 @@ type TableMaterializedView struct {
 	/* Immutable. A query whose result is persisted. */
 	Query string `json:"query"`
 
-	/* Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000 */
+	/* Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000. */
 	// +optional
 	RefreshIntervalMs *int `json:"refreshIntervalMs,omitempty"`
 }
@@ -185,7 +185,7 @@ type TableView struct {
 	/* A query that BigQuery executes when the view is referenced. */
 	Query string `json:"query"`
 
-	/* Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's standard SQL */
+	/* Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's standard SQL. */
 	// +optional
 	UseLegacySql *bool `json:"useLegacySql,omitempty"`
 }

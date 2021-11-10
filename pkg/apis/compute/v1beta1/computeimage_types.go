@@ -36,7 +36,7 @@ import (
 )
 
 type ImageGuestOsFeatures struct {
-	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC"] */
+	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC"]. */
 	Type string `json:"type"`
 }
 
@@ -44,7 +44,7 @@ type ImageRawDisk struct {
 	/* Immutable. The format used to encode and transmit the block device, which
 	should be TAR. This is just a container and transmission format
 	and not a runtime format. Provided by the client when the disk
-	image is created. Default value: "TAR" Possible values: ["TAR"] */
+	image is created. Default value: "TAR" Possible values: ["TAR"]. */
 	// +optional
 	ContainerType *string `json:"containerType,omitempty"`
 

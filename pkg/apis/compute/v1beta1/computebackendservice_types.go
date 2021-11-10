@@ -40,7 +40,7 @@ type BackendserviceBackend struct {
 
 	For global HTTP(S) or TCP/SSL load balancing, the default is
 	UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
-	and CONNECTION (for TCP/SSL). Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"] */
+	and CONNECTION (for TCP/SSL). Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"]. */
 	// +optional
 	BalancingMode *string `json:"balancingMode,omitempty"`
 
@@ -196,7 +196,7 @@ type BackendserviceCdnPolicy struct {
 	CacheKeyPolicy *BackendserviceCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
 
 	/* Specifies the cache setting for all responses from this backend.
-	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"] */
+	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
 	// +optional
 	CacheMode *string `json:"cacheMode,omitempty"`
 
@@ -302,7 +302,7 @@ type BackendserviceConnectionTrackingPolicy struct {
 
 	If set to 'ALWAYS_PERSIST', existing connections always persist on
 	unhealthy backends regardless of protocol and session affinity. It is
-	generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"] */
+	generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"]. */
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
 
@@ -320,7 +320,7 @@ type BackendserviceConnectionTrackingPolicy struct {
 	Connection Key (default Hash Method) for the specific protocol.
 
 	'PER_SESSION': The Connection Tracking is performed as per the
-	configured Session Affinity. It matches the configured Session Affinity. Default value: "PER_CONNECTION" Possible values: ["PER_CONNECTION", "PER_SESSION"] */
+	configured Session Affinity. It matches the configured Session Affinity. Default value: "PER_CONNECTION" Possible values: ["PER_CONNECTION", "PER_SESSION"]. */
 	// +optional
 	TrackingMode *string `json:"trackingMode,omitempty"`
 }
@@ -414,14 +414,14 @@ type BackendserviceHttpCookie struct {
 }
 
 type BackendserviceIap struct {
-	/* OAuth2 Client ID for IAP */
+	/* OAuth2 Client ID for IAP. */
 	Oauth2ClientId string `json:"oauth2ClientId"`
 
-	/* OAuth2 Client Secret for IAP */
+	/* OAuth2 Client Secret for IAP. */
 	// +optional
 	Oauth2ClientSecret *BackendserviceOauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
 
-	/* OAuth2 Client Secret SHA-256 for IAP */
+	/* OAuth2 Client Secret SHA-256 for IAP. */
 	// +optional
 	Oauth2ClientSecretSha256 *string `json:"oauth2ClientSecretSha256,omitempty"`
 }
@@ -649,13 +649,13 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	HealthChecks []BackendserviceHealthChecks `json:"healthChecks,omitempty"`
 
-	/* Settings for enabling Cloud Identity Aware Proxy */
+	/* Settings for enabling Cloud Identity Aware Proxy. */
 	// +optional
 	Iap *BackendserviceIap `json:"iap,omitempty"`
 
 	/* Immutable. Indicates whether the backend service will be used with internal or
 	external load balancing. A backend service created for one type of
-	load balancing cannot be used with the other. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED"] */
+	load balancing cannot be used with the other. Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED"]. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
@@ -687,7 +687,7 @@ type ComputeBackendServiceSpec struct {
 	           Maglev, refer to https://ai.google/research/pubs/pub44824
 
 	This field is applicable only when the load_balancing_scheme is set to
-	INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"] */
+	INTERNAL_SELF_MANAGED. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]. */
 	// +optional
 	LocalityLbPolicy *string `json:"localityLbPolicy,omitempty"`
 
@@ -719,7 +719,7 @@ type ComputeBackendServiceSpec struct {
 
 	/* The protocol this BackendService uses to communicate with backends.
 	The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-	types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"] */
+	types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"]. */
 	// +optional
 	Protocol *string `json:"protocol,omitempty"`
 
@@ -739,7 +739,7 @@ type ComputeBackendServiceSpec struct {
 	SecuritySettings *BackendserviceSecuritySettings `json:"securitySettings,omitempty"`
 
 	/* Type of session affinity to use. The default is NONE. Session affinity is
-	not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"] */
+	not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]. */
 	// +optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`
 

@@ -60,13 +60,13 @@ type IAMServiceAccountKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMServiceAccountKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Immutable. The name used for this key pair */
+	/* Immutable. The name used for this key pair. */
 	Name string `json:"name,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* The private key in JSON format, base64 encoded. This is what you normally get as a file when creating service account keys through the CLI or web console. This is only populated when creating a new key. */
 	PrivateKey string `json:"privateKey,omitempty"`
-	/* Immutable. The public key, base64 encoded */
+	/* Immutable. The public key, base64 encoded. */
 	PublicKey string `json:"publicKey,omitempty"`
 	/* The key can be used after this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
 	ValidAfter string `json:"validAfter,omitempty"`

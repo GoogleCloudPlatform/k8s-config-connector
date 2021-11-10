@@ -72,7 +72,7 @@ type FirewallDeny struct {
 }
 
 type FirewallLogConfig struct {
-	/* This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"] */
+	/* This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"]. */
 	Metadata string `json:"metadata"`
 }
 
@@ -102,7 +102,7 @@ type ComputeFirewallSpec struct {
 	/* Immutable. Direction of traffic to which this firewall applies; default is
 	INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
 	destinationRanges; For EGRESS traffic, it is NOT supported to specify
-	sourceRanges OR sourceTags. Possible values: ["INGRESS", "EGRESS"] */
+	sourceRanges OR sourceTags. Possible values: ["INGRESS", "EGRESS"]. */
 	// +optional
 	Direction *string `json:"direction,omitempty"`
 

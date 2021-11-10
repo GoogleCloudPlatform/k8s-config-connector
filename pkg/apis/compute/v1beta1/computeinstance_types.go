@@ -69,7 +69,7 @@ type InstanceAliasIpRange struct {
 }
 
 type InstanceAttachedDisk struct {
-	/* Name with which the attached disk is accessible under /dev/disk/by-id/ */
+	/* Name with which the attached disk is accessible under /dev/disk/by-id/. */
 	// +optional
 	DeviceName *string `json:"deviceName,omitempty"`
 
@@ -98,7 +98,7 @@ type InstanceBootDisk struct {
 	// +optional
 	AutoDelete *bool `json:"autoDelete,omitempty"`
 
-	/* Immutable. Name with which attached disk will be accessible under /dev/disk/by-id/ */
+	/* Immutable. Name with which attached disk will be accessible under /dev/disk/by-id/. */
 	// +optional
 	DeviceName *string `json:"deviceName,omitempty"`
 
@@ -177,7 +177,7 @@ type InstanceIpv6AccessConfig struct {
 	// +optional
 	ExternalIpv6PrefixLength *string `json:"externalIpv6PrefixLength,omitempty"`
 
-	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6 */
+	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6. */
 	NetworkTier string `json:"networkTier"`
 
 	/* The domain name to be used when creating DNSv6 records for the external IPv6 ranges. */
@@ -213,7 +213,7 @@ type InstanceNetworkInterface struct {
 	// +optional
 	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
 
-	/* The name of the interface */
+	/* The name of the interface. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -225,7 +225,7 @@ type InstanceNetworkInterface struct {
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET */
+	/* Immutable. The type of vNIC to be used on this interface. Possible values:GVNIC, VIRTIO_NET. */
 	// +optional
 	NicType *string `json:"nicType,omitempty"`
 
@@ -243,7 +243,7 @@ type InstanceNetworkInterface struct {
 }
 
 type InstanceNetworkPerformanceConfig struct {
-	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT */
+	/* Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT. */
 	TotalEgressBandwidthTier string `json:"totalEgressBandwidthTier"`
 }
 
@@ -275,7 +275,7 @@ type InstanceScheduling struct {
 	// +optional
 	NodeAffinities []InstanceNodeAffinities `json:"nodeAffinities,omitempty"`
 
-	/* Describes maintenance behavior for the instance. One of MIGRATE or TERMINATE, */
+	/* Describes maintenance behavior for the instance. One of MIGRATE or TERMINATE,. */
 	// +optional
 	OnHostMaintenance *string `json:"onHostMaintenance,omitempty"`
 
@@ -334,7 +334,7 @@ type ComputeInstanceSpec struct {
 	// +optional
 	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
-	/* List of disks attached to the instance */
+	/* List of disks attached to the instance. */
 	// +optional
 	AttachedDisk []InstanceAttachedDisk `json:"attachedDisk,omitempty"`
 

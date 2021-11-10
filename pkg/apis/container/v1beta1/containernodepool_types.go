@@ -52,6 +52,10 @@ type NodepoolGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
 
+	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
+	// +optional
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
 	/* Immutable. The accelerator type resource name. */
 	Type string `json:"type"`
 }
@@ -184,7 +188,7 @@ type NodepoolNodeConfig struct {
 }
 
 type NodepoolSandboxConfig struct {
-	/* Type of the sandbox to use for the node (e.g. 'gvisor') */
+	/* Type of the sandbox to use for the node (e.g. 'gvisor'). */
 	SandboxType string `json:"sandboxType"`
 }
 
@@ -258,7 +262,7 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	NetworkConfig *NodepoolNetworkConfig `json:"networkConfig,omitempty"`
 
-	/* Immutable. The configuration of the nodepool */
+	/* Immutable. The configuration of the nodepool. */
 	// +optional
 	NodeConfig *NodepoolNodeConfig `json:"nodeConfig,omitempty"`
 

@@ -176,19 +176,19 @@ type TriggerOptions struct {
 	// +optional
 	Env []string `json:"env,omitempty"`
 
-	/* Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"] */
+	/* Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"]. */
 	// +optional
 	LogStreamingOption *string `json:"logStreamingOption,omitempty"`
 
-	/* Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"] */
+	/* Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"]. */
 	// +optional
 	Logging *string `json:"logging,omitempty"`
 
-	/* Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"] */
+	/* Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"] */
+	/* Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"]. */
 	// +optional
 	RequestedVerifyOption *string `json:"requestedVerifyOption,omitempty"`
 
@@ -198,14 +198,14 @@ type TriggerOptions struct {
 	// +optional
 	SecretEnv []string `json:"secretEnv,omitempty"`
 
-	/* Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"] */
+	/* Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"]. */
 	// +optional
 	SourceProvenanceHash []string `json:"sourceProvenanceHash,omitempty"`
 
 	/* Option to specify behavior when there is an error in the substitution checks.
 
 	NOTE this is always set to ALLOW_LOOSE for triggered builds and cannot be overridden
-	in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"] */
+	in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"]. */
 	// +optional
 	SubstitutionOption *string `json:"substitutionOption,omitempty"`
 
@@ -250,7 +250,7 @@ type TriggerPullRequest struct {
 	/* Regex of branches to match. */
 	Branch string `json:"branch"`
 
-	/* Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"] */
+	/* Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]. */
 	// +optional
 	CommentControl *string `json:"commentControl,omitempty"`
 
@@ -276,7 +276,7 @@ type TriggerPush struct {
 type TriggerRepoSource struct {
 	/* Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided.
 	The syntax of the regular expressions accepted is the syntax accepted by RE2 and
-	described at https://github.com/google/re2/wiki/Syntax */
+	described at https://github.com/google/re2/wiki/Syntax. */
 	// +optional
 	BranchName *string `json:"branchName,omitempty"`
 
@@ -303,13 +303,13 @@ type TriggerRepoSource struct {
 	assumed. */
 	RepoRef v1alpha1.ResourceRef `json:"repoRef"`
 
-	/* Substitutions to use in a triggered build. Should only be used with triggers.run */
+	/* Substitutions to use in a triggered build. Should only be used with triggers.run. */
 	// +optional
 	Substitutions map[string]string `json:"substitutions,omitempty"`
 
 	/* Regex matching tags to build. Exactly one a of branch name, tag, or commit SHA must be provided.
 	The syntax of the regular expressions accepted is the syntax accepted by RE2 and
-	described at https://github.com/google/re2/wiki/Syntax */
+	described at https://github.com/google/re2/wiki/Syntax. */
 	// +optional
 	TagName *string `json:"tagName,omitempty"`
 }
@@ -362,7 +362,7 @@ type TriggerStep struct {
 
 	/* Entrypoint to be used instead of the build step image's
 	default entrypoint.
-	If unset, the image's default entrypoint is used */
+	If unset, the image's default entrypoint is used. */
 	// +optional
 	Entrypoint *string `json:"entrypoint,omitempty"`
 
@@ -442,7 +442,7 @@ type TriggerStorageSource struct {
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Google Cloud Storage generation for the object.
-	If the generation is omitted, the latest generation will be used */
+	If the generation is omitted, the latest generation will be used. */
 	// +optional
 	Generation *string `json:"generation,omitempty"`
 
@@ -595,7 +595,7 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	Substitutions map[string]string `json:"substitutions,omitempty"`
 
-	/* Tags for annotation of a BuildTrigger */
+	/* Tags for annotation of a BuildTrigger. */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 

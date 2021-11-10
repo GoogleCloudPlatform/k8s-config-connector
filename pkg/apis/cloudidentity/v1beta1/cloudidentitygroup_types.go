@@ -76,7 +76,7 @@ type CloudIdentityGroupSpec struct {
 
 	See the
 	[API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig)
-	for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"] */
+	for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"]. */
 	// +optional
 	InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
 

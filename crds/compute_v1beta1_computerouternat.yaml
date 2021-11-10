@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -112,14 +112,14 @@ spec:
                   30s if not set.
                 type: integer
               logConfig:
-                description: Configuration for logging on NAT
+                description: Configuration for logging on NAT.
                 properties:
                   enable:
                     description: Indicates whether or not to export logs.
                     type: boolean
                   filter:
                     description: 'Specifies the desired filtering of logs on this
-                      NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]'
+                      NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"].'
                     type: string
                 required:
                 - enable
@@ -132,7 +132,7 @@ spec:
                 description: |-
                   How external IPs should be allocated for this NAT. Valid values are
                   'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-                  Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]
+                  Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"].
                 type: string
               natIps:
                 items:
@@ -210,12 +210,12 @@ spec:
                   (specified in the field subnetwork below). Note that if this field
                   contains ALL_SUBNETWORKS_ALL_IP_RANGES or
                   ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-                  other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]
+                  other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"].
                 type: string
               subnetwork:
                 description: |-
                   One or more subnetwork NAT configurations. Only used if
-                  'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'
+                  'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'.
                 items:
                   properties:
                     secondaryIpRangeNames:
@@ -223,7 +223,7 @@ spec:
                         List of the secondary ranges of the subnetwork that are allowed
                         to use NAT. This can be populated only if
                         'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
-                        sourceIpRangesToNat
+                        sourceIpRangesToNat.
                       items:
                         type: string
                       type: array

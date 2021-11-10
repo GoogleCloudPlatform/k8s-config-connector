@@ -39,7 +39,7 @@ type RouternatLogConfig struct {
 	/* Indicates whether or not to export logs. */
 	Enable bool `json:"enable"`
 
-	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"] */
+	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
 	Filter string `json:"filter"`
 }
 
@@ -47,7 +47,7 @@ type RouternatSubnetwork struct {
 	/* List of the secondary ranges of the subnetwork that are allowed
 	to use NAT. This can be populated only if
 	'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
-	sourceIpRangesToNat */
+	sourceIpRangesToNat. */
 	// +optional
 	SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
 
@@ -75,7 +75,7 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	IcmpIdleTimeoutSec *int `json:"icmpIdleTimeoutSec,omitempty"`
 
-	/* Configuration for logging on NAT */
+	/* Configuration for logging on NAT. */
 	// +optional
 	LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
 
@@ -85,7 +85,7 @@ type ComputeRouterNATSpec struct {
 
 	/* How external IPs should be allocated for this NAT. Valid values are
 	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"] */
+	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
 	NatIpAllocateOption string `json:"natIpAllocateOption"`
 
 	/*  */
@@ -111,11 +111,11 @@ type ComputeRouterNATSpec struct {
 	(specified in the field subnetwork below). Note that if this field
 	contains ALL_SUBNETWORKS_ALL_IP_RANGES or
 	ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-	other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"] */
+	other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
 	SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat"`
 
 	/* One or more subnetwork NAT configurations. Only used if
-	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS' */
+	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'. */
 	// +optional
 	Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
 

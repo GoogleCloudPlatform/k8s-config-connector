@@ -37,7 +37,7 @@ import (
 
 type BackendbucketCdnPolicy struct {
 	/* Specifies the cache setting for all responses from this backend.
-	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"] */
+	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
 	// +optional
 	CacheMode *string `json:"cacheMode,omitempty"`
 

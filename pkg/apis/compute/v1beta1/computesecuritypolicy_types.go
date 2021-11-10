@@ -36,7 +36,7 @@ import (
 )
 
 type SecuritypolicyAdaptiveProtectionConfig struct {
-	/* Layer 7 DDoS Defense Config of this security policy */
+	/* Layer 7 DDoS Defense Config of this security policy. */
 	// +optional
 	Layer7DdosDefenseConfig *SecuritypolicyLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
 }
@@ -76,7 +76,7 @@ type SecuritypolicyMatch struct {
 }
 
 type SecuritypolicyRule struct {
-	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502) */
+	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502). */
 	Action string `json:"action"`
 
 	/* An optional description of this rule. Max size is 64. */

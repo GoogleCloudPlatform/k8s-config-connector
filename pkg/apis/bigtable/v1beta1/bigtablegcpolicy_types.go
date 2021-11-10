@@ -40,7 +40,7 @@ type GcpolicyMaxAge struct {
 	// +optional
 	Days *int `json:"days,omitempty"`
 
-	/* Immutable. Duration before applying GC policy */
+	/* Immutable. Duration before applying GC policy. */
 	// +optional
 	Duration *string `json:"duration,omitempty"`
 }

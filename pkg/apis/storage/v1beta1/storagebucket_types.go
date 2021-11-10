@@ -168,7 +168,7 @@ type StorageBucketSpec struct {
 	// +optional
 	LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
 
-	/* Immutable. The Google Cloud Storage location */
+	/* Immutable. The Google Cloud Storage location. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 

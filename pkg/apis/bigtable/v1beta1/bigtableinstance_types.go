@@ -64,7 +64,7 @@ type BigtableInstanceSpec struct {
 	// +optional
 	Cluster []InstanceCluster `json:"cluster,omitempty"`
 
-	/*  */
+	/* DEPRECATED — This field no longer serves any function and is intended to be dropped in a later version of the resource. */
 	// +optional
 	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 

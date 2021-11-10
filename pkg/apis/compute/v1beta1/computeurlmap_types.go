@@ -91,7 +91,7 @@ type UrlmapCorsPolicy struct {
 
 type UrlmapDefaultRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see
-	[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/) */
+	[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/). */
 	// +optional
 	CorsPolicy *UrlmapCorsPolicy `json:"corsPolicy,omitempty"`
 
@@ -188,7 +188,7 @@ type UrlmapDefaultUrlRedirect struct {
 	will be retained.
 
 	* PERMANENT_REDIRECT, which corresponds to 308. In this case,
-	the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"] */
+	the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]. */
 	// +optional
 	RedirectResponseCode *string `json:"redirectResponseCode,omitempty"`
 
@@ -409,7 +409,7 @@ type UrlmapMetadataFilters struct {
 	* MATCH_ANY: At least one of the filterLabels must have a matching label in the
 	provided metadata.
 	* MATCH_ALL: All filterLabels must have matching labels in
-	the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"] */
+	the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"]. */
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
@@ -444,7 +444,7 @@ type UrlmapPathMatcher struct {
 
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. HeaderAction specified here are applied after the
-	matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap */
+	matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap. */
 	// +optional
 	HeaderAction *UrlmapHeaderAction `json:"headerAction,omitempty"`
 
@@ -614,14 +614,14 @@ type UrlmapRetryPolicy struct {
 	* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
 	  header is set to resource-exhausted
 	* unavailable: Loadbalancer will retry if the gRPC status code in
-	  the response header is set to unavailable */
+	  the response header is set to unavailable. */
 	// +optional
 	RetryConditions []string `json:"retryConditions,omitempty"`
 }
 
 type UrlmapRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see W3C
-	Recommendation for Cross Origin Resource Sharing */
+	Recommendation for Cross Origin Resource Sharing. */
 	// +optional
 	CorsPolicy *UrlmapCorsPolicy `json:"corsPolicy,omitempty"`
 
@@ -654,7 +654,7 @@ type UrlmapRouteAction struct {
 	Timeout *UrlmapTimeout `json:"timeout,omitempty"`
 
 	/* The spec to modify the URL of the request, prior to forwarding the request to
-	the matched service */
+	the matched service. */
 	// +optional
 	UrlRewrite *UrlmapUrlRewrite `json:"urlRewrite,omitempty"`
 
@@ -674,7 +674,7 @@ type UrlmapRouteRules struct {
 	/* Specifies changes to request and response headers that need to take effect for
 	the selected backendService. The headerAction specified here are applied before
 	the matching pathMatchers[].headerAction and after pathMatchers[].routeRules[].r
-	outeAction.weightedBackendService.backendServiceWeightAction[].headerAction */
+	outeAction.weightedBackendService.backendServiceWeightAction[].headerAction. */
 	// +optional
 	HeaderAction *UrlmapHeaderAction `json:"headerAction,omitempty"`
 
@@ -810,7 +810,7 @@ type UrlmapUrlRedirect struct {
 	will be retained.
 
 	* PERMANENT_REDIRECT, which corresponds to 308. In this case,
-	the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"] */
+	the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"]. */
 	// +optional
 	RedirectResponseCode *string `json:"redirectResponseCode,omitempty"`
 
@@ -852,7 +852,7 @@ type UrlmapWeightedBackendServices struct {
 	backend service is determined only for new traffic. Once a user's request has
 	been directed to a backendService, subsequent requests will be sent to the same
 	backendService as determined by the BackendService's session affinity policy.
-	The value must be between 0 and 1000 */
+	The value must be between 0 and 1000. */
 	Weight int `json:"weight"`
 }
 

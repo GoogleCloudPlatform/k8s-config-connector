@@ -208,6 +208,10 @@ type ClusterGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
 
+	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
+	// +optional
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
 	/* Immutable. The accelerator type resource name. */
 	Type string `json:"type"`
 }
@@ -340,7 +344,7 @@ type ClusterMasterGlobalAccessConfig struct {
 }
 
 type ClusterMonitoringConfig struct {
-	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS. */
+	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS and WORKLOADS. */
 	EnableComponents []string `json:"enableComponents"`
 }
 
@@ -445,7 +449,7 @@ type ClusterNodeConfig struct {
 }
 
 type ClusterNotificationConfig struct {
-	/* Notification config for Cloud Pub/Sub */
+	/* Notification config for Cloud Pub/Sub. */
 	Pubsub ClusterPubsub `json:"pubsub"`
 }
 
@@ -494,7 +498,7 @@ type ClusterPrivateClusterConfig struct {
 }
 
 type ClusterPubsub struct {
-	/* Whether or not the notification config is enabled */
+	/* Whether or not the notification config is enabled. */
 	Enabled bool `json:"enabled"`
 
 	/* The PubSubTopic to send the notification to. */
@@ -549,7 +553,7 @@ type ClusterResourceUsageExportConfig struct {
 }
 
 type ClusterSandboxConfig struct {
-	/* Type of the sandbox to use for the node (e.g. 'gvisor') */
+	/* Type of the sandbox to use for the node (e.g. 'gvisor'). */
 	SandboxType string `json:"sandboxType"`
 }
 
@@ -586,8 +590,13 @@ type ClusterVerticalPodAutoscaling struct {
 }
 
 type ClusterWorkloadIdentityConfig struct {
-	/* Enables workload identity. */
-	IdentityNamespace string `json:"identityNamespace"`
+	/* DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workload_pool` instead. Enables workload identity. */
+	// +optional
+	IdentityNamespace *string `json:"identityNamespace,omitempty"`
+
+	/* The workload pool to attach all Kubernetes service accounts to. */
+	// +optional
+	WorkloadPool *string `json:"workloadPool,omitempty"`
 }
 
 type ClusterWorkloadMetadataConfig struct {
@@ -704,7 +713,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff removing a username/password or unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
+	/* DEPRECATED — Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff removing a username/password or unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuth `json:"masterAuth,omitempty"`
 
@@ -736,7 +745,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkingMode *string `json:"networkingMode,omitempty"`
 
-	/* Immutable. The configuration of the nodepool */
+	/* Immutable. The configuration of the nodepool. */
 	// +optional
 	NodeConfig *ClusterNodeConfig `json:"nodeConfig,omitempty"`
 
@@ -748,7 +757,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NodeVersion *string `json:"nodeVersion,omitempty"`
 
-	/* The notification config for sending cluster upgrade notifications */
+	/* The notification config for sending cluster upgrade notifications. */
 	// +optional
 	NotificationConfig *ClusterNotificationConfig `json:"notificationConfig,omitempty"`
 
@@ -795,7 +804,7 @@ type ContainerClusterStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The IP address of this cluster's Kubernetes master. */
 	Endpoint string `json:"endpoint,omitempty"`
-	/* List of instance group URLs which have been assigned to the cluster. */
+	/* DEPRECATED — Please use node_pool.instance_group_urls instead. List of instance group URLs which have been assigned to the cluster. */
 	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
 	/* The fingerprint of the set of labels for this cluster. */
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`

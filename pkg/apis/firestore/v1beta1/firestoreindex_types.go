@@ -37,7 +37,7 @@ import (
 
 type IndexFields struct {
 	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-	be specified. Possible values: ["CONTAINS"] */
+	be specified. Possible values: ["CONTAINS"]. */
 	// +optional
 	ArrayConfig *string `json:"arrayConfig,omitempty"`
 
@@ -46,7 +46,7 @@ type IndexFields struct {
 	FieldPath *string `json:"fieldPath,omitempty"`
 
 	/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-	Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"] */
+	Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]. */
 	// +optional
 	Order *string `json:"order,omitempty"`
 }
@@ -67,7 +67,7 @@ type FirestoreIndexSpec struct {
 	ordered '"ASCENDING"' (unless explicitly specified otherwise). */
 	Fields []IndexFields `json:"fields"`
 
-	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"] */
+	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
 	// +optional
 	QueryScope *string `json:"queryScope,omitempty"`
 }
@@ -77,7 +77,7 @@ type FirestoreIndexStatus struct {
 	   FirestoreIndex's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* A server defined name for this index. Format:
-	'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}' */
+	'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'. */
 	Name string `json:"name,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`

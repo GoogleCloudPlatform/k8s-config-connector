@@ -96,7 +96,7 @@ type ResourceManagerPolicySpec struct {
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values.  */
+	/* A policy that can define specific values that are allowed or denied for the given constraint. It can also be used to allow or deny all values. . */
 	// +optional
 	ListPolicy *PolicyListPolicy `json:"listPolicy,omitempty"`
 

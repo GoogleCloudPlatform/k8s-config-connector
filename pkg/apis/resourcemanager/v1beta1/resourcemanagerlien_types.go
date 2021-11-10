@@ -62,7 +62,7 @@ type ResourceManagerLienSpec struct {
 	Each value should correspond to an IAM permission. The server will validate
 	the permissions against those for which Liens are supported.  An empty
 	list is meaningless and will be rejected.
-	e.g. ['resourcemanager.projects.delete'] */
+	e.g. ['resourcemanager.projects.delete']. */
 	Restrictions []string `json:"restrictions"`
 }
 
@@ -70,7 +70,7 @@ type ResourceManagerLienStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ResourceManagerLien's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Time of creation */
+	/* Time of creation. */
 	CreateTime string `json:"createTime,omitempty"`
 	/* A system-generated unique identifier for this Lien. */
 	Name string `json:"name,omitempty"`

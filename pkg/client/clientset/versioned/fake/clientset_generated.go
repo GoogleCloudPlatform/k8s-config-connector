@@ -41,6 +41,8 @@ import (
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1"
 	fakecomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1/fake"
+	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/configcontroller/v1beta1"
+	fakeconfigcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/configcontroller/v1beta1/fake"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/container/v1beta1"
 	fakecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/container/v1beta1/fake"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/containeranalysis/v1beta1"
@@ -83,6 +85,8 @@ import (
 	fakenetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkservices/v1beta1/fake"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/osconfig/v1beta1"
 	fakeosconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/osconfig/v1beta1/fake"
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/privateca/v1beta1"
+	fakeprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/privateca/v1beta1/fake"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1"
 	fakepubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1/fake"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
@@ -204,6 +208,11 @@ func (c *Clientset) ComputeV1beta1() computev1beta1.ComputeV1beta1Interface {
 	return &fakecomputev1beta1.FakeComputeV1beta1{Fake: &c.Fake}
 }
 
+// ConfigcontrollerV1beta1 retrieves the ConfigcontrollerV1beta1Client
+func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface {
+	return &fakeconfigcontrollerv1beta1.FakeConfigcontrollerV1beta1{Fake: &c.Fake}
+}
+
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
 func (c *Clientset) ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface {
 	return &fakecontainerv1beta1.FakeContainerV1beta1{Fake: &c.Fake}
@@ -307,6 +316,11 @@ func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.Networkservi
 // OsconfigV1beta1 retrieves the OsconfigV1beta1Client
 func (c *Clientset) OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface {
 	return &fakeosconfigv1beta1.FakeOsconfigV1beta1{Fake: &c.Fake}
+}
+
+// PrivatecaV1beta1 retrieves the PrivatecaV1beta1Client
+func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface {
+	return &fakeprivatecav1beta1.FakePrivatecaV1beta1{Fake: &c.Fake}
 }
 
 // PubsubV1beta1 retrieves the PubsubV1beta1Client

@@ -31,6 +31,7 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/compute/v1beta1"
+	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/configcontroller/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/containeranalysis/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/dataflow/v1beta1"
@@ -52,6 +53,7 @@ import (
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/networksecurity/v1beta1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/networkservices/v1beta1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/osconfig/v1beta1"
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/privateca/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/pubsub/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/resourcemanager/v1beta1"
@@ -83,6 +85,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudidentityv1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	computev1beta1.AddToScheme,
+	configcontrollerv1beta1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
@@ -104,6 +107,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	networksecurityv1beta1.AddToScheme,
 	networkservicesv1beta1.AddToScheme,
 	osconfigv1beta1.AddToScheme,
+	privatecav1beta1.AddToScheme,
 	pubsubv1beta1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,

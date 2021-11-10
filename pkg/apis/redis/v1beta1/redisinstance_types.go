@@ -58,7 +58,7 @@ type RedisInstanceSpec struct {
 	// +optional
 	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
 
-	/* Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"] */
+	/* Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"]. */
 	// +optional
 	ConnectMode *string `json:"connectMode,omitempty"`
 
@@ -79,7 +79,7 @@ type RedisInstanceSpec struct {
 
 	/* Redis configuration parameters, according to http://redis.io/topics/config.
 	Please check Memorystore documentation for the list of supported parameters:
-	https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs */
+	https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs. */
 	// +optional
 	RedisConfigs map[string]string `json:"redisConfigs,omitempty"`
 
@@ -107,13 +107,13 @@ type RedisInstanceSpec struct {
 	/* Immutable. The service tier of the instance. Must be one of these values:
 
 	- BASIC: standalone instance
-	- STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"] */
+	- STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"]. */
 	// +optional
 	Tier *string `json:"tier,omitempty"`
 
 	/* Immutable. The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
 
-	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentcation Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"] */
+	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentcation Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"]. */
 	// +optional
 	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 }

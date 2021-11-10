@@ -40,7 +40,7 @@ type CryptokeyVersionTemplate struct {
 	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
 	Algorithm string `json:"algorithm"`
 
-	/* Immutable. The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"] */
+	/* Immutable. The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"]. */
 	// +optional
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
@@ -60,7 +60,7 @@ type KMSCryptoKeySpec struct {
 
 	/* Immutable. The immutable purpose of this CryptoKey. See the
 	[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-	for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"] */
+	for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"]. */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 

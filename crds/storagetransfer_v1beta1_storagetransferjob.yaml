@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -363,7 +363,7 @@ spec:
                             type: string
                         type: object
                       path:
-                        description: Google Cloud Storage path in bucket to transfer
+                        description: Google Cloud Storage path in bucket to transfer.
                         type: string
                     required:
                     - bucketRef
@@ -398,7 +398,7 @@ spec:
                             type: string
                         type: object
                       path:
-                        description: Google Cloud Storage path in bucket to transfer
+                        description: Google Cloud Storage path in bucket to transfer.
                         type: string
                     required:
                     - bucketRef

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.66.0
+    cnrm.cloud.google.com/version: 1.67.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -80,7 +80,7 @@ spec:
                   "example.com.".
                 type: string
               dnssecConfig:
-                description: DNSSEC configuration
+                description: DNSSEC configuration.
                 properties:
                   defaultKeySpecs:
                     description: |-
@@ -93,10 +93,10 @@ spec:
                         algorithm:
                           description: 'String mnemonic specifying the DNSSEC algorithm
                             of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384",
-                            "rsasha1", "rsasha256", "rsasha512"]'
+                            "rsasha1", "rsasha256", "rsasha512"].'
                           type: string
                         keyLength:
-                          description: Length of the keys in bits
+                          description: Length of the keys in bits.
                           type: integer
                         keyType:
                           description: |-
@@ -105,24 +105,24 @@ spec:
                             Point flag set and, when active, will only be used to sign
                             resource record sets of type DNSKEY. Zone signing keys do
                             not have the Secure Entry Point flag set and will be used
-                            to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]
+                            to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"].
                           type: string
                         kind:
-                          description: Identifies what kind of resource this is
+                          description: Identifies what kind of resource this is.
                           type: string
                       type: object
                     type: array
                   kind:
-                    description: Identifies what kind of resource this is
+                    description: Identifies what kind of resource this is.
                     type: string
                   nonExistence:
                     description: |-
                       Specifies the mechanism used to provide authenticated denial-of-existence responses.
-                      non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]
+                      non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"].
                     type: string
                   state:
                     description: 'Specifies whether DNSSEC is enabled, and what mode
-                      it is in Possible values: ["off", "on", "transfer"]'
+                      it is in Possible values: ["off", "on", "transfer"].'
                     type: string
                 type: object
               forwardingConfig:
@@ -142,7 +142,7 @@ spec:
                           description: |-
                             Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
                             decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-                            to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]
+                            to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].
                           type: string
                         ipv4Address:
                           description: IPv4 address of a target name server.
@@ -275,7 +275,7 @@ spec:
               visibility:
                 description: |-
                   Immutable. The zone's visibility: public zones are exposed to the Internet,
-                  while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]
+                  while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"].
                 type: string
             required:
             - dnsName
@@ -311,7 +311,7 @@ spec:
               nameServers:
                 description: |-
                   Delegate your managed_zone to these virtual name servers;
-                  defined by the server
+                  defined by the server.
                 items:
                   type: string
                 type: array
