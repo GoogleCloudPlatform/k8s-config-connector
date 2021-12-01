@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(OSConfigGuestPolicy{}).Name(),
 	}
 
+	OSConfigOSPolicyAssignmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(OSConfigOSPolicyAssignment{}).Name(),
+	}
+
 	osconfigAPIVersion = SchemeGroupVersion.String()
 )

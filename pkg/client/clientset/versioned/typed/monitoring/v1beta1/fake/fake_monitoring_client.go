@@ -51,6 +51,14 @@ func (c *FakeMonitoringV1beta1) MonitoringNotificationChannels(namespace string)
 	return &FakeMonitoringNotificationChannels{c, namespace}
 }
 
+func (c *FakeMonitoringV1beta1) MonitoringServices(namespace string) v1beta1.MonitoringServiceInterface {
+	return &FakeMonitoringServices{c, namespace}
+}
+
+func (c *FakeMonitoringV1beta1) MonitoringServiceLevelObjectives(namespace string) v1beta1.MonitoringServiceLevelObjectiveInterface {
+	return &FakeMonitoringServiceLevelObjectives{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeMonitoringV1beta1) RESTClient() rest.Interface {

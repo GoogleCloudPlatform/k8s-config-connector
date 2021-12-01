@@ -56,6 +56,10 @@ type SecretManagerSecretVersionSpec struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Immutable. The secret data. Must be no larger than 64KiB. */
 	SecretData SecretversionSecretData `json:"secretData"`
 

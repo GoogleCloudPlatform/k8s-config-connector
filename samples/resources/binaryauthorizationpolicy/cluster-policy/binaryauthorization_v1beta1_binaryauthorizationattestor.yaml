@@ -17,6 +17,8 @@ kind: BinaryAuthorizationAttestor
 metadata:
   name: binaryauthorizationpolicy-dep-cluster
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
   description: A sample binary authorization attestor.
   userOwnedDrydockNote:
     noteRef:

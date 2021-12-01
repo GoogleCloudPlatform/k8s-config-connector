@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -396,7 +396,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -526,7 +526,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1678,7 +1678,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1856,7 +1856,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -2176,7 +2176,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3002,7 +3002,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3441,7 +3441,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3610,7 +3610,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -3813,7 +3813,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4009,7 +4009,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -4170,7 +4170,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -4436,7 +4436,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -4856,7 +4856,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -5834,7 +5834,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6028,7 +6028,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -6570,7 +6570,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -6821,7 +6821,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -7046,7 +7046,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8083,7 +8083,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8691,7 +8691,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -8837,7 +8837,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -9054,7 +9054,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -9336,7 +9336,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -9710,7 +9710,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10336,7 +10336,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10800,7 +10800,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -10961,7 +10961,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11122,7 +11122,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -11398,7 +11398,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -12140,7 +12140,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -12341,7 +12341,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13210,7 +13210,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -13929,7 +13929,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14253,7 +14253,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14454,7 +14454,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14647,7 +14647,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -14797,7 +14797,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15005,7 +15005,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15186,7 +15186,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15304,7 +15304,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15518,7 +15518,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -15816,7 +15816,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16023,7 +16023,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16350,7 +16350,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16618,7 +16618,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -16833,7 +16833,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17108,7 +17108,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17325,7 +17325,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -17607,13 +17607,8 @@ spec:
                   type: object
                 type: array
               fingerprint:
-                description: Fingerprint of this resource. A hash of the contents
-                  stored in this object. This field is used in optimistic locking.
-                  This field will be ignored when inserting a `ServiceAttachment`.
-                  An up-to-date fingerprint must be provided in order to patch/update
-                  the ServiceAttachment; otherwise, the request will fail with error
-                  `412 conditionNotMet`. To see the latest fingerprint, make a `get()`
-                  request to retrieve the ServiceAttachment.
+                description: Fingerprint of this resource. This field is used internally
+                  during updates of this resource.
                 type: string
               id:
                 description: The unique identifier for the resource type. The server
@@ -17665,7 +17660,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17771,7 +17766,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -17910,7 +17905,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18290,7 +18285,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18382,8 +18377,8 @@ spec:
                             description: Name of the Secret to extract a value from.
                             type: string
                         required:
-                        - name
                         - key
+                        - name
                         type: object
                     type: object
                 type: object
@@ -18391,8 +18386,9 @@ spec:
                 description: Immutable. An optional description of this resource.
                 type: string
               location:
-                description: Location represents the geographical location of the
-                  ComputeSSLCertificate. Specify "global" for global resources.
+                description: 'Location represents the geographical location of the
+                  ComputeSSLCertificate. Specify a region name or "global" for global
+                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               privateKey:
                 description: Immutable. The write-only private key in PEM format.
@@ -18427,8 +18423,8 @@ spec:
                             description: Name of the Secret to extract a value from.
                             type: string
                         required:
-                        - name
                         - key
+                        - name
                         type: object
                     type: object
                 type: object
@@ -18504,7 +18500,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18667,7 +18663,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -18956,7 +18952,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19133,7 +19129,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19301,7 +19297,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19541,7 +19537,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19735,7 +19731,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -19958,7 +19954,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20183,7 +20179,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20349,7 +20345,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -20509,7 +20505,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23204,7 +23200,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23401,7 +23397,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -23768,7 +23764,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -24004,7 +24000,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -24592,7 +24588,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -25785,7 +25781,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26272,7 +26268,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26398,7 +26394,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -26680,7 +26676,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -26959,7 +26955,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -27251,7 +27247,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -28474,7 +28470,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -30389,7 +30385,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30715,7 +30711,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30910,7 +30906,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31065,7 +31061,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -31282,7 +31278,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -31603,7 +31599,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31757,7 +31753,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -31968,7 +31964,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32106,7 +32102,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32434,7 +32430,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -32669,7 +32665,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -33033,7 +33029,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33195,7 +33191,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33335,7 +33331,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33609,7 +33605,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -33839,7 +33835,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34054,7 +34050,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34232,7 +34228,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -34369,7 +34365,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -34493,7 +34489,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -34643,7 +34639,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -34826,7 +34822,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -35039,7 +35035,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -35192,7 +35188,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35386,7 +35382,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -35515,7 +35511,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -35785,7 +35781,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -36150,7 +36146,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -36384,7 +36380,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -37145,7 +37141,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -43863,7 +43859,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -44050,7 +44046,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -44338,7 +44334,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -44631,7 +44627,906 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com
+spec:
+  group: monitoring.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: MonitoringServiceLevelObjective
+    plural: monitoringservicelevelobjectives
+    shortNames:
+    - gcpmonitoringservicelevelobjective
+    - gcpmonitoringservicelevelobjectives
+    singular: monitoringservicelevelobjective
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              calendarPeriod:
+                description: 'A calendar period, semantically "since the start of
+                  the current ``". At this time, only `DAY`, `WEEK`, `FORTNIGHT`,
+                  and `MONTH` are supported. Possible values: CALENDAR_PERIOD_UNSPECIFIED,
+                  DAY, WEEK, FORTNIGHT, MONTH, QUARTER, HALF, YEAR'
+                type: string
+              displayName:
+                description: Name used for UI elements listing this SLO.
+                type: string
+              goal:
+                description: The fraction of service that must be good in order for
+                  this objective to be met. `0 < goal <= 0.999`.
+                format: double
+                type: number
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              rollingPeriod:
+                description: A rolling time period, semantically "in the past ``".
+                  Must be an integer multiple of 1 day no larger than 30 days.
+                type: string
+              serviceLevelIndicator:
+                description: The definition of good service, used to measure and calculate
+                  the quality of the `Service`'s performance with respect to a single
+                  aspect of service quality.
+                properties:
+                  basicSli:
+                    description: Basic SLI on a well-known service type.
+                    properties:
+                      availability:
+                        description: Good service is defined to be the count of requests
+                          made to this service that return successfully.
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      latency:
+                        description: Good service is defined to be the count of requests
+                          made to this service that are fast enough with respect to
+                          `latency.threshold`.
+                        properties:
+                          experience:
+                            description: 'A description of the experience associated
+                              with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED,
+                              DELIGHTING, SATISFYING, ANNOYING'
+                            type: string
+                          threshold:
+                            description: Good service is defined to be the count of
+                              requests made to this service that return in no more
+                              than `threshold`.
+                            type: string
+                        type: object
+                      location:
+                        description: 'OPTIONAL: The set of locations to which this
+                          SLI is relevant. Telemetry from other locations will not
+                          be used to calculate performance for this SLI. If omitted,
+                          this SLI applies to all locations in which the Service has
+                          activity. For service types that don''t support breaking
+                          down by location, setting this field will result in an error.'
+                        items:
+                          type: string
+                        type: array
+                      method:
+                        description: 'OPTIONAL: The set of RPCs to which this SLI
+                          is relevant. Telemetry from other methods will not be used
+                          to calculate performance for this SLI. If omitted, this
+                          SLI applies to all the Service''s methods. For service types
+                          that don''t support breaking down by method, setting this
+                          field will result in an error.'
+                        items:
+                          type: string
+                        type: array
+                      operationAvailability:
+                        description: Good service is defined to be the count of operations
+                          performed by this service that return successfully
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      operationLatency:
+                        description: Good service is defined to be the count of operations
+                          performed by this service that are fast enough with respect
+                          to `operation_latency.threshold`.
+                        properties:
+                          experience:
+                            description: 'A description of the experience associated
+                              with failing requests. Possible values: LATENCY_EXPERIENCE_UNSPECIFIED,
+                              DELIGHTING, SATISFYING, ANNOYING'
+                            type: string
+                          threshold:
+                            description: Good service is defined to be the count of
+                              operations that are completed in no more than `threshold`.
+                            type: string
+                        type: object
+                      version:
+                        description: 'OPTIONAL: The set of API versions to which this
+                          SLI is relevant. Telemetry from other API versions will
+                          not be used to calculate performance for this SLI. If omitted,
+                          this SLI applies to all API versions. For service types
+                          that don''t support breaking down by version, setting this
+                          field will result in an error.'
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  requestBased:
+                    description: Request-based SLIs
+                    properties:
+                      distributionCut:
+                        description: '`distribution_cut` is used when `good_service`
+                          is a count of values aggregated in a `Distribution` that
+                          fall into a good range. The `total_service` is the total
+                          count of all values aggregated in the `Distribution`.'
+                        properties:
+                          distributionFilter:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying a `TimeSeries` aggregating values. Must have
+                              `ValueType = DISTRIBUTION` and `MetricKind = DELTA`
+                              or `MetricKind = CUMULATIVE`.
+                            type: string
+                          range:
+                            description: Range of values considered "good." For a
+                              one-sided range, set one bound to an infinite value.
+                            properties:
+                              max:
+                                description: Range maximum.
+                                format: double
+                                type: number
+                              min:
+                                description: Range minimum.
+                                format: double
+                                type: number
+                            type: object
+                        type: object
+                      goodTotalRatio:
+                        description: '`good_total_ratio` is used when the ratio of
+                          `good_service` to `total_service` is computed from two `TimeSeries`.'
+                        properties:
+                          badServiceFilter:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying a `TimeSeries` quantifying bad service, either
+                              demanded service that was not provided or demanded service
+                              that was of inadequate quality. Must have `ValueType
+                              = DOUBLE` or `ValueType = INT64` and must have `MetricKind
+                              = DELTA` or `MetricKind = CUMULATIVE`.
+                            type: string
+                          goodServiceFilter:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying a `TimeSeries` quantifying good service provided.
+                              Must have `ValueType = DOUBLE` or `ValueType = INT64`
+                              and must have `MetricKind = DELTA` or `MetricKind =
+                              CUMULATIVE`.
+                            type: string
+                          totalServiceFilter:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying a `TimeSeries` quantifying total demanded
+                              service. Must have `ValueType = DOUBLE` or `ValueType
+                              = INT64` and must have `MetricKind = DELTA` or `MetricKind
+                              = CUMULATIVE`.
+                            type: string
+                        type: object
+                    type: object
+                  windowsBased:
+                    description: Windows-based SLIs
+                    properties:
+                      goodBadMetricFilter:
+                        description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                          specifying a `TimeSeries` with `ValueType = BOOL`. The window
+                          is good if any `true` values appear in the window.
+                        type: string
+                      goodTotalRatioThreshold:
+                        description: A window is good if its `performance` is high
+                          enough.
+                        properties:
+                          basicSliPerformance:
+                            description: '`BasicSli` to evaluate to judge window quality.'
+                            properties:
+                              availability:
+                                description: Good service is defined to be the count
+                                  of requests made to this service that return successfully.
+                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
+                              latency:
+                                description: Good service is defined to be the count
+                                  of requests made to this service that are fast enough
+                                  with respect to `latency.threshold`.
+                                properties:
+                                  experience:
+                                    description: 'A description of the experience
+                                      associated with failing requests. Possible values:
+                                      LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING,
+                                      SATISFYING, ANNOYING'
+                                    type: string
+                                  threshold:
+                                    description: Good service is defined to be the
+                                      count of requests made to this service that
+                                      return in no more than `threshold`.
+                                    type: string
+                                type: object
+                              location:
+                                description: 'OPTIONAL: The set of locations to which
+                                  this SLI is relevant. Telemetry from other locations
+                                  will not be used to calculate performance for this
+                                  SLI. If omitted, this SLI applies to all locations
+                                  in which the Service has activity. For service types
+                                  that don''t support breaking down by location, setting
+                                  this field will result in an error.'
+                                items:
+                                  type: string
+                                type: array
+                              method:
+                                description: 'OPTIONAL: The set of RPCs to which this
+                                  SLI is relevant. Telemetry from other methods will
+                                  not be used to calculate performance for this SLI.
+                                  If omitted, this SLI applies to all the Service''s
+                                  methods. For service types that don''t support breaking
+                                  down by method, setting this field will result in
+                                  an error.'
+                                items:
+                                  type: string
+                                type: array
+                              operationAvailability:
+                                description: Good service is defined to be the count
+                                  of operations performed by this service that return
+                                  successfully
+                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
+                              operationLatency:
+                                description: Good service is defined to be the count
+                                  of operations performed by this service that are
+                                  fast enough with respect to `operation_latency.threshold`.
+                                properties:
+                                  experience:
+                                    description: 'A description of the experience
+                                      associated with failing requests. Possible values:
+                                      LATENCY_EXPERIENCE_UNSPECIFIED, DELIGHTING,
+                                      SATISFYING, ANNOYING'
+                                    type: string
+                                  threshold:
+                                    description: Good service is defined to be the
+                                      count of operations that are completed in no
+                                      more than `threshold`.
+                                    type: string
+                                type: object
+                              version:
+                                description: 'OPTIONAL: The set of API versions to
+                                  which this SLI is relevant. Telemetry from other
+                                  API versions will not be used to calculate performance
+                                  for this SLI. If omitted, this SLI applies to all
+                                  API versions. For service types that don''t support
+                                  breaking down by version, setting this field will
+                                  result in an error.'
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          performance:
+                            description: '`RequestBasedSli` to evaluate to judge window
+                              quality.'
+                            properties:
+                              distributionCut:
+                                description: '`distribution_cut` is used when `good_service`
+                                  is a count of values aggregated in a `Distribution`
+                                  that fall into a good range. The `total_service`
+                                  is the total count of all values aggregated in the
+                                  `Distribution`.'
+                                properties:
+                                  distributionFilter:
+                                    description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                                      specifying a `TimeSeries` aggregating values.
+                                      Must have `ValueType = DISTRIBUTION` and `MetricKind
+                                      = DELTA` or `MetricKind = CUMULATIVE`.
+                                    type: string
+                                  range:
+                                    description: Range of values considered "good."
+                                      For a one-sided range, set one bound to an infinite
+                                      value.
+                                    properties:
+                                      max:
+                                        description: Range maximum.
+                                        format: double
+                                        type: number
+                                      min:
+                                        description: Range minimum.
+                                        format: double
+                                        type: number
+                                    type: object
+                                type: object
+                              goodTotalRatio:
+                                description: '`good_total_ratio` is used when the
+                                  ratio of `good_service` to `total_service` is computed
+                                  from two `TimeSeries`.'
+                                properties:
+                                  badServiceFilter:
+                                    description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                                      specifying a `TimeSeries` quantifying bad service,
+                                      either demanded service that was not provided
+                                      or demanded service that was of inadequate quality.
+                                      Must have `ValueType = DOUBLE` or `ValueType
+                                      = INT64` and must have `MetricKind = DELTA`
+                                      or `MetricKind = CUMULATIVE`.
+                                    type: string
+                                  goodServiceFilter:
+                                    description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                                      specifying a `TimeSeries` quantifying good service
+                                      provided. Must have `ValueType = DOUBLE` or
+                                      `ValueType = INT64` and must have `MetricKind
+                                      = DELTA` or `MetricKind = CUMULATIVE`.
+                                    type: string
+                                  totalServiceFilter:
+                                    description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                                      specifying a `TimeSeries` quantifying total
+                                      demanded service. Must have `ValueType = DOUBLE`
+                                      or `ValueType = INT64` and must have `MetricKind
+                                      = DELTA` or `MetricKind = CUMULATIVE`.
+                                    type: string
+                                type: object
+                            type: object
+                          threshold:
+                            description: If window `performance >= threshold`, the
+                              window is counted as good.
+                            format: double
+                            type: number
+                        type: object
+                      metricMeanInRange:
+                        description: A window is good if the metric's value is in
+                          a good range, averaged across returned streams.
+                        properties:
+                          range:
+                            description: Range of values considered "good." For a
+                              one-sided range, set one bound to an infinite value.
+                            properties:
+                              max:
+                                description: Range maximum.
+                                format: double
+                                type: number
+                              min:
+                                description: Range minimum.
+                                format: double
+                                type: number
+                            type: object
+                          timeSeries:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying the `TimeSeries` to use for evaluating window
+                              quality.
+                            type: string
+                        type: object
+                      metricSumInRange:
+                        description: A window is good if the metric's value is in
+                          a good range, summed across returned streams.
+                        properties:
+                          range:
+                            description: Range of values considered "good." For a
+                              one-sided range, set one bound to an infinite value.
+                            properties:
+                              max:
+                                description: Range maximum.
+                                format: double
+                                type: number
+                              min:
+                                description: Range minimum.
+                                format: double
+                                type: number
+                            type: object
+                          timeSeries:
+                            description: A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+                              specifying the `TimeSeries` to use for evaluating window
+                              quality.
+                            type: string
+                        type: object
+                      windowPeriod:
+                        description: Duration over which window quality is evaluated.
+                          Must be an integer fraction of a day and at least `60s`.
+                        type: string
+                    type: object
+                type: object
+              serviceRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The service for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+            required:
+            - goal
+            - projectRef
+            - serviceRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Time stamp of the `Create` or most recent `Update` command
+                  on this `Slo`.
+                format: date-time
+                type: string
+              deleteTime:
+                description: Time stamp of the `Update` or `Delete` command that made
+                  this no longer a current `Slo`. This field is not populated in `ServiceLevelObjective`s
+                  returned from calls to `GetServiceLevelObjective` and `ListServiceLevelObjectives`,
+                  because it is always empty in the current version. It is populated
+                  in `ServiceLevelObjective`s representing previous versions in the
+                  output of `ListServiceLevelObjectiveVersions`. Because all old configuration
+                  versions are stored, `Update` operations mark the obsoleted version
+                  as deleted.
+                format: date-time
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              serviceManagementOwned:
+                description: Output only. If set, this SLO is managed at the [Service
+                  Management](https://cloud.google.com/service-management/overview)
+                  level. Therefore the service yaml file is the source of truth for
+                  this SLO, and API `Update` and `Delete` operations are forbidden.
+                type: boolean
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.68.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: monitoringservices.monitoring.cnrm.cloud.google.com
+spec:
+  group: monitoring.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: MonitoringService
+    plural: monitoringservices
+    shortNames:
+    - gcpmonitoringservice
+    - gcpmonitoringservices
+    singular: monitoringservice
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              displayName:
+                description: Name used for UI elements listing this Service.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              telemetry:
+                description: Configuration for how to query telemetry on a Service.
+                properties:
+                  resourceName:
+                    description: The full name of the resource that defines this service.
+                      Formatted as described in https://cloud.google.com/apis/design/resource_names.
+                    type: string
+                type: object
+            required:
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.68.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com
+spec:
+  group: networkconnectivity.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetworkConnectivityHub
+    plural: networkconnectivityhubs
+    shortNames:
+    - gcpnetworkconnectivityhub
+    - gcpnetworkconnectivityhubs
+    singular: networkconnectivityhub
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              description:
+                description: An optional description of the hub.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+            required:
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Output only. The time the hub was created.
+                format: date-time
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              routingVpcs:
+                description: The VPC network associated with this hub's spokes. All
+                  of the VPN tunnels, VLAN attachments, and router appliance instances
+                  referenced by this hub's spokes must belong to this VPC network.
+                  This field is read-only. Network Connectivity Center automatically
+                  populates it based on the set of spokes attached to the hub.
+                items:
+                  properties:
+                    uri:
+                      description: The URI of the VPC network.
+                      type: string
+                  type: object
+                type: array
+              state:
+                description: 'Output only. The current lifecycle state of this hub.
+                  Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING'
+                type: string
+              uniqueId:
+                description: Output only. The Google-generated UUID for the hub. This
+                  value is unique across all hub resources. If a hub is deleted and
+                  another with the same name is created, the new hub is assigned a
+                  different unique_id.
+                type: string
+              updateTime:
+                description: Output only. The time the hub was last updated.
+                format: date-time
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -44886,7 +45781,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -45112,7 +46007,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -45353,7 +46248,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -45679,7 +46574,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -45843,10 +46738,6 @@ spec:
               description:
                 description: Description of the GuestPolicy. Length of the description
                   is limited to 1024 characters.
-                type: string
-              etag:
-                description: The etag for this GuestPolicy. If this is provided on
-                  update, it must match the server's etag.
                 type: string
               packageRepositories:
                 description: List of package repository configurations assigned to
@@ -46417,6 +47308,10 @@ spec:
                 description: Output only. Time this GuestPolicy was created.
                 format: date-time
                 type: string
+              etag:
+                description: The etag for this GuestPolicy. If this is provided on
+                  update, it must match the server's etag.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -46445,7 +47340,1004 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: osconfigospolicyassignments.osconfig.cnrm.cloud.google.com
+spec:
+  group: osconfig.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: OSConfigOSPolicyAssignment
+    plural: osconfigospolicyassignments
+    shortNames:
+    - gcposconfigospolicyassignment
+    - gcposconfigospolicyassignments
+    singular: osconfigospolicyassignment
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              description:
+                description: OS policy assignment description. Length of the description
+                  is limited to 1024 characters.
+                type: string
+              instanceFilter:
+                description: Required. Filter to select VMs.
+                properties:
+                  all:
+                    description: Target all VMs in the project. If true, no other
+                      criteria is permitted.
+                    type: boolean
+                  exclusionLabels:
+                    description: List of label sets used for VM exclusion. If the
+                      list has more than one label set, the VM is excluded if any
+                      of the label sets are applicable for the VM.
+                    items:
+                      properties:
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels are identified by key/value pairs in
+                            this map. A VM should contain all the key/value pairs
+                            specified in this map to be selected.
+                          type: object
+                      type: object
+                    type: array
+                  inclusionLabels:
+                    description: List of label sets used for VM inclusion. If the
+                      list has more than one `LabelSet`, the VM is included if any
+                      of the label sets are applicable for the VM.
+                    items:
+                      properties:
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels are identified by key/value pairs in
+                            this map. A VM should contain all the key/value pairs
+                            specified in this map to be selected.
+                          type: object
+                      type: object
+                    type: array
+                  inventories:
+                    description: List of inventories to select VMs. A VM is selected
+                      if its inventory data matches at least one of the following
+                      inventories.
+                    items:
+                      properties:
+                        osShortName:
+                          description: Required. The OS short name
+                          type: string
+                        osVersion:
+                          description: The OS version Prefix matches are supported
+                            if asterisk(*) is provided as the last character. For
+                            example, to match all versions with a major version of
+                            `7`, specify the following value for this field `7.*`
+                            An empty string matches all OS versions.
+                          type: string
+                      required:
+                      - osShortName
+                      type: object
+                    type: array
+                type: object
+              location:
+                description: The location for the resource
+                type: string
+              osPolicies:
+                description: Required. List of OS policies to be applied to the VMs.
+                items:
+                  properties:
+                    allowNoResourceGroupMatch:
+                      description: This flag determines the OS policy compliance status
+                        when none of the resource groups within the policy are applicable
+                        for a VM. Set this value to `true` if the policy needs to
+                        be reported as compliant even if the policy has nothing to
+                        validate or enforce.
+                      type: boolean
+                    description:
+                      description: Policy description. Length of the description is
+                        limited to 1024 characters.
+                      type: string
+                    id:
+                      description: 'Required. The id of the OS policy with the following
+                        restrictions: * Must contain only lowercase letters, numbers,
+                        and hyphens. * Must start with a letter. * Must be between
+                        1-63 characters. * Must end with a number or a letter. * Must
+                        be unique within the assignment.'
+                      type: string
+                    mode:
+                      description: 'Required. Policy mode Possible values: MODE_UNSPECIFIED,
+                        VALIDATION, ENFORCEMENT'
+                      type: string
+                    resourceGroups:
+                      description: Required. List of resource groups for the policy.
+                        For a particular VM, resource groups are evaluated in the
+                        order specified and the first resource group that is applicable
+                        is selected and the rest are ignored. If none of the resource
+                        groups are applicable for a VM, the VM is considered to be
+                        non-compliant w.r.t this policy. This behavior can be toggled
+                        by the flag `allow_no_resource_group_match`
+                      items:
+                        properties:
+                          inventoryFilters:
+                            description: 'List of inventory filters for the resource
+                              group. The resources in this resource group are applied
+                              to the target VM if it satisfies at least one of the
+                              following inventory filters. For example, to apply this
+                              resource group to VMs running either `RHEL` or `CentOS`
+                              operating systems, specify 2 items for the list with
+                              following values: inventory_filters[0].os_short_name=''rhel''
+                              and inventory_filters[1].os_short_name=''centos'' If
+                              the list is empty, this resource group will be applied
+                              to the target VM unconditionally.'
+                            items:
+                              properties:
+                                osShortName:
+                                  description: Required. The OS short name
+                                  type: string
+                                osVersion:
+                                  description: The OS version Prefix matches are supported
+                                    if asterisk(*) is provided as the last character.
+                                    For example, to match all versions with a major
+                                    version of `7`, specify the following value for
+                                    this field `7.*` An empty string matches all OS
+                                    versions.
+                                  type: string
+                              required:
+                              - osShortName
+                              type: object
+                            type: array
+                          resources:
+                            description: Required. List of resources configured for
+                              this resource group. The resources are executed in the
+                              exact order specified here.
+                            items:
+                              properties:
+                                exec:
+                                  description: Exec resource
+                                  properties:
+                                    enforce:
+                                      description: Required. What to run to validate
+                                        this resource is in the desired state. An
+                                        exit code of 100 indicates "in desired state",
+                                        and exit code of 101 indicates "not in desired
+                                        state". Any other exit code indicates a failure
+                                        running validate.
+                                      properties:
+                                        args:
+                                          description: Optional arguments to pass
+                                            to the source during execution.
+                                          items:
+                                            type: string
+                                          type: array
+                                        file:
+                                          description: Required. A deb package.
+                                          properties:
+                                            allowInsecure:
+                                              description: 'Defaults to false. When
+                                                false, files are subject to validations
+                                                based on the file type: Remote: A
+                                                checksum must be specified. Cloud
+                                                Storage: An object generation number
+                                                must be specified.'
+                                              type: boolean
+                                            gcs:
+                                              description: A Cloud Storage object.
+                                              properties:
+                                                bucket:
+                                                  description: Required. Bucket of
+                                                    the Cloud Storage object.
+                                                  type: string
+                                                generation:
+                                                  description: Generation number of
+                                                    the Cloud Storage object.
+                                                  format: int64
+                                                  type: integer
+                                                object:
+                                                  description: Required. Name of the
+                                                    Cloud Storage object.
+                                                  type: string
+                                              required:
+                                              - bucket
+                                              - object
+                                              type: object
+                                            localPath:
+                                              description: A local path within the
+                                                VM to use.
+                                              type: string
+                                            remote:
+                                              description: A generic remote file.
+                                              properties:
+                                                sha256Checksum:
+                                                  description: SHA256 checksum of
+                                                    the remote file.
+                                                  type: string
+                                                uri:
+                                                  description: Required. URI from
+                                                    which to fetch the object. It
+                                                    should contain both the protocol
+                                                    and path following the format
+                                                    `{protocol}://{location}`.
+                                                  type: string
+                                              required:
+                                              - uri
+                                              type: object
+                                          type: object
+                                        interpreter:
+                                          description: 'Required. The script interpreter
+                                            to use. Possible values: INTERPRETER_UNSPECIFIED,
+                                            NONE, SHELL, POWERSHELL'
+                                          type: string
+                                        outputFilePath:
+                                          description: Only recorded for enforce Exec.
+                                            Path to an output file (that is created
+                                            by this Exec) whose content will be recorded
+                                            in OSPolicyResourceCompliance after a
+                                            successful run. Absence or failure to
+                                            read this file will result in this ExecResource
+                                            being non-compliant. Output file size
+                                            is limited to 100K bytes.
+                                          type: string
+                                        script:
+                                          description: An inline script. The size
+                                            of the script is limited to 1024 characters.
+                                          type: string
+                                      required:
+                                      - interpreter
+                                      type: object
+                                    validate:
+                                      description: Required. What to run to validate
+                                        this resource is in the desired state. An
+                                        exit code of 100 indicates "in desired state",
+                                        and exit code of 101 indicates "not in desired
+                                        state". Any other exit code indicates a failure
+                                        running validate.
+                                      properties:
+                                        args:
+                                          description: Optional arguments to pass
+                                            to the source during execution.
+                                          items:
+                                            type: string
+                                          type: array
+                                        file:
+                                          description: Required. A deb package.
+                                          properties:
+                                            allowInsecure:
+                                              description: 'Defaults to false. When
+                                                false, files are subject to validations
+                                                based on the file type: Remote: A
+                                                checksum must be specified. Cloud
+                                                Storage: An object generation number
+                                                must be specified.'
+                                              type: boolean
+                                            gcs:
+                                              description: A Cloud Storage object.
+                                              properties:
+                                                bucket:
+                                                  description: Required. Bucket of
+                                                    the Cloud Storage object.
+                                                  type: string
+                                                generation:
+                                                  description: Generation number of
+                                                    the Cloud Storage object.
+                                                  format: int64
+                                                  type: integer
+                                                object:
+                                                  description: Required. Name of the
+                                                    Cloud Storage object.
+                                                  type: string
+                                              required:
+                                              - bucket
+                                              - object
+                                              type: object
+                                            localPath:
+                                              description: A local path within the
+                                                VM to use.
+                                              type: string
+                                            remote:
+                                              description: A generic remote file.
+                                              properties:
+                                                sha256Checksum:
+                                                  description: SHA256 checksum of
+                                                    the remote file.
+                                                  type: string
+                                                uri:
+                                                  description: Required. URI from
+                                                    which to fetch the object. It
+                                                    should contain both the protocol
+                                                    and path following the format
+                                                    `{protocol}://{location}`.
+                                                  type: string
+                                              required:
+                                              - uri
+                                              type: object
+                                          type: object
+                                        interpreter:
+                                          description: 'Required. The script interpreter
+                                            to use. Possible values: INTERPRETER_UNSPECIFIED,
+                                            NONE, SHELL, POWERSHELL'
+                                          type: string
+                                        outputFilePath:
+                                          description: Only recorded for enforce Exec.
+                                            Path to an output file (that is created
+                                            by this Exec) whose content will be recorded
+                                            in OSPolicyResourceCompliance after a
+                                            successful run. Absence or failure to
+                                            read this file will result in this ExecResource
+                                            being non-compliant. Output file size
+                                            is limited to 100K bytes.
+                                          type: string
+                                        script:
+                                          description: An inline script. The size
+                                            of the script is limited to 1024 characters.
+                                          type: string
+                                      required:
+                                      - interpreter
+                                      type: object
+                                  required:
+                                  - validate
+                                  type: object
+                                file:
+                                  description: File resource
+                                  properties:
+                                    content:
+                                      description: A a file with this content. The
+                                        size of the content is limited to 1024 characters.
+                                      type: string
+                                    file:
+                                      description: Required. A deb package.
+                                      properties:
+                                        allowInsecure:
+                                          description: 'Defaults to false. When false,
+                                            files are subject to validations based
+                                            on the file type: Remote: A checksum must
+                                            be specified. Cloud Storage: An object
+                                            generation number must be specified.'
+                                          type: boolean
+                                        gcs:
+                                          description: A Cloud Storage object.
+                                          properties:
+                                            bucket:
+                                              description: Required. Bucket of the
+                                                Cloud Storage object.
+                                              type: string
+                                            generation:
+                                              description: Generation number of the
+                                                Cloud Storage object.
+                                              format: int64
+                                              type: integer
+                                            object:
+                                              description: Required. Name of the Cloud
+                                                Storage object.
+                                              type: string
+                                          required:
+                                          - bucket
+                                          - object
+                                          type: object
+                                        localPath:
+                                          description: A local path within the VM
+                                            to use.
+                                          type: string
+                                        remote:
+                                          description: A generic remote file.
+                                          properties:
+                                            sha256Checksum:
+                                              description: SHA256 checksum of the
+                                                remote file.
+                                              type: string
+                                            uri:
+                                              description: Required. URI from which
+                                                to fetch the object. It should contain
+                                                both the protocol and path following
+                                                the format `{protocol}://{location}`.
+                                              type: string
+                                          required:
+                                          - uri
+                                          type: object
+                                      type: object
+                                    path:
+                                      description: Required. The absolute path of
+                                        the file within the VM.
+                                      type: string
+                                    permissions:
+                                      description: 'Consists of three octal digits
+                                        which represent, in order, the permissions
+                                        of the owner, group, and other users for the
+                                        file (similarly to the numeric mode used in
+                                        the linux chmod utility). Each digit represents
+                                        a three bit number with the 4 bit corresponding
+                                        to the read permissions, the 2 bit corresponds
+                                        to the write bit, and the one bit corresponds
+                                        to the execute permission. Default behavior
+                                        is 755. Below are some examples of permissions
+                                        and their associated values: read, write,
+                                        and execute: 7 read and execute: 5 read and
+                                        write: 6 read only: 4'
+                                      type: string
+                                    state:
+                                      description: 'Required. Desired state of the
+                                        file. Possible values: OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED,
+                                        COMPLIANT, NON_COMPLIANT, UNKNOWN, NO_OS_POLICIES_APPLICABLE'
+                                      type: string
+                                  required:
+                                  - path
+                                  - state
+                                  type: object
+                                id:
+                                  description: 'Required. The id of the resource with
+                                    the following restrictions: * Must contain only
+                                    lowercase letters, numbers, and hyphens. * Must
+                                    start with a letter. * Must be between 1-63 characters.
+                                    * Must end with a number or a letter. * Must be
+                                    unique within the OS policy.'
+                                  type: string
+                                pkg:
+                                  description: Package resource
+                                  properties:
+                                    apt:
+                                      description: A package managed by Apt.
+                                      properties:
+                                        name:
+                                          description: Required. Package name.
+                                          type: string
+                                      required:
+                                      - name
+                                      type: object
+                                    deb:
+                                      description: A deb package file.
+                                      properties:
+                                        pullDeps:
+                                          description: 'Whether dependencies should
+                                            also be installed. - install when false:
+                                            `dpkg -i package` - install when true:
+                                            `apt-get update && apt-get -y install
+                                            package.deb`'
+                                          type: boolean
+                                        source:
+                                          description: Required. A deb package.
+                                          properties:
+                                            allowInsecure:
+                                              description: 'Defaults to false. When
+                                                false, files are subject to validations
+                                                based on the file type: Remote: A
+                                                checksum must be specified. Cloud
+                                                Storage: An object generation number
+                                                must be specified.'
+                                              type: boolean
+                                            gcs:
+                                              description: A Cloud Storage object.
+                                              properties:
+                                                bucket:
+                                                  description: Required. Bucket of
+                                                    the Cloud Storage object.
+                                                  type: string
+                                                generation:
+                                                  description: Generation number of
+                                                    the Cloud Storage object.
+                                                  format: int64
+                                                  type: integer
+                                                object:
+                                                  description: Required. Name of the
+                                                    Cloud Storage object.
+                                                  type: string
+                                              required:
+                                              - bucket
+                                              - object
+                                              type: object
+                                            localPath:
+                                              description: A local path within the
+                                                VM to use.
+                                              type: string
+                                            remote:
+                                              description: A generic remote file.
+                                              properties:
+                                                sha256Checksum:
+                                                  description: SHA256 checksum of
+                                                    the remote file.
+                                                  type: string
+                                                uri:
+                                                  description: Required. URI from
+                                                    which to fetch the object. It
+                                                    should contain both the protocol
+                                                    and path following the format
+                                                    `{protocol}://{location}`.
+                                                  type: string
+                                              required:
+                                              - uri
+                                              type: object
+                                          type: object
+                                      required:
+                                      - source
+                                      type: object
+                                    desiredState:
+                                      description: 'Required. The desired state the
+                                        agent should maintain for this package. Possible
+                                        values: DESIRED_STATE_UNSPECIFIED, INSTALLED,
+                                        REMOVED'
+                                      type: string
+                                    googet:
+                                      description: A package managed by GooGet.
+                                      properties:
+                                        name:
+                                          description: Required. Package name.
+                                          type: string
+                                      required:
+                                      - name
+                                      type: object
+                                    msi:
+                                      description: An MSI package.
+                                      properties:
+                                        properties:
+                                          description: Additional properties to use
+                                            during installation. This should be in
+                                            the format of Property=Setting. Appended
+                                            to the defaults of `ACTION=INSTALL REBOOT=ReallySuppress`.
+                                          items:
+                                            type: string
+                                          type: array
+                                        source:
+                                          description: Required. A deb package.
+                                          properties:
+                                            allowInsecure:
+                                              description: 'Defaults to false. When
+                                                false, files are subject to validations
+                                                based on the file type: Remote: A
+                                                checksum must be specified. Cloud
+                                                Storage: An object generation number
+                                                must be specified.'
+                                              type: boolean
+                                            gcs:
+                                              description: A Cloud Storage object.
+                                              properties:
+                                                bucket:
+                                                  description: Required. Bucket of
+                                                    the Cloud Storage object.
+                                                  type: string
+                                                generation:
+                                                  description: Generation number of
+                                                    the Cloud Storage object.
+                                                  format: int64
+                                                  type: integer
+                                                object:
+                                                  description: Required. Name of the
+                                                    Cloud Storage object.
+                                                  type: string
+                                              required:
+                                              - bucket
+                                              - object
+                                              type: object
+                                            localPath:
+                                              description: A local path within the
+                                                VM to use.
+                                              type: string
+                                            remote:
+                                              description: A generic remote file.
+                                              properties:
+                                                sha256Checksum:
+                                                  description: SHA256 checksum of
+                                                    the remote file.
+                                                  type: string
+                                                uri:
+                                                  description: Required. URI from
+                                                    which to fetch the object. It
+                                                    should contain both the protocol
+                                                    and path following the format
+                                                    `{protocol}://{location}`.
+                                                  type: string
+                                              required:
+                                              - uri
+                                              type: object
+                                          type: object
+                                      required:
+                                      - source
+                                      type: object
+                                    rpm:
+                                      description: An rpm package file.
+                                      properties:
+                                        pullDeps:
+                                          description: 'Whether dependencies should
+                                            also be installed. - install when false:
+                                            `rpm --upgrade --replacepkgs package.rpm`
+                                            - install when true: `yum -y install package.rpm`
+                                            or `zypper -y install package.rpm`'
+                                          type: boolean
+                                        source:
+                                          description: Required. A deb package.
+                                          properties:
+                                            allowInsecure:
+                                              description: 'Defaults to false. When
+                                                false, files are subject to validations
+                                                based on the file type: Remote: A
+                                                checksum must be specified. Cloud
+                                                Storage: An object generation number
+                                                must be specified.'
+                                              type: boolean
+                                            gcs:
+                                              description: A Cloud Storage object.
+                                              properties:
+                                                bucket:
+                                                  description: Required. Bucket of
+                                                    the Cloud Storage object.
+                                                  type: string
+                                                generation:
+                                                  description: Generation number of
+                                                    the Cloud Storage object.
+                                                  format: int64
+                                                  type: integer
+                                                object:
+                                                  description: Required. Name of the
+                                                    Cloud Storage object.
+                                                  type: string
+                                              required:
+                                              - bucket
+                                              - object
+                                              type: object
+                                            localPath:
+                                              description: A local path within the
+                                                VM to use.
+                                              type: string
+                                            remote:
+                                              description: A generic remote file.
+                                              properties:
+                                                sha256Checksum:
+                                                  description: SHA256 checksum of
+                                                    the remote file.
+                                                  type: string
+                                                uri:
+                                                  description: Required. URI from
+                                                    which to fetch the object. It
+                                                    should contain both the protocol
+                                                    and path following the format
+                                                    `{protocol}://{location}`.
+                                                  type: string
+                                              required:
+                                              - uri
+                                              type: object
+                                          type: object
+                                      required:
+                                      - source
+                                      type: object
+                                    yum:
+                                      description: A package managed by YUM.
+                                      properties:
+                                        name:
+                                          description: Required. Package name.
+                                          type: string
+                                      required:
+                                      - name
+                                      type: object
+                                    zypper:
+                                      description: A package managed by Zypper.
+                                      properties:
+                                        name:
+                                          description: Required. Package name.
+                                          type: string
+                                      required:
+                                      - name
+                                      type: object
+                                  required:
+                                  - desiredState
+                                  type: object
+                                repository:
+                                  description: Package repository resource
+                                  properties:
+                                    apt:
+                                      description: An Apt Repository.
+                                      properties:
+                                        archiveType:
+                                          description: 'Required. Type of archive
+                                            files in this repository. Possible values:
+                                            ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC'
+                                          type: string
+                                        components:
+                                          description: Required. List of components
+                                            for this repository. Must contain at least
+                                            one item.
+                                          items:
+                                            type: string
+                                          type: array
+                                        distribution:
+                                          description: Required. Distribution of this
+                                            repository.
+                                          type: string
+                                        gpgKey:
+                                          description: URI of the key file for this
+                                            repository. The agent maintains a keyring
+                                            at `/etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg`.
+                                          type: string
+                                        uri:
+                                          description: Required. URI for this repository.
+                                          type: string
+                                      required:
+                                      - archiveType
+                                      - components
+                                      - distribution
+                                      - uri
+                                      type: object
+                                    goo:
+                                      description: A Goo Repository.
+                                      properties:
+                                        name:
+                                          description: Required. The name of the repository.
+                                          type: string
+                                        url:
+                                          description: Required. The url of the repository.
+                                          type: string
+                                      required:
+                                      - name
+                                      - url
+                                      type: object
+                                    yum:
+                                      description: A Yum Repository.
+                                      properties:
+                                        baseUrl:
+                                          description: Required. The location of the
+                                            repository directory.
+                                          type: string
+                                        displayName:
+                                          description: The display name of the repository.
+                                          type: string
+                                        gpgKeys:
+                                          description: URIs of GPG keys.
+                                          items:
+                                            type: string
+                                          type: array
+                                        id:
+                                          description: Required. A one word, unique
+                                            name for this repository. This is the
+                                            `repo id` in the yum config file and also
+                                            the `display_name` if `display_name` is
+                                            omitted. This id is also used as the unique
+                                            identifier when checking for resource
+                                            conflicts.
+                                          type: string
+                                      required:
+                                      - baseUrl
+                                      - id
+                                      type: object
+                                    zypper:
+                                      description: A Zypper Repository.
+                                      properties:
+                                        baseUrl:
+                                          description: Required. The location of the
+                                            repository directory.
+                                          type: string
+                                        displayName:
+                                          description: The display name of the repository.
+                                          type: string
+                                        gpgKeys:
+                                          description: URIs of GPG keys.
+                                          items:
+                                            type: string
+                                          type: array
+                                        id:
+                                          description: Required. A one word, unique
+                                            name for this repository. This is the
+                                            `repo id` in the zypper config file and
+                                            also the `display_name` if `display_name`
+                                            is omitted. This id is also used as the
+                                            unique identifier when checking for GuestPolicy
+                                            conflicts.
+                                          type: string
+                                      required:
+                                      - baseUrl
+                                      - id
+                                      type: object
+                                  type: object
+                              required:
+                              - id
+                              type: object
+                            type: array
+                        required:
+                        - resources
+                        type: object
+                      type: array
+                  required:
+                  - id
+                  - mode
+                  - resourceGroups
+                  type: object
+                type: array
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              rollout:
+                description: 'Required. Rollout to deploy the OS policy assignment.
+                  A rollout is triggered in the following situations: 1) OSPolicyAssignment
+                  is created. 2) OSPolicyAssignment is updated and the update contains
+                  changes to one of the following fields: - instance_filter - os_policies
+                  3) OSPolicyAssignment is deleted.'
+                properties:
+                  disruptionBudget:
+                    description: Required. The maximum number (or percentage) of VMs
+                      per zone to disrupt at any given moment.
+                    properties:
+                      fixed:
+                        description: Specifies a fixed value.
+                        format: int64
+                        type: integer
+                      percent:
+                        description: Specifies the relative value defined as a percentage,
+                          which will be multiplied by a reference value.
+                        format: int64
+                        type: integer
+                    type: object
+                  minWaitDuration:
+                    description: Required. This determines the minimum duration of
+                      time to wait after the configuration changes are applied through
+                      the current rollout. A VM continues to count towards the `disruption_budget`
+                      at least until this duration of time has passed after configuration
+                      changes are applied.
+                    type: string
+                required:
+                - disruptionBudget
+                - minWaitDuration
+                type: object
+            required:
+            - instanceFilter
+            - location
+            - osPolicies
+            - projectRef
+            - rollout
+            type: object
+          status:
+            properties:
+              baseline:
+                description: Output only. Indicates that this revision has been successfully
+                  rolled out in this zone and new VMs will be assigned OS policies
+                  from this revision. For a given OS policy assignment, there is only
+                  one revision with a value of `true` for this field.
+                type: boolean
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              deleted:
+                description: Output only. Indicates that this revision deletes the
+                  OS policy assignment.
+                type: boolean
+              etag:
+                description: The etag for this OS policy assignment. If this is provided
+                  on update, it must match the server's etag.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              reconciling:
+                description: 'Output only. Indicates that reconciliation is in progress
+                  for the revision. This value is `true` when the `rollout_state`
+                  is one of: * IN_PROGRESS * CANCELLING'
+                type: boolean
+              revisionCreateTime:
+                description: Output only. The timestamp that the revision was created.
+                format: date-time
+                type: string
+              revisionId:
+                description: Output only. The assignment revision ID A new revision
+                  is committed whenever a rollout is triggered for a OS policy assignment
+                type: string
+              rolloutState:
+                description: 'Output only. OS policy assignment rollout state Possible
+                  values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED,
+                  SUCCEEDED'
+                type: string
+              uid:
+                description: Output only. Server generated unique id for the OS policy
+                  assignment resource.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -46858,7 +48750,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47080,7 +48972,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47441,7 +49333,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47607,7 +49499,240 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com
+spec:
+  group: recaptchaenterprise.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: RecaptchaEnterpriseKey
+    plural: recaptchaenterprisekeys
+    shortNames:
+    - gcprecaptchaenterprisekey
+    - gcprecaptchaenterprisekeys
+    singular: recaptchaenterprisekey
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              androidSettings:
+                description: Settings for keys that can be used by Android apps.
+                properties:
+                  allowAllPackageNames:
+                    description: If set to true, it means allowed_package_names will
+                      not be enforced.
+                    type: boolean
+                  allowedPackageNames:
+                    description: 'Android package names of apps allowed to use the
+                      key. Example: ''com.companyname.appname'''
+                    items:
+                      type: string
+                    type: array
+                type: object
+              displayName:
+                description: Human-readable display name of this key. Modifiable by
+                  user.
+                type: string
+              iosSettings:
+                description: Settings for keys that can be used by iOS apps.
+                properties:
+                  allowAllBundleIds:
+                    description: If set to true, it means allowed_bundle_ids will
+                      not be enforced.
+                    type: boolean
+                  allowedBundleIds:
+                    description: 'iOS bundle ids of apps allowed to use the key. Example:
+                      ''com.companyname.productname.appname'''
+                    items:
+                      type: string
+                    type: array
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The project for the resource
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
+                type: string
+              testingOptions:
+                description: Options for user acceptance testing.
+                properties:
+                  testingChallenge:
+                    description: 'For challenge-based keys only (CHECKBOX, INVISIBLE),
+                      all challenge requests for this site will return nocaptcha if
+                      NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE.
+                      Possible values: TESTING_CHALLENGE_UNSPECIFIED, NOCAPTCHA, UNSOLVABLE_CHALLENGE'
+                    type: string
+                  testingScore:
+                    description: All assessments for this Key will return this score.
+                      Must be between 0 (likely not legitimate) and 1 (likely legitimate)
+                      inclusive.
+                    format: double
+                    type: number
+                type: object
+              webSettings:
+                description: Settings for keys that can be used by websites.
+                properties:
+                  allowAllDomains:
+                    description: If set to true, it means allowed_domains will not
+                      be enforced.
+                    type: boolean
+                  allowAmpTraffic:
+                    description: If set to true, the key can be used on AMP (Accelerated
+                      Mobile Pages) websites. This is supported only for the SCORE
+                      integration type.
+                    type: boolean
+                  allowedDomains:
+                    description: 'Domains or subdomains of websites allowed to use
+                      the key. All subdomains of an allowed domain are automatically
+                      allowed. A valid domain requires a host and must not include
+                      any path, port, query or fragment. Examples: ''example.com''
+                      or ''subdomain.example.com'''
+                    items:
+                      type: string
+                    type: array
+                  challengeSecurityPreference:
+                    description: 'Settings for the frequency and difficulty at which
+                      this key triggers captcha challenges. This should only be specified
+                      for IntegrationTypes CHECKBOX and INVISIBLE. Possible values:
+                      CHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED, USABILITY, BALANCE,
+                      SECURITY'
+                    type: string
+                  integrationType:
+                    description: 'Required. Describes how this key is integrated with
+                      the website. Possible values: SCORE, CHECKBOX, INVISIBLE'
+                    type: string
+                required:
+                - integrationType
+                type: object
+            required:
+            - displayName
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: The timestamp corresponding to the creation of this Key.
+                format: date-time
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -47878,7 +50003,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48055,7 +50180,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48335,7 +50460,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48586,7 +50711,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48645,6 +50770,11 @@ spec:
               enabled:
                 description: The current state of the SecretVersion.
                 type: boolean
+              resourceID:
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
+                type: string
               secretData:
                 description: Immutable. The secret data. Must be no larger than 64KiB.
                 oneOf:
@@ -48780,7 +50910,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -48956,7 +51086,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -49097,7 +51227,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -49294,7 +51424,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -49486,7 +51616,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -49626,7 +51756,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -49789,7 +51919,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -50361,7 +52491,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -50536,7 +52666,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -50731,7 +52861,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -50900,7 +53030,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -51226,7 +53356,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -51411,7 +53541,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -51612,7 +53742,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.67.0
+    cnrm.cloud.google.com/version: 1.68.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"

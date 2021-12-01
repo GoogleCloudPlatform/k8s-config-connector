@@ -71,7 +71,7 @@ type ComputeSSLCertificateSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Location represents the geographical location of the ComputeSSLCertificate. Specify "global" for global resources. */
+	/* Location represents the geographical location of the ComputeSSLCertificate. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. The write-only private key in PEM format. */

@@ -17,6 +17,8 @@ kind: BinaryAuthorizationAttestor
 metadata:
   name: binaryauthorizationpolicy-dep-namespace
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
   description: A sample binary authorization attestor.
   userOwnedDrydockNote:
     noteRef:

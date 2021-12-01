@@ -30,6 +30,7 @@ import (
 type OsconfigV1beta1Interface interface {
 	RESTClient() rest.Interface
 	OSConfigGuestPoliciesGetter
+	OSConfigOSPolicyAssignmentsGetter
 }
 
 // OsconfigV1beta1Client is used to interact with features provided by the osconfig.cnrm.cloud.google.com group.
@@ -39,6 +40,10 @@ type OsconfigV1beta1Client struct {
 
 func (c *OsconfigV1beta1Client) OSConfigGuestPolicies(namespace string) OSConfigGuestPolicyInterface {
 	return newOSConfigGuestPolicies(c, namespace)
+}
+
+func (c *OsconfigV1beta1Client) OSConfigOSPolicyAssignments(namespace string) OSConfigOSPolicyAssignmentInterface {
+	return newOSConfigOSPolicyAssignments(c, namespace)
 }
 
 // NewForConfig creates a new OsconfigV1beta1Client for the given config.

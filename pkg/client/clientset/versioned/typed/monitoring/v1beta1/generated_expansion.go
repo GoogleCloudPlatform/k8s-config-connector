@@ -30,3 +30,7 @@ type MonitoringGroupExpansion interface{}
 type MonitoringMetricDescriptorExpansion interface{}
 
 type MonitoringNotificationChannelExpansion interface{}
+
+type MonitoringServiceExpansion interface{}
+
+type MonitoringServiceLevelObjectiveExpansion interface{}

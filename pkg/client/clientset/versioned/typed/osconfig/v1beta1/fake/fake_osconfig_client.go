@@ -35,6 +35,10 @@ func (c *FakeOsconfigV1beta1) OSConfigGuestPolicies(namespace string) v1beta1.OS
 	return &FakeOSConfigGuestPolicies{c, namespace}
 }
 
+func (c *FakeOsconfigV1beta1) OSConfigOSPolicyAssignments(namespace string) v1beta1.OSConfigOSPolicyAssignmentInterface {
+	return &FakeOSConfigOSPolicyAssignments{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeOsconfigV1beta1) RESTClient() rest.Interface {

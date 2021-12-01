@@ -22,3 +22,5 @@
 package v1beta1
 
 type OSConfigGuestPolicyExpansion interface{}
+
+type OSConfigOSPolicyAssignmentExpansion interface{}

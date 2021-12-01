@@ -17,6 +17,8 @@ kind: BinaryAuthorizationPolicy
 metadata:
   name: binaryauthorizationpolicy-sample-cluster
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
   admissionWhitelistPatterns:
     - namePattern: "gcr.io/*"
   clusterAdmissionRules:

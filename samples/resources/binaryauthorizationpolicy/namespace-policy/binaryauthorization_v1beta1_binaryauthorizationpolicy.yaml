@@ -17,6 +17,8 @@ kind: BinaryAuthorizationPolicy
 metadata:
   name: binaryauthorizationpolicy-sample-namespace
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
   admissionWhitelistPatterns:
     - namePattern: "gcr.io/*"
   kubernetesNamespaceAdmissionRules:

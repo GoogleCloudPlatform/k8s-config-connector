@@ -17,5 +17,7 @@ kind: ContainerAnalysisNote
 metadata:
   name: binaryauthorizationpolicy-dep-namespace
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
   package:
     name: test-package

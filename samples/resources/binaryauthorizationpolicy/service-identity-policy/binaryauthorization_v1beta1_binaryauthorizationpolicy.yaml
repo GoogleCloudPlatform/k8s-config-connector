@@ -17,6 +17,8 @@ kind: BinaryAuthorizationPolicy
 metadata:
   name: binaryauthorizationpolicy-sample-serviceidentity
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-si
   admissionWhitelistPatterns:
     - namePattern: "gcr.io/*"
   istioServiceIdentityAdmissionRules:

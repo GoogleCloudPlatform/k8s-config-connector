@@ -396,10 +396,6 @@ type OSConfigGuestPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The etag for this GuestPolicy. If this is provided on update, it must match the server's etag. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
 	/* List of package repository configurations assigned to the VM instance. */
 	// +optional
 	PackageRepositories []GuestpolicyPackageRepositories `json:"packageRepositories,omitempty"`
@@ -423,6 +419,8 @@ type OSConfigGuestPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Time this GuestPolicy was created. */
 	CreateTime string `json:"createTime,omitempty"`
+	/* The etag for this GuestPolicy. If this is provided on update, it must match the server's etag. */
+	Etag string `json:"etag,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. Last time this GuestPolicy was updated. */

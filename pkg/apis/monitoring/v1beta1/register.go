@@ -83,5 +83,17 @@ var (
 		Kind:    reflect.TypeOf(MonitoringNotificationChannel{}).Name(),
 	}
 
+	MonitoringServiceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringService{}).Name(),
+	}
+
+	MonitoringServiceLevelObjectiveGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringServiceLevelObjective{}).Name(),
+	}
+
 	monitoringAPIVersion = SchemeGroupVersion.String()
 )

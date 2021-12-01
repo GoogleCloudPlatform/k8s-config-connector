@@ -79,6 +79,8 @@ import (
 	fakememcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/memcache/v1beta1/fake"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/monitoring/v1beta1"
 	fakemonitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/monitoring/v1beta1/fake"
+	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkconnectivity/v1beta1"
+	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networksecurity/v1beta1"
 	fakenetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networksecurity/v1beta1/fake"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkservices/v1beta1"
@@ -89,6 +91,8 @@ import (
 	fakeprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/privateca/v1beta1/fake"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1"
 	fakepubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1/fake"
+	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
+	fakerecaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/recaptchaenterprise/v1beta1/fake"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
 	fakeredisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1/fake"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/resourcemanager/v1beta1"
@@ -303,6 +307,11 @@ func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Inter
 	return &fakemonitoringv1beta1.FakeMonitoringV1beta1{Fake: &c.Fake}
 }
 
+// NetworkconnectivityV1beta1 retrieves the NetworkconnectivityV1beta1Client
+func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface {
+	return &fakenetworkconnectivityv1beta1.FakeNetworkconnectivityV1beta1{Fake: &c.Fake}
+}
+
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
 func (c *Clientset) NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface {
 	return &fakenetworksecurityv1beta1.FakeNetworksecurityV1beta1{Fake: &c.Fake}
@@ -326,6 +335,11 @@ func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interfac
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
 func (c *Clientset) PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface {
 	return &fakepubsubv1beta1.FakePubsubV1beta1{Fake: &c.Fake}
+}
+
+// RecaptchaenterpriseV1beta1 retrieves the RecaptchaenterpriseV1beta1Client
+func (c *Clientset) RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface {
+	return &fakerecaptchaenterprisev1beta1.FakeRecaptchaenterpriseV1beta1{Fake: &c.Fake}
 }
 
 // RedisV1beta1 retrieves the RedisV1beta1Client

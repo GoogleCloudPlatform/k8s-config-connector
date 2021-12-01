@@ -17,6 +17,8 @@ kind: BinaryAuthorizationPolicy
 metadata:
   name: binaryauthorizationpolicy-sample-serviceaccount
 spec:
+  projectRef:
+    name: binauthzpolicy-dep-sa
   admissionWhitelistPatterns:
     - namePattern: "gcr.io/*"
   kubernetesServiceAccountAdmissionRules:

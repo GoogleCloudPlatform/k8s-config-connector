@@ -52,11 +52,13 @@ import (
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/logging/v1beta1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/memcache/v1beta1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/monitoring/v1beta1"
+	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networksecurity/v1beta1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/networkservices/v1beta1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/osconfig/v1beta1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/privateca/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/pubsub/v1beta1"
+	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/resourcemanager/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/secretmanager/v1beta1"
@@ -102,11 +104,13 @@ type Interface interface {
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
+	NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
 	PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
+	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
@@ -151,11 +155,13 @@ type Clientset struct {
 	loggingV1beta1              *loggingv1beta1.LoggingV1beta1Client
 	memcacheV1beta1             *memcachev1beta1.MemcacheV1beta1Client
 	monitoringV1beta1           *monitoringv1beta1.MonitoringV1beta1Client
+	networkconnectivityV1beta1  *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
 	networksecurityV1beta1      *networksecurityv1beta1.NetworksecurityV1beta1Client
 	networkservicesV1beta1      *networkservicesv1beta1.NetworkservicesV1beta1Client
 	osconfigV1beta1             *osconfigv1beta1.OsconfigV1beta1Client
 	privatecaV1beta1            *privatecav1beta1.PrivatecaV1beta1Client
 	pubsubV1beta1               *pubsubv1beta1.PubsubV1beta1Client
+	recaptchaenterpriseV1beta1  *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1      *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
 	secretmanagerV1beta1        *secretmanagerv1beta1.SecretmanagerV1beta1Client
@@ -308,6 +314,11 @@ func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Inter
 	return c.monitoringV1beta1
 }
 
+// NetworkconnectivityV1beta1 retrieves the NetworkconnectivityV1beta1Client
+func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface {
+	return c.networkconnectivityV1beta1
+}
+
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
 func (c *Clientset) NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface {
 	return c.networksecurityV1beta1
@@ -331,6 +342,11 @@ func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interfac
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
 func (c *Clientset) PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface {
 	return c.pubsubV1beta1
+}
+
+// RecaptchaenterpriseV1beta1 retrieves the RecaptchaenterpriseV1beta1Client
+func (c *Clientset) RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface {
+	return c.recaptchaenterpriseV1beta1
 }
 
 // RedisV1beta1 retrieves the RedisV1beta1Client
@@ -516,6 +532,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.networkconnectivityV1beta1, err = networkconnectivityv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.networksecurityV1beta1, err = networksecurityv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -533,6 +553,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 		return nil, err
 	}
 	cs.pubsubV1beta1, err = pubsubv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.recaptchaenterpriseV1beta1, err = recaptchaenterprisev1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -616,11 +640,13 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.loggingV1beta1 = loggingv1beta1.NewForConfigOrDie(c)
 	cs.memcacheV1beta1 = memcachev1beta1.NewForConfigOrDie(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.NewForConfigOrDie(c)
+	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.NewForConfigOrDie(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.NewForConfigOrDie(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.NewForConfigOrDie(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.NewForConfigOrDie(c)
 	cs.privatecaV1beta1 = privatecav1beta1.NewForConfigOrDie(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.NewForConfigOrDie(c)
+	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.NewForConfigOrDie(c)
 	cs.redisV1beta1 = redisv1beta1.NewForConfigOrDie(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.NewForConfigOrDie(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.NewForConfigOrDie(c)
@@ -667,11 +693,13 @@ func New(c rest.Interface) *Clientset {
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
+	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.New(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
 	cs.privatecaV1beta1 = privatecav1beta1.New(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
+	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
