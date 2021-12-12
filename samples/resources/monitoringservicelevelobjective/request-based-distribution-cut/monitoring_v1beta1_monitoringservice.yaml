@@ -17,4 +17,7 @@ kind: MonitoringService
 metadata:
   name: monitoringservicelevelobjective-dep-requestbaseddistributioncut
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   displayName: "A basic monitoring service."

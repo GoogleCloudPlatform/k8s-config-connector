@@ -17,6 +17,9 @@ kind: FilestoreBackup
 metadata:
   name: filestorebackup-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   description: "A sample backup"
   location: us-central1
   sourceFileShare: my_share

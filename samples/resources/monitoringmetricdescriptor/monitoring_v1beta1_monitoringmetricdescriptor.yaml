@@ -17,6 +17,9 @@ kind: MonitoringMetricDescriptor
 metadata:
   name: monitoringmetricdescriptor-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   labels:
   - key: system_stable
     valueType: BOOL

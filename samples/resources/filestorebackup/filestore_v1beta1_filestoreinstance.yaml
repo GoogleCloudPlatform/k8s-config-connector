@@ -17,6 +17,9 @@ kind: FilestoreInstance
 metadata:
   name: filestorebackup-dep
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   description: "Sample FilestoreInstance dependency for FilestoreBackup"
   fileShares:
     - capacityGb: 4800

@@ -30,6 +30,7 @@ import (
 type CloudidentityV1beta1Interface interface {
 	RESTClient() rest.Interface
 	CloudIdentityGroupsGetter
+	CloudIdentityMembershipsGetter
 }
 
 // CloudidentityV1beta1Client is used to interact with features provided by the cloudidentity.cnrm.cloud.google.com group.
@@ -39,6 +40,10 @@ type CloudidentityV1beta1Client struct {
 
 func (c *CloudidentityV1beta1Client) CloudIdentityGroups(namespace string) CloudIdentityGroupInterface {
 	return newCloudIdentityGroups(c, namespace)
+}
+
+func (c *CloudidentityV1beta1Client) CloudIdentityMemberships(namespace string) CloudIdentityMembershipInterface {
+	return newCloudIdentityMemberships(c, namespace)
 }
 
 // NewForConfig creates a new CloudidentityV1beta1Client for the given config.

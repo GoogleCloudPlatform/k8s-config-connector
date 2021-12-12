@@ -85,7 +85,7 @@ type IAMPartialPolicySpec struct {
 	// +optional
 	Bindings []PartialpolicyBindings `json:"bindings,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
+	/* Immutable. Required. The GCP resource to set the IAM policy on. */
 	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 }
 

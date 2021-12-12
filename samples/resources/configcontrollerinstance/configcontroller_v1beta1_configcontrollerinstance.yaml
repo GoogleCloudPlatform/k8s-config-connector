@@ -20,6 +20,9 @@ metadata:
   # The maximum allowed length for the name of a ConfigControllerInstance is 24.
   name: ccinstance-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   location: us-central1
   managementConfig:
     standardManagementConfig:

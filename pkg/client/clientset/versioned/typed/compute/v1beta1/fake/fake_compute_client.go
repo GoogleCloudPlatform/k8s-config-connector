@@ -123,6 +123,10 @@ func (c *FakeComputeV1beta1) ComputeNodeTemplates(namespace string) v1beta1.Comp
 	return &FakeComputeNodeTemplates{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputePacketMirrorings(namespace string) v1beta1.ComputePacketMirroringInterface {
+	return &FakeComputePacketMirrorings{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeProjectMetadatas(namespace string) v1beta1.ComputeProjectMetadataInterface {
 	return &FakeComputeProjectMetadatas{c, namespace}
 }

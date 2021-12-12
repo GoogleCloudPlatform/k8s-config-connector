@@ -19,6 +19,9 @@ metadata:
     key-one: value-one
   name: networkservicesendpointpolicy-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   location: global
   type: SIDECAR_PROXY
   authorizationPolicyRef:

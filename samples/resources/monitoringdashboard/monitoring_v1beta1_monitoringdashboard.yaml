@@ -17,6 +17,9 @@ kind: MonitoringDashboard
 metadata:
   name: monitoringdashboard-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   displayName: "monitoringdashboard-sample"
   columnLayout:
     columns:

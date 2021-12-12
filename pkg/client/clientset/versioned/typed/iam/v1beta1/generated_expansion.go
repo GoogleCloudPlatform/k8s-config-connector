@@ -34,3 +34,7 @@ type IAMPolicyMemberExpansion interface{}
 type IAMServiceAccountExpansion interface{}
 
 type IAMServiceAccountKeyExpansion interface{}
+
+type IAMWorkloadIdentityPoolExpansion interface{}
+
+type IAMWorkloadIdentityPoolProviderExpansion interface{}

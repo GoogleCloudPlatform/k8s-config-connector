@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(CloudIdentityGroup{}).Name(),
 	}
 
+	CloudIdentityMembershipGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudIdentityMembership{}).Name(),
+	}
+
 	cloudidentityAPIVersion = SchemeGroupVersion.String()
 )

@@ -17,6 +17,9 @@ kind: BinaryAuthorizationAttestor
 metadata:
   name: binaryauthorizationattestor-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   description: A sample binary authorization attestor.
   userOwnedDrydockNote:
     noteRef:

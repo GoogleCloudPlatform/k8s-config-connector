@@ -67,6 +67,8 @@ type ComputeNodeGroupExpansion interface{}
 
 type ComputeNodeTemplateExpansion interface{}
 
+type ComputePacketMirroringExpansion interface{}
+
 type ComputeProjectMetadataExpansion interface{}
 
 type ComputeReservationExpansion interface{}

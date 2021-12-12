@@ -31,6 +31,10 @@ type FakePrivatecaV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakePrivatecaV1beta1) PrivateCACAPools(namespace string) v1beta1.PrivateCACAPoolInterface {
+	return &FakePrivateCACAPools{c, namespace}
+}
+
 func (c *FakePrivatecaV1beta1) PrivateCACertificateTemplates(namespace string) v1beta1.PrivateCACertificateTemplateInterface {
 	return &FakePrivateCACertificateTemplates{c, namespace}
 }

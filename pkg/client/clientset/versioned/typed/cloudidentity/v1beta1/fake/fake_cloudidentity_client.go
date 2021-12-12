@@ -35,6 +35,10 @@ func (c *FakeCloudidentityV1beta1) CloudIdentityGroups(namespace string) v1beta1
 	return &FakeCloudIdentityGroups{c, namespace}
 }
 
+func (c *FakeCloudidentityV1beta1) CloudIdentityMemberships(namespace string) v1beta1.CloudIdentityMembershipInterface {
+	return &FakeCloudIdentityMemberships{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCloudidentityV1beta1) RESTClient() rest.Interface {

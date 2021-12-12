@@ -29,12 +29,17 @@ import (
 
 type PrivatecaV1beta1Interface interface {
 	RESTClient() rest.Interface
+	PrivateCACAPoolsGetter
 	PrivateCACertificateTemplatesGetter
 }
 
 // PrivatecaV1beta1Client is used to interact with features provided by the privateca.cnrm.cloud.google.com group.
 type PrivatecaV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *PrivatecaV1beta1Client) PrivateCACAPools(namespace string) PrivateCACAPoolInterface {
+	return newPrivateCACAPools(c, namespace)
 }
 
 func (c *PrivatecaV1beta1Client) PrivateCACertificateTemplates(namespace string) PrivateCACertificateTemplateInterface {

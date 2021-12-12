@@ -19,6 +19,9 @@ metadata:
   labels:
     test1: "value1"
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedmetricsum
   displayName: "A window based metric sum filter"

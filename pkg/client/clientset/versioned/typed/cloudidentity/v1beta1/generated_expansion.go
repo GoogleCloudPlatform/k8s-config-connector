@@ -22,3 +22,5 @@
 package v1beta1
 
 type CloudIdentityGroupExpansion interface{}
+
+type CloudIdentityMembershipExpansion interface{}

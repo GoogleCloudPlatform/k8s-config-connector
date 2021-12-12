@@ -19,6 +19,9 @@ metadata:
   labels:
     test1: "value1"
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
   displayName: "A request based good total ratio filter"

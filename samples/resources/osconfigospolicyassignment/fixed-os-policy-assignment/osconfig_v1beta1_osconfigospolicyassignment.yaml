@@ -17,6 +17,9 @@ kind: OSConfigOSPolicyAssignment
 metadata:
   name: osconfigospolicyassignment-sample-fixedospolicyassignment
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   location: "us-west2-a"
   description: "A test os policy assignment"
   osPolicies:

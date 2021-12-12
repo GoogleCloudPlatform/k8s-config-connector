@@ -191,6 +191,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeNodeTemplate{}).Name(),
 	}
 
+	ComputePacketMirroringGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputePacketMirroring{}).Name(),
+	}
+
 	ComputeProjectMetadataGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -69,6 +69,7 @@ import (
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/storage/v1beta1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/storagetransfer/v1beta1"
+	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -121,6 +122,7 @@ type Interface interface {
 	SqlV1beta1() sqlv1beta1.SqlV1beta1Interface
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
+	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
@@ -172,6 +174,7 @@ type Clientset struct {
 	sqlV1beta1                  *sqlv1beta1.SqlV1beta1Client
 	storageV1beta1              *storagev1beta1.StorageV1beta1Client
 	storagetransferV1beta1      *storagetransferv1beta1.StoragetransferV1beta1Client
+	vpcaccessV1beta1            *vpcaccessv1beta1.VpcaccessV1beta1Client
 }
 
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
@@ -399,6 +402,11 @@ func (c *Clientset) StoragetransferV1beta1() storagetransferv1beta1.Storagetrans
 	return c.storagetransferV1beta1
 }
 
+// VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client
+func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface {
+	return c.vpcaccessV1beta1
+}
+
 // Discovery retrieves the DiscoveryClient
 func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 	if c == nil {
@@ -600,6 +608,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.vpcaccessV1beta1, err = vpcaccessv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 
 	cs.DiscoveryClient, err = discovery.NewDiscoveryClientForConfig(&configShallowCopy)
 	if err != nil {
@@ -657,6 +669,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.sqlV1beta1 = sqlv1beta1.NewForConfigOrDie(c)
 	cs.storageV1beta1 = storagev1beta1.NewForConfigOrDie(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.NewForConfigOrDie(c)
+	cs.vpcaccessV1beta1 = vpcaccessv1beta1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -710,6 +723,7 @@ func New(c rest.Interface) *Clientset {
 	cs.sqlV1beta1 = sqlv1beta1.New(c)
 	cs.storageV1beta1 = storagev1beta1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
+	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

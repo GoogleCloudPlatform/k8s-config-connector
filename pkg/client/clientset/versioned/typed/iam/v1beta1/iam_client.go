@@ -36,6 +36,8 @@ type IamV1beta1Interface interface {
 	IAMPolicyMembersGetter
 	IAMServiceAccountsGetter
 	IAMServiceAccountKeysGetter
+	IAMWorkloadIdentityPoolsGetter
+	IAMWorkloadIdentityPoolProvidersGetter
 }
 
 // IamV1beta1Client is used to interact with features provided by the iam.cnrm.cloud.google.com group.
@@ -69,6 +71,14 @@ func (c *IamV1beta1Client) IAMServiceAccounts(namespace string) IAMServiceAccoun
 
 func (c *IamV1beta1Client) IAMServiceAccountKeys(namespace string) IAMServiceAccountKeyInterface {
 	return newIAMServiceAccountKeys(c, namespace)
+}
+
+func (c *IamV1beta1Client) IAMWorkloadIdentityPools(namespace string) IAMWorkloadIdentityPoolInterface {
+	return newIAMWorkloadIdentityPools(c, namespace)
+}
+
+func (c *IamV1beta1Client) IAMWorkloadIdentityPoolProviders(namespace string) IAMWorkloadIdentityPoolProviderInterface {
+	return newIAMWorkloadIdentityPoolProviders(c, namespace)
 }
 
 // NewForConfig creates a new IamV1beta1Client for the given config.

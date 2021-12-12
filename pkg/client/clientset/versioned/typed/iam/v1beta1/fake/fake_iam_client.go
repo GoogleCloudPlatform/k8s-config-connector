@@ -59,6 +59,14 @@ func (c *FakeIamV1beta1) IAMServiceAccountKeys(namespace string) v1beta1.IAMServ
 	return &FakeIAMServiceAccountKeys{c, namespace}
 }
 
+func (c *FakeIamV1beta1) IAMWorkloadIdentityPools(namespace string) v1beta1.IAMWorkloadIdentityPoolInterface {
+	return &FakeIAMWorkloadIdentityPools{c, namespace}
+}
+
+func (c *FakeIamV1beta1) IAMWorkloadIdentityPoolProviders(namespace string) v1beta1.IAMWorkloadIdentityPoolProviderInterface {
+	return &FakeIAMWorkloadIdentityPoolProviders{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeIamV1beta1) RESTClient() rest.Interface {

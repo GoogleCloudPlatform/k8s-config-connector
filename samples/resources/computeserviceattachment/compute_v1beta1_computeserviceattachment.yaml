@@ -17,6 +17,9 @@ kind: ComputeServiceAttachment
 metadata:
   name: computeserviceattachment-sample
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   location: "us-west2"
   description: "A sample service attachment"
   targetServiceRef:

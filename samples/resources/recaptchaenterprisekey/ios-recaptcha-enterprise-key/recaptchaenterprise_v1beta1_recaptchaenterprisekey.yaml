@@ -19,6 +19,9 @@ metadata:
   labels:
     label-one: value-one
 spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
   displayName: display-name-one
   iosSettings:
     allowAllBundleIds: true

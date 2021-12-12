@@ -67,6 +67,7 @@ import (
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/storage/v1beta1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/storagetransfer/v1beta1"
+	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/vpcaccess/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -123,6 +124,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	sqlv1beta1.AddToScheme,
 	storagev1beta1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
+	vpcaccessv1beta1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

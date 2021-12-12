@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type PrivateCACAPoolExpansion interface{}
+
 type PrivateCACertificateTemplateExpansion interface{}
