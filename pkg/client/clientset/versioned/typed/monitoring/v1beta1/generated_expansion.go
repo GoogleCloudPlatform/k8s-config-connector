@@ -34,3 +34,5 @@ type MonitoringNotificationChannelExpansion interface{}
 type MonitoringServiceExpansion interface{}
 
 type MonitoringServiceLevelObjectiveExpansion interface{}
+
+type MonitoringUptimeCheckConfigExpansion interface{}

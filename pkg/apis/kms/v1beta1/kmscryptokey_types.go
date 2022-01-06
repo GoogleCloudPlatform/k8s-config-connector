@@ -40,7 +40,7 @@ type CryptokeyVersionTemplate struct {
 	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
 	Algorithm string `json:"algorithm"`
 
-	/* Immutable. The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"]. */
+	/* Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL". Defaults to "SOFTWARE". */
 	// +optional
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
@@ -91,7 +91,7 @@ type KMSCryptoKeyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider. The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
+	/* The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }
 

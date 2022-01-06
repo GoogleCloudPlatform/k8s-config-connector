@@ -45,3 +45,6 @@ spec:
   monitoringConfig:
     enableComponents:
       - "SYSTEM_COMPONENTS"
+  workloadIdentityConfig:
+    # Replace ${PROJECT_ID?} with your project ID.
+    workloadPool: "${PROJECT_ID?}.svc.id.goog"

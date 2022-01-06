@@ -204,6 +204,11 @@ type ClusterGcePersistentDiskCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterGcfsConfig struct {
+	/* Immutable. Whether or not GCFS is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
@@ -378,6 +383,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Parameters for the ephemeral storage filesystem. */
 	// +optional
 	EphemeralStorageConfig *ClusterEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
+
+	/* Immutable. GCFS configuration for this node. */
+	// +optional
+	GcfsConfig *ClusterGcfsConfig `json:"gcfsConfig,omitempty"`
 
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
 	// +optional
@@ -590,7 +599,8 @@ type ClusterVerticalPodAutoscaling struct {
 }
 
 type ClusterWorkloadIdentityConfig struct {
-	/* DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workload_pool` instead. Enables workload identity. */
+	/* DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
+	Enables workload identity. */
 	// +optional
 	IdentityNamespace *string `json:"identityNamespace,omitempty"`
 
@@ -682,7 +692,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableLegacyAbac *bool `json:"enableLegacyAbac,omitempty"`
 
-	/* Enable Shielded Nodes features on all nodes in this cluster. */
+	/* Enable Shielded Nodes features on all nodes in this cluster. Defaults to true. */
 	// +optional
 	EnableShieldedNodes *bool `json:"enableShieldedNodes,omitempty"`
 
@@ -713,7 +723,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* DEPRECATED — Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff removing a username/password or unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
+	/* DEPRECATED — Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuth `json:"masterAuth,omitempty"`
 
@@ -804,8 +814,6 @@ type ContainerClusterStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The IP address of this cluster's Kubernetes master. */
 	Endpoint string `json:"endpoint,omitempty"`
-	/* DEPRECATED — Please use node_pool.instance_group_urls instead. List of instance group URLs which have been assigned to the cluster. */
-	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
 	/* The fingerprint of the set of labels for this cluster. */
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
 	/* The current version of the master in the cluster. This may be different than the min_master_version set in the config if the master has been updated by GKE. */

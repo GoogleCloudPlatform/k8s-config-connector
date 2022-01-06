@@ -61,6 +61,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/resourcemanager/v1beta1"
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/secretmanager/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/servicenetworking/v1beta1"
 	serviceusagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/serviceusage/v1beta1"
@@ -114,6 +115,7 @@ type Interface interface {
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
+	RunV1beta1() runv1beta1.RunV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	ServicenetworkingV1beta1() servicenetworkingv1beta1.ServicenetworkingV1beta1Interface
 	ServiceusageV1beta1() serviceusagev1beta1.ServiceusageV1beta1Interface
@@ -166,6 +168,7 @@ type Clientset struct {
 	recaptchaenterpriseV1beta1  *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1      *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1beta1                  *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1        *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	servicenetworkingV1beta1    *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
 	serviceusageV1beta1         *serviceusagev1beta1.ServiceusageV1beta1Client
@@ -360,6 +363,11 @@ func (c *Clientset) RedisV1beta1() redisv1beta1.RedisV1beta1Interface {
 // ResourcemanagerV1beta1 retrieves the ResourcemanagerV1beta1Client
 func (c *Clientset) ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface {
 	return c.resourcemanagerV1beta1
+}
+
+// RunV1beta1 retrieves the RunV1beta1Client
+func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
+	return c.runV1beta1
 }
 
 // SecretmanagerV1beta1 retrieves the SecretmanagerV1beta1Client
@@ -576,6 +584,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.runV1beta1, err = runv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.secretmanagerV1beta1, err = secretmanagerv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -661,6 +673,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.NewForConfigOrDie(c)
 	cs.redisV1beta1 = redisv1beta1.NewForConfigOrDie(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.NewForConfigOrDie(c)
+	cs.runV1beta1 = runv1beta1.NewForConfigOrDie(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.NewForConfigOrDie(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.NewForConfigOrDie(c)
 	cs.serviceusageV1beta1 = serviceusagev1beta1.NewForConfigOrDie(c)
@@ -715,6 +728,7 @@ func New(c rest.Interface) *Clientset {
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
+	cs.runV1beta1 = runv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.New(c)
 	cs.serviceusageV1beta1 = serviceusagev1beta1.New(c)

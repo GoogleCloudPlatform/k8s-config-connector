@@ -148,7 +148,8 @@ type BucketWebsite struct {
 }
 
 type StorageBucketSpec struct {
-	/* DEPRECATED — Please use the uniform_bucket_level_access as this field has been renamed by Google. Enables Bucket Policy Only access to a bucket. */
+	/* DEPRECATED — Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
+	Enables Bucket PolicyOnly access to a bucket. */
 	// +optional
 	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 

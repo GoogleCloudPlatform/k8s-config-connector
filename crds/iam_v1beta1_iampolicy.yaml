@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.69.0
+    cnrm.cloud.google.com/version: 1.70.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -86,7 +86,6 @@ spec:
                               this type of permission. The format is the same as that
                               for 'members' in IAMPolicy/IAMPolicyMember.
                             items:
-                              pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
                               type: string
                             type: array
                           logType:
@@ -136,7 +135,6 @@ spec:
                       description: Optional. The list of IAM users to be bound to
                         the role.
                       items:
-                        pattern: ^(user|serviceAccount|group|domain|projectEditor|projectOwner|projectViewer):.+|allUsers|allAuthenticatedUsers$
                         type: string
                       type: array
                     role:

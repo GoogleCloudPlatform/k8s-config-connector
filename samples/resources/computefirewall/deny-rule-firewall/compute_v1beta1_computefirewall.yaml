@@ -23,3 +23,5 @@ spec:
     - protocol: icmp
   networkRef:
     name: computefirewall-dep-deny
+  sourceTags:
+  - "web"

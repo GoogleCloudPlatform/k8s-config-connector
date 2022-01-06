@@ -35,6 +35,26 @@ func (c *FakeNetworkservicesV1beta1) NetworkServicesEndpointPolicies(namespace s
 	return &FakeNetworkServicesEndpointPolicies{c, namespace}
 }
 
+func (c *FakeNetworkservicesV1beta1) NetworkServicesGRPCRoutes(namespace string) v1beta1.NetworkServicesGRPCRouteInterface {
+	return &FakeNetworkServicesGRPCRoutes{c, namespace}
+}
+
+func (c *FakeNetworkservicesV1beta1) NetworkServicesGateways(namespace string) v1beta1.NetworkServicesGatewayInterface {
+	return &FakeNetworkServicesGateways{c, namespace}
+}
+
+func (c *FakeNetworkservicesV1beta1) NetworkServicesHTTPRoutes(namespace string) v1beta1.NetworkServicesHTTPRouteInterface {
+	return &FakeNetworkServicesHTTPRoutes{c, namespace}
+}
+
+func (c *FakeNetworkservicesV1beta1) NetworkServicesMeshes(namespace string) v1beta1.NetworkServicesMeshInterface {
+	return &FakeNetworkServicesMeshes{c, namespace}
+}
+
+func (c *FakeNetworkservicesV1beta1) NetworkServicesTCPRoutes(namespace string) v1beta1.NetworkServicesTCPRouteInterface {
+	return &FakeNetworkServicesTCPRoutes{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworkservicesV1beta1) RESTClient() rest.Interface {

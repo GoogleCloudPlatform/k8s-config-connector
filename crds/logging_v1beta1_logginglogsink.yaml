@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.69.0
+    cnrm.cloud.google.com/version: 1.70.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -114,7 +114,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a BigQueryDataset.
+                        description: A string of the format "bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}",
+                          where {{value}} is the name of a BigQueryDataset.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -140,7 +141,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a PubSubTopic.
+                        description: A string of the format "pubsub.googleapis.com/projects/{{project}}/topics/{{value}}",
+                          where {{value}} is the name of a PubSubTopic.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -166,7 +168,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a StorageBucket.
+                        description: A string of the format "storage.googleapis.com/{{value}}",
+                          where {{value}} is the name of a StorageBucket.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

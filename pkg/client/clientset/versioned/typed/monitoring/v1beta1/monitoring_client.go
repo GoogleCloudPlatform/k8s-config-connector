@@ -36,6 +36,7 @@ type MonitoringV1beta1Interface interface {
 	MonitoringNotificationChannelsGetter
 	MonitoringServicesGetter
 	MonitoringServiceLevelObjectivesGetter
+	MonitoringUptimeCheckConfigsGetter
 }
 
 // MonitoringV1beta1Client is used to interact with features provided by the monitoring.cnrm.cloud.google.com group.
@@ -69,6 +70,10 @@ func (c *MonitoringV1beta1Client) MonitoringServices(namespace string) Monitorin
 
 func (c *MonitoringV1beta1Client) MonitoringServiceLevelObjectives(namespace string) MonitoringServiceLevelObjectiveInterface {
 	return newMonitoringServiceLevelObjectives(c, namespace)
+}
+
+func (c *MonitoringV1beta1Client) MonitoringUptimeCheckConfigs(namespace string) MonitoringUptimeCheckConfigInterface {
+	return newMonitoringUptimeCheckConfigs(c, namespace)
 }
 
 // NewForConfig creates a new MonitoringV1beta1Client for the given config.

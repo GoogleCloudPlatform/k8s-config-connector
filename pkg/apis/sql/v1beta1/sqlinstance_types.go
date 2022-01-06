@@ -226,7 +226,8 @@ type InstanceSettings struct {
 	// +optional
 	ActivationPolicy *string `json:"activationPolicy,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. A list of Google App Engine project names that are allowed to access this instance. */
+	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
@@ -245,7 +246,8 @@ type InstanceSettings struct {
 	// +optional
 	Collation *string `json:"collation,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Specific to read instances, indicates when crash-safe replication flags are enabled. */
+	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
 
@@ -289,7 +291,8 @@ type InstanceSettings struct {
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. This property is only applicable to First Generation instances. First Generation instances are now deprecated, see here for information on how to upgrade to Second Generation instances. Replication type for this instance, can be one of ASYNCHRONOUS or SYNCHRONOUS. */
+	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 

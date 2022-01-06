@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.69.0
+    cnrm.cloud.google.com/version: 1.70.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -72,6 +72,7 @@ spec:
           spec:
             properties:
               databaseVersion:
+                default: MYSQL_5_6
                 description: Immutable. The MySQL, PostgreSQL or SQL Server (beta)
                   version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0,
                   POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13,
@@ -275,14 +276,9 @@ spec:
                       Can be either ALWAYS, NEVER or ON_DEMAND.
                     type: string
                   authorizedGaeApplications:
-                    description: DEPRECATED — This property is only applicable to
-                      First Generation instances, and First Generation instances are
-                      now deprecated. This property is only applicable to First Generation
-                      instances. First Generation instances are now deprecated, see
-                      https://cloud.google.com/sql/docs/mysql/deprecation-notice for
-                      information on how to upgrade to Second Generation instances.
-                      A list of Google App Engine project names that are allowed to
-                      access this instance.
+                    description: |-
+                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     items:
                       type: string
                     type: array
@@ -333,13 +329,9 @@ spec:
                     description: The name of server instance collation.
                     type: string
                   crashSafeReplication:
-                    description: DEPRECATED — This property is only applicable to
-                      First Generation instances, and First Generation instances are
-                      now deprecated. This property is only applicable to First Generation
-                      instances. First Generation instances are now deprecated, see
-                      here for information on how to upgrade to Second Generation
-                      instances. Specific to read instances, indicates when crash-safe
-                      replication flags are enabled.
+                    description: |-
+                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: boolean
                   databaseFlags:
                     items:
@@ -466,13 +458,9 @@ spec:
                     description: Pricing plan for this instance, can only be PER_USE.
                     type: string
                   replicationType:
-                    description: DEPRECATED — This property is only applicable to
-                      First Generation instances, and First Generation instances are
-                      now deprecated. This property is only applicable to First Generation
-                      instances. First Generation instances are now deprecated, see
-                      here for information on how to upgrade to Second Generation
-                      instances. Replication type for this instance, can be one of
-                      ASYNCHRONOUS or SYNCHRONOUS.
+                    description: |-
+                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: string
                   tier:
                     description: The machine type to use. See tiers for more details

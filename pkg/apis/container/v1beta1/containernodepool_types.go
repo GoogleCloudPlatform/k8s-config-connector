@@ -48,6 +48,11 @@ type NodepoolEphemeralStorageConfig struct {
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
+type NodepoolGcfsConfig struct {
+	/* Immutable. Whether or not GCFS is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
@@ -117,6 +122,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Parameters for the ephemeral storage filesystem. */
 	// +optional
 	EphemeralStorageConfig *NodepoolEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
+
+	/* Immutable. GCFS configuration for this node. */
+	// +optional
+	GcfsConfig *NodepoolGcfsConfig `json:"gcfsConfig,omitempty"`
 
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
 	// +optional
@@ -293,6 +302,8 @@ type ContainerNodePoolStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource URLs of the managed instance groups associated with this node pool. */
 	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
+	/* List of instance group URLs which have been assigned to this node pool. */
+	ManagedInstanceGroupUrls []string `json:"managedInstanceGroupUrls,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */

@@ -59,6 +59,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/resourcemanager/v1beta1"
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/secretmanager/v1beta1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/servicenetworking/v1beta1"
 	serviceusagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/serviceusage/v1beta1"
@@ -116,6 +117,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	recaptchaenterprisev1beta1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,
+	runv1beta1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
 	servicenetworkingv1beta1.AddToScheme,
 	serviceusagev1beta1.AddToScheme,

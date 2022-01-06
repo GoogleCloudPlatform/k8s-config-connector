@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.69.0
+    cnrm.cloud.google.com/version: 1.70.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -598,6 +598,11 @@ spec:
                       description: Immutable. The type of vNIC to be used on this
                         interface. Possible values:GVNIC, VIRTIO_NET.
                       type: string
+                    queueCount:
+                      description: Immutable. The networking queue count that's specified
+                        by users for the network interface. Both Rx and Tx queues
+                        will be set to this number. It will be empty if not specified.
+                      type: integer
                     stackType:
                       description: The stack type for this network interface to identify
                         whether the IPv6 feature is enabled or not. If not specified,

@@ -95,5 +95,11 @@ var (
 		Kind:    reflect.TypeOf(MonitoringServiceLevelObjective{}).Name(),
 	}
 
+	MonitoringUptimeCheckConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(MonitoringUptimeCheckConfig{}).Name(),
+	}
+
 	monitoringAPIVersion = SchemeGroupVersion.String()
 )

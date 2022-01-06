@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.69.0
+    cnrm.cloud.google.com/version: 1.70.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -382,6 +382,7 @@ spec:
                 type: boolean
               enableShieldedNodes:
                 description: Enable Shielded Nodes features on all nodes in this cluster.
+                  Defaults to true.
                 type: boolean
               enableTpu:
                 description: Immutable. Whether to enable Cloud TPU resources in this
@@ -508,8 +509,8 @@ spec:
                   cluster versions >= 1.19. The authentication information for accessing
                   the Kubernetes master. Some values in this block are only returned
                   by the API if your service account has permission to get credentials
-                  for your GKE cluster. If you see an unexpected diff removing a username/password
-                  or unsetting your client cert, ensure you have the container.clusters.getCredentials
+                  for your GKE cluster. If you see an unexpected diff unsetting your
+                  client cert, ensure you have the container.clusters.getCredentials
                   permission.
                 properties:
                   clientCertificate:
@@ -720,6 +721,15 @@ spec:
                         type: integer
                     required:
                     - localSsdCount
+                    type: object
+                  gcfsConfig:
+                    description: Immutable. GCFS configuration for this node.
+                    properties:
+                      enabled:
+                        description: Immutable. Whether or not GCFS is enabled.
+                        type: boolean
+                    required:
+                    - enabled
                     type: object
                   guestAccelerator:
                     description: Immutable. List of the type and count of accelerator
@@ -937,7 +947,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The name of a PubSubTopic.
+                            description: A string of the format "projects/{{project}}/topics/{{value}}",
+                              where {{value}} is the name of a PubSubTopic.
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -1110,9 +1121,9 @@ spec:
                   in GCP IAM policies.
                 properties:
                   identityNamespace:
-                    description: DEPRECATED — This field will be removed in a future
-                      major release as it has been deprecated in the API. Use `workload_pool`
-                      instead. Enables workload identity.
+                    description: |-
+                      DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
+                      Enables workload identity.
                     type: string
                   workloadPool:
                     description: The workload pool to attach all Kubernetes service
@@ -1153,13 +1164,6 @@ spec:
               endpoint:
                 description: The IP address of this cluster's Kubernetes master.
                 type: string
-              instanceGroupUrls:
-                description: DEPRECATED — Please use node_pool.instance_group_urls
-                  instead. List of instance group URLs which have been assigned to
-                  the cluster.
-                items:
-                  type: string
-                type: array
               labelFingerprint:
                 description: The fingerprint of the set of labels for this cluster.
                 type: string

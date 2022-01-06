@@ -22,3 +22,13 @@
 package v1beta1
 
 type NetworkServicesEndpointPolicyExpansion interface{}
+
+type NetworkServicesGRPCRouteExpansion interface{}
+
+type NetworkServicesGatewayExpansion interface{}
+
+type NetworkServicesHTTPRouteExpansion interface{}
+
+type NetworkServicesMeshExpansion interface{}
+
+type NetworkServicesTCPRouteExpansion interface{}

@@ -59,5 +59,35 @@ var (
 		Kind:    reflect.TypeOf(NetworkServicesEndpointPolicy{}).Name(),
 	}
 
+	NetworkServicesGRPCRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesGRPCRoute{}).Name(),
+	}
+
+	NetworkServicesGatewayGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesGateway{}).Name(),
+	}
+
+	NetworkServicesHTTPRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesHTTPRoute{}).Name(),
+	}
+
+	NetworkServicesMeshGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesMesh{}).Name(),
+	}
+
+	NetworkServicesTCPRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesTCPRoute{}).Name(),
+	}
+
 	networkservicesAPIVersion = SchemeGroupVersion.String()
 )

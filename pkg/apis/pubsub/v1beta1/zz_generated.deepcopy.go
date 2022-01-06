@@ -247,6 +247,11 @@ func (in *PubSubTopicSpec) DeepCopyInto(out *PubSubTopicSpec) {
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.MessageRetentionDuration != nil {
+		in, out := &in.MessageRetentionDuration, &out.MessageRetentionDuration
+		*out = new(string)
+		**out = **in
+	}
 	if in.MessageStoragePolicy != nil {
 		in, out := &in.MessageStoragePolicy, &out.MessageStoragePolicy
 		*out = new(TopicMessageStoragePolicy)

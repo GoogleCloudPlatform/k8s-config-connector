@@ -30,6 +30,11 @@ import (
 type NetworkservicesV1beta1Interface interface {
 	RESTClient() rest.Interface
 	NetworkServicesEndpointPoliciesGetter
+	NetworkServicesGRPCRoutesGetter
+	NetworkServicesGatewaysGetter
+	NetworkServicesHTTPRoutesGetter
+	NetworkServicesMeshesGetter
+	NetworkServicesTCPRoutesGetter
 }
 
 // NetworkservicesV1beta1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
@@ -39,6 +44,26 @@ type NetworkservicesV1beta1Client struct {
 
 func (c *NetworkservicesV1beta1Client) NetworkServicesEndpointPolicies(namespace string) NetworkServicesEndpointPolicyInterface {
 	return newNetworkServicesEndpointPolicies(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesGRPCRoutes(namespace string) NetworkServicesGRPCRouteInterface {
+	return newNetworkServicesGRPCRoutes(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesGateways(namespace string) NetworkServicesGatewayInterface {
+	return newNetworkServicesGateways(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesHTTPRoutes(namespace string) NetworkServicesHTTPRouteInterface {
+	return newNetworkServicesHTTPRoutes(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesMeshes(namespace string) NetworkServicesMeshInterface {
+	return newNetworkServicesMeshes(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesTCPRoutes(namespace string) NetworkServicesTCPRouteInterface {
+	return newNetworkServicesTCPRoutes(c, namespace)
 }
 
 // NewForConfig creates a new NetworkservicesV1beta1Client for the given config.

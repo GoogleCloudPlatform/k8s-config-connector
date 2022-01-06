@@ -234,8 +234,6 @@ type PubSubSubscriptionStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/* DEPRECATED — Deprecated in favor of id, which contains an identical value. This field will be removed in the next major release of the provider.  Path of the subscription in the format projects/{project}/subscriptions/{name}. */
-	Path string `json:"path,omitempty"`
 }
 
 // +genclient
