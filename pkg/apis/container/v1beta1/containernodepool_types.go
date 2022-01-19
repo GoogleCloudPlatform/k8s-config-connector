@@ -163,6 +163,12 @@ type NodepoolNodeConfig struct {
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
+	/* Immutable. Setting this field will assign instances
+	of this pool to run on the specified node group. This is useful
+	for running workloads on sole tenant nodes. */
+	// +optional
+	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
+
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +optional
 	OauthScopes []string `json:"oauthScopes,omitempty"`
@@ -182,6 +188,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Shielded Instance options. */
 	// +optional
 	ShieldedInstanceConfig *NodepoolShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	/* Immutable. Whether the nodes are created as spot VM instances. */
+	// +optional
+	Spot *bool `json:"spot,omitempty"`
 
 	/* Immutable. The list of instance tags applied to all nodes. */
 	// +optional

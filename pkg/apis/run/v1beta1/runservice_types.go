@@ -368,8 +368,6 @@ type RunServiceStatus struct {
 	Etag string `json:"etag,omitempty"`
 	/* Output only. For a deleted resource, the time after which it will be permamently deleted. */
 	ExpireTime string `json:"expireTime,omitempty"`
-	/* Output only. A number that monotonically increases every time the user modifies the desired state. */
-	Generation int `json:"generation,omitempty"`
 	/* Map of string keys and values that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels Cloud Run will populate some labels with 'run.googleapis.com' or 'serving.knative.dev' namespaces. Those labels are read-only, and user changes will not be preserved. */
 	Labels map[string]string `json:"labels,omitempty"`
 	/* Output only. Email address of the last authenticated modifier. */
@@ -382,6 +380,8 @@ type RunServiceStatus struct {
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. Returns true if the Service is currently being acted upon by the system to bring it into the desired state. When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, `observed_generation`, `latest_ready_revison`, `traffic_statuses`, and `uri` will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in `terminal_condition.state`. If reconciliation succeeded, the following fields will match: `traffic` and `traffic_statuses`, `observed_generation` and `generation`, `latest_ready_revision` and `latest_created_revision`. If reconciliation failed, `traffic_statuses`, `observed_generation`, and `latest_ready_revision` will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in `terminal_condition` and `conditions`. */
 	Reconciling bool `json:"reconciling,omitempty"`
+	/* Output only. A number that monotonically increases every time the user modifies the desired state. */
+	ResourceGeneration int `json:"resourceGeneration,omitempty"`
 	/* Output only. The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */
 	TerminalCondition ServiceTerminalConditionStatus `json:"terminalCondition,omitempty"`
 	/* Output only. Detailed status information for corresponding traffic targets. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */

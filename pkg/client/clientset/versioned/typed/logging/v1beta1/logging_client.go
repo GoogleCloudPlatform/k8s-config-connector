@@ -30,6 +30,7 @@ import (
 type LoggingV1beta1Interface interface {
 	RESTClient() rest.Interface
 	LoggingLogExclusionsGetter
+	LoggingLogMetricsGetter
 	LoggingLogSinksGetter
 }
 
@@ -40,6 +41,10 @@ type LoggingV1beta1Client struct {
 
 func (c *LoggingV1beta1Client) LoggingLogExclusions(namespace string) LoggingLogExclusionInterface {
 	return newLoggingLogExclusions(c, namespace)
+}
+
+func (c *LoggingV1beta1Client) LoggingLogMetrics(namespace string) LoggingLogMetricInterface {
+	return newLoggingLogMetrics(c, namespace)
 }
 
 func (c *LoggingV1beta1Client) LoggingLogSinks(namespace string) LoggingLogSinkInterface {

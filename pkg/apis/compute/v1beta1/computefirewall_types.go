@@ -146,7 +146,8 @@ type ComputeFirewallSpec struct {
 	apply to traffic that has source IP address within sourceRanges OR the
 	source IP that belongs to a tag listed in the sourceTags property. The
 	connection does not need to match both properties for the firewall to
-	apply. Only IPv4 is supported. */
+	apply. Only IPv4 is supported. For INGRESS traffic, one of 'source_ranges',
+	'source_tags' or 'source_service_accounts' is required. */
 	// +optional
 	SourceRanges []string `json:"sourceRanges,omitempty"`
 
@@ -162,7 +163,8 @@ type ComputeFirewallSpec struct {
 	both properties are set, the firewall will apply to traffic that has
 	source IP address within sourceRanges OR the source IP that belongs to
 	a tag listed in the sourceTags property. The connection does not need
-	to match both properties for the firewall to apply. */
+	to match both properties for the firewall to apply. For INGRESS traffic,
+	one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
 	// +optional
 	SourceTags []string `json:"sourceTags,omitempty"`
 

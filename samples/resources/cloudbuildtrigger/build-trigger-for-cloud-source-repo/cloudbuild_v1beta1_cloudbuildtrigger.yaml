@@ -56,3 +56,8 @@ spec:
         name: gcr.io/cloud-builders/docker
         args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
         timeout: 300s
+    availableSecrets:
+      secretManager:
+        - env: SECRET1
+          versionRef:
+            name: cloudbuildtrigger-dep-cloudsourcerepo

@@ -77,6 +77,15 @@ type RedisInstanceSpec struct {
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`
 
+	/* Immutable. Optional. Read replica mode. Can only be specified when trying to create the instance.
+	If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
+	- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
+	instance cannot scale up or down the number of replicas.
+	- READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance
+	can scale up and down the number of replicas. Default value: "READ_REPLICAS_DISABLED" Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"]. */
+	// +optional
+	ReadReplicasMode *string `json:"readReplicasMode,omitempty"`
+
 	/* Redis configuration parameters, according to http://redis.io/topics/config.
 	Please check Memorystore documentation for the list of supported parameters:
 	https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs. */
@@ -91,6 +100,13 @@ type RedisInstanceSpec struct {
 
 	/* Immutable. The name of the Redis region of the instance. */
 	Region string `json:"region"`
+
+	/* Optional. The number of replica nodes. The valid range for the Standard Tier with
+	read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled
+	for a Standard Tier instance, the only valid value is 1 and the default is 1.
+	The valid value for basic tier is 0 and the default is also 0. */
+	// +optional
+	ReplicaCount *int `json:"replicaCount,omitempty"`
 
 	/* Immutable. The CIDR range of internal addresses that are reserved for this
 	instance. If not provided, the service will choose an unused /29
@@ -113,9 +129,17 @@ type RedisInstanceSpec struct {
 
 	/* Immutable. The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
 
-	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentcation Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"]. */
+	- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentication Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"]. */
 	// +optional
 	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
+}
+
+type InstanceNodesStatus struct {
+	/* Node identifying string. e.g. 'node-0', 'node-1'. */
+	Id string `json:"id,omitempty"`
+
+	/* Location of the node. */
+	Zone string `json:"zone,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {
@@ -151,6 +175,8 @@ type RedisInstanceStatus struct {
 	/* Hostname or IP address of the exposed Redis endpoint used by clients
 	to connect to the service. */
 	Host string `json:"host,omitempty"`
+	/* Output only. Info per node. */
+	Nodes []InstanceNodesStatus `json:"nodes,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/* Output only. Cloud IAM identity used by import / export operations
@@ -160,6 +186,13 @@ type RedisInstanceStatus struct {
 	PersistenceIamIdentity string `json:"persistenceIamIdentity,omitempty"`
 	/* The port number of the exposed Redis endpoint. */
 	Port int `json:"port,omitempty"`
+	/* Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only.
+	Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes
+	will exhibit some lag behind the primary. Write requests must target 'host'. */
+	ReadEndpoint string `json:"readEndpoint,omitempty"`
+	/* Output only. The port number of the exposed readonly redis endpoint. Standard tier only.
+	Write requests should target 'port'. */
+	ReadEndpointPort int `json:"readEndpointPort,omitempty"`
 	/* List of server CA certificates for the instance. */
 	ServerCaCerts []InstanceServerCaCertsStatus `json:"serverCaCerts,omitempty"`
 }

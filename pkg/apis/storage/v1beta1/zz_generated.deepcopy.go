@@ -489,6 +489,11 @@ func (in *StorageBucketSpec) DeepCopyInto(out *StorageBucketSpec) {
 		*out = new(BucketLogging)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.PublicAccessPrevention != nil {
+		in, out := &in.PublicAccessPrevention, &out.PublicAccessPrevention
+		*out = new(string)
+		**out = **in
+	}
 	if in.RequesterPays != nil {
 		in, out := &in.RequesterPays, &out.RequesterPays
 		*out = new(bool)

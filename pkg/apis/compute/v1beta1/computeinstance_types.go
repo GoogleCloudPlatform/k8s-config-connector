@@ -346,7 +346,7 @@ type ComputeInstanceSpec struct {
 	// +optional
 	BootDisk *InstanceBootDisk `json:"bootDisk,omitempty"`
 
-	/* Immutable. Whether sending and receiving of packets with non-matching source or destination IPs is allowed. */
+	/* Whether sending and receiving of packets with non-matching source or destination IPs is allowed. */
 	// +optional
 	CanIpForward *bool `json:"canIpForward,omitempty"`
 

@@ -58,10 +58,19 @@ type TriggerArtifacts struct {
 	Objects *TriggerObjects `json:"objects,omitempty"`
 }
 
+type TriggerAvailableSecrets struct {
+	/* Pairs a secret environment variable with a SecretVersion in Secret Manager. */
+	SecretManager []TriggerSecretManager `json:"secretManager"`
+}
+
 type TriggerBuild struct {
 	/* Artifacts produced by the build that should be uploaded upon successful completion of all build steps. */
 	// +optional
 	Artifacts *TriggerArtifacts `json:"artifacts,omitempty"`
+
+	/* Secrets and secret environment variables. */
+	// +optional
+	AvailableSecrets *TriggerAvailableSecrets `json:"availableSecrets,omitempty"`
 
 	/* A list of images to be pushed upon the successful completion of all build steps.
 	The images are pushed using the builder service account's credentials.
@@ -324,6 +333,16 @@ type TriggerSecret struct {
 	There can be at most 100 secret values across all of a build's secrets. */
 	// +optional
 	SecretEnv map[string]string `json:"secretEnv,omitempty"`
+}
+
+type TriggerSecretManager struct {
+	/* Environment variable name to associate with the secret. Secret environment
+	variables must be unique across all of a build's secrets, and must be used
+	by at least one build step. */
+	Env string `json:"env"`
+
+	/*  */
+	VersionRef v1alpha1.ResourceRef `json:"versionRef"`
 }
 
 type TriggerSource struct {

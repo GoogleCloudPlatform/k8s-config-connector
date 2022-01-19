@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkConnectivityHub{}).Name(),
 	}
 
+	NetworkConnectivitySpokeGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkConnectivitySpoke{}).Name(),
+	}
+
 	networkconnectivityAPIVersion = SchemeGroupVersion.String()
 )

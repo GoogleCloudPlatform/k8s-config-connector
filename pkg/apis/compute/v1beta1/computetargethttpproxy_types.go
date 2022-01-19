@@ -40,7 +40,7 @@ type ComputeTargetHTTPProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify "global" for global resources. */
+	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Immutable. This field only applies when the forwarding rule that references

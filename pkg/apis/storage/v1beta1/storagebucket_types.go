@@ -177,6 +177,10 @@ type StorageBucketSpec struct {
 	// +optional
 	Logging *BucketLogging `json:"logging,omitempty"`
 
+	/* Prevents public access to a bucket. */
+	// +optional
+	PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
+
 	/* Enables Requester Pays on a storage bucket. */
 	// +optional
 	RequesterPays *bool `json:"requesterPays,omitempty"`

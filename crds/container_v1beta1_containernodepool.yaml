@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.70.0
+    cnrm.cloud.google.com/version: 1.71.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -305,6 +305,36 @@ spec:
                       instance. The instance may be scheduled on the specified or
                       newer CPU platform.
                     type: string
+                  nodeGroupRef:
+                    description: |-
+                      Immutable. Setting this field will assign instances
+                      of this pool to run on the specified node group. This is useful
+                      for running workloads on sole tenant nodes.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The name of a ComputeNodeGroup.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   oauthScopes:
                     description: Immutable. The set of Google API scopes to be made
                       available on all of the node VMs.
@@ -363,6 +393,10 @@ spec:
                           Boot enabled.
                         type: boolean
                     type: object
+                  spot:
+                    description: Immutable. Whether the nodes are created as spot
+                      VM instances.
+                    type: boolean
                   tags:
                     description: Immutable. The list of instance tags applied to all
                       nodes.

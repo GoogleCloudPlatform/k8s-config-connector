@@ -35,6 +35,10 @@ func (c *FakeNetworkconnectivityV1beta1) NetworkConnectivityHubs(namespace strin
 	return &FakeNetworkConnectivityHubs{c, namespace}
 }
 
+func (c *FakeNetworkconnectivityV1beta1) NetworkConnectivitySpokes(namespace string) v1beta1.NetworkConnectivitySpokeInterface {
+	return &FakeNetworkConnectivitySpokes{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworkconnectivityV1beta1) RESTClient() rest.Interface {

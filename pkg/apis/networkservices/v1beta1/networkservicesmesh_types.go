@@ -57,12 +57,6 @@ type NetworkServicesMeshSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Required. Immutable. Scope defines a logical configuration boundary for mesh. The routes pointing to this particular mesh resource defines the mesh configuration and the scope field name is used by mesh clients to receive that configuration. There cannot be more than one Mesh resource instance of the same type (SIDECAR or PROXYLESS_GRPC) with the same scope. Max length 64 characters. Scope should start with a letter and can only have letters, numbers, hyphens. */
-	Scope string `json:"scope"`
-
-	/* Required. Immutable. The type of the Mesh resource. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL */
-	Type string `json:"type"`
 }
 
 type NetworkServicesMeshStatus struct {

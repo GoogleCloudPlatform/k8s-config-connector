@@ -17,7 +17,7 @@ kind: ContainerCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/remove-default-node-pool: "true"
-  name: containernodepool-dep
+  name: containernodepool-dep-basic
 spec:
   location: us-east1-c
   initialNodeCount: 1

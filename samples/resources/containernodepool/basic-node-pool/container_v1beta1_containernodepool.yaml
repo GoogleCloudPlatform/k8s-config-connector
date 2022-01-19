@@ -17,7 +17,7 @@ kind: ContainerNodePool
 metadata:
   labels:
     label-one: "value-one"
-  name: containernodepool-sample
+  name: containernodepool-sample-basic
 spec:
   location: us-east1-c
   autoscaling:
@@ -44,4 +44,4 @@ spec:
     autoRepair: true
     autoUpgrade: true
   clusterRef:
-    name: containernodepool-dep
+    name: containernodepool-dep-basic

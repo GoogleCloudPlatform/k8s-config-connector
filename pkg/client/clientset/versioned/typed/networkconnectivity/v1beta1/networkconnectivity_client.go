@@ -30,6 +30,7 @@ import (
 type NetworkconnectivityV1beta1Interface interface {
 	RESTClient() rest.Interface
 	NetworkConnectivityHubsGetter
+	NetworkConnectivitySpokesGetter
 }
 
 // NetworkconnectivityV1beta1Client is used to interact with features provided by the networkconnectivity.cnrm.cloud.google.com group.
@@ -39,6 +40,10 @@ type NetworkconnectivityV1beta1Client struct {
 
 func (c *NetworkconnectivityV1beta1Client) NetworkConnectivityHubs(namespace string) NetworkConnectivityHubInterface {
 	return newNetworkConnectivityHubs(c, namespace)
+}
+
+func (c *NetworkconnectivityV1beta1Client) NetworkConnectivitySpokes(namespace string) NetworkConnectivitySpokeInterface {
+	return newNetworkConnectivitySpokes(c, namespace)
 }
 
 // NewForConfig creates a new NetworkconnectivityV1beta1Client for the given config.

@@ -231,6 +231,12 @@ type ClusterHttpLoadBalancing struct {
 	Disabled bool `json:"disabled"`
 }
 
+type ClusterIdentityServiceConfig struct {
+	/* Whether to enable the Identity Service component. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterIpAllocationPolicy struct {
 	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
 	// +optional
@@ -424,6 +430,12 @@ type ClusterNodeConfig struct {
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
+	/* Immutable. Setting this field will assign instances
+	of this pool to run on the specified node group. This is useful
+	for running workloads on sole tenant nodes. */
+	// +optional
+	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
+
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +optional
 	OauthScopes []string `json:"oauthScopes,omitempty"`
@@ -443,6 +455,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Shielded Instance options. */
 	// +optional
 	ShieldedInstanceConfig *ClusterShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	/* Immutable. Whether the nodes are created as spot VM instances. */
+	// +optional
+	Spot *bool `json:"spot,omitempty"`
 
 	/* Immutable. The list of instance tags applied to all nodes. */
 	// +optional
@@ -699,6 +715,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Whether to enable Cloud TPU resources in this cluster. */
 	// +optional
 	EnableTpu *bool `json:"enableTpu,omitempty"`
+
+	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
+	// +optional
+	IdentityServiceConfig *ClusterIdentityServiceConfig `json:"identityServiceConfig,omitempty"`
 
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +optional

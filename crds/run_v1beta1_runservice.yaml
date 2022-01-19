@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.70.0
+    cnrm.cloud.google.com/version: 1.71.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -724,11 +724,6 @@ spec:
                   it will be permamently deleted.
                 format: date-time
                 type: string
-              generation:
-                description: Output only. A number that monotonically increases every
-                  time the user modifies the desired state.
-                format: int64
-                type: integer
               labels:
                 additionalProperties:
                   type: string
@@ -783,6 +778,11 @@ spec:
                   revision, or empty for newly created Services. Additional information
                   on the failure can be found in `terminal_condition` and `conditions`.'
                 type: boolean
+              resourceGeneration:
+                description: Output only. A number that monotonically increases every
+                  time the user modifies the desired state.
+                format: int64
+                type: integer
               terminalCondition:
                 description: Output only. The Condition of this Service, containing
                   its readiness status, and detailed error information in case it

@@ -54,18 +54,6 @@ type GrpcrouteAction struct {
 	// +optional
 	FaultInjectionPolicy *GrpcrouteFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 
-	/* Optional. The specification for modifying the headers of a matching request prior to delivery of the request to the destination. Cannot be set if the route is attached to a Router whose type is PROXYLESS_GRPC. */
-	// +optional
-	RequestHeaderModifier *GrpcrouteRequestHeaderModifier `json:"requestHeaderModifier,omitempty"`
-
-	/* Optional. Specifies the policy on how requests intended for the route's destination are mirrored to a separate mirrored destination. The proxy will not wait for the mirrored destination to respond before returning the response. Prior to sending traffic to the mirrored service, the host / authority header is suffixed with -shadow. Cannot be set if the route is attached to a Router whose type is PROXYLESS_GRPC. */
-	// +optional
-	RequestMirrorPolicy *GrpcrouteRequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
-
-	/* Optional. The specification for modifying the headers of a response prior to sending the response back to the client. Cannot be set if the route is attached to a Router whose type is PROXYLESS_GRPC. */
-	// +optional
-	ResponseHeaderModifier *GrpcrouteResponseHeaderModifier `json:"responseHeaderModifier,omitempty"`
-
 	/* Optional. Specifies the retry policy associated with this route. */
 	// +optional
 	RetryPolicy *GrpcrouteRetryPolicy `json:"retryPolicy,omitempty"`
@@ -73,10 +61,6 @@ type GrpcrouteAction struct {
 	/* Optional. Specifies the timeout for selected route. Timeout is computed from the time the request has been fully processed (i.e. end of stream) up until the response has been completely processed. Timeout includes all retries. */
 	// +optional
 	Timeout *string `json:"timeout,omitempty"`
-
-	/* Optional. The specification for rewrite URL before forwarding requests to the destination. Cannot be set if the route is attached to a Router whose type is PROXYLESS_GRPC. */
-	// +optional
-	UrlRewrite *GrpcrouteUrlRewrite `json:"urlRewrite,omitempty"`
 }
 
 type GrpcrouteDelay struct {
@@ -87,15 +71,6 @@ type GrpcrouteDelay struct {
 	/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
 	// +optional
 	Percentage *int `json:"percentage,omitempty"`
-}
-
-type GrpcrouteDestination struct {
-	/*  */
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
-
-	/* Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
-	// +optional
-	Weight *int `json:"weight,omitempty"`
 }
 
 type GrpcrouteDestinations struct {
@@ -155,48 +130,10 @@ type GrpcrouteMethod struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type GrpcrouteRequestHeaderModifier struct {
-	/* Add the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Add map[string]string `json:"add,omitempty"`
-
-	/* Remove headers (matching by header names) specified in the list. */
-	// +optional
-	Remove []string `json:"remove,omitempty"`
-
-	/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Set map[string]string `json:"set,omitempty"`
-}
-
-type GrpcrouteRequestMirrorPolicy struct {
-	/* The destination the requests will be mirrored to. The weight of the destination will be ignored. */
-	// +optional
-	Destination *GrpcrouteDestination `json:"destination,omitempty"`
-}
-
-type GrpcrouteResponseHeaderModifier struct {
-	/* Add the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Add map[string]string `json:"add,omitempty"`
-
-	/* Remove headers (matching by header names) specified in the list. */
-	// +optional
-	Remove []string `json:"remove,omitempty"`
-
-	/* Completely overwrite/replace the headers with given map where key is the name of the header, value is the value of the header. */
-	// +optional
-	Set map[string]string `json:"set,omitempty"`
-}
-
 type GrpcrouteRetryPolicy struct {
 	/* Specifies the allowed number of retries. This number must be > 0. If not specpfied, default to 1. */
 	// +optional
 	NumRetries *int `json:"numRetries,omitempty"`
-
-	/* If not specified, will use the timeout set in the RouteAction. If timeout is not set in the RouteAction, will use the largest timeout among all Backend Services associated with the route. */
-	// +optional
-	PerTryTimeout *string `json:"perTryTimeout,omitempty"`
 
 	/* - connect-failure: Router will retry on failures connecting to Backend Services, for example due to connection timeouts. - refused-stream: Router will retry if the backend service resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. - cancelled: Router will retry if the gRPC status code in the response header is set to cancelled - deadline-exceeded: Router will retry if the gRPC status code in the response header is set to deadline-exceeded - resource-exhausted: Router will retry if the gRPC status code in the response header is set to resource-exhausted - unavailable: Router will retry if the gRPC status code in the response header is set to unavailable */
 	// +optional
@@ -210,16 +147,6 @@ type GrpcrouteRules struct {
 	/* Optional. Matches define conditions used for matching the rule against incoming gRPC requests. Each match is independent, i.e. this rule will be matched if ANY one of the matches is satisfied. If no matches field is specified, this rule will unconditionally match traffic. */
 	// +optional
 	Matches []GrpcrouteMatches `json:"matches,omitempty"`
-}
-
-type GrpcrouteUrlRewrite struct {
-	/* Prior to forwarding the request to the selected destination, the requests host header is replaced by this value. */
-	// +optional
-	HostRewrite *string `json:"hostRewrite,omitempty"`
-
-	/* Prior to forwarding the request to the selected destination, the matching portion of the requests path is replaced by this value. */
-	// +optional
-	PathPrefixRewrite *string `json:"pathPrefixRewrite,omitempty"`
 }
 
 type NetworkServicesGRPCRouteSpec struct {

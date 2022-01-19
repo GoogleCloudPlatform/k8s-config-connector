@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(LoggingLogExclusion{}).Name(),
 	}
 
+	LoggingLogMetricGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(LoggingLogMetric{}).Name(),
+	}
+
 	LoggingLogSinkGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

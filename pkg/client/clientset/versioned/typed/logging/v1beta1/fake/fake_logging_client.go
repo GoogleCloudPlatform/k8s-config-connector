@@ -35,6 +35,10 @@ func (c *FakeLoggingV1beta1) LoggingLogExclusions(namespace string) v1beta1.Logg
 	return &FakeLoggingLogExclusions{c, namespace}
 }
 
+func (c *FakeLoggingV1beta1) LoggingLogMetrics(namespace string) v1beta1.LoggingLogMetricInterface {
+	return &FakeLoggingLogMetrics{c, namespace}
+}
+
 func (c *FakeLoggingV1beta1) LoggingLogSinks(namespace string) v1beta1.LoggingLogSinkInterface {
 	return &FakeLoggingLogSinks{c, namespace}
 }

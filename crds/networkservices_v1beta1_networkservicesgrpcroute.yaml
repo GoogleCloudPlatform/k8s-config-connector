@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.70.0
+    cnrm.cloud.google.com/version: 1.71.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -316,125 +316,6 @@ spec:
                                   type: integer
                               type: object
                           type: object
-                        requestHeaderModifier:
-                          description: Optional. The specification for modifying the
-                            headers of a matching request prior to delivery of the
-                            request to the destination. Cannot be set if the route
-                            is attached to a Router whose type is PROXYLESS_GRPC.
-                          properties:
-                            add:
-                              additionalProperties:
-                                type: string
-                              description: Add the headers with given map where key
-                                is the name of the header, value is the value of the
-                                header.
-                              type: object
-                            remove:
-                              description: Remove headers (matching by header names)
-                                specified in the list.
-                              items:
-                                type: string
-                              type: array
-                            set:
-                              additionalProperties:
-                                type: string
-                              description: Completely overwrite/replace the headers
-                                with given map where key is the name of the header,
-                                value is the value of the header.
-                              type: object
-                          type: object
-                        requestMirrorPolicy:
-                          description: Optional. Specifies the policy on how requests
-                            intended for the route's destination are mirrored to a
-                            separate mirrored destination. The proxy will not wait
-                            for the mirrored destination to respond before returning
-                            the response. Prior to sending traffic to the mirrored
-                            service, the host / authority header is suffixed with
-                            -shadow. Cannot be set if the route is attached to a Router
-                            whose type is PROXYLESS_GRPC.
-                          properties:
-                            destination:
-                              description: The destination the requests will be mirrored
-                                to. The weight of the destination will be ignored.
-                              properties:
-                                serviceRef:
-                                  oneOf:
-                                  - not:
-                                      required:
-                                      - external
-                                    required:
-                                    - name
-                                  - not:
-                                      anyOf:
-                                      - required:
-                                        - name
-                                      - required:
-                                        - namespace
-                                    required:
-                                    - external
-                                  properties:
-                                    external:
-                                      description: Required. The URL of a destination
-                                        service to which to route traffic. Must refer
-                                        to either a BackendService or ServiceDirectoryService.
-                                      type: string
-                                    name:
-                                      description: 'Name of the referent. More info:
-                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                      type: string
-                                    namespace:
-                                      description: 'Namespace of the referent. More
-                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                      type: string
-                                  type: object
-                                weight:
-                                  description: 'Optional. Specifies the proportion
-                                    of requests forwarded to the backend referenced
-                                    by the serviceName field. This is computed as:
-                                    weight/Sum(weights in this destination list).
-                                    For non-zero values, there may be some epsilon
-                                    from the exact proportion defined here depending
-                                    on the precision an implementation supports. If
-                                    only one serviceName is specified and it has a
-                                    weight greater than 0, 100% of the traffic is
-                                    forwarded to that backend. If weights are specified
-                                    for any one service name, they need to be specified
-                                    for all of them. If weights are unspecified for
-                                    all services, then, traffic is distributed in
-                                    equal proportions to all of them.'
-                                  format: int64
-                                  type: integer
-                              required:
-                              - serviceRef
-                              type: object
-                          type: object
-                        responseHeaderModifier:
-                          description: Optional. The specification for modifying the
-                            headers of a response prior to sending the response back
-                            to the client. Cannot be set if the route is attached
-                            to a Router whose type is PROXYLESS_GRPC.
-                          properties:
-                            add:
-                              additionalProperties:
-                                type: string
-                              description: Add the headers with given map where key
-                                is the name of the header, value is the value of the
-                                header.
-                              type: object
-                            remove:
-                              description: Remove headers (matching by header names)
-                                specified in the list.
-                              items:
-                                type: string
-                              type: array
-                            set:
-                              additionalProperties:
-                                type: string
-                              description: Completely overwrite/replace the headers
-                                with given map where key is the name of the header,
-                                value is the value of the header.
-                              type: object
-                          type: object
                         retryPolicy:
                           description: Optional. Specifies the retry policy associated
                             with this route.
@@ -445,12 +326,6 @@ spec:
                                 to 1.
                               format: int64
                               type: integer
-                            perTryTimeout:
-                              description: If not specified, will use the timeout
-                                set in the RouteAction. If timeout is not set in the
-                                RouteAction, will use the largest timeout among all
-                                Backend Services associated with the route.
-                              type: string
                             retryConditions:
                               description: '- connect-failure: Router will retry on
                                 failures connecting to Backend Services, for example
@@ -477,23 +352,6 @@ spec:
                             response has been completely processed. Timeout includes
                             all retries.
                           type: string
-                        urlRewrite:
-                          description: Optional. The specification for rewrite URL
-                            before forwarding requests to the destination. Cannot
-                            be set if the route is attached to a Router whose type
-                            is PROXYLESS_GRPC.
-                          properties:
-                            hostRewrite:
-                              description: Prior to forwarding the request to the
-                                selected destination, the requests host header is
-                                replaced by this value.
-                              type: string
-                            pathPrefixRewrite:
-                              description: Prior to forwarding the request to the
-                                selected destination, the matching portion of the
-                                requests path is replaced by this value.
-                              type: string
-                          type: object
                       type: object
                     matches:
                       description: Optional. Matches define conditions used for matching
