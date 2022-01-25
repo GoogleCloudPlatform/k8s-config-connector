@@ -35,3 +35,10 @@ spec:
       fixed: 3
     maxUnavailable:
       fixed: 3
+  statefulPolicy:
+    preservedState:
+      disks:
+        disk-a:
+          autoDelete: "ON_PERMANENT_INSTANCE_DELETION"
+        disk-b:
+          autoDelete: "NEVER"

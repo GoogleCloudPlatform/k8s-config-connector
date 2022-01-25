@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type LoggingLogBucketExpansion interface{}
+
 type LoggingLogExclusionExpansion interface{}
 
 type LoggingLogMetricExpansion interface{}

@@ -22,6 +22,4 @@ spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: "projects/${PROJECT_ID?}"
-  type: PROXYLESS_GRPC
-  scope: foo-scope
   location: global

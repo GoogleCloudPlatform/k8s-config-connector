@@ -22,6 +22,15 @@ spec:
   - sourceImageRef:
       external: debian-cloud/debian-9
     boot: true
+  - deviceName: disk-a
+    sourceImageRef:
+      external: debian-cloud/debian-9
+    autoDelete: true
+    boot: false
+  - deviceName: disk-b
+    sourceImageRef:
+      external: debian-cloud/debian-9
+    boot: false
   networkInterface:
   - networkRef:
       name: computeinstancegroupmanager-dep-zonal

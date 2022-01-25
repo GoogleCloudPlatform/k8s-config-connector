@@ -30,6 +30,7 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/bigtable/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
+	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/compute/v1beta1"
@@ -84,6 +85,7 @@ type Interface interface {
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
+	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
@@ -137,6 +139,7 @@ type Clientset struct {
 	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
 	binaryauthorizationV1beta1  *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	cloudbuildV1beta1           *cloudbuildv1beta1.CloudbuildV1beta1Client
+	cloudfunctionsV1beta1       *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
 	cloudidentityV1beta1        *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudschedulerV1beta1       *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	computeV1beta1              *computev1beta1.ComputeV1beta1Client
@@ -208,6 +211,11 @@ func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.Bina
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client
 func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface {
 	return c.cloudbuildV1beta1
+}
+
+// CloudfunctionsV1beta1 retrieves the CloudfunctionsV1beta1Client
+func (c *Clientset) CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface {
+	return c.cloudfunctionsV1beta1
 }
 
 // CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client
@@ -460,6 +468,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudfunctionsV1beta1, err = cloudfunctionsv1beta1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudidentityV1beta1, err = cloudidentityv1beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -642,6 +654,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.bigtableV1beta1 = bigtablev1beta1.NewForConfigOrDie(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.NewForConfigOrDie(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.NewForConfigOrDie(c)
+	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.NewForConfigOrDie(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.NewForConfigOrDie(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.NewForConfigOrDie(c)
 	cs.computeV1beta1 = computev1beta1.NewForConfigOrDie(c)
@@ -697,6 +710,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
+	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.computeV1beta1 = computev1beta1.New(c)

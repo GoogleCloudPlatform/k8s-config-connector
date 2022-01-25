@@ -35,6 +35,8 @@ import (
 	fakebinaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/binaryauthorization/v1beta1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	fakecloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudbuild/v1beta1/fake"
+	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudfunctions/v1beta1"
+	fakecloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudfunctions/v1beta1/fake"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	fakecloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudidentity/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/client/clientset/versioned/typed/cloudscheduler/v1beta1"
@@ -199,6 +201,11 @@ func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.Bina
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client
 func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface {
 	return &fakecloudbuildv1beta1.FakeCloudbuildV1beta1{Fake: &c.Fake}
+}
+
+// CloudfunctionsV1beta1 retrieves the CloudfunctionsV1beta1Client
+func (c *Clientset) CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface {
+	return &fakecloudfunctionsv1beta1.FakeCloudfunctionsV1beta1{Fake: &c.Fake}
 }
 
 // CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client

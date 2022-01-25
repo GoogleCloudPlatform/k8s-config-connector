@@ -28,6 +28,7 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/bigtable/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudbuild/v1beta1"
+	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudfunctions/v1beta1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudidentity/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/cloudscheduler/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/compute/v1beta1"
@@ -86,6 +87,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigtablev1beta1.AddToScheme,
 	binaryauthorizationv1beta1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
+	cloudfunctionsv1beta1.AddToScheme,
 	cloudidentityv1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	computev1beta1.AddToScheme,

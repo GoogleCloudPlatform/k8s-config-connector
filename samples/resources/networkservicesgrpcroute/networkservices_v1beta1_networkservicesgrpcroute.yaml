@@ -44,33 +44,12 @@ spec:
         delay:
           fixedDelay: "10s"
           percentage: 2
-      requestHeaderModifier:
-        add:
-          foo1: bar1
-          baz1: qux1
-        set:
-          foo2: bar2
-          baz2: qux2
-        remove:
-        - foo3
-        - bar3
       requestMirrorPolicy:
         destination:
           serviceRef:
             name: networkservicesgrpcroute-dep
-      responseHeaderModifier:
-        add:
-          foo1: bar1
-          baz1: qux1
-        set:
-          foo2: bar2
-          baz2: qux2
-        remove:
-        - foo3
-        - bar3
       retryPolicy:
         numRetries: 3
-        perTryTimeout: "5s"
         retryConditions:
         - "refused-stream"
         - "cancelled"
