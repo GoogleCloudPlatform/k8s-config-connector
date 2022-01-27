@@ -65,6 +65,13 @@ type ResourceRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type SecretKeyRef struct {
+	/* The name of the key, which is being referenced. More info: https://kubernetes.io/docs/concepts/configuration/secret/#overview-of-secrets */
+	Key string `json:"key,omitempty"`
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	Name string `json:"name,omitempty"`
+}
+
 type IAMResourceRef struct {
 	/* Kind of the referenced resource */
 	Kind string `json:"kind"`
