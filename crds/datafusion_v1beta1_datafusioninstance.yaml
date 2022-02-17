@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -88,10 +88,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: User-managed service account to set on Dataproc when
-                      Cloud Data Fusion creates Dataproc to run data processing pipelines.
-                      This allows users to have fine-grained access control on Dataproc's
-                      accesses to cloud resources.
+                    description: |-
+                      User-managed service account to set on Dataproc when Cloud Data Fusion creates Dataproc to run data processing pipelines. This allows users to have fine-grained access control on Dataproc's accesses to cloud resources.
+
+                      Allowed value: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -141,11 +141,10 @@ spec:
                       - external
                     properties:
                       external:
-                        description: Name of the network in the customer project with
-                          which the Tenant Project will be peered for executing pipelines.
-                          In case of shared VPC where the network resides in another
-                          host project the network should specified in the form of
-                          projects/{host-project-id}/global/networks/{network}
+                        description: |-
+                          Name of the network in the customer project with which the Tenant Project will be peered for executing pipelines. In case of shared VPC where the network resides in another host project the network should specified in the form of projects/{host-project-id}/global/networks/{network}
+
+                          Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

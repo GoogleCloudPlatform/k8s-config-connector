@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -93,7 +93,10 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The URL for the health check that signals autohealing.
+                          description: |-
+                            The URL for the health check that signals autohealing.
+
+                            Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -168,12 +171,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The URL of the instance template that is specified
-                      for this managed instance group. The group uses this template
-                      to create all new instances in the managed instance group. The
-                      templates for existing instances in the group do not change
-                      unless you run `recreateInstances`, run `applyUpdatesToInstances`,
-                      or set the group's `updatePolicy.type` to `PROACTIVE`.
+                    description: |-
+                      The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`.
+
+                      Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -219,7 +220,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project for the resource
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -250,11 +254,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The service account to be used as credentials for
-                      all operations performed by the managed instance group on instances.
-                      The service accounts needs all permissions required to create
-                      and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com
-                      is used.'
+                    description: |-
+                      The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.
+
+                      Allowed value: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -306,6 +309,8 @@ spec:
                     - external
                   properties:
                     external:
+                      description: 'Allowed value: The `selfLink` field of a `ComputeTargetPool`
+                        resource.'
                       type: string
                     name:
                       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -446,15 +451,10 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The URL of the instance template that is specified
-                            for this managed instance group. The group uses this template
-                            to create new instances in the managed instance group
-                            until the `targetSize` for this version is reached. The
-                            templates for existing instances in the group do not change
-                            unless you run `recreateInstances`, run `applyUpdatesToInstances`,
-                            or set the group's `updatePolicy.type` to `PROACTIVE`;
-                            in those cases, existing instances are updated until the
-                            `targetSize` for this version is reached.
+                          description: |-
+                            The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
+
+                            Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

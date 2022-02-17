@@ -30,6 +30,7 @@ import (
 type PrivatecaV1beta1Interface interface {
 	RESTClient() rest.Interface
 	PrivateCACAPoolsGetter
+	PrivateCACertificateAuthoritiesGetter
 	PrivateCACertificateTemplatesGetter
 }
 
@@ -40,6 +41,10 @@ type PrivatecaV1beta1Client struct {
 
 func (c *PrivatecaV1beta1Client) PrivateCACAPools(namespace string) PrivateCACAPoolInterface {
 	return newPrivateCACAPools(c, namespace)
+}
+
+func (c *PrivatecaV1beta1Client) PrivateCACertificateAuthorities(namespace string) PrivateCACertificateAuthorityInterface {
+	return newPrivateCACertificateAuthorities(c, namespace)
 }
 
 func (c *PrivatecaV1beta1Client) PrivateCACertificateTemplates(namespace string) PrivateCACertificateTemplateInterface {

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -101,9 +101,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The name of the group''s parent, if it has one.
-                      The format is: projects/ For groups with no parent, `parent_name`
-                      is the empty string, ``.'
+                    description: |-
+                      The name of the group's parent, if it has one. The format is: projects/ For groups with no parent, `parent_name` is the empty string, ``.
+
+                      Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (format: `projects/{{project}}/groups/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -130,7 +131,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project of the group
+                    description: |-
+                      The project of the group
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

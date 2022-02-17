@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(PrivateCACAPool{}).Name(),
 	}
 
+	PrivateCACertificateAuthorityGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PrivateCACertificateAuthority{}).Name(),
+	}
+
 	PrivateCACertificateTemplateGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

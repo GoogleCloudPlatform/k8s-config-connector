@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -202,11 +202,10 @@ spec:
                           - external
                         properties:
                           external:
-                            description: '[Service account email](https://cloud.google.com/iam/docs/service-accounts)
-                              to be used for generating OAuth token. The service account
-                              must be within the same project as the job. The caller
-                              must have iam.serviceAccounts.actAs permission for the
-                              service account.'
+                            description: |-
+                              [Service account email](https://cloud.google.com/iam/docs/service-accounts) to be used for generating OAuth token. The service account must be within the same project as the job. The caller must have iam.serviceAccounts.actAs permission for the service account.
+
+                              Allowed value: The `email` field of an `IAMServiceAccount` resource.
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -244,11 +243,10 @@ spec:
                           - external
                         properties:
                           external:
-                            description: '[Service account email](https://cloud.google.com/iam/docs/service-accounts)
-                              to be used for generating OIDC token. The service account
-                              must be within the same project as the job. The caller
-                              must have iam.serviceAccounts.actAs permission for the
-                              service account.'
+                            description: |-
+                              [Service account email](https://cloud.google.com/iam/docs/service-accounts) to be used for generating OIDC token. The service account must be within the same project as the job. The caller must have iam.serviceAccounts.actAs permission for the service account.
+
+                              Allowed value: The `email` field of an `IAMServiceAccount` resource.
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -302,12 +300,10 @@ spec:
                       - external
                     properties:
                       external:
-                        description: Required. The name of the Cloud Pub/Sub topic
-                          to which messages will be published when a job is delivered.
-                          The topic name must be in the same format as required by
-                          Pub/Sub's [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest),
-                          for example `projects/PROJECT_ID/topics/TOPIC_ID`. The topic
-                          must be in the same project as the Cloud Scheduler job.
+                        description: |-
+                          Required. The name of the Cloud Pub/Sub topic to which messages will be published when a job is delivered. The topic name must be in the same format as required by Pub/Sub's [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest), for example `projects/PROJECT_ID/topics/TOPIC_ID`. The topic must be in the same project as the Cloud Scheduler job.
+
+                          Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

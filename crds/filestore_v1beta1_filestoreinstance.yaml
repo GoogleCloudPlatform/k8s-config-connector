@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -153,9 +153,10 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The resource name of the backup, in the format
-                            `projects/{project_number}/locations/{location_id}/backups/{backup_id}`,
-                            that this file share has been restored from.
+                          description: |-
+                            The resource name of the backup, in the format `projects/{project_number}/locations/{location_id}/backups/{backup_id}`, that this file share has been restored from.
+
+                            Allowed value: The Google Cloud resource name of a `FilestoreBackup` resource (format: `projects/{{project}}/locations/{{location}}/backups/{{name}}`).
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -204,9 +205,10 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The name of the Google Compute Engine [VPC
-                            network](https://cloud.google.com/vpc/docs/vpc) to which
-                            the instance is connected.
+                          description: |-
+                            The name of the Google Compute Engine [VPC network](https://cloud.google.com/vpc/docs/vpc) to which the instance is connected.
+
+                            Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -244,7 +246,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project for the resource
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

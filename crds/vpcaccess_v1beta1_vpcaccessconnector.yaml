@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -119,7 +119,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: Name of a VPC network.
+                    description: |-
+                      Name of a VPC network.
+
+                      Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -146,7 +149,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project for the resource
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -180,9 +186,10 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Subnet name (relative, not fully qualified).
-                          E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName}
-                          the correct input for this field would be: {subnetName}'
+                        description: |-
+                          Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be: {subnetName}
+
+                          Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource (format: `projects/{{project}}/regions/{{region}}/subnetworks/{{name}}`).
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -208,9 +215,10 @@ spec:
                       - external
                     properties:
                       external:
-                        description: Project in which the subnet exists. If not set,
-                          this project is assumed to be the project for which the
-                          connector create request was issued.
+                        description: |-
+                          Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued.
+
+                          Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

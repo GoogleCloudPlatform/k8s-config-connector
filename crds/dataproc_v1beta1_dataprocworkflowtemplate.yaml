@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -758,13 +758,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The autoscaling policy
-                                      used by the cluster. Only resource names including
-                                      projectid and location (region) are valid. Examples:
-                                      * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]`
-                                      * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]`
-                                      Note that the policy must be in the same project
-                                      and Dataproc region.'
+                                    description: |-
+                                      Optional. The autoscaling policy used by the cluster. Only resource names including projectid and location (region) are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` Note that the policy must be in the same project and Dataproc region.
+
+                                      Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` resource (format: `projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{name}}`).
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -796,9 +793,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: Optional. The Cloud KMS key name
-                                      to use for PD disk encryption for all instances
-                                      in the cluster.
+                                    description: |-
+                                      Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
+
+                                      Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -859,17 +857,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The Compute Engine network
-                                      to be used for machine communications. Cannot
-                                      be specified with subnetwork_uri. If neither
-                                      `network_uri` nor `subnetwork_uri` is specified,
-                                      the "default" network of the project is used,
-                                      if it exists. Cannot be a "Custom Subnet Network"
-                                      (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks)
-                                      for more information). A full URL, partial URI,
-                                      or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default`
-                                      * `projects/[project_id]/regions/global/default`
-                                      * `default`'
+                                    description: |-
+                                      Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`
+
+                                      Allowed value: The `selfLink` field of a `ComputeNetwork` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -901,13 +892,10 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: 'Required. The URI of a sole-tenant
-                                          [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups)
-                                          that the cluster will be created on. A full
-                                          URL, partial URI, or node group name are
-                                          valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1`
-                                          * `projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1`
-                                          * `node-group-1`'
+                                        description: |-
+                                          Required. The URI of a sole-tenant [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups) that the cluster will be created on. A full URL, partial URI, or node group name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `node-group-1`
+
+                                          Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -963,12 +951,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
-                                      (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity))
-                                      used by Dataproc cluster VM instances to access
-                                      Google Cloud Platform services. If not specified,
-                                      the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
-                                      is used.
+                                    description: |-
+                                      Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc) (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity)) used by Dataproc cluster VM instances to access Google Cloud Platform services. If not specified, the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account) is used.
+
+                                      Allowed value: The `email` field of an `IAMServiceAccount` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1011,12 +997,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The Compute Engine subnetwork
-                                      to be used for machine communications. Cannot
-                                      be specified with network_uri. A full URL, partial
-                                      URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0`
-                                      * `projects/[project_id]/regions/us-east1/subnetworks/sub0`
-                                      * `sub0`'
+                                    description: |-
+                                      Optional. The Compute Engine subnetwork to be used for machine communications. Cannot be specified with network_uri. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0` * `projects/[project_id]/regions/us-east1/subnetworks/sub0` * `sub0`
+
+                                      Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1166,18 +1150,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The Compute Engine image
-                                      resource used for cluster instances. The URI
-                                      can represent an image or image family. Image
-                                      examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]`
-                                      * `projects/[project_id]/global/images/[image-id]`
-                                      * `image-id` Image family examples. Dataproc
-                                      will use the most recent image from the family:
-                                      * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      * `projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      If the URI is unspecified, it will be inferred
-                                      from `SoftwareConfig.image_version` or the system
-                                      default.'
+                                    description: |-
+                                      Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+                                      Allowed value: The `selfLink` field of a `ComputeImage` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1292,18 +1268,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The Compute Engine image
-                                      resource used for cluster instances. The URI
-                                      can represent an image or image family. Image
-                                      examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]`
-                                      * `projects/[project_id]/global/images/[image-id]`
-                                      * `image-id` Image family examples. Dataproc
-                                      will use the most recent image from the family:
-                                      * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      * `projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      If the URI is unspecified, it will be inferred
-                                      from `SoftwareConfig.image_version` or the system
-                                      default.'
+                                    description: |-
+                                      Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+                                      Allowed value: The `selfLink` field of a `ComputeImage` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1419,8 +1387,10 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: Optional. The uri of the KMS
-                                          key used to encrypt various sensitive files.
+                                        description: |-
+                                          Optional. The uri of the KMS key used to encrypt various sensitive files.
+
+                                          Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -1513,17 +1483,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: Optional. A Cloud Storage bucket used
-                                  to stage job dependencies, config files, and job
-                                  driver console output. If you do not specify a staging
-                                  bucket, Cloud Dataproc will determine a Cloud Storage
-                                  location (US, ASIA, or EU) for your cluster's staging
-                                  bucket according to the Compute Engine zone where
-                                  your cluster is deployed, and then create and manage
-                                  this project-level, per-location bucket (see [Dataproc
-                                  staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)).
-                                  **This field requires a Cloud Storage bucket name,
-                                  not a URI to a Cloud Storage bucket.**
+                                description: |-
+                                  Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+
+                                  Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -1550,18 +1513,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: Optional. A Cloud Storage bucket used
-                                  to store ephemeral cluster and jobs data, such as
-                                  Spark and MapReduce history files. If you do not
-                                  specify a temp bucket, Dataproc will determine a
-                                  Cloud Storage location (US, ASIA, or EU) for your
-                                  cluster's temp bucket according to the Compute Engine
-                                  zone where your cluster is deployed, and then create
-                                  and manage this project-level, per-location bucket.
-                                  The default bucket has a TTL of 90 days, but you
-                                  can use any TTL (or none) if you specify a bucket.
-                                  **This field requires a Cloud Storage bucket name,
-                                  not a URI to a Cloud Storage bucket.**
+                                description: |-
+                                  Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+
+                                  Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -1643,18 +1598,10 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Optional. The Compute Engine image
-                                      resource used for cluster instances. The URI
-                                      can represent an image or image family. Image
-                                      examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]`
-                                      * `projects/[project_id]/global/images/[image-id]`
-                                      * `image-id` Image family examples. Dataproc
-                                      will use the most recent image from the family:
-                                      * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      * `projects/[project_id]/global/images/family/[custom-image-family-name]`
-                                      If the URI is unspecified, it will be inferred
-                                      from `SoftwareConfig.image_version` or the system
-                                      default.'
+                                    description: |-
+                                      Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+                                      Allowed value: The `selfLink` field of a `ComputeImage` resource.
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1732,7 +1679,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project for the resource
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

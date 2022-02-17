@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -158,6 +158,10 @@ spec:
                           format.
 
                           See each *service's* documentation for supported formats.
+
+                          Allowed values:
+                          * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                          * The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).
                         type: string
                       kind:
                         description: 'Kind of the referent. Allowed values: StorageBucket,PubSubTopic'
@@ -222,7 +226,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project id of the function.
+                    description: |-
+                      The project id of the function.
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -267,6 +274,8 @@ spec:
                     description: |-
                       The email of the function's service account. If empty, defaults to
                       `{project_id}@appspot.gserviceaccount.com`.
+
+                      Allowed value: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -335,6 +344,8 @@ spec:
                       be either the fully-qualified URI, or the short name of the network
                       connector resource. The format of this field is
                       `projects/*/locations/*/connectors/*`
+
+                      Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource (format: `projects/{{project}}/locations/{{location}}/connectors/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

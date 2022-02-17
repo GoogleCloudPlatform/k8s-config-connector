@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.73.0
+    cnrm.cloud.google.com/version: 1.74.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -136,7 +136,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The project for the resource
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -245,11 +248,10 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: 'Required. The name of the
-                                              secret in Cloud Secret Manager. Format:
-                                              {secret_name} if the secret is in the
-                                              same project. projects/{project}/secrets/{secret_name}
-                                              if the secret is in a different project.'
+                                            description: |-
+                                              Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.
+
+                                              Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).
                                             type: string
                                           name:
                                             description: 'Name of the referent. More
@@ -277,10 +279,10 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: The Cloud Secret Manager
-                                              secret version. Can be 'latest' for
-                                              the latest value or an integer for a
-                                              specific version.
+                                            description: |-
+                                              The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+
+                                              Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).
                                             type: string
                                           name:
                                             description: 'Name of the referent. More
@@ -418,11 +420,10 @@ spec:
                       - external
                     properties:
                       external:
-                        description: Email address of the IAM service account associated
-                          with the revision of the service. The service account represents
-                          the identity of the running revision, and determines what
-                          permissions the revision has. If not provided, the revision
-                          will use the project's default service account.
+                        description: |-
+                          Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
+
+                          Allowed value: The `email` field of an `IAMServiceAccount` resource.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -463,6 +464,8 @@ spec:
                                   - external
                                 properties:
                                   external:
+                                    description: 'Allowed value: The `connectionName`
+                                      field of a `SQLInstance` resource.'
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -553,9 +556,10 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The Cloud Secret Manager secret
-                                          version. Can be 'latest' for the latest
-                                          value or an integer for a specific version.
+                                        description: |-
+                                          The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+
+                                          Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -587,10 +591,10 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: 'Required. The name of the secret in
-                                    Cloud Secret Manager. Format: {secret} if the
-                                    secret is in the same project. projects/{project}/secrets/{secret}
-                                    if the secret is in a different project.'
+                                  description: |-
+                                    Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
+
+                                    Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -628,7 +632,10 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}'
+                            description: |-
+                              VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}
+
+                              Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource (format: `projects/{{project}}/locations/{{location}}/connectors/{{name}}`).
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
