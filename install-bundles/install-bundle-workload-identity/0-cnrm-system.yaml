@@ -655,7 +655,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/version: 1.74.0
-    prometheus.io/port: "8888"
+    prometheus.io/port: "48797"
     prometheus.io/scrape: "true"
   labels:
     cnrm.cloud.google.com/monitored: "true"
