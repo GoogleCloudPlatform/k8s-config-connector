@@ -16,7 +16,7 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-  name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-storagebucket
+  name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
 spec:
   lifecycleRule:
     - action:

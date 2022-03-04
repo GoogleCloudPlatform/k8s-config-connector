@@ -120,7 +120,7 @@ func (c *FakeSQLSSLCerts) UpdateStatus(ctx context.Context, sQLSSLCert *v1beta1.
 // Delete takes name of the sQLSSLCert and deletes it. Returns an error if one occurs.
 func (c *FakeSQLSSLCerts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sqlsslcertsResource, c.ns, name), &v1beta1.SQLSSLCert{})
+		Invokes(testing.NewDeleteActionWithOptions(sqlsslcertsResource, c.ns, name, opts), &v1beta1.SQLSSLCert{})
 
 	return err
 }

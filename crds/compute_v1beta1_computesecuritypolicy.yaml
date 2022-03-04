@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -167,6 +167,106 @@ spec:
                         priority (lowest numerically) to lowest priority (highest
                         numerically) in order.
                       type: integer
+                    rateLimitOptions:
+                      description: Rate limit threshold for this security policy.
+                        Must be specified if the action is "rate_based_ban" or "throttle".
+                        Cannot be specified for any other actions.
+                      properties:
+                        banDurationSec:
+                          description: Can only be specified if the action for the
+                            rule is "rate_based_ban". If specified, determines the
+                            time (in seconds) the traffic will continue to be banned
+                            by the rate limit after the rate falls below the threshold.
+                          type: integer
+                        banThreshold:
+                          description: Can only be specified if the action for the
+                            rule is "rate_based_ban". If specified, the key will be
+                            banned for the configured 'banDurationSec' when the number
+                            of requests that exceed the 'rateLimitThreshold' also
+                            exceed this 'banThreshold'.
+                          properties:
+                            count:
+                              description: Number of HTTP(S) requests for calculating
+                                the threshold.
+                              type: integer
+                            intervalSec:
+                              description: Interval over which the threshold is computed.
+                              type: integer
+                          required:
+                          - count
+                          - intervalSec
+                          type: object
+                        conformAction:
+                          description: Action to take for requests that are under
+                            the configured rate limit threshold. Valid option is "allow"
+                            only.
+                          type: string
+                        enforceOnKey:
+                          description: 'Determines the key to enforce the rateLimitThreshold
+                            on. Possible values are: "ALL" -- A single rate limit
+                            threshold is applied to all the requests matching this
+                            rule. This is the default value if this field ''enforceOnKey''
+                            is not configured. "IP" -- The source IP address of the
+                            request is the key. Each IP has this limit enforced separately.
+                            "HTTP_HEADER" -- The value of the HTTP Header whose name
+                            is configured under "enforceOnKeyName". The key value
+                            is truncated to the first 128 bytes of the Header value.
+                            If no such header is present in the request, the key type
+                            defaults to "ALL". "XFF_IP" -- The first IP address (i.e.
+                            the originating client IP address) specified in the list
+                            of IPs under X-Forwarded-For HTTP Header. If no such header
+                            is present or the value is not a valid IP, the key type
+                            defaults to "ALL".'
+                          type: string
+                        enforceOnKeyName:
+                          description: 'Rate limit key name applicable only for the
+                            following key types: HTTP_HEADER -- Name of the HTTP Header
+                            whose value is taken as the key value.'
+                          type: string
+                        exceedAction:
+                          description: Action to take for requests that are above
+                            the configured rate limit threshold, to either deny with
+                            a specified HTTP response code, or redirect to a different
+                            endpoint. Valid options are "deny()" where valid values
+                            for status are 403, 404, 429, and 502, and "redirect"
+                            where the redirect parameters come from exceedRedirectOptions
+                            below.
+                          type: string
+                        exceedRedirectOptions:
+                          description: Parameters defining the redirect action that
+                            is used as the exceed action. Cannot be specified if the
+                            exceed action is not redirect.
+                          properties:
+                            target:
+                              description: Target for the redirect action. This is
+                                required if the type is EXTERNAL_302 and cannot be
+                                specified for GOOGLE_RECAPTCHA.
+                              type: string
+                            type:
+                              description: Type of the redirect action.
+                              type: string
+                          required:
+                          - type
+                          type: object
+                        rateLimitThreshold:
+                          description: Threshold at which to begin ratelimiting.
+                          properties:
+                            count:
+                              description: Number of HTTP(S) requests for calculating
+                                the threshold.
+                              type: integer
+                            intervalSec:
+                              description: Interval over which the threshold is computed.
+                              type: integer
+                          required:
+                          - count
+                          - intervalSec
+                          type: object
+                      required:
+                      - conformAction
+                      - exceedAction
+                      - rateLimitThreshold
+                      type: object
                   required:
                   - action
                   - match

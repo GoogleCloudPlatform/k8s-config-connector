@@ -120,7 +120,7 @@ func (c *FakeSQLUsers) UpdateStatus(ctx context.Context, sQLUser *v1beta1.SQLUse
 // Delete takes name of the sQLUser and deletes it. Returns an error if one occurs.
 func (c *FakeSQLUsers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sqlusersResource, c.ns, name), &v1beta1.SQLUser{})
+		Invokes(testing.NewDeleteActionWithOptions(sqlusersResource, c.ns, name, opts), &v1beta1.SQLUser{})
 
 	return err
 }

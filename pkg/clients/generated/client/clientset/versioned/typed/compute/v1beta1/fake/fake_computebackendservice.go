@@ -120,7 +120,7 @@ func (c *FakeComputeBackendServices) UpdateStatus(ctx context.Context, computeBa
 // Delete takes name of the computeBackendService and deletes it. Returns an error if one occurs.
 func (c *FakeComputeBackendServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computebackendservicesResource, c.ns, name), &v1beta1.ComputeBackendService{})
+		Invokes(testing.NewDeleteActionWithOptions(computebackendservicesResource, c.ns, name, opts), &v1beta1.ComputeBackendService{})
 
 	return err
 }

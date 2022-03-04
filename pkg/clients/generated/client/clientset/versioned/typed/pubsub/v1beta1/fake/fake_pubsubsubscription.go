@@ -120,7 +120,7 @@ func (c *FakePubSubSubscriptions) UpdateStatus(ctx context.Context, pubSubSubscr
 // Delete takes name of the pubSubSubscription and deletes it. Returns an error if one occurs.
 func (c *FakePubSubSubscriptions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(pubsubsubscriptionsResource, c.ns, name), &v1beta1.PubSubSubscription{})
+		Invokes(testing.NewDeleteActionWithOptions(pubsubsubscriptionsResource, c.ns, name, opts), &v1beta1.PubSubSubscription{})
 
 	return err
 }

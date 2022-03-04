@@ -120,7 +120,7 @@ func (c *FakeComputeFirewallPolicies) UpdateStatus(ctx context.Context, computeF
 // Delete takes name of the computeFirewallPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeFirewallPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computefirewallpoliciesResource, c.ns, name), &v1beta1.ComputeFirewallPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(computefirewallpoliciesResource, c.ns, name, opts), &v1beta1.ComputeFirewallPolicy{})
 
 	return err
 }

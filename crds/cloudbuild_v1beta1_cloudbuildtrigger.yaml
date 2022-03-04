@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -169,7 +169,8 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: The name of a SecretManagerSecretVersion.
+                                  description: 'Allowed value: The `name` field of
+                                    a `SecretManagerSecretVersion` resource.'
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -216,7 +217,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The url of a StorageBucket.
+                        description: 'Allowed value: The `url` field of a `StorageBucket`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -356,7 +358,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a KMSCryptoKey.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `KMSCryptoKey` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -435,7 +438,8 @@ spec:
                               - external
                             properties:
                               external:
-                                description: The name of a SourceRepoRepository.
+                                description: 'Allowed value: The `name` field of a
+                                  `SourceRepoRepository` resource.'
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -483,7 +487,8 @@ spec:
                               - external
                             properties:
                               external:
-                                description: The name of a StorageBucket.
+                                description: 'Allowed value: The `name` field of a
+                                  `StorageBucket` resource.'
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -692,8 +697,8 @@ spec:
                       https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform".
                     type: string
                   pullRequest:
-                    description: filter to match changes in pull requests.  Specify
-                      only one of pullRequest or push.
+                    description: filter to match changes in pull requests. Specify
+                      only one of 'pull_request' or 'push'.
                     properties:
                       branch:
                         description: Regex of branches to match.
@@ -712,7 +717,7 @@ spec:
                     type: object
                   push:
                     description: filter to match changes in refs, like branches or
-                      tags.  Specify only one of pullRequest or push.
+                      tags. Specify only one of 'pull_request' or 'push'.
                     properties:
                       branch:
                         description: Regex of branches to match.  Specify only one
@@ -782,7 +787,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The email of an IAMServiceAccount.
+                        description: 'Allowed value: The `email` field of an `IAMServiceAccount`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -819,8 +825,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A string of the format "projects/{{project}}/topics/{{value}}",
-                          where {{value}} is the name of a PubSubTopic.
+                        description: 'Allowed value: string of the format `projects/{{project}}/topics/{{value}}`,
+                          where {{value}} is the `name` field of a `PubSubTopic` resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -858,8 +864,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A string of the format "projects/{{project}}/serviceAccounts/{{value}}",
-                      where {{value}} is the email of an IAMServiceAccount.
+                    description: 'Allowed value: string of the format `projects/{{project}}/serviceAccounts/{{value}}`,
+                      where {{value}} is the `email` field of an `IAMServiceAccount`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -929,7 +936,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a SourceRepoRepository.
+                        description: 'Allowed value: The `name` field of a `SourceRepoRepository`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -968,7 +976,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a SecretManagerSecret.
+                        description: 'Allowed value: The `name` field of a `SecretManagerSecret`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

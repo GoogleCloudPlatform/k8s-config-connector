@@ -120,7 +120,7 @@ func (c *FakeComputeImages) UpdateStatus(ctx context.Context, computeImage *v1be
 // Delete takes name of the computeImage and deletes it. Returns an error if one occurs.
 func (c *FakeComputeImages) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeimagesResource, c.ns, name), &v1beta1.ComputeImage{})
+		Invokes(testing.NewDeleteActionWithOptions(computeimagesResource, c.ns, name, opts), &v1beta1.ComputeImage{})
 
 	return err
 }

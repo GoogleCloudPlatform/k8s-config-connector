@@ -68,7 +68,7 @@ type FeaturemembershipConfigmanagement struct {
 	// +optional
 	PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
 
-	/* Version of ACM installed. */
+	/* Optional. Version of ACM to install. Defaults to the latest version. */
 	// +optional
 	Version *string `json:"version,omitempty"`
 }

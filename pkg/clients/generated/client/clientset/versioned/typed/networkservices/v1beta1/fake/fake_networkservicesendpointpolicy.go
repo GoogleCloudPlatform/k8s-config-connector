@@ -120,7 +120,7 @@ func (c *FakeNetworkServicesEndpointPolicies) UpdateStatus(ctx context.Context, 
 // Delete takes name of the networkServicesEndpointPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkServicesEndpointPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networkservicesendpointpoliciesResource, c.ns, name), &v1beta1.NetworkServicesEndpointPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(networkservicesendpointpoliciesResource, c.ns, name, opts), &v1beta1.NetworkServicesEndpointPolicy{})
 
 	return err
 }

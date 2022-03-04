@@ -20,4 +20,4 @@ metadata:
     cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: resourcemanagerpolicy-dep-folder
 spec:
-  displayName: Org Policy Sample
+  displayName: Organization Policy Sample

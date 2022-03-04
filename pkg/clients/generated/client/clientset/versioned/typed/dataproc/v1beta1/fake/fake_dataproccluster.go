@@ -120,7 +120,7 @@ func (c *FakeDataprocClusters) UpdateStatus(ctx context.Context, dataprocCluster
 // Delete takes name of the dataprocCluster and deletes it. Returns an error if one occurs.
 func (c *FakeDataprocClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dataprocclustersResource, c.ns, name), &v1beta1.DataprocCluster{})
+		Invokes(testing.NewDeleteActionWithOptions(dataprocclustersResource, c.ns, name, opts), &v1beta1.DataprocCluster{})
 
 	return err
 }

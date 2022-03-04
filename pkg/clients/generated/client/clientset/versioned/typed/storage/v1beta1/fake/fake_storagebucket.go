@@ -120,7 +120,7 @@ func (c *FakeStorageBuckets) UpdateStatus(ctx context.Context, storageBucket *v1
 // Delete takes name of the storageBucket and deletes it. Returns an error if one occurs.
 func (c *FakeStorageBuckets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(storagebucketsResource, c.ns, name), &v1beta1.StorageBucket{})
+		Invokes(testing.NewDeleteActionWithOptions(storagebucketsResource, c.ns, name, opts), &v1beta1.StorageBucket{})
 
 	return err
 }

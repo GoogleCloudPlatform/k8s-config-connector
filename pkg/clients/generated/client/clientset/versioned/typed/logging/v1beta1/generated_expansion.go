@@ -28,3 +28,5 @@ type LoggingLogExclusionExpansion interface{}
 type LoggingLogMetricExpansion interface{}
 
 type LoggingLogSinkExpansion interface{}
+
+type LoggingLogViewExpansion interface{}

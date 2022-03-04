@@ -23,7 +23,10 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID.
     external: "projects/${PROJECT_ID?}"
   location: global
-  meshes: []
+  meshes:
+    - name: networkservicestcproute-dep
+  gateways:
+    - name: networkservicestcproute-dep
   rules:
   - matches:
     - address: "10.0.0.1/32"

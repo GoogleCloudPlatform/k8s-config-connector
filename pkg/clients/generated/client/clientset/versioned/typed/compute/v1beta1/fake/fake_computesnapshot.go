@@ -120,7 +120,7 @@ func (c *FakeComputeSnapshots) UpdateStatus(ctx context.Context, computeSnapshot
 // Delete takes name of the computeSnapshot and deletes it. Returns an error if one occurs.
 func (c *FakeComputeSnapshots) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computesnapshotsResource, c.ns, name), &v1beta1.ComputeSnapshot{})
+		Invokes(testing.NewDeleteActionWithOptions(computesnapshotsResource, c.ns, name, opts), &v1beta1.ComputeSnapshot{})
 
 	return err
 }

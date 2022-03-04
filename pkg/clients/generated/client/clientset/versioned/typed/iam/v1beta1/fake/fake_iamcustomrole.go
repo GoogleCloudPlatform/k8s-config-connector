@@ -120,7 +120,7 @@ func (c *FakeIAMCustomRoles) UpdateStatus(ctx context.Context, iAMCustomRole *v1
 // Delete takes name of the iAMCustomRole and deletes it. Returns an error if one occurs.
 func (c *FakeIAMCustomRoles) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iamcustomrolesResource, c.ns, name), &v1beta1.IAMCustomRole{})
+		Invokes(testing.NewDeleteActionWithOptions(iamcustomrolesResource, c.ns, name, opts), &v1beta1.IAMCustomRole{})
 
 	return err
 }

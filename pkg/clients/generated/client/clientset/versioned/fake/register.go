@@ -26,6 +26,7 @@ import (
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
+	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions/v1beta1"
@@ -39,6 +40,7 @@ import (
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
+	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gameservices/v1beta1"
@@ -85,6 +87,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	artifactregistryv1beta1.AddToScheme,
 	bigqueryv1beta1.AddToScheme,
 	bigtablev1beta1.AddToScheme,
+	billingbudgetsv1beta1.AddToScheme,
 	binaryauthorizationv1beta1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	cloudfunctionsv1beta1.AddToScheme,
@@ -98,6 +101,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
 	dnsv1beta1.AddToScheme,
+	eventarcv1beta1.AddToScheme,
 	filestorev1beta1.AddToScheme,
 	firestorev1beta1.AddToScheme,
 	gameservicesv1beta1.AddToScheme,

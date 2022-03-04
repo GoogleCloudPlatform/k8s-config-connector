@@ -24,15 +24,18 @@ spec:
     external: "projects/${PROJECT_ID?}"
   location: global
   hostnames: ["baz.bar"]
-  meshes: []
+  meshes:
+    - name: networkservicesgrpcroute-dep
+  gateways:
+    - name: networkservicesgrpcroute-dep
   rules:
   - matches:
     - method:
         grpcService: helloworld.Greeter
         grpcMethod: SayHello
-    headers:
-    - key: foo
-      value: bar
+      headers:
+      - key: foo
+        value: bar
     action:
       destinations:
       - serviceRef:
@@ -44,10 +47,6 @@ spec:
         delay:
           fixedDelay: "10s"
           percentage: 2
-      requestMirrorPolicy:
-        destination:
-          serviceRef:
-            name: networkservicesgrpcroute-dep
       retryPolicy:
         numRetries: 3
         retryConditions:

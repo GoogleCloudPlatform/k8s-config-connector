@@ -120,7 +120,7 @@ func (c *FakeLoggingLogMetrics) UpdateStatus(ctx context.Context, loggingLogMetr
 // Delete takes name of the loggingLogMetric and deletes it. Returns an error if one occurs.
 func (c *FakeLoggingLogMetrics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(logginglogmetricsResource, c.ns, name), &v1beta1.LoggingLogMetric{})
+		Invokes(testing.NewDeleteActionWithOptions(logginglogmetricsResource, c.ns, name, opts), &v1beta1.LoggingLogMetric{})
 
 	return err
 }

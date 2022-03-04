@@ -120,7 +120,7 @@ func (c *FakeLoggingLogExclusions) UpdateStatus(ctx context.Context, loggingLogE
 // Delete takes name of the loggingLogExclusion and deletes it. Returns an error if one occurs.
 func (c *FakeLoggingLogExclusions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(logginglogexclusionsResource, c.ns, name), &v1beta1.LoggingLogExclusion{})
+		Invokes(testing.NewDeleteActionWithOptions(logginglogexclusionsResource, c.ns, name, opts), &v1beta1.LoggingLogExclusion{})
 
 	return err
 }

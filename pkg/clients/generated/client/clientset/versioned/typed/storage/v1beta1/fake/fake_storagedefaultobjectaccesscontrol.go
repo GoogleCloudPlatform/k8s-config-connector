@@ -120,7 +120,7 @@ func (c *FakeStorageDefaultObjectAccessControls) UpdateStatus(ctx context.Contex
 // Delete takes name of the storageDefaultObjectAccessControl and deletes it. Returns an error if one occurs.
 func (c *FakeStorageDefaultObjectAccessControls) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(storagedefaultobjectaccesscontrolsResource, c.ns, name), &v1beta1.StorageDefaultObjectAccessControl{})
+		Invokes(testing.NewDeleteActionWithOptions(storagedefaultobjectaccesscontrolsResource, c.ns, name, opts), &v1beta1.StorageDefaultObjectAccessControl{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeIAMAuditConfigs) UpdateStatus(ctx context.Context, iAMAuditConfig *
 // Delete takes name of the iAMAuditConfig and deletes it. Returns an error if one occurs.
 func (c *FakeIAMAuditConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iamauditconfigsResource, c.ns, name), &v1beta1.IAMAuditConfig{})
+		Invokes(testing.NewDeleteActionWithOptions(iamauditconfigsResource, c.ns, name, opts), &v1beta1.IAMAuditConfig{})
 
 	return err
 }

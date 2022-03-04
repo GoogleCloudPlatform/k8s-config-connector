@@ -120,7 +120,7 @@ func (c *FakeSecretManagerSecrets) UpdateStatus(ctx context.Context, secretManag
 // Delete takes name of the secretManagerSecret and deletes it. Returns an error if one occurs.
 func (c *FakeSecretManagerSecrets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(secretmanagersecretsResource, c.ns, name), &v1beta1.SecretManagerSecret{})
+		Invokes(testing.NewDeleteActionWithOptions(secretmanagersecretsResource, c.ns, name, opts), &v1beta1.SecretManagerSecret{})
 
 	return err
 }

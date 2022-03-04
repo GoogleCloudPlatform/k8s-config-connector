@@ -120,7 +120,7 @@ func (c *FakeComputeTargetSSLProxies) UpdateStatus(ctx context.Context, computeT
 // Delete takes name of the computeTargetSSLProxy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeTargetSSLProxies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computetargetsslproxiesResource, c.ns, name), &v1beta1.ComputeTargetSSLProxy{})
+		Invokes(testing.NewDeleteActionWithOptions(computetargetsslproxiesResource, c.ns, name, opts), &v1beta1.ComputeTargetSSLProxy{})
 
 	return err
 }

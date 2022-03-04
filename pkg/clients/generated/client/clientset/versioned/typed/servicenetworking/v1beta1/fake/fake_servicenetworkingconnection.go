@@ -120,7 +120,7 @@ func (c *FakeServiceNetworkingConnections) UpdateStatus(ctx context.Context, ser
 // Delete takes name of the serviceNetworkingConnection and deletes it. Returns an error if one occurs.
 func (c *FakeServiceNetworkingConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(servicenetworkingconnectionsResource, c.ns, name), &v1beta1.ServiceNetworkingConnection{})
+		Invokes(testing.NewDeleteActionWithOptions(servicenetworkingconnectionsResource, c.ns, name, opts), &v1beta1.ServiceNetworkingConnection{})
 
 	return err
 }

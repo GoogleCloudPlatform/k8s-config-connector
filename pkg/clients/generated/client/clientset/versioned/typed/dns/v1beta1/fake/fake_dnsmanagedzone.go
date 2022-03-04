@@ -120,7 +120,7 @@ func (c *FakeDNSManagedZones) UpdateStatus(ctx context.Context, dNSManagedZone *
 // Delete takes name of the dNSManagedZone and deletes it. Returns an error if one occurs.
 func (c *FakeDNSManagedZones) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dnsmanagedzonesResource, c.ns, name), &v1beta1.DNSManagedZone{})
+		Invokes(testing.NewDeleteActionWithOptions(dnsmanagedzonesResource, c.ns, name, opts), &v1beta1.DNSManagedZone{})
 
 	return err
 }

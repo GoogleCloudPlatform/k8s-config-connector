@@ -120,7 +120,7 @@ func (c *FakeComputeSSLPolicies) UpdateStatus(ctx context.Context, computeSSLPol
 // Delete takes name of the computeSSLPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeSSLPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computesslpoliciesResource, c.ns, name), &v1beta1.ComputeSSLPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(computesslpoliciesResource, c.ns, name, opts), &v1beta1.ComputeSSLPolicy{})
 
 	return err
 }

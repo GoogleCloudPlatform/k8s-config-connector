@@ -15,9 +15,9 @@
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogExclusion
 metadata:
-  name: logginglogexclusion-sample-project
+  name: logginglogexclusion-sample-proj
 spec:
   projectRef:
-    name: logginglogexclusion-dep-project
+    name: logginglogexclusion-dep-proj
   description: "A project log exclusion"
   filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"

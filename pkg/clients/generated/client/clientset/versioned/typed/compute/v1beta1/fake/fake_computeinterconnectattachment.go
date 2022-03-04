@@ -120,7 +120,7 @@ func (c *FakeComputeInterconnectAttachments) UpdateStatus(ctx context.Context, c
 // Delete takes name of the computeInterconnectAttachment and deletes it. Returns an error if one occurs.
 func (c *FakeComputeInterconnectAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeinterconnectattachmentsResource, c.ns, name), &v1beta1.ComputeInterconnectAttachment{})
+		Invokes(testing.NewDeleteActionWithOptions(computeinterconnectattachmentsResource, c.ns, name, opts), &v1beta1.ComputeInterconnectAttachment{})
 
 	return err
 }

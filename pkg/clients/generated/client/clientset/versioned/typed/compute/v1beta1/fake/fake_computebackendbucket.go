@@ -120,7 +120,7 @@ func (c *FakeComputeBackendBuckets) UpdateStatus(ctx context.Context, computeBac
 // Delete takes name of the computeBackendBucket and deletes it. Returns an error if one occurs.
 func (c *FakeComputeBackendBuckets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computebackendbucketsResource, c.ns, name), &v1beta1.ComputeBackendBucket{})
+		Invokes(testing.NewDeleteActionWithOptions(computebackendbucketsResource, c.ns, name, opts), &v1beta1.ComputeBackendBucket{})
 
 	return err
 }

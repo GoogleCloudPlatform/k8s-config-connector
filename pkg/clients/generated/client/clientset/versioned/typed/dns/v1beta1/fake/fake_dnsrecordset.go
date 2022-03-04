@@ -120,7 +120,7 @@ func (c *FakeDNSRecordSets) UpdateStatus(ctx context.Context, dNSRecordSet *v1be
 // Delete takes name of the dNSRecordSet and deletes it. Returns an error if one occurs.
 func (c *FakeDNSRecordSets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dnsrecordsetsResource, c.ns, name), &v1beta1.DNSRecordSet{})
+		Invokes(testing.NewDeleteActionWithOptions(dnsrecordsetsResource, c.ns, name, opts), &v1beta1.DNSRecordSet{})
 
 	return err
 }

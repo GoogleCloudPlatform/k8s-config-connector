@@ -120,7 +120,7 @@ func (c *FakeDataflowFlexTemplateJobs) UpdateStatus(ctx context.Context, dataflo
 // Delete takes name of the dataflowFlexTemplateJob and deletes it. Returns an error if one occurs.
 func (c *FakeDataflowFlexTemplateJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dataflowflextemplatejobsResource, c.ns, name), &v1beta1.DataflowFlexTemplateJob{})
+		Invokes(testing.NewDeleteActionWithOptions(dataflowflextemplatejobsResource, c.ns, name, opts), &v1beta1.DataflowFlexTemplateJob{})
 
 	return err
 }

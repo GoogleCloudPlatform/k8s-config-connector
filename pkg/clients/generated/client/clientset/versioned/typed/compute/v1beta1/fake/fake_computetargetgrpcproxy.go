@@ -120,7 +120,7 @@ func (c *FakeComputeTargetGRPCProxies) UpdateStatus(ctx context.Context, compute
 // Delete takes name of the computeTargetGRPCProxy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeTargetGRPCProxies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computetargetgrpcproxiesResource, c.ns, name), &v1beta1.ComputeTargetGRPCProxy{})
+		Invokes(testing.NewDeleteActionWithOptions(computetargetgrpcproxiesResource, c.ns, name, opts), &v1beta1.ComputeTargetGRPCProxy{})
 
 	return err
 }

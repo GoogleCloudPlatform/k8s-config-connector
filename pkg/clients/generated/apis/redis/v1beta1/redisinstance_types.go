@@ -35,6 +35,97 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceMaintenancePolicy struct {
+	/* Output only. The time when the policy was created.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Optional. Description of what this policy is for.
+	Create/Update methods return INVALID_ARGUMENT if the
+	length is greater than 512. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Output only. The time when the policy was last updated.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	/* Optional. Maintenance window that is applied to resources covered by this policy.
+	Minimum 1. For the current version, the maximum number
+	of weekly_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
+type InstanceMaintenanceSchedule struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The deadline that the maintenance schedule start time
+	can not go beyond, including reschedule.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+type InstanceStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23.
+	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59.
+	An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int `json:"seconds,omitempty"`
+}
+
+type InstanceWeeklyMaintenanceWindow struct {
+	/* Required. The day of week that maintenance updates occur.
+
+	- DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
+	- MONDAY: Monday
+	- TUESDAY: Tuesday
+	- WEDNESDAY: Wednesday
+	- THURSDAY: Thursday
+	- FRIDAY: Friday
+	- SATURDAY: Saturday
+	- SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	Day string `json:"day"`
+
+	/* Output only. Duration of the maintenance window.
+	The current window is fixed at 1 hour.
+	A duration in seconds with up to nine fractional digits,
+	terminated by 's'. Example: "3.5s". */
+	// +optional
+	Duration *string `json:"duration,omitempty"`
+
+	/* Required. Start time of the window in UTC time. */
+	StartTime InstanceStartTime `json:"startTime"`
+}
+
 type RedisInstanceSpec struct {
 	/* Immutable. Only applicable to STANDARD_HA tier which protects the instance
 	against zonal failures by provisioning it across two zones.
@@ -73,6 +164,14 @@ type RedisInstanceSpec struct {
 	be different from [locationId]. */
 	// +optional
 	LocationId *string `json:"locationId,omitempty"`
+
+	/* Maintenance policy for an instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	/* Upcoming maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *InstanceMaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
 
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`

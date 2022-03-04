@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -108,7 +108,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeNetwork.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -134,6 +135,105 @@ spec:
                   zonal failures. If [alternativeLocationId] is also provided, it must
                   be different from [locationId].
                 type: string
+              maintenancePolicy:
+                description: Maintenance policy for an instance.
+                properties:
+                  createTime:
+                    description: |-
+                      Output only. The time when the policy was created.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  description:
+                    description: |-
+                      Optional. Description of what this policy is for.
+                      Create/Update methods return INVALID_ARGUMENT if the
+                      length is greater than 512.
+                    type: string
+                  updateTime:
+                    description: |-
+                      Output only. The time when the policy was last updated.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  weeklyMaintenanceWindow:
+                    description: |-
+                      Optional. Maintenance window that is applied to resources covered by this policy.
+                      Minimum 1. For the current version, the maximum number
+                      of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: |-
+                            Required. The day of week that maintenance updates occur.
+
+                            - DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
+                            - MONDAY: Monday
+                            - TUESDAY: Tuesday
+                            - WEDNESDAY: Wednesday
+                            - THURSDAY: Thursday
+                            - FRIDAY: Friday
+                            - SATURDAY: Saturday
+                            - SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].
+                          type: string
+                        duration:
+                          description: |-
+                            Output only. Duration of the maintenance window.
+                            The current window is fixed at 1 hour.
+                            A duration in seconds with up to nine fractional digits,
+                            terminated by 's'. Example: "3.5s".
+                          type: string
+                        startTime:
+                          description: Required. Start time of the window in UTC time.
+                          properties:
+                            hours:
+                              description: |-
+                                Hours of day in 24 hour format. Should be from 0 to 23.
+                                An API may choose to allow the value "24:00:00" for scenarios like business closing time.
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              type: integer
+                            seconds:
+                              description: |-
+                                Seconds of minutes of the time. Must normally be from 0 to 59.
+                                An API may allow the value 60 if it allows leap-seconds.
+                              type: integer
+                          type: object
+                      required:
+                      - day
+                      - startTime
+                      type: object
+                    type: array
+                type: object
+              maintenanceSchedule:
+                description: Upcoming maintenance schedule.
+                properties:
+                  endTime:
+                    description: |-
+                      Output only. The end time of any upcoming scheduled maintenance for this instance.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  scheduleDeadlineTime:
+                    description: |-
+                      Output only. The deadline that the maintenance schedule start time
+                      can not go beyond, including reschedule.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  startTime:
+                    description: |-
+                      Output only. The start time of any upcoming scheduled maintenance for this instance.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                type: object
               memorySizeGb:
                 description: Redis memory size in GiB.
                 type: integer

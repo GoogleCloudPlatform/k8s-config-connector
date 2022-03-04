@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -261,8 +261,16 @@ spec:
                       bucketName:
                         description: S3 Bucket name.
                         type: string
+                      roleArn:
+                        description: The Amazon Resource Name (ARN) of the role to
+                          support temporary credentials via 'AssumeRoleWithWebIdentity'.
+                          For more information about ARNs, see [IAM ARNs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns).
+                          When a role ARN is provided, Transfer Service fetches temporary
+                          credentials for the session using a 'AssumeRoleWithWebIdentity'
+                          call for the provided role using the [GoogleServiceAccount][]
+                          for this project.
+                        type: string
                     required:
-                    - awsAccessKey
                     - bucketName
                     type: object
                   azureBlobStorageDataSource:
@@ -353,7 +361,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The name of a StorageBucket.
+                            description: 'Allowed value: The `name` field of a `StorageBucket`
+                              resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -388,7 +397,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The name of a StorageBucket.
+                            description: 'Allowed value: The `name` field of a `StorageBucket`
+                              resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -446,6 +456,24 @@ spec:
                           digits, terminated by ''s''. Example: "3.5s".'
                         type: string
                     type: object
+                  posixDataSink:
+                    description: A POSIX filesystem data sink.
+                    properties:
+                      rootDirectory:
+                        description: Root directory path to the filesystem.
+                        type: string
+                    required:
+                    - rootDirectory
+                    type: object
+                  posixDataSource:
+                    description: A POSIX filesystem data source.
+                    properties:
+                      rootDirectory:
+                        description: Root directory path to the filesystem.
+                        type: string
+                    required:
+                    - rootDirectory
+                    type: object
                   transferOptions:
                     description: Characteristics of how to treat files from datasource
                       and sink during job. If the option delete_objects_unique_in_sink
@@ -471,7 +499,6 @@ spec:
                 type: object
             required:
             - description
-            - schedule
             - transferSpec
             type: object
           status:

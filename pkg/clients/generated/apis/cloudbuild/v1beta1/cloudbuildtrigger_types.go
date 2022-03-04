@@ -136,11 +136,11 @@ type TriggerGithub struct {
 	// +optional
 	Owner *string `json:"owner,omitempty"`
 
-	/* filter to match changes in pull requests.  Specify only one of pullRequest or push. */
+	/* filter to match changes in pull requests. Specify only one of 'pull_request' or 'push'. */
 	// +optional
 	PullRequest *TriggerPullRequest `json:"pullRequest,omitempty"`
 
-	/* filter to match changes in refs, like branches or tags.  Specify only one of pullRequest or push. */
+	/* filter to match changes in refs, like branches or tags. Specify only one of 'pull_request' or 'push'. */
 	// +optional
 	Push *TriggerPush `json:"push,omitempty"`
 }

@@ -120,7 +120,7 @@ func (c *FakeIAPBrands) UpdateStatus(ctx context.Context, iAPBrand *v1beta1.IAPB
 // Delete takes name of the iAPBrand and deletes it. Returns an error if one occurs.
 func (c *FakeIAPBrands) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iapbrandsResource, c.ns, name), &v1beta1.IAPBrand{})
+		Invokes(testing.NewDeleteActionWithOptions(iapbrandsResource, c.ns, name, opts), &v1beta1.IAPBrand{})
 
 	return err
 }

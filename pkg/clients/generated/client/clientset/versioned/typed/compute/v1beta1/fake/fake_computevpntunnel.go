@@ -120,7 +120,7 @@ func (c *FakeComputeVPNTunnels) UpdateStatus(ctx context.Context, computeVPNTunn
 // Delete takes name of the computeVPNTunnel and deletes it. Returns an error if one occurs.
 func (c *FakeComputeVPNTunnels) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computevpntunnelsResource, c.ns, name), &v1beta1.ComputeVPNTunnel{})
+		Invokes(testing.NewDeleteActionWithOptions(computevpntunnelsResource, c.ns, name, opts), &v1beta1.ComputeVPNTunnel{})
 
 	return err
 }

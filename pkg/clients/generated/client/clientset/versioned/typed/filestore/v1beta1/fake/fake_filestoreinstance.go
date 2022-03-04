@@ -120,7 +120,7 @@ func (c *FakeFilestoreInstances) UpdateStatus(ctx context.Context, filestoreInst
 // Delete takes name of the filestoreInstance and deletes it. Returns an error if one occurs.
 func (c *FakeFilestoreInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(filestoreinstancesResource, c.ns, name), &v1beta1.FilestoreInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(filestoreinstancesResource, c.ns, name, opts), &v1beta1.FilestoreInstance{})
 
 	return err
 }

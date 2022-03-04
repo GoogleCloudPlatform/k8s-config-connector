@@ -120,7 +120,7 @@ func (c *FakePrivateCACAPools) UpdateStatus(ctx context.Context, privateCACAPool
 // Delete takes name of the privateCACAPool and deletes it. Returns an error if one occurs.
 func (c *FakePrivateCACAPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(privatecacapoolsResource, c.ns, name), &v1beta1.PrivateCACAPool{})
+		Invokes(testing.NewDeleteActionWithOptions(privatecacapoolsResource, c.ns, name, opts), &v1beta1.PrivateCACAPool{})
 
 	return err
 }

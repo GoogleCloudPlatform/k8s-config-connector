@@ -41,9 +41,26 @@ type SecuritypolicyAdaptiveProtectionConfig struct {
 	Layer7DdosDefenseConfig *SecuritypolicyLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
 }
 
+type SecuritypolicyBanThreshold struct {
+	/* Number of HTTP(S) requests for calculating the threshold. */
+	Count int `json:"count"`
+
+	/* Interval over which the threshold is computed. */
+	IntervalSec int `json:"intervalSec"`
+}
+
 type SecuritypolicyConfig struct {
 	/* Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior). */
 	SrcIpRanges []string `json:"srcIpRanges"`
+}
+
+type SecuritypolicyExceedRedirectOptions struct {
+	/* Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA. */
+	// +optional
+	Target *string `json:"target,omitempty"`
+
+	/* Type of the redirect action. */
+	Type string `json:"type"`
 }
 
 type SecuritypolicyExpr struct {
@@ -75,6 +92,45 @@ type SecuritypolicyMatch struct {
 	VersionedExpr *string `json:"versionedExpr,omitempty"`
 }
 
+type SecuritypolicyRateLimitOptions struct {
+	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold. */
+	// +optional
+	BanDurationSec *int `json:"banDurationSec,omitempty"`
+
+	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'banDurationSec' when the number of requests that exceed the 'rateLimitThreshold' also exceed this 'banThreshold'. */
+	// +optional
+	BanThreshold *SecuritypolicyBanThreshold `json:"banThreshold,omitempty"`
+
+	/* Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only. */
+	ConformAction string `json:"conformAction"`
+
+	/* Determines the key to enforce the rateLimitThreshold on. Possible values are: "ALL" -- A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforceOnKey' is not configured. "IP" -- The source IP address of the request is the key. Each IP has this limit enforced separately. "HTTP_HEADER" -- The value of the HTTP Header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the Header value. If no such header is present in the request, the key type defaults to "ALL". "XFF_IP" -- The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP Header. If no such header is present or the value is not a valid IP, the key type defaults to "ALL". */
+	// +optional
+	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
+
+	/* Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP Header whose value is taken as the key value. */
+	// +optional
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	/* Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are "deny()" where valid values for status are 403, 404, 429, and 502, and "redirect" where the redirect parameters come from exceedRedirectOptions below. */
+	ExceedAction string `json:"exceedAction"`
+
+	/* Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. */
+	// +optional
+	ExceedRedirectOptions *SecuritypolicyExceedRedirectOptions `json:"exceedRedirectOptions,omitempty"`
+
+	/* Threshold at which to begin ratelimiting. */
+	RateLimitThreshold SecuritypolicyRateLimitThreshold `json:"rateLimitThreshold"`
+}
+
+type SecuritypolicyRateLimitThreshold struct {
+	/* Number of HTTP(S) requests for calculating the threshold. */
+	Count int `json:"count"`
+
+	/* Interval over which the threshold is computed. */
+	IntervalSec int `json:"intervalSec"`
+}
+
 type SecuritypolicyRule struct {
 	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502). */
 	Action string `json:"action"`
@@ -92,6 +148,10 @@ type SecuritypolicyRule struct {
 
 	/* An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order. */
 	Priority int `json:"priority"`
+
+	/* Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions. */
+	// +optional
+	RateLimitOptions *SecuritypolicyRateLimitOptions `json:"rateLimitOptions,omitempty"`
 }
 
 type ComputeSecurityPolicySpec struct {

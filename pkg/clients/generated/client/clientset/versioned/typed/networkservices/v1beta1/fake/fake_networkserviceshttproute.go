@@ -120,7 +120,7 @@ func (c *FakeNetworkServicesHTTPRoutes) UpdateStatus(ctx context.Context, networ
 // Delete takes name of the networkServicesHTTPRoute and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkServicesHTTPRoutes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networkserviceshttproutesResource, c.ns, name), &v1beta1.NetworkServicesHTTPRoute{})
+		Invokes(testing.NewDeleteActionWithOptions(networkserviceshttproutesResource, c.ns, name, opts), &v1beta1.NetworkServicesHTTPRoute{})
 
 	return err
 }

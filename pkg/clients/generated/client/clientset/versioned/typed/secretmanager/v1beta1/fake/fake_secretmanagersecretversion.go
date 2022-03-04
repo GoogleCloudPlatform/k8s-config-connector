@@ -120,7 +120,7 @@ func (c *FakeSecretManagerSecretVersions) UpdateStatus(ctx context.Context, secr
 // Delete takes name of the secretManagerSecretVersion and deletes it. Returns an error if one occurs.
 func (c *FakeSecretManagerSecretVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(secretmanagersecretversionsResource, c.ns, name), &v1beta1.SecretManagerSecretVersion{})
+		Invokes(testing.NewDeleteActionWithOptions(secretmanagersecretversionsResource, c.ns, name, opts), &v1beta1.SecretManagerSecretVersion{})
 
 	return err
 }

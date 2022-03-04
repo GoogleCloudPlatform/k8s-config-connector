@@ -120,7 +120,7 @@ func (c *FakeComputeDisks) UpdateStatus(ctx context.Context, computeDisk *v1beta
 // Delete takes name of the computeDisk and deletes it. Returns an error if one occurs.
 func (c *FakeComputeDisks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computedisksResource, c.ns, name), &v1beta1.ComputeDisk{})
+		Invokes(testing.NewDeleteActionWithOptions(computedisksResource, c.ns, name, opts), &v1beta1.ComputeDisk{})
 
 	return err
 }

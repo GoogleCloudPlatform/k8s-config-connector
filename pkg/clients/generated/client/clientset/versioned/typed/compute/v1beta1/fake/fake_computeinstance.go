@@ -120,7 +120,7 @@ func (c *FakeComputeInstances) UpdateStatus(ctx context.Context, computeInstance
 // Delete takes name of the computeInstance and deletes it. Returns an error if one occurs.
 func (c *FakeComputeInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeinstancesResource, c.ns, name), &v1beta1.ComputeInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(computeinstancesResource, c.ns, name, opts), &v1beta1.ComputeInstance{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeNetworkServicesMeshes) UpdateStatus(ctx context.Context, networkSer
 // Delete takes name of the networkServicesMesh and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkServicesMeshes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networkservicesmeshesResource, c.ns, name), &v1beta1.NetworkServicesMesh{})
+		Invokes(testing.NewDeleteActionWithOptions(networkservicesmeshesResource, c.ns, name, opts), &v1beta1.NetworkServicesMesh{})
 
 	return err
 }

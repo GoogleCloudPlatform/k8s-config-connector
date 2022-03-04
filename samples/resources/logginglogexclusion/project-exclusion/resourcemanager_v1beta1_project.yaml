@@ -15,9 +15,9 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
-  name: logginglogexclusion-dep-project
+  name: logginglogexclusion-dep-proj
 spec:
-  name: Project Exclusion Sample
+  name: Project Log Exclusion Sample
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"

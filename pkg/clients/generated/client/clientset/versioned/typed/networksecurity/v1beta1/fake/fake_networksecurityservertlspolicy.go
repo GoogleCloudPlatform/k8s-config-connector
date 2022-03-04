@@ -120,7 +120,7 @@ func (c *FakeNetworkSecurityServerTLSPolicies) UpdateStatus(ctx context.Context,
 // Delete takes name of the networkSecurityServerTLSPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkSecurityServerTLSPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networksecurityservertlspoliciesResource, c.ns, name), &v1beta1.NetworkSecurityServerTLSPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(networksecurityservertlspoliciesResource, c.ns, name, opts), &v1beta1.NetworkSecurityServerTLSPolicy{})
 
 	return err
 }

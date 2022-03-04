@@ -85,11 +85,11 @@ type WorkflowtemplateConfig struct {
 	// +optional
 	LifecycleConfig *WorkflowtemplateLifecycleConfig `json:"lifecycleConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for the master instance in a cluster. */
 	// +optional
 	MasterConfig *WorkflowtemplateMasterConfig `json:"masterConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
+	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
 	// +optional
 	SecondaryWorkerConfig *WorkflowtemplateSecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 

@@ -120,7 +120,7 @@ func (c *FakeComputeNetworkPeerings) UpdateStatus(ctx context.Context, computeNe
 // Delete takes name of the computeNetworkPeering and deletes it. Returns an error if one occurs.
 func (c *FakeComputeNetworkPeerings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computenetworkpeeringsResource, c.ns, name), &v1beta1.ComputeNetworkPeering{})
+		Invokes(testing.NewDeleteActionWithOptions(computenetworkpeeringsResource, c.ns, name, opts), &v1beta1.ComputeNetworkPeering{})
 
 	return err
 }

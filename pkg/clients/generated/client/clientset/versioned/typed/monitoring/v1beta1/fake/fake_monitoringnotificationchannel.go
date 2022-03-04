@@ -120,7 +120,7 @@ func (c *FakeMonitoringNotificationChannels) UpdateStatus(ctx context.Context, m
 // Delete takes name of the monitoringNotificationChannel and deletes it. Returns an error if one occurs.
 func (c *FakeMonitoringNotificationChannels) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(monitoringnotificationchannelsResource, c.ns, name), &v1beta1.MonitoringNotificationChannel{})
+		Invokes(testing.NewDeleteActionWithOptions(monitoringnotificationchannelsResource, c.ns, name, opts), &v1beta1.MonitoringNotificationChannel{})
 
 	return err
 }

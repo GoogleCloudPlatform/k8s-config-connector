@@ -120,7 +120,7 @@ func (c *FakeComputeProjectMetadatas) UpdateStatus(ctx context.Context, computeP
 // Delete takes name of the computeProjectMetadata and deletes it. Returns an error if one occurs.
 func (c *FakeComputeProjectMetadatas) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeprojectmetadatasResource, c.ns, name), &v1beta1.ComputeProjectMetadata{})
+		Invokes(testing.NewDeleteActionWithOptions(computeprojectmetadatasResource, c.ns, name, opts), &v1beta1.ComputeProjectMetadata{})
 
 	return err
 }

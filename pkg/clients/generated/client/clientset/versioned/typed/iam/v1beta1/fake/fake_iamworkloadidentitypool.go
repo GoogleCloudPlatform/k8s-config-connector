@@ -120,7 +120,7 @@ func (c *FakeIAMWorkloadIdentityPools) UpdateStatus(ctx context.Context, iAMWork
 // Delete takes name of the iAMWorkloadIdentityPool and deletes it. Returns an error if one occurs.
 func (c *FakeIAMWorkloadIdentityPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iamworkloadidentitypoolsResource, c.ns, name), &v1beta1.IAMWorkloadIdentityPool{})
+		Invokes(testing.NewDeleteActionWithOptions(iamworkloadidentitypoolsResource, c.ns, name, opts), &v1beta1.IAMWorkloadIdentityPool{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeStorageTransferJobs) UpdateStatus(ctx context.Context, storageTrans
 // Delete takes name of the storageTransferJob and deletes it. Returns an error if one occurs.
 func (c *FakeStorageTransferJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(storagetransferjobsResource, c.ns, name), &v1beta1.StorageTransferJob{})
+		Invokes(testing.NewDeleteActionWithOptions(storagetransferjobsResource, c.ns, name, opts), &v1beta1.StorageTransferJob{})
 
 	return err
 }

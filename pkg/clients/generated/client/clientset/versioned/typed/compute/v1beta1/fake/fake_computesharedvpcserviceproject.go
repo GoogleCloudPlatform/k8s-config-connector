@@ -120,7 +120,7 @@ func (c *FakeComputeSharedVPCServiceProjects) UpdateStatus(ctx context.Context, 
 // Delete takes name of the computeSharedVPCServiceProject and deletes it. Returns an error if one occurs.
 func (c *FakeComputeSharedVPCServiceProjects) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computesharedvpcserviceprojectsResource, c.ns, name), &v1beta1.ComputeSharedVPCServiceProject{})
+		Invokes(testing.NewDeleteActionWithOptions(computesharedvpcserviceprojectsResource, c.ns, name, opts), &v1beta1.ComputeSharedVPCServiceProject{})
 
 	return err
 }

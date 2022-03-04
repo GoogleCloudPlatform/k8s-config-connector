@@ -120,7 +120,7 @@ func (c *FakeComputeNodeTemplates) UpdateStatus(ctx context.Context, computeNode
 // Delete takes name of the computeNodeTemplate and deletes it. Returns an error if one occurs.
 func (c *FakeComputeNodeTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computenodetemplatesResource, c.ns, name), &v1beta1.ComputeNodeTemplate{})
+		Invokes(testing.NewDeleteActionWithOptions(computenodetemplatesResource, c.ns, name, opts), &v1beta1.ComputeNodeTemplate{})
 
 	return err
 }

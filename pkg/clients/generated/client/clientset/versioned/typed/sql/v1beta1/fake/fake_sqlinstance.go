@@ -120,7 +120,7 @@ func (c *FakeSQLInstances) UpdateStatus(ctx context.Context, sQLInstance *v1beta
 // Delete takes name of the sQLInstance and deletes it. Returns an error if one occurs.
 func (c *FakeSQLInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sqlinstancesResource, c.ns, name), &v1beta1.SQLInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(sqlinstancesResource, c.ns, name, opts), &v1beta1.SQLInstance{})
 
 	return err
 }

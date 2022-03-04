@@ -120,7 +120,7 @@ func (c *FakeComputeServiceAttachments) UpdateStatus(ctx context.Context, comput
 // Delete takes name of the computeServiceAttachment and deletes it. Returns an error if one occurs.
 func (c *FakeComputeServiceAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeserviceattachmentsResource, c.ns, name), &v1beta1.ComputeServiceAttachment{})
+		Invokes(testing.NewDeleteActionWithOptions(computeserviceattachmentsResource, c.ns, name, opts), &v1beta1.ComputeServiceAttachment{})
 
 	return err
 }

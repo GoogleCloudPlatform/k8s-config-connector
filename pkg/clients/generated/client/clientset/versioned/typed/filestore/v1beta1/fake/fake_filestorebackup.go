@@ -120,7 +120,7 @@ func (c *FakeFilestoreBackups) UpdateStatus(ctx context.Context, filestoreBackup
 // Delete takes name of the filestoreBackup and deletes it. Returns an error if one occurs.
 func (c *FakeFilestoreBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(filestorebackupsResource, c.ns, name), &v1beta1.FilestoreBackup{})
+		Invokes(testing.NewDeleteActionWithOptions(filestorebackupsResource, c.ns, name, opts), &v1beta1.FilestoreBackup{})
 
 	return err
 }

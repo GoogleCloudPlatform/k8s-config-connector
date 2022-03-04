@@ -120,7 +120,7 @@ func (c *FakeComputeRouterPeers) UpdateStatus(ctx context.Context, computeRouter
 // Delete takes name of the computeRouterPeer and deletes it. Returns an error if one occurs.
 func (c *FakeComputeRouterPeers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computerouterpeersResource, c.ns, name), &v1beta1.ComputeRouterPeer{})
+		Invokes(testing.NewDeleteActionWithOptions(computerouterpeersResource, c.ns, name, opts), &v1beta1.ComputeRouterPeer{})
 
 	return err
 }

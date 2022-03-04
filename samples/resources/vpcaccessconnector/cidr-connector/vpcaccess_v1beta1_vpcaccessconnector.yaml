@@ -15,11 +15,11 @@
 apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
 kind: VPCAccessConnector
 metadata:
-  name: vpcaccessconnector-sample-cidrconnector
+  name: connector-sample-cidr
 spec:
   location: "us-central1"
   networkRef:
-    name: "vpcaccessconnector-dep-cidrconnector"
+    name: connector-dep-cidr
   ipCidrRange: "10.132.0.0/28"
   minThroughput: 300
   maxThroughput: 400

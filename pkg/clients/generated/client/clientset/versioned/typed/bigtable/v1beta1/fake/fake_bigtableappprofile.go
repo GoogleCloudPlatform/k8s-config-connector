@@ -120,7 +120,7 @@ func (c *FakeBigtableAppProfiles) UpdateStatus(ctx context.Context, bigtableAppP
 // Delete takes name of the bigtableAppProfile and deletes it. Returns an error if one occurs.
 func (c *FakeBigtableAppProfiles) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigtableappprofilesResource, c.ns, name), &v1beta1.BigtableAppProfile{})
+		Invokes(testing.NewDeleteActionWithOptions(bigtableappprofilesResource, c.ns, name, opts), &v1beta1.BigtableAppProfile{})
 
 	return err
 }

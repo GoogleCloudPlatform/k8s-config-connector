@@ -120,7 +120,7 @@ func (c *FakeBigtableTables) UpdateStatus(ctx context.Context, bigtableTable *v1
 // Delete takes name of the bigtableTable and deletes it. Returns an error if one occurs.
 func (c *FakeBigtableTables) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigtabletablesResource, c.ns, name), &v1beta1.BigtableTable{})
+		Invokes(testing.NewDeleteActionWithOptions(bigtabletablesResource, c.ns, name, opts), &v1beta1.BigtableTable{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeFolders) UpdateStatus(ctx context.Context, folder *v1beta1.Folder, 
 // Delete takes name of the folder and deletes it. Returns an error if one occurs.
 func (c *FakeFolders) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(foldersResource, c.ns, name), &v1beta1.Folder{})
+		Invokes(testing.NewDeleteActionWithOptions(foldersResource, c.ns, name, opts), &v1beta1.Folder{})
 
 	return err
 }

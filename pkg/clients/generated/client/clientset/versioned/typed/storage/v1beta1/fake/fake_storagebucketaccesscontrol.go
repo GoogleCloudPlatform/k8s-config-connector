@@ -120,7 +120,7 @@ func (c *FakeStorageBucketAccessControls) UpdateStatus(ctx context.Context, stor
 // Delete takes name of the storageBucketAccessControl and deletes it. Returns an error if one occurs.
 func (c *FakeStorageBucketAccessControls) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(storagebucketaccesscontrolsResource, c.ns, name), &v1beta1.StorageBucketAccessControl{})
+		Invokes(testing.NewDeleteActionWithOptions(storagebucketaccesscontrolsResource, c.ns, name, opts), &v1beta1.StorageBucketAccessControl{})
 
 	return err
 }

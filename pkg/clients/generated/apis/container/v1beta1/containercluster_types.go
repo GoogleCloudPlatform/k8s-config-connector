@@ -52,6 +52,10 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcePersistentDiskCsiDriverConfig *ClusterGcePersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
+	/* The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
+
 	/* The status of the Horizontal Pod Autoscaling addon, which increases or decreases the number of replica pods a replication controller has based on the resource usage of the existing pods. It ensures that a Heapster pod is running in the cluster, which is also used by the Cloud Monitoring service. It is enabled by default; set disabled = true to disable. */
 	// +optional
 	HorizontalPodAutoscaling *ClusterHorizontalPodAutoscaling `json:"horizontalPodAutoscaling,omitempty"`
@@ -79,6 +83,10 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
+	/* The default image type used by NAP once a new node pool is being created. */
+	// +optional
+	ImageType *string `json:"imageType,omitempty"`
+
 	/* Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell. */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
@@ -206,6 +214,11 @@ type ClusterGcePersistentDiskCsiDriverConfig struct {
 
 type ClusterGcfsConfig struct {
 	/* Immutable. Whether or not GCFS is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
+type ClusterGcpFilestoreCsiDriverConfig struct {
+	/*  */
 	Enabled bool `json:"enabled"`
 }
 

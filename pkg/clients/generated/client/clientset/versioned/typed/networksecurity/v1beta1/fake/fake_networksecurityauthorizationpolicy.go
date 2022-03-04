@@ -120,7 +120,7 @@ func (c *FakeNetworkSecurityAuthorizationPolicies) UpdateStatus(ctx context.Cont
 // Delete takes name of the networkSecurityAuthorizationPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkSecurityAuthorizationPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networksecurityauthorizationpoliciesResource, c.ns, name), &v1beta1.NetworkSecurityAuthorizationPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(networksecurityauthorizationpoliciesResource, c.ns, name, opts), &v1beta1.NetworkSecurityAuthorizationPolicy{})
 
 	return err
 }

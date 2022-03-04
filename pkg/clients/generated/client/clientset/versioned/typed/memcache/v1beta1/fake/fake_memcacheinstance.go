@@ -120,7 +120,7 @@ func (c *FakeMemcacheInstances) UpdateStatus(ctx context.Context, memcacheInstan
 // Delete takes name of the memcacheInstance and deletes it. Returns an error if one occurs.
 func (c *FakeMemcacheInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(memcacheinstancesResource, c.ns, name), &v1beta1.MemcacheInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(memcacheinstancesResource, c.ns, name, opts), &v1beta1.MemcacheInstance{})
 
 	return err
 }

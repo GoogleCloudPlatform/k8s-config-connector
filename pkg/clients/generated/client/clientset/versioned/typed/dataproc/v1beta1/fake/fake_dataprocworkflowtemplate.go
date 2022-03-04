@@ -120,7 +120,7 @@ func (c *FakeDataprocWorkflowTemplates) UpdateStatus(ctx context.Context, datapr
 // Delete takes name of the dataprocWorkflowTemplate and deletes it. Returns an error if one occurs.
 func (c *FakeDataprocWorkflowTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dataprocworkflowtemplatesResource, c.ns, name), &v1beta1.DataprocWorkflowTemplate{})
+		Invokes(testing.NewDeleteActionWithOptions(dataprocworkflowtemplatesResource, c.ns, name, opts), &v1beta1.DataprocWorkflowTemplate{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeDNSPolicies) UpdateStatus(ctx context.Context, dNSPolicy *v1beta1.D
 // Delete takes name of the dNSPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeDNSPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dnspoliciesResource, c.ns, name), &v1beta1.DNSPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(dnspoliciesResource, c.ns, name, opts), &v1beta1.DNSPolicy{})
 
 	return err
 }

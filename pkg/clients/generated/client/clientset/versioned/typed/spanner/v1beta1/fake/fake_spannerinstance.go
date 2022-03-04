@@ -120,7 +120,7 @@ func (c *FakeSpannerInstances) UpdateStatus(ctx context.Context, spannerInstance
 // Delete takes name of the spannerInstance and deletes it. Returns an error if one occurs.
 func (c *FakeSpannerInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(spannerinstancesResource, c.ns, name), &v1beta1.SpannerInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(spannerinstancesResource, c.ns, name, opts), &v1beta1.SpannerInstance{})
 
 	return err
 }

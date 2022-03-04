@@ -120,7 +120,7 @@ func (c *FakeDataprocAutoscalingPolicies) UpdateStatus(ctx context.Context, data
 // Delete takes name of the dataprocAutoscalingPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeDataprocAutoscalingPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(dataprocautoscalingpoliciesResource, c.ns, name), &v1beta1.DataprocAutoscalingPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(dataprocautoscalingpoliciesResource, c.ns, name, opts), &v1beta1.DataprocAutoscalingPolicy{})
 
 	return err
 }

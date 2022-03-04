@@ -120,7 +120,7 @@ func (c *FakeMonitoringUptimeCheckConfigs) UpdateStatus(ctx context.Context, mon
 // Delete takes name of the monitoringUptimeCheckConfig and deletes it. Returns an error if one occurs.
 func (c *FakeMonitoringUptimeCheckConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(monitoringuptimecheckconfigsResource, c.ns, name), &v1beta1.MonitoringUptimeCheckConfig{})
+		Invokes(testing.NewDeleteActionWithOptions(monitoringuptimecheckconfigsResource, c.ns, name, opts), &v1beta1.MonitoringUptimeCheckConfig{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeFirestoreIndexes) UpdateStatus(ctx context.Context, firestoreIndex 
 // Delete takes name of the firestoreIndex and deletes it. Returns an error if one occurs.
 func (c *FakeFirestoreIndexes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(firestoreindexesResource, c.ns, name), &v1beta1.FirestoreIndex{})
+		Invokes(testing.NewDeleteActionWithOptions(firestoreindexesResource, c.ns, name, opts), &v1beta1.FirestoreIndex{})
 
 	return err
 }

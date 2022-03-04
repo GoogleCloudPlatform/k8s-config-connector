@@ -120,7 +120,7 @@ func (c *FakeContainerAnalysisNotes) UpdateStatus(ctx context.Context, container
 // Delete takes name of the containerAnalysisNote and deletes it. Returns an error if one occurs.
 func (c *FakeContainerAnalysisNotes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(containeranalysisnotesResource, c.ns, name), &v1beta1.ContainerAnalysisNote{})
+		Invokes(testing.NewDeleteActionWithOptions(containeranalysisnotesResource, c.ns, name, opts), &v1beta1.ContainerAnalysisNote{})
 
 	return err
 }

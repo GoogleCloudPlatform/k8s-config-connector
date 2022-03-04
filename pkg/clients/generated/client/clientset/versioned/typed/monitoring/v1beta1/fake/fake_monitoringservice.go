@@ -120,7 +120,7 @@ func (c *FakeMonitoringServices) UpdateStatus(ctx context.Context, monitoringSer
 // Delete takes name of the monitoringService and deletes it. Returns an error if one occurs.
 func (c *FakeMonitoringServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(monitoringservicesResource, c.ns, name), &v1beta1.MonitoringService{})
+		Invokes(testing.NewDeleteActionWithOptions(monitoringservicesResource, c.ns, name, opts), &v1beta1.MonitoringService{})
 
 	return err
 }

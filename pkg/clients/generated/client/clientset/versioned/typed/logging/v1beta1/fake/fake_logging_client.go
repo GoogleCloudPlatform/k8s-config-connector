@@ -47,6 +47,10 @@ func (c *FakeLoggingV1beta1) LoggingLogSinks(namespace string) v1beta1.LoggingLo
 	return &FakeLoggingLogSinks{c, namespace}
 }
 
+func (c *FakeLoggingV1beta1) LoggingLogViews(namespace string) v1beta1.LoggingLogViewInterface {
+	return &FakeLoggingLogViews{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeLoggingV1beta1) RESTClient() rest.Interface {

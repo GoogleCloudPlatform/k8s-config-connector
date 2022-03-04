@@ -120,7 +120,7 @@ func (c *FakeComputeRoutes) UpdateStatus(ctx context.Context, computeRoute *v1be
 // Delete takes name of the computeRoute and deletes it. Returns an error if one occurs.
 func (c *FakeComputeRoutes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeroutesResource, c.ns, name), &v1beta1.ComputeRoute{})
+		Invokes(testing.NewDeleteActionWithOptions(computeroutesResource, c.ns, name, opts), &v1beta1.ComputeRoute{})
 
 	return err
 }

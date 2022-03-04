@@ -31,6 +31,8 @@ import (
 	fakebigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1/fake"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	fakebigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1/fake"
+	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
+	fakebillingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1/fake"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	fakebinaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
@@ -57,6 +59,8 @@ import (
 	fakedataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1/fake"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
 	fakednsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1/fake"
+	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
+	fakeeventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1/fake"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	fakefilestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1/fake"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
@@ -171,7 +175,10 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 	return c.tracker
 }
 
-var _ clientset.Interface = &Clientset{}
+var (
+	_ clientset.Interface = &Clientset{}
+	_ testing.FakeClient  = &Clientset{}
+)
 
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
 func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface {
@@ -191,6 +198,11 @@ func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 // BigtableV1beta1 retrieves the BigtableV1beta1Client
 func (c *Clientset) BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface {
 	return &fakebigtablev1beta1.FakeBigtableV1beta1{Fake: &c.Fake}
+}
+
+// BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
+func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
+	return &fakebillingbudgetsv1beta1.FakeBillingbudgetsV1beta1{Fake: &c.Fake}
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
@@ -256,6 +268,11 @@ func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 // DnsV1beta1 retrieves the DnsV1beta1Client
 func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 	return &fakednsv1beta1.FakeDnsV1beta1{Fake: &c.Fake}
+}
+
+// EventarcV1beta1 retrieves the EventarcV1beta1Client
+func (c *Clientset) EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface {
+	return &fakeeventarcv1beta1.FakeEventarcV1beta1{Fake: &c.Fake}
 }
 
 // FilestoreV1beta1 retrieves the FilestoreV1beta1Client

@@ -120,7 +120,7 @@ func (c *FakeAccessContextManagerAccessPolicies) UpdateStatus(ctx context.Contex
 // Delete takes name of the accessContextManagerAccessPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeAccessContextManagerAccessPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(accesscontextmanageraccesspoliciesResource, c.ns, name), &v1beta1.AccessContextManagerAccessPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(accesscontextmanageraccesspoliciesResource, c.ns, name, opts), &v1beta1.AccessContextManagerAccessPolicy{})
 
 	return err
 }

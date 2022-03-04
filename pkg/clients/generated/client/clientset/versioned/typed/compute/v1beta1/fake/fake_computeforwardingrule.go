@@ -120,7 +120,7 @@ func (c *FakeComputeForwardingRules) UpdateStatus(ctx context.Context, computeFo
 // Delete takes name of the computeForwardingRule and deletes it. Returns an error if one occurs.
 func (c *FakeComputeForwardingRules) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeforwardingrulesResource, c.ns, name), &v1beta1.ComputeForwardingRule{})
+		Invokes(testing.NewDeleteActionWithOptions(computeforwardingrulesResource, c.ns, name, opts), &v1beta1.ComputeForwardingRule{})
 
 	return err
 }

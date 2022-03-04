@@ -120,7 +120,7 @@ func (c *FakeOSConfigOSPolicyAssignments) UpdateStatus(ctx context.Context, oSCo
 // Delete takes name of the oSConfigOSPolicyAssignment and deletes it. Returns an error if one occurs.
 func (c *FakeOSConfigOSPolicyAssignments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(osconfigospolicyassignmentsResource, c.ns, name), &v1beta1.OSConfigOSPolicyAssignment{})
+		Invokes(testing.NewDeleteActionWithOptions(osconfigospolicyassignmentsResource, c.ns, name, opts), &v1beta1.OSConfigOSPolicyAssignment{})
 
 	return err
 }

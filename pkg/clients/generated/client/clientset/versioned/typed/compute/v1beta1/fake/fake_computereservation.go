@@ -120,7 +120,7 @@ func (c *FakeComputeReservations) UpdateStatus(ctx context.Context, computeReser
 // Delete takes name of the computeReservation and deletes it. Returns an error if one occurs.
 func (c *FakeComputeReservations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computereservationsResource, c.ns, name), &v1beta1.ComputeReservation{})
+		Invokes(testing.NewDeleteActionWithOptions(computereservationsResource, c.ns, name, opts), &v1beta1.ComputeReservation{})
 
 	return err
 }

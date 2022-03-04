@@ -120,7 +120,7 @@ func (c *FakeComputeTargetPools) UpdateStatus(ctx context.Context, computeTarget
 // Delete takes name of the computeTargetPool and deletes it. Returns an error if one occurs.
 func (c *FakeComputeTargetPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computetargetpoolsResource, c.ns, name), &v1beta1.ComputeTargetPool{})
+		Invokes(testing.NewDeleteActionWithOptions(computetargetpoolsResource, c.ns, name, opts), &v1beta1.ComputeTargetPool{})
 
 	return err
 }

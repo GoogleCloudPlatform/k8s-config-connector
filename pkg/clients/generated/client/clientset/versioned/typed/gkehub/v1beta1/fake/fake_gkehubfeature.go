@@ -120,7 +120,7 @@ func (c *FakeGKEHubFeatures) UpdateStatus(ctx context.Context, gKEHubFeature *v1
 // Delete takes name of the gKEHubFeature and deletes it. Returns an error if one occurs.
 func (c *FakeGKEHubFeatures) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(gkehubfeaturesResource, c.ns, name), &v1beta1.GKEHubFeature{})
+		Invokes(testing.NewDeleteActionWithOptions(gkehubfeaturesResource, c.ns, name, opts), &v1beta1.GKEHubFeature{})
 
 	return err
 }

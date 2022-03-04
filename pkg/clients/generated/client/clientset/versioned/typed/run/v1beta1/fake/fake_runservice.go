@@ -120,7 +120,7 @@ func (c *FakeRunServices) UpdateStatus(ctx context.Context, runService *v1beta1.
 // Delete takes name of the runService and deletes it. Returns an error if one occurs.
 func (c *FakeRunServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(runservicesResource, c.ns, name), &v1beta1.RunService{})
+		Invokes(testing.NewDeleteActionWithOptions(runservicesResource, c.ns, name, opts), &v1beta1.RunService{})
 
 	return err
 }

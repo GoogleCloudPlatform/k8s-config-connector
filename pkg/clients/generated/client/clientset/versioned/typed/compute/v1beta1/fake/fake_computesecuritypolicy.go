@@ -120,7 +120,7 @@ func (c *FakeComputeSecurityPolicies) UpdateStatus(ctx context.Context, computeS
 // Delete takes name of the computeSecurityPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeSecurityPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computesecuritypoliciesResource, c.ns, name), &v1beta1.ComputeSecurityPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(computesecuritypoliciesResource, c.ns, name, opts), &v1beta1.ComputeSecurityPolicy{})
 
 	return err
 }

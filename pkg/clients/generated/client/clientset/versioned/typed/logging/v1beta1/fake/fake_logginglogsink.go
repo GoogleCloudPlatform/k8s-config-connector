@@ -120,7 +120,7 @@ func (c *FakeLoggingLogSinks) UpdateStatus(ctx context.Context, loggingLogSink *
 // Delete takes name of the loggingLogSink and deletes it. Returns an error if one occurs.
 func (c *FakeLoggingLogSinks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(logginglogsinksResource, c.ns, name), &v1beta1.LoggingLogSink{})
+		Invokes(testing.NewDeleteActionWithOptions(logginglogsinksResource, c.ns, name, opts), &v1beta1.LoggingLogSink{})
 
 	return err
 }

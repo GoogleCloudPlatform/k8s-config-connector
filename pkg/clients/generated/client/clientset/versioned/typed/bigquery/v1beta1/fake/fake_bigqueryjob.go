@@ -120,7 +120,7 @@ func (c *FakeBigQueryJobs) UpdateStatus(ctx context.Context, bigQueryJob *v1beta
 // Delete takes name of the bigQueryJob and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigqueryjobsResource, c.ns, name), &v1beta1.BigQueryJob{})
+		Invokes(testing.NewDeleteActionWithOptions(bigqueryjobsResource, c.ns, name, opts), &v1beta1.BigQueryJob{})
 
 	return err
 }

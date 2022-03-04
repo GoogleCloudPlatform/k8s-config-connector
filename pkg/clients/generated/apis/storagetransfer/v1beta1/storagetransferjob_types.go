@@ -55,10 +55,15 @@ type JobAwsAccessKey struct {
 
 type JobAwsS3DataSource struct {
 	/* AWS credentials block. */
-	AwsAccessKey JobAwsAccessKey `json:"awsAccessKey"`
+	// +optional
+	AwsAccessKey *JobAwsAccessKey `json:"awsAccessKey,omitempty"`
 
 	/* S3 Bucket name. */
 	BucketName string `json:"bucketName"`
+
+	/* The Amazon Resource Name (ARN) of the role to support temporary credentials via 'AssumeRoleWithWebIdentity'. For more information about ARNs, see [IAM ARNs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns). When a role ARN is provided, Transfer Service fetches temporary credentials for the session using a 'AssumeRoleWithWebIdentity' call for the provided role using the [GoogleServiceAccount][] for this project. */
+	// +optional
+	RoleArn *string `json:"roleArn,omitempty"`
 }
 
 type JobAzureBlobStorageDataSource struct {
@@ -120,6 +125,16 @@ type JobObjectConditions struct {
 	/* A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
 	// +optional
 	MinTimeElapsedSinceLastModification *string `json:"minTimeElapsedSinceLastModification,omitempty"`
+}
+
+type JobPosixDataSink struct {
+	/* Root directory path to the filesystem. */
+	RootDirectory string `json:"rootDirectory"`
+}
+
+type JobPosixDataSource struct {
+	/* Root directory path to the filesystem. */
+	RootDirectory string `json:"rootDirectory"`
 }
 
 type JobSasToken struct {
@@ -230,6 +245,14 @@ type JobTransferSpec struct {
 	// +optional
 	ObjectConditions *JobObjectConditions `json:"objectConditions,omitempty"`
 
+	/* A POSIX filesystem data sink. */
+	// +optional
+	PosixDataSink *JobPosixDataSink `json:"posixDataSink,omitempty"`
+
+	/* A POSIX filesystem data source. */
+	// +optional
+	PosixDataSource *JobPosixDataSource `json:"posixDataSource,omitempty"`
+
 	/* Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects' last_modification_time are ignored and do not exclude objects in a data source or a data sink. */
 	// +optional
 	TransferOptions *JobTransferOptions `json:"transferOptions,omitempty"`
@@ -250,7 +273,8 @@ type StorageTransferJobSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Schedule specification defining when the Transfer Job should be scheduled to start, end and what time to run. */
-	Schedule JobSchedule `json:"schedule"`
+	// +optional
+	Schedule *JobSchedule `json:"schedule,omitempty"`
 
 	/* Status of the job. Default: ENABLED. NOTE: The effect of the new job status takes place during a subsequent job run. For example, if you change the job status from ENABLED to DISABLED, and an operation spawned by the transfer is running, the status change would not affect the current operation. */
 	// +optional

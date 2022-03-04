@@ -120,7 +120,7 @@ func (c *FakeMonitoringGroups) UpdateStatus(ctx context.Context, monitoringGroup
 // Delete takes name of the monitoringGroup and deletes it. Returns an error if one occurs.
 func (c *FakeMonitoringGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(monitoringgroupsResource, c.ns, name), &v1beta1.MonitoringGroup{})
+		Invokes(testing.NewDeleteActionWithOptions(monitoringgroupsResource, c.ns, name, opts), &v1beta1.MonitoringGroup{})
 
 	return err
 }

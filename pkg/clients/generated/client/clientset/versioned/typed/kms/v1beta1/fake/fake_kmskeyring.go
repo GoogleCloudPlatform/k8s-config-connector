@@ -120,7 +120,7 @@ func (c *FakeKMSKeyRings) UpdateStatus(ctx context.Context, kMSKeyRing *v1beta1.
 // Delete takes name of the kMSKeyRing and deletes it. Returns an error if one occurs.
 func (c *FakeKMSKeyRings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(kmskeyringsResource, c.ns, name), &v1beta1.KMSKeyRing{})
+		Invokes(testing.NewDeleteActionWithOptions(kmskeyringsResource, c.ns, name, opts), &v1beta1.KMSKeyRing{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeContainerClusters) UpdateStatus(ctx context.Context, containerClust
 // Delete takes name of the containerCluster and deletes it. Returns an error if one occurs.
 func (c *FakeContainerClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(containerclustersResource, c.ns, name), &v1beta1.ContainerCluster{})
+		Invokes(testing.NewDeleteActionWithOptions(containerclustersResource, c.ns, name, opts), &v1beta1.ContainerCluster{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeCloudIdentityGroups) UpdateStatus(ctx context.Context, cloudIdentit
 // Delete takes name of the cloudIdentityGroup and deletes it. Returns an error if one occurs.
 func (c *FakeCloudIdentityGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(cloudidentitygroupsResource, c.ns, name), &v1beta1.CloudIdentityGroup{})
+		Invokes(testing.NewDeleteActionWithOptions(cloudidentitygroupsResource, c.ns, name, opts), &v1beta1.CloudIdentityGroup{})
 
 	return err
 }

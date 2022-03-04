@@ -120,7 +120,7 @@ func (c *FakeIdentityPlatformTenantOAuthIDPConfigs) UpdateStatus(ctx context.Con
 // Delete takes name of the identityPlatformTenantOAuthIDPConfig and deletes it. Returns an error if one occurs.
 func (c *FakeIdentityPlatformTenantOAuthIDPConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(identityplatformtenantoauthidpconfigsResource, c.ns, name), &v1beta1.IdentityPlatformTenantOAuthIDPConfig{})
+		Invokes(testing.NewDeleteActionWithOptions(identityplatformtenantoauthidpconfigsResource, c.ns, name, opts), &v1beta1.IdentityPlatformTenantOAuthIDPConfig{})
 
 	return err
 }

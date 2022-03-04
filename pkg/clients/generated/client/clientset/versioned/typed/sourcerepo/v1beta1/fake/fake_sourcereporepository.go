@@ -120,7 +120,7 @@ func (c *FakeSourceRepoRepositories) UpdateStatus(ctx context.Context, sourceRep
 // Delete takes name of the sourceRepoRepository and deletes it. Returns an error if one occurs.
 func (c *FakeSourceRepoRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sourcereporepositoriesResource, c.ns, name), &v1beta1.SourceRepoRepository{})
+		Invokes(testing.NewDeleteActionWithOptions(sourcereporepositoriesResource, c.ns, name, opts), &v1beta1.SourceRepoRepository{})
 
 	return err
 }

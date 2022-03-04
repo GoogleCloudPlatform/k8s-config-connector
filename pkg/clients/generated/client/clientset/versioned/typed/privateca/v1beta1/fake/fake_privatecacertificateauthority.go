@@ -120,7 +120,7 @@ func (c *FakePrivateCACertificateAuthorities) UpdateStatus(ctx context.Context, 
 // Delete takes name of the privateCACertificateAuthority and deletes it. Returns an error if one occurs.
 func (c *FakePrivateCACertificateAuthorities) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(privatecacertificateauthoritiesResource, c.ns, name), &v1beta1.PrivateCACertificateAuthority{})
+		Invokes(testing.NewDeleteActionWithOptions(privatecacertificateauthoritiesResource, c.ns, name, opts), &v1beta1.PrivateCACertificateAuthority{})
 
 	return err
 }

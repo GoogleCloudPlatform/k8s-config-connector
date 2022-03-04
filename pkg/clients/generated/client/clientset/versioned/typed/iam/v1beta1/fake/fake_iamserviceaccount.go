@@ -120,7 +120,7 @@ func (c *FakeIAMServiceAccounts) UpdateStatus(ctx context.Context, iAMServiceAcc
 // Delete takes name of the iAMServiceAccount and deletes it. Returns an error if one occurs.
 func (c *FakeIAMServiceAccounts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iamserviceaccountsResource, c.ns, name), &v1beta1.IAMServiceAccount{})
+		Invokes(testing.NewDeleteActionWithOptions(iamserviceaccountsResource, c.ns, name, opts), &v1beta1.IAMServiceAccount{})
 
 	return err
 }

@@ -77,5 +77,11 @@ var (
 		Kind:    reflect.TypeOf(LoggingLogSink{}).Name(),
 	}
 
+	LoggingLogViewGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(LoggingLogView{}).Name(),
+	}
+
 	loggingAPIVersion = SchemeGroupVersion.String()
 )

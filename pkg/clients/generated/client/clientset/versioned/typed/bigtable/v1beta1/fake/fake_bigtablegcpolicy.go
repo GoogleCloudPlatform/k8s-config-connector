@@ -120,7 +120,7 @@ func (c *FakeBigtableGCPolicies) UpdateStatus(ctx context.Context, bigtableGCPol
 // Delete takes name of the bigtableGCPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeBigtableGCPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigtablegcpoliciesResource, c.ns, name), &v1beta1.BigtableGCPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(bigtablegcpoliciesResource, c.ns, name, opts), &v1beta1.BigtableGCPolicy{})
 
 	return err
 }

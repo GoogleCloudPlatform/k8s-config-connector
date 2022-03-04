@@ -120,7 +120,7 @@ func (c *FakeComputeVPNGateways) UpdateStatus(ctx context.Context, computeVPNGat
 // Delete takes name of the computeVPNGateway and deletes it. Returns an error if one occurs.
 func (c *FakeComputeVPNGateways) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computevpngatewaysResource, c.ns, name), &v1beta1.ComputeVPNGateway{})
+		Invokes(testing.NewDeleteActionWithOptions(computevpngatewaysResource, c.ns, name, opts), &v1beta1.ComputeVPNGateway{})
 
 	return err
 }

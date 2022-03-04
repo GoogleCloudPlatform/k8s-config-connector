@@ -120,7 +120,7 @@ func (c *FakeArtifactRegistryRepositories) UpdateStatus(ctx context.Context, art
 // Delete takes name of the artifactRegistryRepository and deletes it. Returns an error if one occurs.
 func (c *FakeArtifactRegistryRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(artifactregistryrepositoriesResource, c.ns, name), &v1beta1.ArtifactRegistryRepository{})
+		Invokes(testing.NewDeleteActionWithOptions(artifactregistryrepositoriesResource, c.ns, name, opts), &v1beta1.ArtifactRegistryRepository{})
 
 	return err
 }

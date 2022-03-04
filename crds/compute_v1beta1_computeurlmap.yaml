@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -209,7 +209,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The name of a ComputeBackendService.
+                            description: 'Allowed value: The `name` field of a `ComputeBackendService`
+                              resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -339,7 +340,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The name of a ComputeBackendService.
+                              description: 'Allowed value: The `name` field of a `ComputeBackendService`
+                                resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -461,7 +463,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeBackendBucket.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeBackendBucket`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -487,7 +490,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeBackendService.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeBackendService`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -806,7 +810,8 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: The name of a ComputeBackendService.
+                                  description: 'Allowed value: The `name` field of
+                                    a `ComputeBackendService` resource.'
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -939,7 +944,8 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The name of a ComputeBackendService.
+                                    description: 'Allowed value: The `name` field
+                                      of a `ComputeBackendService` resource.'
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1056,7 +1062,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeBackendBucket.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendBucket` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -1083,7 +1090,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeBackendService.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendService` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -1403,7 +1411,8 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The selfLink of a ComputeBackendService.
+                                        description: 'Allowed value: The `selfLink`
+                                          field of a `ComputeBackendService` resource.'
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -1543,7 +1552,8 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The selfLink of a ComputeBackendService.
+                                          description: 'Allowed value: The `selfLink`
+                                            field of a `ComputeBackendService` resource.'
                                           type: string
                                         name:
                                           description: 'Name of the referent. More
@@ -1678,7 +1688,8 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The selfLink of a ComputeBackendBucket.
+                                    description: 'Allowed value: The `selfLink` field
+                                      of a `ComputeBackendBucket` resource.'
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -1706,7 +1717,8 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The selfLink of a ComputeBackendService.
+                                    description: 'Allowed value: The `selfLink` field
+                                      of a `ComputeBackendService` resource.'
                                     type: string
                                   name:
                                     description: 'Name of the referent. More info:
@@ -2229,7 +2241,8 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The selfLink of a ComputeBackendService.
+                                        description: 'Allowed value: The `selfLink`
+                                          field of a `ComputeBackendService` resource.'
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -2371,7 +2384,8 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The selfLink of a ComputeBackendService.
+                                          description: 'Allowed value: The `selfLink`
+                                            field of a `ComputeBackendService` resource.'
                                           type: string
                                         name:
                                           description: 'Name of the referent. More
@@ -2596,7 +2610,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeBackendBucket.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendBucket` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -2623,7 +2638,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeBackendService.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendService` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

@@ -120,7 +120,7 @@ func (c *FakeCloudSchedulerJobs) UpdateStatus(ctx context.Context, cloudSchedule
 // Delete takes name of the cloudSchedulerJob and deletes it. Returns an error if one occurs.
 func (c *FakeCloudSchedulerJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(cloudschedulerjobsResource, c.ns, name), &v1beta1.CloudSchedulerJob{})
+		Invokes(testing.NewDeleteActionWithOptions(cloudschedulerjobsResource, c.ns, name, opts), &v1beta1.CloudSchedulerJob{})
 
 	return err
 }

@@ -15,7 +15,7 @@
 apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
 kind: VPCAccessConnector
 metadata:
-  name: vpcaccessconnector-sample-subnetconnector
+  name: connector-sample-subnet
 spec:
   location: "us-central1"
   machineType: "e2-micro"
@@ -23,7 +23,7 @@ spec:
   maxInstances: 3
   subnet:
     nameRef:
-      name: "vpcaccessconnector-dep-subnetconnector"
+      name: connector-dep-subnet
     projectRef:
       # Replace ${PROJECT_ID?} with your project ID.
       external: "projects/${PROJECT_ID?}"

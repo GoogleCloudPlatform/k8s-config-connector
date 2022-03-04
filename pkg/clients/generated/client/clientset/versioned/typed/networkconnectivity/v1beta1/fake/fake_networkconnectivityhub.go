@@ -120,7 +120,7 @@ func (c *FakeNetworkConnectivityHubs) UpdateStatus(ctx context.Context, networkC
 // Delete takes name of the networkConnectivityHub and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkConnectivityHubs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networkconnectivityhubsResource, c.ns, name), &v1beta1.NetworkConnectivityHub{})
+		Invokes(testing.NewDeleteActionWithOptions(networkconnectivityhubsResource, c.ns, name, opts), &v1beta1.NetworkConnectivityHub{})
 
 	return err
 }

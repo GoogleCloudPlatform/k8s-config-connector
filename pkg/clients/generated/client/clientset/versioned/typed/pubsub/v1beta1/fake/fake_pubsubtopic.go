@@ -120,7 +120,7 @@ func (c *FakePubSubTopics) UpdateStatus(ctx context.Context, pubSubTopic *v1beta
 // Delete takes name of the pubSubTopic and deletes it. Returns an error if one occurs.
 func (c *FakePubSubTopics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(pubsubtopicsResource, c.ns, name), &v1beta1.PubSubTopic{})
+		Invokes(testing.NewDeleteActionWithOptions(pubsubtopicsResource, c.ns, name, opts), &v1beta1.PubSubTopic{})
 
 	return err
 }

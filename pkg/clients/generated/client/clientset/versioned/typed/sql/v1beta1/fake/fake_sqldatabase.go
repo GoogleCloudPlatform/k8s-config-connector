@@ -120,7 +120,7 @@ func (c *FakeSQLDatabases) UpdateStatus(ctx context.Context, sQLDatabase *v1beta
 // Delete takes name of the sQLDatabase and deletes it. Returns an error if one occurs.
 func (c *FakeSQLDatabases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sqldatabasesResource, c.ns, name), &v1beta1.SQLDatabase{})
+		Invokes(testing.NewDeleteActionWithOptions(sqldatabasesResource, c.ns, name, opts), &v1beta1.SQLDatabase{})
 
 	return err
 }

@@ -120,7 +120,7 @@ func (c *FakeNetworkConnectivitySpokes) UpdateStatus(ctx context.Context, networ
 // Delete takes name of the networkConnectivitySpoke and deletes it. Returns an error if one occurs.
 func (c *FakeNetworkConnectivitySpokes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(networkconnectivityspokesResource, c.ns, name), &v1beta1.NetworkConnectivitySpoke{})
+		Invokes(testing.NewDeleteActionWithOptions(networkconnectivityspokesResource, c.ns, name, opts), &v1beta1.NetworkConnectivitySpoke{})
 
 	return err
 }

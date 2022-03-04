@@ -120,7 +120,7 @@ func (c *FakeCloudIdentityMemberships) UpdateStatus(ctx context.Context, cloudId
 // Delete takes name of the cloudIdentityMembership and deletes it. Returns an error if one occurs.
 func (c *FakeCloudIdentityMemberships) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(cloudidentitymembershipsResource, c.ns, name), &v1beta1.CloudIdentityMembership{})
+		Invokes(testing.NewDeleteActionWithOptions(cloudidentitymembershipsResource, c.ns, name, opts), &v1beta1.CloudIdentityMembership{})
 
 	return err
 }

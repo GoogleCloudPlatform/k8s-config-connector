@@ -23,11 +23,13 @@ package versioned
 
 import (
 	"fmt"
+	"net/http"
 
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
+	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
@@ -41,6 +43,7 @@ import (
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
+	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
 	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gameservices/v1beta1"
@@ -83,6 +86,7 @@ type Interface interface {
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
+	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
@@ -96,6 +100,7 @@ type Interface interface {
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
+	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
 	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
 	GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface
@@ -137,6 +142,7 @@ type Clientset struct {
 	artifactregistryV1beta1     *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	bigqueryV1beta1             *bigqueryv1beta1.BigqueryV1beta1Client
 	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
+	billingbudgetsV1beta1       *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
 	binaryauthorizationV1beta1  *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	cloudbuildV1beta1           *cloudbuildv1beta1.CloudbuildV1beta1Client
 	cloudfunctionsV1beta1       *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
@@ -150,6 +156,7 @@ type Clientset struct {
 	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
 	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
+	eventarcV1beta1             *eventarcv1beta1.EventarcV1beta1Client
 	filestoreV1beta1            *filestorev1beta1.FilestoreV1beta1Client
 	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
 	gameservicesV1beta1         *gameservicesv1beta1.GameservicesV1beta1Client
@@ -201,6 +208,11 @@ func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 // BigtableV1beta1 retrieves the BigtableV1beta1Client
 func (c *Clientset) BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface {
 	return c.bigtableV1beta1
+}
+
+// BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
+func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
+	return c.billingbudgetsV1beta1
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
@@ -266,6 +278,11 @@ func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 // DnsV1beta1 retrieves the DnsV1beta1Client
 func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 	return c.dnsV1beta1
+}
+
+// EventarcV1beta1 retrieves the EventarcV1beta1Client
+func (c *Clientset) EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface {
+	return c.eventarcV1beta1
 }
 
 // FilestoreV1beta1 retrieves the FilestoreV1beta1Client
@@ -434,7 +451,25 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 // NewForConfig creates a new Clientset for the given config.
 // If config's RateLimiter is not set and QPS and Burst are acceptable,
 // NewForConfig will generate a rate-limiter in configShallowCopy.
+// NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
+// where httpClient was generated with rest.HTTPClientFor(c).
 func NewForConfig(c *rest.Config) (*Clientset, error) {
+	configShallowCopy := *c
+
+	// share the transport between all clients
+	httpClient, err := rest.HTTPClientFor(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewForConfigAndClient(&configShallowCopy, httpClient)
+}
+
+// NewForConfigAndClient creates a new Clientset for the given config and http client.
+// Note the http client provided takes precedence over the configured transport values.
+// If config's RateLimiter is not set and QPS and Burst are acceptable,
+// NewForConfigAndClient will generate a rate-limiter in configShallowCopy.
+func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset, error) {
 	configShallowCopy := *c
 	if configShallowCopy.RateLimiter == nil && configShallowCopy.QPS > 0 {
 		if configShallowCopy.Burst <= 0 {
@@ -442,202 +477,211 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 		}
 		configShallowCopy.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(configShallowCopy.QPS, configShallowCopy.Burst)
 	}
+
 	var cs Clientset
 	var err error
-	cs.accesscontextmanagerV1beta1, err = accesscontextmanagerv1beta1.NewForConfig(&configShallowCopy)
+	cs.accesscontextmanagerV1beta1, err = accesscontextmanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.artifactregistryV1beta1, err = artifactregistryv1beta1.NewForConfig(&configShallowCopy)
+	cs.artifactregistryV1beta1, err = artifactregistryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.bigqueryV1beta1, err = bigqueryv1beta1.NewForConfig(&configShallowCopy)
+	cs.bigqueryV1beta1, err = bigqueryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.bigtableV1beta1, err = bigtablev1beta1.NewForConfig(&configShallowCopy)
+	cs.bigtableV1beta1, err = bigtablev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfig(&configShallowCopy)
+	cs.billingbudgetsV1beta1, err = billingbudgetsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudbuildV1beta1, err = cloudbuildv1beta1.NewForConfig(&configShallowCopy)
+	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudfunctionsV1beta1, err = cloudfunctionsv1beta1.NewForConfig(&configShallowCopy)
+	cs.cloudbuildV1beta1, err = cloudbuildv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudidentityV1beta1, err = cloudidentityv1beta1.NewForConfig(&configShallowCopy)
+	cs.cloudfunctionsV1beta1, err = cloudfunctionsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudschedulerV1beta1, err = cloudschedulerv1beta1.NewForConfig(&configShallowCopy)
+	cs.cloudidentityV1beta1, err = cloudidentityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.computeV1beta1, err = computev1beta1.NewForConfig(&configShallowCopy)
+	cs.cloudschedulerV1beta1, err = cloudschedulerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.configcontrollerV1beta1, err = configcontrollerv1beta1.NewForConfig(&configShallowCopy)
+	cs.computeV1beta1, err = computev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.containerV1beta1, err = containerv1beta1.NewForConfig(&configShallowCopy)
+	cs.configcontrollerV1beta1, err = configcontrollerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.containeranalysisV1beta1, err = containeranalysisv1beta1.NewForConfig(&configShallowCopy)
+	cs.containerV1beta1, err = containerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.dataflowV1beta1, err = dataflowv1beta1.NewForConfig(&configShallowCopy)
+	cs.containeranalysisV1beta1, err = containeranalysisv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.datafusionV1beta1, err = datafusionv1beta1.NewForConfig(&configShallowCopy)
+	cs.dataflowV1beta1, err = dataflowv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.dataprocV1beta1, err = dataprocv1beta1.NewForConfig(&configShallowCopy)
+	cs.datafusionV1beta1, err = datafusionv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.dnsV1beta1, err = dnsv1beta1.NewForConfig(&configShallowCopy)
+	cs.dataprocV1beta1, err = dataprocv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.filestoreV1beta1, err = filestorev1beta1.NewForConfig(&configShallowCopy)
+	cs.dnsV1beta1, err = dnsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.firestoreV1beta1, err = firestorev1beta1.NewForConfig(&configShallowCopy)
+	cs.eventarcV1beta1, err = eventarcv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.gameservicesV1beta1, err = gameservicesv1beta1.NewForConfig(&configShallowCopy)
+	cs.filestoreV1beta1, err = filestorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.gkehubV1beta1, err = gkehubv1beta1.NewForConfig(&configShallowCopy)
+	cs.firestoreV1beta1, err = firestorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.iamV1beta1, err = iamv1beta1.NewForConfig(&configShallowCopy)
+	cs.gameservicesV1beta1, err = gameservicesv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.iapV1beta1, err = iapv1beta1.NewForConfig(&configShallowCopy)
+	cs.gkehubV1beta1, err = gkehubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.identityplatformV1beta1, err = identityplatformv1beta1.NewForConfig(&configShallowCopy)
+	cs.iamV1beta1, err = iamv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.k8sV1alpha1, err = k8sv1alpha1.NewForConfig(&configShallowCopy)
+	cs.iapV1beta1, err = iapv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.kmsV1beta1, err = kmsv1beta1.NewForConfig(&configShallowCopy)
+	cs.identityplatformV1beta1, err = identityplatformv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.loggingV1beta1, err = loggingv1beta1.NewForConfig(&configShallowCopy)
+	cs.k8sV1alpha1, err = k8sv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.memcacheV1beta1, err = memcachev1beta1.NewForConfig(&configShallowCopy)
+	cs.kmsV1beta1, err = kmsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.monitoringV1beta1, err = monitoringv1beta1.NewForConfig(&configShallowCopy)
+	cs.loggingV1beta1, err = loggingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.networkconnectivityV1beta1, err = networkconnectivityv1beta1.NewForConfig(&configShallowCopy)
+	cs.memcacheV1beta1, err = memcachev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.networksecurityV1beta1, err = networksecurityv1beta1.NewForConfig(&configShallowCopy)
+	cs.monitoringV1beta1, err = monitoringv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.networkservicesV1beta1, err = networkservicesv1beta1.NewForConfig(&configShallowCopy)
+	cs.networkconnectivityV1beta1, err = networkconnectivityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.osconfigV1beta1, err = osconfigv1beta1.NewForConfig(&configShallowCopy)
+	cs.networksecurityV1beta1, err = networksecurityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.privatecaV1beta1, err = privatecav1beta1.NewForConfig(&configShallowCopy)
+	cs.networkservicesV1beta1, err = networkservicesv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.pubsubV1beta1, err = pubsubv1beta1.NewForConfig(&configShallowCopy)
+	cs.osconfigV1beta1, err = osconfigv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.recaptchaenterpriseV1beta1, err = recaptchaenterprisev1beta1.NewForConfig(&configShallowCopy)
+	cs.privatecaV1beta1, err = privatecav1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.redisV1beta1, err = redisv1beta1.NewForConfig(&configShallowCopy)
+	cs.pubsubV1beta1, err = pubsubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.resourcemanagerV1beta1, err = resourcemanagerv1beta1.NewForConfig(&configShallowCopy)
+	cs.recaptchaenterpriseV1beta1, err = recaptchaenterprisev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.runV1beta1, err = runv1beta1.NewForConfig(&configShallowCopy)
+	cs.redisV1beta1, err = redisv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.secretmanagerV1beta1, err = secretmanagerv1beta1.NewForConfig(&configShallowCopy)
+	cs.resourcemanagerV1beta1, err = resourcemanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.servicenetworkingV1beta1, err = servicenetworkingv1beta1.NewForConfig(&configShallowCopy)
+	cs.runV1beta1, err = runv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.serviceusageV1beta1, err = serviceusagev1beta1.NewForConfig(&configShallowCopy)
+	cs.secretmanagerV1beta1, err = secretmanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.sourcerepoV1beta1, err = sourcerepov1beta1.NewForConfig(&configShallowCopy)
+	cs.servicenetworkingV1beta1, err = servicenetworkingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.spannerV1beta1, err = spannerv1beta1.NewForConfig(&configShallowCopy)
+	cs.serviceusageV1beta1, err = serviceusagev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.sqlV1beta1, err = sqlv1beta1.NewForConfig(&configShallowCopy)
+	cs.sourcerepoV1beta1, err = sourcerepov1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.storageV1beta1, err = storagev1beta1.NewForConfig(&configShallowCopy)
+	cs.spannerV1beta1, err = spannerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.storagetransferV1beta1, err = storagetransferv1beta1.NewForConfig(&configShallowCopy)
+	cs.sqlV1beta1, err = sqlv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
-	cs.vpcaccessV1beta1, err = vpcaccessv1beta1.NewForConfig(&configShallowCopy)
+	cs.storageV1beta1, err = storagev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.storagetransferV1beta1, err = storagetransferv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.vpcaccessV1beta1, err = vpcaccessv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
 
-	cs.DiscoveryClient, err = discovery.NewDiscoveryClientForConfig(&configShallowCopy)
+	cs.DiscoveryClient, err = discovery.NewDiscoveryClientForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -647,58 +691,11 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // NewForConfigOrDie creates a new Clientset for the given config and
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
-	var cs Clientset
-	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.NewForConfigOrDie(c)
-	cs.artifactregistryV1beta1 = artifactregistryv1beta1.NewForConfigOrDie(c)
-	cs.bigqueryV1beta1 = bigqueryv1beta1.NewForConfigOrDie(c)
-	cs.bigtableV1beta1 = bigtablev1beta1.NewForConfigOrDie(c)
-	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.NewForConfigOrDie(c)
-	cs.cloudbuildV1beta1 = cloudbuildv1beta1.NewForConfigOrDie(c)
-	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.NewForConfigOrDie(c)
-	cs.cloudidentityV1beta1 = cloudidentityv1beta1.NewForConfigOrDie(c)
-	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.NewForConfigOrDie(c)
-	cs.computeV1beta1 = computev1beta1.NewForConfigOrDie(c)
-	cs.configcontrollerV1beta1 = configcontrollerv1beta1.NewForConfigOrDie(c)
-	cs.containerV1beta1 = containerv1beta1.NewForConfigOrDie(c)
-	cs.containeranalysisV1beta1 = containeranalysisv1beta1.NewForConfigOrDie(c)
-	cs.dataflowV1beta1 = dataflowv1beta1.NewForConfigOrDie(c)
-	cs.datafusionV1beta1 = datafusionv1beta1.NewForConfigOrDie(c)
-	cs.dataprocV1beta1 = dataprocv1beta1.NewForConfigOrDie(c)
-	cs.dnsV1beta1 = dnsv1beta1.NewForConfigOrDie(c)
-	cs.filestoreV1beta1 = filestorev1beta1.NewForConfigOrDie(c)
-	cs.firestoreV1beta1 = firestorev1beta1.NewForConfigOrDie(c)
-	cs.gameservicesV1beta1 = gameservicesv1beta1.NewForConfigOrDie(c)
-	cs.gkehubV1beta1 = gkehubv1beta1.NewForConfigOrDie(c)
-	cs.iamV1beta1 = iamv1beta1.NewForConfigOrDie(c)
-	cs.iapV1beta1 = iapv1beta1.NewForConfigOrDie(c)
-	cs.identityplatformV1beta1 = identityplatformv1beta1.NewForConfigOrDie(c)
-	cs.k8sV1alpha1 = k8sv1alpha1.NewForConfigOrDie(c)
-	cs.kmsV1beta1 = kmsv1beta1.NewForConfigOrDie(c)
-	cs.loggingV1beta1 = loggingv1beta1.NewForConfigOrDie(c)
-	cs.memcacheV1beta1 = memcachev1beta1.NewForConfigOrDie(c)
-	cs.monitoringV1beta1 = monitoringv1beta1.NewForConfigOrDie(c)
-	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.NewForConfigOrDie(c)
-	cs.networksecurityV1beta1 = networksecurityv1beta1.NewForConfigOrDie(c)
-	cs.networkservicesV1beta1 = networkservicesv1beta1.NewForConfigOrDie(c)
-	cs.osconfigV1beta1 = osconfigv1beta1.NewForConfigOrDie(c)
-	cs.privatecaV1beta1 = privatecav1beta1.NewForConfigOrDie(c)
-	cs.pubsubV1beta1 = pubsubv1beta1.NewForConfigOrDie(c)
-	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.NewForConfigOrDie(c)
-	cs.redisV1beta1 = redisv1beta1.NewForConfigOrDie(c)
-	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.NewForConfigOrDie(c)
-	cs.runV1beta1 = runv1beta1.NewForConfigOrDie(c)
-	cs.secretmanagerV1beta1 = secretmanagerv1beta1.NewForConfigOrDie(c)
-	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.NewForConfigOrDie(c)
-	cs.serviceusageV1beta1 = serviceusagev1beta1.NewForConfigOrDie(c)
-	cs.sourcerepoV1beta1 = sourcerepov1beta1.NewForConfigOrDie(c)
-	cs.spannerV1beta1 = spannerv1beta1.NewForConfigOrDie(c)
-	cs.sqlV1beta1 = sqlv1beta1.NewForConfigOrDie(c)
-	cs.storageV1beta1 = storagev1beta1.NewForConfigOrDie(c)
-	cs.storagetransferV1beta1 = storagetransferv1beta1.NewForConfigOrDie(c)
-	cs.vpcaccessV1beta1 = vpcaccessv1beta1.NewForConfigOrDie(c)
-
-	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
-	return &cs
+	cs, err := NewForConfig(c)
+	if err != nil {
+		panic(err)
+	}
+	return cs
 }
 
 // New creates a new Clientset for the given RESTClient.
@@ -708,6 +705,7 @@ func New(c rest.Interface) *Clientset {
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
+	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
@@ -721,6 +719,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
+	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
 	cs.filestoreV1beta1 = filestorev1beta1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
 	cs.gameservicesV1beta1 = gameservicesv1beta1.New(c)

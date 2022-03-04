@@ -120,7 +120,7 @@ func (c *FakeComputeFirewallPolicyAssociations) UpdateStatus(ctx context.Context
 // Delete takes name of the computeFirewallPolicyAssociation and deletes it. Returns an error if one occurs.
 func (c *FakeComputeFirewallPolicyAssociations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computefirewallpolicyassociationsResource, c.ns, name), &v1beta1.ComputeFirewallPolicyAssociation{})
+		Invokes(testing.NewDeleteActionWithOptions(computefirewallpolicyassociationsResource, c.ns, name, opts), &v1beta1.ComputeFirewallPolicyAssociation{})
 
 	return err
 }

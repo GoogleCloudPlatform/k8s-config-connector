@@ -20,4 +20,4 @@ metadata:
     cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: logginglogsink-dep-folder
 spec:
-  displayName: Config Connector Folder Sink Sample
+  displayName: Folder Log Sink Sample

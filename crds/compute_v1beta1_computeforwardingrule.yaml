@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -107,7 +107,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeBackendService.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeBackendService`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -164,7 +165,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The address of a ComputeAddress.
+                        description: 'Allowed value: The `address` field of a `ComputeAddress`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -204,22 +206,20 @@ spec:
                   set to `INTERNAL`.
                 type: boolean
               loadBalancingScheme:
-                description: |-
-                  Immutable. Specifies the forwarding rule type.
-
-                  *   `EXTERNAL` is used for:
-                      *   Classic Cloud VPN gateways
-                      *   Protocol forwarding to VMs from an external IP address
-                      *   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP
-                  *   `INTERNAL` is used for:
-                      *   Protocol forwarding to VMs from an internal IP address
-                      *   Internal TCP/UDP load balancers
-                  *   `INTERNAL_MANAGED` is used for:
-                      *   Internal HTTP(S) load balancers
-                  *   `INTERNAL_SELF_MANAGED` is used for:
-                      *   Traffic Director
-
-                  For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL.
+                description: "Immutable. Specifies the forwarding rule type.\n\n*
+                  \  `EXTERNAL` is used for:\n    *   Classic Cloud VPN gateways\n
+                  \   *   Protocol forwarding to VMs from an external IP address\n
+                  \   *   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy,
+                  and Network TCP/UDP\n*   `INTERNAL` is used for:\n    *   Protocol
+                  forwarding to VMs from an internal IP address\n    *   Internal
+                  TCP/UDP load balancers\n*   `INTERNAL_MANAGED` is used for:\n    *
+                  \  Internal HTTP(S) load balancers\n*   `INTERNAL_SELF_MANAGED`
+                  is used for:\n    *   Traffic Director\n*   `EXTERNAL_MANAGED` is
+                  used for:\n    *   Global external HTTP(S) load balancers \n\nFor
+                  more information about forwarding rules, refer to [Forwarding rule
+                  concepts](/load-balancing/docs/forwarding-rule-concepts). Possible
+                  values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED,
+                  EXTERNAL, EXTERNAL_MANAGED."
                 type: string
               location:
                 description: 'Location represents the geographical location of the
@@ -297,7 +297,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeNetwork.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -383,7 +384,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The name of a ComputeSubnetwork.
+                    description: 'Allowed value: The `name` field of a `ComputeSubnetwork`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -429,7 +431,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetGRPCProxy.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetGRPCProxy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -455,7 +458,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetHTTPProxy.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetHTTPProxy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -481,7 +485,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetHTTPSProxy.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetHTTPSProxy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -507,7 +512,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetSSLProxy.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetSSLProxy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -533,7 +539,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetTCPProxy.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetTCPProxy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -559,7 +566,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The selfLink of a ComputeTargetVPNGateway.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetVPNGateway`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

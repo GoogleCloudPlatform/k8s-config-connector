@@ -120,7 +120,7 @@ func (c *FakeBinaryAuthorizationPolicies) UpdateStatus(ctx context.Context, bina
 // Delete takes name of the binaryAuthorizationPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeBinaryAuthorizationPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(binaryauthorizationpoliciesResource, c.ns, name), &v1beta1.BinaryAuthorizationPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(binaryauthorizationpoliciesResource, c.ns, name, opts), &v1beta1.BinaryAuthorizationPolicy{})
 
 	return err
 }

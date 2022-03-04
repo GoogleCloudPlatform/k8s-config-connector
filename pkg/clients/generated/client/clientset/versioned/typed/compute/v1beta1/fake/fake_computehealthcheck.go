@@ -120,7 +120,7 @@ func (c *FakeComputeHealthChecks) UpdateStatus(ctx context.Context, computeHealt
 // Delete takes name of the computeHealthCheck and deletes it. Returns an error if one occurs.
 func (c *FakeComputeHealthChecks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computehealthchecksResource, c.ns, name), &v1beta1.ComputeHealthCheck{})
+		Invokes(testing.NewDeleteActionWithOptions(computehealthchecksResource, c.ns, name, opts), &v1beta1.ComputeHealthCheck{})
 
 	return err
 }

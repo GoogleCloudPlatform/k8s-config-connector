@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -114,8 +114,9 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A string of the format "bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}",
-                          where {{value}} is the name of a BigQueryDataset.
+                        description: 'Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`,
+                          where {{value}} is the `name` field of a `BigQueryDataset`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -141,8 +142,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A string of the format "pubsub.googleapis.com/projects/{{project}}/topics/{{value}}",
-                          where {{value}} is the name of a PubSubTopic.
+                        description: 'Allowed value: string of the format `pubsub.googleapis.com/projects/{{project}}/topics/{{value}}`,
+                          where {{value}} is the `name` field of a `PubSubTopic` resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -168,8 +169,9 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A string of the format "storage.googleapis.com/{{value}}",
-                          where {{value}} is the name of a StorageBucket.
+                        description: 'Allowed value: string of the format `storage.googleapis.com/{{value}}`,
+                          where {{value}} is the `name` field of a `StorageBucket`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -236,7 +238,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The folderId of a Folder.
+                    description: 'Allowed value: The `folderId` field of a `Folder`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -271,7 +274,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The name of an Organization.
+                    description: 'Allowed value: The `name` field of an `Organization`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -300,7 +304,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The name of a Project.
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

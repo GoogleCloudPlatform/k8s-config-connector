@@ -120,7 +120,7 @@ func (c *FakeComputeRouterNATs) UpdateStatus(ctx context.Context, computeRouterN
 // Delete takes name of the computeRouterNAT and deletes it. Returns an error if one occurs.
 func (c *FakeComputeRouterNATs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computerouternatsResource, c.ns, name), &v1beta1.ComputeRouterNAT{})
+		Invokes(testing.NewDeleteActionWithOptions(computerouternatsResource, c.ns, name, opts), &v1beta1.ComputeRouterNAT{})
 
 	return err
 }

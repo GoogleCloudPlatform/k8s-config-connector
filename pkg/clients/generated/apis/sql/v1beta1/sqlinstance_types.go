@@ -114,7 +114,7 @@ type InstanceInsightsConfig struct {
 }
 
 type InstanceIpConfiguration struct {
-	/* Immutable. The name of the allocated ip range for the private ip CloudSQL instance. For example: "google-managed-services-default". If set, the instance ip will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])?. */
+	/* The name of the allocated ip range for the private ip CloudSQL instance. For example: "google-managed-services-default". If set, the instance ip will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])?. */
 	// +optional
 	AllocatedIpRange *string `json:"allocatedIpRange,omitempty"`
 

@@ -120,7 +120,7 @@ func (c *FakeComputeNodeGroups) UpdateStatus(ctx context.Context, computeNodeGro
 // Delete takes name of the computeNodeGroup and deletes it. Returns an error if one occurs.
 func (c *FakeComputeNodeGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computenodegroupsResource, c.ns, name), &v1beta1.ComputeNodeGroup{})
+		Invokes(testing.NewDeleteActionWithOptions(computenodegroupsResource, c.ns, name, opts), &v1beta1.ComputeNodeGroup{})
 
 	return err
 }

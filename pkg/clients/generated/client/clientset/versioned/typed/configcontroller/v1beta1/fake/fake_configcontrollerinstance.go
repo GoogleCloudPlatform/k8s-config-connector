@@ -120,7 +120,7 @@ func (c *FakeConfigControllerInstances) UpdateStatus(ctx context.Context, config
 // Delete takes name of the configControllerInstance and deletes it. Returns an error if one occurs.
 func (c *FakeConfigControllerInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(configcontrollerinstancesResource, c.ns, name), &v1beta1.ConfigControllerInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(configcontrollerinstancesResource, c.ns, name, opts), &v1beta1.ConfigControllerInstance{})
 
 	return err
 }

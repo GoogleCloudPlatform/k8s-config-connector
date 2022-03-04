@@ -120,7 +120,7 @@ func (c *FakeSpannerDatabases) UpdateStatus(ctx context.Context, spannerDatabase
 // Delete takes name of the spannerDatabase and deletes it. Returns an error if one occurs.
 func (c *FakeSpannerDatabases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(spannerdatabasesResource, c.ns, name), &v1beta1.SpannerDatabase{})
+		Invokes(testing.NewDeleteActionWithOptions(spannerdatabasesResource, c.ns, name, opts), &v1beta1.SpannerDatabase{})
 
 	return err
 }

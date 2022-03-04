@@ -120,7 +120,7 @@ func (c *FakeGameServicesRealms) UpdateStatus(ctx context.Context, gameServicesR
 // Delete takes name of the gameServicesRealm and deletes it. Returns an error if one occurs.
 func (c *FakeGameServicesRealms) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(gameservicesrealmsResource, c.ns, name), &v1beta1.GameServicesRealm{})
+		Invokes(testing.NewDeleteActionWithOptions(gameservicesrealmsResource, c.ns, name, opts), &v1beta1.GameServicesRealm{})
 
 	return err
 }

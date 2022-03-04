@@ -163,8 +163,10 @@ type ComputeForwardingRuleSpec struct {
 	    *   Internal HTTP(S) load balancers
 	*   `INTERNAL_SELF_MANAGED` is used for:
 	    *   Traffic Director
+	*   `EXTERNAL_MANAGED` is used for:
+	    *   Global external HTTP(S) load balancers
 
-	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL. */
+	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL, EXTERNAL_MANAGED. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 

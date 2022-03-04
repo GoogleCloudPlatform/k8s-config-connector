@@ -120,7 +120,7 @@ func (c *FakeCloudBuildTriggers) UpdateStatus(ctx context.Context, cloudBuildTri
 // Delete takes name of the cloudBuildTrigger and deletes it. Returns an error if one occurs.
 func (c *FakeCloudBuildTriggers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(cloudbuildtriggersResource, c.ns, name), &v1beta1.CloudBuildTrigger{})
+		Invokes(testing.NewDeleteActionWithOptions(cloudbuildtriggersResource, c.ns, name, opts), &v1beta1.CloudBuildTrigger{})
 
 	return err
 }

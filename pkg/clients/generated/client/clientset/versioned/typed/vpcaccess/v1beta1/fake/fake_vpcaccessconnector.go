@@ -120,7 +120,7 @@ func (c *FakeVPCAccessConnectors) UpdateStatus(ctx context.Context, vPCAccessCon
 // Delete takes name of the vPCAccessConnector and deletes it. Returns an error if one occurs.
 func (c *FakeVPCAccessConnectors) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(vpcaccessconnectorsResource, c.ns, name), &v1beta1.VPCAccessConnector{})
+		Invokes(testing.NewDeleteActionWithOptions(vpcaccessconnectorsResource, c.ns, name, opts), &v1beta1.VPCAccessConnector{})
 
 	return err
 }

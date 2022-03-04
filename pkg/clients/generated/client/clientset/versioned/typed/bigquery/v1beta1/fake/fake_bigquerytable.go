@@ -120,7 +120,7 @@ func (c *FakeBigQueryTables) UpdateStatus(ctx context.Context, bigQueryTable *v1
 // Delete takes name of the bigQueryTable and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryTables) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigquerytablesResource, c.ns, name), &v1beta1.BigQueryTable{})
+		Invokes(testing.NewDeleteActionWithOptions(bigquerytablesResource, c.ns, name, opts), &v1beta1.BigQueryTable{})
 
 	return err
 }

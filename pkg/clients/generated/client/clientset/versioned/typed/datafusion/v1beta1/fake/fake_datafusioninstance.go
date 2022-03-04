@@ -120,7 +120,7 @@ func (c *FakeDataFusionInstances) UpdateStatus(ctx context.Context, dataFusionIn
 // Delete takes name of the dataFusionInstance and deletes it. Returns an error if one occurs.
 func (c *FakeDataFusionInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(datafusioninstancesResource, c.ns, name), &v1beta1.DataFusionInstance{})
+		Invokes(testing.NewDeleteActionWithOptions(datafusioninstancesResource, c.ns, name, opts), &v1beta1.DataFusionInstance{})
 
 	return err
 }

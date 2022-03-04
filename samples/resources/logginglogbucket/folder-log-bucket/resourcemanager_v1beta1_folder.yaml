@@ -20,4 +20,4 @@ metadata:
     cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: logginglogbucket-dep-folderlogbucket
 spec:
-  displayName: Config Connector Folder Bucket Sample
+  displayName: Folder Log Bucket Sample

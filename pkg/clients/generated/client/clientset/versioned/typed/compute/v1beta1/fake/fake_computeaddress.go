@@ -120,7 +120,7 @@ func (c *FakeComputeAddresses) UpdateStatus(ctx context.Context, computeAddress 
 // Delete takes name of the computeAddress and deletes it. Returns an error if one occurs.
 func (c *FakeComputeAddresses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeaddressesResource, c.ns, name), &v1beta1.ComputeAddress{})
+		Invokes(testing.NewDeleteActionWithOptions(computeaddressesResource, c.ns, name, opts), &v1beta1.ComputeAddress{})
 
 	return err
 }

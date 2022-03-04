@@ -120,7 +120,7 @@ func (c *FakeComputeInstanceTemplates) UpdateStatus(ctx context.Context, compute
 // Delete takes name of the computeInstanceTemplate and deletes it. Returns an error if one occurs.
 func (c *FakeComputeInstanceTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computeinstancetemplatesResource, c.ns, name), &v1beta1.ComputeInstanceTemplate{})
+		Invokes(testing.NewDeleteActionWithOptions(computeinstancetemplatesResource, c.ns, name, opts), &v1beta1.ComputeInstanceTemplate{})
 
 	return err
 }

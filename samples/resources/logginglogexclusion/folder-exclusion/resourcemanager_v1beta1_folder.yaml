@@ -20,4 +20,4 @@ spec:
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"
-  displayName: Config Connector Folder Exclusion Sample
+  displayName: Folder Log Exclusion Sample

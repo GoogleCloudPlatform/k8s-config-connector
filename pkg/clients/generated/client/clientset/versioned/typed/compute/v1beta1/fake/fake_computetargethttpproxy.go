@@ -120,7 +120,7 @@ func (c *FakeComputeTargetHTTPProxies) UpdateStatus(ctx context.Context, compute
 // Delete takes name of the computeTargetHTTPProxy and deletes it. Returns an error if one occurs.
 func (c *FakeComputeTargetHTTPProxies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computetargethttpproxiesResource, c.ns, name), &v1beta1.ComputeTargetHTTPProxy{})
+		Invokes(testing.NewDeleteActionWithOptions(computetargethttpproxiesResource, c.ns, name, opts), &v1beta1.ComputeTargetHTTPProxy{})
 
 	return err
 }

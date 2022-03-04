@@ -120,7 +120,7 @@ func (c *FakeComputePacketMirrorings) UpdateStatus(ctx context.Context, computeP
 // Delete takes name of the computePacketMirroring and deletes it. Returns an error if one occurs.
 func (c *FakeComputePacketMirrorings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computepacketmirroringsResource, c.ns, name), &v1beta1.ComputePacketMirroring{})
+		Invokes(testing.NewDeleteActionWithOptions(computepacketmirroringsResource, c.ns, name, opts), &v1beta1.ComputePacketMirroring{})
 
 	return err
 }

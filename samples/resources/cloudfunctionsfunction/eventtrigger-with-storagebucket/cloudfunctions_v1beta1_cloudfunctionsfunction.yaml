@@ -15,7 +15,7 @@
 apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
 kind: CloudFunctionsFunction
 metadata:
-  name: cloudfunctionsfunction-sample-storagebucket
+  name: cloudfunctionsfunction-sample-bucket
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
@@ -28,7 +28,7 @@ spec:
   eventTrigger:
     eventType: "providers/cloud.storage/eventTypes/object.change"
     resourceRef:
-      name: "${PROJECT_ID?}-cloudfunctionsfunction-dep-storagebucket"
-      kind: "StorageBucket"
+      name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
+      kind: StorageBucket
     failurePolicy: true
     service: "storage.googleapis.com"

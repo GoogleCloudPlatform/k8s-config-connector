@@ -23,8 +23,11 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID.
     external: "projects/${PROJECT_ID?}"
   location: global
-  hostnames: ["foo.bar"]
-  meshes: []
+  hostnames: ["bar.baz"]
+  meshes:
+    - name: networkserviceshttproute-dep
+  gateways:
+    - name: networkserviceshttproute-dep
   rules:
   - matches:
     - fullPathMatch: "/foo/bar"

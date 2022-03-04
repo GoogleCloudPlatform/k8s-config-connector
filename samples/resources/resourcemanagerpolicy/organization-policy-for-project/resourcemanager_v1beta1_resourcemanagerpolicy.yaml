@@ -15,10 +15,10 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: ResourceManagerPolicy
 metadata:
-  name: resourcemanagerpolicy-sample-project
+  name: resourcemanagerpolicy-sample-proj
 spec:
   projectRef:
-    name: resourcemanagerpolicy-dep-project
+    name: resourcemanagerpolicy-dep-proj
   constraint: "constraints/compute.disableSerialPortAccess"
   booleanPolicy:
     enforced: true

@@ -120,7 +120,7 @@ func (c *FakeGKEHubFeatureMemberships) UpdateStatus(ctx context.Context, gKEHubF
 // Delete takes name of the gKEHubFeatureMembership and deletes it. Returns an error if one occurs.
 func (c *FakeGKEHubFeatureMemberships) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(gkehubfeaturemembershipsResource, c.ns, name), &v1beta1.GKEHubFeatureMembership{})
+		Invokes(testing.NewDeleteActionWithOptions(gkehubfeaturemembershipsResource, c.ns, name, opts), &v1beta1.GKEHubFeatureMembership{})
 
 	return err
 }

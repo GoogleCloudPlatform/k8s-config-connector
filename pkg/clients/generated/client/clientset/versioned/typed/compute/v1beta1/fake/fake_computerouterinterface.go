@@ -120,7 +120,7 @@ func (c *FakeComputeRouterInterfaces) UpdateStatus(ctx context.Context, computeR
 // Delete takes name of the computeRouterInterface and deletes it. Returns an error if one occurs.
 func (c *FakeComputeRouterInterfaces) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computerouterinterfacesResource, c.ns, name), &v1beta1.ComputeRouterInterface{})
+		Invokes(testing.NewDeleteActionWithOptions(computerouterinterfacesResource, c.ns, name, opts), &v1beta1.ComputeRouterInterface{})
 
 	return err
 }

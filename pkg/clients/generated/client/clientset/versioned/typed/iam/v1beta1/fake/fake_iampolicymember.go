@@ -120,7 +120,7 @@ func (c *FakeIAMPolicyMembers) UpdateStatus(ctx context.Context, iAMPolicyMember
 // Delete takes name of the iAMPolicyMember and deletes it. Returns an error if one occurs.
 func (c *FakeIAMPolicyMembers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iampolicymembersResource, c.ns, name), &v1beta1.IAMPolicyMember{})
+		Invokes(testing.NewDeleteActionWithOptions(iampolicymembersResource, c.ns, name, opts), &v1beta1.IAMPolicyMember{})
 
 	return err
 }

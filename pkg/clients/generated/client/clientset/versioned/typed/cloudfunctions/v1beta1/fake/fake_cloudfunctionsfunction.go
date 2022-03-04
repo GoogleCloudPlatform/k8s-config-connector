@@ -120,7 +120,7 @@ func (c *FakeCloudFunctionsFunctions) UpdateStatus(ctx context.Context, cloudFun
 // Delete takes name of the cloudFunctionsFunction and deletes it. Returns an error if one occurs.
 func (c *FakeCloudFunctionsFunctions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(cloudfunctionsfunctionsResource, c.ns, name), &v1beta1.CloudFunctionsFunction{})
+		Invokes(testing.NewDeleteActionWithOptions(cloudfunctionsfunctionsResource, c.ns, name, opts), &v1beta1.CloudFunctionsFunction{})
 
 	return err
 }

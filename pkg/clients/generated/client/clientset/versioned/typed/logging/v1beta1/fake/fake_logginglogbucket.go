@@ -120,7 +120,7 @@ func (c *FakeLoggingLogBuckets) UpdateStatus(ctx context.Context, loggingLogBuck
 // Delete takes name of the loggingLogBucket and deletes it. Returns an error if one occurs.
 func (c *FakeLoggingLogBuckets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(logginglogbucketsResource, c.ns, name), &v1beta1.LoggingLogBucket{})
+		Invokes(testing.NewDeleteActionWithOptions(logginglogbucketsResource, c.ns, name, opts), &v1beta1.LoggingLogBucket{})
 
 	return err
 }

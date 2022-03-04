@@ -120,7 +120,7 @@ func (c *FakeIAMPartialPolicies) UpdateStatus(ctx context.Context, iAMPartialPol
 // Delete takes name of the iAMPartialPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeIAMPartialPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(iampartialpoliciesResource, c.ns, name), &v1beta1.IAMPartialPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(iampartialpoliciesResource, c.ns, name, opts), &v1beta1.IAMPartialPolicy{})
 
 	return err
 }

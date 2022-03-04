@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.74.0
+    cnrm.cloud.google.com/version: 1.75.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -153,7 +153,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeInstanceGroup.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeInstanceGroup` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -180,7 +181,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The selfLink of a ComputeNetworkEndpointGroup.
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeNetworkEndpointGroup` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -441,11 +443,13 @@ spec:
                       generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"].
                     type: string
                   idleTimeoutSec:
-                    description: "Specifies how long to keep a Connection Tracking
-                      entry while there is\nno matching traffic (in seconds). \n\nFor
-                      L4 ILB the minimum(default) is 10 minutes and maximum is 16
-                      hours.\n\nFor NLB the minimum(default) is 60 seconds and the
-                      maximum is 16 hours."
+                    description: |-
+                      Specifies how long to keep a Connection Tracking entry while there is
+                      no matching traffic (in seconds).
+
+                      For L4 ILB the minimum(default) is 10 minutes and maximum is 16 hours.
+
+                      For NLB the minimum(default) is 60 seconds and the maximum is 16 hours.
                     type: integer
                   trackingMode:
                     description: |-
@@ -597,7 +601,8 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The selfLink of a ComputeHealthCheck.
+                          description: 'Allowed value: The `selfLink` field of a `ComputeHealthCheck`
+                            resource.'
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -623,7 +628,8 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The selfLink of a ComputeHTTPHealthCheck.
+                          description: 'Allowed value: The `selfLink` field of a `ComputeHTTPHealthCheck`
+                            resource.'
                           type: string
                         name:
                           description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -779,7 +785,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeNetwork.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -928,7 +935,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The selfLink of a ComputeSecurityPolicy.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSecurityPolicy`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -967,7 +975,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The name of a NetworkSecurityClientTLSPolicy.
+                        description: 'Allowed value: The `name` field of a `NetworkSecurityClientTLSPolicy`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

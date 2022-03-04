@@ -120,7 +120,7 @@ func (c *FakeOSConfigGuestPolicies) UpdateStatus(ctx context.Context, oSConfigGu
 // Delete takes name of the oSConfigGuestPolicy and deletes it. Returns an error if one occurs.
 func (c *FakeOSConfigGuestPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(osconfigguestpoliciesResource, c.ns, name), &v1beta1.OSConfigGuestPolicy{})
+		Invokes(testing.NewDeleteActionWithOptions(osconfigguestpoliciesResource, c.ns, name, opts), &v1beta1.OSConfigGuestPolicy{})
 
 	return err
 }

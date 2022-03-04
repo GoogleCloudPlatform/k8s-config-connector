@@ -120,7 +120,7 @@ func (c *FakeComputeNetworkEndpointGroups) UpdateStatus(ctx context.Context, com
 // Delete takes name of the computeNetworkEndpointGroup and deletes it. Returns an error if one occurs.
 func (c *FakeComputeNetworkEndpointGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(computenetworkendpointgroupsResource, c.ns, name), &v1beta1.ComputeNetworkEndpointGroup{})
+		Invokes(testing.NewDeleteActionWithOptions(computenetworkendpointgroupsResource, c.ns, name, opts), &v1beta1.ComputeNetworkEndpointGroup{})
 
 	return err
 }

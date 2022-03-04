@@ -120,7 +120,7 @@ func (c *FakeBigQueryDatasets) UpdateStatus(ctx context.Context, bigQueryDataset
 // Delete takes name of the bigQueryDataset and deletes it. Returns an error if one occurs.
 func (c *FakeBigQueryDatasets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(bigquerydatasetsResource, c.ns, name), &v1beta1.BigQueryDataset{})
+		Invokes(testing.NewDeleteActionWithOptions(bigquerydatasetsResource, c.ns, name, opts), &v1beta1.BigQueryDataset{})
 
 	return err
 }

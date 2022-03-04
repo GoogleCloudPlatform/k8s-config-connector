@@ -120,7 +120,7 @@ func (c *FakeRecaptchaEnterpriseKeys) UpdateStatus(ctx context.Context, recaptch
 // Delete takes name of the recaptchaEnterpriseKey and deletes it. Returns an error if one occurs.
 func (c *FakeRecaptchaEnterpriseKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(recaptchaenterprisekeysResource, c.ns, name), &v1beta1.RecaptchaEnterpriseKey{})
+		Invokes(testing.NewDeleteActionWithOptions(recaptchaenterprisekeysResource, c.ns, name, opts), &v1beta1.RecaptchaEnterpriseKey{})
 
 	return err
 }

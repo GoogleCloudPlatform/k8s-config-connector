@@ -120,7 +120,7 @@ func (c *FakeKMSCryptoKeys) UpdateStatus(ctx context.Context, kMSCryptoKey *v1be
 // Delete takes name of the kMSCryptoKey and deletes it. Returns an error if one occurs.
 func (c *FakeKMSCryptoKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(kmscryptokeysResource, c.ns, name), &v1beta1.KMSCryptoKey{})
+		Invokes(testing.NewDeleteActionWithOptions(kmscryptokeysResource, c.ns, name, opts), &v1beta1.KMSCryptoKey{})
 
 	return err
 }

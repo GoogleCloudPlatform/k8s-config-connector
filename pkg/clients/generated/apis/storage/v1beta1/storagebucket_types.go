@@ -157,7 +157,7 @@ type StorageBucketSpec struct {
 	// +optional
 	Cors []BucketCors `json:"cors,omitempty"`
 
-	/*  */
+	/* Whether or not to automatically apply an eventBasedHold to new objects added to the bucket. */
 	// +optional
 	DefaultEventBasedHold *bool `json:"defaultEventBasedHold,omitempty"`
 

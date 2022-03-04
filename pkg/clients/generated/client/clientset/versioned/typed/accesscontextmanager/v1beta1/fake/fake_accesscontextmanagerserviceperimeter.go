@@ -120,7 +120,7 @@ func (c *FakeAccessContextManagerServicePerimeters) UpdateStatus(ctx context.Con
 // Delete takes name of the accessContextManagerServicePerimeter and deletes it. Returns an error if one occurs.
 func (c *FakeAccessContextManagerServicePerimeters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(accesscontextmanagerserviceperimetersResource, c.ns, name), &v1beta1.AccessContextManagerServicePerimeter{})
+		Invokes(testing.NewDeleteActionWithOptions(accesscontextmanagerserviceperimetersResource, c.ns, name, opts), &v1beta1.AccessContextManagerServicePerimeter{})
 
 	return err
 }
