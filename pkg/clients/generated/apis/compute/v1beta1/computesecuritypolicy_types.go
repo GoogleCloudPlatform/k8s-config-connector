@@ -104,11 +104,11 @@ type SecuritypolicyRateLimitOptions struct {
 	/* Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only. */
 	ConformAction string `json:"conformAction"`
 
-	/* Determines the key to enforce the rateLimitThreshold on. Possible values are: "ALL" -- A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforceOnKey' is not configured. "IP" -- The source IP address of the request is the key. Each IP has this limit enforced separately. "HTTP_HEADER" -- The value of the HTTP Header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the Header value. If no such header is present in the request, the key type defaults to "ALL". "XFF_IP" -- The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP Header. If no such header is present or the value is not a valid IP, the key type defaults to "ALL". */
+	/* Determines the key to enforce the rateLimitThreshold on. */
 	// +optional
 	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
 
-	/* Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP Header whose value is taken as the key value. */
+	/* Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value. */
 	// +optional
 	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
 
@@ -132,7 +132,7 @@ type SecuritypolicyRateLimitThreshold struct {
 }
 
 type SecuritypolicyRule struct {
-	/* Action to take when match matches the request. Valid values:   "allow" : allow access to target, "deny(status)" : deny access to target, returns the HTTP response code specified (valid values are 403, 404 and 502). */
+	/* Action to take when match matches the request. */
 	Action string `json:"action"`
 
 	/* An optional description of this rule. Max size is 64. */

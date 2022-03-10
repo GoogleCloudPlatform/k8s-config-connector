@@ -286,6 +286,10 @@ type InstanceScheduling struct {
 	/* Immutable. Whether the instance is preemptible. */
 	// +optional
 	Preemptible *bool `json:"preemptible,omitempty"`
+
+	/* Immutable. Whether the instance is spot. If this is set as SPOT. */
+	// +optional
+	ProvisioningModel *string `json:"provisioningModel,omitempty"`
 }
 
 type InstanceScratchDisk struct {

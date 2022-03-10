@@ -259,6 +259,10 @@ type InstancetemplateScheduling struct {
 	/* Immutable. Allows instance to be preempted. This defaults to false. */
 	// +optional
 	Preemptible *bool `json:"preemptible,omitempty"`
+
+	/* Immutable. Whether the instance is spot. If this is set as SPOT. */
+	// +optional
+	ProvisioningModel *string `json:"provisioningModel,omitempty"`
 }
 
 type InstancetemplateServiceAccount struct {

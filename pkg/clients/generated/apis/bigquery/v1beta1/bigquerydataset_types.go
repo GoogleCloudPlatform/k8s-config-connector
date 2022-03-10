@@ -36,6 +36,10 @@ import (
 )
 
 type DatasetAccess struct {
+	/* Grants all resources of particular types in a particular dataset read access to the current dataset. */
+	// +optional
+	Dataset *DatasetDataset `json:"dataset,omitempty"`
+
 	/* A domain to grant access to. Any users signed in with the
 	domain specified will be granted the specified access. */
 	// +optional
@@ -81,6 +85,14 @@ type DatasetAccess struct {
 	needs to be granted again via an update operation. */
 	// +optional
 	View *DatasetView `json:"view,omitempty"`
+}
+
+type DatasetDataset struct {
+	/* The ID of the dataset containing this table. */
+	DatasetId string `json:"datasetId"`
+
+	/* The ID of the project containing this table. */
+	ProjectId string `json:"projectId"`
 }
 
 type DatasetDefaultEncryptionConfiguration struct {

@@ -54,7 +54,11 @@ type BigtableAppProfileSpec struct {
 	// +optional
 	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 
-	/* Immutable. If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
+	/* The set of clusters to route to. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible. */
+	// +optional
+	MultiClusterRoutingClusterIds []string `json:"multiClusterRoutingClusterIds,omitempty"`
+
+	/* If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
 	in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
 	consistency to improve availability. */
 	// +optional

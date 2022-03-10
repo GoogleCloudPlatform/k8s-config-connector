@@ -206,6 +206,11 @@ type NodepoolNodeConfig struct {
 	WorkloadMetadataConfig *NodepoolWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
 }
 
+type NodepoolPlacementPolicy struct {
+	/* Type defines the type of placement policy. */
+	Type string `json:"type"`
+}
+
 type NodepoolSandboxConfig struct {
 	/* Type of the sandbox to use for the node (e.g. 'gvisor'). */
 	SandboxType string `json:"sandboxType"`
@@ -292,6 +297,10 @@ type ContainerNodePoolSpec struct {
 	/* The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used. */
 	// +optional
 	NodeLocations []string `json:"nodeLocations,omitempty"`
+
+	/* Immutable. Specifies the node placement policy. */
+	// +optional
+	PlacementPolicy *NodepoolPlacementPolicy `json:"placementPolicy,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

@@ -124,6 +124,11 @@ func (in *BigtableAppProfileSpec) DeepCopyInto(out *BigtableAppProfileSpec) {
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.MultiClusterRoutingClusterIds != nil {
+		in, out := &in.MultiClusterRoutingClusterIds, &out.MultiClusterRoutingClusterIds
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.MultiClusterRoutingUseAny != nil {
 		in, out := &in.MultiClusterRoutingUseAny, &out.MultiClusterRoutingUseAny
 		*out = new(bool)

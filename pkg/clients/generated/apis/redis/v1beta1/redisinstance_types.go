@@ -242,7 +242,7 @@ type InstanceNodesStatus struct {
 }
 
 type InstanceServerCaCertsStatus struct {
-	/* Serial number, as extracted from the certificate. */
+	/* The certificate data in PEM format. */
 	Cert string `json:"cert,omitempty"`
 
 	/* The time when the certificate was created. */

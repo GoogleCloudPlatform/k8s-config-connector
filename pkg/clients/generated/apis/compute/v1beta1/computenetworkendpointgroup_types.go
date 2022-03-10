@@ -49,7 +49,13 @@ type ComputeNetworkEndpointGroupSpec struct {
 	/* Location represents the geographical location of the ComputeNetworkEndpointGroup. Specify a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. Type of network endpoints in this network endpoint group. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT"]. */
+	/* Immutable. Type of network endpoints in this network endpoint group.
+	NON_GCP_PRIVATE_IP_PORT is used for hybrid connectivity network
+	endpoint groups (see https://cloud.google.com/load-balancing/docs/hybrid).
+	Note that NON_GCP_PRIVATE_IP_PORT can only be used with Backend Services
+	that 1) have the following load balancing schemes: EXTERNAL, EXTERNAL_MANAGED,
+	INTERNAL_MANAGED, and INTERNAL_SELF_MANAGED and 2) support the RATE or
+	CONNECTION balancing modes. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP_PORT", "NON_GCP_PRIVATE_IP_PORT"]. */
 	// +optional
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
 

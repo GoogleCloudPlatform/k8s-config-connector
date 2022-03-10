@@ -9259,6 +9259,11 @@ func (in *InstanceScheduling) DeepCopyInto(out *InstanceScheduling) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ProvisioningModel != nil {
+		in, out := &in.ProvisioningModel, &out.ProvisioningModel
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -10320,6 +10325,11 @@ func (in *InstancetemplateScheduling) DeepCopyInto(out *InstancetemplateScheduli
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ProvisioningModel != nil {
+		in, out := &in.ProvisioningModel, &out.ProvisioningModel
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -11133,6 +11143,11 @@ func (in *RouterBgp) DeepCopyInto(out *RouterBgp) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.KeepaliveInterval != nil {
+		in, out := &in.KeepaliveInterval, &out.KeepaliveInterval
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
