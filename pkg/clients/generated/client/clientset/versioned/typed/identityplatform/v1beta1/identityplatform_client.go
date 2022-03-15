@@ -31,6 +31,7 @@ import (
 
 type IdentityplatformV1beta1Interface interface {
 	RESTClient() rest.Interface
+	IdentityPlatformConfigsGetter
 	IdentityPlatformOAuthIDPConfigsGetter
 	IdentityPlatformTenantsGetter
 	IdentityPlatformTenantOAuthIDPConfigsGetter
@@ -39,6 +40,10 @@ type IdentityplatformV1beta1Interface interface {
 // IdentityplatformV1beta1Client is used to interact with features provided by the identityplatform.cnrm.cloud.google.com group.
 type IdentityplatformV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *IdentityplatformV1beta1Client) IdentityPlatformConfigs(namespace string) IdentityPlatformConfigInterface {
+	return newIdentityPlatformConfigs(c, namespace)
 }
 
 func (c *IdentityplatformV1beta1Client) IdentityPlatformOAuthIDPConfigs(namespace string) IdentityPlatformOAuthIDPConfigInterface {

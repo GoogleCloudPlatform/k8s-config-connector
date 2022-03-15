@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type IdentityPlatformConfigExpansion interface{}
+
 type IdentityPlatformOAuthIDPConfigExpansion interface{}
 
 type IdentityPlatformTenantExpansion interface{}

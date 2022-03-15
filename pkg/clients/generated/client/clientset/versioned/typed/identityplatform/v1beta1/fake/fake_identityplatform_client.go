@@ -31,6 +31,10 @@ type FakeIdentityplatformV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeIdentityplatformV1beta1) IdentityPlatformConfigs(namespace string) v1beta1.IdentityPlatformConfigInterface {
+	return &FakeIdentityPlatformConfigs{c, namespace}
+}
+
 func (c *FakeIdentityplatformV1beta1) IdentityPlatformOAuthIDPConfigs(namespace string) v1beta1.IdentityPlatformOAuthIDPConfigInterface {
 	return &FakeIdentityPlatformOAuthIDPConfigs{c, namespace}
 }
