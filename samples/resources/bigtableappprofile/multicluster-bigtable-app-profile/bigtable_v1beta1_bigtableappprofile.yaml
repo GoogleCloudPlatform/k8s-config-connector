@@ -23,3 +23,6 @@ spec:
   instanceRef:
     name: bigtableappprofile-dep-multi
   multiClusterRoutingUseAny: true
+  multiClusterRoutingClusterIds:
+    - bigtableappprofile-dep1-multi
+    - bigtableappprofile-dep2-multi
