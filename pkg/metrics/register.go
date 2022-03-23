@@ -16,9 +16,9 @@ package metrics
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"contrib.go.opencensus.io/exporter/prometheus"
 	"go.opencensus.io/stats/view"
 )
@@ -46,7 +46,7 @@ func RegisterPrometheusExporter(addr string) error {
 		mux := http.NewServeMux()
 		mux.Handle("/metrics", pe)
 		if err := http.ListenAndServe(addr, mux); err != nil {
-			log.Fatalf("Failed to run Prometheus scrape endpoint: %v", err)
+			logging.Fatal(err, "failed to run Prometheus scrape endpoint")
 		}
 	}()
 	return nil
