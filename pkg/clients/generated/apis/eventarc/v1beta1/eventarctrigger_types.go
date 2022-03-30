@@ -55,11 +55,41 @@ type TriggerDestination struct {
 	/* Cloud Run fully-managed service that receives the events. The service should be running in the same project of the trigger. */
 	// +optional
 	CloudRunService *TriggerCloudRunService `json:"cloudRunService,omitempty"`
+
+	/* A GKE service capable of receiving events. The service should be running in the same project as the trigger. */
+	// +optional
+	Gke *TriggerGke `json:"gke,omitempty"`
+
+	/*  */
+	// +optional
+	WorkflowRef *v1alpha1.ResourceRef `json:"workflowRef,omitempty"`
+}
+
+type TriggerGke struct {
+	/*  */
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+
+	/* Required. The name of the Google Compute Engine in which the cluster resides, which can either be compute zone (for example, us-central1-a) for the zonal clusters or region (for example, us-central1) for regional clusters. */
+	Location string `json:"location"`
+
+	/* Required. The namespace the GKE service is running in. */
+	Namespace string `json:"namespace"`
+
+	/* Optional. The relative path on the GKE service the events should be sent to. The value must conform to the definition of a URI path segment (section 3.3 of RFC2396). Examples: "/route", "route", "route/subroute". */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* Required. Name of the GKE service. */
+	Service string `json:"service"`
 }
 
 type TriggerMatchingCriteria struct {
 	/* Required. The name of a CloudEvents attribute. Currently, only a subset of attributes are supported for filtering. All triggers MUST provide a filter for the 'type' attribute. */
 	Attribute string `json:"attribute"`
+
+	/* Optional. The operator used for matching the events with the value of the filter. If not specified, only events that have an exact key-value pair specified in the filter are matched. The only allowed value is `match-path-pattern`. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
 	/* Required. The value for the attribute. */
 	Value string `json:"value"`

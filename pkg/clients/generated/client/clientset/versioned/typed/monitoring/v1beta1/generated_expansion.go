@@ -29,6 +29,8 @@ type MonitoringGroupExpansion interface{}
 
 type MonitoringMetricDescriptorExpansion interface{}
 
+type MonitoringMonitoredProjectExpansion interface{}
+
 type MonitoringNotificationChannelExpansion interface{}
 
 type MonitoringServiceExpansion interface{}

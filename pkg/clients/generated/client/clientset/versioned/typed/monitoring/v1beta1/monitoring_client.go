@@ -35,6 +35,7 @@ type MonitoringV1beta1Interface interface {
 	MonitoringDashboardsGetter
 	MonitoringGroupsGetter
 	MonitoringMetricDescriptorsGetter
+	MonitoringMonitoredProjectsGetter
 	MonitoringNotificationChannelsGetter
 	MonitoringServicesGetter
 	MonitoringServiceLevelObjectivesGetter
@@ -60,6 +61,10 @@ func (c *MonitoringV1beta1Client) MonitoringGroups(namespace string) MonitoringG
 
 func (c *MonitoringV1beta1Client) MonitoringMetricDescriptors(namespace string) MonitoringMetricDescriptorInterface {
 	return newMonitoringMetricDescriptors(c, namespace)
+}
+
+func (c *MonitoringV1beta1Client) MonitoringMonitoredProjects(namespace string) MonitoringMonitoredProjectInterface {
+	return newMonitoringMonitoredProjects(c, namespace)
 }
 
 func (c *MonitoringV1beta1Client) MonitoringNotificationChannels(namespace string) MonitoringNotificationChannelInterface {

@@ -4,11 +4,16 @@ about: Feature request or new resource request
 labels: enhancement
 
 ---
+## Checklist
 
-**Describe the feature or resource**
+- [ ] I did not find a related open enhancement request.
+- [ ] I understand that enhancement requests filed in the GitHub repository are by default low priority.
+- [ ] If this request is time-sensitive, I have submitted a corresponding issue with [GCP support](https://cloud.google.com/support-hub).
+
+## Describe the feature or resource
 <!--- Describe the feature or resource that you're requesting. --->
 
-**Importance**
+## Importance
 <!---
 State whether you consider this request a nice-to-have, pain point, or blocker.
 

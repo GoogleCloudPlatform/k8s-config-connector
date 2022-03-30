@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.78.0
+    cnrm.cloud.google.com/version: 1.79.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -152,6 +152,95 @@ spec:
                     - region
                     - serviceRef
                     type: object
+                  gke:
+                    description: A GKE service capable of receiving events. The service
+                      should be running in the same project as the trigger.
+                    properties:
+                      clusterRef:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: |-
+                              Required. The name of the cluster the GKE service is running in. The cluster must be running in the same project as the trigger being created.
+
+                              Allowed value: The `selfLink` field of a `ContainerCluster` resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
+                      location:
+                        description: Required. The name of the Google Compute Engine
+                          in which the cluster resides, which can either be compute
+                          zone (for example, us-central1-a) for the zonal clusters
+                          or region (for example, us-central1) for regional clusters.
+                        type: string
+                      namespace:
+                        description: Required. The namespace the GKE service is running
+                          in.
+                        type: string
+                      path:
+                        description: 'Optional. The relative path on the GKE service
+                          the events should be sent to. The value must conform to
+                          the definition of a URI path segment (section 3.3 of RFC2396).
+                          Examples: "/route", "route", "route/subroute".'
+                        type: string
+                      service:
+                        description: Required. Name of the GKE service.
+                        type: string
+                    required:
+                    - clusterRef
+                    - location
+                    - namespace
+                    - service
+                    type: object
+                  workflowRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The resource name of the Workflow whose Executions
+                          are triggered by the events. The Workflow resource should
+                          be deployed in the same project as the trigger. Format:
+                          `projects/{project}/locations/{location}/workflows/{workflow}`'
+                        type: string
+                      name:
+                        description: |-
+                          [WARNING] WorkflowsWorkflow not yet supported in Config Connector, use 'external' field to reference existing resources.
+                          Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
               location:
                 description: The location for the resource
@@ -166,6 +255,12 @@ spec:
                       description: Required. The name of a CloudEvents attribute.
                         Currently, only a subset of attributes are supported for filtering.
                         All triggers MUST provide a filter for the 'type' attribute.
+                      type: string
+                    operator:
+                      description: Optional. The operator used for matching the events
+                        with the value of the filter. If not specified, only events
+                        that have an exact key-value pair specified in the filter
+                        are matched. The only allowed value is `match-path-pattern`.
                       type: string
                     value:
                       description: Required. The value for the attribute.

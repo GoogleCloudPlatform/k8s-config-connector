@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: logging.cnrm.cloud.google.com/v1beta1
-kind: LoggingLogBucket
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
 metadata:
-  name: logginglogview-dep-organizationlogview
+  name: mmp-sample-dep
 spec:
-  # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-  resourceID: "_Default"
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "organizations/${ORG_ID?}"
-  location: "global"
+    external: "${ORG_ID?}"
+  name: "Config Connector Sample"

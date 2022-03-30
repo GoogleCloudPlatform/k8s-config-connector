@@ -35,6 +35,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RepositoryMavenConfig struct {
+	/* Immutable. The repository with this flag will allow publishing the same
+	snapshot versions. */
+	// +optional
+	AllowSnapshotOverwrites *bool `json:"allowSnapshotOverwrites,omitempty"`
+
+	/* Immutable. Version policy defines the versions that the registry will accept. Default value: "VERSION_POLICY_UNSPECIFIED" Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"]. */
+	// +optional
+	VersionPolicy *string `json:"versionPolicy,omitempty"`
+}
+
 type ArtifactRegistryRepositorySpec struct {
 	/* The user-provided description of the repository. */
 	// +optional
@@ -59,6 +70,12 @@ type ArtifactRegistryRepositorySpec struct {
 
 	/* Immutable. The name of the location this repository is located in. */
 	Location string `json:"location"`
+
+	/* MavenRepositoryConfig is maven related repository details.
+	Provides additional configuration details for repositories of the maven
+	format type. */
+	// +optional
+	MavenConfig *RepositoryMavenConfig `json:"mavenConfig,omitempty"`
 
 	/* Immutable. Optional. The repositoryId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

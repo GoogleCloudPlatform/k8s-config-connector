@@ -234,6 +234,11 @@ type ClusterGuestAccelerator struct {
 	Type string `json:"type"`
 }
 
+type ClusterGvnic struct {
+	/* Immutable. Whether or not gvnic is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterHorizontalPodAutoscaling struct {
 	/*  */
 	Disabled bool `json:"disabled"`
@@ -410,6 +415,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
 	// +optional
 	GuestAccelerator []ClusterGuestAccelerator `json:"guestAccelerator,omitempty"`
+
+	/* Immutable. Enable or disable gvnic in the node pool. */
+	// +optional
+	Gvnic *ClusterGvnic `json:"gvnic,omitempty"`
 
 	/* The image type to use for this node. Note that for a given image type, the latest version of it will be used. */
 	// +optional

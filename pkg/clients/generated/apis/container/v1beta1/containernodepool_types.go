@@ -65,6 +65,11 @@ type NodepoolGuestAccelerator struct {
 	Type string `json:"type"`
 }
 
+type NodepoolGvnic struct {
+	/* Immutable. Whether or not gvnic is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolKubeletConfig struct {
 	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
 	// +optional
@@ -130,6 +135,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. List of the type and count of accelerator cards attached to the instance. */
 	// +optional
 	GuestAccelerator []NodepoolGuestAccelerator `json:"guestAccelerator,omitempty"`
+
+	/* Immutable. Enable or disable gvnic in the node pool. */
+	// +optional
+	Gvnic *NodepoolGvnic `json:"gvnic,omitempty"`
 
 	/* The image type to use for this node. Note that for a given image type, the latest version of it will be used. */
 	// +optional

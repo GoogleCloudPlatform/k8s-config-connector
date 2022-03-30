@@ -18,8 +18,8 @@ metadata:
   name: logginglogview-sample-organizationlogview
 spec:
   bucketRef:
-    name: "logginglogview-dep-organizationlogview"
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}/locations/global/buckets/_Default"
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "organizations/${ORG_ID?}"
-  location: "global"

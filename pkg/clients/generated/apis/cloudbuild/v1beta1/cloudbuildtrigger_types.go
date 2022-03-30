@@ -125,6 +125,25 @@ type TriggerBuild struct {
 	Timeout *string `json:"timeout,omitempty"`
 }
 
+type TriggerGitFileSource struct {
+	/* The path of the file, with the repo root as the root of the path. */
+	Path string `json:"path"`
+
+	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL). Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	RepoType string `json:"repoType"`
+
+	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
+	filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions
+	If unspecified, the revision from which the trigger invocation originated is assumed to be the revision from which to read the specified path. */
+	// +optional
+	Revision *string `json:"revision,omitempty"`
+
+	/* The URI of the repo (optional). If unspecified, the repo from which the trigger
+	invocation originated is assumed to be the repo from which to read the specified path. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
 type TriggerGithub struct {
 	/* Name of the repository. For example: The name for
 	https://github.com/googlecloudplatform/cloud-builders is "cloud-builders". */
@@ -355,6 +374,17 @@ type TriggerSource struct {
 	StorageSource *TriggerStorageSource `json:"storageSource,omitempty"`
 }
 
+type TriggerSourceToBuild struct {
+	/* The branch or tag to use. Must start with "refs/" (required). */
+	Ref string `json:"ref"`
+
+	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL). Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	RepoType string `json:"repoType"`
+
+	/* The URI of the repo (required). */
+	Uri string `json:"uri"`
+}
+
 type TriggerStep struct {
 	/* A list of arguments that will be presented to the step when it is started.
 
@@ -556,9 +586,19 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* Path, from the source root, to a file whose contents is used for the template. Either a filename or build template must be provided. */
+	/* Path, from the source root, to a file whose contents is used for the template.
+	Either a filename or build template must be provided. Set this only when using trigger_template or github.
+	When using Pub/Sub, Webhook or Manual set the file name using git_file_source instead. */
 	// +optional
 	Filename *string `json:"filename,omitempty"`
+
+	/* A Common Expression Language string. Used only with Pub/Sub and Webhook. */
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
+	/* The file source describing the local or remote Build template. */
+	// +optional
+	GitFileSource *TriggerGitFileSource `json:"gitFileSource,omitempty"`
 
 	/* Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
@@ -595,7 +635,7 @@ type CloudBuildTriggerSpec struct {
 	/* PubsubConfig describes the configuration of a trigger that creates
 	a build whenever a Pub/Sub message is published.
 
-	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
+	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
 	// +optional
 	PubsubConfig *TriggerPubsubConfig `json:"pubsubConfig,omitempty"`
 
@@ -609,6 +649,15 @@ type CloudBuildTriggerSpec struct {
 	projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL} */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/* The repo and ref of the repository from which to build.
+	This field is used only for those triggers that do not respond to SCM events.
+	Triggers that respond to such events build source at whatever commit caused the event.
+	This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
+
+	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
+	// +optional
+	SourceToBuild *TriggerSourceToBuild `json:"sourceToBuild,omitempty"`
 
 	/* Substitutions data for Build resource. */
 	// +optional
@@ -624,14 +673,14 @@ type CloudBuildTriggerSpec struct {
 	expressions. Any branch or tag change that matches that regular
 	expression will trigger a build.
 
-	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
+	One of 'trigger_template', 'github', 'pubsub_config', 'webhook_config' or 'source_to_build' must be provided. */
 	// +optional
 	TriggerTemplate *TriggerTriggerTemplate `json:"triggerTemplate,omitempty"`
 
 	/* WebhookConfig describes the configuration of a trigger that creates
 	a build whenever a webhook is sent to a trigger's webhook URL.
 
-	One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided. */
+	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
 	// +optional
 	WebhookConfig *TriggerWebhookConfig `json:"webhookConfig,omitempty"`
 }
