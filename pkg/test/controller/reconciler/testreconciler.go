@@ -113,7 +113,7 @@ func (r *TestReconciler) Reconcile(unstruct *unstructured.Unstructured, expected
 
 func (r *TestReconciler) ReconcileObjectMeta(om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	r.t.Helper()
-	reconciler := r.newReconcilerForKind(kind)
+	reconciler := r.NewReconcilerForKind(kind)
 	testcontroller.RunReconcilerAssertResults(r.t, reconciler, om, expectedResult, expectedErrorRegex)
 }
 
@@ -163,7 +163,7 @@ func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, c
 	}
 }
 
-func (r *TestReconciler) newReconcilerForKind(kind string) reconcile.Reconciler {
+func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler {
 	r.t.Helper()
 	var reconciler reconcile.Reconciler
 	var err error

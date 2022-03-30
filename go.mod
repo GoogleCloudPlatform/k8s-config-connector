@@ -12,7 +12,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/fatih/color v1.13.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-logr/logr v1.2.0
+	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zapr v1.2.0
 	github.com/golang-collections/go-datastructures v0.0.0-20150211160725-59788d5eb259
 	github.com/golang/glog v1.0.0
@@ -47,11 +47,12 @@ require (
 	k8s.io/client-go v0.23.0
 	k8s.io/code-generator v0.23.0
 	k8s.io/gengo v0.0.0-20210813121822-485abfe95c7c
-	k8s.io/klog/v2 v2.30.0
+	k8s.io/klog/v2 v2.70.1
 	sigs.k8s.io/controller-runtime v0.11.1
 	sigs.k8s.io/controller-tools v0.6.2
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.0.0-20220110041111-fea7e5cc7012
-	sigs.k8s.io/structured-merge-diff/v4 v4.2.0
+	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20221013004300-4095ad3c21ca
+	sigs.k8s.io/structured-merge-diff/v4 v4.2.3
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -178,7 +179,7 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167 // indirect
 	golang.org/x/mod v0.5.0 // indirect
-	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
+	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
 	golang.org/x/sys v0.0.0-20220624220833-87e55d714810 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect
@@ -196,8 +197,8 @@ require (
 	k8s.io/component-base v0.23.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65 // indirect
 	k8s.io/kubectl v0.22.2 // indirect
-	k8s.io/utils v0.0.0-20210930125809-cb0fa318a74b // indirect
-	sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 // indirect
+	k8s.io/utils v0.0.0-20220728103510-ee6ede2d64ed // indirect
+	sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2 // indirect
 	sigs.k8s.io/kustomize/api v0.10.1 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.13.0 // indirect
 )

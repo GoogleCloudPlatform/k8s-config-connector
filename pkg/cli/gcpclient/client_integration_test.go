@@ -20,7 +20,10 @@ package gcpclient_test
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -75,11 +78,22 @@ func init() {
 	// TODO: Can we initialize this globally once somewhere?
 	// (It shouldn't _really_ matter if we have multiple instances, it's just leaky and confusing)
 	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		t := test.NewHTTPRecorder(inner.Transport)
+		artifacts := os.Getenv("ARTIFACTS")
+		if artifacts == "" {
+			log.Printf("env var ARTIFACTS is not set; will not record http log")
+			return inner
+		}
+		outputDir := filepath.Join(artifacts, "http-logs")
+		t := test.NewHTTPRecorder(inner.Transport, outputDir)
 		return &http.Client{Transport: t}
 	}
 	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		t := test.NewHTTPRecorder(inner.Transport)
+		artifacts := os.Getenv("ARTIFACTS")
+		if artifacts == "" {
+			return inner
+		}
+		outputDir := filepath.Join(artifacts, "http-logs")
+		t := test.NewHTTPRecorder(inner.Transport, outputDir)
 		return &http.Client{Transport: t}
 	}
 }

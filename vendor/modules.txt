@@ -361,7 +361,7 @@ github.com/go-git/go-git/v5/utils/merkletrie/filesystem
 github.com/go-git/go-git/v5/utils/merkletrie/index
 github.com/go-git/go-git/v5/utils/merkletrie/internal/frame
 github.com/go-git/go-git/v5/utils/merkletrie/noder
-# github.com/go-logr/logr v1.2.0
+# github.com/go-logr/logr v1.2.3
 ## explicit; go 1.16
 github.com/go-logr/logr
 # github.com/go-logr/zapr v1.2.0
@@ -855,7 +855,7 @@ golang.org/x/crypto/ssh/knownhosts
 golang.org/x/mod/internal/lazyregexp
 golang.org/x/mod/module
 golang.org/x/mod/semver
-# golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e
+# golang.org/x/net v0.0.0-20220722155237-a158d28d115b
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
@@ -984,6 +984,7 @@ google.golang.org/api/option/internaloption
 google.golang.org/api/pubsub/v1
 google.golang.org/api/redis/v1
 google.golang.org/api/runtimeconfig/v1beta1
+google.golang.org/api/secretmanager/v1
 google.golang.org/api/servicemanagement/v1
 google.golang.org/api/servicenetworking/v1
 google.golang.org/api/serviceusage/v1
@@ -1274,6 +1275,7 @@ k8s.io/apimachinery/pkg/runtime/serializer/protobuf
 k8s.io/apimachinery/pkg/runtime/serializer/recognizer
 k8s.io/apimachinery/pkg/runtime/serializer/streaming
 k8s.io/apimachinery/pkg/runtime/serializer/versioning
+k8s.io/apimachinery/pkg/runtime/serializer/yaml
 k8s.io/apimachinery/pkg/selection
 k8s.io/apimachinery/pkg/types
 k8s.io/apimachinery/pkg/util/cache
@@ -1480,9 +1482,14 @@ k8s.io/gengo/generator
 k8s.io/gengo/namer
 k8s.io/gengo/parser
 k8s.io/gengo/types
-# k8s.io/klog/v2 v2.30.0
+# k8s.io/klog/v2 v2.70.1
 ## explicit; go 1.13
 k8s.io/klog/v2
+k8s.io/klog/v2/internal/buffer
+k8s.io/klog/v2/internal/clock
+k8s.io/klog/v2/internal/dbg
+k8s.io/klog/v2/internal/serialize
+k8s.io/klog/v2/internal/severity
 # k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65
 ## explicit; go 1.16
 k8s.io/kube-openapi/pkg/schemaconv
@@ -1509,7 +1516,7 @@ k8s.io/kubectl/pkg/util/openapi/validation
 k8s.io/kubectl/pkg/util/templates
 k8s.io/kubectl/pkg/util/term
 k8s.io/kubectl/pkg/validation
-# k8s.io/utils v0.0.0-20210930125809-cb0fa318a74b
+# k8s.io/utils v0.0.0-20220728103510-ee6ede2d64ed
 ## explicit; go 1.12
 k8s.io/utils/buffer
 k8s.io/utils/clock
@@ -1577,8 +1584,8 @@ sigs.k8s.io/controller-tools/pkg/genall
 sigs.k8s.io/controller-tools/pkg/loader
 sigs.k8s.io/controller-tools/pkg/markers
 sigs.k8s.io/controller-tools/pkg/version
-# sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6
-## explicit; go 1.16
+# sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2
+## explicit; go 1.18
 sigs.k8s.io/json
 sigs.k8s.io/json/internal/golang/encoding/json
 # sigs.k8s.io/kubebuilder-declarative-pattern v0.0.0-20220110041111-fea7e5cc7012
@@ -1592,6 +1599,9 @@ sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/applier
 sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest
 sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/watch
 sigs.k8s.io/kubebuilder-declarative-pattern/pkg/test/mocks
+# sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20221013004300-4095ad3c21ca
+## explicit; go 1.19
+sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver
 # sigs.k8s.io/kustomize/api v0.10.1
 ## explicit; go 1.16
 sigs.k8s.io/kustomize/api/builtins
@@ -1674,7 +1684,7 @@ sigs.k8s.io/kustomize/kyaml/yaml/merge2
 sigs.k8s.io/kustomize/kyaml/yaml/merge3
 sigs.k8s.io/kustomize/kyaml/yaml/schema
 sigs.k8s.io/kustomize/kyaml/yaml/walk
-# sigs.k8s.io/structured-merge-diff/v4 v4.2.0
+# sigs.k8s.io/structured-merge-diff/v4 v4.2.3
 ## explicit; go 1.13
 sigs.k8s.io/structured-merge-diff/v4/fieldpath
 sigs.k8s.io/structured-merge-diff/v4/schema

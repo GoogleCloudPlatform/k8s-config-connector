@@ -59,12 +59,7 @@ type HTTPRecorder struct {
 	mutex sync.Mutex
 }
 
-func NewHTTPRecorder(inner http.RoundTripper) *HTTPRecorder {
-	artifacts := os.Getenv("ARTIFACTS")
-	if artifacts == "" {
-		artifacts = "./artifacts"
-	}
-	outputDir := filepath.Join(artifacts, "http-logs")
+func NewHTTPRecorder(inner http.RoundTripper, outputDir string) *HTTPRecorder {
 	rt := &HTTPRecorder{outputDir: outputDir, inner: inner}
 	return rt
 }
