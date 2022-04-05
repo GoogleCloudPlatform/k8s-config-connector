@@ -55,9 +55,9 @@ func SubdirsIn(path string) ([]string, error) {
 	return subdirNames, nil
 }
 
-// FileNamesWithSubstringInDir gets all the filenames in the directory at the
-// given path which contain the given substring in the filename.
-func FileNamesWithSubstringInDir(path, substring string) (names []string, err error) {
+// FileNamesWithSuffixInDir gets all the filenames in the directory at the
+// given path which end with the given suffix.
+func FileNamesWithSuffixInDir(path, suffix string) (names []string, err error) {
 	fileInfos, err := ioutil.ReadDir(path)
 	if err != nil {
 		return []string{}, fmt.Errorf("error reading directory '%v': %v", path, err)
@@ -67,7 +67,7 @@ func FileNamesWithSubstringInDir(path, substring string) (names []string, err er
 		if fi.IsDir() {
 			continue
 		}
-		if strings.Contains(fi.Name(), substring) {
+		if strings.HasSuffix(fi.Name(), suffix) {
 			names = append(names, fi.Name())
 		}
 	}

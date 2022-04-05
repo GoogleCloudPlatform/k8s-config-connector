@@ -641,6 +641,11 @@ var serviceList = []ServiceMetadata{
 				SupportsHierarchicalReferences: true,
 			},
 			{
+				Kind:                           "PrivateCACertificate",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
+			},
+			{
 				Kind:                           "PrivateCACertificateAuthority",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

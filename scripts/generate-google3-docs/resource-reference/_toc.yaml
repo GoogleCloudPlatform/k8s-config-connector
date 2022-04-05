@@ -398,6 +398,8 @@ toc:
   section:
   - title: "PrivateCACAPool"
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacapool.md
+  - title: "PrivateCACertificate"
+    path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificate.md
   - title: "PrivateCACertificateAuthority"
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificateauthority.md
   - title: "PrivateCACertificateTemplate"

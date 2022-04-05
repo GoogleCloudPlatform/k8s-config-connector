@@ -199,6 +199,13 @@ var testDisabledList = map[string]bool{
 	// This setup cannot be easily done in sample tests. Also due to issue 1, customers cannot directly
 	// apply this sample before updating it with a proper cloud source repo URL.
 	"eventtrigger-with-pubsubtopic": true,
+	// When testing these samples, they always error out on deletion due to a lack
+	// of ordered deletion of dependencies. I.e., privatecacapool is deleted before
+	// privatecacertificateauthority (which has privatecacapool as a dependency),
+	// so privatecacertificateauthority fails on deletion (b/225964552).
+	"basic-certificate":     true,
+	"cert-sign-certificate": true,
+	"complex-certificate":   true,
 }
 
 type Sample struct {

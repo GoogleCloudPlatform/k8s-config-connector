@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/mapslice"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
+
 	"github.com/ghodss/yaml"
 	goyaml "gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -81,6 +82,7 @@ var preferredSampleForResource = map[string]string{
 	"monitoringservicelevelobjective":  "window-based-gtr-distribution-cut",
 	"monitoringuptimecheckconfig":      "http-uptime-check-config",
 	"osconfigospolicyassignment":       "fixed-os-policy-assignment",
+	"privatecacertificate":             "basic-certificate",
 	"project":                          "project-in-folder",
 	"recaptchaenterprisekey":           "challenge-based-web-recaptcha-enterprise-key",
 	"resourcemanagerpolicy":            "organization-policy-for-project",
@@ -124,7 +126,7 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 		}
 	}
 
-	fileNames, err := fileutil.FileNamesWithSubstringInDir(sampleDirPath, resourceDirName)
+	fileNames, err := fileutil.FileNamesWithSuffixInDir(sampleDirPath, resourceDirName+".yaml")
 	if err != nil || len(fileNames) != 1 {
 		return "", fmt.Errorf("error getting exactly one file to use for generating snippets: %v", err)
 	}

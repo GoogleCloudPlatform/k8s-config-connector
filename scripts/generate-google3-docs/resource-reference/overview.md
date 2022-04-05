@@ -543,11 +543,15 @@
 </tr>
 <tr>
   <td><a href="/certificate-authority-service/docs/">Private CA</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md">PrivateCACertificateTemplate</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacertificate.md">PrivateCACertificate</a></td>
 </tr>
 <tr>
   <td><a href="/certificate-authority-service/docs/">Private CA</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacertificateauthority.md">PrivateCACertificateAuthority</a></td>
+</tr>
+<tr>
+  <td><a href="/certificate-authority-service/docs/">Private CA</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md">PrivateCACertificateTemplate</a></td>
 </tr>
 <tr>
   <td><a href="/pubsub/docs/">{{pubsub_name}}</a></td>

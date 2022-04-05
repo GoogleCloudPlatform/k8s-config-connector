@@ -35,6 +35,10 @@ func (c *FakePrivatecaV1beta1) PrivateCACAPools(namespace string) v1beta1.Privat
 	return &FakePrivateCACAPools{c, namespace}
 }
 
+func (c *FakePrivatecaV1beta1) PrivateCACertificates(namespace string) v1beta1.PrivateCACertificateInterface {
+	return &FakePrivateCACertificates{c, namespace}
+}
+
 func (c *FakePrivatecaV1beta1) PrivateCACertificateAuthorities(namespace string) v1beta1.PrivateCACertificateAuthorityInterface {
 	return &FakePrivateCACertificateAuthorities{c, namespace}
 }

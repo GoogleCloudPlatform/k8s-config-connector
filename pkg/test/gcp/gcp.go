@@ -25,11 +25,11 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"google.golang.org/api/compute/v1"
-	"google.golang.org/api/iam/v1"
 
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/compute/v1"
+	"google.golang.org/api/iam/v1"
 	"google.golang.org/api/storage/v1"
 )
 
@@ -239,6 +239,7 @@ func ResourceSupportsDeletion(resourceKind string) bool {
 		"KMSCryptoKey",
 		"KMSKeyRing",
 		"LoggingLogBucket",
+		"PrivateCACertificate",
 		"PrivateCACertificateAuthority",
 		"ResourceManagerPolicy",
 		"SecretManagerSecretVersion":
