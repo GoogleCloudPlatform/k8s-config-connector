@@ -25,6 +25,8 @@ import (
 	clientset "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	fakeapigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1/fake"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	fakeartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1/fake"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
@@ -183,6 +185,11 @@ var (
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
 func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface {
 	return &fakeaccesscontextmanagerv1beta1.FakeAccesscontextmanagerV1beta1{Fake: &c.Fake}
+}
+
+// ApigeeV1beta1 retrieves the ApigeeV1beta1Client
+func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
+	return &fakeapigeev1beta1.FakeApigeeV1beta1{Fake: &c.Fake}
 }
 
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client

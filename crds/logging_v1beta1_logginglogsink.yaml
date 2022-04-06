@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.79.0
+    cnrm.cloud.google.com/version: 1.80.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -93,6 +93,8 @@ spec:
                 - required:
                   - bigQueryDatasetRef
                 - required:
+                  - loggingLogBucketRef
+                - required:
                   - pubSubTopicRef
                 - required:
                   - storageBucketRef
@@ -116,6 +118,36 @@ spec:
                       external:
                         description: 'Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`,
                           where {{value}} is the `name` field of a `BigQueryDataset`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  loggingLogBucketRef:
+                    description: Only `external` field is supported to configure the
+                      reference.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: string of the format `logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}`,
+                          where {{value}} is the `name` field of a `LoggingLogBucket`
                           resource.'
                         type: string
                       name:

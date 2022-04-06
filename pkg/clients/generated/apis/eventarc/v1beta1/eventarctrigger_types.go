@@ -91,7 +91,7 @@ type TriggerMatchingCriteria struct {
 	// +optional
 	Operator *string `json:"operator,omitempty"`
 
-	/* Required. The value for the attribute. */
+	/* Required. The value for the attribute. See https://cloud.google.com/eventarc/docs/creating-triggers#trigger-gcloud for available values. */
 	Value string `json:"value"`
 }
 

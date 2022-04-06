@@ -45,6 +45,10 @@ type LogsinkDestination struct {
 	// +optional
 	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 
+	/* Only `external` field is supported to configure the reference. */
+	// +optional
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+
 	/*  */
 	// +optional
 	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`

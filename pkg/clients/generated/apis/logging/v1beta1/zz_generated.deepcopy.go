@@ -1001,6 +1001,11 @@ func (in *LogsinkDestination) DeepCopyInto(out *LogsinkDestination) {
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.LoggingLogBucketRef != nil {
+		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.PubSubTopicRef != nil {
 		in, out := &in.PubSubTopicRef, &out.PubSubTopicRef
 		*out = new(v1alpha1.ResourceRef)

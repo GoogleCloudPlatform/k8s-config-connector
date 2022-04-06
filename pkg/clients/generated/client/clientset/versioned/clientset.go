@@ -26,6 +26,7 @@ import (
 	"net/http"
 
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
@@ -83,6 +84,7 @@ import (
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
+	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
@@ -139,6 +141,7 @@ type Interface interface {
 type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1 *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
+	apigeeV1beta1               *apigeev1beta1.ApigeeV1beta1Client
 	artifactregistryV1beta1     *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	bigqueryV1beta1             *bigqueryv1beta1.BigqueryV1beta1Client
 	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
@@ -193,6 +196,11 @@ type Clientset struct {
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
 func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface {
 	return c.accesscontextmanagerV1beta1
+}
+
+// ApigeeV1beta1 retrieves the ApigeeV1beta1Client
+func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
+	return c.apigeeV1beta1
 }
 
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client
@@ -484,6 +492,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.apigeeV1beta1, err = apigeev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.artifactregistryV1beta1, err = artifactregistryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -702,6 +714,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
+	cs.apigeeV1beta1 = apigeev1beta1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)

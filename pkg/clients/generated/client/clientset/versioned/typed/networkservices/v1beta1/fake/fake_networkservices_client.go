@@ -55,6 +55,10 @@ func (c *FakeNetworkservicesV1beta1) NetworkServicesTCPRoutes(namespace string) 
 	return &FakeNetworkServicesTCPRoutes{c, namespace}
 }
 
+func (c *FakeNetworkservicesV1beta1) NetworkServicesTLSRoutes(namespace string) v1beta1.NetworkServicesTLSRouteInterface {
+	return &FakeNetworkServicesTLSRoutes{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworkservicesV1beta1) RESTClient() rest.Interface {

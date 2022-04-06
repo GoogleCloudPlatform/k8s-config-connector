@@ -89,5 +89,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkServicesTCPRoute{}).Name(),
 	}
 
+	NetworkServicesTLSRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkServicesTLSRoute{}).Name(),
+	}
+
 	networkservicesAPIVersion = SchemeGroupVersion.String()
 )

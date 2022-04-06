@@ -37,6 +37,7 @@ type NetworkservicesV1beta1Interface interface {
 	NetworkServicesHTTPRoutesGetter
 	NetworkServicesMeshesGetter
 	NetworkServicesTCPRoutesGetter
+	NetworkServicesTLSRoutesGetter
 }
 
 // NetworkservicesV1beta1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
@@ -66,6 +67,10 @@ func (c *NetworkservicesV1beta1Client) NetworkServicesMeshes(namespace string) N
 
 func (c *NetworkservicesV1beta1Client) NetworkServicesTCPRoutes(namespace string) NetworkServicesTCPRouteInterface {
 	return newNetworkServicesTCPRoutes(c, namespace)
+}
+
+func (c *NetworkservicesV1beta1Client) NetworkServicesTLSRoutes(namespace string) NetworkServicesTLSRouteInterface {
+	return newNetworkServicesTLSRoutes(c, namespace)
 }
 
 // NewForConfig creates a new NetworkservicesV1beta1Client for the given config.

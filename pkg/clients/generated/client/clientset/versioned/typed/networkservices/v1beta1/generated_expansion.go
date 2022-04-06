@@ -32,3 +32,5 @@ type NetworkServicesHTTPRouteExpansion interface{}
 type NetworkServicesMeshExpansion interface{}
 
 type NetworkServicesTCPRouteExpansion interface{}
+
+type NetworkServicesTLSRouteExpansion interface{}

@@ -23,6 +23,7 @@ package fake
 
 import (
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1beta1"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
@@ -84,6 +85,7 @@ var codecs = serializer.NewCodecFactory(scheme)
 
 var localSchemeBuilder = runtime.SchemeBuilder{
 	accesscontextmanagerv1beta1.AddToScheme,
+	apigeev1beta1.AddToScheme,
 	artifactregistryv1beta1.AddToScheme,
 	bigqueryv1beta1.AddToScheme,
 	bigtablev1beta1.AddToScheme,

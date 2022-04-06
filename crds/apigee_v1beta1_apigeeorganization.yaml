@@ -1,0 +1,306 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.80.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+  name: apigeeorganizations.apigee.cnrm.cloud.google.com
+spec:
+  group: apigee.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ApigeeOrganization
+    plural: apigeeorganizations
+    shortNames:
+    - gcpapigeeorganization
+    - gcpapigeeorganizations
+    singular: apigeeorganization
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              addonsConfig:
+                description: Addon configurations of the Apigee organization.
+                properties:
+                  advancedApiOpsConfig:
+                    description: Configuration for the Advanced API Ops add-on.
+                    properties:
+                      enabled:
+                        description: Flag that specifies whether the Advanced API
+                          Ops add-on is enabled.
+                        type: boolean
+                    type: object
+                  monetizationConfig:
+                    description: Configuration for the Monetization add-on.
+                    properties:
+                      enabled:
+                        description: Flag that specifies whether the Monetization
+                          add-on is enabled.
+                        type: boolean
+                    type: object
+                type: object
+              analyticsRegion:
+                description: Required. Primary GCP region for analytics data storage.
+                  For valid values, see (https://cloud.google.com/apigee/docs/api-platform/get-started/create-org).
+                type: string
+              authorizedNetworkRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See (https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid.
+
+                      Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              description:
+                description: Description of the Apigee organization.
+                type: string
+              displayName:
+                description: Display name for the Apigee organization.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      Required. Name of the GCP project in which to associate the Apigee organization. Pass the information as a query parameter using the following structure in your request: projects/<project> Authorization requires the following IAM permission on the specified resource parent: apigee.organizations.create
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              properties:
+                additionalProperties:
+                  type: string
+                description: Properties defined in the Apigee organization profile.
+                type: object
+              resourceID:
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
+                type: string
+              runtimeDatabaseEncryptionKeyRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. Required when (#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
+
+                      Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (format: `projects/{{project}}/locations/{{location}}/keyRings/{{key_ring}}/cryptoKeys/{{name}}`).
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              runtimeType:
+                description: 'Required. Runtime type of the Apigee organization based
+                  on the Apigee subscription purchased. Possible values: RUNTIME_TYPE_UNSPECIFIED,
+                  CLOUD, HYBRID'
+                type: string
+            required:
+            - analyticsRegion
+            - projectRef
+            - runtimeType
+            type: object
+          status:
+            properties:
+              billingType:
+                description: 'Output only. Billing type of the Apigee organization.
+                  See (https://cloud.google.com/apigee/pricing). Possible values:
+                  BILLING_TYPE_UNSPECIFIED, SUBSCRIPTION, EVALUATION'
+                type: string
+              caCertificate:
+                description: Output only. Base64-encoded public certificate for the
+                  root CA of the Apigee organization. Valid only when (#RuntimeType)
+                  is `CLOUD`.
+                type: string
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createdAt:
+                description: Output only. Time that the Apigee organization was created
+                  in milliseconds since epoch.
+                format: int64
+                type: integer
+              environments:
+                description: Output only. List of environments in the Apigee organization.
+                items:
+                  type: string
+                type: array
+              expiresAt:
+                description: Output only. Time that the Apigee organization is scheduled
+                  for deletion.
+                format: int64
+                type: integer
+              lastModifiedAt:
+                description: Output only. Time that the Apigee organization was last
+                  modified in milliseconds since epoch.
+                format: int64
+                type: integer
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              projectId:
+                description: Output only. Project ID associated with the Apigee organization.
+                type: string
+              state:
+                description: 'Output only. State of the organization. Values other
+                  than ACTIVE means the resource is not ready to use. Possible values:
+                  SNAPSHOT_STATE_UNSPECIFIED, MISSING, OK_DOCSTORE, OK_SUBMITTED,
+                  OK_EXTERNAL, DELETED'
+                type: string
+              subscriptionType:
+                description: 'Output only. DEPRECATED: This will eventually be replaced
+                  by BillingType. Subscription type of the Apigee organization. Valid
+                  values include trial (free, limited, and for evaluation purposes
+                  only) or paid (full subscription has been purchased). See (https://cloud.google.com/apigee/pricing/).
+                  Possible values: SUBSCRIPTION_TYPE_UNSPECIFIED, PAID, TRIAL'
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
