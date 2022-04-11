@@ -59,6 +59,8 @@ import (
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	fakedataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1/fake"
+	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
+	fakedlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1/fake"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
 	fakednsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1/fake"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
@@ -272,6 +274,11 @@ func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Inter
 // DataprocV1beta1 retrieves the DataprocV1beta1Client
 func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 	return &fakedataprocv1beta1.FakeDataprocV1beta1{Fake: &c.Fake}
+}
+
+// DlpV1beta1 retrieves the DlpV1beta1Client
+func (c *Clientset) DlpV1beta1() dlpv1beta1.DlpV1beta1Interface {
+	return &fakedlpv1beta1.FakeDlpV1beta1{Fake: &c.Fake}
 }
 
 // DnsV1beta1 retrieves the DnsV1beta1Client

@@ -40,6 +40,7 @@ import (
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
+	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
@@ -103,6 +104,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	dataflowv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,
+	dlpv1beta1.AddToScheme,
 	dnsv1beta1.AddToScheme,
 	eventarcv1beta1.AddToScheme,
 	filestorev1beta1.AddToScheme,

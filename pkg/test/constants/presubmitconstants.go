@@ -47,6 +47,7 @@ var (
 		"dataflow":             {"streamingdataflowjobupdatetemplate"},
 		"datafusion":           {"datafusioninstance"},
 		"dataproc":             {"dataproccluster"},
+		"dlp":                  {"bigqueryfieldstoredinfotype"},
 		"dns":                  {"dnsrecordset"},
 		"eventarc":             {"eventarctrigger"},
 		"filestore":            {"filestorebackup"},

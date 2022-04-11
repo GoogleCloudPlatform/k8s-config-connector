@@ -46,6 +46,21 @@ var serviceList = []ServiceMetadata{
 		},
 	},
 	{
+		Name:       "BigQuery",
+		APIVersion: k8s.KCCAPIVersion,
+		DCLVersion: "beta",
+		Resources: []Resource{
+			{
+				Kind:       "BigQueryDataset",
+				Releasable: false,
+			},
+			{
+				Kind:       "BigQueryTable",
+				Releasable: false,
+			},
+		},
+	},
+	{
 		Name:       "BillingBudgets",
 		APIVersion: k8s.KCCAPIVersion,
 		DCLVersion: "beta",
@@ -252,6 +267,18 @@ var serviceList = []ServiceMetadata{
 				Kind:                         "ContainerAnalysisNote",
 				Releasable:                   true,
 				SupportsContainerAnnotations: true,
+			},
+		},
+	},
+	{
+		Name:       "DLP",
+		APIVersion: k8s.KCCAPIVersion,
+		DCLVersion: "beta",
+		Resources: []Resource{
+			{
+				Kind:                           "DLPStoredInfoType",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
 			},
 		},
 	},

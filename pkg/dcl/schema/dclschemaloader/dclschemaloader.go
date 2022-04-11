@@ -42,6 +42,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/containeranalysis"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/datafusion/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/dataproc"
+	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/dlp/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/eventarc/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/filestore/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/gameservices"

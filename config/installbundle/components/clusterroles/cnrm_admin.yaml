@@ -26,6 +26,7 @@ rules:
   - dataflow.cnrm.cloud.google.com
   - datafusion.cnrm.cloud.google.com
   - dataproc.cnrm.cloud.google.com
+  - dlp.cnrm.cloud.google.com
   - dns.cnrm.cloud.google.com
   - eventarc.cnrm.cloud.google.com
   - filestore.cnrm.cloud.google.com

@@ -56,6 +56,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/services/goog
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataplex/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataproc
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataproc/beta
+github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dlp/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/eventarc/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/filestore/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/firebaserules/beta
@@ -97,6 +98,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/containeranalysis
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/datafusion/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/dataproc
+github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/dlp/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/eventarc/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/filestore/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/gameservices

@@ -43,6 +43,7 @@ import (
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
+	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
@@ -102,6 +103,7 @@ type Interface interface {
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
+	DlpV1beta1() dlpv1beta1.DlpV1beta1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
 	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
@@ -160,6 +162,7 @@ type Clientset struct {
 	dataflowV1beta1             *dataflowv1beta1.DataflowV1beta1Client
 	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
+	dlpV1beta1                  *dlpv1beta1.DlpV1beta1Client
 	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
 	eventarcV1beta1             *eventarcv1beta1.EventarcV1beta1Client
 	filestoreV1beta1            *filestorev1beta1.FilestoreV1beta1Client
@@ -284,6 +287,11 @@ func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Inter
 // DataprocV1beta1 retrieves the DataprocV1beta1Client
 func (c *Clientset) DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface {
 	return c.dataprocV1beta1
+}
+
+// DlpV1beta1 retrieves the DlpV1beta1Client
+func (c *Clientset) DlpV1beta1() dlpv1beta1.DlpV1beta1Interface {
+	return c.dlpV1beta1
 }
 
 // DnsV1beta1 retrieves the DnsV1beta1Client
@@ -568,6 +576,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.dlpV1beta1, err = dlpv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.dnsV1beta1, err = dnsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -743,6 +755,7 @@ func New(c rest.Interface) *Clientset {
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
+	cs.dlpV1beta1 = dlpv1beta1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
 	cs.filestoreV1beta1 = filestorev1beta1.New(c)

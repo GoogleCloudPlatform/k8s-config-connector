@@ -26,6 +26,7 @@ SERVICE_REPLACEMENTS = {
     'cloudresourcemanager':
         '',  #TODO(kcc-eng): Handle ResourceManagerLien, etc.
     'dependencyservice': 'DependencyService',
+    'dlp': 'DLP',
     'dns': 'DNS',
     'gcp': 'GCP',
     'http': 'HTTP',

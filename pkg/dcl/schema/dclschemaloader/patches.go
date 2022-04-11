@@ -25,6 +25,9 @@ var correctedDCLResourceValueTemplateMap = map[string]string{
 }
 
 var unsupportedDCLResourceValueTemplateMap = map[string]string{
+	// referenced by DLPStoredInfoType
+	"bigquery_beta_dataset": "projects/{{project}}/datasets/{{name}}",
+	"bigquery_beta_table":   "projects/{{project}}/datasets/{{dataset_id}}/tables/{{name}}",
 	// referenced by RunService
 	"secretmanager_beta_secret": "projects/{{project}}/secrets/{{name}}",
 	// TODO(b/200559394): Support the relative resource name.

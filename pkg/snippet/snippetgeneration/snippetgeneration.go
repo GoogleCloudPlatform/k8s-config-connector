@@ -64,6 +64,7 @@ var preferredSampleForResource = map[string]string{
 	"containernodepool":                 "basic-node-pool",
 	"dataflowjob":                       "streaming-dataflow-job",
 	"dataflowflextemplatejob":           "streaming-dataflow-flex-template-job",
+	"dlpstoredinfotype":                 "big-query-field-stored-info-type",
 	"dnsrecordset":                      "dns-a-record-set",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",

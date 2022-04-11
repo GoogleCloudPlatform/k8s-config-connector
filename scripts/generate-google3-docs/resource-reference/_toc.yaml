@@ -82,6 +82,10 @@ toc:
   section:
   - title: "ConfigControllerInstance"
     path: /config-connector/docs/reference/resource-docs/configcontroller/configcontrollerinstance.md
+- title: "Cloud DLP"
+  section:
+  - title: "DLPStoredInfoType"
+    path: /config-connector/docs/reference/resource-docs/dlp/dlpstoredinfotype.md
 - title: "Cloud DNS"
   section:
   - title: "DNSManagedZone"
