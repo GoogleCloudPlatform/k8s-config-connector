@@ -35,7 +35,22 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceAutoscalingConfig struct {
+	/* The target CPU utilization for autoscaling. Value must be between 10 and 80. */
+	CpuTarget int `json:"cpuTarget"`
+
+	/* The maximum number of nodes for autoscaling. */
+	MaxNodes int `json:"maxNodes"`
+
+	/* The minimum number of nodes for autoscaling. */
+	MinNodes int `json:"minNodes"`
+}
+
 type InstanceCluster struct {
+	/* A list of Autoscaling configurations. Only one element is used and allowed. */
+	// +optional
+	AutoscalingConfig *InstanceAutoscalingConfig `json:"autoscalingConfig,omitempty"`
+
 	/* The ID of the Cloud Bigtable cluster. */
 	ClusterId string `json:"clusterId"`
 

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.80.0
+    cnrm.cloud.google.com/version: 1.81.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -76,6 +76,25 @@ spec:
                   specified at least once.
                 items:
                   properties:
+                    autoscalingConfig:
+                      description: A list of Autoscaling configurations. Only one
+                        element is used and allowed.
+                      properties:
+                        cpuTarget:
+                          description: The target CPU utilization for autoscaling.
+                            Value must be between 10 and 80.
+                          type: integer
+                        maxNodes:
+                          description: The maximum number of nodes for autoscaling.
+                          type: integer
+                        minNodes:
+                          description: The minimum number of nodes for autoscaling.
+                          type: integer
+                      required:
+                      - cpuTarget
+                      - maxNodes
+                      - minNodes
+                      type: object
                     clusterId:
                       description: The ID of the Cloud Bigtable cluster.
                       type: string

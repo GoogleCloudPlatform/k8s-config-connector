@@ -148,6 +148,10 @@ type JobSasToken struct {
 }
 
 type JobSchedule struct {
+	/* Interval between the start of each scheduled transfer. If unspecified, the default value is 24 hours. This value may not be less than 1 hour. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	// +optional
+	RepeatInterval *string `json:"repeatInterval,omitempty"`
+
 	/* Immutable. The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once. */
 	// +optional
 	ScheduleEndDate *JobScheduleEndDate `json:"scheduleEndDate,omitempty"`

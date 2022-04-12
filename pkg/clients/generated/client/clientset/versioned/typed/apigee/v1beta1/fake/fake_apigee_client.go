@@ -31,6 +31,10 @@ type FakeApigeeV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeApigeeV1beta1) ApigeeEnvironments(namespace string) v1beta1.ApigeeEnvironmentInterface {
+	return &FakeApigeeEnvironments{c, namespace}
+}
+
 func (c *FakeApigeeV1beta1) ApigeeOrganizations(namespace string) v1beta1.ApigeeOrganizationInterface {
 	return &FakeApigeeOrganizations{c, namespace}
 }

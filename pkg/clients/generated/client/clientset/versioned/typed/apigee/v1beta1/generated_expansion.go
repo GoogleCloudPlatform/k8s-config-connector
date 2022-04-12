@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type ApigeeEnvironmentExpansion interface{}
+
 type ApigeeOrganizationExpansion interface{}

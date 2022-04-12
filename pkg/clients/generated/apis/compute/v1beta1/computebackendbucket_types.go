@@ -108,6 +108,10 @@ type ComputeBackendBucketSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* The security policy associated with this backend bucket. */
+	// +optional
+	EdgeSecurityPolicy *string `json:"edgeSecurityPolicy,omitempty"`
+
 	/* If true, enable Cloud CDN for this BackendBucket. */
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`

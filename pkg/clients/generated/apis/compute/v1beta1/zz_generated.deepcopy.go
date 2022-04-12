@@ -1046,6 +1046,11 @@ func (in *ComputeBackendBucketSpec) DeepCopyInto(out *ComputeBackendBucketSpec) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.EdgeSecurityPolicy != nil {
+		in, out := &in.EdgeSecurityPolicy, &out.EdgeSecurityPolicy
+		*out = new(string)
+		**out = **in
+	}
 	if in.EnableCdn != nil {
 		in, out := &in.EnableCdn, &out.EnableCdn
 		*out = new(bool)
@@ -5961,6 +5966,11 @@ func (in *ComputeSecurityPolicySpec) DeepCopyInto(out *ComputeSecurityPolicySpec
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

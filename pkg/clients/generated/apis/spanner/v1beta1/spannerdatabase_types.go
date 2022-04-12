@@ -42,6 +42,10 @@ type DatabaseEncryptionConfig struct {
 }
 
 type SpannerDatabaseSpec struct {
+	/*  */
+	// +optional
+	DatabaseDialect *string `json:"databaseDialect,omitempty"`
+
 	/* An optional list of DDL statements to run inside the newly created
 	database. Statements can create tables, indexes, etc. These statements
 	execute atomically with the creation of the database: if there is an

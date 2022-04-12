@@ -31,12 +31,17 @@ import (
 
 type ApigeeV1beta1Interface interface {
 	RESTClient() rest.Interface
+	ApigeeEnvironmentsGetter
 	ApigeeOrganizationsGetter
 }
 
 // ApigeeV1beta1Client is used to interact with features provided by the apigee.cnrm.cloud.google.com group.
 type ApigeeV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ApigeeV1beta1Client) ApigeeEnvironments(namespace string) ApigeeEnvironmentInterface {
+	return newApigeeEnvironments(c, namespace)
 }
 
 func (c *ApigeeV1beta1Client) ApigeeOrganizations(namespace string) ApigeeOrganizationInterface {
