@@ -1,0 +1,45 @@
+name: 'Enhancement'
+description: 'Feature request or new resource request'
+labels: ['enhancement']
+body:
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    options:
+      - label: I did not find a related open enhancement request.
+        required: true
+      - label: I understand that enhancement requests filed in the GitHub repository are by default low priority.
+        required: true
+      - label: 'If this request is time-sensitive, I have submitted a corresponding issue with [GCP support](https://cloud.google.com/support-hub).'
+        required: true
+- type: 'markdown'
+  attributes:
+    value: |-
+      Thank you for filing a feature request. Please complete the form below so we evaluate your feature request.
+
+- id: 'fr-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Describe the feature or resource'
+    description: "Describe the feature or resource that you're requesting."
+  validations:
+    required: true
+
+- id: 'fr-resource'
+  type: 'textarea'
+  attributes:
+    label: 'Additional information'
+    description: 'API Docs or gcloud command for requested feature or resource'
+    placeholder: 'gcloud pubsub topics create pubsubtopic-sample'
+
+- id: 'importance'
+  type: 'textarea'
+  attributes:
+    label: 'Importance'
+    description: | 
+      State whether you consider this request a nice-to-have, pain point, or blocker.
+      Elaborate if you have any other details:
+      * How would this feature/resource impact you?
+      * Urgency. If this is a blocker, when would you need it by? If it's not yet a
+        blocker, do you foresee it becoming a blocker at some point, and when?
