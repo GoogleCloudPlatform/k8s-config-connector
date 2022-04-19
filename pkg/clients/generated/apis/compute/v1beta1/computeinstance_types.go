@@ -217,9 +217,13 @@ type InstanceNetworkInterface struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* The private IP address assigned to the instance. */
+	/* DEPRECATED. This field is deprecated, use `spec.networkInterface.networkIpRef` instead. */
 	// +optional
 	NetworkIp *string `json:"networkIp,omitempty"`
+
+	/*  */
+	// +optional
+	NetworkIpRef *v1alpha1.ResourceRef `json:"networkIpRef,omitempty"`
 
 	/*  */
 	// +optional

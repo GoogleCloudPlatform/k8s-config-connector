@@ -9138,6 +9138,11 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkIpRef != nil {
+		in, out := &in.NetworkIpRef, &out.NetworkIpRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
 		*out = new(v1alpha1.ResourceRef)
