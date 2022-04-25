@@ -22,7 +22,6 @@ spec:
       name: eventarctrigger-dep
   role: roles/eventarc.admin
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     # Replace ${PROJECT_ID?} with your project ID
     external: "${PROJECT_ID?}"

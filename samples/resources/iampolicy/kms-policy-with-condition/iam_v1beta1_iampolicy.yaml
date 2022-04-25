@@ -20,7 +20,6 @@ metadata:
   name: iampolicy-sample-condition
 spec:
   resourceRef:
-    apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSKeyRing
     name: iampolicy-dep-condition
   bindings:

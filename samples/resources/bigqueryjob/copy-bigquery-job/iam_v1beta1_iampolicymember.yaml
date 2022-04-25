@@ -22,6 +22,5 @@ spec:
   member: serviceAccount:bq-${PROJECT_NUMBER?}@bigquery-encryption.iam.gserviceaccount.com
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${PROJECT_ID?}

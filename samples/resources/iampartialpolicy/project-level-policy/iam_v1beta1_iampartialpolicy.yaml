@@ -20,7 +20,6 @@ metadata:
   name: iampartialpolicy-sample-project
 spec:
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     name: iampartialpolicy-dep-project
   bindings:

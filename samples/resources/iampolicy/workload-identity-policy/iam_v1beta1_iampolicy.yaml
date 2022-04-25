@@ -18,7 +18,6 @@ metadata:
   name: iampolicy-sample-workloadidentity
 spec:
   resourceRef:
-    apiVersion: iam.cnrm.cloud.google.com/v1beta1
     kind: IAMServiceAccount
     name: iampolicy-dep-workloadidentity
   bindings:

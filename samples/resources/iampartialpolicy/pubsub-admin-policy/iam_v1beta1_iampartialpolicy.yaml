@@ -18,7 +18,6 @@ metadata:
   name: iampartialpolicy-sample-pubsubadmin
 spec:
   resourceRef:
-    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
     kind: PubSubTopic
     name: iampartialpolicy-dep-pubsubadmin
   bindings:

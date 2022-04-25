@@ -25,6 +25,5 @@ spec:
       exemptedMembers:
         - serviceAccount:iamauditconfig-dep@${PROJECT_ID?}.iam.gserviceaccount.com
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${PROJECT_ID?}

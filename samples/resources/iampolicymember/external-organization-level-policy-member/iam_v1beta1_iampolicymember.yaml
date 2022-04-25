@@ -22,6 +22,5 @@ spec:
   member: serviceAccount:iampolicymember-dep-orglevel@${PROJECT_ID?}.iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "${ORG_ID?}"

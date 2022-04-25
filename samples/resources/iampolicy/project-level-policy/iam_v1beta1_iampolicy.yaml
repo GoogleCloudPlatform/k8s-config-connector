@@ -25,7 +25,6 @@ metadata:
   name: iampolicy-sample-project
 spec:
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     name: iampolicy-dep-project
   bindings:

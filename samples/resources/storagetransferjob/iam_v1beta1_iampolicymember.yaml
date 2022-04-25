@@ -21,7 +21,6 @@ spec:
   member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
-    apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
     name: ${PROJECT_ID?}-storagetransferjob-dep1
 ---
@@ -34,6 +33,5 @@ spec:
   member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
-    apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
     name: ${PROJECT_ID?}-storagetransferjob-dep2

@@ -21,6 +21,5 @@ spec:
   member: serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com
   role: roles/pubsub.publisher
   resourceRef:
-    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
     kind: PubSubTopic
     name: storagenotification-dep

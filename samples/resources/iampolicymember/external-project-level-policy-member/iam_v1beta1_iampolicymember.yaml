@@ -23,6 +23,5 @@ spec:
   member: serviceAccount:iampolicymember-dep-projlevel@${PROJECT_ID?}.iam.gserviceaccount.com
   role: roles/storage.admin
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${PROJECT_ID?}

@@ -22,6 +22,5 @@ spec:
   # Replace ${PROJECT_ID?} with your project ID
   role: projects/${PROJECT_ID?}/roles/iamcustomrolesampleproject
   resourceRef:
-    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
     kind: PubSubTopic
     name: iamcustomrole-dep-project

@@ -22,6 +22,5 @@ spec:
   # Replace ${ORG_ID?} with the numeric ID of your organization
   role: organizations/${ORG_ID?}/roles/iampolicymemberdeporgrole
   resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${PROJECT_ID?}
