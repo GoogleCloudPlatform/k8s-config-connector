@@ -73,6 +73,8 @@ type ComputePacketMirroringExpansion interface{}
 
 type ComputeProjectMetadataExpansion interface{}
 
+type ComputeRegionNetworkEndpointGroupExpansion interface{}
+
 type ComputeReservationExpansion interface{}
 
 type ComputeResourcePolicyExpansion interface{}

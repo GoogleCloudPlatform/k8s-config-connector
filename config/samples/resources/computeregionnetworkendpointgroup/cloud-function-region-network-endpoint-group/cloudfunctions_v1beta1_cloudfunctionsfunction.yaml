@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetworkEndpointGroup
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
 metadata:
-  name: computenetworkendpointgroup-sample
+  name: computeregionnetworkendpointgroup-dep-cloudfunction
 spec:
-  networkRef:
-    name: computenetworkendpointgroup-dep
-  subnetworkRef:
-    name: computenetworkendpointgroup-dep
-  location: us-west1-a
-  defaultPort: 90
-  description: A network endpoint group living in a specific us-west1 subnetwork, whose member endpoints will serve on port number 90 by default.
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  region: us-west1
+  runtime: "nodejs8"
+  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
+  entryPoint: "helloGET"
+  httpsTrigger:
+    securityLevel: "SECURE_OPTIONAL"

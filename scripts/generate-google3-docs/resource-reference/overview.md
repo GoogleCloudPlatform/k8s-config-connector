@@ -207,6 +207,10 @@
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computeregionnetworkendpointgroup.md">ComputeRegionNetworkEndpointGroup</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computereservation.md">ComputeReservation</a></td>
 </tr>
 <tr>

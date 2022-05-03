@@ -135,6 +135,10 @@ func (c *FakeComputeV1beta1) ComputeProjectMetadatas(namespace string) v1beta1.C
 	return &FakeComputeProjectMetadatas{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeRegionNetworkEndpointGroups(namespace string) v1beta1.ComputeRegionNetworkEndpointGroupInterface {
+	return &FakeComputeRegionNetworkEndpointGroups{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeReservations(namespace string) v1beta1.ComputeReservationInterface {
 	return &FakeComputeReservations{c, namespace}
 }

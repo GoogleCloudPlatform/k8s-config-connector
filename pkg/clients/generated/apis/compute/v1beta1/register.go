@@ -209,6 +209,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeProjectMetadata{}).Name(),
 	}
 
+	ComputeRegionNetworkEndpointGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeRegionNetworkEndpointGroup{}).Name(),
+	}
+
 	ComputeReservationGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

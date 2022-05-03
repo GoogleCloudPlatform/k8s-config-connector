@@ -57,6 +57,7 @@ type ComputeV1beta1Interface interface {
 	ComputeNodeTemplatesGetter
 	ComputePacketMirroringsGetter
 	ComputeProjectMetadatasGetter
+	ComputeRegionNetworkEndpointGroupsGetter
 	ComputeReservationsGetter
 	ComputeResourcePoliciesGetter
 	ComputeRoutesGetter
@@ -192,6 +193,10 @@ func (c *ComputeV1beta1Client) ComputePacketMirrorings(namespace string) Compute
 
 func (c *ComputeV1beta1Client) ComputeProjectMetadatas(namespace string) ComputeProjectMetadataInterface {
 	return newComputeProjectMetadatas(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeRegionNetworkEndpointGroups(namespace string) ComputeRegionNetworkEndpointGroupInterface {
+	return newComputeRegionNetworkEndpointGroups(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeReservations(namespace string) ComputeReservationInterface {

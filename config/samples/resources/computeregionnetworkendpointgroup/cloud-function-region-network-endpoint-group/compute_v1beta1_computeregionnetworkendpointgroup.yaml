@@ -13,14 +13,13 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetworkEndpointGroup
+kind: ComputeRegionNetworkEndpointGroup
 metadata:
-  name: computenetworkendpointgroup-sample
+  name: computeregionnetworkendpointgroup-sample-cloudfunction
 spec:
-  networkRef:
-    name: computenetworkendpointgroup-dep
-  subnetworkRef:
-    name: computenetworkendpointgroup-dep
-  location: us-west1-a
+  region: us-west1
   defaultPort: 90
-  description: A network endpoint group living in a specific us-west1 subnetwork, whose member endpoints will serve on port number 90 by default.
+  description: A sample regional network endpoint group.
+  cloudFunction:
+    functionRef:
+      external: computeregionnetworkendpointgroup-dep-cloudfunction

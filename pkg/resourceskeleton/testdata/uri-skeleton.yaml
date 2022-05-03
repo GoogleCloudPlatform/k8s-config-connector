@@ -295,11 +295,11 @@
     metadata:
       annotations:
         cnrm.cloud.google.com/project-id: kcc-test
-      name: compute-neg
+      name: computeneg
     spec:
       location: us-central1-a
   ResourceConfigId: ComputeNetworkEndpointGroup:zonal
-  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/networkEndpointGroups/compute-neg"
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/networkEndpointGroups/computeneg"
 - ExpectedSkeleton: null
   ResourceConfigId: ComputeNetworkPeering
   URI: ""
@@ -362,6 +362,10 @@
   ResourceConfigId: ComputeProjectMetadata
   URI: ""
   # URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRegionNetworkEndpointGroup
+  URI: ""
+  # TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
 - ExpectedSkeleton:
     apiVersion: compute.cnrm.cloud.google.com/v1beta1
     kind: ComputeReservation

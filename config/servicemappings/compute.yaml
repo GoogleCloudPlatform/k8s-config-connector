@@ -1335,6 +1335,52 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_region_network_endpoint_group
+      kind: ComputeRegionNetworkEndpointGroup
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/networkEndpointGroups/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      # TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+      - key: serviceRef
+        tfField: cloud_run.service
+        description: |-
+          Only `external` field is supported to configure the reference.
+
+          Immutable. Cloud Run service is the main resource of Cloud Run.
+          The service must be 1-63 characters long, and comply with RFC1035.
+          Example value: "run-service".
+        gvk:
+          kind: RunService
+          version: v1beta1
+          group: run.cnrm.cloud.google.com
+        targetField: name
+      - key: functionRef
+        tfField: cloud_function.function
+        description: |-
+          Only `external` field is supported to configure the reference.
+
+          Immutable. A user-defined name of the Cloud Function.
+          The function name is case-sensitive and must be 1-63 characters long.
+          Example value: "func1".
+        gvk:
+          kind: CloudFunctionsFunction
+          version: v1beta1
+          group: cloudfunctions.cnrm.cloud.google.com
+        targetField: name
+      ignoredFields:
+        # As of 5/19/22 the only allowed value for serverlessDeployment.platform is `apigateway.googleapis.com`
+        # This field is ignored because APIGateway is not a supported resource at this time
+        - serverless_deployment
+        # This field is ignored because AppEngine is not a supported resource at this time
+        - app_engine
+      containers:
+      - type: project
+        tfField: project
     - name: google_compute_region_ssl_certificate
       kind: ComputeSSLCertificate
       metadataMapping:

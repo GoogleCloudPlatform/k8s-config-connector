@@ -24,11 +24,11 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1.networkEndpointGroups</td>
+<td>beta.networkEndpointGroups</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/networkEndpointGroups">/compute/docs/reference/rest/v1/networkEndpointGroups</a></td>
+<td><a href="/compute/docs/reference/rest/beta/networkEndpointGroups">/compute/docs/reference/rest/beta/networkEndpointGroups</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
