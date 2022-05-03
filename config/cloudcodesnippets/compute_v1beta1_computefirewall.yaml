@@ -1,0 +1,19 @@
+label: Config Connector ComputeFirewall
+markdownDescription: Creates yaml for a ComputeFirewall resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeFirewall
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computefirewall-name}
+  spec:
+    allow:
+    - protocol: \${4:tcp}
+      ports:
+      - \${5:80}
+      - \${6:1000-2000}
+    networkRef:
+      name: \${7:computefirewall-dep-allow}
+    sourceTags:
+    - \${8:web}

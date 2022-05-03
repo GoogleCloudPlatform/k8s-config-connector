@@ -1,0 +1,45 @@
+label: Config Connector DataprocWorkflowTemplate
+markdownDescription: Creates yaml for a DataprocWorkflowTemplate resource
+insertText: |
+  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+  kind: DataprocWorkflowTemplate
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:dataprocworkflowtemplate-name}
+  spec:
+    location: \${4:us-central1}
+    placement:
+      managedCluster:
+        clusterName: \${5:test-cluster}
+        config:
+          autoscalingConfig:
+            policyRef:
+              name: \${6:dataprocworkflowtemplate-dep}
+          masterConfig:
+            diskConfig:
+              bootDiskSizeGb: \${7:30}
+              bootDiskType: \${8:pd-standard}
+            machineType: \${9:n2-standard-8}
+            numInstances: \${10:1}
+          workerConfig:
+            numInstances: \${11:2}
+            machineType: \${12:n2-standard-8}
+            diskConfig:
+              bootDiskSizeGb: \${13:30}
+              numLocalSsds: \${14:1}
+          softwareConfig:
+            imageVersion: \${15:2.0.27-debian10}
+          gceClusterConfig:
+            tags:
+            - \${16:foo}
+            - \${17:bar}
+    jobs:
+    - stepId: \${18:someJob}
+      sparkJob:
+        mainClass: \${19:SomeClass}
+    - stepId: \${20:otherJob}
+      prerequisiteStepIds:
+      - \${21:someJob}
+      prestoJob:
+        queryFileUri: \${22:someUri}

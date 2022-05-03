@@ -1,0 +1,99 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: storagebucket-${uniqueId}
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: pubsubtopic1-${uniqueId}
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: pubsubtopic2-${uniqueId}
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: bigquerydataset${uniqueId}
+spec:
+  friendlyName: bigquerydataset${uniqueId}
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: bigquerytable${uniqueId}
+spec:
+  friendlyName: bigquerytable${uniqueId}
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: default
+spec:
+  description: Default network for the project
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: default
+spec:
+  ipCidrRange: 10.128.0.0/20
+  region: us-central1
+  networkRef:
+    name: default
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: gsa-${uniqueId}
+---
+# The IAMServiceAccount used by the DataflowJob must have the appropriate IAM
+# permissions to create Dataflow jobs and access referenced GCP resources (e.g.
+# the input PubSubTopic and output BigQueryTable).
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  member: serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  role: roles/editor
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${projectId}

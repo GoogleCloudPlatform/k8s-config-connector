@@ -1,0 +1,62 @@
+label: Config Connector ComputeInstanceTemplate
+markdownDescription: Creates yaml for a ComputeInstanceTemplate resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInstanceTemplate
+  metadata:
+    labels:
+      \${1:env}: \${2:dev}
+    name: \${3:computeinstancetemplate-name}
+  spec:
+    description: \${4:a sample instance template}
+    tags:
+    - \${5:foo}
+    - \${6:bar}
+    instanceDescription: \${7:a sample instance created from the sample instance template}
+    machineType: \${8:n1-standard-1}
+    region: \${9:us-west1}
+    disk:
+    - sourceDiskRef:
+        name: \${10:instancetemplate-dep}
+      autoDelete: \${11:false}
+      boot: \${12:true}
+    - sourceImageRef:
+        name: \${13:instancetemplate-dep}
+      autoDelete: \${14:true}
+      boot: \${15:false}
+      diskName: \${16:sample-attached-disk}
+      deviceName: \${17:attachment}
+      interface: \${18:SCSI}
+      diskType: \${19:pd-ssd}
+      diskSizeGb: \${20:10}
+      type: \${21:PERSISTENT}
+    networkInterface:
+    - networkRef:
+        name: \${22:instancetemplate-dep}
+      subnetworkRef:
+        name: \${23:instancetemplate-dep}
+      networkIp: \${24:10.2.0.1}
+      aliasIpRange:
+      - ipCidrRange: \${25:/16}
+        subnetworkRangeName: \${26:sub-range}
+    canIpForward: \${27:false}
+    scheduling:
+      automaticRestart: \${28:true}
+      onHostMaintenance: \${29:MIGRATE}
+      preemptible: \${30:false}
+    metadataStartupScript: \${31:echo hi > /test.txt}
+    serviceAccount:
+      serviceAccountRef:
+        name: \${32:instancetemplate-dep}
+      scopes:
+      - \${33:userinfo-email}
+      - \${34:compute-ro}
+      - \${35:storage-ro}
+    guestAccelerator:
+    - type: \${36:nvidia-tesla-k80}
+      count: \${37:1}
+    minCpuPlatform: \${38:Intel Skylake}
+    shieldedInstanceConfig:
+      enableSecureBoot: \${39:false}
+      enableVtpm: \${40:true}
+      enableIntegrityMonitoring: \${41:true}

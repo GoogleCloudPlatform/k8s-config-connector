@@ -1,0 +1,13 @@
+label: Config Connector ComputeFirewallPolicyAssociation
+markdownDescription: Creates yaml for a ComputeFirewallPolicyAssociation resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeFirewallPolicyAssociation
+  metadata:
+    name: \${1:computefirewallpolicyassociation-name}
+  spec:
+    attachmentTargetRef:
+      kind: \${2:Folder}
+      name: \${3:firewallpolicyassociation-dep-folder}
+    firewallPolicyRef:
+      name: \${4:firewallpolicyassociation-dep-folder}

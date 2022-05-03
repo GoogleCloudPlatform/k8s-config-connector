@@ -1,0 +1,117 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
+index d48e1de4f..cdd6e47ac 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
+@@ -1180,6 +1180,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_logging_organization_exclusion":        ResourceLoggingExclusion(OrganizationLoggingExclusionSchema, NewOrganizationLoggingExclusionUpdater, organizationLoggingExclusionIdParseFunc),
+ 			"google_logging_organization_bucket_config":    ResourceLoggingOrganizationBucketConfig(),
+ 			"google_logging_folder_sink":                   resourceLoggingFolderSink(),
++			"google_logging_log_sink":                      resourceLoggingLogSink(),
+ 			"google_logging_folder_exclusion":              ResourceLoggingExclusion(FolderLoggingExclusionSchema, NewFolderLoggingExclusionUpdater, folderLoggingExclusionIdParseFunc),
+ 			"google_logging_folder_bucket_config":          ResourceLoggingFolderBucketConfig(),
+ 			"google_logging_project_sink":                  resourceLoggingProjectSink(),
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_log_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_log_sink.go
+new file mode 100644
+index 000000000..35b99d7d3
+--- /dev/null
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_log_sink.go
+@@ -0,0 +1,70 @@
++package google
++
++import (
++	"fmt"
++	"strings"
++
++	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
++)
++
++func resourceLoggingLogSink() *schema.Resource {
++	return combinedResource(
++		map[string]*schema.Resource{
++			projectType: resourceLoggingProjectSink(),
++			folderType:  resourceLoggingFolderSink(),
++			orgType:     resourceLoggingOrganizationSink(),
++		}, loggingLogSinkImporter)
++}
++
++func loggingLogSinkImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
++	id := d.Id()
++	if strings.HasPrefix(id, "projects/") {
++		return resourceLoggingSinkImportState("project")(d, meta)
++	} else if strings.HasPrefix(id, "folders/") {
++		return resourceLoggingSinkImportState("folder")(d, meta)
++	} else if strings.HasPrefix(id, "organizations/") {
++		return resourceLoggingSinkImportState("organization")(d, meta)
++	}
++	return kccImportIdImporter(d, meta)
++}
++
++func kccImportIdImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
++
++	// FROM: {{project?}}#{{folder?}}#{{org_id?}}#{{name}}
++	// TO:
++	//   - project: projects/{{project?}}/sinks/{{name}}
++	//   - folder:  folders/{{folder?}}/sinks/{{name}}
++	//   - org:     organizations/{{org_id?}}/sinks/{{name}}
++	importID := d.Id()
++	partitions := strings.Split(importID, "#")
++	if len(partitions) != 4 {
++		return nil, fmt.Errorf("expected 4 partitions in import ID, got %v", len(partitions))
++	}
++	name := partitions[3]
++	for sinkType, parentVal := range map[string]string{
++		projectType: partitions[0],
++		folderType:  partitions[1],
++		orgType:     partitions[2],
++	} {
++		if parentVal == "" {
++			continue
++		}
++		if err := d.Set(fieldForParentType(sinkType), parentVal); err != nil {
++			return nil, fmt.Errorf("error setting sink parent ID: %w", err)
++		}
++		var id string
++		switch sinkType {
++		case projectType:
++			id = fmt.Sprintf("projects/%v/sinks/%v", parentVal, name)
++		case folderType:
++			id = fmt.Sprintf("folders/%v/sinks/%v", parentVal, name)
++		case orgType:
++			id = fmt.Sprintf("organizations/%v/sinks/%v", parentVal, name)
++		default:
++			return nil, fmt.Errorf("unknown sink type in import ID")
++		}
++		d.SetId(id)
++		return []*schema.ResourceData{d}, nil
++	}
++	return nil, fmt.Errorf("no sink type specified")
++}
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_sink.go
+index f6d6f905d..8a5ed3f1d 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_sink.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_sink.go
+@@ -258,6 +258,10 @@ func resourceLoggingSinkImportState(sinkType string) schema.StateFunc {
+ 			return nil, fmt.Errorf("Error setting sinkType: %s", err)
+ 		}
+ 
++		if err := d.Set("name", loggingSinkId.name); err != nil {
++			return nil, fmt.Errorf("Error setting log sink name: %v", err)
++		}
++
+ 		return []*schema.ResourceData{d}, nil
+ 	}
+ }

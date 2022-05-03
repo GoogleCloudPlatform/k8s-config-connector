@@ -1,0 +1,103 @@
+label: Config Connector MonitoringAlertPolicy
+markdownDescription: Creates yaml for a MonitoringAlertPolicy resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringAlertPolicy
+  metadata:
+    labels:
+      \${1:checking}: \${2:website-health}
+      \${3:oncall-treatment}: \${4:stay-aware}
+    name: \${5:monitoringalertpolicy-name}
+  spec:
+    displayName: \${6:Sample Website Aetwork Connectivity Alert Policy}
+    enabled: \${7:true}
+    notificationChannels:
+    - name: \${8:monitoringalertpolicy-dep1-networkconnectivity}
+    - name: \${9:monitoringalertpolicy-dep2-networkconnectivity}
+    combiner: \${10:OR}
+    conditions:
+    - displayName: \${11:Failure of uptime check_id uptime-check-for-google-cloud-site}
+      conditionThreshold:
+        filter: \${12:metric.type="monitoring.googleapis.com/uptime_check/check_passed"
+          AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"}
+        aggregations:
+        - perSeriesAligner: \${13:ALIGN_NEXT_OLDER}
+          alignmentPeriod: \${14:1200s}
+          crossSeriesReducer: \${15:REDUCE_COUNT_FALSE}
+          groupByFields:
+          - \${16:resource.label.*}
+        comparison: \${17:COMPARISON_GT}
+        thresholdValue: \${18:1}
+        duration: \${19:600s}
+        trigger:
+          count: \${20:1}
+    - displayName: \${21:SSL Certificate for google-cloud-site expiring soon}
+      conditionThreshold:
+        filter: \${22:metric.type="monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires"
+          AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"}
+        aggregations:
+        - alignmentPeriod: \${23:1200s}
+          perSeriesAligner: \${24:ALIGN_NEXT_OLDER}
+          crossSeriesReducer: \${25:REDUCE_MEAN}
+          groupByFields:
+          - \${26:resource.label.*}
+        comparison: \${27:COMPARISON_LT}
+        thresholdValue: \${28:15}
+        duration: \${29:600s}
+        trigger:
+          count: \${30:1}
+    - displayName: \${31:Uptime check running}
+      conditionAbsent:
+        filter: \${32:metric.type="monitoring.googleapis.com/uptime_check/check_passed"
+          AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"}
+        duration: \${33:3900s}
+    - displayName: \${34:Ratio of HTTP 500s error-response counts to all HTTP response
+        counts}
+      conditionThreshold:
+        filter: \${35:metric.label.response_code>="500" AND metric.label.response_code<"600"
+          AND metric.type="appengine.googleapis.com/http/server/response_count" AND
+          resource.type="gae_app"}
+        aggregations:
+        - alignmentPeriod: \${36:300s}
+          perSeriesAligner: \${37:ALIGN_DELTA}
+          crossSeriesReducer: \${38:REDUCE_SUM}
+          groupByFields:
+          - \${39:project}
+          - \${40:resource.label.module_id}
+          - \${41:resource.label.version_id}
+        denominatorFilter: \${42:metric.type="appengine.googleapis.com/http/server/response_count"
+          AND resource.type="gae_app"}
+        denominatorAggregations:
+        - alignmentPeriod: \${43:300s}
+          perSeriesAligner: \${44:ALIGN_DELTA}
+          crossSeriesReducer: \${45:REDUCE_SUM}
+          groupByFields:
+          - \${46:project}
+          - \${47:resource.label.module_id}
+          - \${48:resource.label.version_id}
+        comparison: \${49:COMPARISON_GT}
+        thresholdValue: \${50:0.5}
+        duration: \${51:0s}
+        trigger:
+          count: \${52:1}
+    documentation:
+      content: |-
+        \${53:This sample is a synthesis of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
+
+        Combiner OR
+        OR combiner policies will trigger an incident when any of their conditions are met. They should be considered the default for most purposes.
+
+        Uptime-check conditions
+        The first three conditions in this policy involve an uptime check with the ID 'uptime-check-for-google-cloud-site'.
+
+        The first condition, "Failure of uptime check_id uptime-check-for-google-cloud-site", tests if the uptime check fails.
+        The second condition, "SSL Certificate for google-cloud-site expiring soon", tests if the SSL certificate on the Google Cloud site will expire in under 15 days.
+
+        Metric-absence condition
+        The third condition in this policy, "Uptime check running" tests if the aforementioned uptime check is not written to for a period of approximately an hour.
+        Note that unlike all the conditions so far, the condition used here is conditionAbsent, because the test is for the lack of a metric.
+
+        Metric ratio
+        The fourth and last condition in this policy, "Ratio of HTTP 500s error-response counts to all HTTP response counts", tests that 5XX error codes do not make up more than half of all HTTP responses. It targets a different set of metrics through appengine.
+
+        All together, this policy would monitor for a situation where any of the above conditions threatened the health of the website.}

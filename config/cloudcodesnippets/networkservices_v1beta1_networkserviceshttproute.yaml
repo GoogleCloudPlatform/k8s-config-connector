@@ -1,0 +1,71 @@
+label: Config Connector NetworkServicesHTTPRoute
+markdownDescription: Creates yaml for a NetworkServicesHTTPRoute resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesHTTPRoute
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkserviceshttproute-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    hostnames:
+    - \${6:bar.baz}
+    meshes:
+    - name: \${7:networkserviceshttproute-dep}
+    gateways:
+    - name: \${8:networkserviceshttproute-dep}
+    rules:
+    - matches:
+      - fullPathMatch: \${9:/foo/bar}
+        headers:
+        - header: \${10:foo-header}
+          prefixMatch: \${11:bar-value}
+      action:
+        destinations:
+        - serviceRef:
+            name: \${12:networkserviceshttproute-dep}
+        faultInjectionPolicy:
+          abort:
+            httpStatus: \${13:501}
+            percentage: \${14:1}
+          delay:
+            fixedDelay: \${15:10s}
+            percentage: \${16:2}
+        requestHeaderModifier:
+          add:
+            foo1: \${17:bar1}
+            baz1: \${18:qux1}
+          set:
+            foo2: \${19:bar2}
+            baz2: \${20:qux2}
+          remove:
+          - \${21:foo3}
+          - \${22:bar3}
+        requestMirrorPolicy:
+          destination:
+            serviceRef:
+              name: \${23:networkserviceshttproute-dep}
+        responseHeaderModifier:
+          add:
+            foo1: \${24:bar1}
+            baz1: \${25:qux1}
+          set:
+            foo2: \${26:bar2}
+            baz2: \${27:qux2}
+          remove:
+          - \${28:foo3}
+          - \${29:bar3}
+        retryPolicy:
+          numRetries: \${30:3}
+          perTryTimeout: \${31:5s}
+          retryConditions:
+          - \${32:refused-stream}
+          - \${33:cancelled}
+        timeout: \${34:30s}
+    - action:
+        destinations:
+        - serviceRef:
+            name: \${35:networkserviceshttproute-dep}

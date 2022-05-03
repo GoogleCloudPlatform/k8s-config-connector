@@ -1,0 +1,14 @@
+label: Config Connector IAMWorkloadIdentityPool
+markdownDescription: Creates yaml for a IAMWorkloadIdentityPool resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMWorkloadIdentityPool
+  metadata:
+    name: \${1:iamworkloadidentitypool-name}
+  spec:
+    location: \${2:global}
+    displayName: \${3:sample-pool}
+    description: \${4:A sample workload identity pool using a newly created project}
+    disabled: \${5:false}
+    projectRef:
+      external: \${6:projects/[PROJECT_ID?]}

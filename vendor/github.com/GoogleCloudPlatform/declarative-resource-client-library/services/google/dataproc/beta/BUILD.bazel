@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "autoscaling_policy.go",
+        "autoscaling_policy_beta_yaml_embed.go",
+        "autoscaling_policy_internal.go",
+        "client.go",
+        "cluster.go",
+        "cluster_beta_yaml_embed.go",
+        "cluster_internal.go",
+        "dataproc_utils.go",
+        "workflow_template.go",
+        "workflow_template_beta_yaml_embed.go",
+        "workflow_template_internal.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataproc/beta",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

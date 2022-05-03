@@ -1,0 +1,18 @@
+label: Config Connector BigtableGCPolicy
+markdownDescription: Creates yaml for a BigtableGCPolicy resource
+insertText: |
+  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+  kind: BigtableGCPolicy
+  metadata:
+    name: \${1:bigtablegcpolicy-name}
+  spec:
+    tableRef:
+      name: \${2:bigtablegcpolicy-dep}
+    columnFamily: \${3:family1}
+    instanceRef:
+      name: \${4:bigtablegcpolicy-dep}
+    mode: \${5:INTERSECTION}
+    maxAge:
+    - duration: \${6:24h}
+    maxVersion:
+    - number: \${7:10}

@@ -1,0 +1,128 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+fullname:
+- status
+shortname: status
+description: ""
+type: object
+requirementlevel: Optional
+children:
+- fullname:
+  - status
+  - conditions
+  shortname: conditions
+  description: Conditions represent the latest available observation of the resource's
+    current state.
+  type: list (object)
+  requirementlevel: Optional
+  children:
+  - fullname:
+    - status
+    - conditions
+    - '[]'
+    shortname: '[]'
+    description: ""
+    type: object
+    requirementlevel: Optional
+    children:
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - lastTransitionTime
+      shortname: lastTransitionTime
+      description: Last time the condition transitioned from one status to another.
+      type: string
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - message
+      shortname: message
+      description: Human-readable message indicating details about last transition.
+      type: string
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - reason
+      shortname: reason
+      description: Unique, one-word, CamelCase reason for the condition's last transition.
+      type: string
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - status
+      shortname: status
+      description: Status is the status of the condition. Can be True, False, Unknown.
+      type: string
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - type
+      shortname: type
+      description: Type is the type of the condition.
+      type: string
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    additionalproperties: []
+  additionalproperties: []
+- fullname:
+  - status
+  - observedGeneration
+  shortname: observedGeneration
+  description: ObservedGeneration is the generation of the resource that was most
+    recently observed by the Config Connector controller. If this is equal to metadata.generation,
+    then that means that the current reported status reflects the most recent desired
+    state of the resource.
+  type: integer
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+- fullname:
+  - status
+  - selfLink
+  shortname: selfLink
+  description: Output only. The resource name, in the format `projects/*/policy`.
+    There is at most one policy per project.
+  type: string
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+- fullname:
+  - status
+  - updateTime
+  shortname: updateTime
+  description: Output only. Time when the policy was last updated.
+  type: string
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+additionalproperties: []

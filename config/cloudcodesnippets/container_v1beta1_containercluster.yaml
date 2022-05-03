@@ -1,0 +1,67 @@
+label: Config Connector ContainerCluster
+markdownDescription: Creates yaml for a ContainerCluster resource
+insertText: |
+  apiVersion: container.cnrm.cloud.google.com/v1beta1
+  kind: ContainerCluster
+  metadata:
+    labels:
+      \${1:availability}: \${2:high}
+      \${3:target-audience}: \${4:production}
+    name: \${5:containercluster-name}
+  spec:
+    description: \${6:A large regional VPC-native cluster set up with special networking
+      considerations.}
+    location: \${7:us-central1}
+    initialNodeCount: \${8:1}
+    defaultMaxPodsPerNode: \${9:16}
+    nodeLocations:
+    - \${10:us-central1-a}
+    - \${11:us-central1-b}
+    - \${12:us-central1-c}
+    - \${13:us-central1-f}
+    workloadIdentityConfig:
+      workloadPool: \${14:[PROJECT_ID?].svc.id.goog}
+    networkingMode: \${15:VPC_NATIVE}
+    networkRef:
+      name: \${16:containercluster-dep-vpcnative}
+    subnetworkRef:
+      name: \${17:containercluster-dep-vpcnative}
+    ipAllocationPolicy:
+      servicesSecondaryRangeName: \${18:servicesrange}
+      clusterSecondaryRangeName: \${19:clusterrange}
+    clusterAutoscaling:
+      enabled: \${20:true}
+      autoscalingProfile: \${21:BALANCED}
+      resourceLimits:
+      - resourceType: \${22:cpu}
+        maximum: \${23:100}
+        minimum: \${24:10}
+      - resourceType: \${25:memory}
+        maximum: \${26:1000}
+        minimum: \${27:100}
+    maintenancePolicy:
+      dailyMaintenanceWindow:
+        startTime: \${28:00:00}
+    releaseChannel:
+      channel: \${29:STABLE}
+    notificationConfig:
+      pubsub:
+        enabled: \${30:true}
+        topicRef:
+          name: \${31:containercluster-dep-vpcnative}
+    enableBinaryAuthorization: \${32:true}
+    enableIntranodeVisibility: \${33:true}
+    enableShieldedNodes: \${34:true}
+    addonsConfig:
+      networkPolicyConfig:
+        disabled: \${35:false}
+      dnsCacheConfig:
+        enabled: \${36:true}
+      configConnectorConfig:
+        enabled: \${37:true}
+    networkPolicy:
+      enabled: \${38:true}
+    podSecurityPolicyConfig:
+      enabled: \${39:true}
+    verticalPodAutoscaling:
+      enabled: \${40:true}

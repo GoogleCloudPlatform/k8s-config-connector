@@ -1,0 +1,14 @@
+label: Config Connector StorageDefaultObjectAccessControl
+markdownDescription: Creates yaml for a StorageDefaultObjectAccessControl resource
+insertText: |
+  apiVersion: storage.cnrm.cloud.google.com/v1beta1
+  kind: StorageDefaultObjectAccessControl
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:storagedefaultobjectaccesscontrol-name}
+  spec:
+    bucketRef:
+      name: \${4:[PROJECT_ID?]-objectaccesscontrol-dep}
+    entity: \${5:allAuthenticatedUsers}
+    role: \${6:READER}

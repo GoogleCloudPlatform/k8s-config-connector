@@ -1,0 +1,4 @@
+{
+  "name": "{{dependency3}}",
+  "dependency": "{{ref:second.dependencyservice.dependency.json:name}}"
+}

@@ -1,0 +1,52 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: You must enable <a href="/identity-platform/docs/quickstart-email-password">identity platform</a> via the Cloud Console prior to using this resource.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Identity Platform</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/identity-platform/docs/">/identity-platform/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v2.projects</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/identity-platform/docs/reference/rest/v2/Config">/identity-platform/docs/reference/rest/v2/Config</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .Kind}}<br>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>identitytoolkit.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

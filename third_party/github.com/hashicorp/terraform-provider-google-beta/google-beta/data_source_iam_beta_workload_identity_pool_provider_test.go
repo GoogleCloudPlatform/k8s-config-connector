@@ -1,0 +1,58 @@
+package google
+
+import (
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+)
+
+func TestAccDataSourceIAMBetaWorkloadIdentityPoolProvider_basic(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataSourceIAMBetaWorkloadIdentityPoolProviderBasic(context),
+				Check: resource.ComposeTestCheckFunc(
+					checkDataSourceStateMatchesResourceState("data.google_iam_workload_identity_pool_provider.foo", "google_iam_workload_identity_pool_provider.bar"),
+				),
+			},
+		},
+	})
+}
+
+func testAccDataSourceIAMBetaWorkloadIdentityPoolProviderBasic(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_iam_workload_identity_pool" "pool" {
+	workload_identity_pool_id = "pool-%{random_suffix}"
+}
+
+resource "google_iam_workload_identity_pool_provider" "bar" {
+	workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
+	workload_identity_pool_provider_id = "bar-provider-%{random_suffix}"
+	display_name                       = "Name of provider"
+	description                        = "OIDC identity pool provider for automated test"
+	disabled                           = true
+	attribute_condition                = "\"e968c2ef-047c-498d-8d79-16ca1b61e77e\" in assertion.groups"
+	attribute_mapping                  = {
+		"google.subject" = "assertion.sub"
+	}
+	oidc {
+		allowed_audiences = ["https://example.com/gcp-oidc-federation"]
+		issuer_uri        = "https://sts.windows.net/azure-tenant-id"
+	}
+  }
+
+data "google_iam_workload_identity_pool_provider" "foo" {
+	workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
+	workload_identity_pool_provider_id = google_iam_workload_identity_pool_provider.bar.workload_identity_pool_provider_id
+}
+`, context)
+}

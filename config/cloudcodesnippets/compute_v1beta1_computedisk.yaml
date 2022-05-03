@@ -1,0 +1,21 @@
+label: Config Connector ComputeDisk
+markdownDescription: Creates yaml for a ComputeDisk resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeDisk
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computedisk-name}
+  spec:
+    description: \${4:a sample encrypted, blank disk}
+    diskEncryptionKey:
+      rawKey:
+        valueFrom:
+          secretKeyRef:
+            name: \${5:computedisk-dep-zonal}
+            key: \${6:sharedSecret}
+    physicalBlockSizeBytes: \${7:4096}
+    size: \${8:1}
+    type: \${9:pd-ssd}
+    location: \${10:us-west1-c}

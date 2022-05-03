@@ -1,0 +1,29 @@
+label: Config Connector NetworkServicesTLSRoute
+markdownDescription: Creates yaml for a NetworkServicesTLSRoute resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesTLSRoute
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkservicestlsroute-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    meshes:
+    - name: \${6:networkservicestlsroute-dep}
+    gateways:
+    - name: \${7:networkservicestlsroute-dep}
+    rules:
+    - matches:
+      - sniHost:
+        - \${8:*.foo.example.com}
+        - \${9:foo.example.com}
+        alpn:
+        - \${10:h2}
+        - \${11:http/1.1}
+      action:
+        destinations:
+        - serviceRef:
+            name: \${12:networkservicestlsroute-dep}

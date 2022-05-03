@@ -1,0 +1,13 @@
+label: Config Connector ComputeNodeGroup
+markdownDescription: Creates yaml for a ComputeNodeGroup resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNodeGroup
+  metadata:
+    name: \${1:computenodegroup-name}
+  spec:
+    description: \${2:A single sole-tenant node in the us-central1-b zone.}
+    size: \${3:1}
+    nodeTemplateRef:
+      name: \${4:computenodegroup-dep}
+    zone: \${5:us-central1-b}

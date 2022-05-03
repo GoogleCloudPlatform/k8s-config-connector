@@ -1,0 +1,48 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>ArtifactRegistry</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/artifact-registry/docs/">/artifact-registry/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1beta1.projects.locations.repositories</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/artifact-registry/docs/reference/rest/v1beta2/projects.locations.repositories">
+/artifact-registry/docs/reference/rest/v1beta1/projects.locations.repositories</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>artifactregistry.googleapis.com</td>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

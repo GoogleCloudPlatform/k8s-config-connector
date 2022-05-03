@@ -1,0 +1,49 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Billing Budgets</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/billing/docs/">/billing/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>billingAccounts.budgets</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets">/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>billingbudgets.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

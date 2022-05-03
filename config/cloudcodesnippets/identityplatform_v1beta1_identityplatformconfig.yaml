@@ -1,0 +1,122 @@
+label: Config Connector IdentityPlatformConfig
+markdownDescription: Creates yaml for a IdentityPlatformConfig resource
+insertText: |
+  apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
+  kind: IdentityPlatformConfig
+  metadata:
+    name: \${1:identityplatformconfig-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    signIn:
+      email:
+        enabled: \${3:true}
+        passwordRequired: \${4:true}
+      phoneNumber:
+        enabled: \${5:true}
+        testPhoneNumbers:
+          +1 555-555-5555: \${6:000000}
+      anonymous:
+        enabled: \${7:true}
+      allowDuplicateEmails: \${8:true}
+    notification:
+      sendEmail:
+        method: \${9:CUSTOM_SMTP}
+        smtp:
+          senderEmail: \${10:magic-modules-guitar-testing@system.gserviceaccount.com}
+          host: \${11:system.gserviceaccount.com}
+          port: \${12:8080}
+          username: \${13:sample-username}
+          password:
+            value: \${14:sample-password}
+          securityMode: \${15:SSL}
+        resetPasswordTemplate:
+          senderLocalPart: \${16:noreply}
+          subject: \${17:Reset your password for %APP_NAME%}
+          senderDisplayName: \${18:DCL Team}
+          body: |-
+            \${19:<p>Hello,</p>
+            <p>Follow this link to reset your %APP_NAME% password for your %EMAIL% account.</p>
+            <p><a href='%LINK%'>%LINK%</a></p>
+            <p>If you didn’t ask to reset your password, you can ignore this email.</p>
+            <p>Thanks,</p>
+            <p>Your %APP_NAME% team</p>}
+          bodyFormat: \${20:PLAIN_TEXT}
+          replyTo: \${21:noreply}
+        verifyEmailTemplate:
+          senderLocalPart: \${22:noreply}
+          subject: \${23:Verify your email for %APP_NAME%}
+          senderDisplayName: \${24:DCL Team}
+          body: |-
+            \${25:<p>Hello %DISPLAY_NAME%,</p>
+            <p>Follow this link to verify your email address.</p>
+            <p><a href='%LINK%'>%LINK%</a></p>
+            <p>If you didn’t ask to verify this address, you can ignore this email.</p>
+            <p>Thanks,</p>
+            <p>Your %APP_NAME% team</p>}
+          bodyFormat: \${26:PLAIN_TEXT}
+          replyTo: \${27:noreply}
+        changeEmailTemplate:
+          senderLocalPart: \${28:noreply}
+          subject: \${29:Your sign-in email was changed for %APP_NAME%}
+          senderDisplayName: \${30:DCL Team}
+          body: |-
+            \${31:<p>Hello %DISPLAY_NAME%,</p>
+            <p>Your sign-in email for %APP_NAME% was changed to %NEW_EMAIL%.</p>
+            <p>If you didn’t ask to change your email, follow this link to reset your sign-in email.</p>
+            <p><a href='%LINK%'>%LINK%</a></p>
+            <p>Thanks,</p>
+            <p>Your %APP_NAME% team</p>}
+          bodyFormat: \${32:PLAIN_TEXT}
+          replyTo: \${33:noreply}
+        callbackUri: \${34:https://config-connector-sample.firebaseapp.com/__/auth/action}
+        dnsInfo:
+          useCustomDomain: \${35:true}
+        revertSecondFactorAdditionTemplate:
+          senderLocalPart: \${36:noreply}
+          subject: \${37:You've added 2 step verification to your %APP_NAME% account.}
+          senderDisplayName: \${38:DCL Team}
+          body: |-
+            \${39:<p>Hello %DISPLAY_NAME%,</p>
+            <p>Your account in %APP_NAME% has been updated with a phone number %SECOND_FACTOR% for 2-step verification.</p>
+            <p>If you didn't add this phone number for 2-step verification, click the link below to remove it.</p>
+            <p><a href='%LINK%'>%LINK%</a></p>
+            <p>Thanks,</p>
+            <p>Your %APP_NAME% team</p>}
+          bodyFormat: \${40:PLAIN_TEXT}
+          replyTo: \${41:noreply}
+      sendSms:
+        useDeviceLocale: \${42:true}
+      defaultLocale: \${43:en}
+    quota:
+      signUpQuotaConfig:
+        quota: \${44:1}
+        startTime: \${45:2022-08-10T00:22:56.247547Z}
+        quotaDuration: \${46:604800s}
+    monitoring:
+      requestLogging:
+        enabled: \${47:true}
+    multiTenant:
+      allowTenants: \${48:true}
+      defaultTenantLocationRef:
+        kind: \${49:Folder}
+        name: \${50:identityplatformconfig-dep}
+    authorizedDomains:
+    - \${51:localhost}
+    - \${52:config-connector-sample.firebaseapp.com}
+    subtype: \${53:IDENTITY_PLATFORM}
+    client:
+      permissions:
+        disabledUserSignup: \${54:true}
+        disabledUserDeletion: \${55:true}
+    mfa:
+      state: \${56:ENABLED}
+    blockingFunctions:
+      triggers:
+        beforeCreate:
+          functionUriRef:
+            name: \${57:identityplatformconfig-dep}
+      forwardInboundCredentials:
+        idToken: \${58:true}
+        accessToken: \${59:true}
+        refereshToken: \${60:true}

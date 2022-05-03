@@ -1,0 +1,55 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: storagetransfer.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: StorageTransfer
+  version: v1beta1
+  serviceHostName: "storagetransfer.googleapis.com"
+  resources:
+  - name: google_storage_transfer_job
+    kind: StorageTransferJob
+    serverGeneratedIDField: "name"
+    resourceID:
+      targetField: name
+      valuteTemplate: "transferJobs/{{value}}"
+    skipImport: true
+    # NOTE: this resource's import ID is inconsistent, as the underlying API does not support the
+    # traditional "projects/{{project}}/{{collection}}/{{id}} relative resource name format. The
+    # project is instead specified as a required query parameter on the GET request. See:
+    # https://cloud.google.com/storage-transfer/docs/reference/rest/v1/transferJobs/get
+    idTemplate: "{{project}}/{{name}}"
+    # importer is not using the regex format
+    idTemplateCanBeUsedToMatchResourceName: false
+    resourceAvailableInAssetInventory: false
+    containers:
+    - type: project
+      tfField: project
+    resourceReferences:
+    - tfField: transfer_spec.gcs_data_sink.bucket_name
+      key: bucketRef
+      gvk:
+        kind: StorageBucket
+        version: v1beta1
+        group: storage.cnrm.cloud.google.com
+    - tfField: transfer_spec.gcs_data_source.bucket_name
+      key: bucketRef
+      gvk:
+        kind: StorageBucket
+        version: v1beta1
+        group: storage.cnrm.cloud.google.com

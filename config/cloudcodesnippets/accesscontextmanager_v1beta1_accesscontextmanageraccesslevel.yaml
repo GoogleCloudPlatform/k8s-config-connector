@@ -1,0 +1,19 @@
+label: Config Connector AccessContextManagerAccessLevel
+markdownDescription: Creates yaml for a AccessContextManagerAccessLevel resource
+insertText: |
+  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+  kind: AccessContextManagerAccessLevel
+  metadata:
+    name: \${1:accesscontextmanageraccesslevel-name}
+  spec:
+    accessPolicyRef:
+      name: \${2:accessleveldep}
+    title: \${3:Config Connector Sample Access Level}
+    basic:
+      conditions:
+      - devicePolicy:
+          requireCorpOwned: \${4:true}
+      - devicePolicy:
+          osConstraints:
+          - osType: \${5:DESKTOP_CHROME_OS}
+      combiningFunction: \${6:OR}

@@ -1,0 +1,38 @@
+{{ if.IAM}}
+<tr>
+    <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+{{ if.IAM.IsDCLBased}}
+<tr>
+    <td>IAMPolicy/IAMPartialPolicy Supports Conditions</td>
+    <td>Yes</td>
+</tr>
+<tr>
+    <td>IAMPolicyMember Supports Conditions</td>
+    <td>No</td>
+</tr>
+{{else}}
+<tr>
+    <td>Supports IAM Conditions</td>
+    {{ if.IAM.SupportsConditions}}<td>Yes</td>{{else}}<td>No</td>{{end}}
+</tr>
+{{end}}
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    {{ if.IAM.SupportsAuditConfigs}}<td>Yes</td>{{else}}<td>No</td>{{end}}
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        {{range $format := .IAM.ExternalReferenceFormats}}
+        <p>{% verbatim %}{{$format}}{% endverbatim %}</p>
+        {{end}}
+    </td>
+</tr>
+{{else}}
+<tr>
+    <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>No</td>
+</tr>
+{{end}}

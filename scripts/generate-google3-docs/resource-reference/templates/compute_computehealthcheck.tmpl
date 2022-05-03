@@ -1,0 +1,58 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Compute Engine</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/compute/docs/">/compute/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>
+<pre>v1.healthChecks</pre>
+<pre>v1.regionHealthChecks</pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td>
+<pre><a href="/compute/docs/reference/rest/v1/healthChecks">/compute/docs/reference/rest/v1/healthChecks</a></pre>
+<pre><a href="/compute/docs/reference/rest/v1/regionHealthChecks">/compute/docs/reference/rest/v1/regionHealthChecks</a></pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>compute.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{ .Kind}} can manage both global and regional health checks. To manage a global {{ .Kind}} use a value of `global` in
+the `spec.location` field. To manage a regional {{ .Kind}}, use a region name in the `spec.location` field.
+
+{{template "resource.tmpl" .}}
+{% endblock %}

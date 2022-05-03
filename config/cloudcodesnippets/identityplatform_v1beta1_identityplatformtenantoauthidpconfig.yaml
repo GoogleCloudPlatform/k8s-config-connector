@@ -1,0 +1,22 @@
+label: Config Connector IdentityPlatformTenantOAuthIDPConfig
+markdownDescription: Creates yaml for a IdentityPlatformTenantOAuthIDPConfig resource
+insertText: |
+  apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
+  kind: IdentityPlatformTenantOAuthIDPConfig
+  metadata:
+    labels:
+      \${1:foo}: \${2:bar}
+    name: \${3:identityplatformtenantoauthidpconfig-name}
+  spec:
+    resourceID: \${4:oidc.tenant-oauth-idp-config-sample}
+    tenantRef:
+      name: \${5:identityplatformtenantoauthidpconfig-dep}
+    displayName: \${6:sample tenant oauth idp config}
+    clientId: \${7:client-id}
+    issuer: \${8:issuer}
+    enabled: \${9:true}
+    clientSecret:
+      valueFrom:
+        secretKeyRef:
+          key: \${10:clientSecret}
+          name: \${11:identityplatformtenantoauthidpconfig-dep}

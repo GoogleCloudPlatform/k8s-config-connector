@@ -1,0 +1,136 @@
+affinityCookieTtlSec: integer
+backend:
+- balancingMode: string
+  capacityScaler: float
+  description: string
+  failover: boolean
+  group:
+    instanceGroupRef:
+      external: string
+      name: string
+      namespace: string
+    networkEndpointGroupRef:
+      external: string
+      name: string
+      namespace: string
+  maxConnections: integer
+  maxConnectionsPerEndpoint: integer
+  maxConnectionsPerInstance: integer
+  maxRate: integer
+  maxRatePerEndpoint: float
+  maxRatePerInstance: float
+  maxUtilization: float
+cdnPolicy:
+  cacheKeyPolicy:
+    includeHost: boolean
+    includeProtocol: boolean
+    includeQueryString: boolean
+    queryStringBlacklist:
+    - string
+    queryStringWhitelist:
+    - string
+  cacheMode: string
+  clientTtl: integer
+  defaultTtl: integer
+  maxTtl: integer
+  negativeCaching: boolean
+  negativeCachingPolicy:
+  - code: integer
+    ttl: integer
+  serveWhileStale: integer
+  signedUrlCacheMaxAgeSec: integer
+circuitBreakers:
+  connectTimeout:
+    nanos: integer
+    seconds: integer
+  maxConnections: integer
+  maxPendingRequests: integer
+  maxRequests: integer
+  maxRequestsPerConnection: integer
+  maxRetries: integer
+connectionDrainingTimeoutSec: integer
+connectionTrackingPolicy:
+  connectionPersistenceOnUnhealthyBackends: string
+  idleTimeoutSec: integer
+  trackingMode: string
+consistentHash:
+  httpCookie:
+    name: string
+    path: string
+    ttl:
+      nanos: integer
+      seconds: integer
+  httpHeaderName: string
+  minimumRingSize: integer
+customRequestHeaders:
+- string
+customResponseHeaders:
+- string
+description: string
+enableCdn: boolean
+failoverPolicy:
+  disableConnectionDrainOnFailover: boolean
+  dropTrafficIfUnhealthy: boolean
+  failoverRatio: float
+healthChecks:
+- healthCheckRef:
+    external: string
+    name: string
+    namespace: string
+  httpHealthCheckRef:
+    external: string
+    name: string
+    namespace: string
+iap:
+  oauth2ClientId: string
+  oauth2ClientSecret:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  oauth2ClientSecretSha256: string
+loadBalancingScheme: string
+localityLbPolicy: string
+location: string
+logConfig:
+  enable: boolean
+  sampleRate: float
+networkRef:
+  external: string
+  name: string
+  namespace: string
+outlierDetection:
+  baseEjectionTime:
+    nanos: integer
+    seconds: integer
+  consecutiveErrors: integer
+  consecutiveGatewayFailure: integer
+  enforcingConsecutiveErrors: integer
+  enforcingConsecutiveGatewayFailure: integer
+  enforcingSuccessRate: integer
+  interval:
+    nanos: integer
+    seconds: integer
+  maxEjectionPercent: integer
+  successRateMinimumHosts: integer
+  successRateRequestVolume: integer
+  successRateStdevFactor: integer
+portName: string
+protocol: string
+resourceID: string
+securityPolicyRef:
+  external: string
+  name: string
+  namespace: string
+securitySettings:
+  clientTLSPolicyRef:
+    external: string
+    name: string
+    namespace: string
+  subjectAltNames:
+  - string
+sessionAffinity: string
+subsetting:
+  policy: string
+timeoutSec: integer

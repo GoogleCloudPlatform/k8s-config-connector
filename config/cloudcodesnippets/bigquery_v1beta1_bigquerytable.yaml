@@ -1,0 +1,24 @@
+label: Config Connector BigQueryTable
+markdownDescription: Creates yaml for a BigQueryTable resource
+insertText: |
+  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+  kind: BigQueryTable
+  metadata:
+    labels:
+      \${1:data-source}: \${2:external}
+      \${3:schema-type}: \${4:auto-junk}
+    name: \${5:bigquerytable-name}
+  spec:
+    description: \${6:BigQuery Sample Table}
+    datasetRef:
+      name: \${7:bigquerytabledep}
+    friendlyName: \${8:bigquerytable-sample}
+    externalDataConfiguration:
+      autodetect: \${9:true}
+      compression: \${10:NONE}
+      ignoreUnknownValues: \${11:false}
+      maxBadRecords: \${12:10}
+      sourceFormat: \${13:CSV}
+      sourceUris:
+      - \${14:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt}
+      - \${15:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt}

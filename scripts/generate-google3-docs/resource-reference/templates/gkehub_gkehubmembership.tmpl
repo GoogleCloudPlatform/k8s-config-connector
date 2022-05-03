@@ -1,0 +1,52 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: GKE Hub REST documentation is under construction.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>GKE Hub</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/anthos/multicluster-management/connect/overview">/anthos/multicluster-management/connect/overview</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1beta1.projects.locations.memberships</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a class="external" href="https://gkehub.googleapis.com/$discovery/rest?version=v1beta1">https://gkehub.googleapis.com/$discovery/rest?version=v1beta1</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>gkehub.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

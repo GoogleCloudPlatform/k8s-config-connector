@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "client.go",
+        "endpoint_config_selector.go",
+        "endpoint_config_selector_alpha_yaml_embed.go",
+        "endpoint_config_selector_internal.go",
+        "endpoint_policy.go",
+        "endpoint_policy_alpha_yaml_embed.go",
+        "endpoint_policy_internal.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkservices/alpha",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

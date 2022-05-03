@@ -1,0 +1,32 @@
+label: Config Connector BigQueryJob
+markdownDescription: Creates yaml for a BigQueryJob resource
+insertText: |
+  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+  kind: BigQueryJob
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:bigqueryjob-name}
+  spec:
+    location: \${4:US}
+    jobTimeoutMs: \${5:600000}
+    query:
+      query: \${6:SELECT state FROM [lookerdata:cdc.project_tycho_reports]}
+      useLegacySql: \${7:true}
+      defaultDataset:
+        datasetRef:
+          name: \${8:bigqueryjobdep1query}
+      destinationTable:
+        tableRef:
+          name: \${9:bigqueryjobdepquery}
+      allowLargeResults: \${10:true}
+      flattenResults: \${11:true}
+      useQueryCache: \${12:true}
+      priority: \${13:INTERACTIVE}
+      writeDisposition: \${14:WRITE_APPEND}
+      schemaUpdateOptions:
+      - \${15:ALLOW_FIELD_ADDITION}
+      - \${16:ALLOW_FIELD_RELAXATION}
+      scriptOptions:
+        statementTimeoutMs: \${17:300000}
+        keyResultStatement: \${18:LAST}

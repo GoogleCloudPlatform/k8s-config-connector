@@ -1,0 +1,26 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_resource_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_resource_policy.go
+index ce89991e..e60eeda9 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_resource_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_resource_policy.go
+@@ -249,7 +249,6 @@ the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values
+ 										ForceNew: true,
+ 										Description: `Cloud Storage bucket location to store the auto snapshot
+ (regional or multi-regional)`,
+-										MaxItems: 1,
+ 										Elem: &schema.Schema{
+ 											Type: schema.TypeString,
+ 										},

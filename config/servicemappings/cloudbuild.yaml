@@ -1,0 +1,133 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: cloudbuild.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: CloudBuild
+  version: v1beta1
+  serviceHostName: "cloudbuild.googleapis.com"
+  resources:
+    - name: google_cloudbuild_trigger
+      kind: CloudBuildTrigger
+      metadataMapping:
+        name: name
+      idTemplate: "projects/{{project}}/triggers/{{name}}"
+      # doesn't import properly
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      containers:
+        - type: project
+          tfField: project
+      resourceReferences:
+        - tfField: trigger_template.repo_name
+          description: |-
+            The Cloud Source Repository to build. If omitted, the repo with
+            name "default" is assumed.
+          key: repoRef
+          gvk:
+            kind: SourceRepoRepository
+            version: v1beta1
+            group: sourcerepo.cnrm.cloud.google.com
+        - tfField: build.logs_bucket
+          key: logsBucketRef
+          description: |-
+            Google Cloud Storage bucket where logs should be written. Logs file
+            names will be of the format ${logsBucket}/log-${build_id}.txt.
+          gvk:
+            group: storage.cnrm.cloud.google.com
+            version: v1beta1
+            kind: StorageBucket
+          targetField: url
+        - tfField: build.secret.kms_key_name
+          key: kmsKeyRef
+          description: |-
+            KMS crypto key to use to decrypt these envs.
+          gvk:
+            group: kms.cnrm.cloud.google.com
+            version: v1beta1
+            kind: KMSCryptoKey
+          targetField: self_link
+        - tfField: build.source.storage_source.bucket
+          key: bucketRef
+          description: |-
+            Google Cloud Storage bucket containing the source.
+          gvk:
+            group: storage.cnrm.cloud.google.com
+            version: v1beta1
+            kind: StorageBucket
+        - tfField: build.source.repo_source.repo_name
+          key: repoRef
+          description: |-
+            The desired Cloud Source Repository. If omitted, "default" is
+            assumed.
+          gvk:
+            group: sourcerepo.cnrm.cloud.google.com
+            version: v1beta1
+            kind: SourceRepoRepository
+        - tfField: pubsub_config.topic
+          key: topicRef
+          description: |-
+            The name of the topic from which this subscription
+            is receiving messages.
+          gvk:
+            group: pubsub.cnrm.cloud.google.com
+            version: v1beta1
+            kind: PubSubTopic
+          valueTemplate: "projects/{{project}}/topics/{{value}}"
+        - tfField: pubsub_config.service_account_email
+          key: serviceAccountRef
+          description: Service account that will make the push request.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: webhook_config.secret
+          description: The secret required
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecret
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: service_account
+          key: serviceAccountRef
+          description: |-
+            The service account used for all user-controlled operations including
+            triggers.patch, triggers.run, builds.create, and builds.cancel.
+
+            If no service account is set, then the standard Cloud Build service account
+            ([PROJECT_NUM]@system.gserviceaccount.com) will be used instead.
+
+            When populating via the external field, the following format is supported:
+            projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL}
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+          valueTemplate: "projects/{{project}}/serviceAccounts/{{value}}"
+        - tfField: build.available_secrets.secret_manager.version_name
+          key: versionRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+      ignoredFields:
+        - trigger_template.project_id

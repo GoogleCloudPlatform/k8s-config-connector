@@ -1,0 +1,84 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: iam.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: IAM
+  version: v1beta1
+  serviceHostName: "iam.googleapis.com"
+  resources:
+    - name: google_iam_custom_role
+      kind: IAMCustomRole
+      # Due to this being a custom KCC-only resource, the ID template is
+      # in a non-standard format to more easily allow for TF resource
+      # multiplexing.
+      idTemplate: "{{project?}}#{{org_id?}}#{{role_id}}"
+      # This TF resource has a custom crafted import ID that has an arbitrary format that is not able to be mapped
+      # cleanly to a URI, due to being a combination of multiple underlying resources.
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: role_id
+      resourceID:
+        targetField: role_id
+      containers:
+        - type: project
+          tfField: project
+        - type: organization
+          tfField: org_id
+    - name: google_service_account
+      kind: IAMServiceAccount
+      iamConfig:
+        policyName: google_service_account_iam_policy
+        policyMemberName: google_service_account_iam_member
+        referenceField:
+          name: service_account_id
+          type: id
+        supportsConditions: true
+      iamMemberReferenceConfig:
+        targetField: email
+        valueTemplate: "serviceAccount:{{value}}"
+      idTemplate: "projects/{{project}}/serviceAccounts/[{{account_id}}@{{project}}.iam.gserviceaccount.com|{{unique_id}}]"
+      # id template is complex, has an 'or' condition
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: account_id
+      resourceID:
+        targetField: account_id
+      containers:
+        - type: project
+          tfField: project
+    - name: google_service_account_key
+      kind: IAMServiceAccountKey
+      skipImport: true
+      # import not implemented
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      serverGeneratedIDField: "name"
+      resourceReferences:
+        - key: serviceAccountRef
+          tfField: service_account_id
+          targetField: email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          parent: true
+      ignoredFields:
+        - keepers

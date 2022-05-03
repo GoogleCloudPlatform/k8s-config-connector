@@ -1,0 +1,107 @@
+label: Config Connector OSConfigGuestPolicy
+markdownDescription: Creates yaml for a OSConfigGuestPolicy resource
+insertText: |
+  apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
+  kind: OSConfigGuestPolicy
+  metadata:
+    name: \${1:osconfigguestpolicy-name}
+  spec:
+    description: \${2:An example OSConfigGuestPolicy for installing a web application
+      on assigned instances.}
+    assignment:
+      groupLabels:
+      - labels:
+          env: \${3:prod}
+          app: \${4:web}
+      - labels:
+          env: \${5:staging}
+          app: \${6:web}
+      instanceNamePrefixes:
+      - \${7:webappprod-}
+      - \${8:webappstaging-}
+      osTypes:
+      - osArchitecture: \${9:x86_64}
+        osShortName: \${10:debian}
+        osVersion: \${11:10}
+      - osArchitecture: \${12:x86_64}
+        osShortName: \${13:windows}
+        osVersion: \${14:10.0.14393}
+    packageRepositories:
+    - apt:
+        archiveType: \${15:DEB}
+        distribution: \${16:aiy-debian-buster}
+        components:
+        - \${17:main}
+        uri: \${18:https://packages.cloud.google.com/apt}
+        gpgKey: \${19:https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg}
+    - yum:
+        id: \${20:liamtest}
+        displayName: \${21:Liam Test}
+        baseUrl: \${22:https://packages.cloud.google.com/yum/repos/liamtest}
+        gpgKeys:
+        - \${23:https://packages.cloud.google.com/yum/doc/yum-key.gpg}
+        - \${24:https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg}
+    packages:
+    - desiredState: \${25:INSTALLED}
+      manager: \${26:APT}
+      name: \${27:add-apt-key}
+    - desiredState: \${28:REMOVED}
+      manager: \${29:YUM}
+      name: \${30:ssl}
+    - desiredState: \${31:UPDATED}
+      manager: \${32:ANY}
+      name: \${33:ansible-doc}
+    recipes:
+    - name: \${34:latest-ansible}
+      version: \${35:1.0.0.1}
+      artifacts:
+      - id: \${36:ansible}
+        remote:
+          uri: \${37:https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz}
+        allowInsecure: \${38:true}
+      desiredState: \${39:INSTALLED}
+      installSteps:
+      - fileCopy:
+          artifactId: \${40:ansible}
+          destination: \${41:/installbackups/ansible}
+          overwrite: \${42:true}
+          permissions: \${43:555}
+      - archiveExtraction:
+          destination: \${44:/var/ansible/}
+          type: \${45:TAR_GZIP}
+          artifactId: \${46:ansible}
+    - name: \${47:prod-web-app}
+      version: \${48:2.5.27}
+      artifacts:
+      - id: \${49:web-app}
+        allowInsecure: \${50:false}
+        gcs:
+          generation: \${51:1829485032948520}
+          object: \${52:latest/prod}
+          bucketRef:
+            external: \${53:https://storage.googleapis.com/storage/v1/b/webapp}
+      desiredState: \${54:UPDATED}
+      installSteps:
+      - fileCopy:
+          overwrite: \${55:false}
+          permissions: \${56:777}
+          artifactId: \${57:web-app}
+          destination: \${58:/installbackups/prod}
+      - fileExec:
+          localPath: \${59:/installbackups/prod}
+          allowedExitCodes:
+          - \${60:0}
+          args:
+          - \${61:prodcompile}
+      updateSteps:
+      - fileCopy:
+          permissions: \${62:755}
+          artifactId: \${63:web-app}
+          destination: \${64:/installbackups/prod}
+      - fileExec:
+          localPath: \${65:/installbackups/prod}
+          allowedExitCodes:
+          - \${66:0}
+          - \${67:4}
+          args:
+          - \${68:updatecompile}

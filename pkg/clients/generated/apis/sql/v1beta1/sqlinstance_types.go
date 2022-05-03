@@ -53,7 +53,7 @@ type InstanceBackupConfiguration struct {
 	// +optional
 	BackupRetentionSettings *InstanceBackupRetentionSettings `json:"backupRetentionSettings,omitempty"`
 
-	/* True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Cannot be used with Postgres. */
+	/* True if binary logging is enabled. If settings.backup_configuration.enabled is false, this must be as well. Can only be used with MySQL. */
 	// +optional
 	BinaryLogEnabled *bool `json:"binaryLogEnabled,omitempty"`
 
@@ -236,12 +236,11 @@ type InstanceSettings struct {
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
 	/* The availability type of the Cloud SQL instance, high availability
-	(REGIONAL) or single zone (ZONAL). For MySQL and SQL Server instances, ensure that
-	settings.backup_configuration.enabled and
-	settings.backup_configuration.binary_log_enabled are both set to true.
-	For Postgres instances, ensure that settings.backup_configuration.enabled
-	and settings.backup_configuration.point_in_time_recovery_enabled
-	are both set to true. */
+	(REGIONAL) or single zone (ZONAL). For all instances, ensure that
+	settings.backup_configuration.enabled is set to true.
+	For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
+	For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
+	is set to true. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 

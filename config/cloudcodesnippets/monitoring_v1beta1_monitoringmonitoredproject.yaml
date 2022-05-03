@@ -1,0 +1,9 @@
+label: Config Connector MonitoringMonitoredProject
+markdownDescription: Creates yaml for a MonitoringMonitoredProject resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringMonitoredProject
+  metadata:
+    name: \${1:monitoringmonitoredproject-name}
+  spec:
+    metricsScope: \${2:[PROJECT_ID?]}

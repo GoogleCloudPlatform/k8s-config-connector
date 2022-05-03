@@ -1,0 +1,14 @@
+label: Config Connector SQLDatabase
+markdownDescription: Creates yaml for a SQLDatabase resource
+insertText: |
+  apiVersion: sql.cnrm.cloud.google.com/v1beta1
+  kind: SQLDatabase
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:sqldatabase-name}
+  spec:
+    charset: \${4:utf8mb4}
+    collation: \${5:utf8mb4_bin}
+    instanceRef:
+      name: \${6:sqldatabase-dep}

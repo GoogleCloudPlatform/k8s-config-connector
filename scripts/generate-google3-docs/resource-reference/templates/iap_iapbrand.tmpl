@@ -1,0 +1,58 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: Brands can only be created once for a Google Cloud project and the underlying Google API
+doesn't not support DELETE or PATCH methods. Deleting a Brand managed by Config Connector will remove it from your cluster
+but will not delete it from Google Cloud.
+
+Note: The Identity and Access Management (IAM) service account used by Config Connector to authenticate with Google Cloud APIs
+has to be the owner of the Google Group whose email address will be used as the support email of the brand.
+See <a href="/iap/docs/programmatic-oauth-clients#support-email">the IAP user guide]</a> for details.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Identity-Aware Proxy</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/iap/docs/">/iap/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects.brands</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/iap/docs/reference/rest/v1/projects.brands">/iap/docs/reference/rest/v1/projects.brands</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .Kind}}<br>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>iap.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

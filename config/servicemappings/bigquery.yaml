@@ -1,0 +1,221 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: bigquery.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: BigQuery
+  version: v1beta1
+  serviceHostName: "bigquery.googleapis.com"
+  resources:
+    - name: google_bigquery_dataset
+      kind: BigQueryDataset
+      idTemplate: "projects/{{project}}/datasets/{{dataset_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: dataset_id
+        labels: labels
+      resourceID:
+        targetField: dataset_id
+      containers:
+        - type: project
+          tfField: project
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      directives:
+        - delete_contents_on_destroy
+      resourceReferences:
+        - key: projectRef
+          tfField: project
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: default_encryption_configuration.kms_key_name
+          description: |-
+            Describes the Cloud KMS encryption key that will be used to protect destination
+            BigQuery table. The BigQuery Service Account associated with your project requires
+            access to this encryption key.
+          key: kmsKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+    - name: google_bigquery_job
+      kind: BigQueryJob
+      idTemplate: "projects/{{project}}/jobs/{{job_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: job_id
+        labels: labels
+      resourceID:
+        targetField: job_id
+      containers:
+        - type: project
+          tfField: project
+      resourceReferences:
+        - key: tableRef
+          tfField: copy.source_tables.table_id
+          description: |-
+            A reference to the table.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: tableRef
+          tfField: copy.destination_table.table_id
+          description: |-
+            A reference to the table.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: tableRef
+          tfField: extract.source_table.table_id
+          description: |-
+            A reference to the table.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: tableRef
+          tfField: load.destination_table.table_id
+          description: |-
+            A reference to the table.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: datasetRef
+          tfField: query.default_dataset.dataset_id
+          description: |-
+            A reference to the dataset.
+          gvk:
+            kind: BigQueryDataset
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: tableRef
+          tfField: query.destination_table.table_id
+          description: |-
+            A reference to the table.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: copy.destination_encryption_configuration.kms_key_name
+          description: |-
+            Describes the Cloud KMS encryption key that will be used to protect
+            destination BigQuery table. The BigQuery Service Account associated
+            with your project requires access to this encryption key.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: load.destination_encryption_configuration.kms_key_name
+          description: |-
+            Describes the Cloud KMS encryption key that will be used to protect
+            destination BigQuery table. The BigQuery Service Account associated
+            with your project requires access to this encryption key.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: query.destination_encryption_configuration.kms_key_name
+          description: |-
+            Describes the Cloud KMS encryption key that will be used to protect
+            destination BigQuery table. The BigQuery Service Account associated
+            with your project requires access to this encryption key.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+      ignoredFields:
+        - copy.source_tables.project_id
+        - copy.source_tables.dataset_id
+        - copy.destination_table.project_id
+        - copy.destination_table.dataset_id
+        - extract.source_table.project_id
+        - extract.source_table.dataset_id
+        - load.destination_table.project_id
+        - load.destination_table.dataset_id
+        - query.default_dataset.project_id
+        - query.destination_table.project_id
+        - query.destination_table.dataset_id
+        # TODO(kcc-eng): omit support for references to BigQuery ML Models for
+        # now since the reference field is broken up into three fields, whereas
+        # KCC resource references need to be able to map to a single TF field.
+        # We could change one of the three fields to be able to accept a
+        # self_link to a BigQuery ML Model and then make the other two fields
+        # optional, making it possible for us to just drop the other two
+        # fields. This is the approach we took for table and dataset
+        # references. However, BigQuery ML Models don't seem to have a selfLink
+        # attribute today (source: cloud.google.com/bigquery/docs/reference/rest/v2/models).
+        - extract.source_model
+    - name: google_bigquery_table
+      kind: BigQueryTable
+      idTemplate: "projects/{{project}}/datasets/{{dataset_id}}/tables/{{table_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: table_id
+        labels: labels
+      resourceID:
+        targetField: table_id
+      iamConfig:
+        policyName: google_bigquery_table_iam_policy
+        policyMemberName: google_bigquery_table_iam_member
+        referenceField:
+          name: table_id
+          type: name
+        supportsConditions: true
+      ignoredFields:
+        - deletion_protection
+      resourceReferences:
+        - key: datasetRef
+          tfField: dataset_id
+          gvk:
+            kind: BigQueryDataset
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+        - tfField: encryption_configuration.kms_key_name
+          key: kmsKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project

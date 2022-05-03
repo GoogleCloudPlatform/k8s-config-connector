@@ -1,0 +1,29 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "client.go",
+        "iam.go",
+        "iam_utils.go",
+        "role.go",
+        "role_internal.go",
+        "role_yaml_embed.go",
+        "service_account.go",
+        "service_account_internal.go",
+        "service_account_yaml_embed.go",
+        "workload_identity_pool.go",
+        "workload_identity_pool_internal.go",
+        "workload_identity_pool_provider.go",
+        "workload_identity_pool_provider_internal.go",
+        "workload_identity_pool_provider_yaml_embed.go",
+        "workload_identity_pool_yaml_embed.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/iam",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

@@ -1,0 +1,15 @@
+label: Config Connector FilestoreBackup
+markdownDescription: Creates yaml for a FilestoreBackup resource
+insertText: |
+  apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+  kind: FilestoreBackup
+  metadata:
+    name: \${1:filestorebackup-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    description: \${3:A sample backup}
+    location: \${4:us-central1}
+    sourceFileShare: \${5:my_share}
+    sourceInstanceRef:
+      name: \${6:filestorebackup-dep}

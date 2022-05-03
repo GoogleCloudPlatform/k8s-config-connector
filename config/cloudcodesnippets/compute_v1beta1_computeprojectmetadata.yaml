@@ -1,0 +1,11 @@
+label: Config Connector ComputeProjectMetadata
+markdownDescription: Creates yaml for a ComputeProjectMetadata resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeProjectMetadata
+  metadata:
+    name: \${1:computeprojectmetadata-name}
+  spec:
+    metadata:
+      baz: \${2:bat}
+      foo: \${3:bar}

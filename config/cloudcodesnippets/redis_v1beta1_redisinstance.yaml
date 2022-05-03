@@ -1,0 +1,14 @@
+label: Config Connector RedisInstance
+markdownDescription: Creates yaml for a RedisInstance resource
+insertText: |
+  apiVersion: redis.cnrm.cloud.google.com/v1beta1
+  kind: RedisInstance
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:redisinstance-name}
+  spec:
+    displayName: \${4:Sample Redis Instance}
+    region: \${5:us-central1}
+    tier: \${6:BASIC}
+    memorySizeGb: \${7:16}

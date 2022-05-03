@@ -1,0 +1,28 @@
+label: Config Connector MonitoringMetricDescriptor
+markdownDescription: Creates yaml for a MonitoringMetricDescriptor resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringMetricDescriptor
+  metadata:
+    name: \${1:monitoringmetricdescriptor-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    labels:
+    - key: \${3:system_stable}
+      valueType: \${4:BOOL}
+      description: \${5:True if the estimation system is stable.}
+    - key: \${6:condition_summary}
+      valueType: \${7:STRING}
+      description: \${8:A description of the condition the market system is in.}
+    launchStage: \${9:BETA}
+    metadata:
+      ingestDelay: \${10:1000s}
+      samplePeriod: \${11:100s}
+    metricKind: \${12:GAUGE}
+    type: \${13:custom.googleapis.com/market/measurements/volume}
+    unit: \${14:[USD]/h}
+    valueType: \${15:DISTRIBUTION}
+    description: \${16:Tracks a combination of estimates of trade volume for a given
+      resource, in USD per hour.}
+    displayName: \${17:Trading Volume Estimate}

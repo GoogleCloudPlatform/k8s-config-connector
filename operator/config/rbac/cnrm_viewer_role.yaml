@@ -1,0 +1,68 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.84.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/system: "true"
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+  name: cnrm-viewer
+rules:
+- apiGroups:
+  - accesscontextmanager.cnrm.cloud.google.com
+  - apigee.cnrm.cloud.google.com
+  - artifactregistry.cnrm.cloud.google.com
+  - bigquery.cnrm.cloud.google.com
+  - bigtable.cnrm.cloud.google.com
+  - billingbudgets.cnrm.cloud.google.com
+  - binaryauthorization.cnrm.cloud.google.com
+  - cloudbuild.cnrm.cloud.google.com
+  - cloudfunctions.cnrm.cloud.google.com
+  - cloudidentity.cnrm.cloud.google.com
+  - cloudscheduler.cnrm.cloud.google.com
+  - compute.cnrm.cloud.google.com
+  - configcontroller.cnrm.cloud.google.com
+  - container.cnrm.cloud.google.com
+  - containeranalysis.cnrm.cloud.google.com
+  - dataflow.cnrm.cloud.google.com
+  - datafusion.cnrm.cloud.google.com
+  - dataproc.cnrm.cloud.google.com
+  - dns.cnrm.cloud.google.com
+  - eventarc.cnrm.cloud.google.com
+  - filestore.cnrm.cloud.google.com
+  - firestore.cnrm.cloud.google.com
+  - gameservices.cnrm.cloud.google.com
+  - gkehub.cnrm.cloud.google.com
+  - iam.cnrm.cloud.google.com
+  - iap.cnrm.cloud.google.com
+  - identityplatform.cnrm.cloud.google.com
+  - kms.cnrm.cloud.google.com
+  - logging.cnrm.cloud.google.com
+  - memcache.cnrm.cloud.google.com
+  - monitoring.cnrm.cloud.google.com
+  - networkconnectivity.cnrm.cloud.google.com
+  - networksecurity.cnrm.cloud.google.com
+  - networkservices.cnrm.cloud.google.com
+  - osconfig.cnrm.cloud.google.com
+  - privateca.cnrm.cloud.google.com
+  - pubsub.cnrm.cloud.google.com
+  - recaptchaenterprise.cnrm.cloud.google.com
+  - redis.cnrm.cloud.google.com
+  - resourcemanager.cnrm.cloud.google.com
+  - run.cnrm.cloud.google.com
+  - secretmanager.cnrm.cloud.google.com
+  - servicenetworking.cnrm.cloud.google.com
+  - serviceusage.cnrm.cloud.google.com
+  - sourcerepo.cnrm.cloud.google.com
+  - spanner.cnrm.cloud.google.com
+  - sql.cnrm.cloud.google.com
+  - storage.cnrm.cloud.google.com
+  - storagetransfer.cnrm.cloud.google.com
+  - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch

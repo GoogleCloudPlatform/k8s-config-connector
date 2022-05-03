@@ -1,0 +1,18 @@
+label: Config Connector PubSubSubscription
+markdownDescription: Creates yaml for a PubSubSubscription resource
+insertText: |
+  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+  kind: PubSubSubscription
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:pubsubsubscription-name}
+  spec:
+    ackDeadlineSeconds: \${4:15}
+    messageRetentionDuration: \${5:86400s}
+    retainAckedMessages: \${6:false}
+    topicRef:
+      name: \${7:pubsubsubscription-dep}
+    deadLetterPolicy:
+      deadLetterTopicRef:
+        name: \${8:pubsubsubscription-dep2}

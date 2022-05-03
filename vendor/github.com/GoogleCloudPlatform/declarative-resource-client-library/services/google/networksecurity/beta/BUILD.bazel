@@ -1,0 +1,24 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "authorization_policy.go",
+        "authorization_policy_beta_yaml_embed.go",
+        "authorization_policy_internal.go",
+        "client.go",
+        "client_tls_policy.go",
+        "client_tls_policy_beta_yaml_embed.go",
+        "client_tls_policy_internal.go",
+        "server_tls_policy.go",
+        "server_tls_policy_beta_yaml_embed.go",
+        "server_tls_policy_internal.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networksecurity/beta",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

@@ -1,0 +1,147 @@
+label: Config Connector OSConfigOSPolicyAssignment
+markdownDescription: Creates yaml for a OSConfigOSPolicyAssignment resource
+insertText: |
+  apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
+  kind: OSConfigOSPolicyAssignment
+  metadata:
+    name: \${1:osconfigospolicyassignment-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-west2-a}
+    description: \${4:A test os policy assignment}
+    osPolicies:
+    - id: \${5:policy}
+      description: \${6:A test os policy}
+      mode: \${7:VALIDATION}
+      resourceGroups:
+      - inventoryFilters:
+        - osShortName: \${8:centos}
+          osVersion: \${9:8.*}
+        resources:
+        - id: \${10:apt}
+          pkg:
+            desiredState: \${11:INSTALLED}
+            apt:
+              name: \${12:bazel}
+        - id: \${13:deb1}
+          pkg:
+            desiredState: \${14:INSTALLED}
+            deb:
+              source:
+                localPath: \${15:HOME/package.deb}
+        - id: \${16:deb2}
+          pkg:
+            desiredState: \${17:INSTALLED}
+            deb:
+              pullDeps: \${18:true}
+              source:
+                allowInsecure: \${19:true}
+                remote:
+                  uri: \${20:ftp.us.debian.org/debian/package.deb}
+                  sha256Checksum: \${21:3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025}
+        - id: \${22:deb3}
+          pkg:
+            desiredState: \${23:INSTALLED}
+            deb:
+              pullDeps: \${24:true}
+              source:
+                gcs:
+                  bucket: \${25:test-bucket}
+                  object: \${26:test-object}
+                  generation: \${27:1}
+        - id: \${28:yum}
+          pkg:
+            desiredState: \${29:INSTALLED}
+            yum:
+              name: \${30:gstreamer-plugins-base-devel.x86_64}
+        - id: \${31:zypper}
+          pkg:
+            desiredState: \${32:INSTALLED}
+            zypper:
+              name: \${33:gcc}
+        - id: \${34:rpm1}
+          pkg:
+            desiredState: \${35:INSTALLED}
+            rpm:
+              pullDeps: \${36:true}
+              source:
+                localPath: \${37:HOME/package.rpm}
+        - id: \${38:rpm2}
+          pkg:
+            desiredState: \${39:INSTALLED}
+            rpm:
+              source:
+                allowInsecure: \${40:true}
+                remote:
+                  uri: \${41:https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm}
+                  sha256Checksum: \${42:3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025}
+        - id: \${43:rpm3}
+          pkg:
+            desiredState: \${44:INSTALLED}
+            rpm:
+              source:
+                gcs:
+                  bucket: \${45:test-bucket}
+                  object: \${46:test-object}
+                  generation: \${47:1}
+      - resources:
+        - id: \${48:apt-to-deb}
+          pkg:
+            desiredState: \${49:INSTALLED}
+            apt:
+              name: \${50:bazel}
+        - id: \${51:deb-local-path-to-gcs}
+          pkg:
+            desiredState: \${52:INSTALLED}
+            deb:
+              source:
+                localPath: \${53:HOME/package.deb}
+        - id: \${54:googet}
+          pkg:
+            desiredState: \${55:INSTALLED}
+            googet:
+              name: \${56:gcc}
+        - id: \${57:msi1}
+          pkg:
+            desiredState: \${58:INSTALLED}
+            msi:
+              source:
+                localPath: \${59:HOME/package.msi}
+              properties:
+              - \${60:REBOOT=ReallySuppress}
+        - id: \${61:msi2}
+          pkg:
+            desiredState: \${62:INSTALLED}
+            msi:
+              source:
+                allowInsecure: \${63:true}
+                remote:
+                  uri: \${64:https://remote.uri.com/package.msi}
+                  sha256Checksum: \${65:3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025}
+                sha256Checksum: \${66:3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025}
+        - id: \${67:msi3}
+          pkg:
+            desiredState: \${68:INSTALLED}
+            msi:
+              source:
+                gcs:
+                  bucket: \${69:test-bucket}
+                  object: \${70:test-object}
+                  generation: \${71:1}
+      allowNoResourceGroupMatch: \${72:false}
+    instanceFilter:
+      all: \${73:false}
+      inclusionLabels:
+      - labels:
+          label-one: \${74:value-one}
+      exclusionLabels:
+      - labels:
+          label-two: \${75:value-two}
+      inventories:
+      - osShortName: \${76:centos}
+        osVersion: \${77:8.*}
+    rollout:
+      disruptionBudget:
+        fixed: \${78:1}
+      minWaitDuration: \${79:3.5s}

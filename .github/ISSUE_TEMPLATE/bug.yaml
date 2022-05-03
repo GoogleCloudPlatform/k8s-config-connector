@@ -1,0 +1,108 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Bug'
+description: "Report something that doesn't work how it should"
+labels: ['bug']
+body:
+- type: checkboxes
+  id: checklist
+  attributes:
+    label: Checklist
+    options:
+      - label: I did not find a related open issue.
+        required: true
+      - label: 'I did not find a solution in the troubleshooting guide: (https://cloud.google.com/config-connector/docs/troubleshooting)'
+        required: true
+      - label: 'If this issue is time-sensitive, I have submitted a corresponding issue with [GCP support](https://cloud.google.com/support-hub).'
+        required: true
+- type: 'markdown'
+  attributes:
+    value: |-
+      Thank you for filing an bug. Please complete the form below so we can triage, reproduce, and fix your issue.
+
+- id: 'bug-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Bug Description'
+    description: 'A clear and concise description of the bug.'
+  validations:
+    required: true
+
+- id: 'optional-diag'
+  type: 'textarea'
+  attributes:
+    label: 'Additional Diagnostic Information'
+    description: 'Any additional diagnostic info'
+  validations:
+    required: true
+
+- type: input
+  id: k8s-version
+  attributes:
+    label: Kubernetes Cluster Version
+    description: kubectl version --short
+  validations:
+    required: true
+
+- type: input
+  id: kcc-version
+  attributes:
+    label: Config Connector Version
+    description: | 
+      kubectl get ns cnrm-system -o jsonpath='{.metadata.annotations.cnrm\\.cloud\\.google\\.com/version}'
+  validations:
+    required: true
+
+- type: dropdown
+  id: kcc-mode
+  attributes:
+    label: Config Connector Mode
+    description: 'kubectl get ConfigConnector "configconnector.core.cnrm.cloud.google.com" -o=jsonpath="{@.spec.mode}"'
+    options:
+        - namespaced mode (default)
+        - cluster mode
+  validations:
+    required: true
+
+- id: 'logs'
+  type: 'textarea'
+  attributes:
+    label: 'Log Output'
+    description: | 
+      Include any relevant log output. 
+      See https://cloud.google.com/config-connector/docs/troubleshooting#logging. 
+      If the issue is for a specific resource, please include those logs.
+
+- id: 'repro'
+  type: 'textarea'
+  attributes:
+    label: 'Steps to reproduce the issue'
+    description: 'Steps needed to reproduce the issue.'
+  validations:
+    required: true
+
+- id: 'repro-yaml'
+  type: 'textarea'
+  attributes:
+    label: 'YAML snippets'
+    description: 'YAML snippets needed to reproduce the issue. See the following as an example.'
+    render: 'YAML'
+    placeholder: |
+      apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+      kind: PubSubTopic
+      metadata:
+        labels:
+          label-one: "value-one"
+        name: pubsubtopic-sample

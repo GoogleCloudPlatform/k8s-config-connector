@@ -1,0 +1,26 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
+index ad08369e4..172af3372 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
+@@ -58,7 +58,6 @@ func resourceBigtableGCPolicy() *schema.Resource {
+ 				Optional:    true,
+ 				ForceNew:    true,
+ 				Description: `GC policy that applies to all cells older than the given age.`,
+-				MaxItems:    1,
+ 				Elem: &schema.Resource{
+ 					Schema: map[string]*schema.Schema{
+ 						"days": {

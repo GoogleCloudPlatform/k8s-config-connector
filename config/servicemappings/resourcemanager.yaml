@@ -1,0 +1,200 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: resourcemanager.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: ResourceManager
+  version: v1beta1
+  serviceHostName: "cloudresourcemanager.googleapis.com"
+  resources:
+    - name: google_folder
+      kind: Folder
+      serverGeneratedIDField: name
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      resourceID:
+        targetField: name
+        valueTemplate: "folders/{{value}}"
+      iamConfig:
+        policyName: google_folder_iam_policy
+        policyMemberName: google_folder_iam_member
+        auditConfigName: google_folder_iam_audit_config
+        referenceField:
+          name: folder
+          type: id
+        supportsConditions: true
+      resourceReferences:
+        - key: folderRef
+          tfField: parent_folder_id
+          description: |-
+            The folder that this resource belongs to. Changing this forces the
+            resource to be migrated to the newly specified folder. Only one of
+            folderRef or organizationRef may be specified.
+          gvk:
+            kind: Folder
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: folder_id
+        - key: organizationRef
+          tfField: parent_org_id
+          description: |-
+            The organization that this resource belongs to. Changing this
+            forces the resource to be migrated to the newly specified
+            organization. Only one of folderRef or organizationRef may be
+            specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Organization
+      containers:
+        - type: folder
+          tfField: parent_folder_id
+        - type: organization
+          tfField: parent_org_id
+      hierarchicalReferences:
+        - type: folder
+          key: folderRef
+        - type: organization
+          key: organizationRef
+    - name: google_org_policy
+      kind: ResourceManagerPolicy
+      # Due to this being a custom KCC-only resource, the ID template is
+      # in a non-standard format to more easily allow for TF resource
+      # multiplexing.
+      idTemplate: "{{project?}}#{{folder?}}#{{org_id?}}#{{constraint}}"
+      #  This TF resource has a custom crafted import ID that has an arbitrary format that is not able to be mapped
+      # cleanly to a URI, due to being a combination of multiple underlying resources.
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project on which to configure the constraint. Only one of
+            projectRef, folderRef, or organizationRef may be specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Project
+          parent: true
+        - tfField: folder
+          key: folderRef
+          description: |-
+            The folder on which to configure the constraint. Only one of
+            projectRef, folderRef, or organizationRef may be specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Folder
+          targetField: name
+          parent: true
+        - tfField: org_id
+          key: organizationRef
+          description: |-
+            The organization on which to configure the constraint. Only one of
+            projectRef, folderRef, or organizationRef may be specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Organization
+          parent: true
+    - name: google_project
+      kind: Project
+      serverGeneratedIDField: number
+      idTemplate: "projects/{{project_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: project_id
+        labels: labels
+      resourceID:
+        targetField: project_id
+      ignoredFields:
+        - skip_delete
+      directives:
+        - auto_create_network
+      iamConfig:
+        policyName: google_project_iam_policy
+        policyMemberName: google_project_iam_member
+        auditConfigName: google_project_iam_audit_config
+        referenceField:
+          name: project
+          type: id
+        supportsConditions: true
+      resourceReferences:
+        - key: folderRef
+          tfField: folder_id
+          description: |-
+            The folder that this resource belongs to. Changing this forces the
+            resource to be migrated to the newly specified folder. Only one of
+            folderRef or organizationRef may be specified.
+          gvk:
+            kind: Folder
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: folder_id
+        - key: organizationRef
+          tfField: org_id
+          description: |-
+            The organization that this resource belongs to. Changing this
+            forces the resource to be migrated to the newly specified
+            organization. Only one of folderRef or organizationRef may be
+            specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Organization
+        - key: billingAccountRef
+          tfField: billing_account
+          gvk:
+            kind: BillingAccount
+            version: v1beta1
+            group: billing.cnrm.cloud.google.com
+          targetField: name
+      containers:
+        - type: folder
+          tfField: folder_id
+        - type: organization
+          tfField: org_id
+      hierarchicalReferences:
+        - type: folder
+          key: folderRef
+        - type: organization
+          key: organizationRef
+    - name: google_resource_manager_lien
+      kind: ResourceManagerLien
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name
+      idTemplate: "{{parent}}/{{name}}"
+      # import ID too broad
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: parent
+          types:
+            - key: projectRef
+              description: |-
+                A project on which the lien is placed.
+              parent: true
+              valueTemplate: projects/{{value}}
+              targetField: "number"
+              gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com

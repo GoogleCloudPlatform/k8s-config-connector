@@ -1,0 +1,38 @@
+label: Config Connector GKEHubFeatureMembership
+markdownDescription: Creates yaml for a GKEHubFeatureMembership resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubFeatureMembership
+  metadata:
+    name: \${1:gkehubfeaturemembership-name}
+  spec:
+    projectRef:
+      name: \${2:gkehubfeaturemembership-dep}
+    location: \${3:global}
+    membershipRef:
+      name: \${4:gkehubfeaturemembership-dep}
+    featureRef:
+      name: \${5:gkehubfeaturemembership-dep}
+    configmanagement:
+      configSync:
+        sourceFormat: \${6:unstructured}
+        git:
+          syncRepo: \${7:https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit}
+          syncBranch: \${8:master}
+          policyDir: \${9:config-connector}
+          syncWaitSecs: \${10:20}
+          syncRev: \${11:HEAD}
+      policyController:
+        enabled: \${12:true}
+        exemptableNamespaces:
+        - \${13:test-namespace}
+        referentialRulesEnabled: \${14:true}
+        logDeniesEnabled: \${15:true}
+        templateLibraryInstalled: \${16:true}
+        auditIntervalSeconds: \${17:20}
+      binauthz:
+        enabled: \${18:true}
+      hierarchyController:
+        enabled: \${19:true}
+        enablePodTreeLabels: \${20:true}
+        enableHierarchicalResourceQuota: \${21:true}

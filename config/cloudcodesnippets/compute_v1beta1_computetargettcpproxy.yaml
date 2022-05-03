@@ -1,0 +1,11 @@
+label: Config Connector ComputeTargetTCPProxy
+markdownDescription: Creates yaml for a ComputeTargetTCPProxy resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeTargetTCPProxy
+  metadata:
+    name: \${1:computetargettcpproxy-name}
+  spec:
+    description: \${2:A sample TCP proxy.}
+    backendServiceRef:
+      name: \${3:computetargettcpproxy-dep}

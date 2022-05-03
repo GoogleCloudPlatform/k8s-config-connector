@@ -1,0 +1,54 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: artifactregistry.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: ArtifactRegistry
+  version: v1beta1
+  serviceHostName: "artifactregistry.googleapis.com"
+  resources:
+  - name: google_artifact_registry_repository
+    kind: ArtifactRegistryRepository
+    resourceAvailableInAssetInventory: true
+    iamConfig:
+      policyName: google_artifact_registry_repository_iam_policy
+      policyMemberName: google_artifact_registry_repository_iam_member
+      referenceField:
+        name: repository
+        type: name
+    metadataMapping:
+      name: repository_id
+      labels: labels
+    resourceID:
+      targetField: repository_id
+    idTemplate: "projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}"
+    idTemplateCanBeUsedToMatchResourceName: true
+    resourceReferences:
+      - tfField: kms_key_name
+        key: kmsKeyRef
+        description: |-
+          The customer managed encryption key that’s used to encrypt the
+          contents of the Repository.
+        gvk:
+          kind: KMSCryptoKey
+          version: v1beta1
+          group: kms.cnrm.cloud.google.com
+        targetField: self_link
+    containers:
+    - type: project
+      tfField: project

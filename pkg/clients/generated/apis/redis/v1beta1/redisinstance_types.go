@@ -176,7 +176,7 @@ type RedisInstanceSpec struct {
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`
 
-	/* Immutable. Optional. Read replica mode. Can only be specified when trying to create the instance.
+	/* Optional. Read replica mode. Can only be specified when trying to create the instance.
 	If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
 	- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
 	instance cannot scale up or down the number of replicas.
@@ -218,6 +218,13 @@ type RedisInstanceSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. Additional IP range for node placement. Required when enabling read replicas on
+	an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or
+	"auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address
+	range associated with the private service access connection, or "auto". */
+	// +optional
+	SecondaryIpRange *string `json:"secondaryIpRange,omitempty"`
 
 	/* Immutable. The service tier of the instance. Must be one of these values:
 

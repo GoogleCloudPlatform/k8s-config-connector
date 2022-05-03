@@ -1,0 +1,21 @@
+label: Config Connector ComputeVPNTunnel
+markdownDescription: Creates yaml for a ComputeVPNTunnel resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeVPNTunnel
+  metadata:
+    labels:
+      \${1:foo}: \${2:bar}
+    name: \${3:computevpntunnel-name}
+  spec:
+    peerIp: \${4:15.0.0.120}
+    region: \${5:us-central1}
+    sharedSecret:
+      valueFrom:
+        secretKeyRef:
+          name: \${6:computevpntunnel-dep}
+          key: \${7:sharedSecret}
+    targetVPNGatewayRef:
+      name: \${8:computevpntunnel-dep}
+    localTrafficSelector:
+    - \${9:192.168.0.0/16}

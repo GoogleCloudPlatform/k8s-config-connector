@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "brand.go",
+        "brand_internal.go",
+        "brand_yaml_embed.go",
+        "client.go",
+        "iap_utils.go",
+        "identity_aware_proxy_client.go",
+        "identity_aware_proxy_client_internal.go",
+        "identity_aware_proxy_client_yaml_embed.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/iap",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

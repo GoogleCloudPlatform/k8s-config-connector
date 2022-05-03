@@ -1,0 +1,97 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-sample
+spec:
+  description: "Regional ComputeURLMap L7 Ilb Path"
+  location: us-central1
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-dep
+  hostRule:
+    - hosts:
+        - "mysite.com"
+      pathMatcher: "allpaths"
+  pathMatcher:
+    - name: "allpaths"
+      defaultService:
+        backendServiceRef:
+          name: computeurlmap-dep
+      pathRule:
+        - paths:
+            - "/home"
+          routeAction:
+            corsPolicy:
+              allowCredentials: true
+              allowHeaders:
+                - "Allowed content"
+              allowMethods:
+                - "GET"
+              allowOrigins:
+                - "Allowed origin"
+              exposeHeaders:
+                - "Exposed header"
+              maxAge: 30
+              disabled: false
+            faultInjectionPolicy:
+              abort:
+                httpStatus: 234
+                percentage: 5.6
+              delay:
+                fixedDelay:
+                  seconds: "0"
+                  nanos: 50000
+                percentage: 7.8
+            requestMirrorPolicy:
+              backendServiceRef:
+                name: computeurlmap-dep
+            retryPolicy:
+              numRetries: 4
+              retryTimeout:
+                seconds: "30"
+              retryConditions:
+                - "5xx"
+                - "deadline-exceeded"
+            timeout:
+              seconds: "20"
+              nanos: 750000000
+            urlRewrite:
+              hostRewrite: "A replacement header"
+              pathPrefixRewrite: "A replacement path"
+            weightedBackendServices:
+              - backendServiceRef:
+                  name: computeurlmap-dep
+                weight: 400
+                headerAction:
+                  requestHeadersToRemove:
+                    - "RemoveMe"
+                  requestHeadersToAdd:
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
+                      replace: true
+                  responseHeadersToRemove:
+                    - "RemoveMe"
+                  responseHeadersToAdd:
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
+                      replace: false
+  test:
+    - service:
+        backendServiceRef:
+          name: computeurlmap-dep
+      host: "hi.com"
+      path: "/home"

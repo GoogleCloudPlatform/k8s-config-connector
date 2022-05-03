@@ -1,0 +1,17 @@
+label: Config Connector ComputeTargetHTTPSProxy
+markdownDescription: Creates yaml for a ComputeTargetHTTPSProxy resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeTargetHTTPSProxy
+  metadata:
+    name: \${1:computetargethttpsproxy-name}
+  spec:
+    description: \${2:A sample proxy}
+    urlMapRef:
+      name: \${3:computetargethttpsproxy-dep}
+    sslCertificates:
+    - name: \${4:computetargethttpsproxy-dep}
+    sslPolicyRef:
+      name: \${5:computetargethttpsproxy-dep}
+    quicOverride: \${6:ENABLE}
+    location: \${7:global}

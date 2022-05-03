@@ -1,0 +1,35 @@
+label: Config Connector ComputePacketMirroring
+markdownDescription: Creates yaml for a ComputePacketMirroring resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputePacketMirroring
+  metadata:
+    name: \${1:computepacketmirroring-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-west2}
+    description: \${4:A sample packet mirroring}
+    network:
+      urlRef:
+        name: \${5:computepacketmirroring-dep}
+    priority: \${6:1000}
+    collectorIlb:
+      urlRef:
+        name: \${7:computepacketmirroring-dep}
+    mirroredResources:
+      subnetworks:
+      - urlRef:
+          name: \${8:computepacketmirroring-dep}
+      instances:
+      - urlRef:
+          name: \${9:computepacketmirroring-dep}
+      tags:
+      - \${10:tag-one}
+    filter:
+      cidrRanges:
+      - \${11:192.168.0.0/23}
+      ipProtocols:
+      - \${12:tcp}
+      direction: \${13:BOTH}
+    enable: \${14:TRUE}

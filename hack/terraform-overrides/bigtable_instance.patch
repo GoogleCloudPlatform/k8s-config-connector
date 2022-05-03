@@ -1,0 +1,89 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
+index d89545571..601dc09df 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
+@@ -62,6 +62,7 @@ func resourceBigtableInstance() *schema.Resource {
+ 						},
+ 						"zone": {
+ 							Type:        schema.TypeString,
++							Required:    true,
+ 							Computed:    true,
+ 							Optional:    true,
+ 							Description: `The zone to create the Cloud Bigtable cluster in. Each cluster must have a different zone in the same region. Zones that support Bigtable instances are noted on the Cloud Bigtable locations page.`,
+@@ -102,10 +103,11 @@ func resourceBigtableInstance() *schema.Resource {
+ 			},
+
+ 			"deletion_protection": {
+-				Type:        schema.TypeBool,
+-				Optional:    true,
+-				Default:     true,
+-				Description: `Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail.`,
++				Type:             schema.TypeBool,
++				Optional:         true,
++				Default:          false,
++				DiffSuppressFunc: bigtableInstanceDeletionProtectionDiffSuppress,
++				Deprecated:       "This field no longer serves any function and is intended to be dropped in a later version of the resource.",
+ 			},
+
+ 			"labels": {
+@@ -221,6 +223,16 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
+ 		return fmt.Errorf("Error setting project: %s", err)
+ 	}
+
++	var instanceType string
++	if instance.InstanceType == bigtable.DEVELOPMENT {
++		instanceType = "DEVELOPMENT"
++	} else {
++		instanceType = "PRODUCTION"
++	}
++	if err := d.Set("instance_type", instanceType); err != nil {
++		return fmt.Errorf("Error setting instance_type: %s", err)
++	}
++
+ 	clusters, err := c.Clusters(ctx, instance.Name)
+ 	if err != nil {
+ 		return fmt.Errorf("Error retrieving instance clusters. %s", err)
+@@ -246,8 +258,6 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
+ 	if err := d.Set("labels", instance.Labels); err != nil {
+ 		return fmt.Errorf("Error setting labels: %s", err)
+ 	}
+-	// Don't set instance_type: we don't want to detect drift on it because it can
+-	// change under-the-hood.
+
+ 	return nil
+ }
+@@ -306,9 +316,6 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
+ }
+
+ func resourceBigtableInstanceDestroy(d *schema.ResourceData, meta interface{}) error {
+-	if d.Get("deletion_protection").(bool) {
+-		return fmt.Errorf("cannot destroy instance without setting deletion_protection=false and running `terraform apply`")
+-	}
+ 	config := meta.(*Config)
+ 	userAgent, err := generateUserAgentString(d, config.userAgent)
+ 	if err != nil {
+@@ -526,3 +545,10 @@ func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([
+
+ 	return []*schema.ResourceData{d}, nil
+ }
++
++func bigtableInstanceDeletionProtectionDiffSuppress(_, _, _ string, _ *schema.ResourceData) bool {
++	// Always suppress diffs for "deletion_protection" since the field no
++	// longer serves any purpose, and the intention is to remove it from the
++	// resource in the future.
++	return true
++}

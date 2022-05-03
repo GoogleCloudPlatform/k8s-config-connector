@@ -1,0 +1,79 @@
+label: Config Connector PrivateCACAPool
+markdownDescription: Creates yaml for a PrivateCACAPool resource
+insertText: |
+  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+  kind: PrivateCACAPool
+  metadata:
+    labels:
+      \${1:label-two}: \${2:value-two}
+    name: \${3:privatecacapool-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:us-central1}
+    tier: \${6:ENTERPRISE}
+    issuancePolicy:
+      allowedKeyTypes:
+      - rsa:
+          minModulusSize: \${7:64}
+          maxModulusSize: \${8:128}
+      - ellipticCurve:
+          signatureAlgorithm: \${9:ECDSA_P384}
+      maximumLifetime: \${10:43200s}
+      allowedIssuanceModes:
+        allowCsrBasedIssuance: \${11:true}
+        allowConfigBasedIssuance: \${12:false}
+      baselineValues:
+        keyUsage:
+          baseKeyUsage:
+            digitalSignature: \${13:false}
+            contentCommitment: \${14:false}
+            keyEncipherment: \${15:false}
+            dataEncipherment: \${16:false}
+            keyAgreement: \${17:false}
+            certSign: \${18:false}
+            crlSign: \${19:false}
+            encipherOnly: \${20:false}
+            decipherOnly: \${21:false}
+          extendedKeyUsage:
+            serverAuth: \${22:false}
+            clientAuth: \${23:false}
+            codeSigning: \${24:false}
+            emailProtection: \${25:false}
+            timeStamping: \${26:false}
+            ocspSigning: \${27:false}
+          unknownExtendedKeyUsages:
+          - objectIdPath:
+            - \${28:1}
+            - \${29:7}
+        caOptions:
+          isCa: \${30:false}
+          maxIssuerPathLength: \${31:7}
+        policyIds:
+        - objectIdPath:
+          - \${32:1}
+          - \${33:7}
+        aiaOcspServers:
+        - \${34:string}
+        additionalExtensions:
+        - objectId:
+            objectIdPath:
+            - \${35:1}
+            - \${36:7}
+          critical: \${37:false}
+          value: \${38:c3RyaW5nCg==}
+      identityConstraints:
+        celExpression:
+          title: \${39:Sample expression}
+          description: \${40:Always false}
+          expression: \${41:false}
+          location: \${42:devops.ca_pool.json}
+        allowSubjectPassthrough: \${43:false}
+        allowSubjectAltNamesPassthrough: \${44:false}
+      passthroughExtensions:
+        knownExtensions:
+        - \${45:BASE_KEY_USAGE}
+        additionalExtensions:
+        - objectIdPath:
+          - \${46:1}
+          - \${47:7}

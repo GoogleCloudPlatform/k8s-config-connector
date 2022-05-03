@@ -1,0 +1,48 @@
+label: Config Connector NetworkServicesGRPCRoute
+markdownDescription: Creates yaml for a NetworkServicesGRPCRoute resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesGRPCRoute
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkservicesgrpcroute-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    hostnames:
+    - \${6:baz.bar}
+    meshes:
+    - name: \${7:networkservicesgrpcroute-dep}
+    gateways:
+    - name: \${8:networkservicesgrpcroute-dep}
+    rules:
+    - matches:
+      - method:
+          grpcService: \${9:helloworld.Greeter}
+          grpcMethod: \${10:SayHello}
+        headers:
+        - key: \${11:foo}
+          value: \${12:bar}
+      action:
+        destinations:
+        - serviceRef:
+            name: \${13:networkservicesgrpcroute-dep}
+        faultInjectionPolicy:
+          abort:
+            httpStatus: \${14:501}
+            percentage: \${15:1}
+          delay:
+            fixedDelay: \${16:10s}
+            percentage: \${17:2}
+        retryPolicy:
+          numRetries: \${18:3}
+          retryConditions:
+          - \${19:refused-stream}
+          - \${20:cancelled}
+        timeout: \${21:30s}
+    - action:
+        destinations:
+        - serviceRef:
+            name: \${22:networkservicesgrpcroute-dep}

@@ -1,0 +1,12 @@
+label: Config Connector ComputeFirewallPolicy
+markdownDescription: Creates yaml for a ComputeFirewallPolicy resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeFirewallPolicy
+  metadata:
+    name: \${1:computefirewallpolicy-name}
+  spec:
+    organizationRef:
+      external: \${2:organizations/[ORG_ID?]}
+    shortName: \${3:[PROJECT_ID?]-short}
+    description: \${4:A basic organization firewall policy}

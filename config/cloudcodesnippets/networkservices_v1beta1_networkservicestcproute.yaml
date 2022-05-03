@@ -1,0 +1,27 @@
+label: Config Connector NetworkServicesTCPRoute
+markdownDescription: Creates yaml for a NetworkServicesTCPRoute resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesTCPRoute
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkservicestcproute-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    meshes:
+    - name: \${6:networkservicestcproute-dep}
+    rules:
+    - matches:
+      - address: \${7:10.0.0.1/32}
+        port: \${8:7777}
+      action:
+        destinations:
+        - serviceRef:
+            name: \${9:networkservicestcproute-dep}
+    - action:
+        destinations:
+        - serviceRef:
+            name: \${10:networkservicestcproute-dep}

@@ -1,0 +1,124 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
+kind: IdentityPlatformConfig
+metadata:
+  name: "identityplatformconfig-${uniqueId}"
+spec:
+  projectRef:
+    # A fixed project is used here because there is currently no way to enable identity platform programatically (b/197420627).
+    external: "projects/kcc-identity-platform"
+  signIn:
+    email:
+      enabled: true
+      passwordRequired: false
+    phoneNumber:
+      enabled: false
+      testPhoneNumbers:
+        +52 –  55 – 1234 5678: "000001"
+    anonymous:
+      enabled: false
+    allowDuplicateEmails: false
+  notification:
+    sendEmail:
+      method: "DEFAULT"
+      smtp:
+        senderEmail: "magic-modules-eng@google.com"
+        host: "google.com"
+        port: 80
+        username: "new-sample-username"
+        password:
+          value: "sample-password"
+        securityMode: "START_TLS"
+      resetPasswordTemplate:
+        senderLocalPart: "new-noreply"
+        subject: "Reset the password for %APP_NAME%"
+        senderDisplayName: "DCL"
+        body: "<p>Hello,</p>\n<p>Follow this link to reset your %APP_NAME% password\
+          \ for your %EMAIL% account.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If\
+          \ you didn’t ask to reset your password, you can ignore this email.</p>\n\
+          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "new-noreply"
+      verifyEmailTemplate:
+        senderLocalPart: "new-noreply"
+        subject: "Verify the email for %APP_NAME%"
+        senderDisplayName: "DCL"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Follow this link to verify your email\
+          \ address.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If you didn’t ask\
+          \ to verify this address, you can ignore this email.</p>\n<p>Thanks,</p>\n\
+          <p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "new-noreply"
+      changeEmailTemplate:
+        senderLocalPart: "new-noreply"
+        subject: "The sign-in email was changed for %APP_NAME%"
+        senderDisplayName: "DCL"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your sign-in email for %APP_NAME%\
+          \ was changed to %NEW_EMAIL%.</p>\n<p>If you didn’t ask to change your email,\
+          \ follow this link to reset your sign-in email.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n\
+          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "new-noreply"
+      callbackUri: "https://identityplatformconfig-${uniqueId}.firebaseapp.com/__/auth/new-action"
+      dnsInfo:
+        useCustomDomain: false
+      revertSecondFactorAdditionTemplate:
+        senderLocalPart: "new-noreply"
+        subject: "You've added 2 step verification to the %APP_NAME% account."
+        senderDisplayName: "DCL"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been\
+          \ updated with a phone number %SECOND_FACTOR% for 2-step verification.</p>\n\
+          <p>If you didn't add this phone number for 2-step verification, click the\
+          \ link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n\
+          <p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "new-noreply"
+    sendSms:
+      useDeviceLocale: false
+    defaultLocale: "zh"
+  quota:
+    signUpQuotaConfig:
+      quota: 2
+      startTime: "2022-08-20T00:22:56.247547Z"
+      quotaDuration: "1209600s"
+  monitoring:
+    requestLogging:
+      enabled: false
+  multiTenant:
+    allowTenants: true
+    defaultTenantLocationRef:
+      kind: Folder
+      name: "folder-${uniqueId}"
+  authorizedDomains:
+  - "localhost"
+  - "identityplatformconfig-${uniqueId}.firebaseapp.com"
+  - "identityplatformconfig-${uniqueId}.web.app"
+  subtype: "IDENTITY_PLATFORM"
+  client:
+    permissions:
+      disabledUserSignup: false
+      disabledUserDeletion: false
+  mfa:
+    state: "DISABLED"
+  blockingFunctions:
+    triggers:
+      beforeCreate:
+        functionUriRef:
+          name: "cloudfunctionsfunction-2-${uniqueId}"
+    forwardInboundCredentials:
+      idToken: false
+      accessToken: false
+      refereshToken: false

@@ -1,0 +1,142 @@
+advancedMachineFeatures:
+  enableNestedVirtualization: boolean
+  threadsPerCore: integer
+attachedDisk:
+- deviceName: string
+  diskEncryptionKeyRaw:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  diskEncryptionKeySha256: string
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+  mode: string
+  sourceDiskRef:
+    external: string
+    name: string
+    namespace: string
+bootDisk:
+  autoDelete: boolean
+  deviceName: string
+  diskEncryptionKeyRaw:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  diskEncryptionKeySha256: string
+  initializeParams:
+    labels: {}
+    size: integer
+    sourceImageRef:
+      external: string
+      name: string
+      namespace: string
+    type: string
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+  mode: string
+  sourceDiskRef:
+    external: string
+    name: string
+    namespace: string
+canIpForward: boolean
+confidentialInstanceConfig:
+  enableConfidentialCompute: boolean
+deletionProtection: boolean
+description: string
+desiredStatus: string
+enableDisplay: boolean
+guestAccelerator:
+- count: integer
+  type: string
+hostname: string
+instanceTemplateRef:
+  external: string
+  name: string
+  namespace: string
+machineType: string
+metadata:
+- key: string
+  value: string
+metadataStartupScript: string
+minCpuPlatform: string
+networkInterface:
+- accessConfig:
+  - natIpRef:
+      external: string
+      name: string
+      namespace: string
+    networkTier: string
+    publicPtrDomainName: string
+  aliasIpRange:
+  - ipCidrRange: string
+    subnetworkRangeName: string
+  ipv6AccessConfig:
+  - externalIpv6: string
+    externalIpv6PrefixLength: string
+    networkTier: string
+    publicPtrDomainName: string
+  ipv6AccessType: string
+  name: string
+  networkIp: string
+  networkIpRef:
+    external: string
+    kind: string
+    name: string
+    namespace: string
+  networkRef:
+    external: string
+    name: string
+    namespace: string
+  nicType: string
+  queueCount: integer
+  stackType: string
+  subnetworkProject: string
+  subnetworkRef:
+    external: string
+    name: string
+    namespace: string
+networkPerformanceConfig:
+  totalEgressBandwidthTier: string
+reservationAffinity:
+  specificReservation:
+    key: string
+    values:
+    - string
+  type: string
+resourceID: string
+resourcePolicies:
+- external: string
+  name: string
+  namespace: string
+scheduling:
+  automaticRestart: boolean
+  minNodeCpus: integer
+  nodeAffinities:
+  - value: {}
+  onHostMaintenance: string
+  preemptible: boolean
+  provisioningModel: string
+scratchDisk:
+- interface: string
+serviceAccount:
+  scopes:
+  - string
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+shieldedInstanceConfig:
+  enableIntegrityMonitoring: boolean
+  enableSecureBoot: boolean
+  enableVtpm: boolean
+tags:
+- string
+zone: string

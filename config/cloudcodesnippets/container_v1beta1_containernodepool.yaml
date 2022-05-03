@@ -1,0 +1,36 @@
+label: Config Connector ContainerNodePool
+markdownDescription: Creates yaml for a ContainerNodePool resource
+insertText: |
+  apiVersion: container.cnrm.cloud.google.com/v1beta1
+  kind: ContainerNodePool
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:containernodepool-name}
+  spec:
+    location: \${4:us-east1-c}
+    autoscaling:
+      minNodeCount: \${5:1}
+      maxNodeCount: \${6:3}
+    nodeConfig:
+      machineType: \${7:n1-standard-1}
+      diskSizeGb: \${8:100}
+      diskType: \${9:pd-standard}
+      tags:
+      - \${10:tagone}
+      - \${11:tagtwo}
+      preemptible: \${12:false}
+      minCpuPlatform: \${13:Intel Haswell}
+      oauthScopes:
+      - \${14:https://www.googleapis.com/auth/logging.write}
+      - \${15:https://www.googleapis.com/auth/monitoring}
+      guestAccelerator:
+      - type: \${16:nvidia-tesla-k80}
+        count: \${17:1}
+      metadata:
+        disable-legacy-endpoints: \${18:true}
+    management:
+      autoRepair: \${19:true}
+      autoUpgrade: \${20:true}
+    clusterRef:
+      name: \${21:containernodepool-dep-basic}

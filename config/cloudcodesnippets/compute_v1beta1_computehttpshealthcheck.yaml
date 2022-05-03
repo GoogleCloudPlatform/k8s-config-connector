@@ -1,0 +1,15 @@
+label: Config Connector ComputeHTTPSHealthCheck
+markdownDescription: Creates yaml for a ComputeHTTPSHealthCheck resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeHTTPSHealthCheck
+  metadata:
+    name: \${1:computehttpshealthcheck-name}
+  spec:
+    checkIntervalSec: \${2:10}
+    description: \${3:example HTTPS health check}
+    healthyThreshold: \${4:2}
+    port: \${5:80}
+    requestPath: \${6:/}
+    timeoutSec: \${7:5}
+    unhealthyThreshold: \${8:2}

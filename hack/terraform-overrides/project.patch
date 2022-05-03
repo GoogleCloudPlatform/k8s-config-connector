@@ -1,0 +1,29 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
+index a62b6683d..d1e4c385a 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
+@@ -225,7 +225,9 @@ func resourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
+ 	p, err := readGoogleProject(d, config, userAgent)
+ 	if err != nil {
+ 		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 403 && strings.Contains(gerr.Message, "caller does not have permission") {
+-			return fmt.Errorf("the user does not have permission to access Project %q or it may not exist", pid)
++			// Projects that haven't been created yet will always return 403 on GET
++			d.SetId("")
++			return nil
+ 		}
+ 		return handleNotFoundError(err, d, fmt.Sprintf("Project %q", pid))
+ 	}

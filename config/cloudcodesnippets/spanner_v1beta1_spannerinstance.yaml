@@ -1,0 +1,13 @@
+label: Config Connector SpannerInstance
+markdownDescription: Creates yaml for a SpannerInstance resource
+insertText: |
+  apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+  kind: SpannerInstance
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:spannerinstance-name}
+  spec:
+    config: \${4:regional-us-west1}
+    displayName: \${5:Spanner Instance Sample}
+    numNodes: \${6:2}

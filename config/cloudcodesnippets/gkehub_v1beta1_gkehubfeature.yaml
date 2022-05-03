@@ -1,0 +1,18 @@
+label: Config Connector GKEHubFeature
+markdownDescription: Creates yaml for a GKEHubFeature resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubFeature
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:gkehubfeature-name}
+  spec:
+    projectRef:
+      name: \${4:gkehubfeature-dep-mcifeature}
+    location: \${5:global}
+    resourceID: \${6:multiclusteringress}
+    spec:
+      multiclusteringress:
+        configMembershipRef:
+          name: \${7:gkehubfeature-dep-mcifeature}

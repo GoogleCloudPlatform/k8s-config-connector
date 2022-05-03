@@ -1,0 +1,14 @@
+label: Config Connector ComputeRoute
+markdownDescription: Creates yaml for a ComputeRoute resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRoute
+  metadata:
+    name: \${1:computeroute-name}
+  spec:
+    description: \${2:A sample compute route}
+    destRange: \${3:0.0.0.0/0}
+    networkRef:
+      name: \${4:computeroute-dep}
+    priority: \${5:100}
+    nextHopIp: \${6:10.132.1.5}

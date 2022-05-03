@@ -1,0 +1,40 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreIndex
+metadata:
+  annotations:
+    # Tests for Firestore resources require Firestore to be enabled for the GCP
+    # project, but there is currently no way to enable Firestore for a project
+    # programmatically. So, for now, we use a pre-existing project which already has
+    # Firestore enabled for any test that tests Firestore resources.
+    cnrm.cloud.google.com/project-id: ${FIRESTORE_TEST_PROJECT}
+  name: firestoreindex-${uniqueId}
+spec:
+  # We append a unique id to the collection name so that the Firestore Indexes
+  # created for each test (i.e. the create/nochange/delete tests) are created
+  # for different collections.
+  #
+  # This is a workaround meant to make our tests work. The issue is that when a
+  # Firestore Index is deleted from GCP, it takes time for it to be fully
+  # deleted. During that time, attempts to re-create the same index (an index
+  # with the same fields and for the same collection) fails. There is
+  # unfortunately no way to tell if a Firestore Index has been fully deleted.
+  collection: sample-collection-${uniqueId}
+  fields:
+  - fieldPath: field1
+    order: ASCENDING
+  - fieldPath: field2
+    order: DESCENDING

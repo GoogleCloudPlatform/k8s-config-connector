@@ -1,0 +1,10 @@
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+fingerprint: string
+observedGeneration: integer
+selfLink: string

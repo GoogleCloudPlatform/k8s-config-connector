@@ -1,0 +1,19 @@
+label: Config Connector NetworkSecurityClientTLSPolicy
+markdownDescription: Creates yaml for a NetworkSecurityClientTLSPolicy resource
+insertText: |
+  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+  kind: NetworkSecurityClientTLSPolicy
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:networksecurityclienttlspolicy-name}
+  spec:
+    description: \${4:Sample global client TLS policy}
+    location: \${5:global}
+    sni: \${6:example.com}
+    clientCertificate:
+      certificateProviderInstance:
+        pluginInstance: \${7:google_cloud_private_spiffe}
+    serverValidationCa:
+    - certificateProviderInstance:
+        pluginInstance: \${8:google_cloud_private_spiffe}

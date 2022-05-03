@@ -1,0 +1,79 @@
+[
+  {
+    "GVK": {
+      "Group": "bigtable.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "BigtableTable"
+    },
+    "ResourceNameFormat": "//bigtableadmin.googleapis.com/projects/{{project}}/instances/{{instance_name}}/tables/{{name}}",
+    "SupportsExport": true,
+    "SupportsBulkExport": true,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "cloudbuild.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "CloudBuildTrigger"
+    },
+    "ResourceNameFormat": "//cloudbuild.googleapis.com/projects/{{project}}/triggers/{{trigger_id}}",
+    "SupportsExport": true,
+    "SupportsBulkExport": true,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "dns.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "DNSManagedZone"
+    },
+    "ResourceNameFormat": "//dns.googleapis.com/projects/{{project}}/managedZones/{{name}}",
+    "SupportsExport": true,
+    "SupportsBulkExport": true,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "dns.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "DNSPolicy"
+    },
+    "ResourceNameFormat": "//dns.googleapis.com/projects/{{project}}/policies/{{name}}",
+    "SupportsExport": true,
+    "SupportsBulkExport": true,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "dns.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "DNSRecordSet"
+    },
+    "ResourceNameFormat": "//dns.googleapis.com/{{project}}/{{zone-name}}/{{record-name}}/{{type}}",
+    "SupportsExport": true,
+    "SupportsBulkExport": true,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "secretmanager.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "SecretManagerSecretVersion"
+    },
+    "ResourceNameFormat": "//secretmanager.googleapis.com/",
+    "SupportsExport": false,
+    "SupportsBulkExport": false,
+    "SupportsIAM": false
+  },
+  {
+    "GVK": {
+      "Group": "storage.cnrm.cloud.google.com",
+      "Version": "v1beta1",
+      "Kind": "StorageBucket"
+    },
+    "ResourceNameFormat": "",
+    "SupportsExport": false,
+    "SupportsBulkExport": true,
+    "SupportsIAM": true
+  }
+]

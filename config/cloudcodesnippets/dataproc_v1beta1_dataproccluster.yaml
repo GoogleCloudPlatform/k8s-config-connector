@@ -1,0 +1,38 @@
+label: Config Connector DataprocCluster
+markdownDescription: Creates yaml for a DataprocCluster resource
+insertText: |
+  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+  kind: DataprocCluster
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:dataproccluster-name}
+  spec:
+    location: \${4:us-central1}
+    config:
+      autoscalingConfig:
+        policyRef:
+          name: \${5:dataproccluster-dep}
+      stagingBucketRef:
+        name: \${6:dataproccluster-dep-staging}
+      masterConfig:
+        diskConfig:
+          bootDiskSizeGb: \${7:30}
+          bootDiskType: \${8:pd-standard}
+        machineType: \${9:n2-standard-2}
+        numInstances: \${10:1}
+      workerConfig:
+        numInstances: \${11:2}
+        machineType: \${12:n2-standard-2}
+        diskConfig:
+          bootDiskSizeGb: \${13:30}
+          numLocalSsds: \${14:1}
+      softwareConfig:
+        imageVersion: \${15:2.0.27-debian10}
+      gceClusterConfig:
+        tags:
+        - \${16:foo}
+        - \${17:bar}
+      initializationActions:
+      - executableFile: \${18:gs://dataproc-initialization-actions/stackdriver/stackdriver.sh}
+        executionTimeout: \${19:500s}

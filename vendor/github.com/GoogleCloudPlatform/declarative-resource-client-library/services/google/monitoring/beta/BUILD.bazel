@@ -1,0 +1,36 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "client.go",
+        "dashboard.go",
+        "dashboard_beta_yaml_embed.go",
+        "dashboard_internal.go",
+        "group.go",
+        "group_beta_yaml_embed.go",
+        "group_internal.go",
+        "metric_descriptor.go",
+        "metric_descriptor_beta_yaml_embed.go",
+        "metric_descriptor_internal.go",
+        "metrics_scope.go",
+        "metrics_scope_beta_yaml_embed.go",
+        "metrics_scope_internal.go",
+        "monitored_project.go",
+        "monitored_project_beta_yaml_embed.go",
+        "monitored_project_internal.go",
+        "monitoring_beta_utils.go",
+        "monitoring_utils.go",
+        "uptime_check_config.go",
+        "uptime_check_config_beta_yaml_embed.go",
+        "uptime_check_config_internal.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/monitoring/beta",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "//services/google/cloudresourcemanager:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

@@ -1,0 +1,15 @@
+label: Config Connector LoggingLogSink
+markdownDescription: Creates yaml for a LoggingLogSink resource
+insertText: |
+  apiVersion: logging.cnrm.cloud.google.com/v1beta1
+  kind: LoggingLogSink
+  metadata:
+    name: \${1:logginglogsink-name}
+  spec:
+    projectRef:
+      name: \${2:logginglogsink-dep-project}
+    uniqueWriterIdentity: \${3:true}
+    destination:
+      pubSubTopicRef:
+        name: \${4:logginglogsink-dep-project}
+    filter: \${5:resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"}

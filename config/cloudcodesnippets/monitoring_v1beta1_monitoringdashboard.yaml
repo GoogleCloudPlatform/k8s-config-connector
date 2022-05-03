@@ -1,0 +1,51 @@
+label: Config Connector MonitoringDashboard
+markdownDescription: Creates yaml for a MonitoringDashboard resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringDashboard
+  metadata:
+    name: \${1:monitoringdashboard-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    displayName: \${3:monitoringdashboard-sample}
+    columnLayout:
+      columns:
+      - weight: \${4:2}
+        widgets:
+        - title: \${5:Widget 1}
+          xyChart:
+            dataSets:
+            - timeSeriesQuery:
+                timeSeriesFilter:
+                  filter: \${6:metric.type="agent.googleapis.com/nginx/connections/accepted_count"}
+                  aggregation:
+                    perSeriesAligner: \${7:ALIGN_RATE}
+                unitOverride: \${8:1}
+              plotType: \${9:LINE}
+            timeshiftDuration: \${10:0s}
+            yAxis:
+              label: \${11:y1Axis}
+              scale: \${12:LINEAR}
+        - text:
+            content: \${13:Widget 2}
+            format: \${14:MARKDOWN}
+        - title: \${15:Widget 3}
+          xyChart:
+            dataSets:
+            - timeSeriesQuery:
+                timeSeriesFilter:
+                  filter: \${16:metric.type="agent.googleapis.com/nginx/connections/accepted_count"}
+                  aggregation:
+                    perSeriesAligner: \${17:ALIGN_RATE}
+                unitOverride: \${18:1}
+              plotType: \${19:STACKED_BAR}
+            timeshiftDuration: \${20:0s}
+            yAxis:
+              label: \${21:y1Axis}
+              scale: \${22:LINEAR}
+        - title: \${23:Widget 4}
+          logsPanel:
+            filter: \${24:metric.type="agent.googleapis.com/nginx/connections/accepted_count"}
+            resourceNames:
+            - external: \${25:projects/[PROJECT_ID?]}

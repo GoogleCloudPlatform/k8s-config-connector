@@ -1,0 +1,64 @@
+label: Config Connector CloudBuildTrigger
+markdownDescription: Creates yaml for a CloudBuildTrigger resource
+insertText: |
+  apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+  kind: CloudBuildTrigger
+  metadata:
+    name: \${1:cloudbuildtrigger-name}
+  spec:
+    description: \${2:Cloud Build Trigger for building the master branch of the referenced
+      Cloud Source Repository.}
+    disabled: \${3:false}
+    triggerTemplate:
+      repoRef:
+        name: \${4:cloudbuildtrigger-dep-cloudsourcerepo}
+      dir: \${5:team-a/service-b}
+      branchName: \${6:master}
+    ignoredFiles:
+    - \${7:**/*.md}
+    includedFiles:
+    - \${8:src/**}
+    substitutions:
+      _SERVICE_NAME: \${9:service-name}
+    build:
+      images:
+      - \${10:gcr.io/PROJECT_ID/[_SERVICE_NAME]:COMMIT_SHA}
+      tags:
+      - \${11:team-a}
+      - \${12:service-b}
+      timeout: \${13:1800s}
+      step:
+      - id: \${14:download_zip}
+        name: \${15:gcr.io/cloud-builders/gsutil}
+        args:
+        - \${16:cp}
+        - \${17:gs://mybucket/remotefile.zip}
+        - \${18:localfile.zip}
+        timeout: \${19:300s}
+      - id: \${20:build_package}
+        name: \${21:gcr.io/cloud-builders/go}
+        args:
+        - \${22:build}
+        - \${23:my_package}
+        dir: \${24:directory}
+        env:
+        - \${25:ENV1=one}
+        - \${26:ENV2=two}
+        secretEnv:
+        - \${27:SECRET_ENV1}
+        timeout: \${28:300s}
+      - id: \${29:build_docker_image}
+        name: \${30:gcr.io/cloud-builders/docker}
+        args:
+        - \${31:build}
+        - \${32:-t}
+        - \${33:gcr.io/PROJECT_ID/[_SERVICE_NAME]:COMMIT_SHA}
+        - \${34:-f}
+        - \${35:Dockerfile}
+        - \${36:.}
+        timeout: \${37:300s}
+      availableSecrets:
+        secretManager:
+        - env: \${38:SECRET1}
+          versionRef:
+            name: \${39:cloudbuildtrigger-dep-cloudsourcerepo}

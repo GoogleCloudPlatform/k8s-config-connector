@@ -1,0 +1,19 @@
+label: Config Connector ComputeInstanceGroup
+markdownDescription: Creates yaml for a ComputeInstanceGroup resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInstanceGroup
+  metadata:
+    name: \${1:computeinstancegroup-name}
+  spec:
+    description: \${2:Compute instance group with two specified instances and named
+      http and https ports.}
+    instances:
+    - name: \${3:computeinstancegroup-dep1}
+    - name: \${4:computeinstancegroup-dep2}
+    namedPort:
+    - name: \${5:http}
+      port: \${6:8080}
+    - name: \${7:https}
+      port: \${8:8443}
+    zone: \${9:us-central1-a}

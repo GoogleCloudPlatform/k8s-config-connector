@@ -1,0 +1,129 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: sql.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: SQL
+  version: v1beta1
+  serviceHostName: "sqladmin.googleapis.com"
+  resources:
+    - name: google_sql_database
+      kind: SQLDatabase
+      idTemplate: "projects/{{project}}/instances/{{instance}}/databases/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - key: instanceRef
+          tfField: instance
+          description: |-
+            The Cloud SQL instance.
+          gvk:
+            kind: SQLInstance
+            version: v1beta1
+            group: sql.cnrm.cloud.google.com
+          parent: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_sql_database_instance
+      kind: SQLInstance
+      metadataMapping:
+        name: name
+        labels: settings.user_labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/instances/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: masterInstanceRef
+          tfField: master_instance_name
+          gvk:
+            kind: SQLInstance
+            version: v1beta1
+            group: sql.cnrm.cloud.google.com
+        - tfField: settings.ip_configuration.private_network
+          key: privateNetworkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: encryption_key_name
+          key: encryptionKMSCryptoKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+      ignoredFields:
+        - settings.version
+        - deletion_protection
+        - restore_backup_context
+        - clone # b/179734967
+      containers:
+        - type: project
+          tfField: project
+    - name: google_sql_ssl_cert
+      kind: SQLSSLCert
+      skipImport: true
+      serverGeneratedIDField: "sha1_fingerprint"
+      resourceID:
+        targetField: sha1_fingerprint
+      idTemplate: "projects/{{project}}/instances/{{instance}}/sslCerts/{{sha1_fingerprint}}"
+      # not setup for importing, uses the server generated id of the sha1_fingerprint, should work though because gcloud is able to get them by 'name'
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceReferences:
+      - key: instanceRef
+        tfField: instance
+        gvk:
+          kind: SQLInstance
+          version: v1beta1
+          group: sql.cnrm.cloud.google.com
+        parent: true
+        description: |-
+          The Cloud SQL instance.
+      containers:
+      - type: project
+        tfField: project
+    - name: google_sql_user
+      kind: SQLUser
+      idTemplate: "{{project}}/{{instance}}/{{host?}}/{{name}}"
+      # doesn't have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - key: instanceRef
+          tfField: instance
+          gvk:
+            kind: SQLInstance
+            version: v1beta1
+            group: sql.cnrm.cloud.google.com
+          parent: true
+      containers:
+        - type: project
+          tfField: project
+      mutableButUnreadableFields:
+        - password
+      ignoredFields:
+        - deletion_policy

@@ -1,0 +1,63 @@
+attributes:
+  attached_disk.#: "0"
+  boot_disk.#: "1"
+  boot_disk.0.auto_delete: "true"
+  boot_disk.0.device_name: persistent-disk-0
+  boot_disk.0.disk_encryption_key_raw: ""
+  boot_disk.0.disk_encryption_key_sha256: ""
+  boot_disk.0.initialize_params.#: "1"
+  boot_disk.0.initialize_params.0.image: https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-9-stretch-v20200910
+  boot_disk.0.initialize_params.0.labels.%: "0"
+  boot_disk.0.initialize_params.0.size: "10"
+  boot_disk.0.initialize_params.0.type: pd-standard
+  boot_disk.0.kms_key_self_link: ""
+  boot_disk.0.mode: READ_WRITE
+  boot_disk.0.source: https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-f/disks/computetargetpool-dep4
+  can_ip_forward: "false"
+  confidential_instance_config.#: "0"
+  cpu_platform: Intel Haswell
+  current_status: RUNNING
+  deletion_protection: "false"
+  description: ""
+  enable_display: "false"
+  guest_accelerator.#: "0"
+  hostname: ""
+  id: projects/my-project/zones/us-central1-f/instances/computetargetpool-dep4
+  instance_id: "2616053329357785407"
+  label_fingerprint: XPkV8ucVMPQ=
+  labels.%: "2"
+  labels.cnrm-lease-expiration: "1601998420"
+  labels.cnrm-lease-holder-id: btpp498colih6qs1pe5g
+  machine_type: n1-standard-1
+  metadata.%: "0"
+  metadata_fingerprint: nT6sQlRHngo=
+  metadata_startup_script: ""
+  min_cpu_platform: ""
+  name: computetargetpool-dep4
+  network_interface.#: "1"
+  network_interface.0.access_config.#: "0"
+  network_interface.0.alias_ip_range.#: "0"
+  network_interface.0.name: nic0
+  network_interface.0.network: https://www.googleapis.com/compute/v1/projects/my-project/global/networks/computetargetpool-dep
+  network_interface.0.network_ip: 10.2.0.5
+  network_interface.0.subnetwork: https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/computetargetpool-dep
+  network_interface.0.subnetwork_project: my-project
+  project: my-project
+  resource_policies.#: "0"
+  scheduling.#: "1"
+  scheduling.0.automatic_restart: "true"
+  scheduling.0.min_node_cpus: "0"
+  scheduling.0.node_affinities.#: "0"
+  scheduling.0.on_host_maintenance: MIGRATE
+  scheduling.0.preemptible: "false"
+  scratch_disk.#: "0"
+  self_link: https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-f/instances/computetargetpool-dep4
+  service_account.#: "0"
+  shielded_instance_config.#: "0"
+  tags.#: "0"
+  tags_fingerprint: 42WmSpB8rSM=
+  zone: us-central1-f
+id: projects/my-project/zones/us-central1-f/instances/computetargetpool-dep4
+meta:
+  schema_version: "6"
+tainted: false

@@ -1,0 +1,36 @@
+label: Config Connector PrivateCACertificateAuthority
+markdownDescription: Creates yaml for a PrivateCACertificateAuthority resource
+insertText: |
+  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+  kind: PrivateCACertificateAuthority
+  metadata:
+    labels:
+      \${1:label-two}: \${2:value-two}
+    name: \${3:privatecacertificateauthority-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:us-central1}
+    type: \${6:SELF_SIGNED}
+    caPoolRef:
+      name: \${7:privatecacertificateauthority-dep}
+    lifetime: \${8:86400s}
+    config:
+      subjectConfig:
+        subject:
+          organization: \${9:Example}
+          common-name: \${10:my-certificate-authority}
+        subjectAltName:
+          dnsNames:
+          - \${11:example.com}
+      x509Config:
+        caOptions:
+          isCa: \${12:true}
+        keyUsage:
+          baseKeyUsage:
+            certSign: \${13:true}
+            crlSign: \${14:true}
+        extendedKeyUsage:
+          serverAuth: \${15:true}
+    keySpec:
+      algorithm: \${16:RSA_PKCS1_4096_SHA256}

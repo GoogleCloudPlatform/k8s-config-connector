@@ -1,0 +1,32 @@
+label: Config Connector ComputeURLMap
+markdownDescription: Creates yaml for a ComputeURLMap resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeURLMap
+  metadata:
+    name: \${1:computeurlmap-name}
+  spec:
+    location: \${2:global}
+    defaultService:
+      backendServiceRef:
+        name: \${3:computeurlmap-dep1}
+    pathMatcher:
+    - name: \${4:allpaths}
+      defaultService:
+        backendServiceRef:
+          name: \${5:computeurlmap-dep2}
+      pathRule:
+      - paths:
+        - \${6:/home}
+        service:
+          backendServiceRef:
+            name: \${7:computeurlmap-dep3}
+      - paths:
+        - \${8:/foo}
+        service:
+          backendBucketRef:
+            name: \${9:computeurlmap-dep}
+    hostRule:
+    - hosts:
+      - \${10:example.com}
+      pathMatcher: \${11:allpaths}

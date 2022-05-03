@@ -1,0 +1,13 @@
+databaseDialect: string
+ddl:
+- string
+encryptionConfig:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string

@@ -1,0 +1,26 @@
+label: Config Connector ApigeeOrganization
+markdownDescription: Creates yaml for a ApigeeOrganization resource
+insertText: |
+  apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+  kind: ApigeeOrganization
+  metadata:
+    name: \${1:apigeeorganization-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    displayName: \${3:basic-organization}
+    description: \${4:A sample organization}
+    properties:
+      features.mart.connect.enabled: \${5:false}
+      features.hybrid.enabled: \${6:true}
+    analyticsRegion: \${7:us-west1}
+    authorizedNetworkRef:
+      name: \${8:apigeeorganization-dep}
+    runtimeType: \${9:CLOUD}
+    addonsConfig:
+      advancedApiOpsConfig:
+        enabled: \${10:true}
+      integrationConfig:
+        enabled: \${11:false}
+      monetizationConfig:
+        enabled: \${12:false}

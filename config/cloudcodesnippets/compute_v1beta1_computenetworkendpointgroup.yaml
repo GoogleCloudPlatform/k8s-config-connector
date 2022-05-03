@@ -1,0 +1,16 @@
+label: Config Connector ComputeNetworkEndpointGroup
+markdownDescription: Creates yaml for a ComputeNetworkEndpointGroup resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNetworkEndpointGroup
+  metadata:
+    name: \${1:computenetworkendpointgroup-name}
+  spec:
+    networkRef:
+      name: \${2:computenetworkendpointgroup-dep}
+    subnetworkRef:
+      name: \${3:computenetworkendpointgroup-dep}
+    location: \${4:us-west1-a}
+    defaultPort: \${5:90}
+    description: \${6:A network endpoint group living in a specific us-west1 subnetwork,
+      whose member endpoints will serve on port number 90 by default.}

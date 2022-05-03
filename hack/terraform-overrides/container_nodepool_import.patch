@@ -1,0 +1,57 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
+index 3b995fb32..340072371 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
+@@ -538,11 +538,6 @@ func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (
+ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+ 	config := meta.(*Config)
+ 
+-	userAgent, err := generateUserAgentString(d, config.userAgent)
+-	if err != nil {
+-		return nil, err
+-	}
+-
+ 	idRegexes := []string{
+ 		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<cluster>[^/]+)/nodePools/(?P<name>[^/]+)",
+ 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<cluster>[^/]+)/nodePools/(?P<name>[^/]+)",
+@@ -560,26 +555,6 @@ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interfa
+ 
+ 	d.SetId(id)
+ 
+-	project, err := getProject(d, config)
+-	if err != nil {
+-		return nil, err
+-	}
+-
+-	nodePoolInfo, err := extractNodePoolInformation(d, config)
+-	if err != nil {
+-		return nil, err
+-	}
+-
+-	//Check cluster is in running state
+-	_, err = containerClusterAwaitRestingState(config, nodePoolInfo.project, nodePoolInfo.location, nodePoolInfo.cluster, userAgent, d.Timeout(schema.TimeoutCreate))
+-	if err != nil {
+-		return nil, err
+-	}
+-
+-	if _, err := containerNodePoolAwaitRestingState(config, d.Id(), project, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
+-		return nil, err
+-	}
+-
+ 	return []*schema.ResourceData{d}, nil
+ }
+ 

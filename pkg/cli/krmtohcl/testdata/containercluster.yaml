@@ -1,0 +1,81 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: my-project
+  name: twenty-namespaces
+spec:
+  addonsConfig:
+    networkPolicyConfig:
+      disabled: true
+  clusterAutoscaling:
+    enabled: false
+  clusterIpv4Cidr: 10.12.0.0/14
+  clusterTelemetry:
+    type: ENABLED
+  databaseEncryption:
+    state: DECRYPTED
+  location: us-central1-c
+  loggingService: logging.googleapis.com/kubernetes
+  masterAuth:
+    clientCertificateConfig:
+      issueClientCertificate: false
+    clusterCaCertificate: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLekNDQWhPZ0F3SUJBZ0lSQU5pQmFha3VVRlplL1JjUXFBakR3aEl3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1ptSTBNVFl6T0RJdE5XSTJNUzAwTmpRMUxXSmpORGt0T0dReFlUaGlaREUxTXpObApNQjRYRFRJd01UQXlNakV5TURneU4xb1hEVEkxTVRBeU1URXpNRGd5TjFvd0x6RXRNQ3NHQTFVRUF4TWtabUkwCk1UWXpPREl0TldJMk1TMDBOalExTFdKak5Ea3RPR1F4WVRoaVpERTFNek5sTUlJQklqQU5CZ2txaGtpRzl3MEIKQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBc1c3d1JnSE0wRGxVS2dYd085QTFzRGJ0aXN0ZDNPbGMrNkxCVTN0dQpkakFTQUttemxVbFRpM0h1UWt0Ull1ZFF4QWtZRWJ0aXVuRWpEUU1UK3I3S0VBVjVCcGxGVXJlblBaeU9mVm5SCkdRUDJKa05BbUlCTXdnd1ZUMVIzNGQxR1dsVitwUTQ3SVBhWE4xRXZsT0EzcVFQMjBKWml1b2lTWElsb0NGMloKUndIZVo1YTcweXlnVldNbmFVM21VNXFiNzArM3BkYi9sdTJLUCtmNDZ6MW9RM0Q4eHlQQm1QbFBiMWpjdGhBOApkU3JpYW85aG9neXNzM1pvdGFqZ1FUdjhBS3dMQWIwY3ZwNjdJZHpySk1hVCtoczlQQ2FyWE9Lamkya0U4bWxwCmpRaVRtRUFRYmk3M2ppcUtHNUJZdlJlM2JPUFV6Q3pzR29OaTc2K0pFbnhMaXdJREFRQUJvMEl3UURBT0JnTlYKSFE4QkFmOEVCQU1DQWdRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXN1MzRkZk9vcENXNgo3YWFOQXpwSzJnLzZnNjB3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUdrbEE0Y3R6OXU3RjNScnJkVmQzSk43Cm9QclV0cGIrRStPTFBva0Z1MDJWYUZncTZpdGVadnRYSDJGc29FYVJqWkdDeTBtWmFzT2FhbEhTbnVXSTZ3a0EKWjUzRVl3Wm9kTGNscGp4M1JtSU9BTk1ZRzZlREw2YTRNOWk3VlptMm95S3hzOHExeFB4b2VtendWcTh5M0J2VAppN0g1T3FzWlFJME9UN3NhMG5valZSN0pYcnZsQ1I3U2l0WnMrNXVMaTlaS1VNNkVFWmZwMnhVUjZxdkswQ3VFClloYXYvOCsyejlDQlNwVlU3WHR1WEN1SmdCNGd6c2NDSXcwaFhHalV4eUZBQ2FabFhkaXNqZFhQWkY1ZUpHMW4KNzQzVVJVVXdWNld2TWYvQUQwTzdPeXY5WStKbnlIMGo0U3lQODA2eVFMR3VoTG5BOXhmWXZjeHdoditGNTNFPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  monitoringService: monitoring.googleapis.com/kubernetes
+  networkPolicy:
+    enabled: false
+    provider: PROVIDER_UNSPECIFIED
+  networkRef:
+    external: projects/my-project/global/networks/default
+  networkingMode: ROUTES
+  nodeConfig:
+    diskSizeGb: 100
+    diskType: pd-standard
+    imageType: COS
+    machineType: n1-standard-1
+    metadata:
+      disable-legacy-endpoints: "true"
+    oauthScopes:
+    - https://www.googleapis.com/auth/trace.append
+    - https://www.googleapis.com/auth/devstorage.read_only
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/monitoring
+    - https://www.googleapis.com/auth/service.management.readonly
+    - https://www.googleapis.com/auth/servicecontrol
+    serviceAccountRef:
+      external: default
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: true
+    workloadMetadataConfig:
+      nodeMetadata: GKE_METADATA_SERVER
+  nodeVersion: 1.16.15-gke.1600
+  podSecurityPolicyConfig:
+    enabled: false
+  releaseChannel:
+    channel: UNSPECIFIED
+  subnetworkRef:
+    external: projects/my-project/regions/us-central1/subnetworks/default
+  workloadIdentityConfig:
+    workloadPool: my-project.svc.id.goog
+status:
+  endpoint: 34.70.97.254
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/beta/projects/my-project/zones/us-central1-c/instanceGroups/gke-twenty-namespaces-default-pool-47cb3837-grp
+  labelFingerprint: a9dc16a7
+  masterVersion: 1.16.15-gke.1600
+  selfLink: https://container.googleapis.com/v1beta1/projects/my-project/zones/us-central1-c/clusters/twenty-namespaces
+  servicesIpv4Cidr: 10.15.240.0/20

@@ -1,0 +1,19 @@
+label: Config Connector BigQueryDataset
+markdownDescription: Creates yaml for a BigQueryDataset resource
+insertText: |
+  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+  kind: BigQueryDataset
+  metadata:
+    name: \${1:bigquerydataset-name}
+  spec:
+    defaultTableExpirationMs: \${2:3600000}
+    description: \${3:BigQuery Dataset Sample}
+    friendlyName: \${4:bigquerydataset-sample}
+    location: \${5:US}
+    access:
+    - role: \${6:OWNER}
+      userByEmail: \${7:bigquerydataset-dep@[PROJECT_ID?].iam.gserviceaccount.com}
+    - role: \${8:WRITER}
+      specialGroup: \${9:projectWriters}
+    - role: \${10:READER}
+      domain: \${11:google.com}

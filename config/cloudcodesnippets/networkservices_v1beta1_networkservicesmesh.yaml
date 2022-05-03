@@ -1,0 +1,13 @@
+label: Config Connector NetworkServicesMesh
+markdownDescription: Creates yaml for a NetworkServicesMesh resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesMesh
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkservicesmesh-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}

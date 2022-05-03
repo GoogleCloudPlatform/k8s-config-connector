@@ -1,0 +1,10 @@
+label: Config Connector ComputeSharedVPCServiceProject
+markdownDescription: Creates yaml for a ComputeSharedVPCServiceProject resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSharedVPCServiceProject
+  metadata:
+    name: \${1:computesharedvpcserviceproject-name}
+  spec:
+    projectRef:
+      name: \${2:sharedvpc-service-project-dep}

@@ -1,0 +1,16 @@
+label: Config Connector ResourceManagerLien
+markdownDescription: Creates yaml for a ResourceManagerLien resource
+insertText: |
+  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+  kind: ResourceManagerLien
+  metadata:
+    name: \${1:resourcemanagerlien-name}
+  spec:
+    origin: \${2:project-deletion-prohibited}
+    reason: \${3:This project is protected from deletion, for reasons which can be explained
+      in this field.}
+    parent:
+      projectRef:
+        name: \${4:resourcemanagerlien-dep}
+    restrictions:
+    - \${5:resourcemanager.projects.delete}

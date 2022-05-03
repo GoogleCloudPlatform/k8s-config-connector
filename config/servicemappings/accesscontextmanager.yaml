@@ -1,0 +1,419 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: accesscontextmanager.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: AccessContextManager
+  version: v1beta1
+  serviceHostName: "accesscontextmanager.googleapis.com"
+  resources:
+    - name: google_access_context_manager_access_level
+      kind: AccessContextManagerAccessLevel
+      idTemplate: "{{name}}"
+      # importer doesn't parse out the various fields (organization etc)
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: name
+        nameValueTemplate: "{{parent}}/accessLevels/{{value}}"
+      resourceID:
+        targetField: name
+        valueTemplate: "{{parent}}/accessLevels/{{value}}"
+      resourceReferences:
+        - tfField: parent
+          description: |-
+            The AccessContextManagerAccessPolicy this
+            AccessContextManagerAccessLevel lives in.
+          key: accessPolicyRef
+          gvk:
+            kind: AccessContextManagerAccessPolicy
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          valueTemplate: "accessPolicies/{{value}}"
+          targetField: name
+        - tfField: basic.conditions.required_access_levels
+          description: |-
+            A list of other access levels defined in the same policy.
+            Referencing an AccessContextManagerAccessLevel which does not exist
+            is an error. All access levels listed must be granted for the
+            condition to be true.
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: basic.conditions.members
+          description: |-
+            An allowed list of members (users, service accounts).
+            Using groups is not supported.
+
+            The signed-in user originating the request must be a part of one
+            of the provided members. If not specified, a request may come
+            from any user (logged in/not logged in, not present in any
+            groups, etc.).
+          types:
+            - key: serviceAccountRef
+              gvk:
+                kind: IAMServiceAccount
+                version: v1beta1
+                group: iam.cnrm.cloud.google.com
+              targetField: email
+              valueTemplate: "serviceAccount:{{value}}"
+            - key: user
+              jsonSchemaType: string
+              valueTemplate: "user:{{value}}"
+    - name: google_access_context_manager_access_policy
+      kind: AccessContextManagerAccessPolicy
+      # importer doesn't parse out the various fields (organization etc)
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name
+      containers:
+        - type: organization
+          tfField: org_id
+      ignoredFields:
+        # TODO(b/229420363): Add 'scopesRefs' after multi-kind reference with 'kind' field is supported in KCC-TF bridge.
+        - scopes
+      iamConfig:
+        policyName: google_access_context_manager_access_policy_iam_policy
+        policyMemberName: google_access_context_manager_access_policy_iam_member
+        referenceField:
+          name: name
+          type: name
+        supportsConditions: false
+    - name: google_access_context_manager_service_perimeter
+      kind: AccessContextManagerServicePerimeter
+      idTemplate: "{{name}}"
+      # importer doesn't parse out the various fields (organization etc)
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: name
+        nameValueTemplate: "{{parent}}/servicePerimeters/{{value}}"
+      resourceID:
+        targetField: name
+        valueTemplate: "{{parent}}/servicePerimeters/{{value}}"
+      resourceReferences:
+        - tfField: parent
+          description: |-
+            The AccessContextManagerAccessPolicy this
+            AccessContextManagerServicePerimeter lives in.
+          key: accessPolicyRef
+          gvk:
+            kind: AccessContextManagerAccessPolicy
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          targetField: name
+          valueTemplate: "accessPolicies/{{value}}"
+        - tfField: spec.egress_policies.egress_from.identities
+          description: |-
+            (Optional) A list of identities that are allowed access through this
+            EgressPolicy. Should be in the format of email address. The email
+            address should represent individual user or service account only.
+          types:
+          - key: serviceAccountRef
+            gvk:
+              kind: IAMServiceAccount
+              version: v1beta1
+              group: iam.cnrm.cloud.google.com
+            targetField: email
+            valueTemplate: "serviceAccount:{{value}}"
+          - key: user
+            jsonSchemaType: string
+            valueTemplate: "user:{{value}}"
+        - tfField: spec.egress_policies.egress_to.resources
+          description: |-
+            (Optional) A list of resources, currently only projects in the form
+            "projects/{project_number}". A request
+            matches if it contains a resource in this list.
+          types:
+          - key: projectRef
+            gvk:
+              kind: Project
+              version: v1beta1
+              group: resourcemanager.cnrm.cloud.google.com
+            targetField: "number"
+            valueTemplate: "projects/{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.identities
+          description: |-
+            (Optional) A list of identities that are allowed access through this
+            EgressPolicy. Should be in the format of email address. The email
+            address should represent individual user or service account only.
+          types:
+          - key: serviceAccountRef
+            gvk:
+              kind: IAMServiceAccount
+              version: v1beta1
+              group: iam.cnrm.cloud.google.com
+            targetField: email
+            valueTemplate: "serviceAccount:{{value}}"
+          - key: user
+            jsonSchemaType: string
+            valueTemplate: "user:{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.sources.access_level
+          description: |-
+            An AccessLevel resource name that allow resources within the
+            ServicePerimeters to be accessed from the internet. AccessLevels
+            listed must be in the same policy as this ServicePerimeter.
+            Referencing a nonexistent AccessLevel will cause an error. If no
+            AccessLevel names are listed, resources within the perimeter can
+            only be accessed via Google Cloud calls with request origins within
+            the perimeter.
+          key: accessLevelRef
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          # TODO(b/171825578): Remove this value template once `name` field starts get value in correct format
+          valueTemplate: "{{parent}}/accessLevels/{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.sources.resource
+          description: |-
+            (Optional) A Google Cloud resource that is allowed to ingress the
+            perimeter. Requests from these resources will be allowed to access
+            perimeter data. Currently only projects are allowed. Format
+            "projects/{project_number}" The project may be in any Google Cloud
+            organization, not just the organization that the perimeter is defined in.
+          key: projectRef
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: "number"
+          valueTemplate: "projects/{{value}}"
+        - tfField: spec.ingress_policies.ingress_to.resources
+          description: |-
+            A list of resources, currently only projects in the form
+            "projects/{project_number}", protected by this ServicePerimeter
+            that are allowed to be accessed by sources defined in the
+            corresponding IngressFrom. A request matches if it contains a
+            resource in this list.
+          types:
+          - key: projectRef
+            gvk:
+              kind: Project
+              version: v1beta1
+              group: resourcemanager.cnrm.cloud.google.com
+            targetField: "number"
+            valueTemplate: "projects/{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.identities
+          description: |-
+            (Optional) A list of identities that are allowed access through this
+            EgressPolicy. Should be in the format of email address. The email
+            address should represent individual user or service account only.
+          types:
+            - key: serviceAccountRef
+              gvk:
+                kind: IAMServiceAccount
+                version: v1beta1
+                group: iam.cnrm.cloud.google.com
+              targetField: email
+              valueTemplate: "serviceAccount:{{value}}"
+            - key: user
+              jsonSchemaType: string
+              valueTemplate: "user:{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.sources.access_level
+          description: |-
+            An AccessLevel resource name that allow resources within the
+            ServicePerimeters to be accessed from the internet. AccessLevels
+            listed must be in the same policy as this ServicePerimeter.
+            Referencing a nonexistent AccessLevel will cause an error. If no
+            AccessLevel names are listed, resources within the perimeter can
+            only be accessed via Google Cloud calls with request origins within
+            the perimeter.
+          key: accessLevelRef
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          # TODO(b/171825578): Remove this value template once `name` field starts get value in correct format
+          valueTemplate: "{{parent}}/accessLevels/{{value}}"
+        - tfField: spec.ingress_policies.ingress_from.sources.resource
+          description: |-
+            (Optional) A Google Cloud resource that is allowed to ingress the
+            perimeter. Requests from these resources will be allowed to access
+            perimeter data. Currently only projects are allowed. Format
+            "projects/{project_number}" The project may be in any Google Cloud
+            organization, not just the organization that the perimeter is defined in.
+          key: projectRef
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: "number"
+          valueTemplate: "projects/{{value}}"
+        - tfField: spec.ingress_policies.ingress_to.resources
+          description: |-
+            A list of resources, currently only projects in the form
+            "projects/{project_number}", protected by this ServicePerimeter
+            that are allowed to be accessed by sources defined in the
+            corresponding IngressFrom. A request matches if it contains a
+            resource in this list.
+          types:
+            - key: projectRef
+              gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com
+              targetField: "number"
+              valueTemplate: "projects/{{value}}"
+        - tfField: spec.resources
+          description: |-
+            (Optional) A list of GCP resources that are inside of the service perimeter.
+            Currently only projects are allowed.
+          types:
+            - key: projectRef
+              gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com
+              targetField: "number"
+              valueTemplate: "projects/{{value}}"
+        - tfField: spec.access_levels
+          description: |-
+            (Optional) A list of AccessLevel resource names that allow resources within
+            the ServicePerimeter to be accessed from the internet. AccessLevels listed
+            must be in the same policy as this ServicePerimeter.
+            Referencing a nonexistent AccessLevel is a syntax error. If no
+            AccessLevel names are listed, resources within the perimeter can
+            only be accessed via GCP calls with request origins within the
+            perimeter. For Service Perimeter Bridge, must be empty.
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          # TODO(b/171825578): Remove this value template once `name` field starts get value in correct format
+          valueTemplate: "{{parent}}/accessLevels/{{value}}"
+        - tfField: status.egress_policies.egress_from.identities
+          description: |-
+            (Optional) A list of identities that are allowed access through this
+            EgressPolicy. Should be in the format of email address. The email
+            address should represent individual user or service account only.
+          types:
+          - key: serviceAccountRef
+            gvk:
+              kind: IAMServiceAccount
+              version: v1beta1
+              group: iam.cnrm.cloud.google.com
+            targetField: email
+            valueTemplate: "serviceAccount:{{value}}"
+          - key: user
+            jsonSchemaType: string
+            valueTemplate: "user:{{value}}"
+        - tfField: status.egress_policies.egress_to.resources
+          description: |-
+            (Optional) A list of resources, currently only projects in the form
+            "projects/{project_number}". A request
+            matches if it contains a resource in this list.
+          types:
+          - key: projectRef
+            gvk:
+              kind: Project
+              version: v1beta1
+              group: resourcemanager.cnrm.cloud.google.com
+            targetField: "number"
+            valueTemplate: "projects/{{value}}"
+        - tfField: status.ingress_policies.ingress_from.identities
+          description: |-
+            (Optional) A list of identities that are allowed access through this
+            EgressPolicy. Should be in the format of email address. The email
+            address should represent individual user or service account only.
+          types:
+          - key: serviceAccountRef
+            gvk:
+              kind: IAMServiceAccount
+              version: v1beta1
+              group: iam.cnrm.cloud.google.com
+            targetField: email
+            valueTemplate: "serviceAccount:{{value}}"
+          - key: user
+            jsonSchemaType: string
+            valueTemplate: "user:{{value}}"
+        - tfField: status.ingress_policies.ingress_from.sources.access_level
+          description: |-
+            An AccessLevel resource name that allow resources within the
+            ServicePerimeters to be accessed from the internet. AccessLevels
+            listed must be in the same policy as this ServicePerimeter.
+            Referencing a nonexistent AccessLevel will cause an error. If no
+            AccessLevel names are listed, resources within the perimeter can
+            only be accessed via Google Cloud calls with request origins within
+            the perimeter.
+          key: accessLevelRef
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          # TODO(b/171825578): Remove this value template once `name` field starts get value in correct format
+          valueTemplate: "{{parent}}/accessLevels/{{value}}"
+        - tfField: status.ingress_policies.ingress_from.sources.resource
+          description: |-
+            (Optional) A Google Cloud resource that is allowed to ingress the
+            perimeter. Requests from these resources will be allowed to access
+            perimeter data. Currently only projects are allowed. Format
+            "projects/{project_number}" The project may be in any Google Cloud
+            organization, not just the organization that the perimeter is defined in.
+          key: projectRef
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: "number"
+          valueTemplate: "projects/{{value}}"
+        - tfField: status.ingress_policies.ingress_to.resources
+          description: |-
+            A list of resources, currently only projects in the form
+            "projects/{project_number}", protected by this ServicePerimeter
+            that are allowed to be accessed by sources defined in the
+            corresponding IngressFrom. A request matches if it contains a
+            resource in this list.
+          types:
+            - key: projectRef
+              gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com
+              targetField: "number"
+              valueTemplate: "projects/{{value}}"
+        - tfField: status.resources
+          description: |-
+            (Optional) A list of GCP resources that are inside of the service perimeter.
+            Currently only projects are allowed.
+          types:
+            - key: projectRef
+              gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com
+              targetField: "number"
+              valueTemplate: "projects/{{value}}"
+        - tfField: status.access_levels
+          description: |-
+            (Optional) A list of AccessLevel resource names that allow resources within
+            the ServicePerimeter to be accessed from the internet. AccessLevels listed
+            must be in the same policy as this ServicePerimeter.
+            Referencing a nonexistent AccessLevel is a syntax error. If no
+            AccessLevel names are listed, resources within the perimeter can
+            only be accessed via GCP calls with request origins within the
+            perimeter. For Service Perimeter Bridge, must be empty.
+          gvk:
+            kind: AccessContextManagerAccessLevel
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          # TODO(b/171825578): Remove this value template once `name` field starts get value in correct format
+          valueTemplate: "{{parent}}/accessLevels/{{value}}"

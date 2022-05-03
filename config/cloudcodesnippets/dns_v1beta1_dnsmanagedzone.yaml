@@ -1,0 +1,17 @@
+label: Config Connector DNSManagedZone
+markdownDescription: Creates yaml for a DNSManagedZone resource
+insertText: |
+  apiVersion: dns.cnrm.cloud.google.com/v1beta1
+  kind: DNSManagedZone
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:dnsmanagedzone-name}
+  spec:
+    description: \${4:Example DNS zone}
+    dnsName: \${5:cnrm-dns-example.com.}
+    visibility: \${6:private}
+    privateVisibilityConfig:
+      networks:
+      - networkRef:
+          name: \${7:dnsmanagedzone-dep}

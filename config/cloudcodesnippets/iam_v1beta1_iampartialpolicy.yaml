@@ -1,0 +1,20 @@
+label: Config Connector IAMPartialPolicy
+markdownDescription: Creates yaml for a IAMPartialPolicy resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPartialPolicy
+  metadata:
+    name: \${1:iampartialpolicy-name}
+  spec:
+    resourceRef:
+      kind: \${2:Project}
+      name: \${3:iampartialpolicy-dep-project}
+    bindings:
+    - role: \${4:roles/storage.admin}
+      members:
+      - member: \${5:serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com}
+    - role: \${6:roles/editor}
+      members:
+      - memberFrom:
+          serviceAccountRef:
+            name: \${7:iampartialpolicy-dep-project}

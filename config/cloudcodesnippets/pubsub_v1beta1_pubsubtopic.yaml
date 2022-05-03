@@ -1,0 +1,11 @@
+label: Config Connector PubSubTopic
+markdownDescription: Creates yaml for a PubSubTopic resource
+insertText: |
+  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+  kind: PubSubTopic
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:pubsubtopic-name}
+  spec:
+    resourceID: \${4:pubsubtopic-sample}

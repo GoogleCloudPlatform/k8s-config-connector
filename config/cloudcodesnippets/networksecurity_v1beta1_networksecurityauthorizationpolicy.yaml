@@ -1,0 +1,40 @@
+label: Config Connector NetworkSecurityAuthorizationPolicy
+markdownDescription: Creates yaml for a NetworkSecurityAuthorizationPolicy resource
+insertText: |
+  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+  kind: NetworkSecurityAuthorizationPolicy
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networksecurityauthorizationpolicy-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    action: \${6:ALLOW}
+    description: \${7:Test Authorization Policy}
+    rules:
+    - sources:
+      - ipBlocks:
+        - \${8:1.2.3.4}
+        principals:
+        - \${9:*}
+      destinations:
+      - hosts:
+        - \${10:demo-service}
+        ports:
+        - \${11:8080}
+        methods:
+        - \${12:POST}
+    - sources:
+      - ipBlocks:
+        - \${13:1.2.3.5}
+        principals:
+        - \${14:*}
+      destinations:
+      - hosts:
+        - \${15:test-service}
+        ports:
+        - \${16:8081}
+        methods:
+        - \${17:GET}

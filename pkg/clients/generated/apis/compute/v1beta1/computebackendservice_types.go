@@ -559,6 +559,11 @@ type BackendserviceSecuritySettings struct {
 	SubjectAltNames []string `json:"subjectAltNames"`
 }
 
+type BackendserviceSubsetting struct {
+	/* The algorithm used for subsetting. Possible values: ["CONSISTENT_HASH_SUBSETTING"]. */
+	Policy string `json:"policy"`
+}
+
 type BackendserviceTtl struct {
 	/* Span of time that's a fraction of a second at nanosecond
 	resolution. Durations less than one second are represented
@@ -755,6 +760,10 @@ type ComputeBackendServiceSpec struct {
 	not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]. */
 	// +optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`
+
+	/* Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing and Internal HTTP(S) load balancing. */
+	// +optional
+	Subsetting *BackendserviceSubsetting `json:"subsetting,omitempty"`
 
 	/* How many seconds to wait for the backend before considering it a
 	failed request. Default is 30 seconds. Valid range is [1, 86400]. */

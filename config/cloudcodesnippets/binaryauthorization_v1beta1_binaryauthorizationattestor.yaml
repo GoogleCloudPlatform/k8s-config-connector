@@ -1,0 +1,24 @@
+label: Config Connector BinaryAuthorizationAttestor
+markdownDescription: Creates yaml for a BinaryAuthorizationAttestor resource
+insertText: |
+  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+  kind: BinaryAuthorizationAttestor
+  metadata:
+    name: \${1:binaryauthorizationattestor-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    description: \${3:A sample binary authorization attestor.}
+    userOwnedDrydockNote:
+      noteRef:
+        name: \${4:binaryauthorizationattestor-dep}
+      publicKeys:
+      - comment: \${5:A sample key}
+        pkixPublicKey:
+          publicKeyPem: |-
+            \${6:-----BEGIN PUBLIC KEY-----
+            MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8qErzp1izKNonCWqj5KSqdz6g2Tf
+            ZWvtX3I6huRWGD0pIMieOOUdFD/hbMH6xYx0ml2vVkUqFJzeSmQt8pbtnw==
+            -----END PUBLIC KEY-----
+            }
+          signatureAlgorithm: \${7:ECDSA_P256_SHA256}

@@ -1,0 +1,13 @@
+label: Config Connector ResourceManagerPolicy
+markdownDescription: Creates yaml for a ResourceManagerPolicy resource
+insertText: |
+  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+  kind: ResourceManagerPolicy
+  metadata:
+    name: \${1:resourcemanagerpolicy-name}
+  spec:
+    projectRef:
+      name: \${2:resourcemanagerpolicy-dep-proj}
+    constraint: \${3:constraints/compute.disableSerialPortAccess}
+    booleanPolicy:
+      enforced: \${4:true}

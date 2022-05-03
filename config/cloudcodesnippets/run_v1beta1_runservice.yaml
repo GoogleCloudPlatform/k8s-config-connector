@@ -1,0 +1,24 @@
+label: Config Connector RunService
+markdownDescription: Creates yaml for a RunService resource
+insertText: |
+  apiVersion: run.cnrm.cloud.google.com/v1beta1
+  kind: RunService
+  metadata:
+    name: \${1:runservice-name}
+  spec:
+    ingress: \${2:INGRESS_TRAFFIC_ALL}
+    launchStage: \${3:GA}
+    location: \${4:us-central1}
+    projectRef:
+      external: \${5:projects/[PROJECT_ID?]}
+    template:
+      containers:
+      - env:
+        - name: \${6:FOO}
+          value: \${7:bar]}
+        image: \${8:gcr.io/cloudrun/hello}
+      scaling:
+        maxInstanceCount: \${9:2}
+    traffic:
+    - percent: \${10:100}
+      type: \${11:TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST}

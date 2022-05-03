@@ -1,0 +1,2431 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: compute.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Compute
+  version: v1beta1
+  serviceHostName: "compute.googleapis.com"
+  resources:
+    - name: google_compute_address
+      kind: ComputeAddress
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: regional
+      resourceReferences:
+        - key: networkRef
+          tfField: network
+          description: |-
+            The network in which to reserve the address. If global, the address
+            must be within the RFC1918 IP space. The network cannot be deleted
+            if there are any reserved IP ranges referring to it. This field can
+            only be used with INTERNAL type with the VPC_PEERING and
+            IPSEC_INTERCONNECT purposes.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: subnetworkRef
+          tfField: subnetwork
+          description: |-
+            The subnetwork in which to reserve the address. If an IP address is
+            specified, it must be within the subnetwork's IP range.  This field
+            can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
+            purposes.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_backend_bucket
+      kind: ComputeBackendBucket
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/backendBuckets/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+      - key: bucketRef
+        tfField: bucket_name
+        description: |-
+          Reference to the bucket.
+        gvk:
+          kind: StorageBucket
+          version: v1beta1
+          group: storage.cnrm.cloud.google.com
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_backend_service
+      kind: ComputeBackendService
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/backendServices/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: health_checks
+          description: |-
+            The health check resources for health checking this
+            ComputeBackendService. Currently at most one health check can be
+            specified, and a health check is required.
+          types:
+            - key: healthCheckRef
+              gvk:
+                kind: ComputeHealthCheck
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: httpHealthCheckRef
+              gvk:
+                kind: ComputeHTTPHealthCheck
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: backend.group
+          description: |-
+            Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+            resource. In case of instance group this defines the list of
+            instances that serve traffic. Member virtual machine instances from
+            each instance group must live in the same zone as the instance
+            group itself. No two backends in a backend service are allowed to
+            use same Instance Group resource.
+
+            For Network Endpoint Groups this defines list of endpoints. All
+            endpoints of Network Endpoint Group must be hosted on instances
+            located in the same zone as the Network Endpoint Group.
+
+            Backend services cannot mix Instance Group and Network Endpoint
+            Group backends.
+
+            When the 'load_balancing_scheme' is INTERNAL, only instance groups
+            are supported.
+          types:
+            - key: instanceGroupRef
+              gvk:
+                kind: ComputeInstanceGroup
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: networkEndpointGroupRef
+              gvk:
+                kind: ComputeNetworkEndpointGroup
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: security_policy
+          description: |-
+            The security policy associated with this backend service.
+          key: securityPolicyRef
+          gvk:
+            kind: ComputeSecurityPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: security_settings.client_tls_policy
+          description: |-
+            ClientTlsPolicy is a resource that specifies how a client should
+            authenticate connections to backends of a service. This resource itself
+            does not affect configuration unless it is attached to a backend
+            service resource. *ConfigConnector only supports `external`
+            references for this field.*
+          key: clientTLSPolicyRef
+          gvk:
+            kind: NetworkSecurityClientTLSPolicy
+            version: v1beta1
+            group: networksecurity.cnrm.cloud.google.com/v1beta1
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_disk
+      kind: ComputeDisk
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/zones/{{zone}}/disks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: zonal
+      iamConfig:
+        policyName: google_compute_disk_iam_policy
+        policyMemberName: google_compute_disk_iam_member
+        referenceField:
+          name: name
+          type: name
+        supportsConditions: false
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: image
+          description: |-
+            The image from which to initialize this disk.
+          key: imageRef
+          targetField: self_link
+          gvk:
+            kind: ComputeImage
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: snapshot
+          description: |-
+            The source snapshot used to create this disk.
+          key: snapshotRef
+          targetField: self_link
+          gvk:
+            kind: ComputeSnapshot
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: disk_encryption_key.kms_key_self_link
+          description: |-
+            The encryption key used to encrypt the disk. Your project's Compute
+            Engine System service account
+            ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+            must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+            feature. See
+            https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
+          key: kmsKeyRef
+          targetField: self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: disk_encryption_key.kms_key_service_account
+          description: |-
+              The service account used for the encryption request for the given KMS key.
+              If absent, the Compute Engine Service Agent service account is used.
+          key: kmsKeyServiceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: source_image_encryption_key.kms_key_self_link
+          description: |-
+            The encryption key used to encrypt the disk. Your project's Compute
+            Engine System service account
+            ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+            must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+            feature. See
+            https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
+          key: kmsKeyRef
+          targetField: self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: source_image_encryption_key.kms_key_service_account
+          description: |-
+            The service account used for the encryption request for the given KMS key.
+            If absent, the Compute Engine Service Agent service account is used.
+          key: kmsKeyServiceAccountRef
+          targetField: email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+        - tfField: source_snapshot_encryption_key.kms_key_self_link
+          description: |-
+            The encryption key used to encrypt the disk. Your project's Compute
+            Engine System service account
+            ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+            must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+            feature. See
+            https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys
+          key: kmsKeyRef
+          targetField: self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: source_snapshot_encryption_key.kms_key_service_account
+          description: |-
+            The service account used for the encryption request for the given KMS key.
+            If absent, the Compute Engine Service Agent service account is used.
+          key: kmsKeyServiceAccountRef
+          targetField: email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+        - tfField: resource_policies
+          description: |-
+            Resource policies applied to this disk for automatic snapshot creations.
+          gvk:
+            kind: ComputeResourcePolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+    - name: google_compute_external_vpn_gateway
+      kind: ComputeExternalVPNGateway
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/externalVpnGateways/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_firewall
+      kind: ComputeFirewall
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/firewalls/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: network
+          description: |-
+            The network to attach this firewall to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: source_service_accounts
+          description: |-
+            If source service accounts are specified, the firewall will apply only
+            to traffic originating from an instance with a service account in this
+            list. Source service accounts cannot be used to control traffic to an
+            instance's external IP address because service accounts are associated
+            with an instance, not an IP address. sourceRanges can be set at the
+            same time as sourceServiceAccounts. If both are set, the firewall will
+            apply to traffic that has source IP address within sourceRanges OR the
+            source IP belongs to an instance with service account listed in
+            sourceServiceAccount. The connection does not need to match both
+            properties for the firewall to apply. sourceServiceAccounts cannot be
+            used at the same time as sourceTags or targetTags.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: target_service_accounts
+          description: |-
+            A list of service accounts indicating sets of instances located in the
+            network that may make network connections as specified in allowed[].
+            targetServiceAccounts cannot be used at the same time as targetTags or
+            sourceTags. If neither targetServiceAccounts nor targetTags are
+            specified, the firewall rule applies to all instances on the specified
+            network.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_forwarding_rule
+      kind: ComputeForwardingRule
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: target
+          description: |-
+            The target resource to receive the matched traffic. The forwarded
+            traffic must be of a type appropriate to the target object. For
+            INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+            are valid.
+          types:
+            - key: targetVPNGatewayRef
+              gvk:
+                kind: ComputeTargetVPNGateway
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetHTTPProxyRef
+              gvk:
+                kind: ComputeTargetHTTPProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetHTTPSProxyRef
+              gvk:
+                kind: ComputeTargetHTTPSProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetTCPProxyRef
+              gvk:
+                kind: ComputeTargetTCPProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetSSLProxyRef
+              gvk:
+                kind: ComputeTargetSSLProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetGRPCProxyRef
+              gvk:
+                kind: ComputeTargetGRPCProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: ip_address
+          description: |-
+            The IP address that this forwarding rule is serving on behalf of.
+
+            Addresses are restricted based on the forwarding rule's load
+            balancing scheme (EXTERNAL or INTERNAL) and scope (global or
+            regional).
+
+            When the load balancing scheme is EXTERNAL, for global forwarding
+            rules, the address must be a global IP, and for regional forwarding
+            rules, the address must live in the same region as the forwarding
+            rule. If this field is empty, an ephemeral IPv4 address from the
+            same scope (global or regional) will be assigned. A regional
+            forwarding rule supports IPv4 only. A global forwarding rule
+            supports either IPv4 or IPv6.
+
+            When the load balancing scheme is INTERNAL, this can only be an RFC
+            1918 IP address belonging to the network/subnet configured for the
+            forwarding rule. By default, if this field is empty, an ephemeral
+            internal IP address will be automatically allocated from the IP
+            range of the subnet or network configured for this forwarding rule.
+          types:
+            - key: ip
+              jsonSchemaType: string
+            - key: addressRef
+              gvk:
+                kind: ComputeAddress
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: address
+        - key: networkRef
+          description: |-
+            This field is not used for external load balancing. For internal
+            load balancing, this field identifies the network that the load
+            balanced IP should belong to for this forwarding rule. If this
+            field is not specified, the default network will be used.
+          tfField: network
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: subnetworkRef
+          description: |-
+            The subnetwork that the load balanced IP should belong to for this
+            forwarding rule. This field is only used for internal load
+            balancing.
+
+            If the network specified is in auto subnet mode, this field is
+            optional. However, if the network is in custom subnet mode, a
+            subnetwork must be specified.
+          tfField: subnetwork
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - key: backendServiceRef
+          tfField: backend_service
+          description: |-
+            A ComputeBackendService to receive the matched traffic. This is
+            used only for internal load balancing.
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_global_address
+      kind: ComputeAddress
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/addresses/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: global
+      resourceReferences:
+        - key: networkRef
+          tfField: network
+          description: |-
+            The network in which to reserve the address. If global, the address
+            must be within the RFC1918 IP space. The network cannot be deleted
+            if there are any reserved IP ranges referring to it. This field can
+            only be used with INTERNAL type with the VPC_PEERING and
+            IPSEC_INTERCONNECT purposes.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_global_forwarding_rule
+      kind: ComputeForwardingRule
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/forwardingRules/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: ip_address
+          description: |-
+            The IP address that this forwarding rule is serving on behalf of.
+
+            Addresses are restricted based on the forwarding rule's load
+            balancing scheme (EXTERNAL or INTERNAL) and scope (global or
+            regional).
+
+            When the load balancing scheme is EXTERNAL, for global forwarding
+            rules, the address must be a global IP, and for regional forwarding
+            rules, the address must live in the same region as the forwarding
+            rule. If this field is empty, an ephemeral IPv4 address from the
+            same scope (global or regional) will be assigned. A regional
+            forwarding rule supports IPv4 only. A global forwarding rule
+            supports either IPv4 or IPv6.
+
+            When the load balancing scheme is INTERNAL, this can only be an RFC
+            1918 IP address belonging to the network/subnet configured for the
+            forwarding rule. By default, if this field is empty, an ephemeral
+            internal IP address will be automatically allocated from the IP
+            range of the subnet or network configured for this forwarding rule.
+          types:
+            - key: addressRef
+              gvk:
+                kind: ComputeAddress
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: address
+            - key: ip
+              jsonSchemaType: string
+        - tfField: target
+          description: |-
+            The target resource to receive the matched traffic. The forwarded
+            traffic must be of a type appropriate to the target object. For
+            INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+            are valid.
+          types:
+            - key: targetHTTPProxyRef
+              gvk:
+                kind: ComputeTargetHTTPProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetHTTPSProxyRef
+              gvk:
+                kind: ComputeTargetHTTPSProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetTCPProxyRef
+              gvk:
+                kind: ComputeTargetTCPProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetSSLProxyRef
+              gvk:
+                kind: ComputeTargetSSLProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: targetGRPCProxyRef
+              gvk:
+                kind: ComputeTargetGRPCProxy
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - key: networkRef
+          tfField: network
+          description: |-
+            This field is not used for external load balancing. For internal
+            load balancing, this field identifies the network that the load
+            balanced IP should belong to for this forwarding rule. If this
+            field is not specified, the default network will be used.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_ha_vpn_gateway
+      kind: ComputeVPNGateway
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/vpnGateways/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: networkRef
+          tfField: network
+          description: |-
+            The network this VPN gateway is accepting traffic for.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: interconnectAttachmentRef
+          tfField: vpn_interfaces.interconnect_attachment
+          description: |-
+            Immutable. When this value is present, the VPN Gateway will be used
+            for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
+            traffic for this VPN Gateway interface will go through the specified
+            interconnect attachment resource. Not currently available publicly.
+          gvk:
+            kind: ComputeInterconnectAttachment
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_health_check
+      kind: ComputeHealthCheck
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/healthChecks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_http_health_check
+      kind: ComputeHTTPHealthCheck
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/httpHealthChecks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_https_health_check
+      kind: ComputeHTTPSHealthCheck
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/httpsHealthChecks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_image
+      kind: ComputeImage
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      iamConfig:
+        policyName: google_compute_image_iam_policy
+        policyMemberName: google_compute_image_iam_member
+        referenceField:
+          name: image
+          type: name
+        supportsConditions: true
+      resourceReferences:
+        - key: diskRef
+          tfField: source_disk
+          description: |-
+            The source disk to create this image based on.
+            You must provide either this property or the
+            rawDisk.source property but not both to create an image.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: source_image
+          key: sourceImageRef
+          description: |-
+            The source image used to create this image.
+          gvk:
+            kind: ComputeImage
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: source_snapshot
+          key: sourceSnapshotRef
+          description: |-
+            The source snapshot used to create this image.
+          gvk:
+            kind: ComputeSnapshot
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      idTemplate: "projects/{{project}}/global/images/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_instance
+      kind: ComputeInstance
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      iamConfig:
+        policyName: google_compute_instance_iam_policy
+        policyMemberName: google_compute_instance_iam_member
+        referenceField:
+          name: instance_name
+          type: name
+        supportsConditions: true
+      resourceReferences:
+        - key: sourceDiskRef
+          tfField: attached_disk.source
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: attached_disk.kms_key_self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sourceDiskRef
+          tfField: boot_disk.source
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sourceImageRef # prefix with "source" as that's how it is in the underlying API
+          tfField: boot_disk.initialize_params.image
+          gvk:
+            kind: ComputeImage
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: boot_disk.kms_key_self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: networkRef
+          tfField: network_interface.network
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: subnetworkRef
+          tfField: network_interface.subnetwork
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: natIpRef
+          tfField: network_interface.access_config.nat_ip
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
+        - tfField: scheduling.node_affinities
+          types:
+            - key: value
+              jsonSchemaType: object
+        - key: serviceAccountRef
+          tfField: service_account.email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: resource_policies
+          gvk:
+            kind: ComputeResourcePolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: networkIpRef
+          tfField: network_interface.network_ip
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
+      idTemplate: "projects/{{project}}/zones/{{zone}}/instances/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      directives:
+        - allow_stopping_for_update
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_instance_from_template
+      kind: ComputeInstance
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      iamConfig:
+        policyName: google_compute_instance_iam_policy
+        policyMemberName: google_compute_instance_iam_member
+        referenceField:
+          name: instance_name
+          type: name
+        supportsConditions: true
+      resourceReferences:
+        - key: sourceDiskRef
+          tfField: attached_disk.source
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: attached_disk.kms_key_self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sourceDiskRef
+          tfField: boot_disk.source
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sourceImageRef # prefix with "source" as that's how it is in the underlying API
+          tfField: boot_disk.initialize_params.image
+          gvk:
+            kind: ComputeImage
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: boot_disk.kms_key_self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: instanceTemplateRef
+          tfField: source_instance_template
+          gvk:
+            kind: ComputeInstanceTemplate
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: networkRef
+          tfField: network_interface.network
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: subnetworkRef
+          tfField: network_interface.subnetwork
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: natIpRef
+          tfField: network_interface.access_config.nat_ip
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
+        - tfField: scheduling.node_affinities
+          types:
+            - key: value
+              jsonSchemaType: object
+        - key: serviceAccountRef
+          tfField: service_account.email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+      idTemplate: "projects/{{project}}/zones/{{zone}}/instances/{{name}}"
+      # would never have a URL, not a valid test case
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      directives:
+        - allow_stopping_for_update
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_instance_group
+      kind: ComputeInstanceGroup
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+      - key: networkRef
+        tfField: network
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: instances
+        gvk:
+          kind: ComputeInstance
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      containers:
+      - type: project
+        tfField: project
+      idTemplate: "projects/{{project}}/zones/{{zone}}/instanceGroups/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+    - name: google_compute_instance_template
+      kind: ComputeInstanceTemplate
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - key: sourceDiskRef
+          tfField: disk.source
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - key: sourceImageRef
+          tfField: disk.source_image
+          gvk:
+            kind: ComputeImage
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: kmsKeyRef
+          tfField: disk.disk_encryption_key.kms_key_self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - key: networkRef
+          tfField: network_interface.network
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: subnetworkRef
+          tfField: network_interface.subnetwork
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: natIpRef
+          tfField: network_interface.access_config.nat_ip
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
+        - key: serviceAccountRef
+          tfField: service_account.email
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: scheduling.node_affinities
+          types:
+            - key: value
+              jsonSchemaType: object
+        - tfField: disk.resource_policies
+          gvk:
+            kind: ComputeResourcePolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      idTemplate: "projects/{{project}}/global/instanceTemplates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_interconnect_attachment
+      kind: ComputeInterconnectAttachment
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: router
+          description: |-
+            The Cloud Router to be used for dynamic routing. This router must
+            be in the same region as this ComputeInterconnectAttachment. The
+            ComputeInterconnectAttachment will automatically connect the
+            interconnect to the network & region within which the Cloud Router
+            is configured.
+          key: routerRef
+          gvk:
+            kind: ComputeRouter
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: ipsec_internal_addresses
+          description: |-
+            Immutable. The addresses that have been reserved for the
+            interconnect attachment. Used only for interconnect attachment that
+            has the encryption option as IPSEC.
+
+            The addresses must be RFC 1918 IP address ranges. When creating HA
+            VPN gateway over the interconnect attachment, if the attachment is
+            configured to use an RFC 1918 IP address, then the VPN gateway's IP
+            address will be allocated from the IP address range specified
+            here.
+
+            For example, if the HA VPN gateway's interface 0 is paired to this
+            interconnect attachment, then an RFC 1918 IP address for the VPN
+            gateway interface 0 will be allocated from the IP address specified
+            for this interconnect attachment.
+
+            If this field is not specified for interconnect attachment that has
+            encryption option as IPSEC, later on when creating HA VPN gateway on
+            this interconnect attachment, the HA VPN gateway's IP address will
+            be allocated from regional external IP address pool.
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_network
+      kind: ComputeNetwork
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/networks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_network_endpoint_group
+      kind: ComputeNetworkEndpointGroup
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: zonal
+      idTemplate: "projects/{{project}}/zones/{{zone}}/networkEndpointGroups/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: network
+          description: |-
+            The network to which all network endpoints in the NEG belong. Uses
+            "default" project network if unspecified.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: subnetwork
+          description: |-
+            Optional subnetwork to which all network endpoints in the NEG belong.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_network_peering
+      kind: ComputeNetworkPeering
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "{{network}}/{{name}}"
+      # sub-method of a network, doesn't have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+          parent: true
+        - tfField: peer_network
+          key: peerNetworkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      skipImport: true
+    - name: google_compute_node_group
+      kind: ComputeNodeGroup
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - key: nodeTemplateRef
+          tfField: node_template
+          description: |-
+            The node template to which this node group belongs.
+          targetField: self_link
+          gvk:
+            kind: ComputeNodeTemplate
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+      idTemplate: "projects/{{project}}/zones/{{zone}}/nodeGroups/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+       - type: project
+         tfField: project
+    - name: google_compute_node_template
+      kind: ComputeNodeTemplate
+      metadataMapping:
+        name: name
+        labels: node_affinity_labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/nodeTemplates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_project_metadata
+      kind: ComputeProjectMetadata
+      idTemplate: "{{project}}"
+      # too hard to reason about yet
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_backend_service
+      kind: ComputeBackendService
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/backendServices/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: health_checks
+          description: |-
+            The health check resources for health checking this
+            ComputeBackendService. Currently at most one health check can be
+            specified, and a health check is required.
+          types:
+            - key: healthCheckRef
+              gvk:
+                kind: ComputeHealthCheck
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: network
+          description: |-
+            The network to which this backend service belongs.  This field can
+            only be specified when the load balancing scheme is set to
+            INTERNAL.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: backend.group
+          description: |-
+            Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+            resource. In case of instance group this defines the list of
+            instances that serve traffic. Member virtual machine instances from
+            each instance group must live in the same zone as the instance
+            group itself. No two backends in a backend service are allowed to
+            use same Instance Group resource.
+
+            For Network Endpoint Groups this defines list of endpoints. All
+            endpoints of Network Endpoint Group must be hosted on instances
+            located in the same zone as the Network Endpoint Group.
+
+            Backend services cannot mix Instance Group and Network Endpoint
+            Group backends.
+
+            When the 'load_balancing_scheme' is INTERNAL, only instance groups
+            are supported.
+          types:
+            - key: instanceGroupRef
+              gvk:
+                kind: ComputeInstanceGroup
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: networkEndpointGroupRef
+              gvk:
+                kind: ComputeNetworkEndpointGroup
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_disk
+      kind: ComputeDisk
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/disks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: regional
+      iamConfig:
+        policyName: google_compute_region_disk_iam_policy
+        policyMemberName: google_compute_region_disk_iam_member
+        referenceField:
+          name: name
+          type: name
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: snapshot
+          description: |-
+            The source snapshot used to create this disk.
+          key: snapshotRef
+          targetField: self_link
+          gvk:
+            kind: ComputeSnapshot
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: disk_encryption_key.kms_key_name
+          description: |-
+            The name of the encryption key that is stored in the Google Cloud KMS.
+          key: kmsKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: source_snapshot_encryption_key.kms_key_name
+          description: |-
+            The name of the encryption key that is stored in the Google Cloud KMS.
+          key: kmsKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+      containers:
+        - type: project
+          tfField: project
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+    - name: google_compute_region_health_check
+      kind: ComputeHealthCheck
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/healthChecks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_ssl_certificate
+      kind: ComputeSSLCertificate
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/sslCertificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: regional
+      ignoredFields:
+        - name_prefix
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_target_http_proxy
+      kind: ComputeTargetHTTPProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: urlMapRef
+          tfField: url_map
+          description: |-
+            A reference to the ComputeURLMap resource that defines the mapping
+            from URL to the BackendService.
+          gvk:
+            kind: ComputeURLMap
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_target_https_proxy
+      kind: ComputeTargetHTTPSProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/targetHttpsProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: urlMapRef
+          tfField: url_map
+          description: |-
+            A reference to the ComputeURLMap resource that defines the mapping
+            from URL to the BackendService.
+          gvk:
+            kind: ComputeURLMap
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: ssl_certificates
+          description: |-
+            A list of ComputeSSLCertificate resources that are used to
+            authenticate connections between users and the load balancer. At
+            least one SSL certificate must be specified.
+          gvk:
+            kind: ComputeSSLCertificate
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_region_url_map
+      kind: ComputeURLMap
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: regional
+      idTemplate: "projects/{{project}}/regions/{{region}}/urlMaps/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: default_service
+          description: |-
+            The defaultService resource to which traffic is directed if none of
+            the hostRules match.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+            If defaultRouteAction is additionally specified, advanced routing
+            actions like URL Rewrites, etc. take effect prior to sending the
+            request to the backend. However, if defaultService is specified,
+            defaultRouteAction cannot contain any weightedBackendServices.
+            Conversely, if routeAction specifies any weightedBackendServices,
+            service must not be specified. Only one of defaultService,
+            defaultUrlRedirect or defaultRouteAction.weightedBackendService
+            must be set.
+          # Use "types" to be better merged with the global URL map, which
+          # supports more than one reference type in `default_service` field.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: path_matcher.default_service
+          description: |-
+            The default service to use if none of the pathRules defined by this
+            PathMatcher is matched by the URL's path portion.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+          # Use "types" to be better merged with the global URL map, which
+          # supports more than one reference type in
+          # `path_matcher.default_service` field.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: path_matcher.path_rule.service
+          description: |-
+            The backend service to which traffic is directed if this rule is
+            matched.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+            If routeAction is additionally specified, advanced routing actions
+            like URL Rewrites, etc. take effect prior to sending the request to
+            the backend. However, if service is specified, routeAction cannot
+            contain any weightedBackendServices. Conversely, if routeAction
+            specifies any weightedBackendServices, service must not be
+            specified. Only one of urlRedirect, service or
+            routeAction.weightedBackendService must be set.
+          # Use "types" to be better merged with the global URL map, which
+          # supports more than one reference type in
+          # `path_matcher.path_rule.service` field.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: path_matcher.path_rule.route_action.request_mirror_policy.backend_service
+          description: |-
+            Required. The backend service resource being mirrored to.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: path_matcher.path_rule.route_action.weighted_backend_services.backend_service
+          description: |-
+            Required. The default backend service resource. Before forwarding
+            the request to backendService, the loadbalancer applies any relevant
+            headerActions specified as part of this backendServiceWeight.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: path_matcher.route_rules.route_action.request_mirror_policy.backend_service
+          description: |-
+            Required. The backend service resource being mirrored to.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: path_matcher.route_rules.route_action.weighted_backend_services.backend_service
+          description: |-
+            Required. The default backend service resource. Before forwarding
+            the request to backendService, the loadbalancer applies any relevant
+            headerActions specified as part of this backendServiceWeight.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: test.service
+          description: |-
+            The backend service resource that should be matched by this test.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+          # Use "types" to be better merged with the global URL map, which
+          # supports more than one reference type in `test.service` field.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_reservation
+      kind: ComputeReservation
+      idTemplate: "projects/{{project}}/zones/{{zone}}/reservations/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      # TODO(b/217273773): Ignore shared_settings field for now until follow up
+      # with service team is completed.
+      ignoredFields:
+      - share_settings
+      containers:
+      - type: project
+        tfField: project
+    - name: google_compute_resource_policy
+      kind: ComputeResourcePolicy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/resourcePolicies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+      - type: project
+        tfField: project
+    - name: google_compute_route
+      kind: ComputeRoute
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/routes/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: network
+          description: |-
+            The network that this route applies to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: next_hop_instance
+          description: |-
+            Instance that should handle matching packets.
+          key: nextHopInstanceRef
+          gvk:
+            kind: ComputeInstance
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: next_hop_ilb
+          description: |-
+            A forwarding rule of type loadBalancingScheme=INTERNAL that should
+            handle matching packets.  Note that this can only be used when the
+            destinationRange is a public (non-RFC 1918) IP CIDR range.
+          key: nextHopILBRef
+          gvk:
+            kind: ComputeForwardingRule
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: next_hop_vpn_tunnel
+          description: |-
+            The ComputeVPNTunnel that should handle matching packets
+          key: nextHopVPNTunnelRef
+          gvk:
+            kind: ComputeVPNTunnel
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      ignoredFields:
+          - next_hop_instance_zone
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_router
+      kind: ComputeRouter
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/routers/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: network
+          description: |-
+            A reference to the network to which this router belongs.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_router_interface
+      kind: ComputeRouterInterface
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "{{region}}/{{router}}/{{name}}"
+      # sub-fields of Router that don't actually have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: router
+          key: routerRef
+          gvk:
+            kind: ComputeRouter
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          parent: true
+        - tfField: vpn_tunnel
+          key: vpnTunnelRef
+          gvk:
+            kind: ComputeVPNTunnel
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: interconnect_attachment
+          key: interconnectAttachmentRef
+          gvk:
+            kind: ComputeInterconnectAttachment
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_router_nat
+      kind: ComputeRouterNAT
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/routers/{{router}}/{{name}}"
+      # sub-fields of Router that don't actually have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: router
+          description: |-
+            The Cloud Router in which this NAT will be configured.
+          key: routerRef
+          gvk:
+            kind: ComputeRouter
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          parent: true
+        - tfField: subnetwork.name
+          description: |-
+            The subnetwork to NAT.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: nat_ips
+          description: |-
+            NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY.
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: drain_nat_ips
+          description: |-
+            A list of IP resources to be drained. These IPs must be valid
+            static external IPs that have been assigned to the NAT.
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_router_peer
+      kind: ComputeRouterPeer
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/routers/{{router}}/{{name}}"
+      # sub-fields of Router that don't actually have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: router
+          description: |-
+            The Cloud Router in which this BGP peer will be configured.
+          key: routerRef
+          gvk:
+            kind: ComputeRouter
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          parent: true
+        - tfField: interface
+          description: |-
+            The interface the BGP peer is associated with.
+          key: routerInterfaceRef
+          gvk:
+            kind: ComputeRouterInterface
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        # Preemptively converting to a resource reference despite the lack of a known type,
+        # as IP addresses should eventually at minimum be able to reference a Kubernetes
+        # Service or Endpoint.
+        #
+        # Note that references to ComputeAddress are invalid
+        # due to ComputeRouterPeer only allowing
+        # IPs in the 169.254.0.0/16 local-link range, which is an invalid
+        # ComputeAddress and subnetwork range for GCP.
+        - tfField: ip_address
+          types:
+            - key: external
+              jsonSchemaType: string
+          description: |-
+            IP address of the interface inside Google Cloud Platform.
+            Only IPv4 is supported.
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_security_policy
+      kind: ComputeSecurityPolicy
+      idTemplate: "projects/{{project}}/global/securityPolicies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_shared_vpc_host_project
+      kind: ComputeSharedVPCHostProject
+      idTemplate: "{{project}}"
+      # resource is a compute API request, doesn't have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_shared_vpc_service_project
+      kind: ComputeSharedVPCServiceProject
+      idTemplate: "{{host_project}}/{{service_project}}"
+      # resource is a compute API request, doesn't have a URL
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - tfField: service_project
+          key: projectRef
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+      containers:
+        - type: project
+          tfField: host_project
+    - name: google_compute_snapshot
+      kind: ComputeSnapshot
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/snapshots/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: sourceDiskRef
+          tfField: source_disk
+          description: |-
+            A reference to the disk used to create this snapshot.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - key: kmsKeyRef
+          tfField: snapshot_encryption_key.kms_key_self_link
+          description: |-
+            The encryption key that is stored in Google Cloud KMS.
+          targetField: self_link
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+        - tfField: snapshot_encryption_key.kms_key_service_account
+          description: |-
+            The service account used for the encryption request for the given KMS key.
+            If absent, the Compute Engine Service Agent service account is used.
+          key: kmsKeyServiceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: source_disk_encryption_key.kms_key_service_account
+          description: |-
+            The service account used for the encryption request for the given KMS key.
+            If absent, the Compute Engine Service Agent service account is used.
+          key: kmsKeyServiceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_ssl_certificate
+      kind: ComputeSSLCertificate
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/sslCertificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: global
+      ignoredFields:
+        - name_prefix
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_ssl_policy
+      kind: ComputeSSLPolicy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/sslPolicies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_subnetwork
+      kind: ComputeSubnetwork
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      iamConfig:
+        policyName: google_compute_subnetwork_iam_policy
+        policyMemberName: google_compute_subnetwork_iam_member
+        referenceField:
+          name: subnetwork
+          type: name
+        supportsConditions: true
+      idTemplate: "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: networkRef
+          description: |-
+            The network this subnet belongs to. Only networks that are in the
+            distributed mode can have subnetworks.
+          tfField: network
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_grpc_proxy
+      kind: ComputeTargetGRPCProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/targetGrpcProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      resourceReferences:
+        - key: urlMapRef
+          description: |-
+            The UrlMap resource that defines the mapping from URL to the BackendService.
+            The protocol field in the BackendService must be set to GRPC.
+          tfField: url_map
+          gvk:
+            kind: ComputeURLMap
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_http_proxy
+      kind: ComputeTargetHTTPProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/targetHttpProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: urlMapRef
+          tfField: url_map
+          description: |-
+            A reference to the ComputeURLMap resource that defines the mapping
+            from URL to the BackendService.
+          gvk:
+            kind: ComputeURLMap
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_https_proxy
+      kind: ComputeTargetHTTPSProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/targetHttpsProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: urlMapRef
+          tfField: url_map
+          description: |-
+            A reference to the ComputeURLMap resource that defines the mapping
+            from URL to the BackendService.
+          gvk:
+            kind: ComputeURLMap
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: ssl_certificates
+          description: |-
+            A list of ComputeSSLCertificate resources that are used to
+            authenticate connections between users and the load balancer. At
+            least one SSL certificate must be specified.
+          gvk:
+            kind: ComputeSSLCertificate
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sslPolicyRef
+          tfField: ssl_policy
+          description: |-
+            A reference to the ComputeSSLPolicy resource that will be
+            associated with the ComputeTargetHTTPSProxy resource. If not set,
+            the ComputeTargetHTTPSProxy resource will not have any SSL policy
+            configured.
+          gvk:
+            kind: ComputeSSLPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_instance
+      kind: ComputeTargetInstance
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/zones/{{zone}}/targetInstances/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: instanceRef
+          tfField: instance
+          description: |-
+            The ComputeInstance handling traffic for this target instance.
+          gvk:
+            kind: ComputeInstance
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: networkRef
+          tfField: network
+          description: |-
+            The network this target instance uses to forward
+            traffic. If not specified, the traffic will be forwarded to the network
+            that the default network interface belongs to.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_pool
+      kind: ComputeTargetPool
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/targetPools/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: backupTargetPoolRef
+          tfField: backup_pool
+          targetField: self_link
+          gvk:
+            kind: ComputeTargetPool
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: instances
+          gvk:
+            kind: ComputeInstance
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: health_checks
+          types:
+            - key: httpHealthCheckRef
+              gvk:
+                kind: ComputeHTTPHealthCheck
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_ssl_proxy
+      kind: ComputeTargetSSLProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/targetSslProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceReferences:
+        - key: backendServiceRef
+          tfField: backend_service
+          description: |-
+            A reference to the ComputeBackendService resource.
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: ssl_certificates
+          description: |-
+            A list of ComputeSSLCertificate resources that are used to
+            authenticate connections between users and the load balancer.
+            Currently, exactly one SSL certificate must be specified.
+          gvk:
+            kind: ComputeSSLCertificate
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: sslPolicyRef
+          tfField: ssl_policy
+          description: |-
+            A reference to the ComputeSSLPolicy resource that will be
+            associated with the TargetSslProxy resource. If not set, the
+            ComputeTargetSSLProxy resource will not have any SSL policy
+            configured.
+          gvk:
+            kind: ComputeSSLPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_target_tcp_proxy
+      kind: ComputeTargetTCPProxy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/targetTcpProxies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: backendServiceRef
+          description: |-
+            A reference to the ComputeBackendService resource.
+          tfField: backend_service
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_url_map
+      kind: ComputeURLMap
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      locationality: global
+      idTemplate: "projects/{{project}}/global/urlMaps/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: default_service
+          description: |-
+            The defaultService resource to which traffic is directed if none of
+            the hostRules match.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+            If defaultRouteAction is additionally specified, advanced routing
+            actions like URL Rewrites, etc. take effect prior to sending the
+            request to the backend. However, if defaultService is specified,
+            defaultRouteAction cannot contain any weightedBackendServices.
+            Conversely, if routeAction specifies any weightedBackendServices,
+            service must not be specified. Only one of defaultService,
+            defaultUrlRedirect or defaultRouteAction.weightedBackendService
+            must be set.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: backendBucketRef
+              gvk:
+                kind: ComputeBackendBucket
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: default_route_action.request_mirror_policy.backend_service
+          key: backendServiceRef
+          description: |-
+            Required. The backend service resource being mirrored to.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: default_route_action.weighted_backend_services.backend_service
+          key: backendServiceRef
+          description: |-
+            The default backend service resource.
+            Before forwarding the request to backendService, the loadbalancer
+            applies any relevant headerActions specified as part of this
+            backendServiceWeight.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: path_matcher.default_service
+          description: |-
+            The default service to use if none of the pathRules defined by this
+            PathMatcher is matched by the URL's path portion.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: backendBucketRef
+              gvk:
+                kind: ComputeBackendBucket
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: path_matcher.default_route_action.request_mirror_policy.backend_service
+          key: backendServiceRef
+          description: |-
+            Required. The backend service resource being mirrored to.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: path_matcher.default_route_action.weighted_backend_services.backend_service
+          key: backendServiceRef
+          description: |-
+            The default backend service resource.
+            Before forwarding the request to backendService, the loadbalancer
+            applies any relevant headerActions specified as part of this
+            backendServiceWeight.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: path_matcher.path_rule.service
+          description: |-
+            The backend service to which traffic is directed if this rule is
+            matched.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+            If routeAction is additionally specified, advanced routing actions
+            like URL Rewrites, etc. take effect prior to sending the request to
+            the backend. However, if service is specified, routeAction cannot
+            contain any weightedBackendServices. Conversely, if routeAction
+            specifies any weightedBackendServices, service must not be
+            specified. Only one of urlRedirect, service or
+            routeAction.weightedBackendService must be set.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: backendBucketRef
+              gvk:
+                kind: ComputeBackendBucket
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+        - tfField: path_matcher.path_rule.route_action.request_mirror_policy.backend_service
+          key: backendServiceRef
+          description: |-
+            Required. The backend service resource being mirrored to.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: path_matcher.path_rule.route_action.weighted_backend_services.backend_service
+          description: |-
+            Required. The default backend service resource. Before forwarding
+            the request to backendService, the loadbalancer applies any relevant
+            headerActions specified as part of this backendServiceWeight.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: path_matcher.route_rules.route_action.request_mirror_policy.backend_service
+          key: backendServiceRef
+          description: |-
+            Required. The backend service resource being mirrored to.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          target_field: self_link
+        - tfField: path_matcher.route_rules.route_action.weighted_backend_services.backend_service
+          description: |-
+            Required. The default backend service resource. Before forwarding
+            the request to backendService, the loadbalancer applies any relevant
+            headerActions specified as part of this backendServiceWeight.
+          key: backendServiceRef
+          gvk:
+            kind: ComputeBackendService
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: test.service
+          description: |-
+            The backend service resource that should be matched by this test.
+            For the Global URL Map, it should be a reference to the backend
+            service or backend bucket.
+            For the Regional URL Map, it should be a reference to the backend
+            service.
+          types:
+            - key: backendServiceRef
+              gvk:
+                kind: ComputeBackendService
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+            - key: backendBucketRef
+              gvk:
+                kind: ComputeBackendBucket
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_vpn_gateway
+      kind: ComputeTargetVPNGateway
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: networkRef
+          tfField: network
+          description: |-
+            The network this VPN gateway is accepting traffic for.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_compute_vpn_tunnel
+      kind: ComputeVPNTunnel
+      idTemplate: "projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - tfField: target_vpn_gateway
+          description: |-
+            The ComputeTargetVPNGateway with which this VPN tunnel is
+            associated.
+          key: targetVPNGatewayRef
+          gvk:
+            kind: ComputeTargetVPNGateway
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: vpn_gateway
+          description: |-
+            The ComputeVPNGateway with which this VPN tunnel is associated.
+            This must be used if a High Availability VPN gateway resource is
+            created.
+          key: vpnGatewayRef
+          gvk:
+            kind: ComputeVPNGateway
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: peer_external_gateway
+          description: |-
+            The peer side external VPN gateway to which this VPN tunnel
+            is connected.
+          key: peerExternalGatewayRef
+          gvk:
+            kind: ComputeExternalVPNGateway
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: peer_gcp_gateway
+          description: |-
+            The peer side HA GCP VPN gateway to which this VPN tunnel is
+            connected. If provided, the VPN tunnel will automatically use the
+            same VPN gateway interface ID in the peer GCP VPN gateway.
+          key: peerGCPGatewayRef
+          gvk:
+            kind: ComputeVPNGateway
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: router
+          description: |-
+            The router to be used for dynamic routing.
+          key: routerRef
+          gvk:
+            kind: ComputeRouter
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project

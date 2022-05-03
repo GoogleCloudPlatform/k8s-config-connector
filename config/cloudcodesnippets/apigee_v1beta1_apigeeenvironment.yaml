@@ -1,0 +1,14 @@
+label: Config Connector ApigeeEnvironment
+markdownDescription: Creates yaml for a ApigeeEnvironment resource
+insertText: |
+  apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+  kind: ApigeeEnvironment
+  metadata:
+    name: \${1:apigeeenvironment-name}
+  spec:
+    apigeeOrganizationRef:
+      name: \${2:apigeeenvironment-dep}
+    description: \${3:A sample environment}
+    properties:
+      key: \${4:A sample value}
+    displayName: \${5:sample-environment}

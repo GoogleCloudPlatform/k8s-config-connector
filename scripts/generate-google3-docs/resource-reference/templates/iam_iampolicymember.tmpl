@@ -1,0 +1,113 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+<code>{{.Kind}}</code> lets you manage the {{"{{iam_name_short}}"}} policy
+bindings for a given {{"{{gcp_name_short}}"}} resource.
+
+<code>{{.Kind}}</code> represents a binding for a single
+{{"{{iam_name_short}}"}} member. It adds a binding for the given
+{{"{{iam_name_short}}"}} member and role to the associated
+{{"{{gcp_name_short}}"}} resource's {{"{{iam_name_short}}"}} policy.
+
+If you want to manage multiple bindings, use
+<a href="/config-connector/docs/reference/resource-docs/iam/iampartialpolicy">IAMPartialPolicy</a>.
+If you want authoritative control over bindings, use
+<a href="/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>{{"{{iam_name_short}}"}}</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/iam/docs/">/iam/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.iamPolicies</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/iam/reference/rest/v1/iamPolicies">/iam/reference/rest/v1/iamPolicies</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>iam.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+Warning: <code>{{.Kind}}</code> **should not** be used in conjunction with
+<code>IAMPolicy</code> for the same resource.
+
+Note: When you delete an <code>{{.Kind}}</code>, only the binding for the given
+{{"{{iam_name_short}}"}} member and role is deleted from the associated
+{{"{{gcp_name_short}}"}} resource's {{"{{iam_name_short}}"}} policy.
+
+Note: Updating <code>spec</code> is not allowed.
+
+## Supported Resources
+
+You can use <code>{{.Kind}}</code> to configure {{"{{iam_name_short}}"}} for
+the following resources.
+
+{{template "bigquerydatasetiamnote.tmpl" .}}
+
+<table>
+<thead>
+    <tr>
+        <th><strong>Kind</strong></th>
+        <th><strong>Supports Conditions</strong></th>
+    </tr>
+</thead>
+<tbody>{{ range $ref := .SupportedReferences}}
+    <tr>
+        <td><code>{{$ref.Kind}}</code></td>
+        {{if $ref.SupportsConditions}}<td>Y</td>{{else}}<td></td>{{end}}
+    </tr>{{end}}
+</tbody>
+</table>
+
+<table>
+<thead>
+    <tr>
+        <th><strong>Kind</strong></th>
+        <th><strong>External Reference Formats</strong></th>
+    </tr>
+</thead>
+<tbody>{{ range $ref := .SupportedReferences}}
+    <tr>
+        <td><code>{{$ref.Kind}}</code></td>
+        <td>
+            {{range $format := $ref.ExternalReferenceFormats}}
+            <p><code>{% verbatim %}{{$format}}{% endverbatim %}</code></p>
+            {{end}}
+        </td>
+    </tr>{{end}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

@@ -1,0 +1,13 @@
+label: Config Connector ArtifactRegistryRepository
+markdownDescription: Creates yaml for a ArtifactRegistryRepository resource
+insertText: |
+  apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+  kind: ArtifactRegistryRepository
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:artifactregistryrepository-name}
+  spec:
+    format: \${4:DOCKER}
+    location: \${5:us-west1}
+    description: \${6:User-provided description of the repository}

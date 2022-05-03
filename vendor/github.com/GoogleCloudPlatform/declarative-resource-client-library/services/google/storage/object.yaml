@@ -1,0 +1,286 @@
+# Copyright 2022 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Storage/Object
+  description: The Storage Object resource
+  x-dcl-struct-name: Object
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Object
+    parameters:
+    - name: Object
+      required: true
+      description: A full instance of a Object
+  apply:
+    description: The function used to apply information about a Object
+    parameters:
+    - name: Object
+      required: true
+      description: A full instance of a Object
+  delete:
+    description: The function used to delete a Object
+    parameters:
+    - name: Object
+      required: true
+      description: A full instance of a Object
+  deleteAll:
+    description: The function used to delete all Object
+    parameters:
+    - name: bucket
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Object
+    parameters:
+    - name: bucket
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Object:
+      title: Object
+      x-dcl-id: b/{{bucket}}/o/{{name}}
+      x-dcl-uses-state-hint: true
+      x-dcl-has-iam: false
+      type: object
+      required:
+      - name
+      - bucket
+      properties:
+        bucket:
+          type: string
+          x-dcl-go-name: Bucket
+          description: The name of the bucket containing the object.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Storage/Bucket
+            field: name
+            parent: true
+        componentCount:
+          type: integer
+          format: int64
+          x-dcl-go-name: ComponentCount
+          readOnly: true
+          description: Returned for composite objects only. Number of non-composite
+            objects in the composite object. componentCount includes non-composite
+            objects that were part of any composite objects used to compose the current
+            object.
+          x-kubernetes-immutable: true
+        content:
+          type: string
+          x-dcl-go-name: Content
+          description: Content of the object
+          x-kubernetes-immutable: true
+        contentType:
+          type: string
+          x-dcl-go-name: ContentType
+          description: Content-Type of the object data. If an object is stored without
+            a Content-Type, it is served as application/octet-stream.
+          x-kubernetes-immutable: true
+        crc32c:
+          type: string
+          x-dcl-go-name: Crc32c
+          description: 'CRC32c checksum, as described in RFC 4960, Appendix B; encoded
+            using base64 in big-endian byte order. For more information about using
+            the CRC32c checksum, see Hashes and eTags: best practices.'
+          x-kubernetes-immutable: true
+        customTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CustomTime
+          description: A user-specified timestamp for the object in RFC 3339 format.
+            Once set on an object, customTime cannot be removed and cannot be set
+            to an earlier datetime. For more information, see custom time metadata.
+          x-kubernetes-immutable: true
+        customerEncryption:
+          type: object
+          x-dcl-go-name: CustomerEncryption
+          x-dcl-go-type: ObjectCustomerEncryption
+          description: Metadata of customer-supplied encryption key, if the object
+            is encrypted by such a key.
+          x-kubernetes-immutable: true
+          properties:
+            encryptionAlgorithm:
+              type: string
+              x-dcl-go-name: EncryptionAlgorithm
+              description: The encryption algorithm.
+              x-kubernetes-immutable: true
+            key:
+              type: string
+              x-dcl-go-name: Key
+              description: The encryption key encoded using base64.
+              x-kubernetes-immutable: true
+              x-dcl-sensitive: true
+              x-dcl-mutable-unreadable: true
+            keySha256:
+              type: string
+              x-dcl-go-name: KeySha256
+              description: SHA256 hash value of the encryption key; encoded using
+                base64.
+              x-kubernetes-immutable: true
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: HTTP 1.1 Entity tag for the object.
+          x-kubernetes-immutable: true
+        eventBasedHold:
+          type: boolean
+          x-dcl-go-name: EventBasedHold
+          description: Whether or not the object is subject to a event-based hold.
+          x-kubernetes-immutable: true
+        generation:
+          type: integer
+          format: int64
+          x-dcl-go-name: Generation
+          readOnly: true
+          description: The content generation of this object. Used for object versioning.
+          x-kubernetes-immutable: true
+        id:
+          type: string
+          x-dcl-go-name: Id
+          readOnly: true
+          description: The ID of the object, including the bucket name, object name,
+            and generation number.
+          x-kubernetes-immutable: true
+        kmsKeyName:
+          type: string
+          x-dcl-go-name: KmsKeyName
+          description: Cloud KMS Key used to encrypt this object, if the object is
+            encrypted by such a key.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudkms/CryptoKey
+            field: name
+        md5Hash:
+          type: string
+          x-dcl-go-name: Md5Hash
+          description: 'MD5 hash of the data, encoded using base64. This field is
+            not present for composite objects. For more information about using the
+            MD5 hash, see Hashes and ETags: Best Practices.'
+          x-kubernetes-immutable: true
+        mediaLink:
+          type: string
+          x-dcl-go-name: MediaLink
+          readOnly: true
+          description: Media download link.
+          x-kubernetes-immutable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Metadata
+          description: User-provided metadata, in key/value pairs.
+          x-kubernetes-immutable: true
+          x-dcl-mutable-unreadable: true
+        metageneration:
+          type: integer
+          format: int64
+          x-dcl-go-name: Metageneration
+          readOnly: true
+          description: The version of the metadata for this object at this generation.
+            Used for preconditions and for detecting changes in metadata. A metageneration
+            number is only meaningful in the context of a particular generation of
+            a particular object.
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The name of the object.
+          x-kubernetes-immutable: true
+        owner:
+          type: object
+          x-dcl-go-name: Owner
+          x-dcl-go-type: ObjectOwner
+          readOnly: true
+          description: User-provided metadata, in key/value pairs.
+          x-kubernetes-immutable: true
+          properties:
+            entity:
+              type: string
+              x-dcl-go-name: Entity
+              readOnly: true
+              description: The entity, in the form "user-emailAddress".
+              x-kubernetes-immutable: true
+            entityId:
+              type: string
+              x-dcl-go-name: EntityId
+              readOnly: true
+              description: The ID for the entity.
+              x-kubernetes-immutable: true
+        retentionExpirationTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: RetentionExpirationTime
+          readOnly: true
+          description: The earliest time that the object can be deleted, based on
+            a bucket's retention policy, in RFC 3339 format.
+          x-kubernetes-immutable: true
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: The link to this object.
+          x-kubernetes-immutable: true
+        size:
+          type: integer
+          format: int64
+          x-dcl-go-name: Size
+          readOnly: true
+          description: Content-Length of the data in bytes.
+          x-kubernetes-immutable: true
+        storageClass:
+          type: string
+          x-dcl-go-name: StorageClass
+          description: Storage class of the object.
+          x-kubernetes-immutable: true
+        temporaryHold:
+          type: boolean
+          x-dcl-go-name: TemporaryHold
+          description: Whether or not the object is subject to a temporary hold.
+          x-kubernetes-immutable: true
+        timeCreated:
+          type: string
+          format: date-time
+          x-dcl-go-name: TimeCreated
+          readOnly: true
+          description: The creation time of the object in RFC 3339 format.
+          x-kubernetes-immutable: true
+        timeDeleted:
+          type: string
+          format: date-time
+          x-dcl-go-name: TimeDeleted
+          readOnly: true
+          description: The deletion time of the object in RFC 3339 format. Returned
+            if and only if this version of the object is no longer a live version,
+            but remains in the bucket as a noncurrent version.
+          x-kubernetes-immutable: true
+        timeStorageClassUpdated:
+          type: string
+          format: date-time
+          x-dcl-go-name: TimeStorageClassUpdated
+          readOnly: true
+          description: The time at which the object's storage class was last changed.
+            When the object is initially created, it will be set to timeCreated.
+          x-kubernetes-immutable: true
+        updated:
+          type: string
+          format: date-time
+          x-dcl-go-name: Updated
+          readOnly: true
+          description: The modification time of the object metadata in RFC 3339 format.
+          x-kubernetes-immutable: true

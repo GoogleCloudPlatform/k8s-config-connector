@@ -1,0 +1,111 @@
+# Copyright 2022 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Apigee/Envgroup
+  description: The Apigee Envgroup resource
+  x-dcl-struct-name: Envgroup
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Envgroup
+    parameters:
+    - name: Envgroup
+      required: true
+      description: A full instance of a Envgroup
+  apply:
+    description: The function used to apply information about a Envgroup
+    parameters:
+    - name: Envgroup
+      required: true
+      description: A full instance of a Envgroup
+  delete:
+    description: The function used to delete a Envgroup
+    parameters:
+    - name: Envgroup
+      required: true
+      description: A full instance of a Envgroup
+  deleteAll:
+    description: The function used to delete all Envgroup
+    parameters:
+    - name: apigeeorganization
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Envgroup
+    parameters:
+    - name: apigeeorganization
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Envgroup:
+      title: Envgroup
+      x-dcl-id: organizations/{{apigee_organization}}/envgroups/{{name}}
+      x-dcl-has-iam: false
+      type: object
+      required:
+      - hostnames
+      - apigeeOrganization
+      properties:
+        apigeeOrganization:
+          type: string
+          x-dcl-go-name: ApigeeOrganization
+          description: The apigee organization for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Apigee/Organization
+            field: name
+            parent: true
+        createdAt:
+          type: integer
+          format: int64
+          x-dcl-go-name: CreatedAt
+          readOnly: true
+          x-kubernetes-immutable: true
+        hostnames:
+          type: array
+          x-dcl-go-name: Hostnames
+          description: Required. Host names for this environment group.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        lastModifiedAt:
+          type: integer
+          format: int64
+          x-dcl-go-name: LastModifiedAt
+          readOnly: true
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: ID of the environment group.
+          x-kubernetes-immutable: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: EnvgroupStateEnum
+          readOnly: true
+          description: 'Output only. State of the environment. Values other than ACTIVE
+            means the resource is not ready to use. Possible values: STATE_UNSPECIFIED,
+            CREATING, ACTIVE, DELETING'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - CREATING
+          - ACTIVE
+          - DELETING

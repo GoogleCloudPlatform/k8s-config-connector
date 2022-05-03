@@ -1,0 +1,102 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.2
+  creationTimestamp: null
+  name: configconnectorcontexts.core.cnrm.cloud.google.com
+spec:
+  group: core.cnrm.cloud.google.com
+  names:
+    kind: ConfigConnectorContext
+    listKind: ConfigConnectorContextList
+    plural: configconnectorcontexts
+    singular: configconnectorcontext
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'true' the most recent reconcile of the ConfigConnectorContext
+        object succeeded
+      jsonPath: .status.healthy
+      name: Healthy
+      type: string
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ConfigConnectorContext is the Schema for the ConfigConnectorContexts
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ConfigConnectorContextSpec defines the desired state of ConfigConnectorContext
+            properties:
+              billingProject:
+                description: Specifies the project to use for preconditions, quota
+                  and billing. Should only be used when requestProjectPolicy is set
+                  to BILLING_PROJECT.
+                type: string
+              googleServiceAccount:
+                description: The Google Service Account to be used by Config Connector
+                  to authenticate with Google Cloud APIs in the associated namespace.
+                type: string
+              requestProjectPolicy:
+                description: Specifies which project to use for preconditions, quota,
+                  and billing for requests made to Google Cloud APIs for resources
+                  in the associated namespace. Must be one of 'SERVICE_ACCOUNT_PROJECT',
+                  'RESOURCE_PROJECT', or 'BILLING_PROJECT. Defaults to 'SERVICE_ACCOUNT_PROJECT'.
+                  If set to 'SERVICE_ACCOUNT_PROJECT', uses the project that the Google
+                  Service Account belongs to. If set to 'RESOURCE_PROJECT', uses the
+                  project that the resource belongs to. If set to 'BILLING_PROJECT',
+                  uses the project specified by spec.billingProject.
+                enum:
+                - SERVICE_ACCOUNT_PROJECT
+                - RESOURCE_PROJECT
+                - BILLING_PROJECT
+                type: string
+            required:
+            - googleServiceAccount
+            type: object
+          status:
+            description: ConfigConnectorContextStatus defines the observed state of
+              ConfigConnectorContext
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

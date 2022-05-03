@@ -1,0 +1,18 @@
+label: Config Connector ComputeImage
+markdownDescription: Creates yaml for a ComputeImage resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeImage
+  metadata:
+    labels:
+      \${1:image-type}: \${2:stemcell}
+    name: \${3:computeimage-name}
+  spec:
+    description: \${4:A sample image created from URL to a raw TAR disk image}
+    family: \${5:ubuntu-custom}
+    licenses:
+    - \${6:https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx}
+    rawDisk:
+      source: \${7:https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz}
+      containerType: \${8:TAR}
+      sha1: \${9:819b7e9c17423f4539f09687eaa13687afa2fe32}

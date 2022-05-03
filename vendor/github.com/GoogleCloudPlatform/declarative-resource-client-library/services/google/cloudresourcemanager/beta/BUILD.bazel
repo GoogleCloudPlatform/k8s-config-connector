@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "client.go",
+        "folder.go",
+        "folder_beta_yaml_embed.go",
+        "folder_internal.go",
+        "project.go",
+        "project_beta_yaml_embed.go",
+        "project_internal.go",
+        "resourcemanager_utils.go",
+    ],
+    importpath = "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudresourcemanager/beta",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dcl:go_default_library",
+        "//dcl/operations:go_default_library",
+        "@org_golang_google_api//googleapi:go_default_library",
+    ],
+)

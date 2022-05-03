@@ -1,0 +1,11 @@
+label: Config Connector IAPIdentityAwareProxyClient
+markdownDescription: Creates yaml for a IAPIdentityAwareProxyClient resource
+insertText: |
+  apiVersion: iap.cnrm.cloud.google.com/v1beta1
+  kind: IAPIdentityAwareProxyClient
+  metadata:
+    name: \${1:iapidentityawareproxyclient-name}
+  spec:
+    displayName: \${2:Test Client}
+    brandRef:
+      name: \${3:iapidentityawareproxyclient-dep}

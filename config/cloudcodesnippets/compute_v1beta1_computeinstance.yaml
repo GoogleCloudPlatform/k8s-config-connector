@@ -1,0 +1,46 @@
+label: Config Connector ComputeInstance
+markdownDescription: Creates yaml for a ComputeInstance resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInstance
+  metadata:
+    labels:
+      \${1:created-from}: \${2:image}
+      \${3:network-type}: \${4:subnetwork}
+    name: \${5:computeinstance-name}
+  spec:
+    machineType: \${6:n1-standard-1}
+    zone: \${7:us-west1-a}
+    bootDisk:
+      initializeParams:
+        size: \${8:24}
+        type: \${9:pd-ssd}
+        sourceImageRef:
+          external: \${10:debian-cloud/debian-9}
+    networkInterface:
+    - subnetworkRef:
+        name: \${11:computeinstance-dep-cloudmachine}
+      aliasIpRange:
+      - ipCidrRange: \${12:/24}
+        subnetworkRangeName: \${13:cloudrange}
+    attachedDisk:
+    - sourceDiskRef:
+        name: \${14:computeinstance-dep1-cloudmachine}
+      mode: \${15:READ_ONLY}
+      deviceName: \${16:proxycontroldisk}
+      diskEncryptionKeyRaw:
+        valueFrom:
+          secretKeyRef:
+            name: \${17:computeinstance-dep-cloudmachine}
+            key: \${18:diskEncryptionKey}
+    - sourceDiskRef:
+        name: \${19:computeinstance-dep2-cloudmachine}
+      mode: \${20:READ_WRITE}
+      deviceName: \${21:persistentdisk}
+    minCpuPlatform: \${22:Intel Skylake}
+    serviceAccount:
+      serviceAccountRef:
+        name: \${23:inst-dep-cloudmachine}
+      scopes:
+      - \${24:compute-rw}
+      - \${25:logging-write}

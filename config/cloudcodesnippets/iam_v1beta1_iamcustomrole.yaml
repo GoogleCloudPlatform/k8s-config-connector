@@ -1,0 +1,14 @@
+label: Config Connector IAMCustomRole
+markdownDescription: Creates yaml for a IAMCustomRole resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMCustomRole
+  metadata:
+    name: \${1:iamcustomrole-name}
+  spec:
+    title: \${2:Example Project-Level Custom Role}
+    description: \${3:This role only contains two permissions - publish and update}
+    permissions:
+    - \${4:pubsub.topics.publish}
+    - \${5:pubsub.topics.update}
+    stage: \${6:GA}

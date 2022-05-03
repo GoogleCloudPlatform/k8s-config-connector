@@ -1,0 +1,15 @@
+label: Config Connector Project
+markdownDescription: Creates yaml for a Project resource
+insertText: |
+  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+  kind: Project
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:project-name}
+  spec:
+    name: \${4:Config Connector Sample}
+    folderRef:
+      external: \${5:[FOLDER_ID?]}
+    billingAccountRef:
+      external: \${6:[BILLING_ACCOUNT_ID?]}

@@ -1,0 +1,13 @@
+label: Config Connector IAMPolicyMember
+markdownDescription: Creates yaml for a IAMPolicyMember resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    name: \${1:iampolicymember-name}
+  spec:
+    member: \${2:serviceAccount:iampolicymember-dep-projlevel@[PROJECT_ID?].iam.gserviceaccount.com}
+    role: \${3:roles/storage.admin}
+    resourceRef:
+      kind: \${4:Project}
+      external: \${5:projects/[PROJECT_ID?]}

@@ -1,0 +1,29 @@
+label: Config Connector MonitoringServiceLevelObjective
+markdownDescription: Creates yaml for a MonitoringServiceLevelObjective resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringServiceLevelObjective
+  metadata:
+    labels:
+      \${1:test1}: \${2:value1}
+    name: \${3:monitoringservicelevelobjective-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    serviceRef:
+      external: \${5:monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut}
+    displayName: \${6:A window based good total ratio distribution cut filter}
+    goal: \${7:0.9}
+    calendarPeriod: \${8:DAY}
+    serviceLevelIndicator:
+      windowsBased:
+        windowPeriod: \${9:60s}
+        goodTotalRatioThreshold:
+          threshold: \${10:0.9}
+          performance:
+            distributionCut:
+              distributionFilter: \${11:metric.type="serviceruntime.googleapis.com/api/request_latencies"
+                resource.type="api"  }
+              range:
+                min: \${12:50}
+                max: \${13:100}

@@ -1,0 +1,98 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: pubsub.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: PubSub
+  version: v1beta1
+  serviceHostName: "pubsub.googleapis.com"
+  resources:
+    - name: google_pubsub_subscription
+      kind: PubSubSubscription
+      iamConfig:
+        policyName: google_pubsub_subscription_iam_policy
+        policyMemberName: google_pubsub_subscription_iam_member
+        referenceField:
+          name: subscription
+          type: name
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/subscriptions/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - key: topicRef
+          tfField: topic
+          description: |-
+            Reference to a PubSubTopic.
+          valueTemplate: "projects/{{project}}/topics/{{value}}"
+          gvk:
+            kind: PubSubTopic
+            version: v1beta1
+            group: pubsub.cnrm.cloud.google.com
+        - tfField: dead_letter_policy.dead_letter_topic
+          key: deadLetterTopicRef
+          gvk:
+            kind: PubSubTopic
+            version: v1beta1
+            group: pubsub.cnrm.cloud.google.com
+          valueTemplate: "projects/{{project}}/topics/{{value}}"
+      containers:
+        - type: project
+          tfField: project
+    - name: google_pubsub_topic
+      kind: PubSubTopic
+      iamConfig:
+        policyName: google_pubsub_topic_iam_policy
+        policyMemberName: google_pubsub_topic_iam_member
+        referenceField:
+          name: topic
+          type: name
+      # Ignore schema_settings until we have support for the PubSubSchema
+      # resource and references from TF-based to DCL-based resources
+      # (b/189392623)
+      ignoredFields:
+        - schema_settings
+      resourceReferences:
+        - tfField: kms_key_name
+          description: |-
+            The KMSCryptoKey to be used to protect access to messages published
+            on this topic. Your project's Pub/Sub service account
+            ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
+            must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+            feature.
+          key: kmsKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/topics/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      containers:
+        - type: project
+          tfField: project

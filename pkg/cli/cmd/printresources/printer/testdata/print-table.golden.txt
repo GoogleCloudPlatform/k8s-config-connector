@@ -1,0 +1,11 @@
++----------------------------+--------------+---------+----------------------+-------------------------------------------------------------------------------------------------+
+|            KIND            | BULK EXPORT? | EXPORT? | SUPPORTS IAM EXPORT? |                                      RESOURCE NAME FORMAT                                       |
++----------------------------+--------------+---------+----------------------+-------------------------------------------------------------------------------------------------+
+| BigtableTable              | x            | x       |                      | //bigtableadmin.googleapis.com/projects/{{project}}/instances/{{instance_name}}/tables/{{name}} |
+| CloudBuildTrigger          | x            | x       |                      | //cloudbuild.googleapis.com/projects/{{project}}/triggers/{{trigger_id}}                        |
+| DNSManagedZone             | x            | x       |                      | //dns.googleapis.com/projects/{{project}}/managedZones/{{name}}                                 |
+| DNSPolicy                  | x            | x       |                      | //dns.googleapis.com/projects/{{project}}/policies/{{name}}                                     |
+| DNSRecordSet               | x            | x       |                      | //dns.googleapis.com/{{project}}/{{zone-name}}/{{record-name}}/{{type}}                         |
+| SecretManagerSecretVersion |              |         |                      | //secretmanager.googleapis.com/                                                                 |
+| StorageBucket              | x            |         | x                    |                                                                                                 |
++----------------------------+--------------+---------+----------------------+-------------------------------------------------------------------------------------------------+

@@ -1,0 +1,62 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+This resource is able to configure log sinks for a project, folder, or
+organization. The parent resource is configured by setting one of
+`projectRef`, `folderRef`, or `organizationRef`.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Cloud Logging</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/logging/docs/">/logging/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>
+<pre>v2.folders.sinks</pre>
+<pre>v2.organizations.sinks</pre>
+<pre>v2.projects.sinks</pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td>
+<pre><a href="/logging/docs/reference/v2/rest/v2/folders.sinks">/logging/docs/reference/v2/rest/v2/folders.sinks</a></pre>
+<pre><a href="/logging/docs/reference/v2/rest/v2/organizations.sinks">/logging/docs/reference/v2/rest/v2/organizations.sinks</a></pre>
+<pre><a href="/logging/docs/reference/v2/rest/v2/projects.sinks">/logging/docs/reference/v2/rest/v2/projects.sinks</a></pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>logging.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

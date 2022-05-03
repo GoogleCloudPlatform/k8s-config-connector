@@ -1,0 +1,20 @@
+label: Config Connector ConfigControllerInstance
+markdownDescription: Creates yaml for a ConfigControllerInstance resource
+insertText: |
+  apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
+  kind: ConfigControllerInstance
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:configcontrollerinstance-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:us-central1}
+    managementConfig:
+      standardManagementConfig:
+        networkRef:
+          name: \${6:configcontrollerinstance-dep}
+        masterIPv4CidrBlock: \${7:172.16.123.64/28}
+        clusterCidrBlock: \${8:/20}
+        servicesCidrBlock: \${9:/24}

@@ -1,0 +1,16 @@
+label: Config Connector MonitoringNotificationChannel
+markdownDescription: Creates yaml for a MonitoringNotificationChannel resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringNotificationChannel
+  metadata:
+    labels:
+      \${1:response-priority}: \${2:intervention}
+      \${3:target-user}: \${4:on-call}
+    name: \${5:monitoringnotificationchannel-name}
+  spec:
+    type: \${6:sms}
+    labels:
+      number: \${7:12025550196}
+    description: \${8:A channel that sends notifications via Short Message Service (SMS).}
+    enabled: \${9:true}

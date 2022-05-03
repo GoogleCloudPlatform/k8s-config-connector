@@ -1,0 +1,877 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- ExpectedSkeleton: null
+  ResourceConfigId: CloudBuildTrigger
+  URI: "https://cloudbuild.googleapis.com/v1/projects/kcc-test/triggers/cloudbuildtrigger-sample-withtemplatefile"
+- ExpectedSkeleton: null
+  ResourceConfigId: CloudIdentityGroup
+  URI: "https://cloudidentity.googleapis.com/v1/groups:lookup?groupKey.id=test@example.com"
+- ExpectedSkeleton:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Folder
+    metadata: {}
+    status:
+      name: folders/1234567890
+  ResourceConfigId: Folder
+  URI: "https://cloudresourcemanager.googleapis.com/folders/1234567890"
+- ExpectedSkeleton:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/auto-create-network: "true"
+      name: kcc-test
+  ResourceConfigId: Project
+  URI: "https://cloudresourcemanager.googleapis.com/v1/projects/kcc-test"
+- ExpectedSkeleton:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    metadata:
+      name: edagywbbqe
+    spec:
+      keyRingRef:
+        external: projects/kcc-test/locations/us-central1/keyRings/boazjqsuop
+  ResourceConfigId: KMSCryptoKey
+  URI: "https://cloudkms.googleapis.com/v1/projects/kcc-test/locations/us-central1/keyRings/boazjqsuop/cryptoKeys/edagywbbqe"
+- ExpectedSkeleton:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: zyakyiyida
+    spec:
+      location: us-central1
+  ResourceConfigId: KMSKeyRing
+  URI: "https://cloudkms.googleapis.com/v1/projects/kcc-test/locations/us-central1/keyRings/zyakyiyida"
+- ExpectedSkeleton:
+    apiVersion: container.cnrm.cloud.google.com/v1beta1
+    kind: ContainerCluster
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: twenty-namespace-big-workload
+    spec:
+      location: us-central1-c
+  ResourceConfigId: ContainerCluster
+  URI: "https://container.googleapis.com/v1/projects/kcc-test/locations/us-central1-c/clusters/twenty-namespace-big-workload"
+- ExpectedSkeleton: null
+  ResourceConfigId: ContainerNodePool
+  URI: "https://container.googleapis.com/v1/projects/kcc-test/zones/us-central1-c/clusters/twenty-namespace-big-workload/nodePools/default-pool"
+- ExpectedSkeleton:
+    apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
+    kind: SourceRepoRepository
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: cloudbuildtrigger-dep-cloudsourcerepo
+  ResourceConfigId: SourceRepoRepository
+  URI: "https://sourcerepo.googleapis.com/v1/projects/kcc-test/repos/cloudbuildtrigger-dep-cloudsourcerepo"
+- ExpectedSkeleton: null
+  ResourceConfigId: FirestoreIndex
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+    kind: ArtifactRegistryRepository
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: my-repository
+    spec:
+      location: us-east1
+  ResourceConfigId: ArtifactRegistryRepository
+  URI: "https://artifactregistry.googleapis.com/v1beta1/projects/kcc-test/locations/us-east1/repositories/my-repository"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeAddress
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinstance-dep-networkworker
+    spec:
+      location: us-west1
+  ResourceConfigId: ComputeAddress:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-west1/addresses/computeinstance-dep-networkworker"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendBucket
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: backend-bucket-name
+  ResourceConfigId: ComputeBackendBucket
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/backendBuckets/backend-bucket-name"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendService
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeurlmap-dep1
+    spec:
+      location: global
+  ResourceConfigId: ComputeBackendService:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/backendServices/computeurlmap-dep1"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeDisk
+    metadata:
+      name: computedisk-sample-zonal
+    spec:
+      projectRef:
+        external: kcc-test
+      location: us-west1-c
+  ResourceConfigId: ComputeDisk:zonal
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/zones/us-west1-c/disks/computedisk-sample-zonal"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeExternalVPNGateway
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeexternalvpngateway-sample
+  ResourceConfigId: ComputeExternalVPNGateway
+  URI: "https://compute.googleapis.com/batch/compute/projects/kcc-test/global/externalVpnGateways/computeexternalvpngateway-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeFirewall
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: default-allow-icmp
+  ResourceConfigId: ComputeFirewall
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/firewalls/default-allow-icmp"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeForwardingRule
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeforwardingrule2-1j26msq4eebfv63n6sil
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeForwardingRule:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/regions/us-central1/forwardingRules/computeforwardingrule2-1j26msq4eebfv63n6sil"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeAddress
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeaddress-sample-global
+    spec:
+      location: global
+  ResourceConfigId: ComputeAddress:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/addresses/computeaddress-sample-global"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeForwardingRule
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeforwardingrule-sample-global-with-target-tcp-proxy
+    spec:
+      location: global
+  ResourceConfigId: ComputeForwardingRule:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/projects/kcc-test/global/forwardingRules/computeforwardingrule-sample-global-with-target-tcp-proxy"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeVPNGateway
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computevpngateway-sample
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeVPNGateway
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/regions/us-central1/vpnGateways/computevpngateway-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehealthcheck-6gb61f29e7bh0d3dh8f4
+    spec:
+      location: global
+  ResourceConfigId: ComputeHealthCheck:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/healthChecks/computehealthcheck-6gb61f29e7bh0d3dh8f4"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHTTPHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehttphealthcheck-3m5j7pbhtprbatjs96cg
+  ResourceConfigId: ComputeHTTPHealthCheck
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/httpHealthChecks/computehttphealthcheck-3m5j7pbhtprbatjs96cg"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHTTPSHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehttpshealthcheck-3m5j7pbhtprbatjs96cg
+  ResourceConfigId: ComputeHTTPSHealthCheck
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/httpsHealthChecks/computehttpshealthcheck-3m5j7pbhtprbatjs96cg"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeImage
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeimage-e8i6bqmaa8lit8n0dt6n
+  ResourceConfigId: ComputeImage
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/global/images/computeimage-e8i6bqmaa8lit8n0dt6n"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinstance-d5j7psdsjn9nru7ilcdd
+    spec:
+      zone: us-central1-a
+  ResourceConfigId: ComputeInstance:google_compute_instance
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/instances/computeinstance-d5j7psdsjn9nru7ilcdd"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeInstance:google_compute_instance_from_template
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstanceGroup
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: gke-containernodepool-de-default-pool-765c7c66-grp
+    spec:
+      zone: us-east1-c
+  ResourceConfigId: ComputeInstanceGroup
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-east1-c/instanceGroups/gke-containernodepool-de-default-pool-765c7c66-grp"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstanceTemplate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinstancetemplate-1t3peerm81btr50p818h
+  ResourceConfigId: ComputeInstanceTemplate
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/instanceTemplates/computeinstancetemplate-1t3peerm81btr50p818h"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInterconnectAttachment
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinterconnectattachment-3m5j7pbhtprbatjs96cg
+    spec:
+      region: us-west2
+  ResourceConfigId: ComputeInterconnectAttachment
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-west2/interconnectAttachments/computeinterconnectattachment-3m5j7pbhtprbatjs96cg"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNetwork
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeaddress-dep-global
+  ResourceConfigId: ComputeNetwork
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/networks/computeaddress-dep-global"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNetworkEndpointGroup
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: compute-neg
+    spec:
+      location: us-central1-a
+  ResourceConfigId: ComputeNetworkEndpointGroup:zonal
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/networkEndpointGroups/compute-neg"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeNetworkPeering
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNodeGroup
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computenodegroup-1kdftdfao5oe76n4crhj
+    spec:
+      zone: us-central1-a
+  ResourceConfigId: ComputeNodeGroup
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/nodeGroups/computenodegroup-1kdftdfao5oe76n4crhj"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNodeTemplate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computenodetemplate-sample-flexible
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeNodeTemplate
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/nodeTemplates/computenodetemplate-sample-flexible"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendService
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeregionbackendservice-sample2iia
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeBackendService:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/backendServices/computeregionbackendservice-sample2iia"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeDisk
+    metadata:
+      name: disk-1
+    spec:
+      projectRef:
+        external: kcc-test
+      location: us-central1
+  ResourceConfigId: ComputeDisk:regional
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/regions/us-central1/disks/disk-1"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehealthcheck-sample-regional
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeHealthCheck:regional
+  URI: "https://compute.googleapis.com/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/healthChecks/computehealthcheck-sample-regional"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeProjectMetadata
+  URI: ""
+  # URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeReservation
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computereservation-sample-bulk
+    spec:
+      zone: us-central1-a
+  ResourceConfigId: ComputeReservation
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/zones/us-central1-a/reservations/computereservation-sample-bulk?alt=json"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeResourcePolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeresourcepolicy-sample-dailyschedule
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeResourcePolicy
+  URI: "https://compute.googleapis.com/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/resourcePolicies/computeresourcepolicy-sample-dailyschedule"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeRoute
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: gke-twenty-namespace-big-w-20495981-702f-44d9-b40e-8203dfa51ee9
+  ResourceConfigId: ComputeRoute
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/routes/gke-twenty-namespace-big-w-20495981-702f-44d9-b40e-8203dfa51ee9?alt=json"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeRouter
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computerouter-2g5hgkesmd3prpca036b
+    spec:
+      region: us-west2
+  ResourceConfigId: ComputeRouter
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-west2/routers/computerouter-2g5hgkesmd3prpca036b"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRouterInterface
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRouterNAT
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeRouterPeer
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSecurityPolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesecuritypolicy-sample-multirule
+  ResourceConfigId: ComputeSecurityPolicy
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/securityPolicies/computesecuritypolicy-sample-multirule"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeSharedVPCHostProject
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeSharedVPCServiceProject
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSnapshot
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: snapshot-1
+  ResourceConfigId: ComputeSnapshot
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/snapshots/snapshot-1"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSSLCertificate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesslcertificate-sample
+    spec:
+      location: global
+  ResourceConfigId: ComputeSSLCertificate:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/sslCertificates/computesslcertificate-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSSLCertificate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesslcertificate-sample
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeSSLCertificate:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/sslCertificates/computesslcertificate-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSSLPolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetsslproxy-dep
+  ResourceConfigId: ComputeSSLPolicy
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/global/sslPolicies/computetargetsslproxy-dep"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSubnetwork
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesubnetwork-8jk5g26obsm3ad4rkcu2
+    spec:
+      region: us-west1
+  ResourceConfigId: ComputeSubnetwork
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-west1/subnetworks/computesubnetwork-8jk5g26obsm3ad4rkcu2"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetGRPCProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetgrpcproxy-sample
+  ResourceConfigId: ComputeTargetGRPCProxy
+  URI: "https://compute.googleapis.com/compute/v1/projects/kcc-test/global/targetGrpcProxies/computetargetgrpcproxy-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpproxy-sample
+    spec:
+      location: global
+  ResourceConfigId: ComputeTargetHTTPProxy:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/targetHttpProxies/computetargethttpproxy-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpproxy-sample
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeTargetHTTPProxy:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/targetHttpProxies/computetargethttpproxy-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPSProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpsproxy-sample
+    spec:
+      location: global
+  ResourceConfigId: ComputeTargetHTTPSProxy:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/targetHttpsProxies/computetargethttpsproxy-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPSProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpsproxy-sample
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeTargetHTTPSProxy:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/targetHttpsProxies/computetargethttpsproxy-sample"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetinstance-gvlkce2i69vekdsai2fq
+    spec:
+      zone: us-central1-a
+  ResourceConfigId: ComputeTargetInstance
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/targetInstances/computetargetinstance-gvlkce2i69vekdsai2fq"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetPool
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetpool1-jbq8a24chi54g1o6ejn2
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeTargetPool
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/targetPools/computetargetpool1-jbq8a24chi54g1o6ejn2"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetSSLProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetsslproxy-5bpo1ch4c9t6bl9dt2ru
+  ResourceConfigId: ComputeTargetSSLProxy
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/targetSslProxies/computetargetsslproxy-5bpo1ch4c9t6bl9dt2ru"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetTCPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargettcpproxy-poli52tfa9b1c5d5oas4
+  ResourceConfigId: ComputeTargetTCPProxy
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/targetTcpProxies/computetargettcpproxy-poli52tfa9b1c5d5oas4"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeURLMap
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpproxy-dep
+    spec:
+      location: global
+  ResourceConfigId: ComputeURLMap:global
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/global/urlMaps/computetargethttpproxy-dep"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeURLMap
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeurlmap-8034p172pirpg3bg31te
+    spec:
+      location: us-central1
+  ResourceConfigId: ComputeURLMap:regional
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/urlMaps/computeurlmap-8034p172pirpg3bg31te"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetVPNGateway
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetvpngateway-gj23jdsjvqmgp6pv2ocb
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeTargetVPNGateway
+  URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/regions/us-central1/targetVpnGateways/computetargetvpngateway-gj23jdsjvqmgp6pv2ocb?alt=json"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeVPNTunnel
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computevpntunnel-1j26msq4eebfv63n6sil
+    spec:
+      region: us-central1
+  ResourceConfigId: ComputeVPNTunnel
+  URI: "https://compute.googleapis.com/batch/compute/v1/projects/kcc-test/regions/us-central1/vpnTunnels/computevpntunnel-1j26msq4eebfv63n6sil"
+- ExpectedSkeleton: null
+  ResourceConfigId: LoggingLogSink
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: MonitoringAlertPolicy
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: MonitoringNotificationChannel
+  URI: "https://monitoring.googleapis.com/v3/projects/kcc-test/notificationChannels/12480009264808484665"
+- ExpectedSkeleton: null
+  ResourceConfigId: ResourceManagerLien
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ResourceManagerPolicy
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: ServiceNetworkingConnection
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: StorageTransferJob
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+    kind: Service
+    metadata:
+      name: redis.googleapis.com
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: Service
+  URI: "https://serviceusage.googleapis.com/v1/projects/kcc-test/services/redis.googleapis.com"
+- ExpectedSkeleton:
+    apiVersion: sql.cnrm.cloud.google.com/v1beta1
+    kind: SQLDatabase
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: sqldatabase-sample
+    spec:
+      instanceRef:
+        external: sqldatabase-dep
+  ResourceConfigId: SQLDatabase
+  URI: "https://sqladmin.googleapis.com/sql/v1beta4/projects/kcc-test/instances/sqldatabase-dep/databases/sqldatabase-sample"
+- ExpectedSkeleton:
+    apiVersion: sql.cnrm.cloud.google.com/v1beta1
+    kind: SQLInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: sqldatabase-dep
+  ResourceConfigId: SQLInstance
+  URI: "https://sqladmin.googleapis.com/sql/v1beta4/projects/kcc-test/instances/sqldatabase-dep"
+- ExpectedSkeleton: null
+  ResourceConfigId: SQLSSLCert
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: SQLUser
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: StorageBucket
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: StorageBucketAccessControl
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: StorageDefaultObjectAccessControl
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: StorageNotification
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: DataflowJob
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: DataflowFlexTemplateJob
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryDataset
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+      name: bigquerydataset23ud716o5e16ibc3j9kc
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: BigQueryDataset
+  URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydataset23ud716o5e16ibc3j9kc"
+- ExpectedSkeleton:
+    apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryJob
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: my-job
+  ResourceConfigId: BigQueryJob
+  URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/jobs/my-job"
+- ExpectedSkeleton:
+    apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryTable
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bigquerytablesamplehnf4t2squ1g1ghnendt0
+    spec:
+      datasetRef:
+        external: bigquerydatasetsamplehnf4t2squ1g1ghnendt0
+  ResourceConfigId: BigQueryTable
+  URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydatasetsamplehnf4t2squ1g1ghnendt0/tables/bigquerytablesamplehnf4t2squ1g1ghnendt0"
+- ExpectedSkeleton:
+    apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+    kind: SecretManagerSecret
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: secretmanagersecret-sample-automatic
+  ResourceConfigId: SecretManagerSecret
+  URI: "https://secretmanager.googleapis.com/v1/projects/kcc-test/secrets/secretmanagersecret-sample-automatic?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: SecretManagerSecretVersion
+  URI: "https://secretmanager.googleapis.com/v1/projects/kcc-test/secrets/secretmanagersecretversion-dep/versions/1?alt=json"
+- ExpectedSkeleton:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubSubscription
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: pubsubsubscription-sample
+  ResourceConfigId: PubSubSubscription
+  URI: "https://pubsub.googleapis.com/v1/projects/kcc-test/subscriptions/pubsubsubscription-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: pubsubtopic-sample-sjbarmmcp9q4h9q0pmk4-154
+  ResourceConfigId: PubSubTopic
+  URI: "https://pubsub.googleapis.com/v1/projects/kcc-test/topics/pubsubtopic-sample-sjbarmmcp9q4h9q0pmk4-154?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: IAMCustomRole
+  URI: "https://iam.googleapis.com/v1/projects/kcc-test/roles/rolechh3ku2jrdtltfiocs00?alt=json"
+- ExpectedSkeleton:
+  ResourceConfigId: IAMServiceAccount
+  URI: "https://iam.googleapis.com/v1/projects/-/serviceAccounts/cnrm-system@kcc-test.iam.gserviceaccount.com?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: IAMServiceAccountKey
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    kind: BigtableAppProfile
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bigtableappprofile-sample-singlecluster
+    spec:
+      instanceRef:
+        external: bigtableappprofile-dep-single
+  ResourceConfigId: BigtableAppProfile
+  URI: "https://bigtableadmin.googleapis.com/v2/projects/kcc-test/instances/bigtableappprofile-dep-single/appProfiles/bigtableappprofile-sample-singlecluster?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: BigtableGCPolicy
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    kind: BigtableInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bigtableinstance-sample
+  ResourceConfigId: BigtableInstance
+  URI: "https://bigtableadmin.googleapis.com/v2/projects/kcc-test/instances/bigtableinstance-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    kind: BigtableTable
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bigtabletable-sample
+    spec:
+      instanceRef:
+        external: bigtabletable-dep
+  ResourceConfigId: BigtableTable
+  URI: "https://bigtableadmin.googleapis.com/v2/projects/kcc-test/instances/bigtabletable-dep/tables/bigtabletable-sample"
+- ExpectedSkeleton: null
+  ResourceConfigId: AccessContextManagerAccessPolicy
+  URI: "https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: AccessContextManagerAccessLevel
+  URI: "https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/level_48127?accessLevelFormat=AS_DEFINED&alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: AccessContextManagerServicePerimeter
+  URI: "https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/test-service-perimeter?alt=json"
+- ExpectedSkeleton:
+    apiVersion: dns.cnrm.cloud.google.com/v1beta1
+    kind: DNSManagedZone
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/force-destroy: "false"
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: dnsmanagedzone-sample
+  ResourceConfigId: DNSManagedZone
+  URI: "https://dns.googleapis.com/dns/v1/projects/kcc-test/managedZones/dnsmanagedzone-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: dns.cnrm.cloud.google.com/v1beta1
+    kind: DNSPolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: dnspolicy-sample
+  ResourceConfigId: DNSPolicy
+  URI: "https://dns.googleapis.com/dns/v1/projects/kcc-test/policies/dnspolicy-sample?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: DNSRecordSet
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+    kind: SpannerDatabase
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: asdf
+    spec:
+      instanceRef:
+        external: spannerdatabase-dep
+  ResourceConfigId: SpannerDatabase
+  URI: "https://spanner.googleapis.com/v1/projects/kcc-test/instances/spannerdatabase-dep/databases/asdf"
+- ExpectedSkeleton:
+    apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+    kind: SpannerInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/force-destroy: "false"
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: spannerinstance-1bcu10c553d1r0cfa3p0
+  ResourceConfigId: SpannerInstance
+  URI: "https://spanner.googleapis.com/v1/projects/kcc-test/instances/spannerinstance-1bcu10c553d1r0cfa3p0"
+- ExpectedSkeleton:
+    apiVersion: redis.cnrm.cloud.google.com/v1beta1
+    kind: RedisInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: redisinstance-sample
+    spec:
+      region: us-central1
+  ResourceConfigId: RedisInstance
+  URI: "https://redis.googleapis.com/v1/projects/kcc-test/locations/us-central1/instances/redisinstance-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: memcache.cnrm.cloud.google.com/v1beta1
+    kind: MemcacheInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: memcacheinstance-sample
+    spec:
+      region: us-central1
+  ResourceConfigId: MemcacheInstance
+  URI: "https://memcache.googleapis.com/v1/projects/kcc-test/locations/us-central1/instances/memcacheinstance-sample"

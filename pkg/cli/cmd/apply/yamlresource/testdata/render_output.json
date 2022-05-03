@@ -1,0 +1,75 @@
+{
+  "apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+  "kind": "ComputeInstance",
+  "metadata": {
+    "annotations": {
+      "cnrm.cloud.google.com/project-id": "testprojects"
+    },
+    "name": "testuser-win-vm4"
+  },
+  "spec": {
+    "bootDisk": {
+      "autoDelete": true,
+      "deviceName": "testuser-win-vm4",
+      "initializeParams": {
+        "size": 50,
+        "sourceImageRef": {
+          "external": "https://www.googleapis.com/compute/beta/projects/windows-cloud/global/images/windows-server-2019-dc-v20201208"
+        },
+        "type": "pd-standard"
+      },
+      "mode": "READ_WRITE",
+      "sourceDiskRef": {
+        "external": "https://www.googleapis.com/compute/v1/projects/testprojects/zones/us-central1-a/disks/testuser-win-vm4"
+      }
+    },
+    "confidentialInstanceConfig": {
+      "enableConfidentialCompute": false
+    },
+    "machineType": "e2-medium",
+    "networkInterface": [
+      {
+        "accessConfig": [
+          {
+            "natIpRef": {
+              "external": "34.71.33.221"
+            },
+            "networkTier": "PREMIUM"
+          }
+        ],
+        "name": "nic0",
+        "networkIp": "10.240.0.31",
+        "networkRef": {
+          "external": "https://www.googleapis.com/compute/v1/projects/testprojects/global/networks/default"
+        }
+      }
+    ],
+    "resourceID": "testuser-win-vm4",
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE"
+    },
+    "serviceAccount": {
+      "scopes": [
+        "https://www.googleapis.com/auth/trace.append",
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring.write",
+        "https://www.googleapis.com/auth/service.management.readonly",
+        "https://www.googleapis.com/auth/servicecontrol"
+      ],
+      "serviceAccountRef": {
+        "external": "1234567890@project.gserviceaccount.com"
+      }
+    },
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "http-server",
+      "https-server"
+    ],
+    "zone": "us-central1-a"
+  }
+}

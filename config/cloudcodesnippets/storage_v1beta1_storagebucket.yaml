@@ -1,0 +1,28 @@
+label: Config Connector StorageBucket
+markdownDescription: Creates yaml for a StorageBucket resource
+insertText: |
+  apiVersion: storage.cnrm.cloud.google.com/v1beta1
+  kind: StorageBucket
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:storagebucket-name}
+  spec:
+    lifecycleRule:
+    - action:
+        type: \${4:Delete}
+      condition:
+        age: \${5:7}
+    versioning:
+      enabled: \${6:true}
+    cors:
+    - origin:
+      - \${7:http://example.appspot.com}
+      responseHeader:
+      - \${8:Content-Type}
+      method:
+      - \${9:GET}
+      - \${10:HEAD}
+      - \${11:DELETE}
+      maxAgeSeconds: \${12:3600}
+    uniformBucketLevelAccess: \${13:true}

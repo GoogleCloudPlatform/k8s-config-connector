@@ -1,0 +1,12 @@
+label: Config Connector ComputeNetwork
+markdownDescription: Creates yaml for a ComputeNetwork resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNetwork
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computenetwork-name}
+  spec:
+    routingMode: \${4:REGIONAL}
+    autoCreateSubnetworks: \${5:true}

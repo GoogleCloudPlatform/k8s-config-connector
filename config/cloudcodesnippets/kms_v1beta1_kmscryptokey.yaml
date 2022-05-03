@@ -1,0 +1,17 @@
+label: Config Connector KMSCryptoKey
+markdownDescription: Creates yaml for a KMSCryptoKey resource
+insertText: |
+  apiVersion: kms.cnrm.cloud.google.com/v1beta1
+  kind: KMSCryptoKey
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:kmscryptokey-name}
+  spec:
+    keyRingRef:
+      name: \${4:kmscryptokey-dep}
+    purpose: \${5:ASYMMETRIC_SIGN}
+    versionTemplate:
+      algorithm: \${6:EC_SIGN_P384_SHA384}
+      protectionLevel: \${7:SOFTWARE}
+    importOnly: \${8:false}

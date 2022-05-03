@@ -1,0 +1,1036 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# not supported by asset inventory
+- resourceConfigId: AccessContextManagerAccessLevel
+# not supported by asset inventory
+- resourceConfigId: AccessContextManagerAccessPolicy
+# not supported by asset inventory
+- resourceConfigId: AccessContextManagerServicePerimeter
+# not supported by asset inventory
+- resourceConfigId: ArtifactRegistryRepository
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //bigquery.googleapis.com/projects/kcc-test/datasets/bigquerydataset23ud716o5e16ibc3j9kc
+    asset_type: bigquery.googleapis.com/Dataset
+  expectedSkeleton:
+    apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryDataset
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+      name: bigquerydataset23ud716o5e16ibc3j9kc
+    spec:
+      projectRef:
+        external: kcc-test
+  resourceConfigId: BigQueryDataset
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //bigquery.googleapis.com/projects/kcc-test/datasets/bigquerydatasetsamplehnf4t2squ1g1ghnendt0/tables/bigquerytablesamplehnf4t2squ1g1ghnendt0
+    asset_type: bigquery.googleapis.com/Table
+  expectedSkeleton:
+    apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryTable
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bigquerytablesamplehnf4t2squ1g1ghnendt0
+    spec:
+      datasetRef:
+        external: bigquerydatasetsamplehnf4t2squ1g1ghnendt0
+  resourceConfigId: BigQueryTable
+# not supported by asset inventory
+- resourceConfigId: BigQueryJob
+# not supported by asset inventory
+- resourceConfigId: BigtableAppProfile
+# not supported by asset inventory
+- resourceConfigId: BigtableGCPolicy
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //bigtable.googleapis.com/projects/kcc-test/instances/btinstance-mvc1ighvp85c6dit6rm3
+    asset_type: bigtableadmin.googleapis.com/Instance
+  expectedSkeleton:
+    apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    kind: BigtableInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: btinstance-mvc1ighvp85c6dit6rm3
+  resourceConfigId: BigtableInstance
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //bigtable.googleapis.com/projects/kcc-test/instances/btinstance-m38iaxbeplv6bltdk5pz/tables/bttable-sq6ith7wwy2b54qlvypm
+    asset_type: bigtableadmin.googleapis.com/Table
+  expectedSkeleton:
+    apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    kind: BigtableTable
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: bttable-sq6ith7wwy2b54qlvypm
+    spec:
+      instanceRef:
+        external: btinstance-m38iaxbeplv6bltdk5pz
+  resourceConfigId: BigtableTable
+# not supported by asset inventory
+- resourceConfigId: CloudBuildTrigger
+# not supported by asset inventory
+- resourceConfigId: CloudIdentityGroup
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/addresses/computeaddress1-ohl5m1f6sustgv2beqe8
+    asset_type: compute.googleapis.com/GlobalAddress
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeAddress
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeaddress1-ohl5m1f6sustgv2beqe8
+    spec:
+      location: global
+  resourceConfigId: ComputeAddress:global
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/addresses/computeaddress-1j26msq4eebfv63n6sil
+    asset_type: compute.googleapis.com/Address
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeAddress
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeaddress-1j26msq4eebfv63n6sil
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeAddress:regional
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/backendBuckets/computebackendbucket-test-hnf4t2squ1g1ghnendt0
+    asset_type: compute.googleapis.com/BackendBucket
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendBucket
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computebackendbucket-test-hnf4t2squ1g1ghnendt0
+  resourceConfigId: ComputeBackendBucket
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/backendServices/computebackendservice-c6vqa537jmane5t2dgik
+    asset_type: compute.googleapis.com/BackendService
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendService
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computebackendservice-c6vqa537jmane5t2dgik
+    spec:
+      location: global
+  resourceConfigId: ComputeBackendService:global
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/backendServices/computeregionbackendservice-sample2iia
+    asset_type: compute.googleapis.com/RegionBackendService
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeBackendService
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeregionbackendservice-sample2iia
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeBackendService:regional
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/disks/computedisk-1m7i0o4vher0mgms6h7c
+    asset_type: compute.googleapis.com/RegionDisk
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeDisk
+    metadata:
+      name: computedisk-1m7i0o4vher0mgms6h7c
+    spec:
+      projectRef:
+        external: kcc-test
+      location: us-central1
+  resourceConfigId: ComputeDisk:regional
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/zones/us-central1-a/disks/computeinstance-1n6f9mfl92jbgv5h4ngk
+    asset_type: compute.googleapis.com/Disk
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeDisk
+    metadata:
+      name: computeinstance-1n6f9mfl92jbgv5h4ngk
+    spec:
+      projectRef:
+        external: kcc-test
+      location: us-central1-a
+  resourceConfigId: ComputeDisk:zonal
+# not supported by asset inventory
+- resourceConfigId: ComputeExternalVPNGateway
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/firewalls/computefirewall-takdvemmj1ci50067rjt
+    asset_type: compute.googleapis.com/Firewall
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeFirewall
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computefirewall-takdvemmj1ci50067rjt
+  resourceConfigId: ComputeFirewall
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/forwardingRules/computeglobalforwardingrule-8034p172pirpg3bg31te
+    asset_type: compute.googleapis.com/GlobalForwardingRule
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeForwardingRule
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeglobalforwardingrule-8034p172pirpg3bg31te
+    spec:
+      location: global
+  resourceConfigId: ComputeForwardingRule:global
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/forwardingRules/computeforwardingrule2-1j26msq4eebfv63n6sil
+    asset_type: compute.googleapis.com/ForwardingRule
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeForwardingRule
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeforwardingrule2-1j26msq4eebfv63n6sil
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeForwardingRule:regional
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/httpHealthChecks/computehttphealthcheck-3m5j7pbhtprbatjs96cg
+    asset_type: compute.googleapis.com/HttpHealthCheck
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHTTPHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehttphealthcheck-3m5j7pbhtprbatjs96cg
+  resourceConfigId: ComputeHTTPHealthCheck
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/httpsHealthChecks/computehttpshealthcheck-3m5j7pbhtprbatjs96cg
+    asset_type: compute.googleapis.com/HttpsHealthCheck
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHTTPSHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehttpshealthcheck-3m5j7pbhtprbatjs96cg
+  resourceConfigId: ComputeHTTPSHealthCheck
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/healthChecks/computehealthcheck-6gb61f29e7bh0d3dh8f4
+    asset_type: compute.googleapis.com/HealthCheck
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeHealthCheck
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computehealthcheck-6gb61f29e7bh0d3dh8f4
+    spec:
+      location: global
+  resourceConfigId: ComputeHealthCheck:global
+# not supported by asset inventory
+- resourceConfigId: ComputeHealthCheck:regional
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/images/computeimage-e8i6bqmaa8lit8n0dt6n
+    asset_type: compute.googleapis.com/Image
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeImage
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeimage-e8i6bqmaa8lit8n0dt6n
+  resourceConfigId: ComputeImage
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/zones/us-central1-a/instances/computeinstance-gvlkce2i69vekdsai2fq
+    asset_type: compute.googleapis.com/Instance
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinstance-gvlkce2i69vekdsai2fq
+    spec:
+      zone: us-central1-a
+  resourceConfigId: ComputeInstance:google_compute_instance
+# will never be supported -- is a "before the resource exists" step only, will never be mapped to an asset inventory type
+- resourceConfigId: ComputeInstance:google_compute_instance_from_template
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/zones/us-east1-c/instanceGroups/gke-containernodepool-de-default-pool-765c7c66-grp
+    asset_type: compute.googleapis.com/InstanceGroup
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstanceGroup
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: gke-containernodepool-de-default-pool-765c7c66-grp
+    spec:
+      zone: us-east1-c
+  resourceConfigId: ComputeInstanceGroup
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/instanceTemplates/gke-containernodepool-de-default-pool-765c7c66
+    asset_type: compute.googleapis.com/InstanceTemplate
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInstanceTemplate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: gke-containernodepool-de-default-pool-765c7c66
+  resourceConfigId: ComputeInstanceTemplate
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-west2/interconnectAttachments/computeinterconnectattachment-3m5j7pbhtprbatjs96cg
+    asset_type: compute.googleapis.com/InterconnectAttachment
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeInterconnectAttachment
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinterconnectattachment-3m5j7pbhtprbatjs96cg
+    spec:
+      region: us-west2
+  resourceConfigId: ComputeInterconnectAttachment
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/networks/computeinstance-dep-0zrf0-networkworker
+    asset_type: compute.googleapis.com/Network
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNetwork
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeinstance-dep-0zrf0-networkworker
+  resourceConfigId: ComputeNetwork
+# not supported by asset inventory
+- resourceConfigId: ComputeNetworkEndpointGroup:zonal
+# not supported by asset inventory
+- resourceConfigId: ComputeNetworkPeering
+# not supported by asset inventory
+- resourceConfigId: ComputeNodeGroup
+# not supported by asset inventory
+- resourceConfigId: ComputeNodeTemplate
+# not supported by asset inventory
+- resourceConfigId: ComputeProjectMetadata
+  # not supported by asset inventory
+- resourceConfigId: ComputeReservation
+# not supported by asset inventory
+- resourceConfigId: ComputeResourcePolicy
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/routes/default-route-1ddac3b6faad8a93
+    asset_type: compute.googleapis.com/Route
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeRoute
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: default-route-1ddac3b6faad8a93
+  resourceConfigId: ComputeRoute
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-west2/routers/computerouter-ouf4ip5mfo2ab52oflvj
+    asset_type: compute.googleapis.com/Router
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeRouter
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computerouter-ouf4ip5mfo2ab52oflvj
+    spec:
+      region: us-west2
+  resourceConfigId: ComputeRouter
+# not supported by asset inventory
+- resourceConfigId: ComputeRouterInterface
+# not supported by asset inventory
+- resourceConfigId: ComputeRouterNAT
+# not supported by asset inventory
+- resourceConfigId: ComputeRouterPeer
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/sslCertificates/computesslcertificate-5bpo1ch4c9t6bl9dt2ru
+    asset_type: compute.googleapis.com/SslCertificate
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSSLCertificate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesslcertificate-5bpo1ch4c9t6bl9dt2ru
+    spec:
+      location: global
+  resourceConfigId: ComputeSSLCertificate:global
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/sslCertificates/computesslcertificate-5bpo1ch4c9t6bl9dt2ru
+    asset_type: compute.googleapis.com/SslCertificate
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSSLCertificate
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesslcertificate-5bpo1ch4c9t6bl9dt2ru
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeSSLCertificate:regional
+- resourceConfigId: ComputeSSLPolicy
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/securityPolicies/computesecuritypolicy-q65ugivmobob7ejfbftb
+    asset_type: compute.googleapis.com/SecurityPolicy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSecurityPolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computesecuritypolicy-q65ugivmobob7ejfbftb
+  resourceConfigId: ComputeSecurityPolicy
+# not supported by asset inventory
+- resourceConfigId: ComputeSharedVPCHostProject
+# not supported by asset inventory
+- resourceConfigId: ComputeSharedVPCServiceProject
+# not supported by asset inventory
+- resourceConfigId: ComputeSnapshot
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/asia-east1/subnetworks/computeroute-dep-ixbu8
+    asset_type: compute.googleapis.com/Subnetwork
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeSubnetwork
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeroute-dep-ixbu8
+    spec:
+      region: asia-east1
+  resourceConfigId: ComputeSubnetwork
+# not supported by asset inventory
+- resourceConfigId: ComputeTargetGRPCProxy
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/targetHttpProxies/computetargethttpproxy-2-8034p172pirpg3bg31te
+    asset_type: compute.googleapis.com/TargetHttpProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpproxy-2-8034p172pirpg3bg31te
+    spec:
+      location: global
+  resourceConfigId: ComputeTargetHTTPProxy:global
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/targetHttpProxies/computetargethttpproxy-2-8034p172pirpg3bg31te
+    asset_type: compute.googleapis.com/TargetHttpProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpproxy-2-8034p172pirpg3bg31te
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeTargetHTTPProxy:regional
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/targetHttpsProxies/computetargethttpsproxy-qflv4b84ift5b96pi998
+    asset_type: compute.googleapis.com/TargetHttpsProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPSProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpsproxy-qflv4b84ift5b96pi998
+    spec:
+      location: global
+  resourceConfigId: ComputeTargetHTTPSProxy:global
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/targetHttpsProxies/computetargethttpsproxy-qflv4b84ift5b96pi998
+    asset_type: compute.googleapis.com/TargetHttpsProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetHTTPSProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargethttpsproxy-qflv4b84ift5b96pi998
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeTargetHTTPSProxy:regional
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/zones/us-central1-a/targetInstances/computetargetinstance-gvlkce2i69vekdsai2fq
+    asset_type: compute.googleapis.com/TargetInstance
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetinstance-gvlkce2i69vekdsai2fq
+    spec:
+      zone: us-central1-a
+  resourceConfigId: ComputeTargetInstance
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/targetPools/targetpool-asdfv
+    asset_type: compute.googleapis.com/TargetPool
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetPool
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: targetpool-asdfv
+    spec:
+      region: us-central1
+  resourceConfigId: ComputeTargetPool
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/targetSslProxies/computetargetsslproxy-5bpo1ch4c9t6bl9dt2ru
+    asset_type: compute.googleapis.com/TargetSslProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetSSLProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargetsslproxy-5bpo1ch4c9t6bl9dt2ru
+  resourceConfigId: ComputeTargetSSLProxy
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/targetTcpProxies/computetargettcpproxy-poli52tfa9b1c5d5oas4
+    asset_type: compute.googleapis.com/TargetTcpProxy
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetTCPProxy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computetargettcpproxy-poli52tfa9b1c5d5oas4
+  resourceConfigId: ComputeTargetTCPProxy
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/targetVpnGateways/computevpngateway-3m5j7pbhtprbatjs96cg
+    asset_type: compute.googleapis.com/TargetVpnGateway
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeTargetVPNGateway
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computevpngateway-3m5j7pbhtprbatjs96cg
+    spec:
+      region: us-central1
+  resourceConfigId: ComputeTargetVPNGateway
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/urlMaps/computeurlmap-8034p172pirpg3bg31te
+    asset_type: compute.googleapis.com/UrlMap
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeURLMap
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeurlmap-8034p172pirpg3bg31te
+    spec:
+      location: global
+  resourceConfigId: ComputeURLMap:global
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/urlMaps/computeurlmap-8034p172pirpg3bg31te
+    asset_type: compute.googleapis.com/UrlMap
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeURLMap
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computeurlmap-8034p172pirpg3bg31te
+    spec:
+      location: us-central1
+  resourceConfigId: ComputeURLMap:regional
+# not supported by asset inventory
+- resourceConfigId: ComputeVPNGateway
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/regions/us-central1/vpnTunnels/computevpntunnel-1j26msq4eebfv63n6sil
+    asset_type: compute.googleapis.com/VpnTunnel
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeVPNTunnel
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: computevpntunnel-1j26msq4eebfv63n6sil
+    spec:
+      region: us-central1
+  resourceConfigId: ComputeVPNTunnel
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //container.googleapis.com/projects/kcc-test/zones/us-central1-a/clusters/cluster-sample-7tjc1eh39prso1atnhsq
+    asset_type: container.googleapis.com/Cluster
+  expectedSkeleton:
+    apiVersion: container.cnrm.cloud.google.com/v1beta1
+    kind: ContainerCluster
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: cluster-sample-7tjc1eh39prso1atnhsq
+    spec:
+      location: us-central1-a
+  resourceConfigId: ContainerCluster
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //container.googleapis.com/projects/kcc-test/zones/us-central1-a/clusters/test-cluster/nodePools/default-pool
+    asset_type: container.googleapis.com/NodePool
+  expectedSkeleton:
+    apiVersion: container.cnrm.cloud.google.com/v1beta1
+    kind: ContainerNodePool
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: default-pool
+    spec:
+      clusterRef:
+        external: test-cluster
+      location: us-central1-a
+  resourceConfigId: ContainerNodePool
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //dns.googleapis.com/projects/kcc-test/managedZones/4698163678635624456
+    asset_type: dns.googleapis.com/ManagedZone
+  expectedSkeleton:
+    apiVersion: dns.cnrm.cloud.google.com/v1beta1
+    kind: DNSManagedZone
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/force-destroy: "false"
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: "4698163678635624456"
+  resourceConfigId: DNSManagedZone
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //dns.googleapis.com/projects/kcc-test/policies/4344834620072597501
+    asset_type: dns.googleapis.com/Policy
+  expectedSkeleton:
+    apiVersion: dns.cnrm.cloud.google.com/v1beta1
+    kind: DNSPolicy
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: "4344834620072597501"
+  resourceConfigId: DNSPolicy
+# not supported by asset inventory
+- resourceConfigId: DNSRecordSet
+# not supported by asset inventory
+- resourceConfigId: DataflowJob
+# not supported by asset inventory
+- resourceConfigId: DataflowFlexTemplateJob
+# not supported by asset inventory
+- resourceConfigId: FirestoreIndex
+- asset:
+    ancestors:
+      - folders/20660350448
+      - folders/608061430863
+      - organizations/1234567890
+    name: //cloudresourcemanager.googleapis.com/folders/20660350448
+    asset_type: cloudresourcemanager.googleapis.com/Folder
+  expectedSkeleton:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Folder
+    metadata: {}
+    status:
+      name: folders/20660350448
+  resourceConfigId: Folder
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //iam.googleapis.com/projects/kcc-test/roles/foo
+    asset_type: iam.googleapis.com/Role
+  expectedSkeleton:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMCustomRole
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+    spec:
+      resourceID: "foo"
+  resourceConfigId: IAMCustomRole
+- asset:
+    ancestors:
+    - organizations/1234567890
+    name: //iam.googleapis.com/organizations/1234567890/roles/myrolestage
+    asset_type: iam.googleapis.com/Role
+  expectedSkeleton:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMCustomRole
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/organization-id: "1234567890"
+    spec:
+      resourceID: "myrolestage"
+  resourceConfigId: IAMCustomRole
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //iam.googleapis.com/projects/kcc-test/serviceAccounts/105908887382658797109
+    asset_type: iam.googleapis.com/ServiceAccount
+  expectedSkeleton:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+    status:
+      uniqueId: "105908887382658797109"
+  resourceConfigId: IAMServiceAccount
+# needs support / bug fix
+- resourceConfigId: IAMServiceAccountKey
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //cloudkms.googleapis.com/projects/kcc-test/locations/us-central1/keyRings/kmscryptokey-7vg0g4ing72tmo8pcq1o/cryptoKeys/kmscryptokey-7vg0g4ing72tmo8pcq1o
+    asset_type: cloudkms.googleapis.com/CryptoKey
+  expectedSkeleton:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    metadata:
+      name: kmscryptokey-7vg0g4ing72tmo8pcq1o
+    spec:
+      keyRingRef:
+        external: projects/kcc-test/locations/us-central1/keyRings/kmscryptokey-7vg0g4ing72tmo8pcq1o
+  resourceConfigId: KMSCryptoKey
+# unsupported due to being a combination of multiple TF resources, which breaks
+# assumptions about mapping asset names to import IDs.
+- asset:
+    ancestors:
+    - organizations/1234567890
+    name: //logging.googleapis.com/projects/kcc-test/sinks/sink-name
+    asset_type: logging.googleapis.com/LogSink
+  expectedSkeleton:
+    apiVersion: logging.cnrm.cloud.google.com/v1beta1
+    kind: LoggingLogSink
+    metadata:
+      name: sink-name
+    spec:
+      projectRef:
+        external: kcc-test
+  resourceConfigId: LoggingLogSink
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //cloudkms.googleapis.com/projects/kcc-test/locations/us-central1/keyRings/kmskeyring-sampleixbu8
+    asset_type: cloudkms.googleapis.com/KeyRing
+  expectedSkeleton:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: kmskeyring-sampleixbu8
+    spec:
+      location: us-central1
+  resourceConfigId: KMSKeyRing
+# not supported by asset inventory
+- resourceConfigId: MemcacheInstance
+# not supported by asset inventory
+- resourceConfigId: MonitoringAlertPolicy
+# not supported by asset inventory
+- resourceConfigId: MonitoringNotificationChannel
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //cloudresourcemanager.googleapis.com/projects/1234567890
+    asset_type: cloudresourcemanager.googleapis.com/Project
+  expectedSkeleton:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/auto-create-network: "true"
+    status:
+      number: "1234567890"
+  resourceConfigId: Project
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //pubsub.googleapis.com/projects/kcc-test/subscriptions/pubsubsubscription-sample-btok42j3jvvne87si6ui
+    asset_type: pubsub.googleapis.com/Subscription
+  expectedSkeleton:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubSubscription
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: pubsubsubscription-sample-btok42j3jvvne87si6ui
+  resourceConfigId: PubSubSubscription
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //pubsub.googleapis.com/projects/kcc-test/topics/pubsubtopic-23ud716o5e16ibc3j9kc
+    asset_type: pubsub.googleapis.com/Topic
+  expectedSkeleton:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: pubsubtopic-23ud716o5e16ibc3j9kc
+  resourceConfigId: PubSubTopic
+# not supported by asset inventory
+- resourceConfigId: RedisInstance
+# not supported by asset Inventory
+- resourceConfigId: ResourceManagerLien
+# unsupported due to being a combination of multiple TF resources, which breaks
+# assumptions about mapping asset names to import IDs.
+- resourceConfigId: ResourceManagerPolicy
+# not supported by asset inventory
+- resourceConfigId: SQLDatabase
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //cloudsql.googleapis.com/projects/kcc-test/instances/sqlinstance-sample-m3n5l2eve1nbp6stc21d
+    asset_type: sqladmin.googleapis.com/Instance
+  expectedSkeleton:
+    apiVersion: sql.cnrm.cloud.google.com/v1beta1
+    kind: SQLInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: sqlinstance-sample-m3n5l2eve1nbp6stc21d
+  resourceConfigId: SQLInstance
+# not supported by asset inventory
+- resourceConfigId: SQLSSLCert
+# not supported by asset inventory
+- resourceConfigId: SQLUser
+# not supported by asset inventory
+- resourceConfigId: SecretManagerSecret
+# not supported by asset Inventory
+- resourceConfigId: SecretManagerSecretVersion
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //serviceusage.googleapis.com/projects/1234567890/services/bigquerystorage.googleapis.com
+    asset_type: serviceusage.googleapis.com/Service
+  expectedSkeleton:
+    apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+    kind: Service
+    metadata:
+      name: bigquerystorage.googleapis.com
+    spec:
+      projectRef:
+        external: "1234567890"
+  resourceConfigId: Service
+# not supported by asset inventory
+- resourceConfigId: ServiceNetworkingConnection
+# not supported by asset inventory
+- resourceConfigId: SourceRepoRepository
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //spanner.googleapis.com/projects/kcc-test/instances/spannerinstance-3m5j7pbhtprbatjs96cg/databases/spannerdatabase-test
+    asset_type: spanner.googleapis.com/Database
+  expectedSkeleton:
+    apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+    kind: SpannerDatabase
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: spannerdatabase-test
+    spec:
+      instanceRef:
+        external: spannerinstance-3m5j7pbhtprbatjs96cg
+  resourceConfigId: SpannerDatabase
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //spanner.googleapis.com/projects/kcc-test/instances/spannerinstance-ob2jjbf5brvrelg1qsma
+    asset_type: spanner.googleapis.com/Instance
+  expectedSkeleton:
+    apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+    kind: SpannerInstance
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/force-destroy: "false"
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: spannerinstance-ob2jjbf5brvrelg1qsma
+  resourceConfigId: SpannerInstance
+- asset:
+    ancestors:
+      - projects/1234567890
+      - organizations/1234567890
+    name: //storage.googleapis.com/storagebucket-a29qtvhj9gsmrc3gud20
+    asset_type: storage.googleapis.com/Bucket
+  expectedSkeleton:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/force-destroy: "false"
+        cnrm.cloud.google.com/project-id: "project-id-1"
+      name: storagebucket-a29qtvhj9gsmrc3gud20
+  resourceConfigId: StorageBucket
+# not supported by asset inventory
+- resourceConfigId: StorageBucketAccessControl
+# not supported by asset inventory
+- resourceConfigId: StorageDefaultObjectAccessControl
+# not supported by asset inventory
+- resourceConfigId: StorageNotification
+# not supported by asset inventory
+- resourceConfigId: StorageTransferJob

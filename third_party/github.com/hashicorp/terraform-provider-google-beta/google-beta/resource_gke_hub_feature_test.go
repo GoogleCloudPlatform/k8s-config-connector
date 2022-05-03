@@ -1,0 +1,317 @@
+package google
+
+import (
+	"fmt"
+	"strings"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+)
+
+func TestAccGKEHubFeature_gkehubFeatureMciUpdate(t *testing.T) {
+	// VCR fails to handle batched project services
+	skipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix":   randString(t, 10),
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccGKEHubFeature_gkehubFeatureMciUpdateStart(context),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature.feature",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGKEHubFeature_gkehubFeatureMciChangeMembership(context),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature.feature",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccGKEHubFeature_gkehubFeatureMciUpdateStart(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+
+resource "google_container_cluster" "primary" {
+  name               = "tf-test%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_container_cluster" "secondary" {
+  name               = "tf-test2%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  membership_id = "tf-test%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  project = google_project.project.project_id
+  provider = google-beta
+}
+
+resource "google_gke_hub_membership" "membership_second" {
+  membership_id = "tf-test2%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.secondary.id}"
+    }
+  }
+  description = "test resource."
+  project = google_project.project.project_id
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  name = "multiclusteringress"
+  location = "global"
+  spec {
+    multiclusteringress {
+      config_membership = google_gke_hub_membership.membership.id
+    }
+  }
+  project = google_project.project.project_id
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGKEHubFeature_gkehubFeatureMciChangeMembership(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "tf-test%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_container_cluster" "secondary" {
+  name               = "tf-test2%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  membership_id = "tf-test%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  project = google_project.project.project_id
+  provider = google-beta
+}
+
+resource "google_gke_hub_membership" "membership_second" {
+  membership_id = "tf-test2%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.secondary.id}"
+    }
+  }
+  description = "test resource."
+  project = google_project.project.project_id
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  name = "multiclusteringress"
+  location = "global"
+  spec {
+    multiclusteringress {
+      config_membership = google_gke_hub_membership.membership_second.id
+    }
+  }
+  labels = {
+    foo = "bar"
+  }
+  project = google_project.project.project_id
+  provider = google-beta
+}
+`, context)
+}
+
+func TestAccGKEHubFeature_gkehubFeatureMcsd(t *testing.T) {
+	// VCR fails to handle batched project services
+	skipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix":   randString(t, 10),
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccGKEHubFeature_gkehubFeatureMcsd(context),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature.feature",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGKEHubFeature_gkehubFeatureMcsdUpdate(context),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature.feature",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccGKEHubFeature_gkehubFeatureMcsd(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_gke_hub_feature" "feature" {
+  name = "multiclusterservicediscovery"
+  location = "global"
+  project = google_project.project.project_id
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.mcsd]
+}
+`, context)
+}
+
+func testAccGKEHubFeature_gkehubFeatureMcsdUpdate(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_gke_hub_feature" "feature" {
+  name = "multiclusterservicediscovery"
+  location = "global"
+  project = google_project.project.project_id
+  labels = {
+    foo = "quux"
+    baz = "qux"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.mcsd]
+}
+`, context)
+}
+
+func gkeHubFeatureProjectSetup(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_project" "project" {
+  name            = "tf-test-gkehub%{random_suffix}"
+  project_id      = "tf-test-gkehub%{random_suffix}"
+  org_id          = "%{org_id}"
+  billing_account = "%{billing_account}"
+  provider        = google-beta
+}
+
+resource "google_project_service" "mci" {
+  project = google_project.project.project_id
+  service = "multiclusteringress.googleapis.com"
+  provider = google-beta
+}
+
+resource "google_project_service" "acm" {
+  project = google_project.project.project_id
+  service = "anthosconfigmanagement.googleapis.com"
+  provider = google-beta
+}
+
+resource "google_project_service" "mcsd" {
+  project = google_project.project.project_id
+  service = "multiclusterservicediscovery.googleapis.com"
+  provider = google-beta
+}
+
+resource "google_project_service" "compute" {
+  project = google_project.project.project_id
+  service = "compute.googleapis.com"
+  disable_on_destroy = false
+  provider = google-beta
+}
+
+resource "google_project_service" "container" {
+  project = google_project.project.project_id
+  service = "container.googleapis.com"
+  disable_on_destroy = false
+  provider = google-beta
+}
+
+resource "google_project_service" "gkehub" {
+  project = google_project.project.project_id
+  service = "gkehub.googleapis.com"
+  disable_on_destroy = false
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccCheckGKEHubFeatureDestroyProducer(t *testing.T) func(s *terraform.State) error {
+	return func(s *terraform.State) error {
+		for name, rs := range s.RootModule().Resources {
+			if rs.Type != "google_gke_hub_feature" {
+				continue
+			}
+			if strings.HasPrefix(name, "data.") {
+				continue
+			}
+
+			config := googleProviderConfig(t)
+
+			url, err := replaceVarsForTest(config, rs, "{{GkeHubBasePath}}projects/{{project}}/locations/{{location}}/features/{{name}}")
+			if err != nil {
+				return err
+			}
+
+			billingProject := ""
+
+			if config.BillingProject != "" {
+				billingProject = config.BillingProject
+			}
+
+			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			if err == nil {
+				return fmt.Errorf("GKEHubFeature still exists at %s", url)
+			}
+		}
+
+		return nil
+	}
+}

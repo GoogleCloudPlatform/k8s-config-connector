@@ -1,0 +1,757 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//go:build integration
+// +build integration
+
+package dynamic_test
+
+import (
+	"context"
+	"flag"
+	"fmt"
+	"reflect"
+	"regexp"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
+	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
+	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
+	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+
+	"github.com/cenkalti/backoff"
+	"github.com/ghodss/yaml"
+	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
+)
+
+func init() {
+	// run-tests and skip-tests allows you to limit the tests that are run by
+	// specifying regexes to be used to match test names. See the
+	// formatTestName() function to see what test names look like.
+	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
+
+	// cleanup-resources allows you to disable the cleanup of resources created during testing. This can be useful for debugging test failures.
+	// The default value is true.
+	//
+	// To use this flag, you MUST use an equals sign as follows: go test -tags=integration -cleanup-resources=false
+	flag.BoolVar(&cleanupResources, "cleanup-resources", true, "when enabled, "+
+		"cloud resources created by tests will be cleaned up at the end of a test")
+}
+
+var (
+	mgr              manager.Manager
+	runTestsRegex    string
+	skipTestsRegex   string
+	cleanupResources bool
+)
+
+const resourceIDTestVar = "${resourceId}"
+
+func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefixture.ResourceFixture) bool {
+	testName := formatTestName(parentTestName, fixture)
+
+	// If a skip-tests regex has been provided and it matches the test name, skip the test.
+	if skipTestsRegex != "" {
+		if regexp.MustCompile(skipTestsRegex).MatchString(testName) {
+			return false
+		}
+	}
+
+	// If a run-tests regex has been provided and it doesn't match the test name, skip the test.
+	if runTestsRegex != "" {
+		if !regexp.MustCompile(runTestsRegex).MatchString(testName) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func TestAcquire(t *testing.T) {
+	t.Parallel()
+	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
+		if !shouldRunBasedOnRunAndSkipRegexes("TestAcquire", fixture) {
+			return false
+		}
+
+		// Never run the acquire test for 'containerannotations' test cases.
+		// This is because these test cases intentionally omit required
+		// hierarchical references to test that the webhooks default them
+		// correctly. However, the acquire test needs to be able to create GCP
+		// resources using create.yaml's without applying them onto the K8s API
+		// server, which means trying to create GCP resources using
+		// create.yaml's that are missing the required references and without
+		// going through the defaulting provided by webhooks.
+		if fixture.Type == resourcefixture.ContainerAnnotations {
+			return false
+		}
+
+		// Run the acquire test for 'resourceid' test cases to test that
+		// resources can be acquired using `spec.resourceID`.
+		if fixture.Type == resourcefixture.ResourceID {
+			return true
+		}
+
+		// Run the acquire test for a representative set of resource kinds.
+		// Note: ensuring that all fields are accounted for and not changed
+		// when applying the same YAMLs is handled separately by the NoChange
+		// test.
+		kinds := map[string]bool{
+			// basic resource with no dependencies
+			"PubSubTopic": true,
+			// resource with dependencies
+			"PubSubSubscription": true,
+			// resource with no labels support
+			"BigQueryTable": true,
+			// resource acquirable by name only if in an active state
+			"DataflowJob": true,
+			// resource acquirable by displayName and parent org/folder ID if
+			// server-generated ID (i.e. folder ID) is not specified
+			"Folder": true,
+			// used as an integration test verifying that falsey values are not
+			// incorrectly defaulted. (b/178744782)
+			"ComputeNetwork": true,
+		}
+		return kinds[fixture.GVK.Kind]
+	}
+	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		testReconcileAcquire(t, testContext, systemContext, context)
+	}
+	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testFunc)
+}
+
+func TestCreateNoChangeUpdateDelete(t *testing.T) {
+	t.Parallel()
+	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
+		switch fixture.Type {
+		case resourcefixture.IAMExternalOnlyRef, resourcefixture.IAMMemberReferences:
+			return false
+		}
+
+		// Skip ResourceID test cases for resources with server-generated IDs.
+		// These test cases exist solely to test acquisition of resources with
+		// server-generated IDs.
+		if fixture.Type == resourcefixture.ResourceID {
+			switch fixture.Name {
+			case "servergeneratedresourceid":
+				return false
+			case "servergeneratedresourceidfordcl":
+				return false
+			}
+		}
+
+		return shouldRunBasedOnRunAndSkipRegexes("TestCreateNoChangeUpdateDelete", fixture)
+	}
+	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
+		testReconcileCreateNoChangeUpdateDelete(t, testContext, systemContext, context)
+	}
+	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testFunc)
+}
+
+func formatTestName(parentTestName string, fixture resourcefixture.ResourceFixture) string {
+	return fmt.Sprintf("%v/%v", parentTestName, resourcefixture.FormatTestName(fixture))
+}
+func testCreate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	kubeClient := systemContext.Manager.GetClient()
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
+		t.Fatalf("error creating %v resource %v: %v", initialUnstruct.GetKind(), initialUnstruct.GetName(), err)
+	}
+	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
+}
+
+func validateCreate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext,
+	resourceContext contexts.ResourceContext, preReconcileGeneration int64) {
+	kubeClient := systemContext.Manager.GetClient()
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	// Check labels match on create
+	reconciledUnstruct := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       initialUnstruct.GetKind(),
+			"apiVersion": initialUnstruct.GetAPIVersion(),
+		},
+	}
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+	gcpUnstruct, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	if err != nil {
+		t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
+	}
+	if resourceContext.SupportsLabels(systemContext.SMLoader) {
+		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), reconciledUnstruct.GetLabels())
+	}
+
+	// Check that an "Updating" event was recorded, indicating that the
+	// controller tried to update the resource at all.
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
+
+	// Check that condition is ready and "UpToDate" event was recorded
+	// TODO: (eventually) check default fields are propagated correctly
+	cond := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, cond)
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
+
+	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, initialUnstruct)
+
+	generationIncrease := reconciledUnstruct.GetGeneration() - preReconcileGeneration
+	if generationIncrease > 1 {
+		// Generation should have incremented at most once, only due to defaulted field sync-back.
+		t.Fatalf("unexpected generation increase %v", generationIncrease)
+	}
+
+	// Check observedGeneration matches with the pre-reconcile generation
+	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+}
+
+// testNoChange verifies that reconciling a resource which has not changed does not result in
+// any meaningful changes.
+func testNoChange(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	if resourceContext.SkipNoChange {
+		return
+	}
+	kubeClient := systemContext.Manager.GetClient()
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+	preReconcileGeneration := initialUnstruct.GetGeneration()
+
+	// Delete all events for the resource so that we can check later at the end
+	// of this test that the right events are recorded.
+	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, initialUnstruct)
+
+	// Reconcile resource without changing anything in its configuration
+	reconciledUnstruct := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       initialUnstruct.GetKind(),
+			"apiVersion": initialUnstruct.GetAPIVersion(),
+		},
+	}
+	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+
+	if reconciledUnstruct.GetGeneration() != initialUnstruct.GetGeneration() {
+		t.Errorf("generation incremented during expected no-op")
+	}
+
+	if testContext.ResourceFixture.GVK.Kind == "DataflowJob" {
+		// Check that the Dataflow job has not been updated. This means
+		// checking that its status.jobId is still the same since Dataflow jobs
+		// are updated by creating a new job (which would have a new job ID) to
+		// replace the existing one.
+		checkDataflowJobNoChange(t, initialUnstruct, reconciledUnstruct)
+	}
+
+	// Check that an "Updating" event was never recorded.
+	testcontroller.AssertEventNotRecordedforUnstruct(t, kubeClient, initialUnstruct, k8s.Updating)
+
+	// Check observedGeneration matches with the pre-reconcile generation
+	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+}
+
+func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	if resourceContext.SkipUpdate {
+		return
+	}
+	kubeClient := systemContext.Manager.GetClient()
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+
+	// Delete all events for the resource so that we can check later at the end
+	// of this test that the right events are recorded.
+	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, initialUnstruct)
+
+	// Update resource from test data
+	updateUnstruct := testContext.UpdateUnstruct.DeepCopy()
+	if updateUnstruct == nil {
+		t.Fatalf("updateUnstruct is nil for '%v'. should SkipUpdate be set to true in resourcefixture/contexts?", testContext.ResourceFixture.Name)
+	}
+	updateUnstruct.SetResourceVersion(initialUnstruct.GetResourceVersion())
+	// For resources with server-generated IDs, ensure the relevant fields are in the status
+	status := initialUnstruct.Object["status"]
+	if err := unstructured.SetNestedField(updateUnstruct.Object, status, "status"); err != nil {
+		t.Fatalf("error setting status on updateUnstruct: %v", err)
+	}
+	patch := client.MergeFrom(testContext.CreateUnstruct)
+	if err := kubeClient.Patch(context.TODO(), updateUnstruct, patch); err != nil {
+		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
+	}
+	preReconcileGeneration := updateUnstruct.GetGeneration()
+	systemContext.Reconciler.Reconcile(updateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+
+	reconciledUnstruct := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       updateUnstruct.GetKind(),
+			"apiVersion": updateUnstruct.GetAPIVersion(),
+		},
+	}
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+
+	generationIncrease := reconciledUnstruct.GetGeneration() - updateUnstruct.GetGeneration()
+	if generationIncrease > 1 {
+		// Generation should have incremented at most once, only due to defaulted field sync-back.
+		t.Fatalf("unexpected generation increase %v", generationIncrease)
+	}
+
+	// Check labels match on update
+	gcpUnstruct, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	if err != nil {
+		t.Fatalf("unexpected error when GETting '%v': %v", updateUnstruct.GetName(), err)
+	}
+	if resourceContext.SupportsLabels(systemContext.SMLoader) {
+		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), testContext.UpdateUnstruct.GetLabels())
+	}
+
+	// If the object has a spec, check that the live GCP resource reflects the
+	// updates made by the update struct
+	if initialUnstruct.Object["spec"] != nil {
+		if gcpUnstruct.Object["spec"] == nil {
+			t.Fatalf("GCP resource has a nil spec even though it was created using a resource with a non-nil spec")
+		}
+
+		// Do pre-actuation transform for the initialUnstruct and
+		// reconciledUnstruct before asserting diff result of them is contained
+		// in the retrieved gcpUnstruct.
+		//
+		// initialUnstruct and reconciledUnstruct contain user-facing resource
+		// configs that match the CRD after CRDDecorate() in resource overrides
+		// is applied.
+		// However, gcpUnstruct is the live state of the resource and only
+		// contains fields in the CRD before CRDDecorate() is applied.
+		// PreActuationTransform() turns the user-facing resource configs into
+		// "vanilla" configs which only contain the fields in the CRD before
+		// CRDDecorate() is applied and makes it comparable with the retrieved
+		// live state of the resource.
+		transformedInitialUnstruct, err := resourceContext.DoPreActuationTransformFor(initialUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
+		if err != nil {
+			t.Fatalf("could not do pre-actuation transfrom for initialUnstruct: %v", err)
+		}
+		transformedReconciledUnstruct, err := resourceContext.DoPreActuationTransformFor(reconciledUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
+		if err != nil {
+			t.Fatalf("could not do pre-actuation transfrom for reconciledUnstruct: %v", err)
+		}
+		changedFields := getChangedFields(transformedInitialUnstruct.Object, transformedReconciledUnstruct.Object, "spec")
+		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedFields)
+	}
+
+	// Check that an "Updating" event was recorded, indicating that the
+	// controller tried to update the resource at all.
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
+
+	// Check if condition is ready and update event was recorded
+	cond := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, cond)
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
+
+	// Check observedGeneration matches with the pre-reconcile generation
+	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+
+	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, updateUnstruct)
+}
+
+// this test deletes the resource directly on GCP and then reconciles and verifies the resource was recreated correctly
+func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	if shouldSkipDriftDetection(t, resourceContext, systemContext.SMLoader, systemContext.DCLConverter.MetadataLoader, testContext.CreateUnstruct) {
+		return
+	}
+	kubeClient := systemContext.Manager.GetClient()
+	u := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, u); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+
+	// Delete all events for the resource so that we can check later at the end
+	// of this test that the right events are recorded.
+	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, u)
+
+	if err := resourceContext.Delete(t, u, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+		t.Fatalf("error deleting: %v", err)
+	}
+	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
+	// give the underlying system some time to propagate the deletion info.
+	time.Sleep(time.Second * 10)
+
+	// get the current state
+	systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	validateCreate(t, testContext, systemContext, resourceContext, u.GetGeneration())
+}
+
+func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceContext, smLoader *servicemappingloader.ServiceMappingLoader,
+	serviceMetadataLoader dclmetadata.ServiceMetadataLoader, u *unstructured.Unstructured) bool {
+	if !testgcp.ResourceSupportsDeletion(u.GetKind()) {
+		// The drift correction test relies on being able to delete the underlying resource.
+		return true
+	}
+	if resourceContext.SkipDriftDetection {
+		return true
+	}
+
+	// Skip drift detection test for dcl-based resources with server-generated id.
+	if resourceContext.DCLBased {
+		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
+		if !found {
+			// The resource doesn't have a 'resourceID' field.
+			return false
+		}
+		isServerGenerated, err := dclextension.IsResourceIDFieldServerGenerated(s)
+		if err != nil {
+			t.Fatalf("error parsing `resourceID` field schema: %v", err)
+		}
+		return isServerGenerated
+	}
+	// Skip drift detection test for tf-based resources with server-generated id.
+	rc := testservicemapping.GetResourceConfig(t, smLoader, u)
+	return hasServerGeneratedId(*rc)
+}
+
+func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
+	return rc.ServerGeneratedIDField != ""
+}
+
+func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	if resourceContext.SkipDelete {
+		return
+	}
+	kubeClient := systemContext.Manager.GetClient()
+	testReconciler := systemContext.Reconciler
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Delete(context.TODO(), initialUnstruct); err != nil {
+		t.Fatalf("error deleting resource: %v", err)
+	}
+
+	// Test that the deletion defender finalizer causes the resource to requeue
+	// and still exist on the underlying API
+	reconciledUnstruct := testContext.CreateUnstruct.DeepCopy()
+	testReconciler.Reconcile(reconciledUnstruct, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+	if _, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+		t.Errorf("expected resource %s to not be deleted with deletion defender finalizer, but got error: %s",
+			initialUnstruct.GetName(), err)
+	}
+
+	// Perform the deletion on the underlying API
+	testk8s.RemoveDeletionDefenderFinalizerForUnstructured(t, reconciledUnstruct, kubeClient)
+	testReconciler.Reconcile(reconciledUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+
+	if !testgcp.ResourceSupportsDeletion(testContext.ResourceFixture.GVK.Kind) {
+		_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		if err != nil {
+			t.Errorf("expected resource %s to exist after deletion, but got error: %s", initialUnstruct.GetName(), err)
+		}
+	} else {
+		getFunc := func() error {
+			// for some resources, Get after Delete is eventually consistent, for that reason we retry until an error is returned
+			_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+			if err == nil {
+				return fmt.Errorf("expected error, instead got 'nil'")
+			}
+			return backoff.Permanent(err)
+		}
+		expBackoff := backoff.NewExponentialBackOff()
+		expBackoff.MaxElapsedTime = 60 * time.Second
+		expBackoff.MaxInterval = 10 * time.Second
+		err := backoff.Retry(getFunc, expBackoff)
+		// TODO: remove gcp.IsNotFoundError(...) once all resources are converted to use terraform for ResourceContext Create / Get
+		if !gcp.IsNotFoundError(err) && !contexts.IsNotFoundError(err) {
+			t.Errorf("expected GCP client to return NotFound for '%v', instead got: %v", initialUnstruct.GetName(), err)
+		}
+
+		err = kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct)
+		if err == nil || !errors.IsNotFound(err) {
+			t.Errorf("unexpected error value: '%v'", err)
+		}
+	}
+
+	// Check that "Deleted" event was recorded
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, initialUnstruct, k8s.Deleted)
+}
+
+func testReconcileCreateNoChangeUpdateDelete(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, getResourceCleanupPolicy())
+	defer resourceCleanup()
+	testCreate(t, testContext, systemContext, resourceContext)
+	testNoChange(t, testContext, systemContext, resourceContext)
+	testUpdate(t, testContext, systemContext, resourceContext)
+	testDriftCorrection(t, testContext, systemContext, resourceContext)
+	testDelete(t, testContext, systemContext, resourceContext)
+}
+
+func checkComputeNetworkUpdate(t *testing.T, updateUnstruct *unstructured.Unstructured, gcpUnstruct *unstructured.Unstructured) {
+	expect, _, err := unstructured.NestedString(updateUnstruct.Object, "spec", "routingMode")
+	if err != nil {
+		t.Error(err)
+	}
+	actual, _, err := unstructured.NestedString(gcpUnstruct.Object, "routingConfig", "routingMode")
+	if err != nil {
+		t.Error(err)
+	}
+	if expect != actual {
+		t.Errorf("unexpected value for routingMode: got %v, want %v", actual, expect)
+	}
+}
+
+func checkDataflowJobNoChange(t *testing.T, initialUnstruct, reconciledUnstruct *unstructured.Unstructured) {
+	expectJobID, found, err := unstructured.NestedString(initialUnstruct.Object, "status", "jobId")
+	if err != nil {
+		t.Error(err)
+	}
+	if !found {
+		t.Errorf("initial unstruct does not have a status.jobId field")
+	}
+	actualJobID, found, err := unstructured.NestedString(reconciledUnstruct.Object, "status", "jobId")
+	if err != nil {
+		t.Error(err)
+	}
+	if !found {
+		t.Errorf("reconciled unstruct does not have a status.jobId field")
+	}
+	if expectJobID != actualJobID {
+		t.Errorf("expected status.jobId to be unchanged: got %v, want %v", actualJobID, expectJobID)
+	}
+}
+
+func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	kubeClient := systemContext.Manager.GetClient()
+	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+
+	// Create the resource on GCP if it doesn't exist.
+	//
+	// If the unstruct contains a ${resourceId} test variable, that means its
+	// spec.resourceID is only meant to be used for acquisition. Therefore,
+	// strip out spec.resourceID for creation.
+	unstructToCreate := initialUnstruct.DeepCopy()
+	if containsResourceIDTestVar(t, unstructToCreate) {
+		testcontroller.RemoveResourceID(unstructToCreate)
+	}
+	var gcpUnstruct *unstructured.Unstructured
+	var err error
+	gcpUnstruct, err = resourceContext.Get(t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	if err != nil {
+		if !strings.Contains(err.Error(), "not found") {
+			t.Fatalf("unexpected error when GETting '%v': %v", unstructToCreate.GetName(), err)
+		}
+		if gcpUnstruct, err = resourceContext.Create(t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+			t.Fatalf("unexpected error when creating GCP resource '%v': %v", unstructToCreate.GetName(), err)
+		}
+	}
+
+	// Acquire the resource using the original unstruct.
+	//
+	// If the unstruct contains a ${resourceId} test variable, that means its
+	// spec.resourceID needs to be set with the live resource's resource ID to
+	// to make the unstruct usable for acquiring the live resource.
+	if containsResourceIDTestVar(t, initialUnstruct) {
+		resourceID, ok := testcontroller.GetResourceID(t, gcpUnstruct)
+		if !ok || resourceID == "" {
+			t.Fatalf("GCP resource does not have a %v field", k8s.ResourceIDFieldPath)
+		}
+		testcontroller.SetResourceID(t, initialUnstruct, resourceID)
+	}
+	// autoCreateSubnetworks defaults to true, rather than false, and acts
+	// as an end-to-end regression test for previous behavior defaulting to the wrong value
+	// see: b/178744782
+	if testContext.ResourceFixture.GVK.Kind == "ComputeNetwork" {
+		unstructured.RemoveNestedField(initialUnstruct.Object, "spec", "autoCreateSubnetworks")
+	}
+	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
+		t.Fatalf("error creating resource: %v", err)
+	}
+	preReconcileGeneration := initialUnstruct.GetGeneration()
+	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(initialUnstruct, getResourceCleanupPolicy())
+	defer resourceCleanup()
+	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+
+	// Check labels match
+	if resourceContext.SupportsLabels(systemContext.SMLoader) {
+		gcpUnstruct, err := resourceContext.Get(t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		if err != nil {
+			t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
+		}
+		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), initialUnstruct.GetLabels())
+	}
+
+	reconciledUnstruct := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       initialUnstruct.GetKind(),
+			"apiVersion": initialUnstruct.GetAPIVersion(),
+		},
+	}
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+		t.Fatalf("unexpected error getting k8s resource: %v", err)
+	}
+
+	// Check that condition is ready and "UpToDate" event was recorded
+	cond := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, cond)
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
+
+	// Check observedGeneration matches with the pre-reconcile generation
+	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+
+	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, initialUnstruct)
+}
+
+// TODO(b/174100391): Compare the resourceID of the retrieved GCP resource and the appliedUnstruct.
+func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext, reconciledUnstruct, appliedUnstruct *unstructured.Unstructured) {
+	if resourceContext.DCLBased {
+		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
+		if !found {
+			// The resource doesn't have a 'resourceID' field.
+			return
+		}
+		isServerGeneratedID, err := dclextension.IsResourceIDFieldServerGenerated(s)
+		if err != nil {
+			t.Fatalf("error parsing `resourceID` field schema: %v", err)
+		}
+		verifyResourceID(t, isServerGeneratedID, reconciledUnstruct, appliedUnstruct)
+	} else {
+		rc, err := systemContext.SMLoader.GetResourceConfig(reconciledUnstruct)
+		if err != nil {
+			t.Fatalf("error getting resource config for Kind '%s', "+
+				"Namespace '%s', Name '%s'", reconciledUnstruct.GetKind(),
+				reconciledUnstruct.GetNamespace(), reconciledUnstruct.GetName())
+		}
+		if !testcontroller.SupportsResourceIDField(rc) {
+			return
+		}
+		isServerGeneratedId := testcontroller.IsResourceIDFieldServerGenerated(rc)
+		verifyResourceID(t, isServerGeneratedId, reconciledUnstruct, appliedUnstruct)
+	}
+}
+
+func verifyResourceID(t *testing.T, isServerGeneratedID bool, reconciledUnstruct, appliedUnstruct *unstructured.Unstructured) {
+	reconciledResourceID, found := testcontroller.GetResourceID(t, reconciledUnstruct)
+	if !found {
+		t.Fatalf("'%s' not found", k8s.ResourceIDFieldPath)
+	}
+	if reconciledResourceID == "" {
+		t.Fatalf("invalid value for '%s': empty string",
+			k8s.ResourceIDFieldPath)
+	}
+
+	if isServerGeneratedID {
+		testcontroller.AssertServerGeneratedResourceIDMatch(t, reconciledResourceID, appliedUnstruct)
+		return
+	}
+	testcontroller.AssertUserSpecifiedResourceIDMatch(t, reconciledResourceID, appliedUnstruct)
+}
+
+func getResourceCleanupPolicy() testreconciler.ResourceCleanupPolicy {
+	if cleanupResources {
+		return testreconciler.CleanupPolicyAlways
+	}
+	return testreconciler.CleanupPolicyOnSuccess
+}
+
+func assertObjectContains(t *testing.T, obj, changedFields map[string]interface{}) {
+	for changedKey, changedVal := range changedFields {
+		objVal, ok := obj[changedKey]
+		if !ok {
+			t.Fatalf("object is missing the field %v", changedKey)
+		}
+
+		switch changedVal.(type) {
+		case map[string]interface{}:
+			if _, ok := objVal.(map[string]interface{}); !ok {
+				t.Fatalf("expected object to have a map at %v, but got %v", changedKey, objVal)
+			}
+			assertObjectContains(t, objVal.(map[string]interface{}), changedVal.(map[string]interface{}))
+		default:
+			if !reflect.DeepEqual(objVal, changedVal) {
+				t.Fatalf("unexpected value for %v: got %v, want %v", changedKey, objVal, changedVal)
+			}
+		}
+	}
+}
+
+func getChangedFields(initialObject, updatedObject map[string]interface{}, field string) map[string]interface{} {
+	changedFields := make(map[string]interface{})
+	initial, _ := initialObject[field].(map[string]interface{})
+	updated := updatedObject[field].(map[string]interface{})
+	if !reflect.DeepEqual(initial, updated) {
+		for k, v := range updated {
+			if !reflect.DeepEqual(initial[k], v) {
+				if _, ok := v.(map[string]interface{}); ok {
+					changedFields[k] = getChangedFields(initial, updated, k)
+				} else {
+					changedFields[k] = updated[k]
+				}
+			}
+		}
+	}
+	return changedFields
+}
+
+// stripInternalKeysFromManagedFields strips fields that are used for internal
+// tracking of managed fields by the api-server. This is useful when trying to
+// differentiate between changes made by the server vs changed made by our controllers.
+//
+// note: this will modify the struct permanently, and will make the schema for
+// managedFields invalid. Do not use this method without a deepcopy if you are
+// planning on extracting the ManagedField struct later.
+func stripInternalKeysFromManagedFields(t *testing.T, unstruct *unstructured.Unstructured) {
+	managedFields, found, err := unstructured.NestedFieldNoCopy(unstruct.Object, "metadata", "managedFields")
+	if err != nil {
+		t.Fatalf("error getting managed fields: %v", err)
+	}
+	if !found {
+		return
+	}
+	for _, managedField := range managedFields.([]interface{}) {
+		managedField := managedField.(map[string]interface{})
+		delete(managedField, "time")
+	}
+}
+
+func containsResourceIDTestVar(t *testing.T, u *unstructured.Unstructured) bool {
+	b, err := yaml.Marshal(u)
+	if err != nil {
+		t.Fatalf("error marshalling unstruct to bytes: %v", err)
+	}
+	return strings.Contains(string(b), resourceIDTestVar)
+}
+
+func TestMain(m *testing.M) {
+	testmain.TestMainForIntegrationTests(m, &mgr)
+}

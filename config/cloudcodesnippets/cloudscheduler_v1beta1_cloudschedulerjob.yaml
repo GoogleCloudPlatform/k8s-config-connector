@@ -1,0 +1,16 @@
+label: Config Connector CloudSchedulerJob
+markdownDescription: Creates yaml for a CloudSchedulerJob resource
+insertText: |
+  apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+  kind: CloudSchedulerJob
+  metadata:
+    name: \${1:cloudschedulerjob-name}
+  spec:
+    description: \${2:scheduler-pubsub-target-job}
+    schedule: \${3:*/2 * * * *}
+    location: \${4:us-west2}
+    pubsubTarget:
+      data: \${5:dGVzdCBtZXNzYWdlCg==}
+      topicRef:
+        name: \${6:cloudscheduler-sample-pubsub-dep}
+    timeZone: \${7:EST}

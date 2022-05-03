@@ -1,0 +1,143 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: container.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Container
+  version: v1beta1
+  serviceHostName: "container.googleapis.com"
+  resources:
+    - name: google_container_cluster
+      kind: ContainerCluster
+      idTemplate: "{{project}}/{{location}}/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      ignoredFields:
+        - node_pool
+      metadataMapping:
+        name: name
+        labels: resource_labels
+      resourceID:
+        targetField: name
+      directives:
+        - remove_default_node_pool
+      mutableButUnreadableFields:
+        - min_master_version
+      containers:
+        - type: project
+          tfField: project
+      resourceReferences:
+        - tfField: cluster_autoscaling.auto_provisioning_defaults.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: subnetwork
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: node_config.boot_disk_kms_key
+          key: bootDiskKMSCryptoKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: notification_config.pubsub.topic
+          description: |-
+            The PubSubTopic to send the notification to.
+          key: topicRef
+          gvk:
+            kind: PubSubTopic
+            version: v1beta1
+            group: pubsub.cnrm.cloud.google.com
+          valueTemplate: "projects/{{project}}/topics/{{value}}"
+        - tfField: node_config.node_group
+          description: |-
+            Immutable. Setting this field will assign instances
+            of this pool to run on the specified node group. This is useful
+            for running workloads on sole tenant nodes.
+          key: nodeGroupRef
+          gvk:
+            kind: ComputeNodeGroup
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+    - name: google_container_node_pool
+      kind: ContainerNodePool
+      idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"
+      # doesn't import correctly
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - key: clusterRef
+          tfField: cluster
+          gvk:
+            kind: ContainerCluster
+            version: v1beta1
+            group: container.cnrm.cloud.google.com
+          parent: true
+        - tfField: node_config.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: node_config.boot_disk_kms_key
+          key: bootDiskKMSCryptoKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.node_group
+          description: |-
+            Immutable. Setting this field will assign instances
+            of this pool to run on the specified node group. This is useful
+            for running workloads on sole tenant nodes.
+          key: nodeGroupRef
+          gvk:
+            kind: ComputeNodeGroup
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+      containers:
+        - type: project
+          tfField: project

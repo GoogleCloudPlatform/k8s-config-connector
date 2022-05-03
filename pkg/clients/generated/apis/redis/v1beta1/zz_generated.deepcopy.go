@@ -329,6 +329,11 @@ func (in *RedisInstanceSpec) DeepCopyInto(out *RedisInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SecondaryIpRange != nil {
+		in, out := &in.SecondaryIpRange, &out.SecondaryIpRange
+		*out = new(string)
+		**out = **in
+	}
 	if in.Tier != nil {
 		in, out := &in.Tier, &out.Tier
 		*out = new(string)

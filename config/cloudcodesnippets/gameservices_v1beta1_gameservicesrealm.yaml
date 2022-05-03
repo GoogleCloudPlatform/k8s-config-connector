@@ -1,0 +1,12 @@
+label: Config Connector GameServicesRealm
+markdownDescription: Creates yaml for a GameServicesRealm resource
+insertText: |
+  apiVersion: gameservices.cnrm.cloud.google.com/v1beta1
+  kind: GameServicesRealm
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:gameservicesrealm-name}
+  spec:
+    timeZone: \${4:EST}
+    location: \${5:us-east1}

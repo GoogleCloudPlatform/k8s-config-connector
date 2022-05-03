@@ -1,0 +1,94 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+<code>{{.Kind}}</code> lets you manage the {{"{{iam_name_short}}"}} policy
+audit configs (that is, Data Access audit logging) for a given
+{{"{{gcp_name_short}}"}} resource. Read more about Data Access audit logs at <a
+href="/logging/docs/audit/configure-data-access">Configuring Data Access audit
+logs</a>.
+
+<code>{{.Kind}}</code> represents an audit config for a single
+{{"{{gcp_name_short}}"}} service. It adds an audit config for the given
+{{"{{gcp_name_short}}"}} service to the associated {{"{{gcp_name_short}}"}}
+resource's {{"{{iam_name_short}}"}} policy.
+
+If you want to manage multiple audit configs, use
+<a href="/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>{{"{{iam_name_short}}"}}</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/iam/docs/">/iam/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.iamPolicies</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/iam/reference/rest/v1/iamPolicies">/iam/reference/rest/v1/iamPolicies</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>iam.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+Warning: <code>{{.Kind}}</code> **should not** be used in conjunction with
+<code>IAMPolicy</code> for the same resource.
+
+Note: Updating <code>spec.service</code> and <code>spec.resourceRef</code> is
+not allowed.
+
+## Supported Resources
+
+You can use <code>{{.Kind}}</code> to configure Data Access audit logging for
+the following resources.
+
+<table>
+<thead>
+    <tr>
+        <th><strong>Kind</strong></th>
+        <th><strong>External Reference Formats</strong></th>
+    </tr>
+</thead>
+<tbody>{{ range $ref := .SupportedReferences}}
+    <tr>
+        <td><code>{{$ref.Kind}}</code></td>
+        <td>
+            {{range $format := $ref.ExternalReferenceFormats}}
+            <p><code>{% verbatim %}{{$format}}{% endverbatim %}</code></p>
+            {{end}}
+        </td>
+    </tr>{{end}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

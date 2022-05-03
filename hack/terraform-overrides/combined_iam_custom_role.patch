@@ -1,0 +1,109 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
+index 1018085b8..fc7184e61 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
+@@ -1177,6 +1177,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_healthcare_consent_store_iam_binding":                  ResourceIamBinding(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
+ 			"google_healthcare_consent_store_iam_member":                   ResourceIamMember(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
+ 			"google_healthcare_consent_store_iam_policy":                   ResourceIamPolicy(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
++			"google_iam_custom_role":                                       resourceIamCustomRole(),
+ 			"google_iam_deny_policy":                                       resourceIAM2DenyPolicy(),
+ 			"google_iam_workload_identity_pool":                            resourceIAMBetaWorkloadIdentityPool(),
+ 			"google_iam_workload_identity_pool_provider":                   resourceIAMBetaWorkloadIdentityPoolProvider(),
+
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
+index 2bf76615c..47b7fc6fa 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
+@@ -65,7 +65,7 @@ func resourceGoogleOrganizationIamCustomRole() *schema.Resource {
+ 			"name": {
+ 				Type:        schema.TypeString,
+ 				Computed:    true,
+-				Description: `The name of the role in the format organizations/{{org_id}}/roles/{{role_id}}. Like id, this field can be used as a reference in other resources such as IAM role bindings.`,
++				Description: `The full name of the role.`,
+ 			},
+ 		},
+ 		UseJSONNumber: true,
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
+index 13ab566b6..9b783e789 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
+@@ -68,7 +68,7 @@ func resourceGoogleProjectIamCustomRole() *schema.Resource {
+ 			"name": {
+ 				Type:        schema.TypeString,
+ 				Computed:    true,
+-				Description: `The name of the role in the format projects/{{project}}/roles/{{role_id}}. Like id, this field can be used as a reference in other resources such as IAM role bindings.`,
++				Description: `The full name of the role.`,
+ 			},
+ 		},
+ 		UseJSONNumber: true,
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go
+new file mode 100644
+index 000000000..bc140f89e
+--- /dev/null
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go
+@@ -0,0 +1,50 @@
++package google
++
++import (
++	"fmt"
++	"strings"
++
++	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
++)
++
++func resourceIamCustomRole() *schema.Resource {
++	return combinedResource(
++		map[string]*schema.Resource{
++			projectType: resourceGoogleProjectIamCustomRole(),
++			orgType:     resourceGoogleOrganizationIamCustomRole(),
++		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
++			// FROM: {{project?}}#{{org_id?}}#{{role_id}}
++			// TO:
++			//   - project: projects/{{project?}}/roles/{{role_id}}
++			//   - org:     organizations/{{org_id?}}/roles/{{role_id}}
++			importID := d.Id()
++			partitions := strings.Split(importID, "#")
++			if len(partitions) != 3 {
++				return nil, fmt.Errorf("expected 3 partitions in import ID, got %v", len(partitions))
++			}
++			roleID := partitions[2]
++			for roleType, parentVal := range map[string]string{
++				projectType: partitions[0],
++				orgType:     partitions[1],
++			} {
++				if parentVal == "" {
++					continue
++				}
++				if err := d.Set(fieldForParentType(roleType), parentVal); err != nil {
++					return nil, fmt.Errorf("error setting role parent ID: %w", err)
++				}
++				var id string
++				switch roleType {
++				case projectType:
++					id = fmt.Sprintf("projects/%v/roles/%v", parentVal, roleID)
++				case orgType:
++					id = fmt.Sprintf("organizations/%v/roles/%v", parentVal, roleID)
++				default:
++					return nil, fmt.Errorf("unknown role type in import ID")
++				}
++				d.SetId(id)
++				return []*schema.ResourceData{d}, nil
++			}
++			return nil, fmt.Errorf("no role type specified")
++		})
++}

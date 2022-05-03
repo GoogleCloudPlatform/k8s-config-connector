@@ -1,0 +1,63 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: To create <code>{{.Kind}}</code> resources, your {{"{{product_name}}"}}
+{{"{{iam_name_short}}"}} service account must have
+`roles/resourcemanager.projectCreator` on the {{"{{gcp_name_short}}"}}
+organization in which you want to create the project, and the
+{{"{{iam_name_short}}"}} service account must belong to a project with the
+{{"{{crmapi_name}}"}} enabled.
+
+Note: To link <code>{{.Kind}}</code> resources to {{"{{billing_name}}"}}
+accounts, your {{"{{product_name}}"}} {{"{{iam_name_short}}"}} service account
+must have `roles/billing.user` on the {{"{{billing_name}}"}} account, and the
+{{"{{iam_name_short}}"}} service account must belong to a project with the
+{{"{{billing_api}}"}} enabled.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Cloud Resource Manager</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/resource-manager/docs/">/resource-manager/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/resource-manager/reference/rest/v1/projects">/resource-manager/reference/rest/v1/projects</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>cloudresourcemanager.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

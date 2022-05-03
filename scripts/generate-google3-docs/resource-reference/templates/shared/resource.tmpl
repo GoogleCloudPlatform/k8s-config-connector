@@ -1,0 +1,78 @@
+## Custom Resource Definition Properties
+
+{{if .Annotations}}
+### Annotations
+<table class="properties responsive">
+<thead>
+    <tr>
+        <th colspan="2">Fields</th>
+    </tr>
+</thead>
+<tbody>{{ range $a := .Annotations }}
+    <tr>
+        <td><code>{{$a}}</code></td>
+    </tr>{{end}}
+</tbody>
+</table>
+{{end}}
+
+### Spec
+#### Schema
+  ```yaml
+  {{- .Spec | nindent 2 -}}
+  ```
+
+<table class="properties responsive">
+<thead>
+    <tr>
+        <th colspan="2">Fields</th>
+    </tr>
+</thead>
+<tbody>{{ range $fd := .SpecDescriptions}}
+    <tr>
+        <td>
+            <p><code>{{$fd.FullName}}</code></p>
+            <p><i>{{$fd.RequirementLevel}}</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">{{$fd.Type}}</code></p>
+            <p>{% verbatim %}{{$fd.Description}}{% endverbatim %}</p>
+        </td>
+    </tr>{{end}}
+</tbody>
+</table>
+
+{{ if .SpecDescriptionContainsRequiredIfParentPresent }}
+<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+{{ end }}
+
+### Status
+#### Schema
+  ```yaml
+  {{- .Status | nindent 2 -}}
+  ```
+
+<table class="properties responsive">
+<thead>
+    <tr>
+        <th colspan="2">Fields</th>
+    </tr>
+</thead>
+<tbody>{{ range $fd := .StatusDescriptions}}
+    <tr>
+        <td><code>{{$fd.FullName}}</code></td>
+        <td>
+            <p><code class="apitype">{{$fd.Type}}</code></p>
+            <p>{% verbatim %}{{$fd.Description}}{% endverbatim %}</p>
+        </td>
+    </tr>{{end}}
+</tbody>
+</table>
+
+## Sample YAML(s)
+{{range $title, $yaml := .SampleYamls}}
+### {{$title}}
+  ```yaml
+  {{- $yaml | nindent 2}}
+  ```
+{{end}}

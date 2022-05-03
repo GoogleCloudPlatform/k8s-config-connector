@@ -1,0 +1,15 @@
+label: Config Connector BigtableTable
+markdownDescription: Creates yaml for a BigtableTable resource
+insertText: |
+  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+  kind: BigtableTable
+  metadata:
+    name: \${1:bigtabletable-name}
+  spec:
+    columnFamily:
+    - family: \${2:family1}
+    - family: \${3:family2}
+    instanceRef:
+      name: \${4:bigtabletable-dep}
+    splitKeys:
+    - \${5:a}

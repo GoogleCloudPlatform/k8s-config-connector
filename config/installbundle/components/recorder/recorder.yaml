@@ -1,0 +1,101 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resource-stats-recorder
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-stats-recorder
+  labels:
+    cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    # due to the need to bind to a hostPort,
+    # using the Recreate strategy ensures that
+    # Config Connector can run and update all components
+    # on a cluster with a single node.
+    type: "Recreate"
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
+    spec:
+      serviceAccountName: resource-stats-recorder
+      containers:
+      - command:
+        - /configconnector/recorder
+        # NOTE: if we change the value for `prometheus-scrape-endpoint` argument, remember to
+        # also update the `prometheus.io/port` annotation in `resource-stats-recorder-service` Service.
+        args: ["--prometheus-scrape-endpoint=:48797", "--metric-interval=60"]
+        env:
+        - name: CONFIG_CONNECTOR_VERSION
+          value: "0.0.0-dev"
+        image: recorder:latest
+        imagePullPolicy: Always
+        name: recorder
+        ports:
+        # since hostPorts can conflict with user's workloads,
+        # choose a random port that will most likely not conflict.
+        - containerPort: 48797
+          hostPort: 48797
+          protocol: TCP
+        # Port used for readiness probe
+        - containerPort: 23232
+        resources:
+          limits:
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+        securityContext:
+          privileged: false
+          runAsUser: 1000
+          runAsNonRoot: true
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 23232
+          initialDelaySeconds: 7
+          periodSeconds: 3
+      terminationGracePeriodSeconds: 10
+      # this is required to ensure that the stats recorder
+      # relies on the GCE VM's identity rather than workloadIdentity,
+      # which is critical for some monitoring use cases.
+      hostNetwork: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource-stats-recorder-service
+  labels:
+    cnrm.cloud.google.com/monitored: "true"
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '48797'
+spec:
+  selector:
+    cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
+  ports:
+  - port: 8888
+    targetPort: 48797
+    name: metrics

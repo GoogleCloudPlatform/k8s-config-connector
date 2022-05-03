@@ -1,0 +1,15 @@
+label: Config Connector ComputeExternalVPNGateway
+markdownDescription: Creates yaml for a ComputeExternalVPNGateway resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeExternalVPNGateway
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computeexternalvpngateway-name}
+  spec:
+    description: \${4:an external vpn gateway}
+    redundancyType: \${5:SINGLE_IP_INTERNALLY_REDUNDANT}
+    interface:
+    - id: \${6:0}
+      ipAddress: \${7:8.8.8.8}

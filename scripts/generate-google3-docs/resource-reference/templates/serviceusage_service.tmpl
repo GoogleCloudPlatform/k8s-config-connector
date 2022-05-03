@@ -1,0 +1,56 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: You must use <code>gcpservice</code> when querying for this resource
+since <code>service</code> is reserved for the
+<a class="external" href="https://kubernetes.io/docs/concepts/services-networking/service/">Kubernetes Service</a>
+resource. For example, if you want to list your {{ .Kind}} resources, you must
+do so using <code>kubectl get gcpservice</code>.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Service Usage</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/service-usage/docs/">/service-usage/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.services</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Rest Resource Documentation</td>
+<td><a href="/service-usage/docs/reference/rest/v1/services">/service-usage/docs/reference/rest/v1/services</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>serviceusage.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

@@ -1,0 +1,57 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: You can update the spec of {{ .Kind}} resources when the type is
+<code>JOB_TYPE_STREAMING</code>. When the type is <code>JOB_TYPE_BATCH</code>,
+the spec cannot be updated. When you update a {{ .Kind}},
+{{"{{product_name_short}}"}} replaces the Cloud Dataflow Job with a new job.
+Read more about updating Dataflow jobs at
+<a href="/dataflow/docs/guides/updating-a-pipeline">Updating an existing pipeline</a>.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Cloud Dataflow</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/dataflow/docs/">/dataflow/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1b3.projects.jobs</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/dataflow/docs/reference/rest/v1b3/projects.jobs">/dataflow/docs/reference/rest/v1b3/projects.jobs</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>dataflow.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{% endblock %}

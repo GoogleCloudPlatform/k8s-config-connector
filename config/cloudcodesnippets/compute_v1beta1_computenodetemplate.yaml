@@ -1,0 +1,17 @@
+label: Config Connector ComputeNodeTemplate
+markdownDescription: Creates yaml for a ComputeNodeTemplate resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNodeTemplate
+  metadata:
+    labels:
+      \${1:memory_guarantee}: \${2:false}
+      \${3:desired_workload}: \${4:high-cpu}
+    name: \${5:computenodetemplate-name}
+  spec:
+    description: \${6:Node template for sole tenant nodes running in us-central1, with
+      96vCPUs and any amount of memory on any machine type.}
+    region: \${7:us-central1}
+    nodeTypeFlexibility:
+      cpus: \${8:96}
+      memory: \${9:any}

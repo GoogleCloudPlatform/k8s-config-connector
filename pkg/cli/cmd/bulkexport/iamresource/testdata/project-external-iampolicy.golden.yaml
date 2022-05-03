@@ -1,0 +1,168 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-1
+  spec:
+    member: serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/compute.serviceAgent
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-2
+  spec:
+    member: serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/container.serviceAgent
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-3
+  spec:
+    member: serviceAccount:123456789-compute@developer.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/editor
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-4
+  spec:
+    member: serviceAccount:123456789@cloudservices.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/editor
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-5
+  spec:
+    member: serviceAccount:cnrm-application-demo@project-id.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/editor
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-6
+  spec:
+    member: serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/editor
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-7
+  spec:
+    member: serviceAccount:cnrm-system@project-id.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/owner
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-8
+  spec:
+    member: user:project-id
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/owner
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-9
+  spec:
+    member: serviceAccount:service-123456789@cloud-redis.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/redis.serviceAgent
+  status: {}
+- apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicyMember
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/deletion-policy: abandon
+    creationTimestamp: null
+    name: iampolicy-sample-projectlevel-10
+  spec:
+    member: serviceAccount:cnrm-system@project-id.iam.gserviceaccount.com
+    resourceRef:
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      external: projects/project-id
+      kind: Project
+    role: roles/storage.admin
+    condition:
+      description: Expires at midnight of 2030-01-01
+      expression: request.time < timestamp("2030-01-01T00:00:00Z")
+      title: expires_after_2030_01_01
+  status: {}

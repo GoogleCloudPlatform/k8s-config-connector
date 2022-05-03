@@ -1,0 +1,29 @@
+ackDeadlineSeconds: integer
+deadLetterPolicy:
+  deadLetterTopicRef:
+    external: string
+    name: string
+    namespace: string
+  maxDeliveryAttempts: integer
+enableExactlyOnceDelivery: boolean
+enableMessageOrdering: boolean
+expirationPolicy:
+  ttl: string
+filter: string
+messageRetentionDuration: string
+pushConfig:
+  attributes:
+    string: string
+  oidcToken:
+    audience: string
+    serviceAccountEmail: string
+  pushEndpoint: string
+resourceID: string
+retainAckedMessages: boolean
+retryPolicy:
+  maximumBackoff: string
+  minimumBackoff: string
+topicRef:
+  external: string
+  name: string
+  namespace: string

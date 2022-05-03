@@ -1,0 +1,13 @@
+label: Config Connector ComputeRouterNAT
+markdownDescription: Creates yaml for a ComputeRouterNAT resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRouterNAT
+  metadata:
+    name: \${1:computerouternat-name}
+  spec:
+    region: \${2:us-west1}
+    routerRef:
+      name: \${3:computerouternat-dep-forallsubnets}
+    natIpAllocateOption: \${4:AUTO_ONLY}
+    sourceSubnetworkIpRangesToNat: \${5:ALL_SUBNETWORKS_ALL_IP_RANGES}

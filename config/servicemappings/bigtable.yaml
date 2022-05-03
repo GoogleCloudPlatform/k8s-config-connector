@@ -1,0 +1,143 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: bigtable.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Bigtable
+  version: v1beta1
+  serviceHostName: "bigtableadmin.googleapis.com"
+  resources:
+  - name: google_bigtable_app_profile
+    kind: BigtableAppProfile
+    idTemplate: "projects/{{project}}/instances/{{instance}}/appProfiles/{{app_profile_id}}"
+    idTemplateCanBeUsedToMatchResourceName: true
+    resourceAvailableInAssetInventory: true
+    directives:
+      - ignore_warnings
+    metadataMapping:
+      name: app_profile_id
+    resourceID:
+      targetField: app_profile_id
+    containers:
+      - type: project
+        tfField: project
+    resourceReferences:
+      - tfField: instance
+        description: |-
+          The instance to create the app profile within.
+        key: instanceRef
+        gvk:
+          kind: BigtableInstance
+          version: v1beta1
+          group: bigtable.cnrm.cloud.google.com
+        parent: true
+  - name: google_bigtable_gc_policy
+    kind: BigtableGCPolicy
+    skipImport: true
+    idTemplate: "{{column_family}}"
+    # import not implemented
+    idTemplateCanBeUsedToMatchResourceName: false
+    resourceAvailableInAssetInventory: false
+    resourceReferences:
+      - tfField: table
+        description: |-
+          The name of the table.
+        key: tableRef
+        gvk:
+          kind: BigtableTable
+          version: v1beta1
+          group: bigtable.cnrm.cloud.google.com
+      - tfField: instance_name
+        description: |-
+          The name of the Bigtable instance.
+        key: instanceRef
+        gvk:
+          kind: BigtableInstance
+          version: v1beta1
+          group: bigtable.cnrm.cloud.google.com
+    ignoredFields:
+      # TODO(b/230626815): TF read does not return current value of field, so
+      # cannot be properly diff'd and drift corrected. Ignore for now until it
+      # supports proper reads.
+      - gc_rules
+    containers:
+      - type: project
+        tfField: project
+  - name: google_bigtable_instance
+    kind: BigtableInstance
+    iamConfig:
+      policyName: google_bigtable_instance_iam_policy
+      policyMemberName: google_bigtable_instance_iam_member
+      referenceField:
+        name: instance
+        type: name
+    idTemplate: "projects/{{project}}/instances/{{name}}"
+    idTemplateCanBeUsedToMatchResourceName: true
+    resourceAvailableInAssetInventory: true
+    metadataMapping:
+      name: name
+      labels: labels
+    resourceID:
+      targetField: name
+    mutableButUnreadableFields:
+      - instance_type
+    containers:
+      - type: project
+        tfField: project
+    resourceReferences:
+    - tfField: cluster.kms_key_name
+      description: |-
+        Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
+        cluster. The requirements for this key are: 1) The Cloud Bigtable service account associated with the project that contains
+        this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
+        2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
+        3) All clusters within an instance must use the same CMEK key access to this encryption key.
+      key: kmsKeyRef
+      gvk:
+        kind: KMSCryptoKey
+        version: v1beta1
+        group: kms.cnrm.cloud.google.com
+      targetField: self_link
+  - name: google_bigtable_table
+    kind: BigtableTable
+    idTemplate: "projects/{{project}}/instances/{{instance_name}}/tables/{{name}}"
+    idTemplateCanBeUsedToMatchResourceName: true
+    resourceAvailableInAssetInventory: true
+    metadataMapping:
+      name: name
+    resourceID:
+      targetField: name
+    containers:
+      - type: project
+        tfField: project
+    resourceReferences:
+      - tfField: instance_name
+        description: |-
+          The name of the Bigtable instance.
+        key: instanceRef
+        gvk:
+          kind: BigtableInstance
+          version: v1beta1
+          group: bigtable.cnrm.cloud.google.com
+        parent: true
+    iamConfig:
+      policyName: google_bigtable_table_iam_policy
+      policyMemberName: google_bigtable_table_iam_member
+      referenceField:
+        name: table
+        type: name

@@ -1,0 +1,105 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: dns.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: DNS
+  version: v1beta1
+  serviceHostName: "dns.googleapis.com"
+  resources:
+    - name: google_dns_managed_zone
+      kind: DNSManagedZone
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/managedZones/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      directives:
+      - force_destroy
+      resourceReferences:
+        - tfField: private_visibility_config.networks.network_url
+          description: |-
+            VPC network to bind to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: peering_config.target_network.network_url
+          description: |-
+            VPC network to forward queries to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_dns_policy
+      kind: DNSPolicy
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/policies/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: networks.network_url
+          description: |-
+            VPC network to bind to.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+      containers:
+        - type: project
+          tfField: project
+    - name: google_dns_record_set
+      kind: DNSRecordSet
+      resourceReferences:
+      - tfField: managed_zone
+        key: managedZoneRef
+        gvk:
+          kind: DNSManagedZone
+          version: v1beta1
+          group: dns.cnrm.cloud.google.com
+      - tfField: rrdatas
+        key: rrdatasRefs
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      idTemplate: "{{project}}/{{zone-name}}/{{record-name}}/{{type}}"
+      # no actual URL, is a list operation for a dns managed zone
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      containers:
+        - type: project
+          tfField: project
+

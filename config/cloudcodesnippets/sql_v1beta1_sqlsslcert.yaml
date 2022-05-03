@@ -1,0 +1,11 @@
+label: Config Connector SQLSSLCert
+markdownDescription: Creates yaml for a SQLSSLCert resource
+insertText: |
+  apiVersion: sql.cnrm.cloud.google.com/v1beta1
+  kind: SQLSSLCert
+  metadata:
+    name: \${1:sqlsslcert-name}
+  spec:
+    instanceRef:
+      name: \${2:sqlsslcert-dep}
+    commonName: \${3:client-name}
