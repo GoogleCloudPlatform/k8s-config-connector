@@ -18,8 +18,8 @@ metadata:
   name: monitoringdashboard-sample
 spec:
   projectRef:
-     # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
   displayName: "monitoringdashboard-sample"
   columnLayout:
     columns:
@@ -56,3 +56,9 @@ spec:
           yAxis:
             label: y1Axis
             scale: LINEAR
+      - title: "Widget 4"
+        logsPanel:
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+          resourceNames:
+            # Replace ${PROJECT_ID?} with the ID of the project you wish to monitor
+            - external: "projects/${PROJECT_ID?}"

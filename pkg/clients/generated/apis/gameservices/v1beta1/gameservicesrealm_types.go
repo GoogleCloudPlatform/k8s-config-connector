@@ -40,7 +40,7 @@ type GameServicesRealmSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The location for this realm. */
+	/* Immutable. The location for this realm. */
 	Location string `json:"location"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

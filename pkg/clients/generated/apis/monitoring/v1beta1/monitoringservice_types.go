@@ -46,7 +46,7 @@ type MonitoringServiceSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

@@ -36,10 +36,10 @@ import (
 )
 
 type ComputeFirewallPolicyAssociationSpec struct {
-	/*  */
+	/* Immutable. */
 	AttachmentTargetRef v1alpha1.ResourceRef `json:"attachmentTargetRef"`
 
-	/*  */
+	/* Immutable. */
 	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

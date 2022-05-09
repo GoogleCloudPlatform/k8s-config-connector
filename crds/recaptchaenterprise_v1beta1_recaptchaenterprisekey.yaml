@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -104,7 +104,7 @@ spec:
                     type: array
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -139,18 +139,18 @@ spec:
                   resource.
                 type: string
               testingOptions:
-                description: Options for user acceptance testing.
+                description: Immutable. Options for user acceptance testing.
                 properties:
                   testingChallenge:
-                    description: 'For challenge-based keys only (CHECKBOX, INVISIBLE),
-                      all challenge requests for this site will return nocaptcha if
-                      NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE.
+                    description: 'Immutable. For challenge-based keys only (CHECKBOX,
+                      INVISIBLE), all challenge requests for this site will return
+                      nocaptcha if NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE.
                       Possible values: TESTING_CHALLENGE_UNSPECIFIED, NOCAPTCHA, UNSOLVABLE_CHALLENGE'
                     type: string
                   testingScore:
-                    description: All assessments for this Key will return this score.
-                      Must be between 0 (likely not legitimate) and 1 (likely legitimate)
-                      inclusive.
+                    description: Immutable. All assessments for this Key will return
+                      this score. Must be between 0 (likely not legitimate) and 1
+                      (likely legitimate) inclusive.
                     format: double
                     type: number
                 type: object
@@ -183,8 +183,8 @@ spec:
                       SECURITY'
                     type: string
                   integrationType:
-                    description: 'Required. Describes how this key is integrated with
-                      the website. Possible values: SCORE, CHECKBOX, INVISIBLE'
+                    description: 'Immutable. Required. Describes how this key is integrated
+                      with the website. Possible values: SCORE, CHECKBOX, INVISIBLE'
                     type: string
                 required:
                 - integrationType

@@ -96,13 +96,13 @@ type TriggerMatchingCriteria struct {
 }
 
 type TriggerPubsub struct {
-	/*  */
+	/* Immutable. */
 	// +optional
 	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type TriggerTransport struct {
-	/* The Pub/Sub topic and subscription used by Eventarc as delivery intermediary. */
+	/* Immutable. The Pub/Sub topic and subscription used by Eventarc as delivery intermediary. */
 	// +optional
 	Pubsub *TriggerPubsub `json:"pubsub,omitempty"`
 }
@@ -111,13 +111,13 @@ type EventarcTriggerSpec struct {
 	/* Required. Destination specifies where the events should be sent to. */
 	Destination TriggerDestination `json:"destination"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* Required. null The list of filters that applies to event attributes. Only events that match all the provided filters will be sent to the destination. */
 	MatchingCriteria []TriggerMatchingCriteria `json:"matchingCriteria"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -128,7 +128,7 @@ type EventarcTriggerSpec struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Optional. In order to deliver messages, Eventarc may use other GCP products as transport intermediary. This field contains a reference to that transport intermediary. This information can be used for debugging purposes. */
+	/* Immutable. Optional. In order to deliver messages, Eventarc may use other GCP products as transport intermediary. This field contains a reference to that transport intermediary. This information can be used for debugging purposes. */
 	// +optional
 	Transport *TriggerTransport `json:"transport,omitempty"`
 }

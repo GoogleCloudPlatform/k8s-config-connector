@@ -64,7 +64,7 @@ type AttestorPublicKeys struct {
 }
 
 type AttestorUserOwnedDrydockNote struct {
-	/*  */
+	/* Immutable. */
 	NoteRef v1alpha1.ResourceRef `json:"noteRef"`
 
 	/* Optional. Public keys that verify attestations signed by this attestor. This field may be updated. If this field is non-empty, one of the specified public keys must verify that an attestation was signed by this attestor for the image specified in the admission request. If this field is empty, this attestor always returns that no valid attestations exist. */
@@ -77,7 +77,7 @@ type BinaryAuthorizationAttestorSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

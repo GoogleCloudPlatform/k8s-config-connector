@@ -48,7 +48,7 @@ type ServiceBinaryAuthorization struct {
 type ServiceCloudSqlInstance struct {
 	/*  */
 	// +optional
-	Connections []v1alpha1.ResourceRef `json:"connections,omitempty"`
+	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 }
 
 type ServiceContainers struct {
@@ -158,10 +158,6 @@ type ServiceTemplate struct {
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Enables Confidential Cloud Run in Revisions created using this template. */
-	// +optional
-	Confidential *bool `json:"confidential,omitempty"`
-
 	/* Sets the maximum number of requests that each serving instance can receive. */
 	// +optional
 	ContainerConcurrency *int `json:"containerConcurrency,omitempty"`
@@ -170,7 +166,7 @@ type ServiceTemplate struct {
 	// +optional
 	Containers []ServiceContainers `json:"containers,omitempty"`
 
-	/* The sandbox environment to host this Revision. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_DEFAULT, EXECUTION_ENVIRONMENT_GEN2 */
+	/* The sandbox environment to host this Revision. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_GEN1, EXECUTION_ENVIRONMENT_GEN2 */
 	// +optional
 	ExecutionEnvironment *string `json:"executionEnvironment,omitempty"`
 
@@ -287,10 +283,10 @@ type RunServiceSpec struct {
 	// +optional
 	LaunchStage *string `json:"launchStage,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -306,12 +302,6 @@ type RunServiceSpec struct {
 }
 
 type ServiceTerminalConditionStatus struct {
-	/* A reason for the domain mapping condition. Possible values: DOMAIN_MAPPING_REASON_UNDEFINED, ROUTE_NOT_READY, PERMISSION_DENIED, CERTIFICATE_ALREADY_EXISTS, MAPPING_ALREADY_EXISTS, CERTIFICATE_PENDING, CERTIFICATE_FAILED */
-	DomainMappingReason string `json:"domainMappingReason,omitempty"`
-
-	/* A reason for the internal condition. Possible values: INTERNAL_REASON_UNDEFINED, CONFLICTING_REVISION_NAME, REVISION_MISSING, CONFIGURATION_MISSING, ASSIGNING_TRAFFIC, UPDATING_INGRESS_TRAFFIC_ALLOWED, REVISION_ORG_POLICY_VIOLATION, ENABLING_GCFV2_URI_SUPPORT */
-	InternalReason string `json:"internalReason,omitempty"`
-
 	/* A reason for the job condition. Possible values: JOB_REASON_UNDEFINED, JOB_STATUS_SERVICE_POLLING_ERROR */
 	JobReason string `json:"jobReason,omitempty"`
 
@@ -321,7 +311,7 @@ type ServiceTerminalConditionStatus struct {
 	/* Human readable message indicating details about the current status. */
 	Message string `json:"message,omitempty"`
 
-	/* A common (service-level) reason for this condition. Possible values: COMMON_REASON_UNDEFINED, UNKNOWN, ROUTE_MISSING, REVISION_FAILED, PROGRESS_DEADLINE_EXCEEDED, BUILD_STEP_FAILED, CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED, CONTAINER_IMAGE_UNAUTHORIZED, CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED, ENCRYPTION_KEY_PERMISSION_DENIED, ENCRYPTION_KEY_CHECK_FAILED, SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION, IMMEDIATE_RETRY, POSTPONED_RETRY */
+	/* A common (service-level) reason for this condition. Possible values: COMMON_REASON_UNDEFINED, UNKNOWN, REVISION_FAILED, PROGRESS_DEADLINE_EXCEEDED, CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED, CONTAINER_IMAGE_UNAUTHORIZED, CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED, ENCRYPTION_KEY_PERMISSION_DENIED, ENCRYPTION_KEY_CHECK_FAILED, SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION, IMMEDIATE_RETRY, POSTPONED_RETRY, INTERNAL */
 	Reason string `json:"reason,omitempty"`
 
 	/* A reason for the revision condition. Possible values: REVISION_REASON_UNDEFINED, PENDING, RESERVE, RETIRED, RETIRING, RECREATING, HEALTH_CHECK_CONTAINER_ERROR, CUSTOMIZED_PATH_RESPONSE_PENDING, MIN_INSTANCES_NOT_PROVISIONED, ACTIVE_REVISION_LIMIT_REACHED, NO_DEPLOYMENT */

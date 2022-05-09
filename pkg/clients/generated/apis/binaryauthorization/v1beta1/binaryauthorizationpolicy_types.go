@@ -133,7 +133,7 @@ type BinaryAuthorizationPolicySpec struct {
 	// +optional
 	KubernetesServiceAccountAdmissionRules map[string]PolicyKubernetesServiceAccountAdmissionRules `json:"kubernetesServiceAccountAdmissionRules,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 

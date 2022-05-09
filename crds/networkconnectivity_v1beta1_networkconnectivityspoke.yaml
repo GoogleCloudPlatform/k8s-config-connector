@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -75,6 +75,7 @@ spec:
                 description: An optional description of the spoke.
                 type: string
               hubRef:
+                description: Immutable.
                 oneOf:
                 - not:
                     required:
@@ -104,17 +105,19 @@ spec:
                     type: string
                 type: object
               linkedInterconnectAttachments:
-                description: A collection of VLAN attachment resources. These resources
-                  should be redundant attachments that all advertise the same prefixes
-                  to Google Cloud. Alternatively, in active/passive configurations,
-                  all attachments should be capable of advertising the same prefixes.
+                description: Immutable. A collection of VLAN attachment resources.
+                  These resources should be redundant attachments that all advertise
+                  the same prefixes to Google Cloud. Alternatively, in active/passive
+                  configurations, all attachments should be capable of advertising
+                  the same prefixes.
                 properties:
                   siteToSiteDataTransfer:
-                    description: A value that controls whether site-to-site data transfer
-                      is enabled for these resources. Note that data transfer is available
-                      only in supported locations.
+                    description: Immutable. A value that controls whether site-to-site
+                      data transfer is enabled for these resources. Note that data
+                      transfer is available only in supported locations.
                     type: boolean
                   uris:
+                    description: Immutable.
                     items:
                       oneOf:
                       - not:
@@ -148,16 +151,18 @@ spec:
                 - uris
                 type: object
               linkedRouterApplianceInstances:
-                description: The URIs of linked Router appliance resources
+                description: Immutable. The URIs of linked Router appliance resources
                 properties:
                   instances:
-                    description: The list of router appliance instances
+                    description: Immutable. The list of router appliance instances
                     items:
                       properties:
                         ipAddress:
-                          description: The IP address on the VM to use for peering.
+                          description: Immutable. The IP address on the VM to use
+                            for peering.
                           type: string
                         virtualMachineRef:
+                          description: Immutable.
                           oneOf:
                           - not:
                               required:
@@ -190,23 +195,24 @@ spec:
                       type: object
                     type: array
                   siteToSiteDataTransfer:
-                    description: A value that controls whether site-to-site data transfer
-                      is enabled for these resources. Note that data transfer is available
-                      only in supported locations.
+                    description: Immutable. A value that controls whether site-to-site
+                      data transfer is enabled for these resources. Note that data
+                      transfer is available only in supported locations.
                     type: boolean
                 required:
                 - instances
                 - siteToSiteDataTransfer
                 type: object
               linkedVpnTunnels:
-                description: The URIs of linked VPN tunnel resources
+                description: Immutable. The URIs of linked VPN tunnel resources
                 properties:
                   siteToSiteDataTransfer:
-                    description: A value that controls whether site-to-site data transfer
-                      is enabled for these resources. Note that data transfer is available
-                      only in supported locations.
+                    description: Immutable. A value that controls whether site-to-site
+                      data transfer is enabled for these resources. Note that data
+                      transfer is available only in supported locations.
                     type: boolean
                   uris:
+                    description: Immutable.
                     items:
                       oneOf:
                       - not:
@@ -240,10 +246,10 @@ spec:
                 - uris
                 type: object
               location:
-                description: The location for the resource
+                description: Immutable. The location for the resource
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

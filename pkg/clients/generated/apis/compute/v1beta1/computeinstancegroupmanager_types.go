@@ -56,7 +56,7 @@ type InstancegroupmanagerDistributionPolicy struct {
 	// +optional
 	TargetShape *string `json:"targetShape,omitempty"`
 
-	/* Zones where the regional managed instance group will create and manage its instances. */
+	/* Immutable. Zones where the regional managed instance group will create and manage its instances. */
 	// +optional
 	Zones []InstancegroupmanagerZones `json:"zones,omitempty"`
 }
@@ -82,11 +82,11 @@ type InstancegroupmanagerMaxUnavailable struct {
 }
 
 type InstancegroupmanagerNamedPorts struct {
-	/* The name for this named port. The name must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). */
+	/* Immutable. The name for this named port. The name must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* The port number, which can be a value between 1 and 65535. */
+	/* Immutable. The port number, which can be a value between 1 and 65535. */
 	// +optional
 	Port *int `json:"port,omitempty"`
 }
@@ -166,7 +166,7 @@ type InstancegroupmanagerVersions struct {
 }
 
 type InstancegroupmanagerZones struct {
-	/* The URL of the [zone](/compute/docs/regions-zones/#available). The zone must exist in the region where the managed instance group is located. */
+	/* Immutable. The URL of the [zone](/compute/docs/regions-zones/#available). The zone must exist in the region where the managed instance group is located. */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }
@@ -180,7 +180,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	// +optional
 	BaseInstanceName *string `json:"baseInstanceName,omitempty"`
 
-	/* An optional description of this resource. */
+	/* Immutable. An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -196,15 +196,15 @@ type ComputeInstanceGroupManagerSpec struct {
 	// +optional
 	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
-	/* The location of this resource. */
+	/* Immutable. The location of this resource. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Named ports configured for the Instance Groups complementary to this Instance Group Manager. */
+	/* Immutable. Named ports configured for the Instance Groups complementary to this Instance Group Manager. */
 	// +optional
 	NamedPorts []InstancegroupmanagerNamedPorts `json:"namedPorts,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

@@ -36,370 +36,370 @@ import (
 )
 
 type ClusterAccelerators struct {
-	/* The number of the accelerator cards of this type exposed to this instance. */
+	/* Immutable. The number of the accelerator cards of this type exposed to this instance. */
 	// +optional
 	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
 
-	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
+	/* Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
 
 type ClusterAutoscalingConfig struct {
-	/*  */
+	/* Immutable. */
 	// +optional
 	PolicyRef *v1alpha1.ResourceRef `json:"policyRef,omitempty"`
 }
 
 type ClusterConfig struct {
-	/* Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset. */
+	/* Immutable. Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset. */
 	// +optional
 	AutoscalingConfig *ClusterAutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
-	/* Optional. Encryption settings for the cluster. */
+	/* Immutable. Optional. Encryption settings for the cluster. */
 	// +optional
 	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* Optional. Port/endpoint configuration for this cluster */
+	/* Immutable. Optional. Port/endpoint configuration for this cluster */
 	// +optional
 	EndpointConfig *ClusterEndpointConfig `json:"endpointConfig,omitempty"`
 
-	/* Optional. The shared Compute Engine config settings for all instances in a cluster. */
+	/* Immutable. Optional. The shared Compute Engine config settings for all instances in a cluster. */
 	// +optional
 	GceClusterConfig *ClusterGceClusterConfig `json:"gceClusterConfig,omitempty"`
 
-	/* Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi */
+	/* Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi */
 	// +optional
 	InitializationActions []ClusterInitializationActions `json:"initializationActions,omitempty"`
 
-	/* Optional. Lifecycle setting for the cluster. */
+	/* Immutable. Optional. Lifecycle setting for the cluster. */
 	// +optional
 	LifecycleConfig *ClusterLifecycleConfig `json:"lifecycleConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for the master instance in a cluster. */
+	/* Immutable. Optional. The Compute Engine config settings for the master instance in a cluster. */
 	// +optional
 	MasterConfig *ClusterMasterConfig `json:"masterConfig,omitempty"`
 
-	/* Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Immutable. Optional. The Compute Engine config settings for additional worker instances in a cluster. */
 	// +optional
 	SecondaryWorkerConfig *ClusterSecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
 
-	/* Optional. Security settings for the cluster. */
+	/* Immutable. Optional. Security settings for the cluster. */
 	// +optional
 	SecurityConfig *ClusterSecurityConfig `json:"securityConfig,omitempty"`
 
-	/* Optional. The config settings for software inside the cluster. */
+	/* Immutable. Optional. The config settings for software inside the cluster. */
 	// +optional
 	SoftwareConfig *ClusterSoftwareConfig `json:"softwareConfig,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	TempBucketRef *v1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
 
-	/* Optional. The Compute Engine config settings for worker instances in a cluster. */
+	/* Immutable. Optional. The Compute Engine config settings for worker instances in a cluster. */
 	// +optional
 	WorkerConfig *ClusterWorkerConfig `json:"workerConfig,omitempty"`
 }
 
 type ClusterDiskConfig struct {
-	/* Optional. Size in GB of the boot disk (default is 500GB). */
+	/* Immutable. Optional. Size in GB of the boot disk (default is 500GB). */
 	// +optional
 	BootDiskSizeGb *int `json:"bootDiskSizeGb,omitempty"`
 
-	/* Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
+	/* Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
 	BootDiskType *string `json:"bootDiskType,omitempty"`
 
-	/* Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
+	/* Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
 	NumLocalSsds *int `json:"numLocalSsds,omitempty"`
 }
 
 type ClusterEncryptionConfig struct {
-	/*  */
+	/* Immutable. */
 	// +optional
 	GcePdKmsKeyRef *v1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
 }
 
 type ClusterEndpointConfig struct {
-	/* Optional. If true, enable http access to specific ports on the cluster from external sources. Defaults to false. */
+	/* Immutable. Optional. If true, enable http access to specific ports on the cluster from external sources. Defaults to false. */
 	// +optional
 	EnableHttpPortAccess *bool `json:"enableHttpPortAccess,omitempty"`
 }
 
 type ClusterGceClusterConfig struct {
-	/* Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This `internal_ip_only` restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses. */
+	/* Immutable. Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This `internal_ip_only` restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses. */
 	// +optional
 	InternalIPOnly *bool `json:"internalIPOnly,omitempty"`
 
-	/* The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
+	/* Immutable. The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
 	// +optional
 	Metadata map[string]string `json:"metadata,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Optional. Node Group Affinity for sole-tenant clusters. */
+	/* Immutable. Optional. Node Group Affinity for sole-tenant clusters. */
 	// +optional
 	NodeGroupAffinity *ClusterNodeGroupAffinity `json:"nodeGroupAffinity,omitempty"`
 
-	/* Optional. The type of IPv6 access for a cluster. Possible values: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED, INHERIT_FROM_SUBNETWORK, OUTBOUND, BIDIRECTIONAL */
+	/* Immutable. Optional. The type of IPv6 access for a cluster. Possible values: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED, INHERIT_FROM_SUBNETWORK, OUTBOUND, BIDIRECTIONAL */
 	// +optional
 	PrivateIPv6GoogleAccess *string `json:"privateIPv6GoogleAccess,omitempty"`
 
-	/* Optional. Reservation Affinity for consuming Zonal reservation. */
+	/* Immutable. Optional. Reservation Affinity for consuming Zonal reservation. */
 	// +optional
 	ReservationAffinity *ClusterReservationAffinity `json:"reservationAffinity,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control */
+	/* Immutable. Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control */
 	// +optional
 	ServiceAccountScopes []string `json:"serviceAccountScopes,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
+	/* Immutable. The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
+	/* Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }
 
 type ClusterInitializationActions struct {
-	/* Required. Cloud Storage URI of executable file. */
+	/* Immutable. Required. Cloud Storage URI of executable file. */
 	ExecutableFile string `json:"executableFile"`
 
-	/* Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
+	/* Immutable. Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period. */
 	// +optional
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
 
 type ClusterKerberosConfig struct {
-	/* Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
+	/* Immutable. Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
 	// +optional
 	CrossRealmTrustAdminServer *string `json:"crossRealmTrustAdminServer,omitempty"`
 
-	/* Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
+	/* Immutable. Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
 	// +optional
 	CrossRealmTrustKdc *string `json:"crossRealmTrustKdc,omitempty"`
 
-	/* Optional. The remote realm the Dataproc on-cluster KDC will trust, should the user enable cross realm trust. */
+	/* Immutable. Optional. The remote realm the Dataproc on-cluster KDC will trust, should the user enable cross realm trust. */
 	// +optional
 	CrossRealmTrustRealm *string `json:"crossRealmTrustRealm,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the shared password between the on-cluster Kerberos realm and the remote trusted realm, in a cross realm trust relationship. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the shared password between the on-cluster Kerberos realm and the remote trusted realm, in a cross realm trust relationship. */
 	// +optional
 	CrossRealmTrustSharedPassword *string `json:"crossRealmTrustSharedPassword,omitempty"`
 
-	/* Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set this field to true to enable Kerberos on a cluster. */
+	/* Immutable. Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set this field to true to enable Kerberos on a cluster. */
 	// +optional
 	EnableKerberos *bool `json:"enableKerberos,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the master key of the KDC database. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the master key of the KDC database. */
 	// +optional
 	KdcDbKey *string `json:"kdcDbKey,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided key. For the self-signed certificate, this password is generated by Dataproc. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided key. For the self-signed certificate, this password is generated by Dataproc. */
 	// +optional
 	KeyPassword *string `json:"keyPassword,omitempty"`
 
-	/* Optional. The Cloud Storage URI of the keystore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
+	/* Immutable. Optional. The Cloud Storage URI of the keystore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
 	// +optional
 	Keystore *string `json:"keystore,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided keystore. For the self-signed certificate, this password is generated by Dataproc. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided keystore. For the self-signed certificate, this password is generated by Dataproc. */
 	// +optional
 	KeystorePassword *string `json:"keystorePassword,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm. */
+	/* Immutable. Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm. */
 	// +optional
 	Realm *string `json:"realm,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the root principal password. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the root principal password. */
 	// +optional
 	RootPrincipalPassword *string `json:"rootPrincipalPassword,omitempty"`
 
-	/* Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used. */
+	/* Immutable. Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used. */
 	// +optional
 	TgtLifetimeHours *int `json:"tgtLifetimeHours,omitempty"`
 
-	/* Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
+	/* Immutable. Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate. */
 	// +optional
 	Truststore *string `json:"truststore,omitempty"`
 
-	/* Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided truststore. For the self-signed certificate, this password is generated by Dataproc. */
+	/* Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided truststore. For the self-signed certificate, this password is generated by Dataproc. */
 	// +optional
 	TruststorePassword *string `json:"truststorePassword,omitempty"`
 }
 
 type ClusterLifecycleConfig struct {
-	/* Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Immutable. Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTime *string `json:"autoDeleteTime,omitempty"`
 
-	/* Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Immutable. Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	AutoDeleteTtl *string `json:"autoDeleteTtl,omitempty"`
 
-	/* Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
+	/* Immutable. Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
 	IdleDeleteTtl *string `json:"idleDeleteTtl,omitempty"`
 }
 
 type ClusterMasterConfig struct {
-	/* Optional. The Compute Engine accelerator configuration for these instances. */
+	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
 	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Optional. Disk option config settings. */
+	/* Immutable. Optional. Disk option config settings. */
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
+	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
-	/* Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
+	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
 type ClusterNodeGroupAffinity struct {
-	/*  */
+	/* Immutable. */
 	NodeGroupRef v1alpha1.ResourceRef `json:"nodeGroupRef"`
 }
 
 type ClusterReservationAffinity struct {
-	/* Optional. Type of reservation to consume Possible values: TYPE_UNSPECIFIED, NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION */
+	/* Immutable. Optional. Type of reservation to consume Possible values: TYPE_UNSPECIFIED, NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION */
 	// +optional
 	ConsumeReservationType *string `json:"consumeReservationType,omitempty"`
 
-	/* Optional. Corresponds to the label key of reservation resource. */
+	/* Immutable. Optional. Corresponds to the label key of reservation resource. */
 	// +optional
 	Key *string `json:"key,omitempty"`
 
-	/* Optional. Corresponds to the label values of reservation resource. */
+	/* Immutable. Optional. Corresponds to the label values of reservation resource. */
 	// +optional
 	Values []string `json:"values,omitempty"`
 }
 
 type ClusterSecondaryWorkerConfig struct {
-	/* Optional. The Compute Engine accelerator configuration for these instances. */
+	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
 	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Optional. Disk option config settings. */
+	/* Immutable. Optional. Disk option config settings. */
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
+	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
-	/* Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
+	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
 type ClusterSecurityConfig struct {
-	/* Optional. Kerberos related configuration. */
+	/* Immutable. Optional. Kerberos related configuration. */
 	// +optional
 	KerberosConfig *ClusterKerberosConfig `json:"kerberosConfig,omitempty"`
 }
 
 type ClusterSoftwareConfig struct {
-	/* Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
+	/* Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
 	// +optional
 	ImageVersion *string `json:"imageVersion,omitempty"`
 
-	/* Optional. The set of components to activate on the cluster. */
+	/* Immutable. Optional. The set of components to activate on the cluster. */
 	// +optional
 	OptionalComponents []string `json:"optionalComponents,omitempty"`
 
-	/* Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
+	/* Immutable. Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
 }
 
 type ClusterWorkerConfig struct {
-	/* Optional. The Compute Engine accelerator configuration for these instances. */
+	/* Immutable. Optional. The Compute Engine accelerator configuration for these instances. */
 	// +optional
 	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Optional. Disk option config settings. */
+	/* Immutable. Optional. Disk option config settings. */
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
+	/* Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
 	// +optional
 	NumInstances *int `json:"numInstances,omitempty"`
 
-	/* Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
+	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
 type DataprocClusterSpec struct {
-	/* Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
+	/* Immutable. Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 
-	/* The location for the resource, usually a GCP region. */
+	/* Immutable. The location for the resource, usually a GCP region. */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 

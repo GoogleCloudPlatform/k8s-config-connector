@@ -56,6 +56,10 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
+	/* The status of the Backup for GKE Agent addon. It is disabled by default. Set enabled = true to enable. */
+	// +optional
+	GkeBackupAgentConfig *ClusterGkeBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
+
 	/* The status of the Horizontal Pod Autoscaling addon, which increases or decreases the number of replica pods a replication controller has based on the resource usage of the existing pods. It ensures that a Heapster pod is running in the cluster, which is also used by the Cloud Monitoring service. It is enabled by default; set disabled = true to disable. */
 	// +optional
 	HorizontalPodAutoscaling *ClusterHorizontalPodAutoscaling `json:"horizontalPodAutoscaling,omitempty"`
@@ -218,6 +222,11 @@ type ClusterGcfsConfig struct {
 }
 
 type ClusterGcpFilestoreCsiDriverConfig struct {
+	/*  */
+	Enabled bool `json:"enabled"`
+}
+
+type ClusterGkeBackupAgentConfig struct {
 	/*  */
 	Enabled bool `json:"enabled"`
 }

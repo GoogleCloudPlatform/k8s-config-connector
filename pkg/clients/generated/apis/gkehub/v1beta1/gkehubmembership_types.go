@@ -98,7 +98,7 @@ type GKEHubMembershipSpec struct {
 	// +optional
 	InfrastructureType *string `json:"infrastructureType,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

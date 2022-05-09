@@ -36,7 +36,7 @@ import (
 )
 
 type FunctionEventTrigger struct {
-	/* Required. The type of event to observe. For example:
+	/* Immutable. Required. The type of event to observe. For example:
 	`providers/cloud.storage/eventTypes/object.change` and
 	`providers/cloud.pubsub/eventTypes/topic.publish`.
 
@@ -52,31 +52,30 @@ type FunctionEventTrigger struct {
 	These parts are lower case. */
 	EventType string `json:"eventType"`
 
-	/* Specifies policy for failed executions. */
+	/* Immutable. Specifies policy for failed executions. */
 	// +optional
 	FailurePolicy *bool `json:"failurePolicy,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
 
-	/* The hostname of the service that should be observed.
+	/* Immutable. The hostname of the service that should be observed.
 
 	If no string is provided, the default service implementing the API will
 	be used. For example, `storage.googleapis.com` is the default for all
-	event types in the `google.storage` namespace.
-	*/
+	event types in the `google.storage` namespace. */
 	// +optional
 	Service *string `json:"service,omitempty"`
 }
 
 type FunctionHttpsTrigger struct {
-	/* Both HTTP and HTTPS requests with URLs that match the handler succeed without redirects. The application can examine the request to determine which protocol was used and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL */
+	/* Immutable. Both HTTP and HTTPS requests with URLs that match the handler succeed without redirects. The application can examine the request to determine which protocol was used and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL */
 	// +optional
 	SecurityLevel *string `json:"securityLevel,omitempty"`
 }
 
 type FunctionSourceRepository struct {
-	/* The URL pointing to the hosted repository where the function is defined.
+	/* Immutable. The URL pointing to the hosted repository where the function is defined.
 	There are supported Cloud Source Repository URLs in the following
 	formats:
 
@@ -101,7 +100,7 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The name of the function (as defined in source code) that will be
+	/* Immutable. The name of the function (as defined in source code) that will be
 	executed. Defaults to the resource name suffix, if not specified. For
 	backward compatibility, if function with given name is not found, then the
 	system will try to use function named "function".
@@ -114,11 +113,11 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	EnvironmentVariables map[string]string `json:"environmentVariables,omitempty"`
 
-	/* A source that fires events in response to a condition in another service. */
+	/* Immutable. A source that fires events in response to a condition in another service. */
 	// +optional
 	EventTrigger *FunctionEventTrigger `json:"eventTrigger,omitempty"`
 
-	/* An HTTPS endpoint type of source that can be triggered via URL. */
+	/* Immutable. An HTTPS endpoint type of source that can be triggered via URL. */
 	// +optional
 	HttpsTrigger *FunctionHttpsTrigger `json:"httpsTrigger,omitempty"`
 
@@ -132,10 +131,10 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	MaxInstances *int `json:"maxInstances,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The name of the Cloud Functions region of the function. */
+	/* Immutable. The name of the Cloud Functions region of the function. */
 	Region string `json:"region"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -150,15 +149,15 @@ type CloudFunctionsFunctionSpec struct {
 	*/
 	Runtime string `json:"runtime"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* The Google Cloud Storage URL, starting with gs://, pointing to the zip archive which contains the function. */
+	/* Immutable. The Google Cloud Storage URL, starting with gs://, pointing to the zip archive which contains the function. */
 	// +optional
 	SourceArchiveUrl *string `json:"sourceArchiveUrl,omitempty"`
 
-	/* Represents parameters related to source repository where a function is hosted. */
+	/* Immutable. Represents parameters related to source repository where a function is hosted. */
 	// +optional
 	SourceRepository *FunctionSourceRepository `json:"sourceRepository,omitempty"`
 

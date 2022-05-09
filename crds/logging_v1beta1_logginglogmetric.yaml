@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -184,15 +184,16 @@ spec:
                     items:
                       properties:
                         description:
-                          description: A human-readable description for the label.
+                          description: Immutable. A human-readable description for
+                            the label.
                           type: string
                         key:
-                          description: The label key.
+                          description: Immutable. The label key.
                           type: string
                         valueType:
-                          description: 'The type of data that can be assigned to the
-                            label. Possible values: STRING, BOOL, INT64, DOUBLE, DISTRIBUTION,
-                            MONEY'
+                          description: 'Immutable. The type of data that can be assigned
+                            to the label. Possible values: STRING, BOOL, INT64, DOUBLE,
+                            DISTRIBUTION, MONEY'
                           type: string
                       type: object
                     type: array
@@ -219,8 +220,8 @@ spec:
                         type: string
                     type: object
                   metricKind:
-                    description: 'Whether the metric records instantaneous values,
-                      changes to a value, etc. Some combinations of `metric_kind`
+                    description: 'Immutable. Whether the metric records instantaneous
+                      values, changes to a value, etc. Some combinations of `metric_kind`
                       and `value_type` might not be supported. Possible values: GAUGE,
                       DELTA, CUMULATIVE'
                     type: string
@@ -283,14 +284,14 @@ spec:
                       means "3 percent").'
                     type: string
                   valueType:
-                    description: 'Whether the measurement is an integer, a floating-point
-                      number, etc. Some combinations of `metric_kind` and `value_type`
-                      might not be supported. Possible values: STRING, BOOL, INT64,
-                      DOUBLE, DISTRIBUTION, MONEY'
+                    description: 'Immutable. Whether the measurement is an integer,
+                      a floating-point number, etc. Some combinations of `metric_kind`
+                      and `value_type` might not be supported. Possible values: STRING,
+                      BOOL, INT64, DOUBLE, DISTRIBUTION, MONEY'
                     type: string
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

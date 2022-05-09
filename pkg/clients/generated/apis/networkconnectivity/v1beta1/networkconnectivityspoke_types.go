@@ -36,36 +36,36 @@ import (
 )
 
 type SpokeInstances struct {
-	/* The IP address on the VM to use for peering. */
+	/* Immutable. The IP address on the VM to use for peering. */
 	// +optional
 	IpAddress *string `json:"ipAddress,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	VirtualMachineRef *v1alpha1.ResourceRef `json:"virtualMachineRef,omitempty"`
 }
 
 type SpokeLinkedInterconnectAttachments struct {
-	/* A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
+	/* Immutable. A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
-	/*  */
+	/* Immutable. */
 	Uris []v1alpha1.ResourceRef `json:"uris"`
 }
 
 type SpokeLinkedRouterApplianceInstances struct {
-	/* The list of router appliance instances */
+	/* Immutable. The list of router appliance instances */
 	Instances []SpokeInstances `json:"instances"`
 
-	/* A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
+	/* Immutable. A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 }
 
 type SpokeLinkedVpnTunnels struct {
-	/* A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
+	/* Immutable. A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
-	/*  */
+	/* Immutable. */
 	Uris []v1alpha1.ResourceRef `json:"uris"`
 }
 
@@ -74,25 +74,25 @@ type NetworkConnectivitySpokeSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	HubRef v1alpha1.ResourceRef `json:"hubRef"`
 
-	/* A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes. */
+	/* Immutable. A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes. */
 	// +optional
 	LinkedInterconnectAttachments *SpokeLinkedInterconnectAttachments `json:"linkedInterconnectAttachments,omitempty"`
 
-	/* The URIs of linked Router appliance resources */
+	/* Immutable. The URIs of linked Router appliance resources */
 	// +optional
 	LinkedRouterApplianceInstances *SpokeLinkedRouterApplianceInstances `json:"linkedRouterApplianceInstances,omitempty"`
 
-	/* The URIs of linked VPN tunnel resources */
+	/* Immutable. The URIs of linked VPN tunnel resources */
 	// +optional
 	LinkedVpnTunnels *SpokeLinkedVpnTunnels `json:"linkedVpnTunnels,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

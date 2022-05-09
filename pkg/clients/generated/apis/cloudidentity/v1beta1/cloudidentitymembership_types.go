@@ -58,10 +58,10 @@ type MembershipMemberRestrictionEvaluation struct {
 }
 
 type MembershipPreferredMemberKey struct {
-	/* The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
 	Id string `json:"id"`
 
-	/* The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
 	// +optional
 	Namespace *string `json:"namespace,omitempty"`
 }
@@ -86,14 +86,14 @@ type MembershipRoles struct {
 }
 
 type CloudIdentityMembershipSpec struct {
-	/*  */
+	/* Immutable. */
 	GroupRef v1alpha1.ResourceRef `json:"groupRef"`
 
 	/* Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. */
 	// +optional
 	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
 
-	/* Required. Immutable. The `EntityKey` of the member. */
+	/* Immutable. Required. Immutable. The `EntityKey` of the member. */
 	PreferredMemberKey MembershipPreferredMemberKey `json:"preferredMemberKey"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */

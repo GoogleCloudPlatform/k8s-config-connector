@@ -181,7 +181,7 @@ type RedisInstanceSpec struct {
 	- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
 	instance cannot scale up or down the number of replicas.
 	- READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance
-	can scale up and down the number of replicas. Default value: "READ_REPLICAS_DISABLED" Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"]. */
+	can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"]. */
 	// +optional
 	ReadReplicasMode *string `json:"readReplicasMode,omitempty"`
 

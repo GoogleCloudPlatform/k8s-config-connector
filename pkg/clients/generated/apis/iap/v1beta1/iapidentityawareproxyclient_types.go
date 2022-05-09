@@ -36,10 +36,10 @@ import (
 )
 
 type IAPIdentityAwareProxyClientSpec struct {
-	/*  */
+	/* Immutable. */
 	BrandRef v1alpha1.ResourceRef `json:"brandRef"`
 
-	/* Human-friendly name given to the OAuth client. */
+	/* Immutable. Human-friendly name given to the OAuth client. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 

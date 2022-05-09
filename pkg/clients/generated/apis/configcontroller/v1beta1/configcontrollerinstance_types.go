@@ -36,54 +36,54 @@ import (
 )
 
 type InstanceManagementConfig struct {
-	/* Configuration of the standard (GKE) cluster management */
+	/* Immutable. Configuration of the standard (GKE) cluster management */
 	StandardManagementConfig InstanceStandardManagementConfig `json:"standardManagementConfig"`
 }
 
 type InstanceStandardManagementConfig struct {
-	/* The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
 	// +optional
 	ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
 
-	/* The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
+	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
 	// +optional
 	ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
 
-	/* Master Authorized Network. Allows access to the k8s master from this block. */
+	/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
 	// +optional
 	ManBlock *string `json:"manBlock,omitempty"`
 
-	/* The /28 network that the masters will use. */
+	/* Immutable. The /28 network that the masters will use. */
 	MasterIPv4CidrBlock string `json:"masterIPv4CidrBlock"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+	/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
 	// +optional
 	ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
 
-	/* The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
+	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
 	// +optional
 	ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
 }
 
 type ConfigControllerInstanceSpec struct {
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* Configuration of the cluster management */
+	/* Immutable. Configuration of the cluster management */
 	ManagementConfig InstanceManagementConfig `json:"managementConfig"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Only allow access to the master's private endpoint IP. */
+	/* Immutable. Only allow access to the master's private endpoint IP. */
 	// +optional
 	UsePrivateEndpoint *bool `json:"usePrivateEndpoint,omitempty"`
 }

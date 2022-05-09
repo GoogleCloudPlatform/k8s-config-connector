@@ -62,7 +62,7 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	AddonsConfig *OrganizationAddonsConfig `json:"addonsConfig,omitempty"`
 
-	/* Required. Primary GCP region for analytics data storage. For valid values, see (https://cloud.google.com/apigee/docs/api-platform/get-started/create-org). */
+	/* Immutable. Required. Primary GCP region for analytics data storage. For valid values, see (https://cloud.google.com/apigee/docs/api-platform/get-started/create-org). */
 	AnalyticsRegion string `json:"analyticsRegion"`
 
 	/*  */
@@ -77,7 +77,7 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Properties defined in the Apigee organization profile. */
@@ -92,7 +92,7 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	RuntimeDatabaseEncryptionKeyRef *v1alpha1.ResourceRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
 
-	/* Required. Runtime type of the Apigee organization based on the Apigee subscription purchased. Possible values: RUNTIME_TYPE_UNSPECIFIED, CLOUD, HYBRID */
+	/* Immutable. Required. Runtime type of the Apigee organization based on the Apigee subscription purchased. Possible values: RUNTIME_TYPE_UNSPECIFIED, CLOUD, HYBRID */
 	RuntimeType string `json:"runtimeType"`
 }
 

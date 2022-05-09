@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -144,7 +144,7 @@ spec:
                     type: array
                 type: object
               location:
-                description: The location for the resource
+                description: Immutable. The location for the resource
                 type: string
               mirroredResources:
                 description: PacketMirroring mirroredResourceInfos. MirroredResourceInfo
@@ -161,8 +161,8 @@ spec:
                     items:
                       properties:
                         canonicalUrl:
-                          description: Output only. Unique identifier for the instance;
-                            defined by the server.
+                          description: Immutable. Output only. Unique identifier for
+                            the instance; defined by the server.
                           type: string
                         urlRef:
                           oneOf:
@@ -197,16 +197,18 @@ spec:
                       type: object
                     type: array
                   subnetworks:
-                    description: A set of subnetworks for which traffic from/to all
-                      VM instances will be mirrored. They must live in the same region
-                      as this packetMirroring. You may specify a maximum of 5 subnetworks.
+                    description: Immutable. A set of subnetworks for which traffic
+                      from/to all VM instances will be mirrored. They must live in
+                      the same region as this packetMirroring. You may specify a maximum
+                      of 5 subnetworks.
                     items:
                       properties:
                         canonicalUrl:
-                          description: Output only. Unique identifier for the subnetwork;
-                            defined by the server.
+                          description: Immutable. Output only. Unique identifier for
+                            the subnetwork; defined by the server.
                           type: string
                         urlRef:
+                          description: Immutable.
                           oneOf:
                           - not:
                               required:
@@ -246,12 +248,13 @@ spec:
                     type: array
                 type: object
               network:
-                description: Specifies the mirrored VPC network. Only packets in this
-                  network will be mirrored. All mirrored VMs should have a NIC in
-                  the given network. All mirrored subnetworks should belong to the
-                  given network.
+                description: Immutable. Specifies the mirrored VPC network. Only packets
+                  in this network will be mirrored. All mirrored VMs should have a
+                  NIC in the given network. All mirrored subnetworks should belong
+                  to the given network.
                 properties:
                   urlRef:
+                    description: Immutable.
                     oneOf:
                     - not:
                         required:
@@ -292,7 +295,7 @@ spec:
                 format: int64
                 type: integer
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

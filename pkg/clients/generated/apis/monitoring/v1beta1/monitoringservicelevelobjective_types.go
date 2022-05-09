@@ -257,7 +257,7 @@ type MonitoringServiceLevelObjectiveSpec struct {
 	/* The fraction of service that must be good in order for this objective to be met. `0 < goal <= 0.999`. */
 	Goal float64 `json:"goal"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -272,7 +272,7 @@ type MonitoringServiceLevelObjectiveSpec struct {
 	// +optional
 	ServiceLevelIndicator *ServicelevelobjectiveServiceLevelIndicator `json:"serviceLevelIndicator,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 }
 

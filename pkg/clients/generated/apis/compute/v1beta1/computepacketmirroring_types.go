@@ -55,7 +55,7 @@ type PacketmirroringFilter struct {
 }
 
 type PacketmirroringInstances struct {
-	/* Output only. Unique identifier for the instance; defined by the server. */
+	/* Immutable. Output only. Unique identifier for the instance; defined by the server. */
 	// +optional
 	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 
@@ -69,7 +69,7 @@ type PacketmirroringMirroredResources struct {
 	// +optional
 	Instances []PacketmirroringInstances `json:"instances,omitempty"`
 
-	/* A set of subnetworks for which traffic from/to all VM instances will be mirrored. They must live in the same region as this packetMirroring. You may specify a maximum of 5 subnetworks. */
+	/* Immutable. A set of subnetworks for which traffic from/to all VM instances will be mirrored. They must live in the same region as this packetMirroring. You may specify a maximum of 5 subnetworks. */
 	// +optional
 	Subnetworks []PacketmirroringSubnetworks `json:"subnetworks,omitempty"`
 
@@ -79,16 +79,16 @@ type PacketmirroringMirroredResources struct {
 }
 
 type PacketmirroringNetwork struct {
-	/*  */
+	/* Immutable. */
 	UrlRef v1alpha1.ResourceRef `json:"urlRef"`
 }
 
 type PacketmirroringSubnetworks struct {
-	/* Output only. Unique identifier for the subnetwork; defined by the server. */
+	/* Immutable. Output only. Unique identifier for the subnetwork; defined by the server. */
 	// +optional
 	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	UrlRef *v1alpha1.ResourceRef `json:"urlRef,omitempty"`
 }
@@ -109,20 +109,20 @@ type ComputePacketMirroringSpec struct {
 	// +optional
 	Filter *PacketmirroringFilter `json:"filter,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* PacketMirroring mirroredResourceInfos. MirroredResourceInfo specifies a set of mirrored VM instances, subnetworks and/or tags for which traffic from/to all VM instances will be mirrored. */
 	MirroredResources PacketmirroringMirroredResources `json:"mirroredResources"`
 
-	/* Specifies the mirrored VPC network. Only packets in this network will be mirrored. All mirrored VMs should have a NIC in the given network. All mirrored subnetworks should belong to the given network. */
+	/* Immutable. Specifies the mirrored VPC network. Only packets in this network will be mirrored. All mirrored VMs should have a NIC in the given network. All mirrored subnetworks should belong to the given network. */
 	Network PacketmirroringNetwork `json:"network"`
 
 	/* The priority of applying this configuration. Priority is used to break ties in cases where there is more than one matching rule. In the case of two rules that apply for a given Instance, the one with the lowest-numbered priority value wins. Default value is 1000. Valid range is 0 through 65535. */
 	// +optional
 	Priority *int `json:"priority,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

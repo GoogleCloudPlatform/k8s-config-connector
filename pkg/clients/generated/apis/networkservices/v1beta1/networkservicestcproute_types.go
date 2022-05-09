@@ -76,22 +76,18 @@ type NetworkServicesTCPRouteSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
-	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
-
 	/* Optional. Set of label tags associated with the TcpRoute resource. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/*  */
 	// +optional
 	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

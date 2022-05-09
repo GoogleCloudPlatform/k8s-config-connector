@@ -94,7 +94,7 @@ type IdentityPlatformTenantOAuthIDPConfigSpec struct {
 	// +optional
 	ResponseType *TenantoauthidpconfigResponseType `json:"responseType,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	TenantRef v1alpha1.ResourceRef `json:"tenantRef"`
 }
 

@@ -50,7 +50,7 @@ type MonitoringGroupSpec struct {
 	// +optional
 	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 

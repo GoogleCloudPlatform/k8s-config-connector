@@ -54,19 +54,19 @@ type InstanceFileShares struct {
 }
 
 type InstanceNetworks struct {
-	/* Output only. IPv4 addresses in the format `{octet1}.{octet2}.{octet3}.{octet4}` or IPv6 addresses in the format `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`. */
+	/* Immutable. Output only. IPv4 addresses in the format `{octet1}.{octet2}.{octet3}.{octet4}` or IPv6 addresses in the format `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`. */
 	// +optional
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 
-	/* Internet protocol versions for which the instance has IP addresses assigned. For this version, only MODE_IPV4 is supported. */
+	/* Immutable. Internet protocol versions for which the instance has IP addresses assigned. For this version, only MODE_IPV4 is supported. */
 	// +optional
 	Modes []string `json:"modes,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/) that identifies the range of IP addresses reserved for this instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify can't overlap with either existing subnets or assigned IP address ranges for other Cloud Filestore instances in the selected VPC network. */
+	/* Immutable. A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/) that identifies the range of IP addresses reserved for this instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify can't overlap with either existing subnets or assigned IP address ranges for other Cloud Filestore instances in the selected VPC network. */
 	// +optional
 	ReservedIPRange *string `json:"reservedIPRange,omitempty"`
 }
@@ -102,21 +102,21 @@ type FilestoreInstanceSpec struct {
 	// +optional
 	FileShares []InstanceFileShares `json:"fileShares,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* VPC networks to which the instance is connected. For this version, only a single network is supported. */
+	/* Immutable. VPC networks to which the instance is connected. For this version, only a single network is supported. */
 	// +optional
 	Networks []InstanceNetworks `json:"networks,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The service tier of the instance. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD */
+	/* Immutable. The service tier of the instance. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD, ENTERPRISE */
 	// +optional
 	Tier *string `json:"tier,omitempty"`
 }

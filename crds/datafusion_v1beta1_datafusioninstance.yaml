@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -101,10 +101,10 @@ spec:
                     type: string
                 type: object
               description:
-                description: A description of this instance.
+                description: Immutable. A description of this instance.
                 type: string
               displayName:
-                description: Display name for an instance.
+                description: Immutable. Display name for an instance.
                 type: string
               enableStackdriverLogging:
                 description: Option to enable Stackdriver Logging.
@@ -113,18 +113,19 @@ spec:
                 description: Option to enable Stackdriver Monitoring.
                 type: boolean
               location:
-                description: The location for the resource
+                description: Immutable. The location for the resource
                 type: string
               networkConfig:
-                description: Network configuration options. These are required when
-                  a private Data Fusion instance is to be created.
+                description: Immutable. Network configuration options. These are required
+                  when a private Data Fusion instance is to be created.
                 properties:
                   ipAllocation:
-                    description: The IP range in CIDR notation to use for the managed
-                      Data Fusion instance nodes. This range must not overlap with
-                      any other ranges used in the customer network.
+                    description: Immutable. The IP range in CIDR notation to use for
+                      the managed Data Fusion instance nodes. This range must not
+                      overlap with any other ranges used in the customer network.
                     type: string
                   networkRef:
+                    description: Immutable.
                     oneOf:
                     - not:
                         required:
@@ -157,13 +158,13 @@ spec:
               options:
                 additionalProperties:
                   type: string
-                description: Map of additional options used to configure the behavior
-                  of Data Fusion instance.
+                description: Immutable. Map of additional options used to configure
+                  the behavior of Data Fusion instance.
                 type: object
               privateInstance:
-                description: Specifies whether the Data Fusion instance should be
-                  private. If set to true, all Data Fusion nodes will have private
-                  IP addresses and will not be able to access the public internet.
+                description: Immutable. Specifies whether the Data Fusion instance
+                  should be private. If set to true, all Data Fusion nodes will have
+                  private IP addresses and will not be able to access the public internet.
                 type: boolean
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
@@ -171,15 +172,15 @@ spec:
                   is used as the default.
                 type: string
               type:
-                description: 'Required. Instance type. Possible values: TYPE_UNSPECIFIED,
-                  BASIC, ENTERPRISE, DEVELOPER'
+                description: 'Immutable. Required. Instance type. Possible values:
+                  TYPE_UNSPECIFIED, BASIC, ENTERPRISE, DEVELOPER'
                 type: string
               version:
                 description: Current version of the Data Fusion.
                 type: string
               zone:
-                description: Name of the zone in which the Data Fusion instance will
-                  be created. Only DEVELOPER instances use this field.
+                description: Immutable. Name of the zone in which the Data Fusion
+                  instance will be created. Only DEVELOPER instances use this field.
                 type: string
             required:
             - location

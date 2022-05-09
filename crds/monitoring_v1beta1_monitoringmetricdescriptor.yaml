@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -72,74 +72,76 @@ spec:
           spec:
             properties:
               description:
-                description: A detailed description of the metric, which can be used
-                  in documentation.
+                description: Immutable. A detailed description of the metric, which
+                  can be used in documentation.
                 type: string
               displayName:
-                description: A concise name for the metric, which can be displayed
-                  in user interfaces. Use sentence case without an ending period,
-                  for example "Request count". This field is optional but it is recommended
-                  to be set for any metrics associated with user-visible concepts,
-                  such as Quota.
+                description: Immutable. A concise name for the metric, which can be
+                  displayed in user interfaces. Use sentence case without an ending
+                  period, for example "Request count". This field is optional but
+                  it is recommended to be set for any metrics associated with user-visible
+                  concepts, such as Quota.
                 type: string
               labels:
-                description: The set of labels that can be used to describe a specific
-                  instance of this metric type. For example, the `appengine.googleapis.com/http/server/response_latencies`
+                description: Immutable. The set of labels that can be used to describe
+                  a specific instance of this metric type. For example, the `appengine.googleapis.com/http/server/response_latencies`
                   metric type has a label for the HTTP response code, `response_code`,
                   so you can look at latencies for successful responses or just for
                   responses that failed.
                 items:
                   properties:
                     description:
-                      description: A human-readable description for the label.
+                      description: Immutable. A human-readable description for the
+                        label.
                       type: string
                     key:
-                      description: 'The key for this label. The key must meet the
-                        following criteria: * Does not exceed 100 characters. * Matches
-                        the following regular expression: `a-zA-Z*` * The first character
-                        must be an upper- or lower-case letter. * The remaining characters
-                        must be letters, digits, or underscores.'
+                      description: 'Immutable. The key for this label. The key must
+                        meet the following criteria: * Does not exceed 100 characters.
+                        * Matches the following regular expression: `a-zA-Z*` * The
+                        first character must be an upper- or lower-case letter. *
+                        The remaining characters must be letters, digits, or underscores.'
                       type: string
                     valueType:
-                      description: 'The type of data that can be assigned to the label.
-                        Possible values: STRING, BOOL, INT64'
+                      description: 'Immutable. The type of data that can be assigned
+                        to the label. Possible values: STRING, BOOL, INT64'
                       type: string
                   type: object
                 type: array
               launchStage:
-                description: 'Optional. The launch stage of the metric definition.
-                  Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED, PRELAUNCH,
-                  EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
+                description: 'Immutable. Optional. The launch stage of the metric
+                  definition. Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED,
+                  PRELAUNCH, EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
                 type: string
               metadata:
-                description: Optional. Metadata which can be used to guide usage of
-                  the metric.
+                description: Immutable. Optional. Metadata which can be used to guide
+                  usage of the metric.
                 properties:
                   ingestDelay:
-                    description: The delay of data points caused by ingestion. Data
-                      points older than this age are guaranteed to be ingested and
-                      available to be read, excluding data loss due to errors.
+                    description: Immutable. The delay of data points caused by ingestion.
+                      Data points older than this age are guaranteed to be ingested
+                      and available to be read, excluding data loss due to errors.
                     type: string
                   launchStage:
-                    description: 'Deprecated. Must use the MetricDescriptor.launch_stage
+                    description: 'Immutable. Deprecated. Must use the MetricDescriptor.launch_stage
                       instead. Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED,
                       PRELAUNCH, EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
                     type: string
                   samplePeriod:
-                    description: The sampling period of metric data points. For metrics
-                      which are written periodically, consecutive data points are
-                      stored at this time interval, excluding data loss due to errors.
-                      Metrics with a higher granularity have a smaller sampling period.
+                    description: Immutable. The sampling period of metric data points.
+                      For metrics which are written periodically, consecutive data
+                      points are stored at this time interval, excluding data loss
+                      due to errors. Metrics with a higher granularity have a smaller
+                      sampling period.
                     type: string
                 type: object
               metricKind:
-                description: 'Whether the metric records instantaneous values, changes
-                  to a value, etc. Some combinations of `metric_kind` and `value_type`
-                  might not be supported. Possible values: METRIC_KIND_UNSPECIFIED,
+                description: 'Immutable. Whether the metric records instantaneous
+                  values, changes to a value, etc. Some combinations of `metric_kind`
+                  and `value_type` might not be supported. Possible values: METRIC_KIND_UNSPECIFIED,
                   GAUGE, DELTA, CUMULATIVE'
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -169,19 +171,20 @@ spec:
                     type: string
                 type: object
               type:
-                description: 'The metric type, including its DNS name prefix. The
-                  type is not URL-encoded. All user-defined metric types have the
-                  DNS name `custom.googleapis.com` or `external.googleapis.com`. Metric
-                  types should use a natural hierarchical grouping. For example: "custom.googleapis.com/invoice/paid/amount"
-                  "external.googleapis.com/prometheus/up" "appengine.googleapis.com/http/server/response_latencies"'
+                description: 'Immutable. The metric type, including its DNS name prefix.
+                  The type is not URL-encoded. All user-defined metric types have
+                  the DNS name `custom.googleapis.com` or `external.googleapis.com`.
+                  Metric types should use a natural hierarchical grouping. For example:
+                  "custom.googleapis.com/invoice/paid/amount" "external.googleapis.com/prometheus/up"
+                  "appengine.googleapis.com/http/server/response_latencies"'
                 type: string
               unit:
-                description: 'The units in which the metric value is reported. It
-                  is only applicable if the `value_type` is `INT64`, `DOUBLE`, or
-                  `DISTRIBUTION`. The `unit` defines the representation of the stored
-                  metric values. Different systems might scale the values to be more
-                  easily displayed (so a value of `0.02kBy` _might_ be displayed as
-                  `20By`, and a value of `3523kBy` _might_ be displayed as `3.5MBy`).
+                description: 'Immutable. The units in which the metric value is reported.
+                  It is only applicable if the `value_type` is `INT64`, `DOUBLE`,
+                  or `DISTRIBUTION`. The `unit` defines the representation of the
+                  stored metric values. Different systems might scale the values to
+                  be more easily displayed (so a value of `0.02kBy` _might_ be displayed
+                  as `20By`, and a value of `3523kBy` _might_ be displayed as `3.5MBy`).
                   However, if the `unit` is `kBy`, then the value of the metric is
                   always in thousands of bytes, no matter how it might be displayed.
                   If you want a custom metric to record the exact number of CPU-seconds
@@ -231,9 +234,10 @@ spec:
                   value `0.03` means "3 percent").'
                 type: string
               valueType:
-                description: 'Whether the measurement is an integer, a floating-point
-                  number, etc. Some combinations of `metric_kind` and `value_type`
-                  might not be supported. Possible values: STRING, BOOL, INT64'
+                description: 'Immutable. Whether the measurement is an integer, a
+                  floating-point number, etc. Some combinations of `metric_kind` and
+                  `value_type` might not be supported. Possible values: STRING, BOOL,
+                  INT64'
                 type: string
             required:
             - metricKind

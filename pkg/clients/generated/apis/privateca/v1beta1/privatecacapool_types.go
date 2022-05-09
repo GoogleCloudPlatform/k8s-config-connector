@@ -282,10 +282,10 @@ type PrivateCACAPoolSpec struct {
 	// +optional
 	IssuancePolicy *CapoolIssuancePolicy `json:"issuancePolicy,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. The PublishingOptions to follow when issuing Certificates from any CertificateAuthority in this CaPool. */
@@ -296,7 +296,7 @@ type PrivateCACAPoolSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Immutable. The Tier of this CaPool. Possible values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS */
+	/* Immutable. Required. Immutable. The Tier of this CaPool. Possible values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS */
 	Tier string `json:"tier"`
 }
 

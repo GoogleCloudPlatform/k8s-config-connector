@@ -76,13 +76,13 @@ type ComputeFirewallPolicyRuleSpec struct {
 	// +optional
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	Match FirewallpolicyruleMatch `json:"match"`
 
-	/* An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority. */
+	/* Immutable. An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority. */
 	Priority int `json:"priority"`
 
 	/*  */

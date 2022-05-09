@@ -60,24 +60,24 @@ type ComputeServiceAttachmentSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* If true, enable the proxy protocol which is for supplying client TCP/IP address data in TCP connections that traverse proxies on their way to destination servers. */
+	/* Immutable. If true, enable the proxy protocol which is for supplying client TCP/IP address data in TCP connections that traverse proxies on their way to destination servers. */
 	// +optional
 	EnableProxyProtocol *bool `json:"enableProxyProtocol,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/*  */
 	NatSubnets []v1alpha1.ResourceRef `json:"natSubnets"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	TargetServiceRef v1alpha1.ResourceRef `json:"targetServiceRef"`
 }
 

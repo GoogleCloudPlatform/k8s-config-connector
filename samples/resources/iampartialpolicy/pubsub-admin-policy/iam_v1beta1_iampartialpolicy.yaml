@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Replace ${PROJECT_ID?} below with your desired project ID.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
@@ -23,5 +24,4 @@ spec:
   bindings:
     - role: roles/editor
       members:
-        # replace ${PROJECT_ID?} with your project name
         - member: serviceAccount:partialpolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com

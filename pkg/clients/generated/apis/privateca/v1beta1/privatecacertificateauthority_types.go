@@ -36,261 +36,261 @@ import (
 )
 
 type CertificateauthorityAdditionalExtensions struct {
-	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
+	/* Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
 	// +optional
 	Critical *bool `json:"critical,omitempty"`
 
-	/* Required. The OID for this X.509 extension. */
+	/* Immutable. Required. The OID for this X.509 extension. */
 	ObjectId CertificateauthorityObjectId `json:"objectId"`
 
-	/* Required. The value of this X.509 extension. */
+	/* Immutable. Required. The value of this X.509 extension. */
 	Value string `json:"value"`
 }
 
 type CertificateauthorityBaseKeyUsage struct {
-	/* The key may be used to sign certificates. */
+	/* Immutable. The key may be used to sign certificates. */
 	// +optional
 	CertSign *bool `json:"certSign,omitempty"`
 
-	/* The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
+	/* Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
 	// +optional
 	ContentCommitment *bool `json:"contentCommitment,omitempty"`
 
-	/* The key may be used sign certificate revocation lists. */
+	/* Immutable. The key may be used sign certificate revocation lists. */
 	// +optional
 	CrlSign *bool `json:"crlSign,omitempty"`
 
-	/* The key may be used to encipher data. */
+	/* Immutable. The key may be used to encipher data. */
 	// +optional
 	DataEncipherment *bool `json:"dataEncipherment,omitempty"`
 
-	/* The key may be used to decipher only. */
+	/* Immutable. The key may be used to decipher only. */
 	// +optional
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 
-	/* The key may be used for digital signatures. */
+	/* Immutable. The key may be used for digital signatures. */
 	// +optional
 	DigitalSignature *bool `json:"digitalSignature,omitempty"`
 
-	/* The key may be used to encipher only. */
+	/* Immutable. The key may be used to encipher only. */
 	// +optional
 	EncipherOnly *bool `json:"encipherOnly,omitempty"`
 
-	/* The key may be used in a key agreement protocol. */
+	/* Immutable. The key may be used in a key agreement protocol. */
 	// +optional
 	KeyAgreement *bool `json:"keyAgreement,omitempty"`
 
-	/* The key may be used to encipher other keys. */
+	/* Immutable. The key may be used to encipher other keys. */
 	// +optional
 	KeyEncipherment *bool `json:"keyEncipherment,omitempty"`
 }
 
 type CertificateauthorityCaOptions struct {
-	/* Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate. */
+	/* Immutable. Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate. */
 	// +optional
 	IsCa *bool `json:"isCa,omitempty"`
 
-	/* Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
+	/* Immutable. Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
 	// +optional
 	MaxIssuerPathLength *int `json:"maxIssuerPathLength,omitempty"`
 }
 
 type CertificateauthorityConfig struct {
-	/* Required. Specifies some of the values in a certificate that are related to the subject. */
+	/* Immutable. Required. Specifies some of the values in a certificate that are related to the subject. */
 	SubjectConfig CertificateauthoritySubjectConfig `json:"subjectConfig"`
 
-	/* Required. Describes how some of the technical X.509 fields in a certificate should be populated. */
+	/* Immutable. Required. Describes how some of the technical X.509 fields in a certificate should be populated. */
 	X509Config CertificateauthorityX509Config `json:"x509Config"`
 }
 
 type CertificateauthorityCustomSans struct {
-	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
+	/* Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
 	// +optional
 	Critical *bool `json:"critical,omitempty"`
 
-	/* Required. The OID for this X.509 extension. */
+	/* Immutable. Required. The OID for this X.509 extension. */
 	ObjectId CertificateauthorityObjectId `json:"objectId"`
 
-	/* Required. The value of this X.509 extension. */
+	/* Immutable. Required. The value of this X.509 extension. */
 	Value string `json:"value"`
 }
 
 type CertificateauthorityExtendedKeyUsage struct {
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ClientAuth *bool `json:"clientAuth,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
 	// +optional
 	CodeSigning *bool `json:"codeSigning,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
 	// +optional
 	EmailProtection *bool `json:"emailProtection,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
 	// +optional
 	OcspSigning *bool `json:"ocspSigning,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ServerAuth *bool `json:"serverAuth,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
+	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
 	// +optional
 	TimeStamping *bool `json:"timeStamping,omitempty"`
 }
 
 type CertificateauthorityKeySpec struct {
-	/* The algorithm to use for creating a managed Cloud KMS key for a for a simplified experience. All managed keys will be have their ProtectionLevel as `HSM`. Possible values: RSA_PSS_2048_SHA256, RSA_PSS_3072_SHA256, RSA_PSS_4096_SHA256, RSA_PKCS1_2048_SHA256, RSA_PKCS1_3072_SHA256, RSA_PKCS1_4096_SHA256, EC_P256_SHA256, EC_P384_SHA384 */
+	/* Immutable. The algorithm to use for creating a managed Cloud KMS key for a for a simplified experience. All managed keys will be have their ProtectionLevel as `HSM`. Possible values: RSA_PSS_2048_SHA256, RSA_PSS_3072_SHA256, RSA_PSS_4096_SHA256, RSA_PKCS1_2048_SHA256, RSA_PKCS1_3072_SHA256, RSA_PKCS1_4096_SHA256, EC_P256_SHA256, EC_P384_SHA384 */
 	// +optional
 	Algorithm *string `json:"algorithm,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	CloudKmsKeyVersionRef *v1alpha1.ResourceRef `json:"cloudKmsKeyVersionRef,omitempty"`
 }
 
 type CertificateauthorityKeyUsage struct {
-	/* Describes high-level ways in which a key may be used. */
+	/* Immutable. Describes high-level ways in which a key may be used. */
 	// +optional
 	BaseKeyUsage *CertificateauthorityBaseKeyUsage `json:"baseKeyUsage,omitempty"`
 
-	/* Detailed scenarios in which a key may be used. */
+	/* Immutable. Detailed scenarios in which a key may be used. */
 	// +optional
 	ExtendedKeyUsage *CertificateauthorityExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 
-	/* Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
+	/* Immutable. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
 	// +optional
 	UnknownExtendedKeyUsages []CertificateauthorityUnknownExtendedKeyUsages `json:"unknownExtendedKeyUsages,omitempty"`
 }
 
 type CertificateauthorityObjectId struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
 	ObjectIdPath []int `json:"objectIdPath"`
 }
 
 type CertificateauthorityPolicyIds struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
 	ObjectIdPath []int `json:"objectIdPath"`
 }
 
 type CertificateauthoritySubject struct {
-	/* The "common name" of the subject. */
+	/* Immutable. The "common name" of the subject. */
 	// +optional
 	CommonName *string `json:"commonName,omitempty"`
 
-	/* The country code of the subject. */
+	/* Immutable. The country code of the subject. */
 	// +optional
 	CountryCode *string `json:"countryCode,omitempty"`
 
-	/* The locality or city of the subject. */
+	/* Immutable. The locality or city of the subject. */
 	// +optional
 	Locality *string `json:"locality,omitempty"`
 
-	/* The organization of the subject. */
+	/* Immutable. The organization of the subject. */
 	// +optional
 	Organization *string `json:"organization,omitempty"`
 
-	/* The organizational_unit of the subject. */
+	/* Immutable. The organizational_unit of the subject. */
 	// +optional
 	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 
-	/* The postal code of the subject. */
+	/* Immutable. The postal code of the subject. */
 	// +optional
 	PostalCode *string `json:"postalCode,omitempty"`
 
-	/* The province, territory, or regional state of the subject. */
+	/* Immutable. The province, territory, or regional state of the subject. */
 	// +optional
 	Province *string `json:"province,omitempty"`
 
-	/* The street address of the subject. */
+	/* Immutable. The street address of the subject. */
 	// +optional
 	StreetAddress *string `json:"streetAddress,omitempty"`
 }
 
 type CertificateauthoritySubjectAltName struct {
-	/* Contains additional subject alternative name values. */
+	/* Immutable. Contains additional subject alternative name values. */
 	// +optional
 	CustomSans []CertificateauthorityCustomSans `json:"customSans,omitempty"`
 
-	/* Contains only valid, fully-qualified host names. */
+	/* Immutable. Contains only valid, fully-qualified host names. */
 	// +optional
 	DnsNames []string `json:"dnsNames,omitempty"`
 
-	/* Contains only valid RFC 2822 E-mail addresses. */
+	/* Immutable. Contains only valid RFC 2822 E-mail addresses. */
 	// +optional
 	EmailAddresses []string `json:"emailAddresses,omitempty"`
 
-	/* Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
+	/* Immutable. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
 	// +optional
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 
-	/* Contains only valid RFC 3986 URIs. */
+	/* Immutable. Contains only valid RFC 3986 URIs. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
 
 type CertificateauthoritySubjectConfig struct {
-	/* Required. Contains distinguished name fields such as the common name, location and organization. */
+	/* Immutable. Required. Contains distinguished name fields such as the common name, location and organization. */
 	Subject CertificateauthoritySubject `json:"subject"`
 
-	/* Optional. The subject alternative name fields. */
+	/* Immutable. Optional. The subject alternative name fields. */
 	// +optional
 	SubjectAltName *CertificateauthoritySubjectAltName `json:"subjectAltName,omitempty"`
 }
 
 type CertificateauthorityUnknownExtendedKeyUsages struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
 	ObjectIdPath []int `json:"objectIdPath"`
 }
 
 type CertificateauthorityX509Config struct {
-	/* Optional. Describes custom X.509 extensions. */
+	/* Immutable. Optional. Describes custom X.509 extensions. */
 	// +optional
 	AdditionalExtensions []CertificateauthorityAdditionalExtensions `json:"additionalExtensions,omitempty"`
 
-	/* Optional. Describes options in this X509Parameters that are relevant in a CA certificate. */
+	/* Immutable. Optional. Describes options in this X509Parameters that are relevant in a CA certificate. */
 	// +optional
 	CaOptions *CertificateauthorityCaOptions `json:"caOptions,omitempty"`
 
-	/* Optional. Indicates the intended use for keys that correspond to a certificate. */
+	/* Immutable. Optional. Indicates the intended use for keys that correspond to a certificate. */
 	// +optional
 	KeyUsage *CertificateauthorityKeyUsage `json:"keyUsage,omitempty"`
 
-	/* Optional. Describes the X.509 certificate policy object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4. */
+	/* Immutable. Optional. Describes the X.509 certificate policy object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4. */
 	// +optional
 	PolicyIds []CertificateauthorityPolicyIds `json:"policyIds,omitempty"`
 }
 
 type PrivateCACertificateAuthoritySpec struct {
-	/*  */
+	/* Immutable. */
 	CaPoolRef v1alpha1.ResourceRef `json:"caPoolRef"`
 
-	/* Required. Immutable. The config used to create a self-signed X.509 certificate or CSR. */
+	/* Immutable. Required. Immutable. The config used to create a self-signed X.509 certificate or CSR. */
 	Config CertificateauthorityConfig `json:"config"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	GcsBucketRef *v1alpha1.ResourceRef `json:"gcsBucketRef,omitempty"`
 
-	/* Required. Immutable. Used when issuing certificates for this CertificateAuthority. If this CertificateAuthority is a self-signed CertificateAuthority, this key is also used to sign the self-signed CA certificate. Otherwise, it is used to sign a CSR. */
+	/* Immutable. Required. Immutable. Used when issuing certificates for this CertificateAuthority. If this CertificateAuthority is a self-signed CertificateAuthority, this key is also used to sign the self-signed CA certificate. Otherwise, it is used to sign a CSR. */
 	KeySpec CertificateauthorityKeySpec `json:"keySpec"`
 
-	/* Required. The desired lifetime of the CA certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. */
+	/* Immutable. Required. The desired lifetime of the CA certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. */
 	Lifetime string `json:"lifetime"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Immutable. The Type of this CertificateAuthority. Possible values: SELF_SIGNED, SUBORDINATE */
+	/* Immutable. Required. Immutable. The Type of this CertificateAuthority. Possible values: SELF_SIGNED, SUBORDINATE */
 	Type string `json:"type"`
 }
 

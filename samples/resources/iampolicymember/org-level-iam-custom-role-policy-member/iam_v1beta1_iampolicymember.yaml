@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace ${PROJECT_ID?} below with your desired project ID.
+# Replace ${PROJECT_ID?} and ${ORG_ID?} below with your desired project and
+# organization IDs respectively.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: iampolicymember-sample-orgrole
 spec:
   member: serviceAccount:iampolicymember-dep-orgrole@${PROJECT_ID?}.iam.gserviceaccount.com
-  # Replace ${ORG_ID?} with the numeric ID of your organization
   role: organizations/${ORG_ID?}/roles/iampolicymemberdeporgrole
   resourceRef:
     kind: Project

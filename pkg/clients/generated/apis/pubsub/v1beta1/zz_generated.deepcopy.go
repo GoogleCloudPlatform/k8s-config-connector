@@ -103,6 +103,11 @@ func (in *PubSubSubscriptionSpec) DeepCopyInto(out *PubSubSubscriptionSpec) {
 		*out = new(SubscriptionDeadLetterPolicy)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.EnableExactlyOnceDelivery != nil {
+		in, out := &in.EnableExactlyOnceDelivery, &out.EnableExactlyOnceDelivery
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EnableMessageOrdering != nil {
 		in, out := &in.EnableMessageOrdering, &out.EnableMessageOrdering
 		*out = new(bool)

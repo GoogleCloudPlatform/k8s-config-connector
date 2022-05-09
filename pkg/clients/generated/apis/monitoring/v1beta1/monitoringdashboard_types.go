@@ -124,6 +124,16 @@ type DashboardGridLayout struct {
 	Widgets []DashboardWidgets `json:"widgets,omitempty"`
 }
 
+type DashboardLogsPanel struct {
+	/* A filter that chooses which log entries to return. See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned. An empty filter matches all log entries. */
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
+	/*  */
+	// +optional
+	ResourceNames []v1alpha1.ResourceRef `json:"resourceNames,omitempty"`
+}
+
 type DashboardMosaicLayout struct {
 	/* The number of columns in the mosaic grid. */
 	// +optional
@@ -325,6 +335,10 @@ type DashboardWidget struct {
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
+	/*  */
+	// +optional
+	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
+
 	/* A scorecard summarizing time series data. */
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
@@ -346,6 +360,10 @@ type DashboardWidgets struct {
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
+
+	/*  */
+	// +optional
+	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
 
 	/* A scorecard summarizing time series data. */
 	// +optional
@@ -425,7 +443,7 @@ type MonitoringDashboardSpec struct {
 	// +optional
 	MosaicLayout *DashboardMosaicLayout `json:"mosaicLayout,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

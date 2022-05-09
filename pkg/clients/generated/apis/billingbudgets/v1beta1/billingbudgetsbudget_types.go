@@ -98,30 +98,30 @@ type BudgetBudgetFilter struct {
 }
 
 type BudgetCustomPeriod struct {
-	/* Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date. */
+	/* Immutable. Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date. */
 	// +optional
 	EndDate *BudgetEndDate `json:"endDate,omitempty"`
 
-	/* Required. The start date must be after January 1, 2017. */
+	/* Immutable. Required. The start date must be after January 1, 2017. */
 	StartDate BudgetStartDate `json:"startDate"`
 }
 
 type BudgetEndDate struct {
-	/* Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
+	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
 	Day *int `json:"day,omitempty"`
 
-	/* Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
+	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
 	Month *int `json:"month,omitempty"`
 
-	/* Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
+	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
 	Year *int `json:"year,omitempty"`
 }
 
 type BudgetLabels struct {
-	/* The values of the label */
+	/* Immutable. The values of the label */
 	// +optional
 	Values []string `json:"values,omitempty"`
 }
@@ -130,7 +130,7 @@ type BudgetLastPeriodAmount struct {
 }
 
 type BudgetSpecifiedAmount struct {
-	/* The three-letter currency code defined in ISO 4217. */
+	/* Immutable. The three-letter currency code defined in ISO 4217. */
 	// +optional
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 
@@ -144,15 +144,15 @@ type BudgetSpecifiedAmount struct {
 }
 
 type BudgetStartDate struct {
-	/* Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
+	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
 	Day *int `json:"day,omitempty"`
 
-	/* Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
+	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
 	Month *int `json:"month,omitempty"`
 
-	/* Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
+	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
 	Year *int `json:"year,omitempty"`
 }
@@ -174,7 +174,7 @@ type BillingBudgetsBudgetSpec struct {
 	/* Required. Budgeted amount. */
 	Amount BudgetAmount `json:"amount"`
 
-	/*  */
+	/* Immutable. */
 	BillingAccountRef v1alpha1.ResourceRef `json:"billingAccountRef"`
 
 	/* Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters. */

@@ -39,4 +39,3 @@ spec:
       destinations:
       - serviceRef:
           name: networkservicestlsroute-dep
-      originalDestination: true

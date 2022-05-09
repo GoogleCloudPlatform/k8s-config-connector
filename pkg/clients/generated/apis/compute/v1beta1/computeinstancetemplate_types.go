@@ -40,7 +40,7 @@ type InstancetemplateAccessConfig struct {
 	// +optional
 	NatIpRef *v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
 
-	/* Immutable. The networking tier used for configuring this instance template. This field can take the following values: PREMIUM or STANDARD. If this field is not specified, it is assumed to be PREMIUM. */
+	/* Immutable. The networking tier used for configuring this instance template. This field can take the following values: PREMIUM, STANDARD, FIXED_STANDARD. If this field is not specified, it is assumed to be PREMIUM. */
 	// +optional
 	NetworkTier *string `json:"networkTier,omitempty"`
 

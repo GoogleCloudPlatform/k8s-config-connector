@@ -35,6 +35,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type TriggerApprovalConfig struct {
+	/* Whether or not approval is needed. If this is set on a build, it will become pending when run,
+	and will need to be explicitly approved to start. */
+	// +optional
+	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+}
+
 type TriggerArtifacts struct {
 	/* A list of images to be pushed upon the successful completion of all build steps.
 
@@ -129,7 +136,8 @@ type TriggerGitFileSource struct {
 	/* The path of the file, with the repo root as the root of the path. */
 	Path string `json:"path"`
 
-	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL). Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
 	RepoType string `json:"repoType"`
 
 	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
@@ -208,7 +216,7 @@ type TriggerOptions struct {
 	// +optional
 	LogStreamingOption *string `json:"logStreamingOption,omitempty"`
 
-	/* Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "NONE"]. */
+	/* Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE"]. */
 	// +optional
 	Logging *string `json:"logging,omitempty"`
 
@@ -378,7 +386,8 @@ type TriggerSourceToBuild struct {
 	/* The branch or tag to use. Must start with "refs/" (required). */
 	Ref string `json:"ref"`
 
-	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL). Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
 	RepoType string `json:"repoType"`
 
 	/* The URI of the repo (required). */
@@ -574,6 +583,12 @@ type TriggerWebhookConfig struct {
 }
 
 type CloudBuildTriggerSpec struct {
+	/* Configuration for manual approval to start a build invocation of this BuildTrigger.
+	Builds created by this trigger will require approval before they execute.
+	Any user with a Cloud Build Approver role for the project can approve a build. */
+	// +optional
+	ApprovalConfig *TriggerApprovalConfig `json:"approvalConfig,omitempty"`
+
 	/* Contents of the build template. Either a filename or build template must be provided. */
 	// +optional
 	Build *TriggerBuild `json:"build,omitempty"`

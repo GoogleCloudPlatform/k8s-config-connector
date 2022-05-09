@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -164,8 +164,8 @@ spec:
                       The `currency_code` is provided on output.
                     properties:
                       currencyCode:
-                        description: The three-letter currency code defined in ISO
-                          4217.
+                        description: Immutable. The three-letter currency code defined
+                          in ISO 4217.
                         type: string
                       nanos:
                         description: Number of nano (10^-9) units of the amount. The
@@ -184,6 +184,7 @@ spec:
                     type: object
                 type: object
               billingAccountRef:
+                description: Immutable.
                 oneOf:
                 - not:
                     required:
@@ -246,45 +247,50 @@ spec:
                       is static, it does not recur.
                     properties:
                       endDate:
-                        description: Optional. The end date of the time period. Budgets
-                          with elapsed end date won't be processed. If unset, specifies
-                          to track all usage incurred since the start_date.
+                        description: Immutable. Optional. The end date of the time
+                          period. Budgets with elapsed end date won't be processed.
+                          If unset, specifies to track all usage incurred since the
+                          start_date.
                         properties:
                           day:
-                            description: Day of a month. Must be from 1 to 31 and
-                              valid for the year and month, or 0 to specify a year
-                              by itself or a year and month where the day isn't significant.
+                            description: Immutable. Day of a month. Must be from 1
+                              to 31 and valid for the year and month, or 0 to specify
+                              a year by itself or a year and month where the day isn't
+                              significant.
                             format: int64
                             type: integer
                           month:
-                            description: Month of a year. Must be from 1 to 12, or
-                              0 to specify a year without a month and day.
+                            description: Immutable. Month of a year. Must be from
+                              1 to 12, or 0 to specify a year without a month and
+                              day.
                             format: int64
                             type: integer
                           year:
-                            description: Year of the date. Must be from 1 to 9999,
-                              or 0 to specify a date without a year.
+                            description: Immutable. Year of the date. Must be from
+                              1 to 9999, or 0 to specify a date without a year.
                             format: int64
                             type: integer
                         type: object
                       startDate:
-                        description: Required. The start date must be after January
-                          1, 2017.
+                        description: Immutable. Required. The start date must be after
+                          January 1, 2017.
                         properties:
                           day:
-                            description: Day of a month. Must be from 1 to 31 and
-                              valid for the year and month, or 0 to specify a year
-                              by itself or a year and month where the day isn't significant.
+                            description: Immutable. Day of a month. Must be from 1
+                              to 31 and valid for the year and month, or 0 to specify
+                              a year by itself or a year and month where the day isn't
+                              significant.
                             format: int64
                             type: integer
                           month:
-                            description: Month of a year. Must be from 1 to 12, or
-                              0 to specify a year without a month and day.
+                            description: Immutable. Month of a year. Must be from
+                              1 to 12, or 0 to specify a year without a month and
+                              day.
                             format: int64
                             type: integer
                           year:
-                            description: Year of the date. Must be from 1 to 9999,
-                              or 0 to specify a date without a year.
+                            description: Immutable. Year of the date. Must be from
+                              1 to 9999, or 0 to specify a date without a year.
                             format: int64
                             type: integer
                         type: object
@@ -295,7 +301,7 @@ spec:
                     additionalProperties:
                       properties:
                         values:
-                          description: The values of the label
+                          description: Immutable. The values of the label
                           items:
                             type: string
                           type: array

@@ -78,21 +78,21 @@ type IAMWorkloadIdentityPoolProviderSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* An OpenId Connect 1.0 identity provider. */
 	// +optional
 	Oidc *WorkloadidentitypoolproviderOidc `json:"oidc,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	WorkloadIdentityPoolRef v1alpha1.ResourceRef `json:"workloadIdentityPoolRef"`
 }
 

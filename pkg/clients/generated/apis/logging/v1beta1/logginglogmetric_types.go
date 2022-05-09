@@ -70,15 +70,15 @@ type LogmetricExponentialBuckets struct {
 }
 
 type LogmetricLabels struct {
-	/* A human-readable description for the label. */
+	/* Immutable. A human-readable description for the label. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The label key. */
+	/* Immutable. The label key. */
 	// +optional
 	Key *string `json:"key,omitempty"`
 
-	/* The type of data that can be assigned to the label. Possible values: STRING, BOOL, INT64, DOUBLE, DISTRIBUTION, MONEY */
+	/* Immutable. The type of data that can be assigned to the label. Possible values: STRING, BOOL, INT64, DOUBLE, DISTRIBUTION, MONEY */
 	// +optional
 	ValueType *string `json:"valueType,omitempty"`
 }
@@ -124,7 +124,7 @@ type LogmetricMetricDescriptor struct {
 	// +optional
 	Metadata *LogmetricMetadata `json:"metadata,omitempty"`
 
-	/* Whether the metric records instantaneous values, changes to a value, etc. Some combinations of `metric_kind` and `value_type` might not be supported. Possible values: GAUGE, DELTA, CUMULATIVE */
+	/* Immutable. Whether the metric records instantaneous values, changes to a value, etc. Some combinations of `metric_kind` and `value_type` might not be supported. Possible values: GAUGE, DELTA, CUMULATIVE */
 	// +optional
 	MetricKind *string `json:"metricKind,omitempty"`
 
@@ -132,7 +132,7 @@ type LogmetricMetricDescriptor struct {
 	// +optional
 	Unit *string `json:"unit,omitempty"`
 
-	/* Whether the measurement is an integer, a floating-point number, etc. Some combinations of `metric_kind` and `value_type` might not be supported. Possible values: STRING, BOOL, INT64, DOUBLE, DISTRIBUTION, MONEY */
+	/* Immutable. Whether the measurement is an integer, a floating-point number, etc. Some combinations of `metric_kind` and `value_type` might not be supported. Possible values: STRING, BOOL, INT64, DOUBLE, DISTRIBUTION, MONEY */
 	// +optional
 	ValueType *string `json:"valueType,omitempty"`
 }
@@ -161,7 +161,7 @@ type LoggingLogMetricSpec struct {
 	// +optional
 	MetricDescriptor *LogmetricMetricDescriptor `json:"metricDescriptor,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

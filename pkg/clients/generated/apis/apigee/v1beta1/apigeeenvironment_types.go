@@ -36,7 +36,7 @@ import (
 )
 
 type ApigeeEnvironmentSpec struct {
-	/*  */
+	/* Immutable. */
 	ApigeeOrganizationRef v1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
 
 	/* Optional. Description of the environment. */

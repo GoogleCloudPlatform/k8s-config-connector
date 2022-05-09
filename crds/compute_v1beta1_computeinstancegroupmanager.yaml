@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -124,7 +124,7 @@ spec:
                   name. The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
                 type: string
               description:
-                description: An optional description of this resource.
+                description: Immutable. An optional description of this resource.
                 type: string
               distributionPolicy:
                 description: Policy specifying the intended distribution of managed
@@ -137,12 +137,12 @@ spec:
                       values: TARGET_SHAPE_UNSPECIFIED, ANY, BALANCED, ANY_SINGLE_ZONE'
                     type: string
                   zones:
-                    description: Zones where the regional managed instance group will
-                      create and manage its instances.
+                    description: Immutable. Zones where the regional managed instance
+                      group will create and manage its instances.
                     items:
                       properties:
                         zone:
-                          description: The URL of the [zone](/compute/docs/regions-zones/#available).
+                          description: Immutable. The URL of the [zone](/compute/docs/regions-zones/#available).
                             The zone must exist in the region where the managed instance
                             group is located.
                           type: string
@@ -184,26 +184,26 @@ spec:
                     type: string
                 type: object
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
               namedPorts:
-                description: Named ports configured for the Instance Groups complementary
-                  to this Instance Group Manager.
+                description: Immutable. Named ports configured for the Instance Groups
+                  complementary to this Instance Group Manager.
                 items:
                   properties:
                     name:
-                      description: The name for this named port. The name must be
-                        1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
+                      description: Immutable. The name for this named port. The name
+                        must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
                       type: string
                     port:
-                      description: The port number, which can be a value between 1
-                        and 65535.
+                      description: Immutable. The port number, which can be a value
+                        between 1 and 65535.
                       format: int64
                       type: integer
                   type: object
                 type: array
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

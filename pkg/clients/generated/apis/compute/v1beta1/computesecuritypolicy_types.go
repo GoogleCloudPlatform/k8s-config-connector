@@ -131,6 +131,15 @@ type SecuritypolicyRateLimitThreshold struct {
 	IntervalSec int `json:"intervalSec"`
 }
 
+type SecuritypolicyRedirectOptions struct {
+	/* Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA. */
+	// +optional
+	Target *string `json:"target,omitempty"`
+
+	/* Type of the redirect action. Available options: EXTERNAL_302: Must specify the corresponding target field in config. GOOGLE_RECAPTCHA: Cannot specify target field in config. */
+	Type string `json:"type"`
+}
+
 type SecuritypolicyRule struct {
 	/* Action to take when match matches the request. */
 	Action string `json:"action"`
@@ -152,6 +161,10 @@ type SecuritypolicyRule struct {
 	/* Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions. */
 	// +optional
 	RateLimitOptions *SecuritypolicyRateLimitOptions `json:"rateLimitOptions,omitempty"`
+
+	/* Parameters defining the redirect action. Cannot be specified for any other actions. */
+	// +optional
+	RedirectOptions *SecuritypolicyRedirectOptions `json:"redirectOptions,omitempty"`
 }
 
 type ComputeSecurityPolicySpec struct {

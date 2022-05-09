@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.83.0
+    cnrm.cloud.google.com/version: 1.84.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -168,27 +168,29 @@ spec:
                   type: object
                 type: array
               location:
-                description: The location for the resource
+                description: Immutable. The location for the resource
                 type: string
               networks:
-                description: VPC networks to which the instance is connected. For
-                  this version, only a single network is supported.
+                description: Immutable. VPC networks to which the instance is connected.
+                  For this version, only a single network is supported.
                 items:
                   properties:
                     ipAddresses:
-                      description: Output only. IPv4 addresses in the format `{octet1}.{octet2}.{octet3}.{octet4}`
-                        or IPv6 addresses in the format `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`.
+                      description: Immutable. Output only. IPv4 addresses in the format
+                        `{octet1}.{octet2}.{octet3}.{octet4}` or IPv6 addresses in
+                        the format `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`.
                       items:
                         type: string
                       type: array
                     modes:
-                      description: Internet protocol versions for which the instance
-                        has IP addresses assigned. For this version, only MODE_IPV4
-                        is supported.
+                      description: Immutable. Internet protocol versions for which
+                        the instance has IP addresses assigned. For this version,
+                        only MODE_IPV4 is supported.
                       items:
                         type: string
                       type: array
                     networkRef:
+                      description: Immutable.
                       oneOf:
                       - not:
                           required:
@@ -218,8 +220,8 @@ spec:
                           type: string
                       type: object
                     reservedIPRange:
-                      description: A /29 CIDR block in one of the [internal IP address
-                        ranges](https://www.arin.net/reference/research/statistics/address_filters/)
+                      description: Immutable. A /29 CIDR block in one of the [internal
+                        IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/)
                         that identifies the range of IP addresses reserved for this
                         instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The
                         range you specify can't overlap with either existing subnets
@@ -229,7 +231,7 @@ spec:
                   type: object
                 type: array
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -264,8 +266,9 @@ spec:
                   is used as the default.
                 type: string
               tier:
-                description: 'The service tier of the instance. Possible values: TIER_UNSPECIFIED,
-                  STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD'
+                description: 'Immutable. The service tier of the instance. Possible
+                  values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD,
+                  HIGH_SCALE_SSD, ENTERPRISE'
                 type: string
             required:
             - location

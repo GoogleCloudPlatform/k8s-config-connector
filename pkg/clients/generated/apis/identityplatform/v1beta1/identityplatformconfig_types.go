@@ -48,7 +48,7 @@ type ConfigBlockingFunctions struct {
 }
 
 type ConfigChangeEmailTemplate struct {
-	/* Email body */
+	/* Immutable. Email body */
 	// +optional
 	Body *string `json:"body,omitempty"`
 
@@ -200,7 +200,7 @@ type ConfigResetPasswordTemplate struct {
 }
 
 type ConfigRevertSecondFactorAdditionTemplate struct {
-	/* Email body */
+	/* Immutable. Email body */
 	// +optional
 	Body *string `json:"body,omitempty"`
 
@@ -340,7 +340,7 @@ type ConfigValueFrom struct {
 }
 
 type ConfigVerifyEmailTemplate struct {
-	/* Email body */
+	/* Immutable. Email body */
 	// +optional
 	Body *string `json:"body,omitempty"`
 
@@ -394,7 +394,7 @@ type IdentityPlatformConfigSpec struct {
 	// +optional
 	Notification *ConfigNotification `json:"notification,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Configuration related to quotas. */

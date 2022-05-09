@@ -1777,11 +1777,6 @@ func (in *NetworkServicesTCPRouteSpec) DeepCopyInto(out *NetworkServicesTCPRoute
 		*out = new(string)
 		**out = **in
 	}
-	if in.Gateways != nil {
-		in, out := &in.Gateways, &out.Gateways
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
-	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))

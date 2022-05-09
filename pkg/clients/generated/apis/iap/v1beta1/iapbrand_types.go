@@ -36,7 +36,7 @@ import (
 )
 
 type IAPBrandSpec struct {
-	/* Application name displayed on OAuth consent screen. */
+	/* Immutable. Application name displayed on OAuth consent screen. */
 	// +optional
 	ApplicationTitle *string `json:"applicationTitle,omitempty"`
 
@@ -44,7 +44,7 @@ type IAPBrandSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Support email displayed on the OAuth consent screen. */
+	/* Immutable. Support email displayed on the OAuth consent screen. */
 	// +optional
 	SupportEmail *string `json:"supportEmail,omitempty"`
 }

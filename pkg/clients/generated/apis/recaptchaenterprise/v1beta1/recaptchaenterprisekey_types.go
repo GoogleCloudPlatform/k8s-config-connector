@@ -56,11 +56,11 @@ type KeyIosSettings struct {
 }
 
 type KeyTestingOptions struct {
-	/* For challenge-based keys only (CHECKBOX, INVISIBLE), all challenge requests for this site will return nocaptcha if NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE. Possible values: TESTING_CHALLENGE_UNSPECIFIED, NOCAPTCHA, UNSOLVABLE_CHALLENGE */
+	/* Immutable. For challenge-based keys only (CHECKBOX, INVISIBLE), all challenge requests for this site will return nocaptcha if NOCAPTCHA, or an unsolvable challenge if UNSOLVABLE_CHALLENGE. Possible values: TESTING_CHALLENGE_UNSPECIFIED, NOCAPTCHA, UNSOLVABLE_CHALLENGE */
 	// +optional
 	TestingChallenge *string `json:"testingChallenge,omitempty"`
 
-	/* All assessments for this Key will return this score. Must be between 0 (likely not legitimate) and 1 (likely legitimate) inclusive. */
+	/* Immutable. All assessments for this Key will return this score. Must be between 0 (likely not legitimate) and 1 (likely legitimate) inclusive. */
 	// +optional
 	TestingScore *float64 `json:"testingScore,omitempty"`
 }
@@ -82,7 +82,7 @@ type KeyWebSettings struct {
 	// +optional
 	ChallengeSecurityPreference *string `json:"challengeSecurityPreference,omitempty"`
 
-	/* Required. Describes how this key is integrated with the website. Possible values: SCORE, CHECKBOX, INVISIBLE */
+	/* Immutable. Required. Describes how this key is integrated with the website. Possible values: SCORE, CHECKBOX, INVISIBLE */
 	IntegrationType string `json:"integrationType"`
 }
 
@@ -98,14 +98,14 @@ type RecaptchaEnterpriseKeySpec struct {
 	// +optional
 	IosSettings *KeyIosSettings `json:"iosSettings,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Options for user acceptance testing. */
+	/* Immutable. Options for user acceptance testing. */
 	// +optional
 	TestingOptions *KeyTestingOptions `json:"testingOptions,omitempty"`
 

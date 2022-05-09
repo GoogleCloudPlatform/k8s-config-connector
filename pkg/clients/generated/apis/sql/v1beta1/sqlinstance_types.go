@@ -236,9 +236,12 @@ type InstanceSettings struct {
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
 	/* The availability type of the Cloud SQL instance, high availability
-	(REGIONAL) or single zone (ZONAL). For MySQL instances, ensure that
+	(REGIONAL) or single zone (ZONAL). For MySQL and SQL Server instances, ensure that
 	settings.backup_configuration.enabled and
-	settings.backup_configuration.binary_log_enabled are both set to true. */
+	settings.backup_configuration.binary_log_enabled are both set to true.
+	For Postgres instances, ensure that settings.backup_configuration.enabled
+	and settings.backup_configuration.point_in_time_recovery_enabled
+	are both set to true. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 

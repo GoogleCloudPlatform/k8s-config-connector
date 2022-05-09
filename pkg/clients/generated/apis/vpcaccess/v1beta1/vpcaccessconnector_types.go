@@ -36,55 +36,55 @@ import (
 )
 
 type ConnectorSubnet struct {
-	/*  */
+	/* Immutable. */
 	// +optional
 	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type VPCAccessConnectorSpec struct {
-	/* The range of internal addresses that follows RFC 4632 notation. Example: `10.132.0.0/28`. */
+	/* Immutable. The range of internal addresses that follows RFC 4632 notation. Example: `10.132.0.0/28`. */
 	// +optional
 	IpCidrRange *string `json:"ipCidrRange,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* Machine type of VM Instance underlying connector. Default is e2-micro */
+	/* Immutable. Machine type of VM Instance underlying connector. Default is e2-micro */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/* Maximum value of instances in autoscaling group underlying the connector. */
+	/* Immutable. Maximum value of instances in autoscaling group underlying the connector. */
 	// +optional
 	MaxInstances *int `json:"maxInstances,omitempty"`
 
-	/* Maximum throughput of the connector in Mbps. Default is 200, max is 1000. */
+	/* Immutable. Maximum throughput of the connector in Mbps. Default is 200, max is 1000. */
 	// +optional
 	MaxThroughput *int `json:"maxThroughput,omitempty"`
 
-	/* Minimum value of instances in autoscaling group underlying the connector. */
+	/* Immutable. Minimum value of instances in autoscaling group underlying the connector. */
 	// +optional
 	MinInstances *int `json:"minInstances,omitempty"`
 
-	/* Minimum throughput of the connector in Mbps. Default and min is 200. */
+	/* Immutable. Minimum throughput of the connector in Mbps. Default and min is 200. */
 	// +optional
 	MinThroughput *int `json:"minThroughput,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The subnet in which to house the VPC Access Connector. */
+	/* Immutable. The subnet in which to house the VPC Access Connector. */
 	// +optional
 	Subnet *ConnectorSubnet `json:"subnet,omitempty"`
 }

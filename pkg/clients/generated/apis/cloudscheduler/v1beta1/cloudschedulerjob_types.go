@@ -168,7 +168,7 @@ type CloudSchedulerJobSpec struct {
 	// +optional
 	HttpTarget *JobHttpTarget `json:"httpTarget,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* Pub/Sub target. */

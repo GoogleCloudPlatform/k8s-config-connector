@@ -35,6 +35,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RecordsetRrdatasRefs struct {
+	/* Allowed value: The `address` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. Allowed values: ComputeAddress */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type DNSRecordSetSpec struct {
 	/*  */
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
@@ -42,8 +60,13 @@ type DNSRecordSetSpec struct {
 	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
 
+	/* DEPRECATED. This field is deprecated, use `spec.rrdatasRefs` instead. */
+	// +optional
+	Rrdatas []string `json:"rrdatas,omitempty"`
+
 	/*  */
-	Rrdatas []string `json:"rrdatas"`
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
 
 	/* The time-to-live of this record set (seconds). */
 	// +optional

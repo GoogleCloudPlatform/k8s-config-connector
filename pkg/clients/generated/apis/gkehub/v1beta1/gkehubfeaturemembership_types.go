@@ -151,16 +151,16 @@ type GKEHubFeatureMembershipSpec struct {
 	/* Config Management-specific spec. */
 	Configmanagement FeaturemembershipConfigmanagement `json:"configmanagement"`
 
-	/*  */
+	/* Immutable. */
 	FeatureRef v1alpha1.ResourceRef `json:"featureRef"`
 
-	/* The location of the feature */
+	/* Immutable. The location of the feature */
 	Location string `json:"location"`
 
-	/*  */
+	/* Immutable. */
 	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 

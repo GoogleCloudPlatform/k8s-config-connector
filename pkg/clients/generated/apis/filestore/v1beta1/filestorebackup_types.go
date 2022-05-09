@@ -40,20 +40,20 @@ type FilestoreBackupSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Name of the file share in the source Cloud Filestore instance that the backup is created from. */
+	/* Immutable. Name of the file share in the source Cloud Filestore instance that the backup is created from. */
 	SourceFileShare string `json:"sourceFileShare"`
 
-	/*  */
+	/* Immutable. */
 	SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
 }
 

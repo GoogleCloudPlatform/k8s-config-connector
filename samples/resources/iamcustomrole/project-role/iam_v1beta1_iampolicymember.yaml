@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Replace ${PROJECT_ID?} below with your desired project ID.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: iampolicymember-sample-projectrole
 spec:
-  # Replace ${PROJECT_ID?} with your project ID
   member: serviceAccount:iamcustomrole-dep-project@${PROJECT_ID?}.iam.gserviceaccount.com
-  # Replace ${PROJECT_ID?} with your project ID
   role: projects/${PROJECT_ID?}/roles/iamcustomrolesampleproject
   resourceRef:
     kind: PubSubTopic

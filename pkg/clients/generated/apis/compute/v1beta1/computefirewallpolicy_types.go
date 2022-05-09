@@ -40,11 +40,11 @@ type ComputeFirewallPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The Folder that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
+	/* Immutable. The Folder that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* The Organization that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
+	/* Immutable. The Organization that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
 	// +optional
 	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
@@ -52,7 +52,7 @@ type ComputeFirewallPolicySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* User-provided name of the Organization firewall policy. The name should be unique in the organization in which the firewall policy is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. */
+	/* Immutable. User-provided name of the Organization firewall policy. The name should be unique in the organization in which the firewall policy is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. */
 	ShortName string `json:"shortName"`
 }
 

@@ -407,13 +407,13 @@ type OSConfigOSPolicyAssignmentSpec struct {
 	/* Required. Filter to select VMs. */
 	InstanceFilter OspolicyassignmentInstanceFilter `json:"instanceFilter"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* Required. List of OS policies to be applied to the VMs. */
 	OsPolicies []OspolicyassignmentOsPolicies `json:"osPolicies"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

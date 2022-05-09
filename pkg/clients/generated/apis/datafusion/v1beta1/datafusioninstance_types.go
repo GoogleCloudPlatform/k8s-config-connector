@@ -36,11 +36,11 @@ import (
 )
 
 type InstanceNetworkConfig struct {
-	/* The IP range in CIDR notation to use for the managed Data Fusion instance nodes. This range must not overlap with any other ranges used in the customer network. */
+	/* Immutable. The IP range in CIDR notation to use for the managed Data Fusion instance nodes. This range must not overlap with any other ranges used in the customer network. */
 	// +optional
 	IpAllocation *string `json:"ipAllocation,omitempty"`
 
-	/*  */
+	/* Immutable. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
@@ -50,11 +50,11 @@ type DataFusionInstanceSpec struct {
 	// +optional
 	DataprocServiceAccountRef *v1alpha1.ResourceRef `json:"dataprocServiceAccountRef,omitempty"`
 
-	/* A description of this instance. */
+	/* Immutable. A description of this instance. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Display name for an instance. */
+	/* Immutable. Display name for an instance. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -66,18 +66,18 @@ type DataFusionInstanceSpec struct {
 	// +optional
 	EnableStackdriverMonitoring *bool `json:"enableStackdriverMonitoring,omitempty"`
 
-	/* The location for the resource */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/* Network configuration options. These are required when a private Data Fusion instance is to be created. */
+	/* Immutable. Network configuration options. These are required when a private Data Fusion instance is to be created. */
 	// +optional
 	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
 
-	/* Map of additional options used to configure the behavior of Data Fusion instance. */
+	/* Immutable. Map of additional options used to configure the behavior of Data Fusion instance. */
 	// +optional
 	Options map[string]string `json:"options,omitempty"`
 
-	/* Specifies whether the Data Fusion instance should be private. If set to true, all Data Fusion nodes will have private IP addresses and will not be able to access the public internet. */
+	/* Immutable. Specifies whether the Data Fusion instance should be private. If set to true, all Data Fusion nodes will have private IP addresses and will not be able to access the public internet. */
 	// +optional
 	PrivateInstance *bool `json:"privateInstance,omitempty"`
 
@@ -85,14 +85,14 @@ type DataFusionInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Instance type. Possible values: TYPE_UNSPECIFIED, BASIC, ENTERPRISE, DEVELOPER */
+	/* Immutable. Required. Instance type. Possible values: TYPE_UNSPECIFIED, BASIC, ENTERPRISE, DEVELOPER */
 	Type string `json:"type"`
 
 	/* Current version of the Data Fusion. */
 	// +optional
 	Version *string `json:"version,omitempty"`
 
-	/* Name of the zone in which the Data Fusion instance will be created. Only DEVELOPER instances use this field. */
+	/* Immutable. Name of the zone in which the Data Fusion instance will be created. Only DEVELOPER instances use this field. */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }

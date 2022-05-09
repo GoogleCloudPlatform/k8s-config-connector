@@ -61,7 +61,7 @@ type UptimecheckconfigHttpCheck struct {
 	// +optional
 	Body *string `json:"body,omitempty"`
 
-	/* The content type to use for the check.  Possible values: TYPE_UNSPECIFIED, URL_ENCODED */
+	/* Immutable. The content type to use for the check.  Possible values: TYPE_UNSPECIFIED, URL_ENCODED */
 	// +optional
 	ContentType *string `json:"contentType,omitempty"`
 
@@ -69,7 +69,7 @@ type UptimecheckconfigHttpCheck struct {
 	// +optional
 	Headers map[string]string `json:"headers,omitempty"`
 
-	/* Boolean specifying whether to encrypt the header information. Encryption should be specified for any headers related to authentication that you do not wish to be seen when retrieving the configuration. The server will be responsible for encrypting the headers. On Get/List calls, if `mask_headers` is set to `true` then the headers will be obscured with `******.` */
+	/* Immutable. Boolean specifying whether to encrypt the header information. Encryption should be specified for any headers related to authentication that you do not wish to be seen when retrieving the configuration. The server will be responsible for encrypting the headers. On Get/List calls, if `mask_headers` is set to `true` then the headers will be obscured with `******.` */
 	// +optional
 	MaskHeaders *bool `json:"maskHeaders,omitempty"`
 
@@ -81,7 +81,7 @@ type UptimecheckconfigHttpCheck struct {
 	// +optional
 	Port *int `json:"port,omitempty"`
 
-	/* The HTTP request method to use for the check. If set to `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`. */
+	/* Immutable. The HTTP request method to use for the check. If set to `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`. */
 	// +optional
 	RequestMethod *string `json:"requestMethod,omitempty"`
 
@@ -95,10 +95,10 @@ type UptimecheckconfigHttpCheck struct {
 }
 
 type UptimecheckconfigMonitoredResource struct {
-	/*  */
+	/* Immutable. */
 	FilterLabels map[string]string `json:"filterLabels"`
 
-	/*  */
+	/* Immutable. */
 	Type string `json:"type"`
 }
 
@@ -113,11 +113,11 @@ type UptimecheckconfigPassword struct {
 }
 
 type UptimecheckconfigResourceGroup struct {
-	/*  */
+	/* Immutable. */
 	// +optional
 	GroupRef *v1alpha1.ResourceRef `json:"groupRef,omitempty"`
 
-	/* The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER */
+	/* Immutable. The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER */
 	// +optional
 	ResourceType *string `json:"resourceType,omitempty"`
 }
@@ -145,7 +145,7 @@ type MonitoringUptimeCheckConfigSpec struct {
 	// +optional
 	HttpCheck *UptimecheckconfigHttpCheck `json:"httpCheck,omitempty"`
 
-	/* The [monitored resource](https://cloud.google.com/monitoring/api/resources) associated with the configuration. The following monitored resource types are supported for Uptime checks:   `uptime_url`,   `gce_instance`,   `gae_app`,   `aws_ec2_instance`,   `aws_elb_load_balancer` */
+	/* Immutable. The [monitored resource](https://cloud.google.com/monitoring/api/resources) associated with the configuration. The following monitored resource types are supported for Uptime checks:   `uptime_url`,   `gce_instance`,   `gae_app`,   `aws_ec2_instance`,   `aws_elb_load_balancer` */
 	// +optional
 	MonitoredResource *UptimecheckconfigMonitoredResource `json:"monitoredResource,omitempty"`
 
@@ -153,10 +153,10 @@ type MonitoringUptimeCheckConfigSpec struct {
 	// +optional
 	Period *string `json:"period,omitempty"`
 
-	/* The Project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The group resource associated with the configuration. */
+	/* Immutable. The group resource associated with the configuration. */
 	// +optional
 	ResourceGroup *UptimecheckconfigResourceGroup `json:"resourceGroup,omitempty"`
 
