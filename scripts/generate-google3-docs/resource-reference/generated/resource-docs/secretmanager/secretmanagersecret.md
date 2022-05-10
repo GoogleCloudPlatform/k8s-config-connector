@@ -107,9 +107,10 @@
     nextRotationTime: string
     rotationPeriod: string
   topics:
-  - external: string
-    name: string
-    namespace: string
+  - topicRef:
+      external: string
+      name: string
+      namespace: string
   ttl: string
   ```
 
@@ -291,13 +292,23 @@ If rotationPeriod is set, 'next_rotation_time' must be set. 'next_rotation_time'
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>topics[]</code></p>
             <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>topics[].topicRef</code></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -308,7 +319,7 @@ or its versions.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>topics[].external</code></p>
+            <p><code>topics[].topicRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -318,7 +329,7 @@ or its versions.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>topics[].name</code></p>
+            <p><code>topics[].topicRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -328,7 +339,7 @@ or its versions.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>topics[].namespace</code></p>
+            <p><code>topics[].topicRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

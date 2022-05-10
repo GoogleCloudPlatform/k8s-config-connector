@@ -71,6 +71,13 @@ type SecretRotation struct {
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 }
 
+type SecretTopics struct {
+	/* A list of up to 10 Pub/Sub topics to which messages are
+	published when control plane operations are called on the secret
+	or its versions. */
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+}
+
 type SecretUserManaged struct {
 	/* Immutable. The list of Replicas for this Secret. Cannot be empty. */
 	Replicas []SecretReplicas `json:"replicas"`
@@ -94,9 +101,9 @@ type SecretManagerSecretSpec struct {
 	// +optional
 	Rotation *SecretRotation `json:"rotation,omitempty"`
 
-	/*  */
+	/* A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions. */
 	// +optional
-	Topics []v1alpha1.ResourceRef `json:"topics,omitempty"`
+	Topics []SecretTopics `json:"topics,omitempty"`
 
 	/* Immutable. The TTL for the Secret.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */

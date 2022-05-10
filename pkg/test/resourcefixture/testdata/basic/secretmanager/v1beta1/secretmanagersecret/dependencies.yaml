@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecret
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-  name: secretmanagersecret-${uniqueId}
-  labels:
-    label-one: value-one
+  name: topic-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
 spec:
-  replication:
-    userManaged:
-      replicas:
-      - location: us-central1
-  topics:
-    - topicRef:
-        name: topic-${uniqueId}
+  member: serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+  resourceRef:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubTopic
+    name: topic-${uniqueId}
