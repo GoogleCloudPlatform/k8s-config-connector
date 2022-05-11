@@ -167,6 +167,10 @@ the `spec.location` field. To manage a regional ComputeBackendService, use a reg
       namespace: string
   iap:
     oauth2ClientId: string
+    oauth2ClientIdRef:
+      external: string
+      name: string
+      namespace: string
     oauth2ClientSecret:
       value: string
       valueFrom:
@@ -1272,11 +1276,53 @@ specified, and a health check is required.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>iap.oauth2ClientId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}OAuth2 Client ID for IAP.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef` instead.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>iap.oauth2ClientIdRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+OAuth2 Client ID for IAP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>iap.oauth2ClientIdRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of an `IAPIdentityAwareProxyClient` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>iap.oauth2ClientIdRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>iap.oauth2ClientIdRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2208,6 +2254,125 @@ object. This field is used in optimistic locking.{% endverbatim %}</p>
   spec:
     routingMode: REGIONAL
     autoCreateSubnetworks: false
+  ```
+
+### Oauth2clientid Backend Service
+  ```yaml
+  # Copyright 2020 Google LLC
+  #
+  # Licensed under the Apache License, Version 2.0 (the "License");
+  # you may not use this file except in compliance with the License.
+  # You may obtain a copy of the License at
+  #
+  #     http://www.apache.org/licenses/LICENSE-2.0
+  #
+  # Unless required by applicable law or agreed to in writing, software
+  # distributed under the License is distributed on an "AS IS" BASIS,
+  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  # See the License for the specific language governing permissions and
+  # limitations under the License.
+  
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeBackendService
+  metadata:
+    name: computebackendservice-sample-oauth2clientid
+  spec:
+    description: Internal managed backend service with Maglev session affinity.
+    localityLbPolicy: MAGLEV
+    timeoutSec: 86400
+    consistentHash:
+      httpHeaderName: "Hash string"
+    healthChecks:
+    - healthCheckRef:
+        name: computebackendservice-dep-oauth2clientid
+    loadBalancingScheme: INTERNAL_MANAGED
+    location: us-east1
+    protocol: HTTP
+    connectionDrainingTimeoutSec: 10
+    sessionAffinity: HEADER_FIELD
+    circuitBreakers:
+      connectTimeout:
+        nanos: 999999999
+        seconds: 0
+      maxConnections: 1024
+      maxPendingRequests: 1024
+      maxRequests: 1024
+      maxRequestsPerConnection: 1
+      maxRetries: 3
+    logConfig:
+      enable: false
+    outlierDetection:
+      consecutiveGatewayFailure: 5
+      enforcingConsecutiveErrors: 100
+      enforcingSuccessRate: 100
+      successRateMinimumHosts: 5
+      successRateRequestVolume: 100
+      baseEjectionTime:
+        nanos: 999999999
+        seconds: 29
+      consecutiveErrors: 5
+      enforcingConsecutiveGatewayFailure: 0
+      interval:
+        nanos: 999999999
+        seconds: 9
+      maxEjectionPercent: 10
+      successRateStdevFactor: 1900
+    backend:
+    - balancingMode: RATE
+      capacityScaler: 0.9
+      description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
+      maxRate: 10000
+      group:
+        instanceGroupRef:
+          name: computebackendservice-dep-oauth2clientid
+    iap:
+      oauth2ClientIdRef:
+        external: computebackendservice-dep-oauth2clientid
+      oauth2ClientSecret:
+        value: "test-secret-value"
+  ---
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeHealthCheck
+  metadata:
+    name: computebackendservice-dep-oauth2clientid
+  spec:
+    httpHealthCheck:
+      port: 80
+    location: global
+  ---
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInstanceGroup
+  metadata:
+    name: computebackendservice-dep-oauth2clientid
+  spec:
+    zone: us-east1-c
+    networkRef:
+      name: computebackendservice-dep-oauth2clientid
+  ---
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNetwork
+  metadata:
+    name: computebackendservice-dep-oauth2clientid
+  spec:
+    routingMode: REGIONAL
+    autoCreateSubnetworks: false
+  ---
+  apiVersion: iap.cnrm.cloud.google.com/v1beta1
+  kind: IAPBrand
+  metadata:
+    name: computebackendservice-dep-oauth2clientid
+  spec:
+    applicationTitle: "test brand"
+    supportEmail: "support@example.com"
+  ---
+  apiVersion: iap.cnrm.cloud.google.com/v1beta1
+  kind: IAPIdentityAwareProxyClient
+  metadata:
+    name: computebackendservice-dep-oauth2clientid
+  spec:
+    displayName: "Test Client"
+    brandRef:
+      name: computebackendservice-dep-oauth2clientid
   ```
 
 

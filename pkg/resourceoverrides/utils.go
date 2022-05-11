@@ -495,8 +495,15 @@ func FavorAuthoritativeFieldOverLegacyField(r *k8s.Resource, legacyFieldPath, fi
 	if err != nil {
 		return err
 	}
-	if found {
-		if err := unstructured.SetNestedField(r.Spec, v, fieldPath...); err != nil {
+	if !found {
+		return nil
+	}
+	if isReferenceFieldPath(fieldPath) {
+		if err := unstructured.SetNestedField(r.Spec, v, append(fieldPath, "external")...); err != nil {
+			return err
+		}
+		// Mark "external" under the authoritative field as user managed fields because the user has set the legacy field for the same feature.
+		if err := markFieldAsManaged(r, append(fieldPath, "external")...); err != nil {
 			return err
 		}
 		// Mark the authoritative field as user managed fields because the user has set the legacy field for the same feature.
@@ -504,8 +511,23 @@ func FavorAuthoritativeFieldOverLegacyField(r *k8s.Resource, legacyFieldPath, fi
 			return err
 		}
 		unstructured.RemoveNestedField(r.Spec, legacyFieldPath...)
+		return nil
 	}
+	if err := unstructured.SetNestedField(r.Spec, v, fieldPath...); err != nil {
+		return err
+	}
+	// Mark the authoritative field as user managed fields because the user has set the legacy field for the same feature.
+	if err := markFieldAsManaged(r, fieldPath...); err != nil {
+		return err
+	}
+	unstructured.RemoveNestedField(r.Spec, legacyFieldPath...)
 	return nil
+}
+
+// isReferenceFieldPath will only identify non-array reference fields (reference array fields end with "Refs")
+func isReferenceFieldPath(fieldPath []string) bool {
+	field := fieldPath[len(fieldPath)-1]
+	return strings.HasSuffix(field, "Ref")
 }
 
 // FavorReferenceFieldOverNonReferenceFieldUnderSlice returns an error if both fields are set; otherwise, take the value

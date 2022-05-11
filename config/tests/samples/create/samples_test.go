@@ -142,6 +142,8 @@ var testDisabledList = map[string]bool{
 	// In samples, we want to show the real use case with group/user email address.
 	"iapbrand":                    true,
 	"iapidentityawareproxyclient": true,
+	// Utilizes IAPBrand as a dependency
+	"oauth2clientid-backend-service": true,
 	// SQL instance replication has complex dependencies on network connection which are unsupported
 	"mysql-sql-instance-with-replication": true,
 	// Org-level audit configs are uniquely identified by the org + service

@@ -629,10 +629,48 @@ spec:
                 type: array
               iap:
                 description: Settings for enabling Cloud Identity Aware Proxy.
+                oneOf:
+                - required:
+                  - oauth2ClientId
+                - required:
+                  - oauth2ClientIdRef
                 properties:
                   oauth2ClientId:
-                    description: OAuth2 Client ID for IAP.
+                    description: DEPRECATED. Although this field is still available,
+                      there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef`
+                      instead.
                     type: string
+                  oauth2ClientIdRef:
+                    description: |-
+                      Only `external` field is supported to configure the reference.
+
+                      OAuth2 Client ID for IAP.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `name` field of an `IAPIdentityAwareProxyClient`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   oauth2ClientSecret:
                     description: OAuth2 Client Secret for IAP.
                     oneOf:
@@ -675,8 +713,6 @@ spec:
                   oauth2ClientSecretSha256:
                     description: OAuth2 Client Secret SHA-256 for IAP.
                     type: string
-                required:
-                - oauth2ClientId
                 type: object
               loadBalancingScheme:
                 description: |-

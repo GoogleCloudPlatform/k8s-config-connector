@@ -1496,6 +1496,55 @@ func TestFavorAuthoritativeFieldOverLegacyField(t *testing.T) {
 			},
 		},
 		{
+			name: "only the nested legacy field is set and the authoritative field is a reference field",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "value",
+					"topField": map[string]interface{}{
+						"field2":      "value",
+						"legacyField": "value",
+					},
+				},
+				ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+					"f:field1": emptyObject,
+					"f:topField": map[string]interface{}{
+						".":             emptyObject,
+						"f:legacyField": emptyObject,
+					},
+				}),
+			},
+			legacyFieldPath: []string{"topField", "legacyField"},
+			fieldPath:       []string{"topField", "authoritativeFieldRef"},
+			expected: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "value",
+					"topField": map[string]interface{}{
+						"field2": "value",
+						"authoritativeFieldRef": map[string]interface{}{
+							"external": "value",
+						},
+					},
+				},
+				ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+					"f:field1": emptyObject,
+					"f:topField": map[string]interface{}{
+						".":             emptyObject,
+						"f:legacyField": emptyObject,
+						"f:authoritativeFieldRef": map[string]interface{}{
+							".":          emptyObject,
+							"f:external": emptyObject,
+						},
+					},
+				}),
+			},
+		},
+		{
 			name: "only the authoritative field is set",
 			original: &k8s.Resource{
 				TypeMeta: v1.TypeMeta{

@@ -164,9 +164,22 @@ spec:
             kind: NetworkSecurityClientTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com/v1beta1
+        - tfField: iap.oauth2_client_id
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            OAuth2 Client ID for IAP.
+          key: oauth2ClientIdRef
+          gvk:
+            kind: IAPIdentityAwareProxyClient
+            version: v1beta1
+            group: iap.cnrm.cloud.google.com
+          targetField: name
       containers:
         - type: project
           tfField: project
+      mutableButUnreadableFields:
+        - iap.oauth2_client_secret
     - name: google_compute_disk
       kind: ComputeDisk
       metadataMapping:
@@ -1262,9 +1275,22 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: iap.oauth2_client_id
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            OAuth2 Client ID for IAP.
+          key: oauth2ClientIdRef
+          gvk:
+            kind: IAPIdentityAwareProxyClient
+            version: v1beta1
+            group: iap.cnrm.cloud.google.com
+          targetField: name
       containers:
         - type: project
           tfField: project
+      mutableButUnreadableFields:
+        - iap.oauth2_client_secret
     - name: google_compute_region_disk
       kind: ComputeDisk
       metadataMapping:

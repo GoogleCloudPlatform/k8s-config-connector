@@ -414,8 +414,15 @@ type BackendserviceHttpCookie struct {
 }
 
 type BackendserviceIap struct {
-	/* OAuth2 Client ID for IAP. */
-	Oauth2ClientId string `json:"oauth2ClientId"`
+	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef` instead. */
+	// +optional
+	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
+
+	/* Only `external` field is supported to configure the reference.
+
+	OAuth2 Client ID for IAP. */
+	// +optional
+	Oauth2ClientIdRef *v1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
 
 	/* OAuth2 Client Secret for IAP. */
 	// +optional

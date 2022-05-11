@@ -83,6 +83,10 @@ healthChecks:
     namespace: string
 iap:
   oauth2ClientId: string
+  oauth2ClientIdRef:
+    external: string
+    name: string
+    namespace: string
   oauth2ClientSecret:
     value: string
     valueFrom:

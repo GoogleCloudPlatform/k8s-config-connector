@@ -162,4 +162,5 @@ func init() {
 	Handler.Register(GetLoggingLogSinkResourceOverrides())
 	Handler.Register(GetComputeInstanceResourceOverrides())
 	Handler.Register(GetDNSRecordSetOverrides())
+	Handler.Register(GetComputeBackendServiceResourceOverrides())
 }
