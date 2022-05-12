@@ -1155,8 +1155,8 @@ func (r *JobTemplateTemplateVolumesSecretItems) HashCode() string {
 }
 
 type JobTemplateTemplateVolumesCloudSqlInstance struct {
-	empty       bool     `json:"-"`
-	Connections []string `json:"connections"`
+	empty     bool     `json:"-"`
+	Instances []string `json:"instances"`
 }
 
 type jsonJobTemplateTemplateVolumesCloudSqlInstance JobTemplateTemplateVolumesCloudSqlInstance
@@ -1174,7 +1174,7 @@ func (r *JobTemplateTemplateVolumesCloudSqlInstance) UnmarshalJSON(data []byte) 
 		*r = *EmptyJobTemplateTemplateVolumesCloudSqlInstance
 	} else {
 
-		r.Connections = res.Connections
+		r.Instances = res.Instances
 
 	}
 	return nil

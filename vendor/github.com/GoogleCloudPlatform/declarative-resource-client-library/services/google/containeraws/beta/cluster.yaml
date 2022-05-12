@@ -351,7 +351,6 @@ components:
               x-dcl-go-type: ClusterControlPlaneSshConfig
               description: Optional. SSH configuration for how to access the underlying
                 control plane machines.
-              x-kubernetes-immutable: true
               required:
               - ec2KeyPair
               properties:
@@ -360,7 +359,6 @@ components:
                   x-dcl-go-name: Ec2KeyPair
                   description: The name of the EC2 key pair used to login into cluster
                     machines.
-                  x-kubernetes-immutable: true
             subnetIds:
               type: array
               x-dcl-go-name: SubnetIds

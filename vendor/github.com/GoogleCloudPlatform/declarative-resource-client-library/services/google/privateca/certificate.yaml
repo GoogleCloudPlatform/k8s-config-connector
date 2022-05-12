@@ -71,6 +71,7 @@ components:
       title: Certificate
       x-dcl-id: projects/{{project}}/locations/{{location}}/caPools/{{ca_pool}}/certificates/{{name}}
       x-dcl-parent-container: project
+      x-dcl-labels: labels
       x-dcl-has-iam: false
       type: object
       required:

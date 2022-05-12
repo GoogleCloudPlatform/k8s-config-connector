@@ -280,7 +280,6 @@ components:
               x-dcl-go-name: SshConfig
               x-dcl-go-type: NodePoolConfigSshConfig
               description: Optional. The SSH configuration.
-              x-kubernetes-immutable: true
               required:
               - ec2KeyPair
               properties:
@@ -289,7 +288,6 @@ components:
                   x-dcl-go-name: Ec2KeyPair
                   description: The name of the EC2 key pair used to login into cluster
                     machines.
-                  x-kubernetes-immutable: true
             tags:
               type: object
               additionalProperties:

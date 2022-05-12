@@ -2551,10 +2551,10 @@ func canonicalizeJobTemplateTemplateVolumesCloudSqlInstance(des, initial *JobTem
 
 	cDes := &JobTemplateTemplateVolumesCloudSqlInstance{}
 
-	if dcl.StringArrayCanonicalize(des.Connections, initial.Connections) {
-		cDes.Connections = initial.Connections
+	if dcl.StringArrayCanonicalize(des.Instances, initial.Instances) {
+		cDes.Instances = initial.Instances
 	} else {
-		cDes.Connections = des.Connections
+		cDes.Instances = des.Instances
 	}
 
 	return cDes
@@ -2602,8 +2602,8 @@ func canonicalizeNewJobTemplateTemplateVolumesCloudSqlInstance(c *Client, des, n
 		return nil
 	}
 
-	if dcl.StringArrayCanonicalize(des.Connections, nw.Connections) {
-		nw.Connections = des.Connections
+	if dcl.StringArrayCanonicalize(des.Instances, nw.Instances) {
+		nw.Instances = des.Instances
 	}
 
 	return nw
@@ -4232,7 +4232,7 @@ func compareJobTemplateTemplateVolumesCloudSqlInstanceNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Connections, actual.Connections, dcl.Info{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Connections")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.Info{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6390,8 +6390,8 @@ func expandJobTemplateTemplateVolumesCloudSqlInstance(c *Client, f *JobTemplateT
 	}
 
 	m := make(map[string]interface{})
-	if v := f.Connections; v != nil {
-		m["connections"] = v
+	if v := f.Instances; v != nil {
+		m["instances"] = v
 	}
 
 	return m, nil
@@ -6410,7 +6410,7 @@ func flattenJobTemplateTemplateVolumesCloudSqlInstance(c *Client, i interface{},
 	if dcl.IsEmptyValueIndirect(i) {
 		return EmptyJobTemplateTemplateVolumesCloudSqlInstance
 	}
-	r.Connections = dcl.FlattenStringSlice(m["connections"])
+	r.Instances = dcl.FlattenStringSlice(m["instances"])
 
 	return r
 }

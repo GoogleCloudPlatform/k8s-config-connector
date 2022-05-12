@@ -2056,7 +2056,7 @@ func compareNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SshConfig, actual.SshConfig, dcl.Info{ObjectFunction: compareNodePoolConfigSshConfigNewStyle, EmptyObject: EmptyNodePoolConfigSshConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SshConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SshConfig, actual.SshConfig, dcl.Info{ObjectFunction: compareNodePoolConfigSshConfigNewStyle, EmptyObject: EmptyNodePoolConfigSshConfig, OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("SshConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2235,7 +2235,7 @@ func compareNodePoolConfigSshConfigNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Ec2KeyPair, actual.Ec2KeyPair, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Ec2KeyPair")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Ec2KeyPair, actual.Ec2KeyPair, dcl.Info{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("Ec2KeyPair")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
