@@ -50,7 +50,7 @@ func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) ad
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(newObj); err != nil {
-		return admission.Errored(http.StatusInternalServerError, fmt.Errorf("error validating or defaulting '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
 	}
 	return constructPatchResponse(obj, newObj)
 }

@@ -100,7 +100,7 @@ func (a *iamValidatorHandler) Handle(ctx context.Context, req admission.Request)
 		}
 		rcs, err := getResourceConfigs(a.smLoader, refResourceGVK)
 		if err != nil {
-			return admission.Errored(http.StatusInternalServerError, err)
+			return admission.Errored(http.StatusBadRequest, err)
 		}
 		return validateIAMAuditConfig(auditConfig, rcs)
 	default:
@@ -144,7 +144,7 @@ func toIAMAuditConfig(obj *unstructured.Unstructured) (*v1beta1.IAMAuditConfig, 
 func getDCLSchema(gvk schema.GroupVersionKind, serviceMetadataLoader metadata.ServiceMetadataLoader, schemaLoader dclschemaloader.DCLSchemaLoader) (*openapi.Schema, admission.Response) {
 	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, schemaLoader)
 	if err != nil {
-		return nil, admission.Errored(http.StatusInternalServerError, err)
+		return nil, admission.Errored(http.StatusBadRequest, err)
 	}
 	return dclSchema, allowedResponse
 }
@@ -185,7 +185,7 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError, err)
+		return admission.Errored(http.StatusBadRequest, err)
 	}
 	return a.tfValidateIAMPolicy(policy, rcs)
 }
@@ -198,7 +198,7 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError, err)
+		return admission.Errored(http.StatusBadRequest, err)
 	}
 	return a.tfValidateIAMPartialPolicy(partialPolicy, rcs)
 }
@@ -211,7 +211,7 @@ func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMP
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError, err)
+		return admission.Errored(http.StatusBadRequest, err)
 	}
 	return a.tfValidateIAMPolicyMember(policyMember, rcs)
 }

@@ -110,7 +110,7 @@ func handleContainerAnnotationsForDCLBasedResources(obj *unstructured.Unstructur
 func handleContainerAnnotationsForTFBasedResources(obj *unstructured.Unstructured, ns *corev1.Namespace, smLoader *servicemappingloader.ServiceMappingLoader) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError,
+		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error getting ResourceConfig for kind %v: %v", obj.GetKind(), err))
 	}
 
@@ -125,7 +125,7 @@ func handleContainerAnnotationsForTFBasedResources(obj *unstructured.Unstructure
 func setDefaultContainerAnnotation(obj *unstructured.Unstructured, ns *corev1.Namespace, containers []corekccv1alpha1.Container) admission.Response {
 	newObj := obj.DeepCopy()
 	if err := k8s.SetDefaultContainerAnnotation(newObj, ns, containers); err != nil {
-		return admission.Errored(http.StatusInternalServerError, fmt.Errorf("error setting container annotation: %v", err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error setting container annotation: %v", err))
 	}
 	return constructPatchResponse(obj, newObj)
 }

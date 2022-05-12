@@ -1446,7 +1446,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 					"x-dcl-parent-container": "project",
 				},
 			},
-			response: admission.Errored(http.StatusInternalServerError,
+			response: admission.Errored(http.StatusBadRequest,
 				fmt.Errorf("error validating container annotations: cannot make changes to container annotation cnrm.cloud.google.com/project-id")),
 		},
 		{
@@ -1535,10 +1535,7 @@ func assertImmutableFieldsValidatorResult(t *testing.T, v *immutableFieldsValida
 		t.Errorf("couldn't get the schema for %v", testCase.TFSchemaName)
 	}
 	fields := list.New()
-	err := compareAndFindChangesOnImmutableFields(testCase.Spec, testCase.OldSpec, r.Schema, "", testCase.ResourceConfig, nil, fields)
-	if err != nil {
-		t.Error(err)
-	}
+	compareAndFindChangesOnImmutableFields(testCase.Spec, testCase.OldSpec, r.Schema, "", testCase.ResourceConfig, nil, fields)
 
 	res := make([]string, 0)
 	for e := fields.Front(); e != nil; e = e.Next() {

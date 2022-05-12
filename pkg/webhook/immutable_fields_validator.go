@@ -144,7 +144,7 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 			fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err))
 	}
 	if err := validateContainerAnnotationsForResource(gvk.Kind, obj.GetAnnotations(), oldObj.GetAnnotations(), containers, hierarchicalRefs); err != nil {
-		return admission.Errored(http.StatusInternalServerError,
+		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error validating container annotations: %v", err))
 	}
 	if isResourceIDModified(spec, oldSpec) {
@@ -278,12 +278,12 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*schema.Resource) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError,
+		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %v", obj.GetKind(), err))
 	}
 
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {
-		return admission.Errored(http.StatusInternalServerError,
+		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error validating container annotations: %v", err))
 	}
 
@@ -304,17 +304,13 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 	}
 
 	fields := list.New()
-	if err = compareAndFindChangesOnImmutableFields(spec, oldSpec, r.Schema, "", rc, getIgnoredFields(rc), fields); err != nil {
-		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("unexpected error: %v", err))
-	}
-
+	compareAndFindChangesOnImmutableFields(spec, oldSpec, r.Schema, "", rc, getIgnoredFields(rc), fields)
 	if fields.Len() != 0 {
 		res := make([]string, 0)
 		for e := fields.Front(); e != nil; e = e.Next() {
 			res = append(res, constructCamelCasePath(e.Value.(string)))
 		}
-		return admission.Errored(http.StatusForbidden,
+		return admission.Errored(http.StatusBadRequest,
 			k8s.NewImmutableFieldsMutationError(res))
 	}
 
@@ -458,7 +454,7 @@ func findChangesOnImmutableLocationField(obj map[string]interface{}, oldObj map[
 }
 
 // TODO: get rid of list.List by changing the function to return a []string recursively
-func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj map[string]interface{}, schemaMap map[string]*schema.Schema, prefix string, resourceConfig *corekccv1alpha1.ResourceConfig, ignoredFields map[string]bool, fields *list.List) error {
+func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj map[string]interface{}, schemaMap map[string]*schema.Schema, prefix string, resourceConfig *corekccv1alpha1.ResourceConfig, ignoredFields map[string]bool, fields *list.List) {
 	for k, s := range schemaMap {
 		qualifiedName := getQualifiedFieldName(prefix, k)
 		if ignoredFields[qualifiedName] {
@@ -469,10 +465,7 @@ func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj m
 			if !s.ForceNew {
 				continue
 			}
-			modified, refKey, err := isReferenceValRawModified(obj, oldObj, refConfig)
-			if err != nil {
-				return err
-			}
+			modified, refKey := isReferenceValRawModified(obj, oldObj, refConfig)
 			if modified {
 				refKey = getQualifiedFieldName(prefix, refKey)
 				fields.PushBack(refKey)
@@ -527,13 +520,12 @@ func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj m
 			}
 		}
 	}
-	return nil
 }
 
-func isReferenceValRawModified(obj map[string]interface{}, oldObj map[string]interface{}, refConfig *corekccv1alpha1.ReferenceConfig) (bool, string, error) {
+func isReferenceValRawModified(obj map[string]interface{}, oldObj map[string]interface{}, refConfig *corekccv1alpha1.ReferenceConfig) (bool, string) {
 	// currently we choose to treat switching between different reference approaches as modification, e.g. change from referencing to ComputeAddress to directly specifying ip address
 	referenceFieldKey := krmtotf.GetKeyForReferenceField(refConfig)
-	return !reflect.DeepEqual(obj[referenceFieldKey], oldObj[referenceFieldKey]), referenceFieldKey, nil
+	return !reflect.DeepEqual(obj[referenceFieldKey], oldObj[referenceFieldKey]), referenceFieldKey
 }
 
 func constructCamelCasePath(path string) string {

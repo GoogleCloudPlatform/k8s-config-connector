@@ -94,7 +94,7 @@ func defaultManagementConflictAnnotationForDCLBasedResources(obj *unstructured.U
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResource(newObj, ns, schema); err != nil {
-		return admission.Errored(http.StatusInternalServerError, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
 	}
 	return constructPatchResponse(obj, newObj)
 }
@@ -102,12 +102,12 @@ func defaultManagementConflictAnnotationForDCLBasedResources(obj *unstructured.U
 func defaultManagementConflictAnnotationForTFBasedResources(obj *unstructured.Unstructured, ns *corev1.Namespace, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
-		return admission.Errored(http.StatusInternalServerError,
+		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error getting ResourceConfig for kind %v: %v", obj.GetKind(), err))
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(newObj, ns, rc, tfResourceMap); err != nil {
-		return admission.Errored(http.StatusInternalServerError, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
 	}
 	return constructPatchResponse(obj, newObj)
 }
