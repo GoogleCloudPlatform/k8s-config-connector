@@ -681,7 +681,7 @@ to apply.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}(Optional) A list of identities that are allowed access through this
-EgressPolicy. Should be in the format of email address. The email
+ingress policy. Should be in the format of email address. The email
 address should represent individual user or service account only.{% endverbatim %}</p>
         </td>
     </tr>

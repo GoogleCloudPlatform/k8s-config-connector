@@ -161,6 +161,25 @@ func TestKindsWithMultipleResourceConfigsHaveSameDescriptionsForSameReferences(t
 	}
 }
 
+func assertAllHaveSameDescriptionsForSameReferences(t *testing.T, kind string, rcs []v1alpha1.ResourceConfig) {
+	t.Helper()
+	tfFieldToDescription := make(map[string]string)
+	for _, rc := range rcs {
+		for _, ref := range rc.ResourceReferences {
+			if _, ok := tfFieldToDescription[ref.TFField]; !ok {
+				tfFieldToDescription[ref.TFField] = ref.Description
+				continue
+			}
+			description := tfFieldToDescription[ref.TFField]
+			if ref.Description != description {
+				t.Errorf("all ResourceConfigs of kind %v must have the same descriptions "+
+					"for all resource references with the same tfField, but not "+
+					"all resource references with tfField %v have the same descriptions", kind, ref.TFField)
+			}
+		}
+	}
+}
+
 func TestResourcesListedAlphabetically(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
@@ -278,16 +297,17 @@ func TestResourceReferencesAreValid(t *testing.T) {
 			rc := rc
 			t.Run(rc.Kind, func(t *testing.T) {
 				t.Parallel()
-				testResourceReferences(t, rc)
+				validateResourceReferences(t, rc)
 			})
 		}
 	}
 }
 
-func testResourceReferences(t *testing.T, rc v1alpha1.ResourceConfig) {
+func validateResourceReferences(t *testing.T, rc v1alpha1.ResourceConfig) {
 	if len(rc.ResourceReferences) == 0 {
 		return
 	}
+	assertHasAtMostOneReferenceConfigPerField(t, rc)
 	for _, refConfig := range rc.ResourceReferences {
 		if len(refConfig.Types) == 0 {
 			assertTypeConfig(t, rc, refConfig, refConfig.TypeConfig)
@@ -304,6 +324,21 @@ func testResourceReferences(t *testing.T, rc v1alpha1.ResourceConfig) {
 				}
 			}
 		}
+	}
+}
+
+func assertHasAtMostOneReferenceConfigPerField(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	tfFields := make(map[string]bool)
+	for _, refConfig := range rc.ResourceReferences {
+		tfField := refConfig.TFField
+		if tfField == "" {
+			t.Errorf("tfField value doesn't exist for the reference config")
+		}
+		if _, ok := tfFields[tfField]; ok {
+			t.Errorf("tfField %v has more than one reference config", tfField)
+		}
+		tfFields[tfField] = true
 	}
 }
 
@@ -780,25 +815,6 @@ func createKindToTFResourcesMap(sms []v1alpha1.ServiceMapping) map[string][]stri
 		}
 	}
 	return kindToTFResources
-}
-
-func assertAllHaveSameDescriptionsForSameReferences(t *testing.T, kind string, rcs []v1alpha1.ResourceConfig) {
-	t.Helper()
-	tfFieldToDescription := make(map[string]string)
-	for _, rc := range rcs {
-		for _, ref := range rc.ResourceReferences {
-			if _, ok := tfFieldToDescription[ref.TFField]; !ok {
-				tfFieldToDescription[ref.TFField] = ref.Description
-				continue
-			}
-			description := tfFieldToDescription[ref.TFField]
-			if ref.Description != description {
-				t.Errorf("all ResourceConfigs of kind %v must have the same descriptions "+
-					"for all resource references with the same tfField, but not "+
-					"all resource references with tfField %v have the same descriptions", kind, ref.TFField)
-			}
-		}
-	}
 }
 
 func TestIAMMemberReferenceConfig(t *testing.T) {

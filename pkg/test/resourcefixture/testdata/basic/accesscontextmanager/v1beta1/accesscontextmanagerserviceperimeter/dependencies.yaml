@@ -17,9 +17,9 @@ kind: Project
 metadata:
   labels:
     label-one: "value-one"
-  name: vpc-sc-${uniqueId}
+  name: project-${uniqueId}
 spec:
-  name: VPC SC ${uniqueId}
+  name: KCC ${uniqueId}
   folderRef:
     external: ${TEST_FOLDER_ID}
   billingAccountRef:

@@ -33,7 +33,7 @@ spec:
       - name: acl${uniqueId}
     resources:
       - projectRef:
-          name: vpc-sc-${uniqueId}
+          name: project-${uniqueId}
     restrictedServices:
       - "notebooks.googleapis.com"
     egressPolicies:
@@ -44,4 +44,16 @@ spec:
       - egressTo:
           resources:
           - projectRef:
-              name: vpc-sc-${uniqueId}
+              name: project-${uniqueId}
+    ingressPolicies:
+      - ingressFrom:
+          identities:
+            - serviceAccountRef:
+                name: gsa-${uniqueId}
+          sources:
+            - accessLevelRef:
+                name: acl${uniqueId}
+      - ingressTo:
+          resources:
+            - projectRef:
+                name: project-${uniqueId}
