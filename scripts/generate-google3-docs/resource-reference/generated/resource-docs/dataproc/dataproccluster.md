@@ -2138,7 +2138,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
           bootDiskSizeGb: 30
           numLocalSsds: 1
       softwareConfig:
-        imageVersion: "2.0.27-debian10"
+        imageVersion: "2.0.39-debian10"
       gceClusterConfig:
         tags:
         - "foo"
