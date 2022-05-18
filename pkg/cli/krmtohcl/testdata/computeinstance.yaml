@@ -35,6 +35,7 @@ spec:
     sourceDiskRef:
       external: https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-f/disks/computetargetpool-dep4
   machineType: n1-standard-1
+  metadataStartupScript: "echo \"${test} %{test}\" > /test.txt"
   networkInterface:
   - name: nic0
     networkIp: 10.2.0.5

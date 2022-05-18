@@ -21,8 +21,10 @@ import (
 	"strings"
 
 	"github.com/hashicorp/hcl/hcl/printer"
+	"github.com/hashicorp/hcl/v2/hclwrite"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/zclconf/go-cty/cty"
 )
 
 // InstanceStateToHCL converts a terraform.InstanceState into the HCL that represents the maximally hydrated form.  The generated
@@ -68,7 +70,7 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 			if attributes[aname] == "" {
 				continue
 			}
-			hcl.WriteString(fmt.Sprintf("%s = %q\n", aname, attributes[aname]))
+			hcl.WriteString(fmt.Sprintf("%s = %s\n", aname, stringLitToHCL(attributes[aname])))
 		// for each non-primitive, find if there are any values and set them.
 		case tfschema.TypeMap:
 			if val, ok := attributes[aname+".%"]; !ok || val == "0" {
@@ -195,4 +197,12 @@ func mapFromPrefix(attributes map[string]string, prefix string) (map[string]stri
 		}
 	}
 	return out, nil
+}
+
+// stringLitToHCL converts a string literal value into a quoted, HCL-compatible
+// format. It currently uses the `TokensForValue()` function from the
+// `hclwrite` library to stay consistent with the HCL spec, particularly in
+// cases where special characters need to be escaped.
+func stringLitToHCL(val string) string {
+	return string(hclwrite.TokensForValue(cty.StringVal(val)).Bytes())
 }

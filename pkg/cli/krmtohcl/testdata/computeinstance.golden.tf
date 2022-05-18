@@ -34,8 +34,9 @@ resource "google_compute_instance" "computetargetpool_dep4" {
     cnrm-lease-expiration = "1603985453"
   }
 
-  machine_type = "n1-standard-1"
-  name         = "computetargetpool-dep4"
+  machine_type            = "n1-standard-1"
+  metadata_startup_script = "echo \"$${test} %%{test}\" > /test.txt"
+  name                    = "computetargetpool-dep4"
 
   network_interface {
     network            = "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/computetargetpool-dep"
