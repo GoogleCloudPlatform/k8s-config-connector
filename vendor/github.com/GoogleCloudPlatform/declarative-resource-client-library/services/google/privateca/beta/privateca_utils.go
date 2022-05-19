@@ -95,7 +95,7 @@ func (r *Certificate) createURL(userBasePath string) (string, error) {
 	return basePath, nil
 }
 
-func flattenCertificateConfigX509ConfigCAOptions(i interface{}, _ *Certificate) *CertificateConfigX509ConfigCaOptions {
+func flattenCertificateConfigX509ConfigCAOptions(_ *Client, i interface{}, _ *Certificate) *CertificateConfigX509ConfigCaOptions {
 	if i == nil {
 		return nil
 	}

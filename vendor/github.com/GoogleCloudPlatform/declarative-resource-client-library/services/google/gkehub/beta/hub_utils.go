@@ -42,7 +42,7 @@ func expandHubReferenceLink(_ *Client, val *string, _ *Membership) (interface{},
 	return "//container.googleapis.com/" + v, nil
 }
 
-func flattenHubReferenceLink(config interface{}, _ *Membership) *string {
+func flattenHubReferenceLink(_ *Client, config interface{}, _ *Membership) *string {
 	v, ok := config.(string)
 	if !ok {
 		return nil

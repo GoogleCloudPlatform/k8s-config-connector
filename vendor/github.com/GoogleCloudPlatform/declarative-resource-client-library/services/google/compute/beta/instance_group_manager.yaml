@@ -69,6 +69,7 @@ components:
       type: object
       required:
       - name
+      - targetSize
       - project
       properties:
         autoHealingPolicies:
@@ -297,7 +298,9 @@ components:
             instances in the managed instance group. The templates for existing instances
             in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`,
             or set the group's `updatePolicy.type` to `PROACTIVE`.
-          x-dcl-forward-slash-allowed: true
+          x-dcl-conflicts:
+          - versions
+          x-dcl-server-default: true
           x-dcl-references:
           - resource: Compute/InstanceTemplate
             field: selfLink
@@ -691,6 +694,9 @@ components:
             Exactly one `version` must leave the `targetSize` field unset. That version
             will be applied to all remaining instances. For more information, read
             about [canary updates](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#starting_a_canary_update).
+          x-dcl-conflicts:
+          - instanceTemplate
+          x-dcl-server-default: true
           x-dcl-send-empty: true
           x-dcl-list-type: list
           items:

@@ -3182,11 +3182,6 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
-	if in.TargetSize != nil {
-		in, out := &in.TargetSize, &out.TargetSize
-		*out = new(int)
-		**out = **in
-	}
 	if in.UpdatePolicy != nil {
 		in, out := &in.UpdatePolicy, &out.UpdatePolicy
 		*out = new(InstancegroupmanagerUpdatePolicy)

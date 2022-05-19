@@ -196,7 +196,7 @@ func expandBudgetFilterLabels(_ *Client, labels map[string]BudgetBudgetFilterLab
 	return m, nil
 }
 
-func flattenBudgetFilterLabels(labels interface{}, _ *Budget) map[string]BudgetBudgetFilterLabels {
+func flattenBudgetFilterLabels(_ *Client, labels interface{}, _ *Budget) map[string]BudgetBudgetFilterLabels {
 	labelsInterfaceMap, ok := labels.(map[string]interface{})
 	if !ok {
 		return nil

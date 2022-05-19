@@ -551,7 +551,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     <tr>
         <td>
             <p><code>targetSize</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>

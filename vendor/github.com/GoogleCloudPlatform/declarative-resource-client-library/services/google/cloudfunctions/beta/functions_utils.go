@@ -47,7 +47,7 @@ func ExpandFunctionEventTriggerFailurePolicy(_ *Client, _ *bool, res *Function) 
 // flattenFunctionEventTriggerFailurePolicy converts the API reprensentation of an event
 // trigger retry policy, which is true or false based on the presence or absence
 // of an empty object, to an actual bool for convenience purposes.
-func flattenFunctionEventTriggerFailurePolicy(i interface{}, _ *Function) *bool {
+func flattenFunctionEventTriggerFailurePolicy(_ *Client, i interface{}, _ *Function) *bool {
 	if _, ok := i.(map[string]interface{}); ok {
 		return dcl.Bool(true)
 	}

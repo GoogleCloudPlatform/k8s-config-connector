@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
-	"time"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations"
@@ -373,20 +372,20 @@ func (op *deleteFunctionOperation) do(ctx context.Context, r *Function, c *Clien
 		return err
 	}
 
-	// we saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
-	// this is the reason we are adding retry to handle that case.
-	maxRetry := 10
-	for i := 1; i <= maxRetry; i++ {
-		_, err = c.GetFunction(ctx, r)
-		if !dcl.IsNotFound(err) {
-			if i == maxRetry {
-				return dcl.NotDeletedError{ExistingResource: r}
-			}
-			time.Sleep(1000 * time.Millisecond)
-		} else {
-			break
+	// We saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
+	// This is the reason we are adding retry to handle that case.
+	retriesRemaining := 10
+	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
+		_, err := c.GetFunction(ctx, r)
+		if dcl.IsNotFound(err) {
+			return nil, nil
 		}
-	}
+		if retriesRemaining > 0 {
+			retriesRemaining--
+			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
+		}
+		return nil, dcl.NotDeletedError{ExistingResource: r}
+	}, c.Config.RetryProvider)
 	return nil
 }
 
@@ -2025,7 +2024,7 @@ func flattenFunctionEventTrigger(c *Client, i interface{}, res *Function) *Funct
 	r.EventType = dcl.FlattenString(m["eventType"])
 	r.Resource = dcl.FlattenString(m["resource"])
 	r.Service = dcl.FlattenString(m["service"])
-	r.FailurePolicy = flattenFunctionEventTriggerFailurePolicy(m["failurePolicy"], res)
+	r.FailurePolicy = flattenFunctionEventTriggerFailurePolicy(c, m["failurePolicy"], res)
 
 	return r
 }

@@ -545,6 +545,26 @@ func (op *deleteFirewallPolicyAssociationOperation) do(ctx context.Context, r *F
 	return nil
 }
 
+// Because the server will return both versions and instance template and expects only one to
+// be set in our requests, instance template will flatten to nil if versions is non-empty.
+func flattenInstanceGroupManagerInstanceTemplateWithConflict(c *Client, instanceTemplate interface{}, resource *InstanceGroupManager) *string {
+	if len(resource.Versions) > 0 {
+		c.Config.Logger.Info("flattening instance_template field to nil because versions were present")
+		return nil
+	}
+	return dcl.FlattenString(instanceTemplate)
+}
+
+// Because the server will return both instance_template and instance template and expects only one to
+// be set in our requests, instance template will flatten to nil if instance_template is non-nil.
+func flattenInstanceGroupManagerVersionsWithConflict(c *Client, Versions interface{}, resource *InstanceGroupManager) []InstanceGroupManagerVersions {
+	if resource.InstanceTemplate != nil {
+		c.Config.Logger.Info("flattening versions field to nil because instance_template was present")
+		return nil
+	}
+	return flattenInstanceGroupManagerVersionsSlice(c, Versions, resource)
+}
+
 func machineTypeOperations() func(fd *dcl.FieldDiff) []string {
 	return func(fd *dcl.FieldDiff) []string {
 		// We're assuming that the instance is currently running. If it isn't, this will lead to a no-op stop operation.
@@ -552,7 +572,7 @@ func machineTypeOperations() func(fd *dcl.FieldDiff) []string {
 	}
 }
 
-func flattenPacketMirroringRegion(region interface{}) *string {
+func flattenPacketMirroringRegion(_ *Client, region interface{}) *string {
 	regionString, ok := region.(string)
 	if !ok {
 		return nil
@@ -586,7 +606,7 @@ func targetPoolInstances() func(fd *dcl.FieldDiff) []string {
 	}
 }
 
-func flattenNetworkSelfLinkWithID(r map[string]interface{}, _ interface{}, _ *Network) *string {
+func flattenNetworkSelfLinkWithID(_ *Client, _ interface{}, _ *Network, r map[string]interface{}) *string {
 	selfLink, ok := r["selfLink"].(string)
 	if !ok {
 		return nil

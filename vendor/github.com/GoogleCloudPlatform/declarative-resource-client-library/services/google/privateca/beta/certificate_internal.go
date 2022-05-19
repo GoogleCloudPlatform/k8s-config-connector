@@ -7809,7 +7809,7 @@ func flattenCertificateConfigX509Config(c *Client, i interface{}, res *Certifica
 		return EmptyCertificateConfigX509Config
 	}
 	r.KeyUsage = flattenCertificateConfigX509ConfigKeyUsage(c, m["keyUsage"], res)
-	r.CaOptions = flattenCertificateConfigX509ConfigCAOptions(m["caOptions"], res)
+	r.CaOptions = flattenCertificateConfigX509ConfigCAOptions(c, m["caOptions"], res)
 	r.PolicyIds = flattenCertificateConfigX509ConfigPolicyIdsSlice(c, m["policyIds"], res)
 	r.AiaOcspServers = dcl.FlattenStringSlice(m["aiaOcspServers"])
 	r.AdditionalExtensions = flattenCertificateConfigX509ConfigAdditionalExtensionsSlice(c, m["additionalExtensions"], res)

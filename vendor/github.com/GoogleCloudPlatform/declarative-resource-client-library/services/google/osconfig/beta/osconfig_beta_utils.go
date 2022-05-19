@@ -32,7 +32,7 @@ func expandGuestPolicyInstances(_ *Client, instances []string, _ *GuestPolicy) (
 }
 
 // flattenGuestPolicyInstances returns the instances field unaltered.
-func flattenGuestPolicyInstances(i interface{}, _ *GuestPolicy) []string {
+func flattenGuestPolicyInstances(_ *Client, i interface{}, _ *GuestPolicy) []string {
 	if items, ok := i.([]interface{}); ok {
 		instances := make([]string, len(items))
 		for j, item := range items {

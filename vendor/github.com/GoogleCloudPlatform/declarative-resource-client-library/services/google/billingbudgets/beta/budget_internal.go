@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
-	"time"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 )
@@ -333,20 +332,20 @@ func (op *deleteBudgetOperation) do(ctx context.Context, r *Budget, c *Client) e
 		return fmt.Errorf("failed to delete Budget: %w", err)
 	}
 
-	// we saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
-	// this is the reason we are adding retry to handle that case.
-	maxRetry := 10
-	for i := 1; i <= maxRetry; i++ {
-		_, err = c.GetBudget(ctx, r)
-		if !dcl.IsNotFound(err) {
-			if i == maxRetry {
-				return dcl.NotDeletedError{ExistingResource: r}
-			}
-			time.Sleep(1000 * time.Millisecond)
-		} else {
-			break
+	// We saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
+	// This is the reason we are adding retry to handle that case.
+	retriesRemaining := 10
+	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
+		_, err := c.GetBudget(ctx, r)
+		if dcl.IsNotFound(err) {
+			return nil, nil
 		}
-	}
+		if retriesRemaining > 0 {
+			retriesRemaining--
+			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
+		}
+		return nil, dcl.NotDeletedError{ExistingResource: r}
+	}, c.Config.RetryProvider)
 	return nil
 }
 
@@ -2547,7 +2546,7 @@ func flattenBudgetBudgetFilter(c *Client, i interface{}, res *Budget) *BudgetBud
 	r.CreditTypesTreatment = flattenBudgetBudgetFilterCreditTypesTreatmentEnum(m["creditTypesTreatment"])
 	r.Services = dcl.FlattenStringSlice(m["services"])
 	r.Subaccounts = dcl.FlattenStringSlice(m["subaccounts"])
-	r.Labels = flattenBudgetFilterLabels(m["labels"], res)
+	r.Labels = flattenBudgetFilterLabels(c, m["labels"], res)
 	r.CalendarPeriod = flattenBudgetBudgetFilterCalendarPeriodEnum(m["calendarPeriod"])
 	r.CustomPeriod = flattenBudgetBudgetFilterCustomPeriod(c, m["customPeriod"], res)
 
