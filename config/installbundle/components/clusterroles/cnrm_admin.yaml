@@ -50,6 +50,7 @@ rules:
   - resourcemanager.cnrm.cloud.google.com
   - run.cnrm.cloud.google.com
   - secretmanager.cnrm.cloud.google.com
+  - servicedirectory.cnrm.cloud.google.com
   - servicenetworking.cnrm.cloud.google.com
   - serviceusage.cnrm.cloud.google.com
   - sourcerepo.cnrm.cloud.google.com

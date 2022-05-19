@@ -212,6 +212,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>ServiceDirectoryNamespace</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>SourceRepoRepository</code></td>
         <td></td>
     </tr>
@@ -453,6 +457,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/secrets/{{secret_id}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>ServiceDirectoryNamespace</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/namespaces/{{namespace_id}}{% endverbatim %}</code></p>
             
         </td>
     </tr>

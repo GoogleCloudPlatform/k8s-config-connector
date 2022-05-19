@@ -436,6 +436,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret.md
   - title: "SecretManagerSecretVersion"
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md
+- title: "Service Directory"
+  section:
+  - title: "ServiceDirectoryNamespace"
+    path: /config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace.md
 - title: "Service Networking"
   section:
   - title: "ServiceNetworkingConnection"

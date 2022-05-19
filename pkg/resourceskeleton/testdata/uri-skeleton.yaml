@@ -879,3 +879,16 @@
       region: us-central1
   ResourceConfigId: MemcacheInstance
   URI: "https://memcache.googleapis.com/v1/projects/kcc-test/locations/us-central1/instances/memcacheinstance-sample"
+- ExpectedSkeleton:
+    apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+    kind: ServiceDirectoryNamespace
+    metadata:
+      name: zzzzaaa
+    spec:
+      location: us-central1
+      projectRef:
+        external: kcc-test
+    status:
+      name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa
+  ResourceConfigId: ServiceDirectoryNamespace
+  URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa"

@@ -991,6 +991,24 @@
       projectRef:
         external: "1234567890"
   resourceConfigId: Service
+- asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/sdnamespace-sample123
+    asset_type: servicedirectory.googleapis.com/Namespace
+  expectedSkeleton:
+    apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+    kind: ServiceDirectoryNamespace
+    metadata:
+      name: sdnamespace-sample123
+    spec:
+      location: us-central1
+      projectRef:
+        external: kcc-test
+    status:
+      name: projects/kcc-test/locations/us-central1/namespaces/sdnamespace-sample123
+  resourceConfigId: ServiceDirectoryNamespace
 # not supported by asset inventory
 - resourceConfigId: ServiceNetworkingConnection
 # not supported by asset inventory
