@@ -163,7 +163,7 @@ type InstanceInitializeParams struct {
 	// +optional
 	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
-	/* Immutable. The Google Compute Engine disk type. One of pd-standard, pd-ssd or pd-balanced. */
+	/* Immutable. The Google Compute Engine disk type. Such as pd-standard, pd-ssd or pd-balanced. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

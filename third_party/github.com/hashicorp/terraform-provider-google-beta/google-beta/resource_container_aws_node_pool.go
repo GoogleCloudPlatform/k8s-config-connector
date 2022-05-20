@@ -196,6 +196,24 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 				Description: "The name of the AWS IAM role assigned to nodes in the pool.",
 			},
 
+			"image_type": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The OS image type to use on node pool instances.",
+			},
+
+			"instance_placement": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Details of placement information for an instance.",
+				MaxItems:    1,
+				Elem:        ContainerAwsNodePoolConfigInstancePlacementSchema(),
+			},
+
 			"instance_type": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -210,6 +228,14 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 				ForceNew:    true,
 				Description: "Optional. The initial labels assigned to nodes of this node pool. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"proxy_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Proxy configuration for outbound HTTP(S) traffic.",
+				MaxItems:    1,
+				Elem:        ContainerAwsNodePoolConfigProxyConfigSchema(),
 			},
 
 			"root_volume": {
@@ -263,6 +289,38 @@ func ContainerAwsNodePoolConfigConfigEncryptionSchema() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "The ARN of the AWS KMS key used to encrypt node pool configuration.",
+			},
+		},
+	}
+}
+
+func ContainerAwsNodePoolConfigInstancePlacementSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"tenancy": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The tenancy for the instance. Possible values: TENANCY_UNSPECIFIED, DEFAULT, DEDICATED, HOST",
+			},
+		},
+	}
+}
+
+func ContainerAwsNodePoolConfigProxyConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"secret_arn": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The ARN of the AWS Secret Manager secret that contains the HTTP(S) proxy configuration.",
+			},
+
+			"secret_version": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The version string of the AWS Secret Manager secret that contains the HTTP(S) proxy configuration.",
 			},
 		},
 	}
@@ -662,8 +720,11 @@ func expandContainerAwsNodePoolConfig(o interface{}) *containeraws.NodePoolConfi
 	return &containeraws.NodePoolConfig{
 		ConfigEncryption:   expandContainerAwsNodePoolConfigConfigEncryption(obj["config_encryption"]),
 		IamInstanceProfile: dcl.String(obj["iam_instance_profile"].(string)),
+		ImageType:          dcl.StringOrNil(obj["image_type"].(string)),
+		InstancePlacement:  expandContainerAwsNodePoolConfigInstancePlacement(obj["instance_placement"]),
 		InstanceType:       dcl.StringOrNil(obj["instance_type"].(string)),
 		Labels:             checkStringMap(obj["labels"]),
+		ProxyConfig:        expandContainerAwsNodePoolConfigProxyConfig(obj["proxy_config"]),
 		RootVolume:         expandContainerAwsNodePoolConfigRootVolume(obj["root_volume"]),
 		SecurityGroupIds:   expandStringArray(obj["security_group_ids"]),
 		SshConfig:          expandContainerAwsNodePoolConfigSshConfig(obj["ssh_config"]),
@@ -679,8 +740,11 @@ func flattenContainerAwsNodePoolConfig(obj *containeraws.NodePoolConfig) interfa
 	transformed := map[string]interface{}{
 		"config_encryption":    flattenContainerAwsNodePoolConfigConfigEncryption(obj.ConfigEncryption),
 		"iam_instance_profile": obj.IamInstanceProfile,
+		"image_type":           obj.ImageType,
+		"instance_placement":   flattenContainerAwsNodePoolConfigInstancePlacement(obj.InstancePlacement),
 		"instance_type":        obj.InstanceType,
 		"labels":               obj.Labels,
+		"proxy_config":         flattenContainerAwsNodePoolConfigProxyConfig(obj.ProxyConfig),
 		"root_volume":          flattenContainerAwsNodePoolConfigRootVolume(obj.RootVolume),
 		"security_group_ids":   obj.SecurityGroupIds,
 		"ssh_config":           flattenContainerAwsNodePoolConfigSshConfig(obj.SshConfig),
@@ -712,6 +776,60 @@ func flattenContainerAwsNodePoolConfigConfigEncryption(obj *containeraws.NodePoo
 	}
 	transformed := map[string]interface{}{
 		"kms_key_arn": obj.KmsKeyArn,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAwsNodePoolConfigInstancePlacement(o interface{}) *containeraws.NodePoolConfigInstancePlacement {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.NodePoolConfigInstancePlacement{
+		Tenancy: containeraws.NodePoolConfigInstancePlacementTenancyEnumRef(obj["tenancy"].(string)),
+	}
+}
+
+func flattenContainerAwsNodePoolConfigInstancePlacement(obj *containeraws.NodePoolConfigInstancePlacement) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"tenancy": obj.Tenancy,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAwsNodePoolConfigProxyConfig(o interface{}) *containeraws.NodePoolConfigProxyConfig {
+	if o == nil {
+		return containeraws.EmptyNodePoolConfigProxyConfig
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return containeraws.EmptyNodePoolConfigProxyConfig
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.NodePoolConfigProxyConfig{
+		SecretArn:     dcl.String(obj["secret_arn"].(string)),
+		SecretVersion: dcl.String(obj["secret_version"].(string)),
+	}
+}
+
+func flattenContainerAwsNodePoolConfigProxyConfig(obj *containeraws.NodePoolConfigProxyConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"secret_arn":     obj.SecretArn,
+		"secret_version": obj.SecretVersion,
 	}
 
 	return []interface{}{transformed}

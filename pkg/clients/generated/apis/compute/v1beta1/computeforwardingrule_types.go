@@ -72,6 +72,16 @@ type ForwardingruleMetadataFilters struct {
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
+type ForwardingruleServiceDirectoryRegistrations struct {
+	/* Immutable. Service Directory namespace to register the forwarding rule under. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+
+	/* Immutable. Service Directory service to register the forwarding rule under. */
+	// +optional
+	Service *string `json:"service,omitempty"`
+}
+
 type ForwardingruleTarget struct {
 	/*  */
 	// +optional
@@ -213,6 +223,10 @@ type ComputeForwardingRuleSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Service Directory resources to register this forwarding rule with. Currently, only supports a single Service Directory resource. */
+	// +optional
+	ServiceDirectoryRegistrations []ForwardingruleServiceDirectoryRegistrations `json:"serviceDirectoryRegistrations,omitempty"`
 
 	/* Immutable. An optional prefix to the service name for this Forwarding Rule. If specified, the prefix is the first label of the fully qualified service name. The label must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Specifically, the label must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. This field is only used for internal load balancing. */
 	// +optional

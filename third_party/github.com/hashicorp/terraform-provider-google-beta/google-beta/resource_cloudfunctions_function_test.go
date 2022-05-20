@@ -305,6 +305,61 @@ func TestAccCloudFunctionsFunction_bucket(t *testing.T) {
 	})
 }
 
+func TestAccCloudFunctionsFunction_dockerRepository(t *testing.T) {
+	t.Parallel()
+	funcResourceName := "google_cloudfunctions_function.function"
+	arRepoName := fmt.Sprintf("tf-ar-test-docker-repository-%s", randString(t, 10))
+	functionName := fmt.Sprintf("tf-ar-test-%s", randString(t, 10))
+	bucketName := fmt.Sprintf("tf-ar-test-bucket-%d", randInt(t))
+	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
+	defer os.Remove(zipFilePath) // clean up
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCloudFunctionsFunctionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudFunctionsFunction_docker_repository(arRepoName, functionName, bucketName, zipFilePath),
+			},
+			{
+				ResourceName:            funcResourceName,
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"build_environment_variables"},
+			},
+		},
+	})
+}
+
+func TestAccCloudFunctionsFunction_cmek(t *testing.T) {
+	t.Parallel()
+	kmsKey := BootstrapKMSKeyInLocation(t, "us-central1")
+	funcResourceName := "google_cloudfunctions_function.function"
+	arRepoName := fmt.Sprintf("tf-cmek-test-docker-repository-%s", randString(t, 10))
+	functionName := fmt.Sprintf("tf-cmek-test-%s", randString(t, 10))
+	bucketName := fmt.Sprintf("tf-cmek-test-bucket-%d", randInt(t))
+	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
+	defer os.Remove(zipFilePath) // clean up
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCloudFunctionsFunctionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudFunctionsFunction_cmek(kmsKey.CryptoKey.Name, arRepoName, functionName, bucketName, zipFilePath),
+			},
+			{
+				ResourceName:            funcResourceName,
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"build_environment_variables"},
+			},
+		},
+	})
+}
+
 func TestAccCloudFunctionsFunction_firestore(t *testing.T) {
 	t.Parallel()
 	funcResourceName := "google_cloudfunctions_function.function"
@@ -1001,6 +1056,123 @@ resource "google_cloudfunctions_function" "function" {
   depends_on = [google_project_iam_member.gcfadmin]
 }
 `, projectNumber, networkName, vpcConnectorName, vpcConnectorName, vpcIp, bucketName, zipFilePath, functionName, vpcConnectorName)
+}
+
+func testAccCloudFunctionsFunction_docker_repository(arRepoName, functionName, bucketName, zipFilePath string) string {
+	return fmt.Sprintf(`
+data "google_project" "project" {
+}
+
+resource "google_artifact_registry_repository" "test-ar-repo" {
+  repository_id = "%s"
+  location = "us-central1"
+  format = "DOCKER"
+}
+
+resource "google_artifact_registry_repository_iam_binding" "binding" {
+  location = google_artifact_registry_repository.test-ar-repo.location
+  repository = google_artifact_registry_repository.test-ar-repo.name
+  role = "roles/artifactregistry.admin"
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@gcf-admin-robot.iam.gserviceaccount.com",
+  ]
+}
+
+resource "google_storage_bucket" "bucket" {
+  name     = "%s"
+  location = "US"
+}
+
+resource "google_storage_bucket_object" "archive" {
+  name   = "index.zip"
+  bucket = google_storage_bucket.bucket.name
+  source = "%s"
+}
+
+resource "google_cloudfunctions_function" "function" {
+  name                  = "%s"
+  description           = "Function deployed to customer-provided Artifact Registry"
+  runtime               = "nodejs10"
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.bucket.name
+  source_archive_object = google_storage_bucket_object.archive.name
+  docker_repository     = google_artifact_registry_repository.test-ar-repo.id
+  trigger_http          = true
+  timeout               = 61
+  entry_point           = "helloGET"
+}
+`, arRepoName, bucketName, zipFilePath, functionName)
+}
+
+func testAccCloudFunctionsFunction_cmek(kmsKey, arRepoName, functionName, bucketName, zipFilePath string) string {
+	return fmt.Sprintf(`
+data "google_project" "project" {
+}
+
+resource "google_artifact_registry_repository" "unencoded-ar-repo" {
+  repository_id = "unencoded-ar-repo-to-generate-p4sa"
+  location = "us-central1"
+  format = "DOCKER"
+}
+
+resource "google_artifact_registry_repository_iam_binding" "binding" {
+  location = google_artifact_registry_repository.encoded-ar-repo.location
+  repository = google_artifact_registry_repository.encoded-ar-repo.name
+  role = "roles/artifactregistry.admin"
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@gcf-admin-robot.iam.gserviceaccount.com",
+  ]
+}
+
+resource "google_project_iam_member" "cloud_build_sa_builder_permission" {
+  project = data.google_project.project.project_id
+  role    = "roles/cloudbuild.builds.builder"
+  member  = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
+}
+
+resource "google_kms_crypto_key_iam_binding" "gcf_cmek_keyuser" {
+  crypto_key_id = "%s"
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@gcf-admin-robot.iam.gserviceaccount.com",
+    "serviceAccount:service-${data.google_project.project.number}@gcp-sa-artifactregistry.iam.gserviceaccount.com",
+    "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com",
+  ]
+}
+
+resource "google_artifact_registry_repository" "encoded-ar-repo" {
+  repository_id = "%s"
+  kms_key_name = "%s"
+  location = "us-central1"
+  format = "DOCKER"
+}
+
+resource "google_storage_bucket" "bucket" {
+  name     = "%s"
+  location = "US"
+}
+
+resource "google_storage_bucket_object" "archive" {
+  name   = "index.zip"
+  bucket = google_storage_bucket.bucket.name
+  source = "%s"
+}
+
+resource "google_cloudfunctions_function" "function" {
+  name                  = "%s"
+  description           = "CMEK function"
+  runtime               = "nodejs10"
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.bucket.name
+  source_archive_object = google_storage_bucket_object.archive.name
+  docker_repository     = google_artifact_registry_repository.encoded-ar-repo.id
+  kms_key_name          = "%s"
+  trigger_http          = true
+  timeout               = 61
+  entry_point           = "helloGET"
+}
+`, kmsKey, arRepoName, kmsKey, bucketName, zipFilePath, functionName, kmsKey)
 }
 
 func testAccCloudFunctionsFunction_secretEnvVar(secretName, versionName, bucketName, functionName, versionNumber, zipFilePath, accountId string) string {

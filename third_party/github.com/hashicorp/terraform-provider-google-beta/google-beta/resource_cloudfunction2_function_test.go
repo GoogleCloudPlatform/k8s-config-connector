@@ -29,7 +29,16 @@ func TestAccCloudFunctions2Function_update(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"location", "build_config.0.source.0.storage_source.0.object", "build_config.0.source.0.storage_source.0.bucket"},
 			},
 			{
-				Config: testAccCloudFunctions2Function_updated(context),
+				Config: testAccCloudFunctions2Function_test_update(context),
+			},
+			{
+				ResourceName:            "google_cloudfunctions2_function.terraform-test2",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"location", "build_config.0.source.0.storage_source.0.object", "build_config.0.source.0.storage_source.0.bucket"},
+			},
+			{
+				Config: testAccCloudFunctions2Function_test_redeploy(context),
 			},
 			{
 				ResourceName:            "google_cloudfunctions2_function.terraform-test2",
@@ -83,7 +92,49 @@ resource "google_cloudfunctions2_function" "terraform-test2" {
 `, context)
 }
 
-func testAccCloudFunctions2Function_updated(context map[string]interface{}) string {
+func testAccCloudFunctions2Function_test_update(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_storage_bucket" "bucket" {
+  provider = google-beta
+  name     = "tf-test-cloudfunctions2-function-bucket%{random_suffix}"
+  location = "US"
+  uniform_bucket_level_access = true
+}
+ 
+resource "google_storage_bucket_object" "object" {
+  provider = google-beta
+  name   = "function-source.zip"
+  bucket = google_storage_bucket.bucket.name
+  source = "%{zip_path}"
+}
+ 
+resource "google_cloudfunctions2_function" "terraform-test2" {
+  provider = google-beta
+  name = "tf-test-test-function%{random_suffix}"
+  location = "us-central1"
+  description = "an updated function"
+ 
+  build_config {
+    runtime = "nodejs12"
+    entry_point = "helloHttp"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket.name
+        object = google_storage_bucket_object.object.name
+      }
+    }
+  }
+ 
+  service_config {
+    max_instance_count  = 1
+    available_memory    = "1536Mi"
+    timeout_seconds     = 30
+  }
+}
+`, context)
+}
+
+func testAccCloudFunctions2Function_test_redeploy(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_storage_bucket" "bucket" {
   provider = google-beta

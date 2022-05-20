@@ -193,6 +193,7 @@ spec:
                     type: integer
                   diskType:
                     description: Immutable. Type of the disk attached to each node.
+                      Such as pd-standard, pd-balanced or pd-ssd.
                     type: string
                   ephemeralStorageConfig:
                     description: Immutable. Parameters for the ephemeral storage filesystem.

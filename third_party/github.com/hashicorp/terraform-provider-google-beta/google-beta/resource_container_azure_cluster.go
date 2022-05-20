@@ -128,6 +128,16 @@ func resourceContainerAzureCluster() *schema.Resource {
 				Description: "Optional. A human readable description of this cluster. Cannot be longer than 255 UTF-8 encoded bytes.",
 			},
 
+			"logging_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Logging configuration.",
+				MaxItems:    1,
+				Elem:        ContainerAzureClusterLoggingConfigSchema(),
+			},
+
 			"project": {
 				Type:             schema.TypeString,
 				Computed:         true,
@@ -195,7 +205,7 @@ func ContainerAzureClusterAuthorizationSchema() *schema.Resource {
 			"admin_users": {
 				Type:        schema.TypeList,
 				Required:    true,
-				Description: "Users that can perform operations as a cluster admin. A new ClusterRoleBinding will be created to grant the cluster-admin ClusterRole to the users. At most one user can be specified. For more info on RBAC, see https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles",
+				Description: "Users that can perform operations as a cluster admin. A new ClusterRoleBinding will be created to grant the cluster-admin ClusterRole to the users. Up to ten admin users can be provided. For more info on RBAC, see https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles",
 				Elem:        ContainerAzureClusterAuthorizationAdminUsersSchema(),
 			},
 		},
@@ -447,6 +457,37 @@ func ContainerAzureClusterNetworkingSchema() *schema.Resource {
 	}
 }
 
+func ContainerAzureClusterLoggingConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"component_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Configuration of the logging components.",
+				MaxItems:    1,
+				Elem:        ContainerAzureClusterLoggingConfigComponentConfigSchema(),
+			},
+		},
+	}
+}
+
+func ContainerAzureClusterLoggingConfigComponentConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"enable_components": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Components of the logging configuration to be enabled.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+		},
+	}
+}
+
 func ContainerAzureClusterWorkloadIdentityConfigSchema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -490,6 +531,7 @@ func resourceContainerAzureClusterCreate(d *schema.ResourceData, meta interface{
 		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
 		Annotations:     checkStringMap(d.Get("annotations")),
 		Description:     dcl.String(d.Get("description").(string)),
+		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
 		Project:         dcl.String(project),
 	}
 
@@ -549,6 +591,7 @@ func resourceContainerAzureClusterRead(d *schema.ResourceData, meta interface{})
 		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
 		Annotations:     checkStringMap(d.Get("annotations")),
 		Description:     dcl.String(d.Get("description").(string)),
+		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
 		Project:         dcl.String(project),
 	}
 
@@ -607,6 +650,9 @@ func resourceContainerAzureClusterRead(d *schema.ResourceData, meta interface{})
 	if err = d.Set("description", res.Description); err != nil {
 		return fmt.Errorf("error setting description in state: %s", err)
 	}
+	if err = d.Set("logging_config", flattenContainerAzureClusterLoggingConfig(res.LoggingConfig)); err != nil {
+		return fmt.Errorf("error setting logging_config in state: %s", err)
+	}
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
 	}
@@ -656,6 +702,7 @@ func resourceContainerAzureClusterUpdate(d *schema.ResourceData, meta interface{
 		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
 		Annotations:     checkStringMap(d.Get("annotations")),
 		Description:     dcl.String(d.Get("description").(string)),
+		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
 		Project:         dcl.String(project),
 	}
 	directive := UpdateDirective
@@ -710,6 +757,7 @@ func resourceContainerAzureClusterDelete(d *schema.ResourceData, meta interface{
 		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
 		Annotations:     checkStringMap(d.Get("annotations")),
 		Description:     dcl.String(d.Get("description").(string)),
+		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
 		Project:         dcl.String(project),
 	}
 
@@ -1130,6 +1178,58 @@ func flattenContainerAzureClusterNetworking(obj *containerazure.ClusterNetworkin
 
 }
 
+func expandContainerAzureClusterLoggingConfig(o interface{}) *containerazure.ClusterLoggingConfig {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containerazure.ClusterLoggingConfig{
+		ComponentConfig: expandContainerAzureClusterLoggingConfigComponentConfig(obj["component_config"]),
+	}
+}
+
+func flattenContainerAzureClusterLoggingConfig(obj *containerazure.ClusterLoggingConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"component_config": flattenContainerAzureClusterLoggingConfigComponentConfig(obj.ComponentConfig),
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAzureClusterLoggingConfigComponentConfig(o interface{}) *containerazure.ClusterLoggingConfigComponentConfig {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containerazure.ClusterLoggingConfigComponentConfig{
+		EnableComponents: expandContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArray(obj["enable_components"]),
+	}
+}
+
+func flattenContainerAzureClusterLoggingConfigComponentConfig(obj *containerazure.ClusterLoggingConfigComponentConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"enable_components": flattenContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArray(obj.EnableComponents),
+	}
+
+	return []interface{}{transformed}
+
+}
+
 func flattenContainerAzureClusterWorkloadIdentityConfig(obj *containerazure.ClusterWorkloadIdentityConfig) interface{} {
 	if obj == nil || obj.Empty() {
 		return nil
@@ -1142,4 +1242,24 @@ func flattenContainerAzureClusterWorkloadIdentityConfig(obj *containerazure.Clus
 
 	return []interface{}{transformed}
 
+}
+func flattenContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArray(obj []containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnum) interface{} {
+	if obj == nil {
+		return nil
+	}
+	items := []string{}
+	for _, item := range obj {
+		items = append(items, string(item))
+	}
+	return items
+}
+
+func expandContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArray(o interface{}) []containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnum {
+	objs := o.([]interface{})
+	items := make([]containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnum, 0, len(objs))
+	for _, item := range objs {
+		i := containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnumRef(item.(string))
+		items = append(items, *i)
+	}
+	return items
 }

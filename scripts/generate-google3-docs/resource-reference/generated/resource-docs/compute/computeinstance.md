@@ -642,7 +642,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Google Compute Engine disk type. One of pd-standard, pd-ssd or pd-balanced.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Google Compute Engine disk type. Such as pd-standard, pd-ssd or pd-balanced.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

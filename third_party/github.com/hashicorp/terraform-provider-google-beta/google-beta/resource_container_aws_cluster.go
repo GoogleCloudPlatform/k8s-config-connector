@@ -113,6 +113,16 @@ func resourceContainerAwsCluster() *schema.Resource {
 				Description: "Optional. A human readable description of this cluster. Cannot be longer than 255 UTF-8 encoded bytes.",
 			},
 
+			"logging_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Logging configuration.",
+				MaxItems:    1,
+				Elem:        ContainerAwsClusterLoggingConfigSchema(),
+			},
+
 			"project": {
 				Type:             schema.TypeString,
 				Computed:         true,
@@ -180,7 +190,7 @@ func ContainerAwsClusterAuthorizationSchema() *schema.Resource {
 			"admin_users": {
 				Type:        schema.TypeList,
 				Required:    true,
-				Description: "Users to perform operations as a cluster admin. A managed ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole to the users. At most one user can be specified. For more info on RBAC, see https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles",
+				Description: "Users to perform operations as a cluster admin. A managed ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole to the users. Up to ten admin users can be provided. For more info on RBAC, see https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles",
 				Elem:        ContainerAwsClusterAuthorizationAdminUsersSchema(),
 			},
 		},
@@ -246,6 +256,16 @@ func ContainerAwsClusterControlPlaneSchema() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "The Kubernetes version to run on control plane replicas (e.g. `1.19.10-gke.1000`). You can list all supported versions on a given Google Cloud region by calling .",
+			},
+
+			"instance_placement": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Details of placement information for an instance.",
+				MaxItems:    1,
+				Elem:        ContainerAwsClusterControlPlaneInstancePlacementSchema(),
 			},
 
 			"instance_type": {
@@ -348,6 +368,20 @@ func ContainerAwsClusterControlPlaneDatabaseEncryptionSchema() *schema.Resource 
 				Required:    true,
 				ForceNew:    true,
 				Description: "The ARN of the AWS KMS key used to encrypt cluster secrets.",
+			},
+		},
+	}
+}
+
+func ContainerAwsClusterControlPlaneInstancePlacementSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"tenancy": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The tenancy for the instance. Possible values: TENANCY_UNSPECIFIED, DEFAULT, DEDICATED, HOST",
 			},
 		},
 	}
@@ -504,6 +538,37 @@ func ContainerAwsClusterNetworkingSchema() *schema.Resource {
 	}
 }
 
+func ContainerAwsClusterLoggingConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"component_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Configuration of the logging components.",
+				MaxItems:    1,
+				Elem:        ContainerAwsClusterLoggingConfigComponentConfigSchema(),
+			},
+		},
+	}
+}
+
+func ContainerAwsClusterLoggingConfigComponentConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"enable_components": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Components of the logging configuration to be enabled.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+		},
+	}
+}
+
 func ContainerAwsClusterWorkloadIdentityConfigSchema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -545,6 +610,7 @@ func resourceContainerAwsClusterCreate(d *schema.ResourceData, meta interface{})
 		Networking:    expandContainerAwsClusterNetworking(d.Get("networking")),
 		Annotations:   checkStringMap(d.Get("annotations")),
 		Description:   dcl.String(d.Get("description").(string)),
+		LoggingConfig: expandContainerAwsClusterLoggingConfig(d.Get("logging_config")),
 		Project:       dcl.String(project),
 	}
 
@@ -602,6 +668,7 @@ func resourceContainerAwsClusterRead(d *schema.ResourceData, meta interface{}) e
 		Networking:    expandContainerAwsClusterNetworking(d.Get("networking")),
 		Annotations:   checkStringMap(d.Get("annotations")),
 		Description:   dcl.String(d.Get("description").(string)),
+		LoggingConfig: expandContainerAwsClusterLoggingConfig(d.Get("logging_config")),
 		Project:       dcl.String(project),
 	}
 
@@ -654,6 +721,9 @@ func resourceContainerAwsClusterRead(d *schema.ResourceData, meta interface{}) e
 	if err = d.Set("description", res.Description); err != nil {
 		return fmt.Errorf("error setting description in state: %s", err)
 	}
+	if err = d.Set("logging_config", flattenContainerAwsClusterLoggingConfig(res.LoggingConfig)); err != nil {
+		return fmt.Errorf("error setting logging_config in state: %s", err)
+	}
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
 	}
@@ -701,6 +771,7 @@ func resourceContainerAwsClusterUpdate(d *schema.ResourceData, meta interface{})
 		Networking:    expandContainerAwsClusterNetworking(d.Get("networking")),
 		Annotations:   checkStringMap(d.Get("annotations")),
 		Description:   dcl.String(d.Get("description").(string)),
+		LoggingConfig: expandContainerAwsClusterLoggingConfig(d.Get("logging_config")),
 		Project:       dcl.String(project),
 	}
 	directive := UpdateDirective
@@ -753,6 +824,7 @@ func resourceContainerAwsClusterDelete(d *schema.ResourceData, meta interface{})
 		Networking:    expandContainerAwsClusterNetworking(d.Get("networking")),
 		Annotations:   checkStringMap(d.Get("annotations")),
 		Description:   dcl.String(d.Get("description").(string)),
+		LoggingConfig: expandContainerAwsClusterLoggingConfig(d.Get("logging_config")),
 		Project:       dcl.String(project),
 	}
 
@@ -899,6 +971,7 @@ func expandContainerAwsClusterControlPlane(o interface{}) *containeraws.ClusterC
 		IamInstanceProfile:        dcl.String(obj["iam_instance_profile"].(string)),
 		SubnetIds:                 expandStringArray(obj["subnet_ids"]),
 		Version:                   dcl.String(obj["version"].(string)),
+		InstancePlacement:         expandContainerAwsClusterControlPlaneInstancePlacement(obj["instance_placement"]),
 		InstanceType:              dcl.StringOrNil(obj["instance_type"].(string)),
 		MainVolume:                expandContainerAwsClusterControlPlaneMainVolume(obj["main_volume"]),
 		ProxyConfig:               expandContainerAwsClusterControlPlaneProxyConfig(obj["proxy_config"]),
@@ -920,6 +993,7 @@ func flattenContainerAwsClusterControlPlane(obj *containeraws.ClusterControlPlan
 		"iam_instance_profile":        obj.IamInstanceProfile,
 		"subnet_ids":                  obj.SubnetIds,
 		"version":                     obj.Version,
+		"instance_placement":          flattenContainerAwsClusterControlPlaneInstancePlacement(obj.InstancePlacement),
 		"instance_type":               obj.InstanceType,
 		"main_volume":                 flattenContainerAwsClusterControlPlaneMainVolume(obj.MainVolume),
 		"proxy_config":                flattenContainerAwsClusterControlPlaneProxyConfig(obj.ProxyConfig),
@@ -1007,6 +1081,32 @@ func flattenContainerAwsClusterControlPlaneDatabaseEncryption(obj *containeraws.
 	}
 	transformed := map[string]interface{}{
 		"kms_key_arn": obj.KmsKeyArn,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAwsClusterControlPlaneInstancePlacement(o interface{}) *containeraws.ClusterControlPlaneInstancePlacement {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.ClusterControlPlaneInstancePlacement{
+		Tenancy: containeraws.ClusterControlPlaneInstancePlacementTenancyEnumRef(obj["tenancy"].(string)),
+	}
+}
+
+func flattenContainerAwsClusterControlPlaneInstancePlacement(obj *containeraws.ClusterControlPlaneInstancePlacement) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"tenancy": obj.Tenancy,
 	}
 
 	return []interface{}{transformed}
@@ -1188,6 +1288,58 @@ func flattenContainerAwsClusterNetworking(obj *containeraws.ClusterNetworking) i
 
 }
 
+func expandContainerAwsClusterLoggingConfig(o interface{}) *containeraws.ClusterLoggingConfig {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.ClusterLoggingConfig{
+		ComponentConfig: expandContainerAwsClusterLoggingConfigComponentConfig(obj["component_config"]),
+	}
+}
+
+func flattenContainerAwsClusterLoggingConfig(obj *containeraws.ClusterLoggingConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"component_config": flattenContainerAwsClusterLoggingConfigComponentConfig(obj.ComponentConfig),
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAwsClusterLoggingConfigComponentConfig(o interface{}) *containeraws.ClusterLoggingConfigComponentConfig {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.ClusterLoggingConfigComponentConfig{
+		EnableComponents: expandContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray(obj["enable_components"]),
+	}
+}
+
+func flattenContainerAwsClusterLoggingConfigComponentConfig(obj *containeraws.ClusterLoggingConfigComponentConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"enable_components": flattenContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray(obj.EnableComponents),
+	}
+
+	return []interface{}{transformed}
+
+}
+
 func flattenContainerAwsClusterWorkloadIdentityConfig(obj *containeraws.ClusterWorkloadIdentityConfig) interface{} {
 	if obj == nil || obj.Empty() {
 		return nil
@@ -1200,4 +1352,24 @@ func flattenContainerAwsClusterWorkloadIdentityConfig(obj *containeraws.ClusterW
 
 	return []interface{}{transformed}
 
+}
+func flattenContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray(obj []containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnum) interface{} {
+	if obj == nil {
+		return nil
+	}
+	items := []string{}
+	for _, item := range obj {
+		items = append(items, string(item))
+	}
+	return items
+}
+
+func expandContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray(o interface{}) []containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnum {
+	objs := o.([]interface{})
+	items := make([]containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnum, 0, len(objs))
+	for _, item := range objs {
+		i := containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnumRef(item.(string))
+		items = append(items, *i)
+	}
+	return items
 }

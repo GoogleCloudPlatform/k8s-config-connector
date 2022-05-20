@@ -99,6 +99,9 @@ spec:
       # no actual URL, is a list operation for a dns managed zone
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      # TODO(b/233267548): Ignore routing_policy because of complexity brought by rrdatas/rrdatasRefs
+      ignoredFields:
+        - routing_policy
       containers:
         - type: project
           tfField: project

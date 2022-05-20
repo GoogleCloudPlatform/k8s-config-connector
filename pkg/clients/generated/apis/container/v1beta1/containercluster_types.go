@@ -409,7 +409,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
 
-	/* Immutable. Type of the disk attached to each node. */
+	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 

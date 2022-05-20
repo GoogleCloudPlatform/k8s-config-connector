@@ -98,7 +98,7 @@ type InstancetemplateDisk struct {
 	// +optional
 	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
 
-	/* Immutable. The Google Compute Engine disk type. Can be either "pd-ssd", "local-ssd", "pd-balanced" or "pd-standard". */
+	/* Immutable. The Google Compute Engine disk type. Such as "pd-ssd", "local-ssd", "pd-balanced" or "pd-standard". */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 

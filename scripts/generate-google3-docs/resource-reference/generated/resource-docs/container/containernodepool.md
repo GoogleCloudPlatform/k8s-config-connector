@@ -415,7 +415,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Type of the disk attached to each node.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

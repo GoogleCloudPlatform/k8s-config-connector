@@ -334,6 +334,22 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              serviceDirectoryRegistrations:
+                description: Immutable. Service Directory resources to register this
+                  forwarding rule with. Currently, only supports a single Service
+                  Directory resource.
+                items:
+                  properties:
+                    namespace:
+                      description: Immutable. Service Directory namespace to register
+                        the forwarding rule under.
+                      type: string
+                    service:
+                      description: Immutable. Service Directory service to register
+                        the forwarding rule under.
+                      type: string
+                  type: object
+                type: array
               serviceLabel:
                 description: Immutable. An optional prefix to the service name for
                   this Forwarding Rule. If specified, the prefix is the first label

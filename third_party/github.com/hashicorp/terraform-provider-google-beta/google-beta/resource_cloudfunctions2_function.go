@@ -549,12 +549,6 @@ func resourceCloudfunctions2functionUpdate(d *schema.ResourceData, meta interfac
 	billingProject = project
 
 	obj := make(map[string]interface{})
-	nameProp, err := expandCloudfunctions2functionName(d.Get("name"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
-		obj["name"] = nameProp
-	}
 	descriptionProp, err := expandCloudfunctions2functionDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
@@ -594,10 +588,6 @@ func resourceCloudfunctions2functionUpdate(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Updating function %q: %#v", d.Id(), obj)
 	updateMask := []string{}
 
-	if d.HasChange("name") {
-		updateMask = append(updateMask, "name")
-	}
-
 	if d.HasChange("description") {
 		updateMask = append(updateMask, "description")
 	}
@@ -629,7 +619,7 @@ func resourceCloudfunctions2functionUpdate(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating function %q: %s", d.Id(), err)

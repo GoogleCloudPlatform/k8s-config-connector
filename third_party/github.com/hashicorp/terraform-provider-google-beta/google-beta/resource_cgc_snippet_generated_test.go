@@ -170,6 +170,7 @@ resource "google_compute_instance" "spot_vm_instance" {
 }
 
 func TestAccCGCSnippet_sqlDatabaseInstanceSqlserverExample(t *testing.T) {
+	skipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -208,6 +209,17 @@ resource "google_sql_database_instance" "instance" {
   deletion_protection =  "%{deletion_protection}"
 }
 # [END cloud_sql_sqlserver_instance_80_db_n1_s2]
+
+resource "random_password" "pwd" {
+    length = 16
+    special = false
+}
+
+resource "google_sql_user" "user" {
+    name = "user"
+    instance = google_sql_database_instance.instance.name
+    password = random_password.pwd.result
+}
 `, context)
 }
 
@@ -823,6 +835,46 @@ data "google_storage_bucket_object" "default" {
 
 output "object_metadata" {
   value        = data.google_storage_bucket_object.default
+}
+`, context)
+}
+
+func TestAccCGCSnippet_storageMakeDataPublicExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProvidersOiCS,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_storageMakeDataPublicExample(context),
+			},
+			{
+				ResourceName:      "google_storage_bucket.default",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_storageMakeDataPublicExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_storage_bucket" "default" {
+    name = "tf-test-example-bucket-name%{random_suffix}"
+    location = "US"
+    uniform_bucket_level_access = true
+}
+
+# Make bucket public
+resource "google_storage_bucket_iam_member" "member" {
+  bucket = google_storage_bucket.default.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
 }
 `, context)
 }

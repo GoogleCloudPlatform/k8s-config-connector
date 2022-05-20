@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.20.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.21.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -258,3 +258,6 @@ apply-patches:
 	# computed list field is omitted, it causes a persistent RequiresNew diff.
 	# Removing `Computed: true` in the schema provides a workaround for the unexpected diff result.
 	git apply ../hack/terraform-overrides/compute_reservation.patch
+	# Ignore routing_policy due to complexity introduced with top layer rrdatas/rrdatasRefs
+	# See b/233267548 for context
+	git apply ../hack/terraform-overrides/dns_ignore_routing_policy.patch

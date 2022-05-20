@@ -97,6 +97,32 @@ func TestAccComputeForwardingRule_networkTier(t *testing.T) {
 	})
 }
 
+func TestAccComputeForwardingRule_serviceDirectoryRegistrations(t *testing.T) {
+	t.Parallel()
+
+	poolName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	ruleName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	svcDirNamespace := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeForwardingRuleDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeForwardingRule_serviceDirectoryRegistrations(poolName, ruleName, svcDirNamespace, serviceName),
+			},
+
+			{
+				ResourceName:      "google_compute_forwarding_rule.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func testAccComputeForwardingRule_basic(poolName, ruleName string) string {
 	return fmt.Sprintf(`
 resource "google_compute_target_pool" "foo-tp" {
@@ -186,4 +212,42 @@ resource "google_compute_forwarding_rule" "foobar" {
   network_tier = "STANDARD"
 }
 `, poolName, ruleName)
+}
+
+func testAccComputeForwardingRule_serviceDirectoryRegistrations(poolName, ruleName, svcDirNamespace, serviceName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_target_pool" "foo-tp" {
+  description = "Resource created for Terraform acceptance testing"
+  instances   = ["us-central1-a/foo", "us-central1-b/bar"]
+  name        = "foo-%s"
+}
+
+resource "google_compute_forwarding_rule" "foobar" {
+  description = "Resource created for Terraform acceptance testing"
+  ip_protocol = "UDP"
+  name        = "%s"
+  port_range  = "80-81"
+  target      = google_compute_target_pool.foo-tp.self_link
+
+  service_directory_registrations {
+    namespace = google_service_directory_namespace.examplens.namespace_id
+    service = google_service_directory_service.examplesvc.service_id
+  }
+}
+
+resource "google_service_directory_namespace" "examplens" {
+  namespace_id = "%s"
+  location     = "us-central1"
+}
+
+resource "google_service_directory_service" "examplesvc" {
+  service_id = "%s"
+  namespace  = google_service_directory_namespace.examplens.id
+
+  metadata = {
+    stage  = "prod"
+    region = "us-central1"
+  }
+}
+`, poolName, ruleName, svcDirNamespace, serviceName)
 }

@@ -114,6 +114,9 @@ the `spec.location` field. To manage a regional ComputeForwardingRule, use a reg
   ports:
   - string
   resourceID: string
+  serviceDirectoryRegistrations:
+  - namespace: string
+    service: string
   serviceLabel: string
   subnetworkRef:
     external: string
@@ -554,6 +557,46 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceDirectoryRegistrations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. Service Directory resources to register this forwarding rule with. Currently, only supports a single Service Directory resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceDirectoryRegistrations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceDirectoryRegistrations[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Service Directory namespace to register the forwarding rule under.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceDirectoryRegistrations[].service</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Service Directory service to register the forwarding rule under.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

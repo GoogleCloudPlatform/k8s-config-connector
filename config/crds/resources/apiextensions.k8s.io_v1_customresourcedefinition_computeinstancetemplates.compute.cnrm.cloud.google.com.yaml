@@ -158,7 +158,7 @@ spec:
                       type: integer
                     diskType:
                       description: Immutable. The Google Compute Engine disk type.
-                        Can be either "pd-ssd", "local-ssd", "pd-balanced" or "pd-standard".
+                        Such as "pd-ssd", "local-ssd", "pd-balanced" or "pd-standard".
                       type: string
                     interface:
                       description: Immutable. Specifies the disk interface to use
