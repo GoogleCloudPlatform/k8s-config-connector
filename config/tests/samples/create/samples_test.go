@@ -506,12 +506,6 @@ func readFileToUnstructs(t *testing.T, fileName string, subVars map[string]strin
 func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.Unstructured) []*unstructured.Unstructured {
 	namesToBeReplaced := make([]string, 0)
 	for _, u := range unstructs {
-		// Skip "Service" resources. Their names shouldn't be replaced with
-		// unique IDs since their names have special meaning (e.g.
-		// "pubsub.googleapis.com")
-		if u.GetKind() == "Service" {
-			continue
-		}
 		namesToBeReplaced = append(namesToBeReplaced, u.GetName())
 	}
 

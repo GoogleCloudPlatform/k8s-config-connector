@@ -127,12 +127,12 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>BigtableInstance</code></td>
-        <td></td>
+        <td>Y</td>
         <td></td>
     </tr>
     <tr>
         <td><code>BigtableTable</code></td>
-        <td></td>
+        <td>Y</td>
         <td></td>
     </tr>
     <tr>

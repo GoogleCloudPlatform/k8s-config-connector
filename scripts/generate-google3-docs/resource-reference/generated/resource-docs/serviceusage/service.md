@@ -256,7 +256,9 @@ do so using <code>kubectl get gcpservice</code>.
       cnrm.cloud.google.com/deletion-policy: "abandon"
       # this is unnecessary with the deletion-policy of 'abandon', but useful if the abandon policy is removed.
       cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: pubsub.googleapis.com
+    name: service-sample
+  spec:
+    resourceID: pubsub.googleapis.com
   ```
 
 

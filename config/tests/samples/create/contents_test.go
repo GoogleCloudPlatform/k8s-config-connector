@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -37,28 +38,27 @@ func TestLicenses(t *testing.T) {
 }
 
 func validateResourceName(t *testing.T, sampleName string, u *unstructured.Unstructured) {
-	if !resourceNameMustAdhereToSampleGuidelines(u) {
-		return
+	// Service resources should specify the service to enable (e.g.
+	// pubsub.googleapis.com) via spec.resourceID instead of metadata.name.
+	// Output a targeted error message for this case since it is an easy
+	// mistake to make.
+	if u.GetKind() == "Service" {
+		if strings.HasSuffix(u.GetName(), ".com") {
+			t.Fatalf("invalid metadata.name value '%v' for Service resource in sample '%v': "+
+				"use %v instead of metadata.name to specify the service to enable",
+				u.GetName(), sampleName, k8s.ResourceIDFieldPath)
+		}
 	}
+
 	allowedNameFragments := []string{"sample", "dep"}
 	for _, nf := range allowedNameFragments {
 		if strings.Contains(u.GetName(), nf) {
 			return
 		}
 	}
-	// in addition to this naming scheme following the sample guidelines, the create sample test is looking for either
-	// "sample" or "dep" to "uniqify" the name of a sample
-	t.Errorf("invalid resource name '%v' in sample '%v': resource name must contain one of {%v} to be valid",
+	// In addition to this naming scheme following the sample guidelines, the
+	// create sample test looks for either "sample" or "dep" to "uniqify" the
+	// name of a sample
+	t.Errorf("invalid metadata.name value '%v' in sample '%v': must contain one of {%v} to be valid",
 		u.GetName(), sampleName, strings.Join(allowedNameFragments, ","))
-}
-
-func resourceNameMustAdhereToSampleGuidelines(u *unstructured.Unstructured) bool {
-	// resources that do not have to adhere to the sample guidelines, each resource should have a comment as to why it
-	// is OK if it doesn't adhere
-	disabledResources := map[string]bool{
-		// Service names MUST be the actual URI of their service, i.e. pubsub.googleapis.com
-		"Service": true,
-	}
-	_, ok := disabledResources[u.GroupVersionKind().Kind]
-	return !ok
 }

@@ -86,6 +86,7 @@ spec:
       referenceField:
         name: instance
         type: name
+      supportsConditions: true
     idTemplate: "projects/{{project}}/instances/{{name}}"
     idTemplateCanBeUsedToMatchResourceName: true
     resourceAvailableInAssetInventory: true
@@ -141,3 +142,4 @@ spec:
       referenceField:
         name: table
         type: name
+      supportsConditions: true

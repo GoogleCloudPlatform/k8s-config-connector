@@ -50,7 +50,7 @@
 
 <tr>
     <td>Supports IAM Conditions</td>
-    <td>No</td>
+    <td>Yes</td>
 </tr>
 
 <tr>
