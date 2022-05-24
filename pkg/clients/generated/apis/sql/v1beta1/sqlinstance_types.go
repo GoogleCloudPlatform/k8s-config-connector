@@ -239,7 +239,7 @@ type InstanceSettings struct {
 	// +optional
 	ActiveDirectoryConfig *InstanceActiveDirectoryConfig `json:"activeDirectoryConfig,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
@@ -261,7 +261,7 @@ type InstanceSettings struct {
 	// +optional
 	Collation *string `json:"collation,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
@@ -306,7 +306,7 @@ type InstanceSettings struct {
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
 
-	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`

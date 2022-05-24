@@ -432,7 +432,7 @@ spec:
                           to workloads running on the node.
                         type: string
                       nodeMetadata:
-                        description: DEPRECATED — Deprecated in favor of mode. NodeMetadata
+                        description: DEPRECATED. Deprecated in favor of mode. NodeMetadata
                           is the configuration for how to expose metadata to the workloads
                           running on the node.
                         type: string

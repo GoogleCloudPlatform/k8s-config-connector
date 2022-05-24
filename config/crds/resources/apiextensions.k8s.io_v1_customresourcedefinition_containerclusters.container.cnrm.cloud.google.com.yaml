@@ -534,7 +534,7 @@ spec:
                     type: object
                 type: object
               masterAuth:
-                description: DEPRECATED — Basic authentication was removed for GKE
+                description: DEPRECATED. Basic authentication was removed for GKE
                   cluster versions >= 1.19. The authentication information for accessing
                   the Kubernetes master. Some values in this block are only returned
                   by the API if your service account has permission to get credentials
@@ -981,7 +981,7 @@ spec:
                           to workloads running on the node.
                         type: string
                       nodeMetadata:
-                        description: DEPRECATED — Deprecated in favor of mode. NodeMetadata
+                        description: DEPRECATED. Deprecated in favor of mode. NodeMetadata
                           is the configuration for how to expose metadata to the workloads
                           running on the node.
                         type: string
@@ -1201,7 +1201,7 @@ spec:
                 properties:
                   identityNamespace:
                     description: |-
-                      DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
+                      DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
                       Enables workload identity.
                     type: string
                   workloadPool:

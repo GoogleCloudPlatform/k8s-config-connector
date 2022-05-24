@@ -163,7 +163,7 @@ the objects within a storage bucket before issuing the delete command.
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED — Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
+            <p>{% verbatim %}DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
 Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
     </tr>

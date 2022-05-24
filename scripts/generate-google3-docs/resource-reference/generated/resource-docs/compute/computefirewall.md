@@ -306,7 +306,7 @@ is unspecified, the firewall rule will be enabled.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED — Deprecated in favor of log_config. This field denotes whether to enable logging for a particular firewall rule. If logging is enabled, logs will be exported to Stackdriver.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of log_config. This field denotes whether to enable logging for a particular firewall rule. If logging is enabled, logs will be exported to Stackdriver.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

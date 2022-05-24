@@ -48,7 +48,7 @@ func preserveBucketPolicyOnlyField() ResourceOverride {
 		spec := schema.Properties["spec"]
 		spec.Properties["bucketPolicyOnly"] = apiextensions.JSONSchemaProps{
 			Type: "boolean",
-			Description: "DEPRECATED — Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.\n" +
+			Description: "DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.\n" +
 				"Enables Bucket PolicyOnly access to a bucket.",
 		}
 		schema.Properties["spec"] = spec

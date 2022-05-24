@@ -917,7 +917,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

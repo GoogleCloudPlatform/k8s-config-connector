@@ -95,7 +95,7 @@ spec:
                 items:
                   properties:
                     days:
-                      description: DEPRECATED — Deprecated in favor of duration. Immutable.
+                      description: DEPRECATED. Deprecated in favor of duration. Immutable.
                         Number of days before applying GC policy.
                       type: integer
                     duration:

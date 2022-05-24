@@ -142,7 +142,7 @@ spec:
                   type: object
                 type: array
               deletionProtection:
-                description: DEPRECATED — This field no longer serves any function
+                description: DEPRECATED. This field no longer serves any function
                   and is intended to be dropped in a later version of the resource.
                 type: boolean
               displayName:
@@ -150,7 +150,7 @@ spec:
                   Defaults to the instance name.
                 type: string
               instanceType:
-                description: DEPRECATED — It is recommended to leave this field unspecified
+                description: DEPRECATED. It is recommended to leave this field unspecified
                   since the distinction between "DEVELOPMENT" and "PRODUCTION" instances
                   is going away, and all instances will become "PRODUCTION" instances.
                   This means that new and existing "DEVELOPMENT" instances will be

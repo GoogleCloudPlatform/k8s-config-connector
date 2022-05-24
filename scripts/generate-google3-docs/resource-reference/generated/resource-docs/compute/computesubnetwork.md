@@ -511,7 +511,7 @@ If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IP
         <td><code>fingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — This field is not useful for users, and has been removed as an output. Fingerprint of this resource. This field is used internally during updates of this resource.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This field is not useful for users, and has been removed as an output. Fingerprint of this resource. This field is used internally during updates of this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

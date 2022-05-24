@@ -655,7 +655,7 @@ type ClusterVerticalPodAutoscaling struct {
 }
 
 type ClusterWorkloadIdentityConfig struct {
-	/* DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
+	/* DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
 	Enables workload identity. */
 	// +optional
 	IdentityNamespace *string `json:"identityNamespace,omitempty"`
@@ -670,7 +670,7 @@ type ClusterWorkloadMetadataConfig struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
+	/* DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
 	// +optional
 	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }
@@ -783,7 +783,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* DEPRECATED — Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
+	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuth `json:"masterAuth,omitempty"`
 

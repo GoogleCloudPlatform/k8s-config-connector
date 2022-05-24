@@ -60,7 +60,7 @@ spec:
             properties:
               bucketPolicyOnly:
                 description: |-
-                  DEPRECATED — Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
+                  DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
                   Enables Bucket PolicyOnly access to a bucket.
                 type: boolean
               cors:

@@ -275,7 +275,7 @@ spec:
                     type: object
                   authorizedGaeApplications:
                     description: |-
-                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     items:
                       type: string
@@ -330,7 +330,7 @@ spec:
                     type: string
                   crashSafeReplication:
                     description: |-
-                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: boolean
                   databaseFlags:
@@ -471,7 +471,7 @@ spec:
                     type: string
                   replicationType:
                     description: |-
-                      DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: string
                   tier:

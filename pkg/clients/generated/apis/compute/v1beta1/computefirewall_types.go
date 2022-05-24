@@ -114,7 +114,7 @@ type ComputeFirewallSpec struct {
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* DEPRECATED — Deprecated in favor of log_config. This field denotes whether to enable logging for a particular firewall rule. If logging is enabled, logs will be exported to Stackdriver. */
+	/* DEPRECATED. Deprecated in favor of log_config. This field denotes whether to enable logging for a particular firewall rule. If logging is enabled, logs will be exported to Stackdriver. */
 	// +optional
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 

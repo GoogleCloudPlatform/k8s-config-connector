@@ -183,7 +183,7 @@ column family as it may result in unexpected behavior.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}DEPRECATED — Deprecated in favor of duration. Immutable. Number of days before applying GC policy.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

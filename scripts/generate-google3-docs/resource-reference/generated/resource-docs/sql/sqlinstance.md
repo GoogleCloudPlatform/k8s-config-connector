@@ -562,7 +562,7 @@ documentation</a>.
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>
@@ -708,7 +708,7 @@ is set to true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1059,7 +1059,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+            <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
         </td>
     </tr>

@@ -49,7 +49,7 @@ func keepFirstGenerationFields() ResourceOverride {
 		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
 		settings := schema.Properties["spec"].Properties["settings"]
 		settings.Properties["authorizedGaeApplications"] = apiextensions.JSONSchemaProps{
-			Description: "DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
+			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
 				"Specifying this field has no-ops; it's recommended to remove this field from your configuration.",
 			Type: "array",
 			Items: &apiextensions.JSONSchemaPropsOrArray{
@@ -59,12 +59,12 @@ func keepFirstGenerationFields() ResourceOverride {
 			},
 		}
 		settings.Properties["crashSafeReplication"] = apiextensions.JSONSchemaProps{
-			Description: "DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
+			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
 				"Specifying this field has no-ops; it's recommended to remove this field from your configuration.",
 			Type: "boolean",
 		}
 		settings.Properties["replicationType"] = apiextensions.JSONSchemaProps{
-			Description: "DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
+			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
 				"Specifying this field has no-ops; it's recommended to remove this field from your configuration.",
 			Type: "string",
 		}

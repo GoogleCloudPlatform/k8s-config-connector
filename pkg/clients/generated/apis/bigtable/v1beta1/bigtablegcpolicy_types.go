@@ -36,7 +36,7 @@ import (
 )
 
 type GcpolicyMaxAge struct {
-	/* DEPRECATED — Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
+	/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
 	// +optional
 	Days *int `json:"days,omitempty"`
 

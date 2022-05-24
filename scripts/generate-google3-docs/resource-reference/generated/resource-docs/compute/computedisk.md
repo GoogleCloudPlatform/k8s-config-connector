@@ -399,7 +399,7 @@ encryption key that protects this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

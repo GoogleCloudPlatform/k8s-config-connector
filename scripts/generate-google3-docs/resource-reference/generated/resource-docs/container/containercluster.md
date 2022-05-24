@@ -1290,7 +1290,7 @@ removes the default node pool created during cluster creation.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED — Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2162,7 +2162,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2546,7 +2546,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED — This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
+            <p>{% verbatim %}DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
 Enables workload identity.{% endverbatim %}</p>
         </td>
     </tr>

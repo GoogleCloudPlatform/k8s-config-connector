@@ -218,7 +218,7 @@ spec:
                     type: string
                 type: object
               interface:
-                description: DEPRECATED — This field is no longer in use, disk interfaces
+                description: DEPRECATED. This field is no longer in use, disk interfaces
                   will be automatically determined on attachment. To resolve this
                   issue, remove this field from your config. Immutable. Specifies
                   the disk interface to use for attaching this disk, which is either

@@ -162,7 +162,7 @@ type ComputeSubnetworkStatus struct {
 	CreationTimestamp string `json:"creationTimestamp,omitempty"`
 	/* The range of external IPv6 addresses that are owned by this subnetwork. */
 	ExternalIpv6Prefix string `json:"externalIpv6Prefix,omitempty"`
-	/* DEPRECATED — This field is not useful for users, and has been removed as an output. Fingerprint of this resource. This field is used internally during updates of this resource. */
+	/* DEPRECATED. This field is not useful for users, and has been removed as an output. Fingerprint of this resource. This field is used internally during updates of this resource. */
 	Fingerprint string `json:"fingerprint,omitempty"`
 	/* The gateway address for default routes to reach destination addresses
 	outside this subnetwork. */

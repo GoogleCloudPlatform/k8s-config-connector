@@ -259,7 +259,7 @@ type NodepoolWorkloadMetadataConfig struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* DEPRECATED — Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
+	/* DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
 	// +optional
 	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }

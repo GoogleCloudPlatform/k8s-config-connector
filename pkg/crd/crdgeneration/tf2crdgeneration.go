@@ -100,7 +100,7 @@ func tfObjectSchemaToJSONSchema(s map[string]*schema.Schema) *apiextensions.JSON
 			description = strings.TrimSpace("Immutable. " + description)
 		}
 		if v.Deprecated != "" {
-			deprecationMsg := ensureEndsInPeriod(fmt.Sprintf("DEPRECATED — %v", v.Deprecated))
+			deprecationMsg := ensureEndsInPeriod(fmt.Sprintf("DEPRECATED. %v", v.Deprecated))
 			description = strings.TrimSpace(fmt.Sprintf("%v %v", deprecationMsg, description))
 		}
 		// if the description contains "terraform", ignore the description field

@@ -249,9 +249,9 @@ spec:
                   this subnetwork.
                 type: string
               fingerprint:
-                description: DEPRECATED — This field is not useful for users, and
-                  has been removed as an output. Fingerprint of this resource. This
-                  field is used internally during updates of this resource.
+                description: DEPRECATED. This field is not useful for users, and has
+                  been removed as an output. Fingerprint of this resource. This field
+                  is used internally during updates of this resource.
                 type: string
               gatewayAddress:
                 description: |-
