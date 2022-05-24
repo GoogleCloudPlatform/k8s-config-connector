@@ -211,6 +211,11 @@ type ClusterEphemeralStorageConfig struct {
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
+type ClusterExclusionOptions struct {
+	/* The scope of automatic upgrades to restrict in the exclusion window. */
+	Scope string `json:"scope"`
+}
+
 type ClusterGcePersistentDiskCsiDriverConfig struct {
 	/*  */
 	Enabled bool `json:"enabled"`
@@ -325,6 +330,10 @@ type ClusterMaintenanceExclusion struct {
 
 	/*  */
 	ExclusionName string `json:"exclusionName"`
+
+	/* Maintenance exclusion related options. */
+	// +optional
+	ExclusionOptions *ClusterExclusionOptions `json:"exclusionOptions,omitempty"`
 
 	/*  */
 	StartTime string `json:"startTime"`

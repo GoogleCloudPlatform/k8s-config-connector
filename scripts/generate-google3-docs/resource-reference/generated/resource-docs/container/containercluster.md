@@ -170,6 +170,8 @@ removes the default node pool created during cluster creation.
     maintenanceExclusion:
     - endTime: string
       exclusionName: string
+      exclusionOptions:
+        scope: string
       startTime: string
     recurringWindow:
       endTime: string
@@ -1209,6 +1211,26 @@ removes the default node pool created during cluster creation.
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusion[].exclusionOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Maintenance exclusion related options.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusion[].exclusionOptions.scope</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The scope of automatic upgrades to restrict in the exclusion window.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

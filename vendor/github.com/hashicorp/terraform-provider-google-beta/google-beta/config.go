@@ -30,7 +30,7 @@ import (
 	"google.golang.org/api/cloudiot/v1"
 	"google.golang.org/api/cloudkms/v1"
 	"google.golang.org/api/cloudresourcemanager/v1"
-	resourceManagerV2 "google.golang.org/api/cloudresourcemanager/v2"
+	resourceManagerV3 "google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/composer/v1beta1"
 	compute "google.golang.org/api/compute/v0.beta"
 	container "google.golang.org/api/container/v1beta1"
@@ -175,6 +175,7 @@ type Config struct {
 	BigtableBasePath             string
 	BillingBasePath              string
 	BinaryAuthorizationBasePath  string
+	CertificateManagerBasePath   string
 	CloudAssetBasePath           string
 	CloudBuildBasePath           string
 	CloudFunctionsBasePath       string
@@ -244,7 +245,7 @@ type Config struct {
 	ContainerBasePath         string
 	DataflowBasePath          string
 	IamCredentialsBasePath    string
-	ResourceManagerV2BasePath string
+	ResourceManagerV3BasePath string
 	IAMBasePath               string
 	CloudIoTBasePath          string
 	ServiceNetworkingBasePath string
@@ -257,6 +258,7 @@ type Config struct {
 	// start DCLBasePaths
 	// dataprocBasePath is implemented in mm
 	AssuredWorkloadsBasePath     string
+	ClouddeployBasePath          string
 	CloudResourceManagerBasePath string
 	ContainerAwsBasePath         string
 	ContainerAzureBasePath       string
@@ -285,6 +287,7 @@ const BigqueryReservationBasePathKey = "BigqueryReservation"
 const BigtableBasePathKey = "Bigtable"
 const BillingBasePathKey = "Billing"
 const BinaryAuthorizationBasePathKey = "BinaryAuthorization"
+const CertificateManagerBasePathKey = "CertificateManager"
 const CloudAssetBasePathKey = "CloudAsset"
 const CloudBuildBasePathKey = "CloudBuild"
 const CloudFunctionsBasePathKey = "CloudFunctions"
@@ -354,7 +357,7 @@ const ContainerBasePathKey = "Container"
 const DataflowBasePathKey = "Dataflow"
 const IAMBasePathKey = "IAM"
 const IamCredentialsBasePathKey = "IamCredentials"
-const ResourceManagerV2BasePathKey = "ResourceManagerV2"
+const ResourceManagerV3BasePathKey = "ResourceManagerV3"
 const ServiceNetworkingBasePathKey = "ServiceNetworking"
 const StorageTransferBasePathKey = "StorageTransfer"
 const BigtableAdminBasePathKey = "BigtableAdmin"
@@ -372,12 +375,13 @@ var DefaultBasePaths = map[string]string{
 	AppEngineBasePathKey:            "https://appengine.googleapis.com/v1/",
 	ArtifactRegistryBasePathKey:     "https://artifactregistry.googleapis.com/v1beta2/",
 	BigQueryBasePathKey:             "https://bigquery.googleapis.com/bigquery/v2/",
-	BigqueryConnectionBasePathKey:   "https://bigqueryconnection.googleapis.com/v1beta1/",
+	BigqueryConnectionBasePathKey:   "https://bigqueryconnection.googleapis.com/v1/",
 	BigqueryDataTransferBasePathKey: "https://bigquerydatatransfer.googleapis.com/v1/",
 	BigqueryReservationBasePathKey:  "https://bigqueryreservation.googleapis.com/v1beta1/",
 	BigtableBasePathKey:             "https://bigtableadmin.googleapis.com/v2/",
 	BillingBasePathKey:              "https://billingbudgets.googleapis.com/v1/",
 	BinaryAuthorizationBasePathKey:  "https://binaryauthorization.googleapis.com/v1/",
+	CertificateManagerBasePathKey:   "https://certificatemanager.googleapis.com/v1/",
 	CloudAssetBasePathKey:           "https://cloudasset.googleapis.com/v1/",
 	CloudBuildBasePathKey:           "https://cloudbuild.googleapis.com/v1/",
 	CloudFunctionsBasePathKey:       "https://cloudfunctions.googleapis.com/v1/",
@@ -447,7 +451,7 @@ var DefaultBasePaths = map[string]string{
 	DataflowBasePathKey:             "https://dataflow.googleapis.com/v1b3/",
 	IAMBasePathKey:                  "https://iam.googleapis.com/v1/",
 	IamCredentialsBasePathKey:       "https://iamcredentials.googleapis.com/v1/",
-	ResourceManagerV2BasePathKey:    "https://cloudresourcemanager.googleapis.com/v2/",
+	ResourceManagerV3BasePathKey:    "https://cloudresourcemanager.googleapis.com/v3/",
 	ServiceNetworkingBasePathKey:    "https://servicenetworking.googleapis.com/v1/",
 	StorageTransferBasePathKey:      "https://storagetransfer.googleapis.com/v1/",
 	BigtableAdminBasePathKey:        "https://bigtableadmin.googleapis.com/v2/",
@@ -815,18 +819,18 @@ func (c *Config) NewResourceManagerClient(userAgent string) *cloudresourcemanage
 	return clientResourceManager
 }
 
-func (c *Config) NewResourceManagerV2Client(userAgent string) *resourceManagerV2.Service {
-	resourceManagerV2BasePath := removeBasePathVersion(c.ResourceManagerV2BasePath)
-	log.Printf("[INFO] Instantiating Google Cloud ResourceManager V client for path %s", resourceManagerV2BasePath)
-	clientResourceManagerV2, err := resourceManagerV2.NewService(c.context, option.WithHTTPClient(c.client))
+func (c *Config) NewResourceManagerV3Client(userAgent string) *resourceManagerV3.Service {
+	resourceManagerV3BasePath := removeBasePathVersion(c.ResourceManagerV3BasePath)
+	log.Printf("[INFO] Instantiating Google Cloud ResourceManager V3 client for path %s", resourceManagerV3BasePath)
+	clientResourceManagerV3, err := resourceManagerV3.NewService(c.context, option.WithHTTPClient(c.client))
 	if err != nil {
-		log.Printf("[WARN] Error creating client resource manager v2: %s", err)
+		log.Printf("[WARN] Error creating client resource manager v3: %s", err)
 		return nil
 	}
-	clientResourceManagerV2.UserAgent = userAgent
-	clientResourceManagerV2.BasePath = resourceManagerV2BasePath
+	clientResourceManagerV3.UserAgent = userAgent
+	clientResourceManagerV3.BasePath = resourceManagerV3BasePath
 
-	return clientResourceManagerV2
+	return clientResourceManagerV3
 }
 
 func (c *Config) NewRuntimeconfigClient(userAgent string) *runtimeconfig.Service {
@@ -1247,6 +1251,7 @@ func ConfigureBasePaths(c *Config) {
 	c.BigtableBasePath = DefaultBasePaths[BigtableBasePathKey]
 	c.BillingBasePath = DefaultBasePaths[BillingBasePathKey]
 	c.BinaryAuthorizationBasePath = DefaultBasePaths[BinaryAuthorizationBasePathKey]
+	c.CertificateManagerBasePath = DefaultBasePaths[CertificateManagerBasePathKey]
 	c.CloudAssetBasePath = DefaultBasePaths[CloudAssetBasePathKey]
 	c.CloudBuildBasePath = DefaultBasePaths[CloudBuildBasePathKey]
 	c.CloudFunctionsBasePath = DefaultBasePaths[CloudFunctionsBasePathKey]
@@ -1318,7 +1323,7 @@ func ConfigureBasePaths(c *Config) {
 	c.DataprocBasePath = DefaultBasePaths[DataprocBasePathKey]
 	c.DataflowBasePath = DefaultBasePaths[DataflowBasePathKey]
 	c.IamCredentialsBasePath = DefaultBasePaths[IamCredentialsBasePathKey]
-	c.ResourceManagerV2BasePath = DefaultBasePaths[ResourceManagerV2BasePathKey]
+	c.ResourceManagerV3BasePath = DefaultBasePaths[ResourceManagerV3BasePathKey]
 	c.IAMBasePath = DefaultBasePaths[IAMBasePathKey]
 	c.ServiceNetworkingBasePath = DefaultBasePaths[ServiceNetworkingBasePathKey]
 	c.BigQueryBasePath = DefaultBasePaths[BigQueryBasePathKey]

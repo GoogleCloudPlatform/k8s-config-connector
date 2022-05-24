@@ -99,9 +99,14 @@ type ComputeRegionNetworkEndpointGroupSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS"]. */
+	/* Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"]. */
 	// +optional
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
+
+	/* Immutable. The target service url used to set up private service connection to
+	a Google API or a PSC Producer Service Attachment. */
+	// +optional
+	PscTargetService *string `json:"pscTargetService,omitempty"`
 
 	/* Immutable. A reference to the region where the Serverless NEGs Reside. */
 	Region string `json:"region"`

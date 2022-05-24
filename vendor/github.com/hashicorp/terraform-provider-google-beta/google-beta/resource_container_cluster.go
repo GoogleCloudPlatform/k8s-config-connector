@@ -123,7 +123,6 @@ func resourceContainerCluster() *schema.Resource {
 
 		CustomizeDiff: customdiff.All(
 			resourceNodeConfigEmptyGuestAccelerator,
-			containerClusterPrivateClusterConfigCustomDiff,
 			customdiff.ForceNewIfChange("enable_l4_ilb_subsetting", isBeenEnabled),
 			containerClusterAutopilotCustomizeDiff,
 			containerClusterNodeVersionRemoveDefaultCustomizeDiff,
@@ -688,6 +687,22 @@ func resourceContainerCluster() *schema.Resource {
 										Required:     true,
 										ValidateFunc: validateRFC3339Date,
 									},
+									"exclusion_options": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										MaxItems:    1,
+										Description: `Maintenance exclusion related options.`,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"scope": {
+													Type:         schema.TypeString,
+													Required:     true,
+													ValidateFunc: validation.StringInSlice([]string{"NO_UPGRADES", "NO_MINOR_UPGRADES", "NO_MINOR_OR_NODE_UPGRADES"}, false),
+													Description:  `The scope of automatic upgrades to restrict in the exclusion window.`,
+												},
+											},
+										},
+									},
 								},
 							},
 						},
@@ -1066,6 +1081,7 @@ func resourceContainerCluster() *schema.Resource {
 						},
 						"master_ipv4_cidr_block": {
 							Type:         schema.TypeString,
+							Computed:     true,
 							Optional:     true,
 							ForceNew:     true,
 							ValidateFunc: orEmpty(validation.IsCIDRNetwork(28, 28)),
@@ -1602,6 +1618,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("monitoring_config"); ok {
 		cluster.MonitoringConfig = expandMonitoringConfig(v)
+	}
+
+	if err := validatePrivateClusterConfig(cluster); err != nil {
+		return err
 	}
 
 	req := &container.CreateClusterRequest{
@@ -3209,6 +3229,15 @@ func expandMaintenancePolicy(d *schema.ResourceData, meta interface{}) *containe
 				StartTime: exclusion["start_time"].(string),
 				EndTime:   exclusion["end_time"].(string),
 			}
+			if exclusionOptions, ok := exclusion["exclusion_options"]; ok && len(exclusionOptions.([]interface{})) > 0 {
+				meo := exclusionOptions.([]interface{})[0].(map[string]interface{})
+				mex := exclusions[exclusion["exclusion_name"].(string)]
+				mex.MaintenanceExclusionOptions = &container.MaintenanceExclusionOptions{
+					Scope:           meo["scope"].(string),
+					ForceSendFields: []string{"Scope"},
+				}
+				exclusions[exclusion["exclusion_name"].(string)] = mex
+			}
 		}
 	}
 
@@ -3932,11 +3961,26 @@ func flattenMaintenancePolicy(mp *container.MaintenancePolicy) []map[string]inte
 	exclusions := []map[string]interface{}{}
 	if mp.Window.MaintenanceExclusions != nil {
 		for wName, window := range mp.Window.MaintenanceExclusions {
-			exclusions = append(exclusions, map[string]interface{}{
+			exclusion := map[string]interface{}{
 				"start_time":     window.StartTime,
 				"end_time":       window.EndTime,
 				"exclusion_name": wName,
-			})
+			}
+			if window.MaintenanceExclusionOptions != nil {
+				// When the scope is set to NO_UPGRADES which is the default value,
+				// the maintenance exclusion returned by GCP will be empty.
+				// This seems like a bug. To workaround this, assign NO_UPGRADES to the scope explicitly
+				scope := "NO_UPGRADES"
+				if window.MaintenanceExclusionOptions.Scope != "" {
+					scope = window.MaintenanceExclusionOptions.Scope
+				}
+				exclusion["exclusion_options"] = []map[string]interface{}{
+					{
+						"scope": scope,
+					},
+				}
+			}
+			exclusions = append(exclusions, exclusion)
 		}
 	}
 
@@ -4266,31 +4310,16 @@ func containerClusterPrivateClusterConfigSuppress(k, old, new string, d *schema.
 	return false
 }
 
-func containerClusterPrivateClusterConfigCustomDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
-	pcc, ok := d.GetOk("private_cluster_config")
-	if !ok {
+func validatePrivateClusterConfig(cluster *container.Cluster) error {
+	if cluster == nil || cluster.PrivateClusterConfig == nil {
 		return nil
 	}
-	pccList := pcc.([]interface{})
-	if len(pccList) == 0 {
-		return nil
+	if !cluster.PrivateClusterConfig.EnablePrivateNodes && len(cluster.PrivateClusterConfig.MasterIpv4CidrBlock) > 0 {
+		return fmt.Errorf("master_ipv4_cidr_block can only be set if enable_private_nodes is true")
 	}
-	config := pccList[0].(map[string]interface{})
-	if config["enable_private_nodes"].(bool) {
-		block := config["master_ipv4_cidr_block"]
-
-		// We can only apply this validation if we know the final value of the field, and we may
-		// not know the final value if users feed the value into their config in unintuitive ways.
-		// https://github.com/hashicorp/terraform-provider-google/issues/4186
-		blockValueKnown := d.NewValueKnown("private_cluster_config.0.master_ipv4_cidr_block")
-
-		if blockValueKnown && (block == nil || block == "") {
+	if cluster.PrivateClusterConfig.EnablePrivateNodes && len(cluster.PrivateClusterConfig.MasterIpv4CidrBlock) == 0 {
+		if cluster.Autopilot == nil || !cluster.Autopilot.Enabled {
 			return fmt.Errorf("master_ipv4_cidr_block must be set if enable_private_nodes is true")
-		}
-	} else {
-		block := config["master_ipv4_cidr_block"]
-		if block != nil && block != "" {
-			return fmt.Errorf("master_ipv4_cidr_block can only be set if enable_private_nodes is true")
 		}
 	}
 	return nil

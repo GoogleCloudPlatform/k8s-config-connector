@@ -500,6 +500,16 @@ spec:
                           type: string
                         exclusionName:
                           type: string
+                        exclusionOptions:
+                          description: Maintenance exclusion related options.
+                          properties:
+                            scope:
+                              description: The scope of automatic upgrades to restrict
+                                in the exclusion window.
+                              type: string
+                          required:
+                          - scope
+                          type: object
                         startTime:
                           type: string
                       required:

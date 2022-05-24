@@ -88,6 +88,7 @@
     urlMask: string
   description: string
   networkEndpointType: string
+  pscTargetService: string
   region: string
   resourceID: string
   ```
@@ -273,7 +274,18 @@ you create the resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscTargetService</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The target service url used to set up private service connection to
+a Google API or a PSC Producer Service Attachment.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

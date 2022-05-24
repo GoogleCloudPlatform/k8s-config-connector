@@ -40,6 +40,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/services/goog
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/billingbudgets/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/binaryauthorization
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudbuild/beta
+github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/clouddeploy/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudfunctions/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudidentity/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudkms
@@ -936,7 +937,7 @@ google.golang.org/api/cloudidentity/v1beta1
 google.golang.org/api/cloudiot/v1
 google.golang.org/api/cloudkms/v1
 google.golang.org/api/cloudresourcemanager/v1
-google.golang.org/api/cloudresourcemanager/v2
+google.golang.org/api/cloudresourcemanager/v3
 google.golang.org/api/composer/v1beta1
 google.golang.org/api/compute/v0.beta
 google.golang.org/api/compute/v1

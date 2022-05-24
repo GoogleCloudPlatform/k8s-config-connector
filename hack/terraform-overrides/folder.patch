@@ -29,8 +29,8 @@ index 3ce6a7eb..26e08926 100644
  	}
 
 +	// If the folder has been deleted from outside Terraform, remove it from state file.
-+	if folder.LifecycleState != "ACTIVE" {
-+		log.Printf("[WARN] Removing folder '%s' because its state is '%s' (requires 'ACTIVE').", d.Id(), folder.LifecycleState)
++	if folder.State != "ACTIVE" {
++		log.Printf("[WARN] Removing folder '%s' because its state is '%s' (requires 'ACTIVE').", d.Id(), folder.State)
 +		d.SetId("")
 +		return nil
 +	}

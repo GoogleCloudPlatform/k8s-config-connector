@@ -261,6 +261,14 @@ func Provider() *schema.Provider {
 					"GOOGLE_BINARY_AUTHORIZATION_CUSTOM_ENDPOINT",
 				}, DefaultBasePaths[BinaryAuthorizationBasePathKey]),
 			},
+			"certificate_manager_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
+					"GOOGLE_CERTIFICATE_MANAGER_CUSTOM_ENDPOINT",
+				}, DefaultBasePaths[CertificateManagerBasePathKey]),
+			},
 			"cloud_asset_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -772,7 +780,7 @@ func Provider() *schema.Provider {
 			ContainerCustomEndpointEntryKey:         ContainerCustomEndpointEntry,
 			DataflowCustomEndpointEntryKey:          DataflowCustomEndpointEntry,
 			IamCredentialsCustomEndpointEntryKey:    IamCredentialsCustomEndpointEntry,
-			ResourceManagerV2CustomEndpointEntryKey: ResourceManagerV2CustomEndpointEntry,
+			ResourceManagerV3CustomEndpointEntryKey: ResourceManagerV3CustomEndpointEntry,
 			RuntimeConfigCustomEndpointEntryKey:     RuntimeConfigCustomEndpointEntry,
 			IAMCustomEndpointEntryKey:               IAMCustomEndpointEntry,
 			ServiceNetworkingCustomEndpointEntryKey: ServiceNetworkingCustomEndpointEntry,
@@ -782,6 +790,7 @@ func Provider() *schema.Provider {
 
 			// dcl
 			AssuredWorkloadsEndpointEntryKey:             AssuredWorkloadsEndpointEntry,
+			ClouddeployEndpointEntryKey:                  ClouddeployEndpointEntry,
 			CloudResourceManagerEndpointEntryKey:         CloudResourceManagerEndpointEntry,
 			EventarcEndpointEntryKey:                     EventarcEndpointEntry,
 			FirebaserulesEndpointEntryKey:                FirebaserulesEndpointEntry,
@@ -927,9 +936,9 @@ func Provider() *schema.Provider {
 	return provider
 }
 
-// Generated resources: 247
+// Generated resources: 249
 // Generated IAM resources: 138
-// Total generated resources: 385
+// Total generated resources: 387
 func ResourceMap() map[string]*schema.Resource {
 	resourceMap, _ := ResourceMapWithErrors()
 	return resourceMap
@@ -1004,6 +1013,8 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_binary_authorization_attestor_iam_member":              ResourceIamMember(BinaryAuthorizationAttestorIamSchema, BinaryAuthorizationAttestorIamUpdaterProducer, BinaryAuthorizationAttestorIdParseFunc),
 			"google_binary_authorization_attestor_iam_policy":              ResourceIamPolicy(BinaryAuthorizationAttestorIamSchema, BinaryAuthorizationAttestorIamUpdaterProducer, BinaryAuthorizationAttestorIdParseFunc),
 			"google_binary_authorization_policy":                           resourceBinaryAuthorizationPolicy(),
+			"google_certificate_manager_dns_authorization":                 resourceCertificateManagerDnsAuthorization(),
+			"google_certificate_manager_certificate":                       resourceCertificateManagerCertificate(),
 			"google_cloud_asset_project_feed":                              resourceCloudAssetProjectFeed(),
 			"google_cloud_asset_folder_feed":                               resourceCloudAssetFolderFeed(),
 			"google_cloud_asset_organization_feed":                         resourceCloudAssetOrganizationFeed(),
@@ -1411,6 +1422,8 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_apikeys_key":                         resourceApikeysKey(),
 			"google_assured_workloads_workload":          resourceAssuredWorkloadsWorkload(),
 			"google_cloudbuild_worker_pool":              resourceCloudbuildWorkerPool(),
+			"google_clouddeploy_delivery_pipeline":       resourceClouddeployDeliveryPipeline(),
+			"google_clouddeploy_target":                  resourceClouddeployTarget(),
 			"google_compute_firewall_policy_association": resourceComputeFirewallPolicyAssociation(),
 			"google_compute_firewall_policy":             resourceComputeFirewallPolicy(),
 			"google_compute_firewall_policy_rule":        resourceComputeFirewallPolicyRule(),
@@ -1597,6 +1610,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.BigtableBasePath = d.Get("bigtable_custom_endpoint").(string)
 	config.BillingBasePath = d.Get("billing_custom_endpoint").(string)
 	config.BinaryAuthorizationBasePath = d.Get("binary_authorization_custom_endpoint").(string)
+	config.CertificateManagerBasePath = d.Get("certificate_manager_custom_endpoint").(string)
 	config.CloudAssetBasePath = d.Get("cloud_asset_custom_endpoint").(string)
 	config.CloudBuildBasePath = d.Get("cloud_build_custom_endpoint").(string)
 	config.CloudFunctionsBasePath = d.Get("cloud_functions_custom_endpoint").(string)
@@ -1667,7 +1681,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.ContainerBasePath = d.Get(ContainerCustomEndpointEntryKey).(string)
 	config.DataflowBasePath = d.Get(DataflowCustomEndpointEntryKey).(string)
 	config.IamCredentialsBasePath = d.Get(IamCredentialsCustomEndpointEntryKey).(string)
-	config.ResourceManagerV2BasePath = d.Get(ResourceManagerV2CustomEndpointEntryKey).(string)
+	config.ResourceManagerV3BasePath = d.Get(ResourceManagerV3CustomEndpointEntryKey).(string)
 	config.RuntimeConfigBasePath = d.Get(RuntimeConfigCustomEndpointEntryKey).(string)
 	config.IAMBasePath = d.Get(IAMCustomEndpointEntryKey).(string)
 	config.ServiceNetworkingBasePath = d.Get(ServiceNetworkingCustomEndpointEntryKey).(string)
@@ -1678,6 +1692,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	// dcl
 	config.ApikeysBasePath = d.Get(ApikeysEndpointEntryKey).(string)
 	config.AssuredWorkloadsBasePath = d.Get(AssuredWorkloadsEndpointEntryKey).(string)
+	config.ClouddeployBasePath = d.Get(ClouddeployEndpointEntryKey).(string)
 	config.CloudResourceManagerBasePath = d.Get(CloudResourceManagerEndpointEntryKey).(string)
 	config.EventarcBasePath = d.Get(EventarcEndpointEntryKey).(string)
 	config.FirebaserulesBasePath = d.Get(FirebaserulesEndpointEntryKey).(string)

@@ -34,7 +34,7 @@ func TestAccBigqueryConnectionConnection_bigqueryConnectionBasicExample(t *testi
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -57,7 +57,6 @@ func TestAccBigqueryConnectionConnection_bigqueryConnectionBasicExample(t *testi
 func testAccBigqueryConnectionConnection_bigqueryConnectionBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_sql_database_instance" "instance" {
-    provider         = google-beta
     name             = "tf-test-my-database-instance%{random_suffix}"
     database_version = "POSTGRES_11"
     region           = "us-central1"
@@ -69,7 +68,6 @@ resource "google_sql_database_instance" "instance" {
 }
 
 resource "google_sql_database" "db" {
-    provider = google-beta
     instance = google_sql_database_instance.instance.name
     name     = "db"
 }
@@ -80,14 +78,12 @@ resource "random_password" "pwd" {
 }
 
 resource "google_sql_user" "user" {
-    provider = google-beta
     name = "user%{random_suffix}"
     instance = google_sql_database_instance.instance.name
     password = random_password.pwd.result
 }
 
 resource "google_bigquery_connection" "connection" {
-    provider      = google-beta
     friendly_name = "👋"
     description   = "a riveting description"
     cloud_sql {
@@ -114,7 +110,7 @@ func TestAccBigqueryConnectionConnection_bigqueryConnectionFullExample(t *testin
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -137,7 +133,6 @@ func TestAccBigqueryConnectionConnection_bigqueryConnectionFullExample(t *testin
 func testAccBigqueryConnectionConnection_bigqueryConnectionFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_sql_database_instance" "instance" {
-    provider         = google-beta
     name             = "tf-test-my-database-instance%{random_suffix}"
     database_version = "POSTGRES_11"
     region           = "us-central1"
@@ -149,7 +144,6 @@ resource "google_sql_database_instance" "instance" {
 }
 
 resource "google_sql_database" "db" {
-    provider = google-beta
     instance = google_sql_database_instance.instance.name
     name     = "db"
 }
@@ -160,14 +154,12 @@ resource "random_password" "pwd" {
 }
 
 resource "google_sql_user" "user" {
-    provider = google-beta
     name = "user%{random_suffix}"
     instance = google_sql_database_instance.instance.name
     password = random_password.pwd.result
 }
 
 resource "google_bigquery_connection" "connection" {
-    provider      = google-beta
     connection_id = "tf-test-my-connection%{random_suffix}"
     location      = "US"
     friendly_name = "👋"
@@ -181,6 +173,47 @@ resource "google_bigquery_connection" "connection" {
           password = google_sql_user.user.password
         }
     }
+}
+`, context)
+}
+
+func TestAccBigqueryConnectionConnection_bigqueryConnectionCloudResourceExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"random": {},
+			"time":   {},
+		},
+		CheckDestroy: testAccCheckBigqueryConnectionConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccBigqueryConnectionConnection_bigqueryConnectionCloudResourceExample(context),
+			},
+			{
+				ResourceName:            "google_bigquery_connection.connection",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"location"},
+			},
+		},
+	})
+}
+
+func testAccBigqueryConnectionConnection_bigqueryConnectionCloudResourceExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_bigquery_connection" "connection" {
+   connection_id = "tf-test-my-connection%{random_suffix}"
+   location      = "US"
+   friendly_name = "👋"
+   description   = "a riveting description"
+   cloud_resource {}
 }
 `, context)
 }

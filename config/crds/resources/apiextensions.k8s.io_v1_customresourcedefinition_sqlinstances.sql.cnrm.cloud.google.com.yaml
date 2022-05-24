@@ -264,6 +264,15 @@ spec:
                     description: This specifies when the instance should be active.
                       Can be either ALWAYS, NEVER or ON_DEMAND.
                     type: string
+                  activeDirectoryConfig:
+                    properties:
+                      domain:
+                        description: Domain name of the Active Directory for SQL Server
+                          (e.g., mydomain.com).
+                        type: string
+                    required:
+                    - domain
+                    type: object
                   authorizedGaeApplications:
                     description: |-
                       DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
@@ -339,6 +348,8 @@ spec:
                       type: object
                     type: array
                   diskAutoresize:
+                    description: Enables auto-resizing of the storage size. Defaults
+                      to true. Set to false if you want to set disk_size.
                     type: boolean
                   diskAutoresizeLimit:
                     description: The maximum size, in GB, to which storage capacity
@@ -347,7 +358,8 @@ spec:
                     type: integer
                   diskSize:
                     description: The size of data disk, in GB. Size of a running instance
-                      cannot be reduced but can be increased.
+                      cannot be reduced but can be increased. If you want to set this
+                      field, set disk_autoresize to false.
                     type: integer
                   diskType:
                     description: 'The type of data disk: PD_SSD or PD_HDD.'

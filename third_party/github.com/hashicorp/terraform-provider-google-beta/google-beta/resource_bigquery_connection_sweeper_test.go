@@ -61,7 +61,7 @@ func testSweepBigqueryConnectionConnection(region string) error {
 		},
 	}
 
-	listTemplate := strings.Split("https://bigqueryconnection.googleapis.com/v1beta1/projects/{{project}}/locations/{{location}}/connections", "?")[0]
+	listTemplate := strings.Split("https://bigqueryconnection.googleapis.com/v1/projects/{{project}}/locations/{{location}}/connections", "?")[0]
 	listUrl, err := replaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
@@ -103,7 +103,7 @@ func testSweepBigqueryConnectionConnection(region string) error {
 			continue
 		}
 
-		deleteTemplate := "https://bigqueryconnection.googleapis.com/v1beta1/projects/{{project}}/locations/{{location}}/connections/{{connection_id}}"
+		deleteTemplate := "https://bigqueryconnection.googleapis.com/v1/projects/{{project}}/locations/{{location}}/connections/{{connection_id}}"
 		deleteUrl, err := replaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)

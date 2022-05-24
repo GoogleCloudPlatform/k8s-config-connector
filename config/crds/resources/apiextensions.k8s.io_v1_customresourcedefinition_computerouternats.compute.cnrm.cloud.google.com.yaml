@@ -90,6 +90,13 @@ spec:
                       type: string
                   type: object
                 type: array
+              enableDynamicPortAllocation:
+                description: "Enable Dynamic Port Allocation.\nIf minPorts is set,
+                  minPortsPerVm must be set to a power of two greater than or equal
+                  to 32. \nIf minPortsPerVm is not set, a minimum of 32 ports will
+                  be allocated to a VM from this NAT config.\n\nMutually exclusive
+                  with enableEndpointIndependentMapping."
+                type: boolean
               enableEndpointIndependentMapping:
                 description: |-
                   Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information

@@ -42,9 +42,25 @@ func resourceBigqueryConnectionConnection() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
+			"cloud_resource": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `Cloud Resource properties.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"service_account_id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `The account ID of the service created for the purpose of this connection.`,
+						},
+					},
+				},
+				ExactlyOneOf: []string{"cloud_sql", "cloud_resource"},
+			},
 			"cloud_sql": {
 				Type:        schema.TypeList,
-				Required:    true,
+				Optional:    true,
 				Description: `Cloud SQL properties.`,
 				MaxItems:    1,
 				Elem: &schema.Resource{
@@ -88,6 +104,7 @@ func resourceBigqueryConnectionConnection() *schema.Resource {
 						},
 					},
 				},
+				ExactlyOneOf: []string{"cloud_sql", "cloud_resource"},
 			},
 			"connection_id": {
 				Type:        schema.TypeString,
@@ -169,6 +186,12 @@ func resourceBigqueryConnectionConnectionCreate(d *schema.ResourceData, meta int
 		return err
 	} else if v, ok := d.GetOkExists("cloud_sql"); !isEmptyValue(reflect.ValueOf(cloudSqlProp)) && (ok || !reflect.DeepEqual(v, cloudSqlProp)) {
 		obj["cloudSql"] = cloudSqlProp
+	}
+	cloudResourceProp, err := expandBigqueryConnectionConnectionCloudResource(d.Get("cloud_resource"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("cloud_resource"); ok || !reflect.DeepEqual(v, cloudResourceProp) {
+		obj["cloudResource"] = cloudResourceProp
 	}
 
 	obj, err = resourceBigqueryConnectionConnectionEncoder(d, meta, obj)
@@ -282,6 +305,9 @@ func resourceBigqueryConnectionConnectionRead(d *schema.ResourceData, meta inter
 	if err := d.Set("cloud_sql", flattenBigqueryConnectionConnectionCloudSql(res["cloudSql"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Connection: %s", err)
 	}
+	if err := d.Set("cloud_resource", flattenBigqueryConnectionConnectionCloudResource(res["cloudResource"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Connection: %s", err)
+	}
 
 	return nil
 }
@@ -320,6 +346,12 @@ func resourceBigqueryConnectionConnectionUpdate(d *schema.ResourceData, meta int
 	} else if v, ok := d.GetOkExists("cloud_sql"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, cloudSqlProp)) {
 		obj["cloudSql"] = cloudSqlProp
 	}
+	cloudResourceProp, err := expandBigqueryConnectionConnectionCloudResource(d.Get("cloud_resource"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("cloud_resource"); ok || !reflect.DeepEqual(v, cloudResourceProp) {
+		obj["cloudResource"] = cloudResourceProp
+	}
 
 	obj, err = resourceBigqueryConnectionConnectionEncoder(d, meta, obj)
 	if err != nil {
@@ -344,6 +376,10 @@ func resourceBigqueryConnectionConnectionUpdate(d *schema.ResourceData, meta int
 
 	if d.HasChange("cloud_sql") {
 		updateMask = append(updateMask, "cloudSql")
+	}
+
+	if d.HasChange("cloud_resource") {
+		updateMask = append(updateMask, "cloudResource")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it
@@ -486,6 +522,23 @@ func flattenBigqueryConnectionConnectionCloudSqlType(v interface{}, d *schema.Re
 	return v
 }
 
+func flattenBigqueryConnectionConnectionCloudResource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["service_account_id"] =
+		flattenBigqueryConnectionConnectionCloudResourceServiceAccountId(original["serviceAccountId"], d, config)
+	return []interface{}{transformed}
+}
+func flattenBigqueryConnectionConnectionCloudResourceServiceAccountId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandBigqueryConnectionConnectionConnectionId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -581,6 +634,29 @@ func expandBigqueryConnectionConnectionCloudSqlCredentialPassword(v interface{},
 }
 
 func expandBigqueryConnectionConnectionCloudSqlType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandBigqueryConnectionConnectionCloudResource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedServiceAccountId, err := expandBigqueryConnectionConnectionCloudResourceServiceAccountId(original["service_account_id"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedServiceAccountId); val.IsValid() && !isEmptyValue(val) {
+		transformed["serviceAccountId"] = transformedServiceAccountId
+	}
+
+	return transformed, nil
+}
+
+func expandBigqueryConnectionConnectionCloudResourceServiceAccountId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

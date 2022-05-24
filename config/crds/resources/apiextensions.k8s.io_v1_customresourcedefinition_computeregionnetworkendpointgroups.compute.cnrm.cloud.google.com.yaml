@@ -172,7 +172,12 @@ spec:
               networkEndpointType:
                 description: 'Immutable. Type of network endpoints in this network
                   endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS"
-                  Possible values: ["SERVERLESS"].'
+                  Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"].'
+                type: string
+              pscTargetService:
+                description: |-
+                  Immutable. The target service url used to set up private service connection to
+                  a Google API or a PSC Producer Service Attachment.
                 type: string
               region:
                 description: Immutable. A reference to the region where the Serverless

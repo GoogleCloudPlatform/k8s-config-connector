@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	resourceManagerV2 "google.golang.org/api/cloudresourcemanager/v2"
+	resourceManagerV3 "google.golang.org/api/cloudresourcemanager/v3"
 )
 
 var activeFolderNotFoundError = errors.New("active folder not found")
@@ -102,12 +102,13 @@ func resourceGoogleFolderCreate(d *schema.ResourceData, meta interface{}) error 
 		return resourceGoogleFolderRead(d, meta)
 	}
 
-	var op *resourceManagerV2.Operation
+	var op *resourceManagerV3.Operation
 	err = retryTimeDuration(func() error {
 		var reqErr error
-		op, reqErr = config.NewResourceManagerV2Client(userAgent).Folders.Create(&resourceManagerV2.Folder{
+		op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Create(&resourceManagerV3.Folder{
 			DisplayName: displayName,
-		}).Parent(parent).Do()
+			Parent:      parent,
+		}).Do()
 		return reqErr
 	}, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -156,8 +157,8 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	// If the folder has been deleted from outside Terraform, remove it from state file.
-	if folder.LifecycleState != "ACTIVE" {
-		log.Printf("[WARN] Removing folder '%s' because its state is '%s' (requires 'ACTIVE').", d.Id(), folder.LifecycleState)
+	if folder.State != "ACTIVE" {
+		log.Printf("[WARN] Removing folder '%s' because its state is '%s' (requires 'ACTIVE').", d.Id(), folder.State)
 		d.SetId("")
 		return nil
 	}
@@ -172,7 +173,7 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("display_name", folder.DisplayName); err != nil {
 		return fmt.Errorf("Error setting display_name: %s", err)
 	}
-	if err := d.Set("lifecycle_state", folder.LifecycleState); err != nil {
+	if err := d.Set("lifecycle_state", folder.State); err != nil {
 		return fmt.Errorf("Error setting lifecycle_state: %s", err)
 	}
 	if err := d.Set("create_time", folder.CreateTime); err != nil {
@@ -207,7 +208,7 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error 
 	d.Partial(true)
 	if d.HasChange("display_name") {
 		err := retry(func() error {
-			_, reqErr := config.NewResourceManagerV2Client(userAgent).Folders.Patch(d.Id(), &resourceManagerV2.Folder{
+			_, reqErr := config.NewResourceManagerV3Client(userAgent).Folders.Patch(d.Id(), &resourceManagerV3.Folder{
 				DisplayName: displayName,
 			}).Do()
 			return reqErr
@@ -216,16 +217,17 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error 
 			return fmt.Errorf("Error updating display_name to '%s': %s", displayName, err)
 		}
 	}
+
 	if d.HasChange("parent_org_id") || d.HasChange("parent_folder_id") {
 		newParent, err := getParentID(d)
 		if err != nil {
 			return fmt.Errorf("Error getting parent for folder '%s': %s", displayName, err)
 		}
 
-		var op *resourceManagerV2.Operation
+		var op *resourceManagerV3.Operation
 		err = retry(func() error {
 			var reqErr error
-			op, reqErr = config.NewResourceManagerV2Client(userAgent).Folders.Move(d.Id(), &resourceManagerV2.MoveFolderRequest{
+			op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Move(d.Id(), &resourceManagerV3.MoveFolderRequest{
 				DestinationParent: newParent,
 			}).Do()
 			return reqErr
@@ -259,7 +261,7 @@ func resourceGoogleFolderDelete(d *schema.ResourceData, meta interface{}) error 
 	displayName := d.Get("display_name").(string)
 
 	err = retryTimeDuration(func() error {
-		_, reqErr := config.NewResourceManagerV2Client(userAgent).Folders.Delete(d.Id()).Do()
+		_, reqErr := config.NewResourceManagerV3Client(userAgent).Folders.Delete(d.Id()).Do()
 		return reqErr
 	}, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
@@ -283,11 +285,11 @@ func resourceGoogleFolderImportState(d *schema.ResourceData, m interface{}) ([]*
 
 // Util to get a Folder resource from API. Note that folder described by name is not necessarily the
 // ResourceData resource.
-func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, config *Config) (*resourceManagerV2.Folder, error) {
-	var folder *resourceManagerV2.Folder
+func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, config *Config) (*resourceManagerV3.Folder, error) {
+	var folder *resourceManagerV3.Folder
 	err := retryTimeDuration(func() error {
 		var reqErr error
-		folder, reqErr = config.NewResourceManagerV2Client(userAgent).Folders.Get(folderName).Do()
+		folder, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Get(folderName).Do()
 		return reqErr
 	}, d.Timeout(schema.TimeoutRead))
 	if err != nil {
@@ -296,19 +298,16 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
 	return folder, nil
 }
 
-func getActiveFolderByDisplayName(displayName, parent, userAgent string, config *Config) (*resourceManagerV2.Folder, error) {
+func getActiveFolderByDisplayName(displayName, parent, userAgent string, config *Config) (*resourceManagerV3.Folder, error) {
 	pageToken := ""
 	for ok := true; ok; ok = pageToken != "" {
-		searchRequest := &resourceManagerV2.SearchFoldersRequest{
-			Query:     fmt.Sprintf("lifecycleState=ACTIVE AND parent=%s AND displayName=\"%s\"", parent, displayName),
-			PageToken: pageToken,
-		}
-		searchResponse, err := config.NewResourceManagerV2Client(userAgent).Folders.Search(searchRequest).Do()
+		query := fmt.Sprintf("state=ACTIVE AND parent=%s AND displayName=\"%s\"", parent, displayName)
+		searchResponse, err := config.NewResourceManagerV3Client(userAgent).Folders.Search().Query(query).PageToken(pageToken).Do()
 		if err != nil {
 			if isGoogleApiErrorWithCode(err, 404) {
 				return nil, activeFolderNotFoundError
 			}
-			return nil, err
+			return nil, fmt.Errorf("error searching for folders with query '%v': %v", query, err)
 		}
 		for _, folder := range searchResponse.Folders {
 			if folder.DisplayName == displayName {

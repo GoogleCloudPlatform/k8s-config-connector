@@ -115,6 +115,8 @@ documentation</a>.
         name: string
   settings:
     activationPolicy: string
+    activeDirectoryConfig:
+      domain: string
     authorizedGaeApplications:
     - string
     availabilityType: string
@@ -535,6 +537,26 @@ documentation</a>.
     </tr>
     <tr>
         <td>
+            <p><code>settings.activeDirectoryConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.activeDirectoryConfig.domain</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Domain name of the Active Directory for SQL Server (e.g., mydomain.com).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.authorizedGaeApplications</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -737,7 +759,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Enables auto-resizing of the storage size. Defaults to true. Set to false if you want to set disk_size.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -757,7 +779,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased.{% endverbatim %}</p>
+            <p>{% verbatim %}The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. If you want to set this field, set disk_autoresize to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

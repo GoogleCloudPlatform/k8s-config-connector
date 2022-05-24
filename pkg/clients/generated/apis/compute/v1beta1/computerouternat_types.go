@@ -66,6 +66,14 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
+	/* Enable Dynamic Port Allocation.
+	If minPorts is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
+	If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config.
+
+	Mutually exclusive with enableEndpointIndependentMapping. */
+	// +optional
+	EnableDynamicPortAllocation *bool `json:"enableDynamicPortAllocation,omitempty"`
+
 	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
 	see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs). */
 	// +optional

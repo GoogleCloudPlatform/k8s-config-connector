@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceActiveDirectoryConfig struct {
+	/* Domain name of the Active Directory for SQL Server (e.g., mydomain.com). */
+	Domain string `json:"domain"`
+}
+
 type InstanceAuthorizedNetworks struct {
 	/*  */
 	// +optional
@@ -230,6 +235,10 @@ type InstanceSettings struct {
 	// +optional
 	ActivationPolicy *string `json:"activationPolicy,omitempty"`
 
+	/*  */
+	// +optional
+	ActiveDirectoryConfig *InstanceActiveDirectoryConfig `json:"activeDirectoryConfig,omitempty"`
+
 	/* DEPRECATED — This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
@@ -261,7 +270,7 @@ type InstanceSettings struct {
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
-	/*  */
+	/* Enables auto-resizing of the storage size. Defaults to true. Set to false if you want to set disk_size. */
 	// +optional
 	DiskAutoresize *bool `json:"diskAutoresize,omitempty"`
 
@@ -269,7 +278,7 @@ type InstanceSettings struct {
 	// +optional
 	DiskAutoresizeLimit *int `json:"diskAutoresizeLimit,omitempty"`
 
-	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. */
+	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. If you want to set this field, set disk_autoresize to false. */
 	// +optional
 	DiskSize *int `json:"diskSize,omitempty"`
 

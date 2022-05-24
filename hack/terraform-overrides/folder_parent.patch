@@ -13,7 +13,7 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
-index b617f0c3f..d95615e58 100644
+index f0f878e73..047265040 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
 @@ -30,11 +30,15 @@ func resourceGoogleFolder() *schema.Resource {
@@ -46,9 +46,9 @@ index b617f0c3f..d95615e58 100644
 +		return fmt.Errorf("Error getting parent for folder '%s': %s", displayName, err)
 +	}
  
- 	var op *resourceManagerV2.Operation
+ 	var op *resourceManagerV3.Operation
  	err = retryTimeDuration(func() error {
-@@ -146,9 +153,6 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
+@@ -147,9 +154,6 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
  	if err := d.Set("folder_id", folderId); err != nil {
  		return fmt.Errorf("Error setting folder_id: %s", err)
  	}
@@ -58,7 +58,7 @@ index b617f0c3f..d95615e58 100644
  	if err := d.Set("display_name", folder.DisplayName); err != nil {
  		return fmt.Errorf("Error setting display_name: %s", err)
  	}
-@@ -159,6 +163,20 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
+@@ -160,6 +164,20 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
  		return fmt.Errorf("Error setting create_time: %s", err)
  	}
  
@@ -79,11 +79,10 @@ index b617f0c3f..d95615e58 100644
  	return nil
  }
  
-@@ -182,12 +200,14 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error
- 			return fmt.Errorf("Error updating display_name to '%s': %s", displayName, err)
+@@ -184,11 +202,14 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error
  		}
  	}
--
+ 
 -	if d.HasChange("parent") {
 -		newParent := d.Get("parent").(string)
 +	if d.HasChange("parent_org_id") || d.HasChange("parent_folder_id") {
@@ -92,13 +91,13 @@ index b617f0c3f..d95615e58 100644
 +			return fmt.Errorf("Error getting parent for folder '%s': %s", displayName, err)
 +		}
  
- 		var op *resourceManagerV2.Operation
+ 		var op *resourceManagerV3.Operation
 -		err := retry(func() error {
 +		err = retry(func() error {
  			var reqErr error
- 			op, reqErr = config.NewResourceManagerV2Client(userAgent).Folders.Move(d.Id(), &resourceManagerV2.MoveFolderRequest{
+ 			op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Move(d.Id(), &resourceManagerV3.MoveFolderRequest{
  				DestinationParent: newParent,
-@@ -259,3 +279,19 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
+@@ -260,3 +281,19 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
  	}
  	return folder, nil
  }

@@ -4833,6 +4833,11 @@ func (in *ComputeRegionNetworkEndpointGroupSpec) DeepCopyInto(out *ComputeRegion
 		*out = new(string)
 		**out = **in
 	}
+	if in.PscTargetService != nil {
+		in, out := &in.PscTargetService, &out.PscTargetService
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -5501,6 +5506,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 		in, out := &in.DrainNatIps, &out.DrainNatIps
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
+	}
+	if in.EnableDynamicPortAllocation != nil {
+		in, out := &in.EnableDynamicPortAllocation, &out.EnableDynamicPortAllocation
+		*out = new(bool)
+		**out = **in
 	}
 	if in.EnableEndpointIndependentMapping != nil {
 		in, out := &in.EnableEndpointIndependentMapping, &out.EnableEndpointIndependentMapping
