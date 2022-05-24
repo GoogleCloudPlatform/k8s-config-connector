@@ -1192,7 +1192,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}DEPRECATED. This field is deprecated, use `spec.networkInterface.networkIpRef` instead.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.networkInterface.networkIpRef` instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

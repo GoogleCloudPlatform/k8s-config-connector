@@ -153,7 +153,7 @@
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}DEPRECATED. This field is deprecated, use `spec.rrdatasRefs` instead.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.rrdatasRefs` instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

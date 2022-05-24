@@ -188,7 +188,8 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 	}
 
 	var nonReferenceFieldSchema *apiextensions.JSONSchemaProps
-	description := fmt.Sprintf("DEPRECATED. This field is deprecated, use `%s.%s` instead.", parentPathStr, referenceFieldName)
+	description := fmt.Sprintf("DEPRECATED. Although this field is still available, there is limited support. "+
+		"We recommend that you use `%s.%s` instead.", parentPathStr, referenceFieldName)
 	if fieldType == "object" {
 		nonReferenceFieldSchema = &apiextensions.JSONSchemaProps{
 			Description: description,

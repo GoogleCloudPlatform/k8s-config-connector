@@ -217,7 +217,7 @@ type InstanceNetworkInterface struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* DEPRECATED. This field is deprecated, use `spec.networkInterface.networkIpRef` instead. */
+	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.networkInterface.networkIpRef` instead. */
 	// +optional
 	NetworkIp *string `json:"networkIp,omitempty"`
 

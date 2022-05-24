@@ -2582,8 +2582,9 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 													Type:        "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 												"otherRequired": {Type: "string"},
 											},
@@ -2655,8 +2656,9 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 													Type:        "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 											},
 											Not: &apiextensions.JSONSchemaProps{
@@ -2744,7 +2746,8 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 															Type: "array",
 														},
 														"nestedArray": {
-															Description: "DEPRECATED. This field is deprecated, use `spec.topLevelObject.nestedArrayRefs` instead.",
+															Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+																"We recommend that you use `spec.topLevelObject.nestedArrayRefs` instead.",
 															Items: &apiextensions.JSONSchemaPropsOrArray{
 																Schema: &apiextensions.JSONSchemaProps{
 																	Type: "string",
@@ -2847,8 +2850,9 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 																			Type:        "object",
 																		},
 																		"nested": {
-																			Description: "DEPRECATED. This field is deprecated, use `spec.topLevelArray.secondLevelObject.nestedRef` instead.",
-																			Type:        "string",
+																			Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+																				"We recommend that you use `spec.topLevelArray.secondLevelObject.nestedRef` instead.",
+																			Type: "string",
 																		},
 																		"otherField": {Type: "string"},
 																	},
@@ -2953,7 +2957,8 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 																	Type: "array",
 																},
 																"nestedArray": {
-																	Description: "DEPRECATED. This field is deprecated, use `spec.topLevelArray.nestedArrayRefs` instead.",
+																	Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+																		"We recommend that you use `spec.topLevelArray.nestedArrayRefs` instead.",
 																	Items: &apiextensions.JSONSchemaPropsOrArray{
 																		Schema: &apiextensions.JSONSchemaProps{
 																			Type: "string",
@@ -3035,8 +3040,9 @@ func TestPreserveMutuallyExclusiveNonRefField(t *testing.T) {
 													Type:        "object",
 												},
 												"test": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.testRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.testRef` instead.",
+													Type: "string",
 												},
 											},
 											OneOf: []apiextensions.JSONSchemaProps{
@@ -3300,8 +3306,9 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 													Type:        "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 												"otherRequired": {Type: "string"},
 											},
@@ -3341,8 +3348,9 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 													Type:        "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 												"otherRequired": {Type: "string"},
 											},
@@ -3384,8 +3392,9 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 													Type:        "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 											},
 											Not: &apiextensions.JSONSchemaProps{
@@ -3453,8 +3462,9 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 													Type: "object",
 												},
 												"topLevel": {
-													Description: "DEPRECATED. This field is deprecated, use `spec.topLevelRef` instead.",
-													Type:        "string",
+													Description: "DEPRECATED. Although this field is still available, there is limited support. " +
+														"We recommend that you use `spec.topLevelRef` instead.",
+													Type: "string",
 												},
 											},
 											Not: &apiextensions.JSONSchemaProps{

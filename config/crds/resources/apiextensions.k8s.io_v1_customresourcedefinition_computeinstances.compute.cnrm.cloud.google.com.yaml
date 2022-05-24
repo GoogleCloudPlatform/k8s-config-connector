@@ -564,7 +564,8 @@ spec:
                       description: The name of the interface.
                       type: string
                     networkIp:
-                      description: DEPRECATED. This field is deprecated, use `spec.networkInterface.networkIpRef`
+                      description: DEPRECATED. Although this field is still available,
+                        there is limited support. We recommend that you use `spec.networkInterface.networkIpRef`
                         instead.
                       type: string
                     networkIpRef:

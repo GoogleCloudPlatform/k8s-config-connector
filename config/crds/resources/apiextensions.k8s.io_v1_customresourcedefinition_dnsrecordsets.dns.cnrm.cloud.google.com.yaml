@@ -94,7 +94,8 @@ spec:
                 description: Immutable. The DNS name this record set will apply to.
                 type: string
               rrdatas:
-                description: DEPRECATED. This field is deprecated, use `spec.rrdatasRefs`
+                description: DEPRECATED. Although this field is still available, there
+                  is limited support. We recommend that you use `spec.rrdatasRefs`
                   instead.
                 items:
                   type: string

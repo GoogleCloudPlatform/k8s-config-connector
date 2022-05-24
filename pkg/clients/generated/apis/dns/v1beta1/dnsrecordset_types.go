@@ -60,7 +60,7 @@ type DNSRecordSetSpec struct {
 	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
 
-	/* DEPRECATED. This field is deprecated, use `spec.rrdatasRefs` instead. */
+	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.rrdatasRefs` instead. */
 	// +optional
 	Rrdatas []string `json:"rrdatas,omitempty"`
 
