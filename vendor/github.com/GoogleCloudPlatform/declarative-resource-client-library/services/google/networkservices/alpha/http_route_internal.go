@@ -174,7 +174,7 @@ func (r *HttpRouteRulesActionCorsPolicy) validate() error {
 }
 func (r *HttpRoute) basePath() string {
 	params := map[string]interface{}{}
-	return dcl.Nprintf("https://networkservices.googleapis.com/v1beta1/", params)
+	return dcl.Nprintf("https://networkservices.googleapis.com/v1alpha1/", params)
 }
 
 func (r *HttpRoute) getURL(userBasePath string) (string, error) {

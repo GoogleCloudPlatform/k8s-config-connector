@@ -40,7 +40,7 @@ func (r *Mesh) validate() error {
 }
 func (r *Mesh) basePath() string {
 	params := map[string]interface{}{}
-	return dcl.Nprintf("https://networkservices.googleapis.com/v1beta1/", params)
+	return dcl.Nprintf("https://networkservices.googleapis.com/v1alpha1/", params)
 }
 
 func (r *Mesh) getURL(userBasePath string) (string, error) {

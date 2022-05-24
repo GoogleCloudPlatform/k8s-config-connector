@@ -72,7 +72,7 @@ type CRMOperationErrorError struct {
 
 // Wait waits for an CRMOperation to complete by fetching the operation until it completes.
 func (op *CRMOperation) Wait(ctx context.Context, c *dcl.Config, basePath, verb string) error {
-	c.Logger.Infof("Waiting on: %v", op)
+	c.Logger.Infof("Waiting on operation: %v", op)
 	op.config = c
 	op.basePath = basePath
 	op.verb = verb
@@ -88,10 +88,13 @@ func (op *CRMOperation) Wait(ctx context.Context, c *dcl.Config, basePath, verb 
 	}
 
 	if op.Done {
+		c.Logger.Infof("Completed operation: %v", op)
 		return nil
 	}
 
-	return dcl.Do(ctx, op.operate, c.RetryProvider)
+	err := dcl.Do(ctx, op.operate, c.RetryProvider)
+	c.Logger.Infof("Completed operation: %v", op)
+	return err
 }
 
 func (op *CRMOperation) operate(ctx context.Context) (*dcl.RetryDetails, error) {

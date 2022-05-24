@@ -25,14 +25,16 @@ import (
 )
 
 type Membership struct {
-	Name               *string                       `json:"name"`
-	PreferredMemberKey *MembershipPreferredMemberKey `json:"preferredMemberKey"`
-	CreateTime         *string                       `json:"createTime"`
-	UpdateTime         *string                       `json:"updateTime"`
-	Roles              []MembershipRoles             `json:"roles"`
-	Type               *MembershipTypeEnum           `json:"type"`
-	MemberKey          *MembershipMemberKey          `json:"memberKey"`
-	Group              *string                       `json:"group"`
+	Name               *string                        `json:"name"`
+	PreferredMemberKey *MembershipPreferredMemberKey  `json:"preferredMemberKey"`
+	CreateTime         *string                        `json:"createTime"`
+	UpdateTime         *string                        `json:"updateTime"`
+	Roles              []MembershipRoles              `json:"roles"`
+	Type               *MembershipTypeEnum            `json:"type"`
+	DeliverySetting    *MembershipDeliverySettingEnum `json:"deliverySetting"`
+	DisplayName        *MembershipDisplayName         `json:"displayName"`
+	MemberKey          *MembershipMemberKey           `json:"memberKey"`
+	Group              *string                        `json:"group"`
 }
 
 func (r *Membership) String() string {
@@ -88,6 +90,33 @@ func (v MembershipTypeEnum) Validate() error {
 	}
 	return &dcl.EnumInvalidError{
 		Enum:  "MembershipTypeEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
+// The enum MembershipDeliverySettingEnum.
+type MembershipDeliverySettingEnum string
+
+// MembershipDeliverySettingEnumRef returns a *MembershipDeliverySettingEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func MembershipDeliverySettingEnumRef(s string) *MembershipDeliverySettingEnum {
+	v := MembershipDeliverySettingEnum(s)
+	return &v
+}
+
+func (v MembershipDeliverySettingEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"DELIVERY_SETTING_UNSPECIFIED", "ALL_MAIL", "DIGEST", "DAILY", "NONE", "DISABLED"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "MembershipDeliverySettingEnum",
 		Value: string(v),
 		Valid: []string{},
 	}
@@ -332,6 +361,58 @@ func (r *MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation) HashC
 	return fmt.Sprintf("%x", hash)
 }
 
+type MembershipDisplayName struct {
+	empty      bool    `json:"-"`
+	GivenName  *string `json:"givenName"`
+	FamilyName *string `json:"familyName"`
+	FullName   *string `json:"fullName"`
+}
+
+type jsonMembershipDisplayName MembershipDisplayName
+
+func (r *MembershipDisplayName) UnmarshalJSON(data []byte) error {
+	var res jsonMembershipDisplayName
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyMembershipDisplayName
+	} else {
+
+		r.GivenName = res.GivenName
+
+		r.FamilyName = res.FamilyName
+
+		r.FullName = res.FullName
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this MembershipDisplayName is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyMembershipDisplayName *MembershipDisplayName = &MembershipDisplayName{empty: true}
+
+func (r *MembershipDisplayName) Empty() bool {
+	return r.empty
+}
+
+func (r *MembershipDisplayName) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *MembershipDisplayName) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
 type MembershipMemberKey struct {
 	empty     bool    `json:"-"`
 	Id        *string `json:"id"`
@@ -403,6 +484,8 @@ func (r *Membership) ID() (string, error) {
 		"updateTime":         dcl.ValueOrEmptyString(nr.UpdateTime),
 		"roles":              dcl.ValueOrEmptyString(nr.Roles),
 		"type":               dcl.ValueOrEmptyString(nr.Type),
+		"deliverySetting":    dcl.ValueOrEmptyString(nr.DeliverySetting),
+		"displayName":        dcl.ValueOrEmptyString(nr.DisplayName),
 		"memberKey":          dcl.ValueOrEmptyString(nr.MemberKey),
 		"group":              dcl.ValueOrEmptyString(nr.Group),
 	}

@@ -773,6 +773,14 @@ components:
               x-dcl-go-name: OAuth2ClientSecretSha256
               readOnly: true
               description: SHA256 hash value for the field oauth2_client_secret above.
+        id:
+          type: integer
+          format: int64
+          x-dcl-go-name: Id
+          readOnly: true
+          description: The unique identifier for the resource. This identifier is
+            defined by the server.
+          x-kubernetes-immutable: true
         loadBalancingScheme:
           type: string
           x-dcl-go-name: LoadBalancingScheme

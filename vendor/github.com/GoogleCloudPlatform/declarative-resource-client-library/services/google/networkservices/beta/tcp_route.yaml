@@ -83,6 +83,20 @@ components:
           x-dcl-go-name: Description
           description: Optional. A free-text description of the resource. Max length
             1024 characters.
+        gateways:
+          type: array
+          x-dcl-go-name: Gateways
+          description: 'Optional. Gateways defines a list of gateways this TcpRoute
+            is attached to, as one of the routing rules to route the requests served
+            by the gateway. Each gateway reference should match the pattern: `projects/*/locations/global/gateways/`'
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+            x-dcl-references:
+            - resource: Networkservices/Gateway
+              field: selfLink
         labels:
           type: object
           additionalProperties:

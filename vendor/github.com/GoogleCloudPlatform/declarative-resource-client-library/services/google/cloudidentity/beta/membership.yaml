@@ -68,6 +68,50 @@ components:
           readOnly: true
           description: Output only. The time when the `Membership` was created.
           x-kubernetes-immutable: true
+        deliverySetting:
+          type: string
+          x-dcl-go-name: DeliverySetting
+          x-dcl-go-type: MembershipDeliverySettingEnum
+          readOnly: true
+          description: 'Output only. Delivery setting associated with the membership.
+            Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY,
+            NONE, DISABLED'
+          x-kubernetes-immutable: true
+          enum:
+          - DELIVERY_SETTING_UNSPECIFIED
+          - ALL_MAIL
+          - DIGEST
+          - DAILY
+          - NONE
+          - DISABLED
+        displayName:
+          type: object
+          x-dcl-go-name: DisplayName
+          x-dcl-go-type: MembershipDisplayName
+          readOnly: true
+          description: Output only. The display name of this member, if available
+          x-kubernetes-immutable: true
+          properties:
+            familyName:
+              type: string
+              x-dcl-go-name: FamilyName
+              readOnly: true
+              description: Output only. Member's family name
+              x-kubernetes-immutable: true
+            fullName:
+              type: string
+              x-dcl-go-name: FullName
+              readOnly: true
+              description: Output only. Localized UTF-16 full name for the member.
+                Localization is done based on the language in the request and the
+                language of the stored display name.
+              x-kubernetes-immutable: true
+            givenName:
+              type: string
+              x-dcl-go-name: GivenName
+              readOnly: true
+              description: Output only. Member's given name
+              x-kubernetes-immutable: true
         group:
           type: string
           x-dcl-go-name: Group

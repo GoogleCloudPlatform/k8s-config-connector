@@ -25,6 +25,8 @@ spec:
   description: "Test"
   meshes:
     - name: "networkservicesmesh-${uniqueId}"
+  gateways:
+    - name: "networkservicesgateway-${uniqueId}"
   rules:
   - matches:
     - address: "10.0.0.1/32"

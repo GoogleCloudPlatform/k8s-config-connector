@@ -101,11 +101,74 @@ components:
           readOnly: true
           description: Output only. The time when the `Group` was created.
           x-kubernetes-immutable: true
+        derivedAliases:
+          type: array
+          x-dcl-go-name: DerivedAliases
+          readOnly: true
+          description: Output only. Aliases for groups derived from domain aliases.
+          x-kubernetes-immutable: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: GroupDerivedAliases
+            required:
+            - id
+            properties:
+              id:
+                type: string
+                x-dcl-go-name: Id
+                description: The ID of the entity. For Google-managed entities, the
+                  `id` must be the email address of a group or user. For external-identity-mapped
+                  entities, the `id` must be a string conforming to the Identity Source's
+                  requirements. Must be unique within a `namespace`.
+                x-kubernetes-immutable: true
+              namespace:
+                type: string
+                x-dcl-go-name: Namespace
+                description: The namespace in which the entity exists. If not specified,
+                  the `EntityKey` represents a Google-managed entity such as a Google
+                  user or a Google Group. If specified, the `EntityKey` represents
+                  an external-identity-mapped group. The namespace must correspond
+                  to an identity source created in Admin Console and must be in the
+                  form of `identitysources/{identity_source_id}`.
+                x-kubernetes-immutable: true
         description:
           type: string
           x-dcl-go-name: Description
           description: An extended description to help users determine the purpose
             of a `Group`. Must not be longer than 4,096 characters.
+        directMemberCount:
+          type: integer
+          format: int64
+          x-dcl-go-name: DirectMemberCount
+          readOnly: true
+          description: 'Output only. The number of all direct members. Including groups
+            and users, The special member: all-user-in-domain will be counted as one
+            member. Output only.'
+          x-kubernetes-immutable: true
+        directMemberCountPerType:
+          type: object
+          x-dcl-go-name: DirectMemberCountPerType
+          x-dcl-go-type: GroupDirectMemberCountPerType
+          readOnly: true
+          description: Output only. Direct membership counts grouped by user/group
+            type
+          x-kubernetes-immutable: true
+          properties:
+            groupCount:
+              type: integer
+              format: int64
+              x-dcl-go-name: GroupCount
+              readOnly: true
+              description: Output only. Direct group type membership count
+              x-kubernetes-immutable: true
+            userCount:
+              type: integer
+              format: int64
+              x-dcl-go-name: UserCount
+              readOnly: true
+              description: Output only. Direct user type membership count
+              x-kubernetes-immutable: true
         displayName:
           type: string
           x-dcl-go-name: DisplayName

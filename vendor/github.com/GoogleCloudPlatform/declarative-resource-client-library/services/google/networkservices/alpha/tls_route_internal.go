@@ -72,7 +72,7 @@ func (r *TlsRouteRulesActionDestinations) validate() error {
 }
 func (r *TlsRoute) basePath() string {
 	params := map[string]interface{}{}
-	return dcl.Nprintf("https://networkservices.googleapis.com/v1beta1/", params)
+	return dcl.Nprintf("https://networkservices.googleapis.com/v1alpha1/", params)
 }
 
 func (r *TlsRoute) getURL(userBasePath string) (string, error) {

@@ -294,6 +294,11 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
     status: string
     type: string
   createTime: string
+  deliverySetting: string
+  displayName:
+    familyName: string
+    fullName: string
+    givenName: string
   observedGeneration: integer
   type: string
   updateTime: string
@@ -360,6 +365,41 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when the `Membership` was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>deliverySetting</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>displayName</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The display name of this member, if available{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>displayName.familyName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Member's family name{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>displayName.fullName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Localized UTF-16 full name for the member. Localization is done based on the language in the request and the language of the stored display name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>displayName.givenName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Member's given name{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

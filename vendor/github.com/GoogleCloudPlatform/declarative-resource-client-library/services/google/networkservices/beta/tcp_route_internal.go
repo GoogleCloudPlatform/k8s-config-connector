@@ -169,6 +169,9 @@ func newUpdateTcpRouteUpdateTcpRouteRequest(ctx context.Context, f *TcpRoute, c 
 	if v := f.Meshes; v != nil {
 		req["meshes"] = v
 	}
+	if v := f.Gateways; v != nil {
+		req["gateways"] = v
+	}
 	if v := f.Labels; !dcl.IsEmptyValueIndirect(v) {
 		req["labels"] = v
 	}
@@ -527,6 +530,11 @@ func canonicalizeTcpRouteDesiredState(rawDesired, rawInitial *TcpRoute, opts ...
 	} else {
 		canonicalDesired.Meshes = rawDesired.Meshes
 	}
+	if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawInitial.Gateways) {
+		canonicalDesired.Gateways = rawInitial.Gateways
+	} else {
+		canonicalDesired.Gateways = rawDesired.Gateways
+	}
 	if dcl.IsZeroValue(rawDesired.Labels) || (dcl.IsEmptyValueIndirect(rawDesired.Labels) && dcl.IsEmptyValueIndirect(rawInitial.Labels)) {
 		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		canonicalDesired.Labels = rawInitial.Labels
@@ -594,6 +602,14 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawNew.Meshes) {
 			rawNew.Meshes = rawDesired.Meshes
+		}
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.Gateways) && dcl.IsNotReturnedByServer(rawDesired.Gateways) {
+		rawNew.Gateways = rawDesired.Gateways
+	} else {
+		if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawNew.Gateways) {
+			rawNew.Gateways = rawDesired.Gateways
 		}
 	}
 
@@ -1153,6 +1169,13 @@ func diffTcpRoute(c *Client, desired, actual *TcpRoute, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTcpRouteUpdateTcpRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTcpRouteUpdateTcpRouteOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1409,6 +1432,9 @@ func expandTcpRoute(c *Client, f *TcpRoute) (map[string]interface{}, error) {
 	if v := f.Meshes; v != nil {
 		m["meshes"] = v
 	}
+	if v := f.Gateways; v != nil {
+		m["gateways"] = v
+	}
 	if v := f.Labels; dcl.ValueShouldBeSent(v) {
 		m["labels"] = v
 	}
@@ -1445,6 +1471,7 @@ func flattenTcpRoute(c *Client, i interface{}, res *TcpRoute) *TcpRoute {
 	resultRes.Rules = flattenTcpRouteRulesSlice(c, m["rules"], res)
 	resultRes.Routers = dcl.FlattenStringSlice(m["routers"])
 	resultRes.Meshes = dcl.FlattenStringSlice(m["meshes"])
+	resultRes.Gateways = dcl.FlattenStringSlice(m["gateways"])
 	resultRes.Labels = dcl.FlattenKeyValuePairs(m["labels"])
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])

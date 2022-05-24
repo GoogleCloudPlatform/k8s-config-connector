@@ -385,7 +385,7 @@ func (r *PatchDeploymentRolloutDisruptionBudget) validate() error {
 }
 func (r *PatchDeployment) basePath() string {
 	params := map[string]interface{}{}
-	return dcl.Nprintf("https://osconfig.googleapis.com/v1beta", params)
+	return dcl.Nprintf("https://osconfig.googleapis.com/v1", params)
 }
 
 func (r *PatchDeployment) getURL(userBasePath string) (string, error) {

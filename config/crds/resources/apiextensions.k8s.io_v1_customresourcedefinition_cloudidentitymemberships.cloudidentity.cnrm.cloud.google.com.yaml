@@ -214,6 +214,26 @@ spec:
                 description: Output only. The time when the `Membership` was created.
                 format: date-time
                 type: string
+              deliverySetting:
+                description: 'Output only. Delivery setting associated with the membership.
+                  Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST,
+                  DAILY, NONE, DISABLED'
+                type: string
+              displayName:
+                description: Output only. The display name of this member, if available
+                properties:
+                  familyName:
+                    description: Output only. Member's family name
+                    type: string
+                  fullName:
+                    description: Output only. Localized UTF-16 full name for the member.
+                      Localization is done based on the language in the request and
+                      the language of the stored display name.
+                    type: string
+                  givenName:
+                    description: Output only. Member's given name
+                    type: string
+                type: object
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

@@ -26,18 +26,21 @@ import (
 )
 
 type Group struct {
-	Name                 *string                      `json:"name"`
-	GroupKey             *GroupGroupKey               `json:"groupKey"`
-	AdditionalGroupKeys  []GroupAdditionalGroupKeys   `json:"additionalGroupKeys"`
-	Parent               *string                      `json:"parent"`
-	DisplayName          *string                      `json:"displayName"`
-	Description          *string                      `json:"description"`
-	CreateTime           *string                      `json:"createTime"`
-	UpdateTime           *string                      `json:"updateTime"`
-	Labels               map[string]string            `json:"labels"`
-	DynamicGroupMetadata *GroupDynamicGroupMetadata   `json:"dynamicGroupMetadata"`
-	PosixGroups          []GroupPosixGroups           `json:"posixGroups"`
-	InitialGroupConfig   *GroupInitialGroupConfigEnum `json:"initialGroupConfig"`
+	Name                     *string                        `json:"name"`
+	GroupKey                 *GroupGroupKey                 `json:"groupKey"`
+	AdditionalGroupKeys      []GroupAdditionalGroupKeys     `json:"additionalGroupKeys"`
+	Parent                   *string                        `json:"parent"`
+	DisplayName              *string                        `json:"displayName"`
+	Description              *string                        `json:"description"`
+	CreateTime               *string                        `json:"createTime"`
+	UpdateTime               *string                        `json:"updateTime"`
+	Labels                   map[string]string              `json:"labels"`
+	DirectMemberCount        *int64                         `json:"directMemberCount"`
+	DirectMemberCountPerType *GroupDirectMemberCountPerType `json:"directMemberCountPerType"`
+	DerivedAliases           []GroupDerivedAliases          `json:"derivedAliases"`
+	DynamicGroupMetadata     *GroupDynamicGroupMetadata     `json:"dynamicGroupMetadata"`
+	PosixGroups              []GroupPosixGroups             `json:"posixGroups"`
+	InitialGroupConfig       *GroupInitialGroupConfigEnum   `json:"initialGroupConfig"`
 }
 
 func (r *Group) String() string {
@@ -217,6 +220,104 @@ func (r *GroupAdditionalGroupKeys) String() string {
 }
 
 func (r *GroupAdditionalGroupKeys) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type GroupDirectMemberCountPerType struct {
+	empty      bool   `json:"-"`
+	UserCount  *int64 `json:"userCount"`
+	GroupCount *int64 `json:"groupCount"`
+}
+
+type jsonGroupDirectMemberCountPerType GroupDirectMemberCountPerType
+
+func (r *GroupDirectMemberCountPerType) UnmarshalJSON(data []byte) error {
+	var res jsonGroupDirectMemberCountPerType
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyGroupDirectMemberCountPerType
+	} else {
+
+		r.UserCount = res.UserCount
+
+		r.GroupCount = res.GroupCount
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this GroupDirectMemberCountPerType is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyGroupDirectMemberCountPerType *GroupDirectMemberCountPerType = &GroupDirectMemberCountPerType{empty: true}
+
+func (r *GroupDirectMemberCountPerType) Empty() bool {
+	return r.empty
+}
+
+func (r *GroupDirectMemberCountPerType) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *GroupDirectMemberCountPerType) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type GroupDerivedAliases struct {
+	empty     bool    `json:"-"`
+	Id        *string `json:"id"`
+	Namespace *string `json:"namespace"`
+}
+
+type jsonGroupDerivedAliases GroupDerivedAliases
+
+func (r *GroupDerivedAliases) UnmarshalJSON(data []byte) error {
+	var res jsonGroupDerivedAliases
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyGroupDerivedAliases
+	} else {
+
+		r.Id = res.Id
+
+		r.Namespace = res.Namespace
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this GroupDerivedAliases is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyGroupDerivedAliases *GroupDerivedAliases = &GroupDerivedAliases{empty: true}
+
+func (r *GroupDerivedAliases) Empty() bool {
+	return r.empty
+}
+
+func (r *GroupDerivedAliases) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *GroupDerivedAliases) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))
@@ -438,18 +539,21 @@ func (r *Group) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                 dcl.ValueOrEmptyString(nr.Name),
-		"groupKey":             dcl.ValueOrEmptyString(nr.GroupKey),
-		"additionalGroupKeys":  dcl.ValueOrEmptyString(nr.AdditionalGroupKeys),
-		"parent":               dcl.ValueOrEmptyString(nr.Parent),
-		"displayName":          dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":          dcl.ValueOrEmptyString(nr.Description),
-		"createTime":           dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":           dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":               dcl.ValueOrEmptyString(nr.Labels),
-		"dynamicGroupMetadata": dcl.ValueOrEmptyString(nr.DynamicGroupMetadata),
-		"posixGroups":          dcl.ValueOrEmptyString(nr.PosixGroups),
-		"initialGroupConfig":   dcl.ValueOrEmptyString(nr.InitialGroupConfig),
+		"name":                     dcl.ValueOrEmptyString(nr.Name),
+		"groupKey":                 dcl.ValueOrEmptyString(nr.GroupKey),
+		"additionalGroupKeys":      dcl.ValueOrEmptyString(nr.AdditionalGroupKeys),
+		"parent":                   dcl.ValueOrEmptyString(nr.Parent),
+		"displayName":              dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":              dcl.ValueOrEmptyString(nr.Description),
+		"createTime":               dcl.ValueOrEmptyString(nr.CreateTime),
+		"updateTime":               dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":                   dcl.ValueOrEmptyString(nr.Labels),
+		"directMemberCount":        dcl.ValueOrEmptyString(nr.DirectMemberCount),
+		"directMemberCountPerType": dcl.ValueOrEmptyString(nr.DirectMemberCountPerType),
+		"derivedAliases":           dcl.ValueOrEmptyString(nr.DerivedAliases),
+		"dynamicGroupMetadata":     dcl.ValueOrEmptyString(nr.DynamicGroupMetadata),
+		"posixGroups":              dcl.ValueOrEmptyString(nr.PosixGroups),
+		"initialGroupConfig":       dcl.ValueOrEmptyString(nr.InitialGroupConfig),
 	}
 	return dcl.Nprintf("groups/{{name}}", params), nil
 }

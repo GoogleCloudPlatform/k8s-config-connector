@@ -35,10 +35,12 @@ type SQLOperation struct {
 
 // Wait waits for an Operation to complete by fetching the operation until it completes.
 func (op *SQLOperation) Wait(ctx context.Context, c *dcl.Config, _, _ string) error {
-	glog.Infof("Waiting on: %v", op)
+	glog.Infof("Waiting on operation: %v", op)
 	op.config = c
 
-	return dcl.Do(ctx, op.operate, c.RetryProvider)
+	err := dcl.Do(ctx, op.operate, c.RetryProvider)
+	c.Logger.Infof("Completed operation: %v", op)
+	return err
 }
 
 func (op *SQLOperation) operate(ctx context.Context) (*dcl.RetryDetails, error) {

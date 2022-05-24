@@ -66,6 +66,10 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 #### Schema
   ```yaml
   description: string
+  gateways:
+  - external: string
+    name: string
+    namespace: string
   labels:
     string: string
   location: string
@@ -109,6 +113,56 @@ Before you upgrade Config Connector to a later version, we recommended that you 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. A free-text description of the resource. Max length 1024 characters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gateways</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gateways[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gateways[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gateways[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gateways[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -545,6 +599,8 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
     location: global
     meshes:
       - name: networkservicestcproute-dep
+    gateways:
+      - name: networkservicestcproute-dep
     rules:
     - matches:
       - address: "10.0.0.1/32"
@@ -566,6 +622,21 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
     loadBalancingScheme: INTERNAL_SELF_MANAGED
     location: global
     protocol: TCP
+  ---
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesGateway
+  metadata:
+    name: networkservicestcproute-dep
+  spec:
+    projectRef:
+      # Replace ${PROJECT_ID?} with your project ID.
+      external: "projects/${PROJECT_ID?}"
+    type: OPEN_MESH
+    ports:
+    - 80
+    - 443
+    location: global
+    scope: tcproute-sample-scope
   ---
   apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
   kind: NetworkServicesMesh

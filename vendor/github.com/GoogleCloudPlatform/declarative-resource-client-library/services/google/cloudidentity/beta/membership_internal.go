@@ -27,7 +27,7 @@ import (
 
 func (r *Membership) validate() error {
 
-	if err := dcl.ValidateAtMostOneOfFieldsSet([]string(nil)); err != nil {
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"DisplayName"}, r.DisplayName); err != nil {
 		return err
 	}
 	if err := dcl.Required(r, "preferredMemberKey"); err != nil {
@@ -41,6 +41,11 @@ func (r *Membership) validate() error {
 	}
 	if !dcl.IsEmptyValueIndirect(r.PreferredMemberKey) {
 		if err := r.PreferredMemberKey.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.DisplayName) {
+		if err := r.DisplayName.validate(); err != nil {
 			return err
 		}
 	}
@@ -85,6 +90,18 @@ func (r *MembershipRolesRestrictionEvaluations) validate() error {
 	return nil
 }
 func (r *MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation) validate() error {
+	return nil
+}
+func (r *MembershipDisplayName) validate() error {
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"GivenName"}, r.GivenName); err != nil {
+		return err
+	}
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"FamilyName"}, r.FamilyName); err != nil {
+		return err
+	}
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"FullName"}, r.FullName); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *MembershipMemberKey) validate() error {
@@ -446,6 +463,13 @@ func (c *Client) membershipDiffsForRawDesired(ctx context.Context, rawDesired *M
 func canonicalizeMembershipInitialState(rawInitial, rawDesired *Membership) (*Membership, error) {
 	// TODO(magic-modules-eng): write canonicalizer once relevant traits are added.
 
+	if !dcl.IsZeroValue(rawInitial.DisplayName) {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			rawInitial.DisplayName = EmptyMembershipDisplayName
+		}
+	}
+
 	return rawInitial, nil
 }
 
@@ -462,9 +486,18 @@ func canonicalizeMembershipDesiredState(rawDesired, rawInitial *Membership, opts
 		// Since the initial state is empty, the desired state is all we have.
 		// We canonicalize the remaining nested objects with nil to pick up defaults.
 		rawDesired.PreferredMemberKey = canonicalizeMembershipPreferredMemberKey(rawDesired.PreferredMemberKey, nil, opts...)
+		rawDesired.DisplayName = canonicalizeMembershipDisplayName(rawDesired.DisplayName, nil, opts...)
 		rawDesired.MemberKey = canonicalizeMembershipMemberKey(rawDesired.MemberKey, nil, opts...)
 
 		return rawDesired, nil
+	}
+
+	if rawDesired.DisplayName != nil || rawInitial.DisplayName != nil {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			rawDesired.DisplayName = nil
+			rawInitial.DisplayName = nil
+		}
 	}
 
 	canonicalDesired := &Membership{}
@@ -518,6 +551,17 @@ func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (
 	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.DeliverySetting) && dcl.IsNotReturnedByServer(rawDesired.DeliverySetting) {
+		rawNew.DeliverySetting = rawDesired.DeliverySetting
+	} else {
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+		rawNew.DisplayName = rawDesired.DisplayName
+	} else {
+		rawNew.DisplayName = canonicalizeNewMembershipDisplayName(c, rawDesired.DisplayName, rawNew.DisplayName)
 	}
 
 	if dcl.IsNotReturnedByServer(rawNew.MemberKey) && dcl.IsNotReturnedByServer(rawDesired.MemberKey) {
@@ -1099,6 +1143,151 @@ func canonicalizeNewMembershipRolesRestrictionEvaluationsMemberRestrictionEvalua
 	return items
 }
 
+func canonicalizeMembershipDisplayName(des, initial *MembershipDisplayName, opts ...dcl.ApplyOption) *MembershipDisplayName {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if des.GivenName != nil || (initial != nil && initial.GivenName != nil) {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			des.GivenName = nil
+			if initial != nil {
+				initial.GivenName = nil
+			}
+		}
+	}
+
+	if des.FamilyName != nil || (initial != nil && initial.FamilyName != nil) {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			des.FamilyName = nil
+			if initial != nil {
+				initial.FamilyName = nil
+			}
+		}
+	}
+
+	if des.FullName != nil || (initial != nil && initial.FullName != nil) {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			des.FullName = nil
+			if initial != nil {
+				initial.FullName = nil
+			}
+		}
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &MembershipDisplayName{}
+
+	return cDes
+}
+
+func canonicalizeMembershipDisplayNameSlice(des, initial []MembershipDisplayName, opts ...dcl.ApplyOption) []MembershipDisplayName {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]MembershipDisplayName, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeMembershipDisplayName(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]MembershipDisplayName, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeMembershipDisplayName(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewMembershipDisplayName(c *Client, des, nw *MembershipDisplayName) *MembershipDisplayName {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsNotReturnedByServer(des) {
+			c.Config.Logger.Info("Found explicitly empty value for MembershipDisplayName while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.GivenName, nw.GivenName) {
+		nw.GivenName = des.GivenName
+	}
+	if dcl.StringCanonicalize(des.FamilyName, nw.FamilyName) {
+		nw.FamilyName = des.FamilyName
+	}
+	if dcl.StringCanonicalize(des.FullName, nw.FullName) {
+		nw.FullName = des.FullName
+	}
+
+	return nw
+}
+
+func canonicalizeNewMembershipDisplayNameSet(c *Client, des, nw []MembershipDisplayName) []MembershipDisplayName {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []MembershipDisplayName
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareMembershipDisplayNameNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewMembershipDisplayNameSlice(c *Client, des, nw []MembershipDisplayName) []MembershipDisplayName {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []MembershipDisplayName
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewMembershipDisplayName(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeMembershipMemberKey(des, initial *MembershipMemberKey, opts ...dcl.ApplyOption) *MembershipMemberKey {
 	if des == nil {
 		return initial
@@ -1276,6 +1465,20 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 	}
 
 	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DeliverySetting, actual.DeliverySetting, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeliverySetting")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipDisplayNameNewStyle, EmptyObject: EmptyMembershipDisplayName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1464,6 +1667,49 @@ func compareMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationNewS
 	return diffs, nil
 }
 
+func compareMembershipDisplayNameNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*MembershipDisplayName)
+	if !ok {
+		desiredNotPointer, ok := d.(MembershipDisplayName)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a MembershipDisplayName or *MembershipDisplayName", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*MembershipDisplayName)
+	if !ok {
+		actualNotPointer, ok := a.(MembershipDisplayName)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a MembershipDisplayName", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.GivenName, actual.GivenName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GivenName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.FamilyName, actual.FamilyName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FamilyName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareMembershipMemberKeyNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -1606,6 +1852,8 @@ func flattenMembership(c *Client, i interface{}, res *Membership) *Membership {
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
 	resultRes.Roles = flattenMembershipRolesSlice(c, m["roles"], res)
 	resultRes.Type = flattenMembershipTypeEnum(m["type"])
+	resultRes.DeliverySetting = flattenMembershipDeliverySettingEnum(m["deliverySetting"])
+	resultRes.DisplayName = flattenMembershipDisplayName(c, m["displayName"], res)
 	resultRes.MemberKey = flattenMembershipMemberKey(c, m["memberKey"], res)
 	resultRes.Group = dcl.FlattenString(m["group"])
 
@@ -2197,6 +2445,119 @@ func flattenMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation(c *
 	return r
 }
 
+// expandMembershipDisplayNameMap expands the contents of MembershipDisplayName into a JSON
+// request object.
+func expandMembershipDisplayNameMap(c *Client, f map[string]MembershipDisplayName, res *Membership) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandMembershipDisplayName(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandMembershipDisplayNameSlice expands the contents of MembershipDisplayName into a JSON
+// request object.
+func expandMembershipDisplayNameSlice(c *Client, f []MembershipDisplayName, res *Membership) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandMembershipDisplayName(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenMembershipDisplayNameMap flattens the contents of MembershipDisplayName from a JSON
+// response object.
+func flattenMembershipDisplayNameMap(c *Client, i interface{}, res *Membership) map[string]MembershipDisplayName {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]MembershipDisplayName{}
+	}
+
+	if len(a) == 0 {
+		return map[string]MembershipDisplayName{}
+	}
+
+	items := make(map[string]MembershipDisplayName)
+	for k, item := range a {
+		items[k] = *flattenMembershipDisplayName(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenMembershipDisplayNameSlice flattens the contents of MembershipDisplayName from a JSON
+// response object.
+func flattenMembershipDisplayNameSlice(c *Client, i interface{}, res *Membership) []MembershipDisplayName {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []MembershipDisplayName{}
+	}
+
+	if len(a) == 0 {
+		return []MembershipDisplayName{}
+	}
+
+	items := make([]MembershipDisplayName, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenMembershipDisplayName(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandMembershipDisplayName expands an instance of MembershipDisplayName into a JSON
+// request object.
+func expandMembershipDisplayName(c *Client, f *MembershipDisplayName, res *Membership) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+
+	return m, nil
+}
+
+// flattenMembershipDisplayName flattens an instance of MembershipDisplayName from a JSON
+// response object.
+func flattenMembershipDisplayName(c *Client, i interface{}, res *Membership) *MembershipDisplayName {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &MembershipDisplayName{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyMembershipDisplayName
+	}
+	r.GivenName = dcl.FlattenString(m["givenName"])
+	r.FamilyName = dcl.FlattenString(m["familyName"])
+	r.FullName = dcl.FlattenString(m["fullName"])
+
+	return r
+}
+
 // expandMembershipMemberKeyMap expands the contents of MembershipMemberKey into a JSON
 // request object.
 func expandMembershipMemberKeyMap(c *Client, f map[string]MembershipMemberKey, res *Membership) (map[string]interface{}, error) {
@@ -2417,6 +2778,57 @@ func flattenMembershipTypeEnum(i interface{}) *MembershipTypeEnum {
 	return MembershipTypeEnumRef(s)
 }
 
+// flattenMembershipDeliverySettingEnumMap flattens the contents of MembershipDeliverySettingEnum from a JSON
+// response object.
+func flattenMembershipDeliverySettingEnumMap(c *Client, i interface{}, res *Membership) map[string]MembershipDeliverySettingEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]MembershipDeliverySettingEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]MembershipDeliverySettingEnum{}
+	}
+
+	items := make(map[string]MembershipDeliverySettingEnum)
+	for k, item := range a {
+		items[k] = *flattenMembershipDeliverySettingEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenMembershipDeliverySettingEnumSlice flattens the contents of MembershipDeliverySettingEnum from a JSON
+// response object.
+func flattenMembershipDeliverySettingEnumSlice(c *Client, i interface{}, res *Membership) []MembershipDeliverySettingEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []MembershipDeliverySettingEnum{}
+	}
+
+	if len(a) == 0 {
+		return []MembershipDeliverySettingEnum{}
+	}
+
+	items := make([]MembershipDeliverySettingEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenMembershipDeliverySettingEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenMembershipDeliverySettingEnum asserts that an interface is a string, and returns a
+// pointer to a *MembershipDeliverySettingEnum with the same value as that string.
+func flattenMembershipDeliverySettingEnum(i interface{}) *MembershipDeliverySettingEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return MembershipDeliverySettingEnumRef(s)
+}
+
 // This function returns a matcher that checks whether a serialized resource matches this resource
 // in its parameters (as defined by the fields in a Get, which definitionally define resource
 // identity).  This is useful in extracting the element from a List call.
@@ -2512,6 +2924,17 @@ func extractMembershipFields(r *Membership) error {
 	if !dcl.IsNotReturnedByServer(vPreferredMemberKey) {
 		r.PreferredMemberKey = vPreferredMemberKey
 	}
+	vDisplayName := r.DisplayName
+	if vDisplayName == nil {
+		// note: explicitly not the empty object.
+		vDisplayName = &MembershipDisplayName{}
+	}
+	if err := extractMembershipDisplayNameFields(r, vDisplayName); err != nil {
+		return err
+	}
+	if !dcl.IsNotReturnedByServer(vDisplayName) {
+		r.DisplayName = vDisplayName
+	}
 	vMemberKey := r.MemberKey
 	if vMemberKey == nil {
 		// note: explicitly not the empty object.
@@ -2573,6 +2996,9 @@ func extractMembershipRolesRestrictionEvaluationsFields(r *Membership, o *Member
 func extractMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationFields(r *Membership, o *MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation) error {
 	return nil
 }
+func extractMembershipDisplayNameFields(r *Membership, o *MembershipDisplayName) error {
+	return nil
+}
 func extractMembershipMemberKeyFields(r *Membership, o *MembershipMemberKey) error {
 	return nil
 }
@@ -2588,6 +3014,17 @@ func postReadExtractMembershipFields(r *Membership) error {
 	}
 	if !dcl.IsNotReturnedByServer(vPreferredMemberKey) {
 		r.PreferredMemberKey = vPreferredMemberKey
+	}
+	vDisplayName := r.DisplayName
+	if vDisplayName == nil {
+		// note: explicitly not the empty object.
+		vDisplayName = &MembershipDisplayName{}
+	}
+	if err := postReadExtractMembershipDisplayNameFields(r, vDisplayName); err != nil {
+		return err
+	}
+	if !dcl.IsNotReturnedByServer(vDisplayName) {
+		r.DisplayName = vDisplayName
 	}
 	vMemberKey := r.MemberKey
 	if vMemberKey == nil {
@@ -2648,6 +3085,9 @@ func postReadExtractMembershipRolesRestrictionEvaluationsFields(r *Membership, o
 	return nil
 }
 func postReadExtractMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationFields(r *Membership, o *MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation) error {
+	return nil
+}
+func postReadExtractMembershipDisplayNameFields(r *Membership, o *MembershipDisplayName) error {
 	return nil
 }
 func postReadExtractMembershipMemberKeyFields(r *Membership, o *MembershipMemberKey) error {

@@ -33,6 +33,7 @@ type TcpRoute struct {
 	Rules       []TcpRouteRules   `json:"rules"`
 	Routers     []string          `json:"routers"`
 	Meshes      []string          `json:"meshes"`
+	Gateways    []string          `json:"gateways"`
 	Labels      map[string]string `json:"labels"`
 	Project     *string           `json:"project"`
 	Location    *string           `json:"location"`
@@ -262,6 +263,7 @@ func (r *TcpRoute) ID() (string, error) {
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
 		"routers":     dcl.ValueOrEmptyString(nr.Routers),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),
+		"gateways":    dcl.ValueOrEmptyString(nr.Gateways),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
 		"project":     dcl.ValueOrEmptyString(nr.Project),
 		"location":    dcl.ValueOrEmptyString(nr.Location),

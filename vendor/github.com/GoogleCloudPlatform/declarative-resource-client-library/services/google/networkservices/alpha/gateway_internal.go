@@ -46,7 +46,7 @@ func (r *Gateway) validate() error {
 }
 func (r *Gateway) basePath() string {
 	params := map[string]interface{}{}
-	return dcl.Nprintf("https://networkservices.googleapis.com/v1beta1/", params)
+	return dcl.Nprintf("https://networkservices.googleapis.com/v1alpha1/", params)
 }
 
 func (r *Gateway) getURL(userBasePath string) (string, error) {

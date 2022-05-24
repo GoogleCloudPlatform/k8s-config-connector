@@ -41,6 +41,11 @@ func (r *Group) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.DirectMemberCountPerType) {
+		if err := r.DirectMemberCountPerType.validate(); err != nil {
+			return err
+		}
+	}
 	if !dcl.IsEmptyValueIndirect(r.DynamicGroupMetadata) {
 		if err := r.DynamicGroupMetadata.validate(); err != nil {
 			return err
@@ -55,6 +60,15 @@ func (r *GroupGroupKey) validate() error {
 	return nil
 }
 func (r *GroupAdditionalGroupKeys) validate() error {
+	if err := dcl.Required(r, "id"); err != nil {
+		return err
+	}
+	return nil
+}
+func (r *GroupDirectMemberCountPerType) validate() error {
+	return nil
+}
+func (r *GroupDerivedAliases) validate() error {
 	if err := dcl.Required(r, "id"); err != nil {
 		return err
 	}
@@ -499,6 +513,7 @@ func canonicalizeGroupDesiredState(rawDesired, rawInitial *Group, opts ...dcl.Ap
 		// Since the initial state is empty, the desired state is all we have.
 		// We canonicalize the remaining nested objects with nil to pick up defaults.
 		rawDesired.GroupKey = canonicalizeGroupGroupKey(rawDesired.GroupKey, nil, opts...)
+		rawDesired.DirectMemberCountPerType = canonicalizeGroupDirectMemberCountPerType(rawDesired.DirectMemberCountPerType, nil, opts...)
 		rawDesired.DynamicGroupMetadata = canonicalizeGroupDynamicGroupMetadata(rawDesired.DynamicGroupMetadata, nil, opts...)
 
 		return rawDesired, nil
@@ -601,6 +616,23 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.DirectMemberCount) && dcl.IsNotReturnedByServer(rawDesired.DirectMemberCount) {
+		rawNew.DirectMemberCount = rawDesired.DirectMemberCount
+	} else {
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.DirectMemberCountPerType) && dcl.IsNotReturnedByServer(rawDesired.DirectMemberCountPerType) {
+		rawNew.DirectMemberCountPerType = rawDesired.DirectMemberCountPerType
+	} else {
+		rawNew.DirectMemberCountPerType = canonicalizeNewGroupDirectMemberCountPerType(c, rawDesired.DirectMemberCountPerType, rawNew.DirectMemberCountPerType)
+	}
+
+	if dcl.IsNotReturnedByServer(rawNew.DerivedAliases) && dcl.IsNotReturnedByServer(rawDesired.DerivedAliases) {
+		rawNew.DerivedAliases = rawDesired.DerivedAliases
+	} else {
+		rawNew.DerivedAliases = canonicalizeNewGroupDerivedAliasesSlice(c, rawDesired.DerivedAliases, rawNew.DerivedAliases)
 	}
 
 	if dcl.IsNotReturnedByServer(rawNew.DynamicGroupMetadata) && dcl.IsNotReturnedByServer(rawDesired.DynamicGroupMetadata) {
@@ -861,6 +893,234 @@ func canonicalizeNewGroupAdditionalGroupKeysSlice(c *Client, des, nw []GroupAddi
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewGroupAdditionalGroupKeys(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeGroupDirectMemberCountPerType(des, initial *GroupDirectMemberCountPerType, opts ...dcl.ApplyOption) *GroupDirectMemberCountPerType {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &GroupDirectMemberCountPerType{}
+
+	return cDes
+}
+
+func canonicalizeGroupDirectMemberCountPerTypeSlice(des, initial []GroupDirectMemberCountPerType, opts ...dcl.ApplyOption) []GroupDirectMemberCountPerType {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]GroupDirectMemberCountPerType, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeGroupDirectMemberCountPerType(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]GroupDirectMemberCountPerType, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeGroupDirectMemberCountPerType(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewGroupDirectMemberCountPerType(c *Client, des, nw *GroupDirectMemberCountPerType) *GroupDirectMemberCountPerType {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsNotReturnedByServer(des) {
+			c.Config.Logger.Info("Found explicitly empty value for GroupDirectMemberCountPerType while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewGroupDirectMemberCountPerTypeSet(c *Client, des, nw []GroupDirectMemberCountPerType) []GroupDirectMemberCountPerType {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []GroupDirectMemberCountPerType
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareGroupDirectMemberCountPerTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewGroupDirectMemberCountPerTypeSlice(c *Client, des, nw []GroupDirectMemberCountPerType) []GroupDirectMemberCountPerType {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []GroupDirectMemberCountPerType
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewGroupDirectMemberCountPerType(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeGroupDerivedAliases(des, initial *GroupDerivedAliases, opts ...dcl.ApplyOption) *GroupDerivedAliases {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &GroupDerivedAliases{}
+
+	if dcl.StringCanonicalize(des.Id, initial.Id) || dcl.IsZeroValue(des.Id) {
+		cDes.Id = initial.Id
+	} else {
+		cDes.Id = des.Id
+	}
+	if dcl.StringCanonicalize(des.Namespace, initial.Namespace) || dcl.IsZeroValue(des.Namespace) {
+		cDes.Namespace = initial.Namespace
+	} else {
+		cDes.Namespace = des.Namespace
+	}
+
+	return cDes
+}
+
+func canonicalizeGroupDerivedAliasesSlice(des, initial []GroupDerivedAliases, opts ...dcl.ApplyOption) []GroupDerivedAliases {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]GroupDerivedAliases, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeGroupDerivedAliases(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]GroupDerivedAliases, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeGroupDerivedAliases(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewGroupDerivedAliases(c *Client, des, nw *GroupDerivedAliases) *GroupDerivedAliases {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsNotReturnedByServer(des) {
+			c.Config.Logger.Info("Found explicitly empty value for GroupDerivedAliases while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.Id, nw.Id) {
+		nw.Id = des.Id
+	}
+	if dcl.StringCanonicalize(des.Namespace, nw.Namespace) {
+		nw.Namespace = des.Namespace
+	}
+
+	return nw
+}
+
+func canonicalizeNewGroupDerivedAliasesSet(c *Client, des, nw []GroupDerivedAliases) []GroupDerivedAliases {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []GroupDerivedAliases
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareGroupDerivedAliasesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewGroupDerivedAliasesSlice(c *Client, des, nw []GroupDerivedAliases) []GroupDerivedAliases {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []GroupDerivedAliases
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewGroupDerivedAliases(c, &d, &n))
 	}
 
 	return items
@@ -1427,6 +1687,27 @@ func diffGroup(c *Client, desired, actual *Group, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.DirectMemberCount, actual.DirectMemberCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DirectMemberCountPerType, actual.DirectMemberCountPerType, dcl.Info{OutputOnly: true, ObjectFunction: compareGroupDirectMemberCountPerTypeNewStyle, EmptyObject: EmptyGroupDirectMemberCountPerType, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCountPerType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DerivedAliases, actual.DerivedAliases, dcl.Info{OutputOnly: true, ObjectFunction: compareGroupDerivedAliasesNewStyle, EmptyObject: EmptyGroupDerivedAliases, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DerivedAliases")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.DynamicGroupMetadata, actual.DynamicGroupMetadata, dcl.Info{ObjectFunction: compareGroupDynamicGroupMetadataNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadata, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("DynamicGroupMetadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1502,6 +1783,78 @@ func compareGroupAdditionalGroupKeysNewStyle(d, a interface{}, fn dcl.FieldName)
 		actualNotPointer, ok := a.(GroupAdditionalGroupKeys)
 		if !ok {
 			return nil, fmt.Errorf("obj %v is not a GroupAdditionalGroupKeys", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareGroupDirectMemberCountPerTypeNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*GroupDirectMemberCountPerType)
+	if !ok {
+		desiredNotPointer, ok := d.(GroupDirectMemberCountPerType)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a GroupDirectMemberCountPerType or *GroupDirectMemberCountPerType", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*GroupDirectMemberCountPerType)
+	if !ok {
+		actualNotPointer, ok := a.(GroupDirectMemberCountPerType)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a GroupDirectMemberCountPerType", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.UserCount, actual.UserCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.GroupCount, actual.GroupCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareGroupDerivedAliasesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*GroupDerivedAliases)
+	if !ok {
+		desiredNotPointer, ok := d.(GroupDerivedAliases)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a GroupDerivedAliases or *GroupDerivedAliases", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*GroupDerivedAliases)
+	if !ok {
+		actualNotPointer, ok := a.(GroupDerivedAliases)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a GroupDerivedAliases", a)
 		}
 		actual = &actualNotPointer
 	}
@@ -1801,6 +2154,9 @@ func flattenGroup(c *Client, i interface{}, res *Group) *Group {
 	resultRes.CreateTime = dcl.FlattenString(m["createTime"])
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
 	resultRes.Labels = dcl.FlattenKeyValuePairs(m["labels"])
+	resultRes.DirectMemberCount = dcl.FlattenInteger(m["directMemberCount"])
+	resultRes.DirectMemberCountPerType = flattenGroupDirectMemberCountPerType(c, m["directMemberCountPerType"], res)
+	resultRes.DerivedAliases = flattenGroupDerivedAliasesSlice(c, m["derivedAliases"], res)
 	resultRes.DynamicGroupMetadata = flattenGroupDynamicGroupMetadata(c, m["dynamicGroupMetadata"], res)
 	resultRes.PosixGroups = flattenGroupPosixGroupsSlice(c, m["posixGroups"], res)
 	resultRes.InitialGroupConfig = flattenGroupInitialGroupConfigEnum(m["initialGroupConfig"])
@@ -2037,6 +2393,236 @@ func flattenGroupAdditionalGroupKeys(c *Client, i interface{}, res *Group) *Grou
 
 	if dcl.IsEmptyValueIndirect(i) {
 		return EmptyGroupAdditionalGroupKeys
+	}
+	r.Id = dcl.FlattenString(m["id"])
+	r.Namespace = dcl.FlattenString(m["namespace"])
+
+	return r
+}
+
+// expandGroupDirectMemberCountPerTypeMap expands the contents of GroupDirectMemberCountPerType into a JSON
+// request object.
+func expandGroupDirectMemberCountPerTypeMap(c *Client, f map[string]GroupDirectMemberCountPerType, res *Group) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandGroupDirectMemberCountPerType(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandGroupDirectMemberCountPerTypeSlice expands the contents of GroupDirectMemberCountPerType into a JSON
+// request object.
+func expandGroupDirectMemberCountPerTypeSlice(c *Client, f []GroupDirectMemberCountPerType, res *Group) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandGroupDirectMemberCountPerType(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenGroupDirectMemberCountPerTypeMap flattens the contents of GroupDirectMemberCountPerType from a JSON
+// response object.
+func flattenGroupDirectMemberCountPerTypeMap(c *Client, i interface{}, res *Group) map[string]GroupDirectMemberCountPerType {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]GroupDirectMemberCountPerType{}
+	}
+
+	if len(a) == 0 {
+		return map[string]GroupDirectMemberCountPerType{}
+	}
+
+	items := make(map[string]GroupDirectMemberCountPerType)
+	for k, item := range a {
+		items[k] = *flattenGroupDirectMemberCountPerType(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenGroupDirectMemberCountPerTypeSlice flattens the contents of GroupDirectMemberCountPerType from a JSON
+// response object.
+func flattenGroupDirectMemberCountPerTypeSlice(c *Client, i interface{}, res *Group) []GroupDirectMemberCountPerType {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []GroupDirectMemberCountPerType{}
+	}
+
+	if len(a) == 0 {
+		return []GroupDirectMemberCountPerType{}
+	}
+
+	items := make([]GroupDirectMemberCountPerType, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenGroupDirectMemberCountPerType(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandGroupDirectMemberCountPerType expands an instance of GroupDirectMemberCountPerType into a JSON
+// request object.
+func expandGroupDirectMemberCountPerType(c *Client, f *GroupDirectMemberCountPerType, res *Group) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+
+	return m, nil
+}
+
+// flattenGroupDirectMemberCountPerType flattens an instance of GroupDirectMemberCountPerType from a JSON
+// response object.
+func flattenGroupDirectMemberCountPerType(c *Client, i interface{}, res *Group) *GroupDirectMemberCountPerType {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &GroupDirectMemberCountPerType{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyGroupDirectMemberCountPerType
+	}
+	r.UserCount = dcl.FlattenInteger(m["userCount"])
+	r.GroupCount = dcl.FlattenInteger(m["groupCount"])
+
+	return r
+}
+
+// expandGroupDerivedAliasesMap expands the contents of GroupDerivedAliases into a JSON
+// request object.
+func expandGroupDerivedAliasesMap(c *Client, f map[string]GroupDerivedAliases, res *Group) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandGroupDerivedAliases(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandGroupDerivedAliasesSlice expands the contents of GroupDerivedAliases into a JSON
+// request object.
+func expandGroupDerivedAliasesSlice(c *Client, f []GroupDerivedAliases, res *Group) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandGroupDerivedAliases(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenGroupDerivedAliasesMap flattens the contents of GroupDerivedAliases from a JSON
+// response object.
+func flattenGroupDerivedAliasesMap(c *Client, i interface{}, res *Group) map[string]GroupDerivedAliases {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]GroupDerivedAliases{}
+	}
+
+	if len(a) == 0 {
+		return map[string]GroupDerivedAliases{}
+	}
+
+	items := make(map[string]GroupDerivedAliases)
+	for k, item := range a {
+		items[k] = *flattenGroupDerivedAliases(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenGroupDerivedAliasesSlice flattens the contents of GroupDerivedAliases from a JSON
+// response object.
+func flattenGroupDerivedAliasesSlice(c *Client, i interface{}, res *Group) []GroupDerivedAliases {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []GroupDerivedAliases{}
+	}
+
+	if len(a) == 0 {
+		return []GroupDerivedAliases{}
+	}
+
+	items := make([]GroupDerivedAliases, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenGroupDerivedAliases(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandGroupDerivedAliases expands an instance of GroupDerivedAliases into a JSON
+// request object.
+func expandGroupDerivedAliases(c *Client, f *GroupDerivedAliases, res *Group) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Id; !dcl.IsEmptyValueIndirect(v) {
+		m["id"] = v
+	}
+	if v := f.Namespace; !dcl.IsEmptyValueIndirect(v) {
+		m["namespace"] = v
+	}
+
+	return m, nil
+}
+
+// flattenGroupDerivedAliases flattens an instance of GroupDerivedAliases from a JSON
+// response object.
+func flattenGroupDerivedAliases(c *Client, i interface{}, res *Group) *GroupDerivedAliases {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &GroupDerivedAliases{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyGroupDerivedAliases
 	}
 	r.Id = dcl.FlattenString(m["id"])
 	r.Namespace = dcl.FlattenString(m["namespace"])
@@ -2759,6 +3345,17 @@ func extractGroupFields(r *Group) error {
 	if !dcl.IsNotReturnedByServer(vGroupKey) {
 		r.GroupKey = vGroupKey
 	}
+	vDirectMemberCountPerType := r.DirectMemberCountPerType
+	if vDirectMemberCountPerType == nil {
+		// note: explicitly not the empty object.
+		vDirectMemberCountPerType = &GroupDirectMemberCountPerType{}
+	}
+	if err := extractGroupDirectMemberCountPerTypeFields(r, vDirectMemberCountPerType); err != nil {
+		return err
+	}
+	if !dcl.IsNotReturnedByServer(vDirectMemberCountPerType) {
+		r.DirectMemberCountPerType = vDirectMemberCountPerType
+	}
 	vDynamicGroupMetadata := r.DynamicGroupMetadata
 	if vDynamicGroupMetadata == nil {
 		// note: explicitly not the empty object.
@@ -2776,6 +3373,12 @@ func extractGroupGroupKeyFields(r *Group, o *GroupGroupKey) error {
 	return nil
 }
 func extractGroupAdditionalGroupKeysFields(r *Group, o *GroupAdditionalGroupKeys) error {
+	return nil
+}
+func extractGroupDirectMemberCountPerTypeFields(r *Group, o *GroupDirectMemberCountPerType) error {
+	return nil
+}
+func extractGroupDerivedAliasesFields(r *Group, o *GroupDerivedAliases) error {
 	return nil
 }
 func extractGroupDynamicGroupMetadataFields(r *Group, o *GroupDynamicGroupMetadata) error {
@@ -2814,6 +3417,17 @@ func postReadExtractGroupFields(r *Group) error {
 	if !dcl.IsNotReturnedByServer(vGroupKey) {
 		r.GroupKey = vGroupKey
 	}
+	vDirectMemberCountPerType := r.DirectMemberCountPerType
+	if vDirectMemberCountPerType == nil {
+		// note: explicitly not the empty object.
+		vDirectMemberCountPerType = &GroupDirectMemberCountPerType{}
+	}
+	if err := postReadExtractGroupDirectMemberCountPerTypeFields(r, vDirectMemberCountPerType); err != nil {
+		return err
+	}
+	if !dcl.IsNotReturnedByServer(vDirectMemberCountPerType) {
+		r.DirectMemberCountPerType = vDirectMemberCountPerType
+	}
 	vDynamicGroupMetadata := r.DynamicGroupMetadata
 	if vDynamicGroupMetadata == nil {
 		// note: explicitly not the empty object.
@@ -2831,6 +3445,12 @@ func postReadExtractGroupGroupKeyFields(r *Group, o *GroupGroupKey) error {
 	return nil
 }
 func postReadExtractGroupAdditionalGroupKeysFields(r *Group, o *GroupAdditionalGroupKeys) error {
+	return nil
+}
+func postReadExtractGroupDirectMemberCountPerTypeFields(r *Group, o *GroupDirectMemberCountPerType) error {
+	return nil
+}
+func postReadExtractGroupDerivedAliasesFields(r *Group, o *GroupDerivedAliases) error {
 	return nil
 }
 func postReadExtractGroupDynamicGroupMetadataFields(r *Group, o *GroupDynamicGroupMetadata) error {

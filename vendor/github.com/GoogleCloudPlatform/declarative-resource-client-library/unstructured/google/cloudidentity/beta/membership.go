@@ -35,6 +35,22 @@ func MembershipToUnstructured(r *dclService.Membership) *unstructured.Resource {
 	if r.CreateTime != nil {
 		u.Object["createTime"] = *r.CreateTime
 	}
+	if r.DeliverySetting != nil {
+		u.Object["deliverySetting"] = string(*r.DeliverySetting)
+	}
+	if r.DisplayName != nil && r.DisplayName != dclService.EmptyMembershipDisplayName {
+		rDisplayName := make(map[string]interface{})
+		if r.DisplayName.FamilyName != nil {
+			rDisplayName["familyName"] = *r.DisplayName.FamilyName
+		}
+		if r.DisplayName.FullName != nil {
+			rDisplayName["fullName"] = *r.DisplayName.FullName
+		}
+		if r.DisplayName.GivenName != nil {
+			rDisplayName["givenName"] = *r.DisplayName.GivenName
+		}
+		u.Object["displayName"] = rDisplayName
+	}
 	if r.Group != nil {
 		u.Object["group"] = *r.Group
 	}
@@ -104,6 +120,41 @@ func UnstructuredToMembership(u *unstructured.Resource) (*dclService.Membership,
 			r.CreateTime = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.CreateTime: expected string")
+		}
+	}
+	if _, ok := u.Object["deliverySetting"]; ok {
+		if s, ok := u.Object["deliverySetting"].(string); ok {
+			r.DeliverySetting = dclService.MembershipDeliverySettingEnumRef(s)
+		} else {
+			return nil, fmt.Errorf("r.DeliverySetting: expected string")
+		}
+	}
+	if _, ok := u.Object["displayName"]; ok {
+		if rDisplayName, ok := u.Object["displayName"].(map[string]interface{}); ok {
+			r.DisplayName = &dclService.MembershipDisplayName{}
+			if _, ok := rDisplayName["familyName"]; ok {
+				if s, ok := rDisplayName["familyName"].(string); ok {
+					r.DisplayName.FamilyName = dcl.String(s)
+				} else {
+					return nil, fmt.Errorf("r.DisplayName.FamilyName: expected string")
+				}
+			}
+			if _, ok := rDisplayName["fullName"]; ok {
+				if s, ok := rDisplayName["fullName"].(string); ok {
+					r.DisplayName.FullName = dcl.String(s)
+				} else {
+					return nil, fmt.Errorf("r.DisplayName.FullName: expected string")
+				}
+			}
+			if _, ok := rDisplayName["givenName"]; ok {
+				if s, ok := rDisplayName["givenName"].(string); ok {
+					r.DisplayName.GivenName = dcl.String(s)
+				} else {
+					return nil, fmt.Errorf("r.DisplayName.GivenName: expected string")
+				}
+			}
+		} else {
+			return nil, fmt.Errorf("r.DisplayName: expected map[string]interface{}")
 		}
 	}
 	if _, ok := u.Object["group"]; ok {

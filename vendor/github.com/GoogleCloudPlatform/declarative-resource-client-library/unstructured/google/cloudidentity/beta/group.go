@@ -47,8 +47,33 @@ func GroupToUnstructured(r *dclService.Group) *unstructured.Resource {
 	if r.CreateTime != nil {
 		u.Object["createTime"] = *r.CreateTime
 	}
+	var rDerivedAliases []interface{}
+	for _, rDerivedAliasesVal := range r.DerivedAliases {
+		rDerivedAliasesObject := make(map[string]interface{})
+		if rDerivedAliasesVal.Id != nil {
+			rDerivedAliasesObject["id"] = *rDerivedAliasesVal.Id
+		}
+		if rDerivedAliasesVal.Namespace != nil {
+			rDerivedAliasesObject["namespace"] = *rDerivedAliasesVal.Namespace
+		}
+		rDerivedAliases = append(rDerivedAliases, rDerivedAliasesObject)
+	}
+	u.Object["derivedAliases"] = rDerivedAliases
 	if r.Description != nil {
 		u.Object["description"] = *r.Description
+	}
+	if r.DirectMemberCount != nil {
+		u.Object["directMemberCount"] = *r.DirectMemberCount
+	}
+	if r.DirectMemberCountPerType != nil && r.DirectMemberCountPerType != dclService.EmptyGroupDirectMemberCountPerType {
+		rDirectMemberCountPerType := make(map[string]interface{})
+		if r.DirectMemberCountPerType.GroupCount != nil {
+			rDirectMemberCountPerType["groupCount"] = *r.DirectMemberCountPerType.GroupCount
+		}
+		if r.DirectMemberCountPerType.UserCount != nil {
+			rDirectMemberCountPerType["userCount"] = *r.DirectMemberCountPerType.UserCount
+		}
+		u.Object["directMemberCountPerType"] = rDirectMemberCountPerType
 	}
 	if r.DisplayName != nil {
 		u.Object["displayName"] = *r.DisplayName
@@ -161,11 +186,65 @@ func UnstructuredToGroup(u *unstructured.Resource) (*dclService.Group, error) {
 			return nil, fmt.Errorf("r.CreateTime: expected string")
 		}
 	}
+	if _, ok := u.Object["derivedAliases"]; ok {
+		if s, ok := u.Object["derivedAliases"].([]interface{}); ok {
+			for _, o := range s {
+				if objval, ok := o.(map[string]interface{}); ok {
+					var rDerivedAliases dclService.GroupDerivedAliases
+					if _, ok := objval["id"]; ok {
+						if s, ok := objval["id"].(string); ok {
+							rDerivedAliases.Id = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("rDerivedAliases.Id: expected string")
+						}
+					}
+					if _, ok := objval["namespace"]; ok {
+						if s, ok := objval["namespace"].(string); ok {
+							rDerivedAliases.Namespace = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("rDerivedAliases.Namespace: expected string")
+						}
+					}
+					r.DerivedAliases = append(r.DerivedAliases, rDerivedAliases)
+				}
+			}
+		} else {
+			return nil, fmt.Errorf("r.DerivedAliases: expected []interface{}")
+		}
+	}
 	if _, ok := u.Object["description"]; ok {
 		if s, ok := u.Object["description"].(string); ok {
 			r.Description = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Description: expected string")
+		}
+	}
+	if _, ok := u.Object["directMemberCount"]; ok {
+		if i, ok := u.Object["directMemberCount"].(int64); ok {
+			r.DirectMemberCount = dcl.Int64(i)
+		} else {
+			return nil, fmt.Errorf("r.DirectMemberCount: expected int64")
+		}
+	}
+	if _, ok := u.Object["directMemberCountPerType"]; ok {
+		if rDirectMemberCountPerType, ok := u.Object["directMemberCountPerType"].(map[string]interface{}); ok {
+			r.DirectMemberCountPerType = &dclService.GroupDirectMemberCountPerType{}
+			if _, ok := rDirectMemberCountPerType["groupCount"]; ok {
+				if i, ok := rDirectMemberCountPerType["groupCount"].(int64); ok {
+					r.DirectMemberCountPerType.GroupCount = dcl.Int64(i)
+				} else {
+					return nil, fmt.Errorf("r.DirectMemberCountPerType.GroupCount: expected int64")
+				}
+			}
+			if _, ok := rDirectMemberCountPerType["userCount"]; ok {
+				if i, ok := rDirectMemberCountPerType["userCount"].(int64); ok {
+					r.DirectMemberCountPerType.UserCount = dcl.Int64(i)
+				} else {
+					return nil, fmt.Errorf("r.DirectMemberCountPerType.UserCount: expected int64")
+				}
+			}
+		} else {
+			return nil, fmt.Errorf("r.DirectMemberCountPerType: expected map[string]interface{}")
 		}
 	}
 	if _, ok := u.Object["displayName"]; ok {

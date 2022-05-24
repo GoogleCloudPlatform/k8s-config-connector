@@ -29,3 +29,17 @@ spec:
   projectRef:
     external: "projects/${projectId}"
   location: global
+---
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesGateway
+metadata:
+  name: networkservicesgateway-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  type: OPEN_MESH
+  ports:
+  - 80
+  - 443
+  location: global
+  scope: foo-scope-${uniqueId}
