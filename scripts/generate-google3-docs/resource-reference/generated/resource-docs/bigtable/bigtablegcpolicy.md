@@ -9,6 +9,12 @@
 
 This resource defines a Bigtable Garbage Collection (GC) policy.
 
+Warning: There is a known bug where <code>BigtableGCPolicy</code> is not able to detect
+and correct drift.
+
+Warning: We don't recommend having multiple <code>BigtableGCPolicy</code>s for the same
+column family as it may result in unexpected behavior.
+
 <table>
 <thead>
 <tr>
