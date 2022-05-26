@@ -1,7 +1,15 @@
 # How to Contribute
 
-We'd love to accept your patches and contributions to this project. There are
-just a few small guidelines you need to follow.
+We'd love to accept your patches and contributions to this project. Source
+code in this project is currently being mirrored from internal Google
+repository. The team is currently focusing on:
+
+* Adding more documentation on design, architecture and development flow.
+* Migrating required infrastracture and tooling to this open source project.
+
+As a result please expect low maintainer resourcing to review pull requests
+and take contributions. The team will conduct PR reviews and try to upstream
+completed PRs on a best-effort basis.
 
 ## Contributor License Agreement
 

@@ -132,6 +132,10 @@ For simple starter examples, see the [Resource reference](https://cloud.google.c
     make config-connector
     ```
 
+## Contributing to Config Connector
+
+Please refer to our [contribution guide] for more details.
+
 [go 1.17+]: https://go.dev/doc/install
 [git]: https://docs.github.com/en/get-started/quickstart/set-up-git
 [make]: https://www.gnu.org/software/make/
@@ -139,3 +143,4 @@ For simple starter examples, see the [Resource reference](https://cloud.google.c
 [kubebuilder 2.3.1]: https://github.com/kubernetes-sigs/kubebuilder/releases/tag/v2.3.1
 [kustomize 3.5.4]: https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4
 [kube-apiserver 1.21.0]: https://dl.k8s.io/v1.21.0/bin/linux/amd64/kube-apiserver
+[contribution guide]: CONTRIBUTING.md
