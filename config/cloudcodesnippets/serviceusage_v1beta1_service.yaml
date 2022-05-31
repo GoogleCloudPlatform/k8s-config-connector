@@ -5,3 +5,5 @@ insertText: |
   kind: Service
   metadata:
     name: \${1:service-name}
+  spec:
+    resourceID: \${2:pubsub.googleapis.com}
