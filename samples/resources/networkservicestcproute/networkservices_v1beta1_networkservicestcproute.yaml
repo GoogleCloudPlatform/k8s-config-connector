@@ -25,6 +25,8 @@ spec:
   location: global
   meshes:
     - name: networkservicestcproute-dep
+  gateways:
+    - name: networkservicestcproute-dep
   rules:
   - matches:
     - address: "10.0.0.1/32"
