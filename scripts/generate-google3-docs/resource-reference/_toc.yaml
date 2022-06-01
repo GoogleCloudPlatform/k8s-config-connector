@@ -440,6 +440,8 @@ toc:
   section:
   - title: "ServiceDirectoryNamespace"
     path: /config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace.md
+  - title: "ServiceDirectoryService"
+    path: /config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryservice.md
 - title: "Service Networking"
   section:
   - title: "ServiceNetworkingConnection"

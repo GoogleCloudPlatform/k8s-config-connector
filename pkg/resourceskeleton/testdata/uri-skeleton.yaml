@@ -892,3 +892,15 @@
       name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa
   ResourceConfigId: ServiceDirectoryNamespace
   URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa"
+- ExpectedSkeleton:
+    apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+    kind: ServiceDirectoryService
+    metadata:
+      name: service-zzz
+    spec:
+      namespaceRef:
+        external: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa
+    status:
+      name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/service-zzz
+  ResourceConfigId: ServiceDirectoryService
+  URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/service-zzz"

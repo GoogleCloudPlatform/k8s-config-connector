@@ -35,6 +35,10 @@ func (c *FakeServicedirectoryV1beta1) ServiceDirectoryNamespaces(namespace strin
 	return &FakeServiceDirectoryNamespaces{c, namespace}
 }
 
+func (c *FakeServicedirectoryV1beta1) ServiceDirectoryServices(namespace string) v1beta1.ServiceDirectoryServiceInterface {
+	return &FakeServiceDirectoryServices{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeServicedirectoryV1beta1) RESTClient() rest.Interface {

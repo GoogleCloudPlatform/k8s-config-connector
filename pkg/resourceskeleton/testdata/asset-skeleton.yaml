@@ -1010,6 +1010,8 @@
       name: projects/kcc-test/locations/us-central1/namespaces/sdnamespace-sample123
   resourceConfigId: ServiceDirectoryNamespace
 # not supported by asset inventory
+- resourceConfigId: ServiceDirectoryService
+# not supported by asset inventory
 - resourceConfigId: ServiceNetworkingConnection
 # not supported by asset inventory
 - resourceConfigId: SourceRepoRepository

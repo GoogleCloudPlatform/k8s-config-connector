@@ -606,6 +606,10 @@
   <td><a href="/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace.md">ServiceDirectoryNamespace</a></td>
 </tr>
 <tr>
+  <td><a href="/service-directory/docs/">{{sd_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryservice.md">ServiceDirectoryService</a></td>
+</tr>
+<tr>
   <td><a href="/service-infrastructure/docs/service-networking/reference/rest/">{{servicenetworking_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/servicenetworking/servicenetworkingconnection.md">ServiceNetworkingConnection</a></td>
 </tr>

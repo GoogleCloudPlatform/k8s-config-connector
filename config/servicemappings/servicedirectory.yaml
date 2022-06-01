@@ -51,3 +51,31 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+    - name: google_service_directory_service
+      kind: ServiceDirectoryService
+      idTemplate: "{{namespace}}/services/{{service_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: service_id
+        labels: metadata
+      resourceID:
+        targetField: service_id
+      resourceReferences:
+        - tfField: namespace
+          description: |-
+            The ServiceDirectoryNamespace that this service belongs to.
+          key: namespaceRef
+          gvk:
+            kind: ServiceDirectoryNamespace
+            version: v1beta1
+            group: servicedirectory.cnrm.cloud.google.com
+          targetField: name
+          parent: true
+      iamConfig:
+        policyName: google_service_directory_service_iam_policy
+        policyMemberName: google_service_directory_service_iam_member
+        referenceField:
+          name: name
+          type: name
+        supportsConditions: false
