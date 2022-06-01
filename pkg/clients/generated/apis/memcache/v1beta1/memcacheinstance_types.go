@@ -35,6 +35,31 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceMaintenancePolicy struct {
+	/* Output only. The time when the policy was created.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Optional. Description of what this policy is for.
+	Create/Update methods return INVALID_ARGUMENT if the
+	length is greater than 512. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Output only. The time when the policy was updated.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	/* Required. Maintenance window that is applied to resources covered by this policy.
+	Minimum 1. For the current version, the maximum number of weekly_maintenance_windows
+	is expected to be one. */
+	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow"`
+}
+
 type InstanceMemcacheParameters struct {
 	/* This is a unique ID associated with this set of parameters. */
 	// +optional
@@ -53,10 +78,55 @@ type InstanceNodeConfig struct {
 	MemorySizeMb int `json:"memorySizeMb"`
 }
 
+type InstanceStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23.
+	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59.
+	An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int `json:"seconds,omitempty"`
+}
+
+type InstanceWeeklyMaintenanceWindow struct {
+	/* Required. The day of week that maintenance updates occur.
+	- DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
+	- MONDAY: Monday
+	- TUESDAY: Tuesday
+	- WEDNESDAY: Wednesday
+	- THURSDAY: Thursday
+	- FRIDAY: Friday
+	- SATURDAY: Saturday
+	- SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	Day string `json:"day"`
+
+	/* Required. The length of the maintenance window, ranging from 3 hours to 8 hours.
+	A duration in seconds with up to nine fractional digits,
+	terminated by 's'. Example: "3.5s". */
+	Duration string `json:"duration"`
+
+	/* Required. Start time of the window in UTC time. */
+	StartTime InstanceStartTime `json:"startTime"`
+}
+
 type MemcacheInstanceSpec struct {
 	/* A user-visible name for the instance. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Maintenance policy for an instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	/* Immutable. User-specified parameters for this memcache instance. */
 	// +optional
@@ -91,6 +161,24 @@ type MemcacheInstanceSpec struct {
 	Zones []string `json:"zones,omitempty"`
 }
 
+type InstanceMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	EndTime string `json:"endTime,omitempty"`
+
+	/* Output only. The deadline that the maintenance schedule start time
+	can not go beyond, including reschedule.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	ScheduleDeadlineTime string `json:"scheduleDeadlineTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	StartTime string `json:"startTime,omitempty"`
+}
+
 type InstanceMemcacheNodesStatus struct {
 	/* Hostname or IP address of the Memcached node used by the clients to connect to the Memcached server on this node. */
 	Host string `json:"host,omitempty"`
@@ -116,6 +204,8 @@ type MemcacheInstanceStatus struct {
 	CreateTime string `json:"createTime,omitempty"`
 	/* Endpoint for Discovery API. */
 	DiscoveryEndpoint string `json:"discoveryEndpoint,omitempty"`
+	/* Output only. Published maintenance schedule. */
+	MaintenanceSchedule []InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 	/* The full version of memcached server running on this instance. */
 	MemcacheFullVersion string `json:"memcacheFullVersion,omitempty"`
 	/* Additional information about the instance state, if available. */

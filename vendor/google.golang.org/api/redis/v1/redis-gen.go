@@ -89,7 +89,7 @@ const (
 
 // NewService creates a new Service.
 func NewService(ctx context.Context, opts ...option.ClientOption) (*Service, error) {
-	scopesOption := option.WithScopes(
+	scopesOption := internaloption.WithDefaultScopes(
 		"https://www.googleapis.com/auth/cloud-platform",
 	)
 	// NOTE: prepend, so we don't override user-specified scopes.
@@ -188,8 +188,7 @@ type ProjectsLocationsOperationsService struct {
 // duplicated empty messages in your APIs. A typical example is to use
 // it as the request or the response type of an API method. For
 // instance: service Foo { rpc Bar(google.protobuf.Empty) returns
-// (google.protobuf.Empty); } The JSON representation for `Empty` is
-// empty JSON object `{}`.
+// (google.protobuf.Empty); }
 type Empty struct {
 	// ServerResponse contains the HTTP response code and headers from the
 	// server.
@@ -579,8 +578,8 @@ type Instance struct {
 	// target 'port'.
 	ReadEndpointPort int64 `json:"readEndpointPort,omitempty"`
 
-	// ReadReplicasMode: Optional. Read replica mode. Can only be specified
-	// when trying to create the instance.
+	// ReadReplicasMode: Optional. Read replicas mode for the instance.
+	// Defaults to READ_REPLICAS_DISABLED.
 	//
 	// Possible values:
 	//   "READ_REPLICAS_MODE_UNSPECIFIED" - If not set, Memorystore Redis
@@ -625,12 +624,12 @@ type Instance struct {
 	// READ_REPLICAS_ENABLED the default block size is /28.
 	ReservedIpRange string `json:"reservedIpRange,omitempty"`
 
-	// SecondaryIpRange: Optional. Additional ip ranges for node placement,
-	// beyond those specified in reserved_ip_range. At most 1 secondary IP
-	// range is supported. The mask value must not exceed /28. Not supported
-	// for BASIC tier. Updates can only add new ranges, once added ranges
-	// cannot be changed or deleted. Values in this list cannot overlap with
-	// the reserved_ip_range. Not supported during instance creation.
+	// SecondaryIpRange: Optional. Additional IP range for node placement.
+	// Required when enabling read replicas on an existing instance. For
+	// DIRECT_PEERING mode value must be a CIDR range of size /28, or
+	// "auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an
+	// allocated address range associated with the private service access
+	// connection, or "auto".
 	SecondaryIpRange string `json:"secondaryIpRange,omitempty"`
 
 	// ServerCaCerts: Output only. List of server CA certificates for the
@@ -1604,8 +1603,8 @@ func (r *ProjectsLocationsService) List(name string) *ProjectsLocationsListCall 
 
 // Filter sets the optional parameter "filter": A filter to narrow down
 // results to a preferred subset. The filtering language accepts strings
-// like "displayName=tokyo", and is documented in more detail in AIP-160
-// (https://google.aip.dev/160).
+// like "displayName=tokyo", and is documented in more detail in
+// AIP-160 (https://google.aip.dev/160).
 func (c *ProjectsLocationsListCall) Filter(filter string) *ProjectsLocationsListCall {
 	c.urlParams_.Set("filter", filter)
 	return c
@@ -1734,7 +1733,7 @@ func (c *ProjectsLocationsListCall) Do(opts ...googleapi.CallOption) (*ListLocat
 	//   ],
 	//   "parameters": {
 	//     "filter": {
-	//       "description": "A filter to narrow down results to a preferred subset. The filtering language accepts strings like \"displayName=tokyo\", and is documented in more detail in [AIP-160](https://google.aip.dev/160).",
+	//       "description": "A filter to narrow down results to a preferred subset. The filtering language accepts strings like `\"displayName=tokyo\"`, and is documented in more detail in [AIP-160](https://google.aip.dev/160).",
 	//       "location": "query",
 	//       "type": "string"
 	//     },

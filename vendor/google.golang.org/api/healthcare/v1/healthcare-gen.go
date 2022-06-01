@@ -87,7 +87,7 @@ const (
 
 // NewService creates a new Service.
 func NewService(ctx context.Context, opts ...option.ClientOption) (*Service, error) {
-	scopesOption := option.WithScopes(
+	scopesOption := internaloption.WithDefaultScopes(
 		"https://www.googleapis.com/auth/cloud-platform",
 	)
 	// NOTE: prepend, so we don't override user-specified scopes.
@@ -735,8 +735,8 @@ type Binding struct {
 	// (https://cloud.google.com/iam/help/conditions/resource-policies).
 	Condition *Expr `json:"condition,omitempty"`
 
-	// Members: Specifies the principals requesting access for a Cloud
-	// Platform resource. `members` can have the following values: *
+	// Members: Specifies the principals requesting access for a Google
+	// Cloud resource. `members` can have the following values: *
 	// `allUsers`: A special identifier that represents anyone who is on the
 	// internet; with or without a Google account. *
 	// `allAuthenticatedUsers`: A special identifier that represents anyone
@@ -1401,7 +1401,8 @@ func (s *DeidentifyConfig) MarshalJSON() ([]byte, error) {
 // DeidentifyDatasetRequest: Redacts identifying information from the
 // specified dataset.
 type DeidentifyDatasetRequest struct {
-	// Config: Deidentify configuration.
+	// Config: Deidentify configuration. Only one of `config` and
+	// `gcs_config_uri` can be specified.
 	Config *DeidentifyConfig `json:"config,omitempty"`
 
 	// DestinationDataset: The name of the dataset resource to create and
@@ -1410,6 +1411,15 @@ type DeidentifyDatasetRequest struct {
 	// dataset. De-identifying data across multiple locations is not
 	// supported.
 	DestinationDataset string `json:"destinationDataset,omitempty"`
+
+	// GcsConfigUri: Cloud Storage location to read the JSON
+	// cloud.healthcare.deidentify.DeidentifyConfig from, overriding the
+	// default config. Must be of the form
+	// `gs://{bucket_id}/path/to/object`. The Cloud Storage location must
+	// grant the Cloud IAM role `roles/storage.objectViewer` to the
+	// project's Cloud Healthcare Service Agent service account. Only one of
+	// `config` and `gcs_config_uri` can be specified.
+	GcsConfigUri string `json:"gcsConfigUri,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "Config") to
 	// unconditionally include in API requests. By default, fields with
@@ -1437,7 +1447,8 @@ func (s *DeidentifyDatasetRequest) MarshalJSON() ([]byte, error) {
 // DeidentifyDicomStoreRequest: Creates a new DICOM store with sensitive
 // information de-identified.
 type DeidentifyDicomStoreRequest struct {
-	// Config: Deidentify configuration.
+	// Config: Deidentify configuration. Only one of `config` and
+	// `gcs_config_uri` can be specified.
 	Config *DeidentifyConfig `json:"config,omitempty"`
 
 	// DestinationStore: The name of the DICOM store to create and write the
@@ -1453,6 +1464,15 @@ type DeidentifyDicomStoreRequest struct {
 
 	// FilterConfig: Filter configuration.
 	FilterConfig *DicomFilterConfig `json:"filterConfig,omitempty"`
+
+	// GcsConfigUri: Cloud Storage location to read the JSON
+	// cloud.healthcare.deidentify.DeidentifyConfig from, overriding the
+	// default config. Must be of the form
+	// `gs://{bucket_id}/path/to/object`. The Cloud Storage location must
+	// grant the Cloud IAM role `roles/storage.objectViewer` to the
+	// project's Cloud Healthcare Service Agent service account. Only one of
+	// `config` and `gcs_config_uri` can be specified.
+	GcsConfigUri string `json:"gcsConfigUri,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "Config") to
 	// unconditionally include in API requests. By default, fields with
@@ -1480,7 +1500,8 @@ func (s *DeidentifyDicomStoreRequest) MarshalJSON() ([]byte, error) {
 // DeidentifyFhirStoreRequest: Creates a new FHIR store with sensitive
 // information de-identified.
 type DeidentifyFhirStoreRequest struct {
-	// Config: Deidentify configuration.
+	// Config: Deidentify configuration. Only one of `config` and
+	// `gcs_config_uri` can be specified.
 	Config *DeidentifyConfig `json:"config,omitempty"`
 
 	// DestinationStore: The name of the FHIR store to create and write the
@@ -1493,6 +1514,15 @@ type DeidentifyFhirStoreRequest struct {
 	// have the healthcare.fhirResources.update permission to write to the
 	// destination FHIR store.
 	DestinationStore string `json:"destinationStore,omitempty"`
+
+	// GcsConfigUri: Cloud Storage location to read the JSON
+	// cloud.healthcare.deidentify.DeidentifyConfig from, overriding the
+	// default config. Must be of the form
+	// `gs://{bucket_id}/path/to/object`. The Cloud Storage location must
+	// grant the Cloud IAM role `roles/storage.objectViewer` to the
+	// project's Cloud Healthcare Service Agent service account. Only one of
+	// `config` and `gcs_config_uri` can be specified.
+	GcsConfigUri string `json:"gcsConfigUri,omitempty"`
 
 	// ResourceFilter: A filter specifying the resources to include in the
 	// output. If not specified, all resources are included in the output.
@@ -1677,8 +1707,7 @@ func (s *DicomStore) MarshalJSON() ([]byte, error) {
 // duplicated empty messages in your APIs. A typical example is to use
 // it as the request or the response type of an API method. For
 // instance: service Foo { rpc Bar(google.protobuf.Empty) returns
-// (google.protobuf.Empty); } The JSON representation for `Empty` is
-// empty JSON object `{}`.
+// (google.protobuf.Empty); }
 type Empty struct {
 	// ServerResponse contains the HTTP response code and headers from the
 	// server.
@@ -2068,6 +2097,16 @@ type ExportMessagesResponse struct {
 
 // ExportResourcesRequest: Request to export resources.
 type ExportResourcesRequest struct {
+	// Since: If provided, only resources updated after this time are
+	// exported. The time uses the format YYYY-MM-DDThh:mm:ss.sss+zz:zz. For
+	// example, `2015-02-07T13:28:17.239+02:00` or `2017-01-01T00:00:00Z`.
+	// The time must be specified to the second and include a time zone.
+	Since string `json:"_since,omitempty"`
+
+	// Type: String of comma-delimited FHIR resource types. If provided,
+	// only resources of the specified resource type(s) are exported.
+	Type string `json:"_type,omitempty"`
+
 	// BigqueryDestination: The BigQuery output destination. The Cloud
 	// Healthcare Service Agent requires two IAM roles on the BigQuery
 	// location: `roles/bigquery.dataEditor` and `roles/bigquery.jobUser`.
@@ -2084,21 +2123,20 @@ type ExportResourcesRequest struct {
 	// resource.
 	GcsDestination *GoogleCloudHealthcareV1FhirGcsDestination `json:"gcsDestination,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "BigqueryDestination")
-	// to unconditionally include in API requests. By default, fields with
+	// ForceSendFields is a list of field names (e.g. "Since") to
+	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
 	// sent to the server regardless of whether the field is empty or not.
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "BigqueryDestination") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
+	// NullFields is a list of field names (e.g. "Since") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -5219,7 +5257,7 @@ func (s *Segment) MarshalJSON() ([]byte, error) {
 type SetIamPolicyRequest struct {
 	// Policy: REQUIRED: The complete policy to be applied to the
 	// `resource`. The size of the policy is limited to a few 10s of KB. An
-	// empty policy is a valid policy but certain Cloud Platform services
+	// empty policy is a valid policy but certain Google Cloud services
 	// (such as Projects) might reject them.
 	Policy *Policy `json:"policy,omitempty"`
 
@@ -5437,7 +5475,7 @@ func (s *TagFilterList) MarshalJSON() ([]byte, error) {
 // method.
 type TestIamPermissionsRequest struct {
 	// Permissions: The set of permissions to check for the `resource`.
-	// Permissions with wildcards (such as '*' or 'storage.*') are not
+	// Permissions with wildcards (such as `*` or `storage.*`) are not
 	// allowed. For more information see IAM Overview
 	// (https://cloud.google.com/iam/docs/overview#permissions).
 	Permissions []string `json:"permissions,omitempty"`
@@ -5939,8 +5977,8 @@ func (r *ProjectsLocationsService) List(name string) *ProjectsLocationsListCall 
 
 // Filter sets the optional parameter "filter": A filter to narrow down
 // results to a preferred subset. The filtering language accepts strings
-// like "displayName=tokyo", and is documented in more detail in AIP-160
-// (https://google.aip.dev/160).
+// like "displayName=tokyo", and is documented in more detail in
+// AIP-160 (https://google.aip.dev/160).
 func (c *ProjectsLocationsListCall) Filter(filter string) *ProjectsLocationsListCall {
 	c.urlParams_.Set("filter", filter)
 	return c
@@ -6069,7 +6107,7 @@ func (c *ProjectsLocationsListCall) Do(opts ...googleapi.CallOption) (*ListLocat
 	//   ],
 	//   "parameters": {
 	//     "filter": {
-	//       "description": "A filter to narrow down results to a preferred subset. The filtering language accepts strings like \"displayName=tokyo\", and is documented in more detail in [AIP-160](https://google.aip.dev/160).",
+	//       "description": "A filter to narrow down results to a preferred subset. The filtering language accepts strings like `\"displayName=tokyo\"`, and is documented in more detail in [AIP-160](https://google.aip.dev/160).",
 	//       "location": "query",
 	//       "type": "string"
 	//     },

@@ -87,7 +87,7 @@ const (
 
 // NewService creates a new Service.
 func NewService(ctx context.Context, opts ...option.ClientOption) (*Service, error) {
-	scopesOption := option.WithScopes(
+	scopesOption := internaloption.WithDefaultScopes(
 		"https://www.googleapis.com/auth/cloud-platform",
 	)
 	// NOTE: prepend, so we don't override user-specified scopes.
@@ -559,8 +559,8 @@ func (s *AttachedResource) MarshalJSON() ([]byte, error) {
 // "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [
 // "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy
 // enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts
-// jose@example.com from DATA_READ logging, and aliya@example.com from
-// DATA_WRITE logging.
+// `jose@example.com` from DATA_READ logging, and `aliya@example.com`
+// from DATA_WRITE logging.
 type AuditConfig struct {
 	// AuditLogConfigs: The configuration for logging of each type of
 	// permission.
@@ -714,7 +714,11 @@ type BigQueryDestination struct {
 	// Dataset: Required. The BigQuery dataset in format
 	// "projects/projectId/datasets/datasetId", to which the snapshot result
 	// should be exported. If this dataset does not exist, the export call
-	// returns an INVALID_ARGUMENT error.
+	// returns an INVALID_ARGUMENT error. Setting the `contentType` for
+	// `exportAssets` determines the schema
+	// (/asset-inventory/docs/exporting-to-bigquery#bigquery-schema) of the
+	// BigQuery table. Setting `separateTablesPerAssetType` to `TRUE` also
+	// influences the schema.
 	Dataset string `json:"dataset,omitempty"`
 
 	// Force: If the destination table already exists and this flag is
@@ -807,8 +811,8 @@ type Binding struct {
 	// (https://cloud.google.com/iam/help/conditions/resource-policies).
 	Condition *Expr `json:"condition,omitempty"`
 
-	// Members: Specifies the principals requesting access for a Cloud
-	// Platform resource. `members` can have the following values: *
+	// Members: Specifies the principals requesting access for a Google
+	// Cloud resource. `members` can have the following values: *
 	// `allUsers`: A special identifier that represents anyone who is on the
 	// internet; with or without a Google account. *
 	// `allAuthenticatedUsers`: A special identifier that represents anyone
@@ -976,11 +980,12 @@ func (s *CreateFeedRequest) MarshalJSON() ([]byte, error) {
 // birthday. The time of day and time zone are either specified
 // elsewhere or are insignificant. The date is relative to the Gregorian
 // Calendar. This can represent one of the following: * A full date,
-// with non-zero year, month, and day values * A month and day, with a
-// zero year (e.g., an anniversary) * A year on its own, with a zero
-// month and a zero day * A year and month, with a zero day (e.g., a
-// credit card expiration date) Related types: * google.type.TimeOfDay *
-// google.type.DateTime * google.protobuf.Timestamp
+// with non-zero year, month, and day values. * A month and day, with a
+// zero year (for example, an anniversary). * A year on its own, with a
+// zero month and a zero day. * A year and month, with a zero day (for
+// example, a credit card expiration date). Related types: *
+// google.type.TimeOfDay * google.type.DateTime *
+// google.protobuf.Timestamp
 type Date struct {
 	// Day: Day of a month. Must be from 1 to 31 and valid for the year and
 	// month, or 0 to specify a year by itself or a year and month where the
@@ -1067,8 +1072,7 @@ func (s *EffectiveIamPolicy) MarshalJSON() ([]byte, error) {
 // duplicated empty messages in your APIs. A typical example is to use
 // it as the request or the response type of an API method. For
 // instance: service Foo { rpc Bar(google.protobuf.Empty) returns
-// (google.protobuf.Empty); } The JSON representation for `Empty` is
-// empty JSON object `{}`.
+// (google.protobuf.Empty); }
 type Empty struct {
 	// ServerResponse contains the HTTP response code and headers from the
 	// server.
@@ -4982,6 +4986,27 @@ type ResourceSearchResult struct {
 	// To search against the `state`: * use a field query. Example:
 	// `state:RUNNING` * use a free text query. Example: `RUNNING`
 	State string `json:"state,omitempty"`
+
+	// TagKeys: TagKey namespaced names, in the format of
+	// {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the `tagKeys`: * use
+	// a field query. Example: - `tagKeys:"123456789/env*" -
+	// `tagKeys="123456789/env" - `tagKeys:"env" * use a free text query.
+	// Example: - `env`
+	TagKeys []string `json:"tagKeys,omitempty"`
+
+	// TagValueIds: TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}.
+	// To search against the `tagValueIds`: * use a field query. Example: -
+	// `tagValueIds:"456" - `tagValueIds="tagValues/456" * use a free text
+	// query. Example: - `456`
+	TagValueIds []string `json:"tagValueIds,omitempty"`
+
+	// TagValues: TagValue namespaced names, in the format of
+	// {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To search
+	// against the `tagValues`: * use a field query. Example: -
+	// `tagValues:"env" - `tagValues:"env/prod" -
+	// `tagValues:"123456789/env/prod*" - `tagValues="123456789/env/prod"
+	// * use a free text query. Example: - `prod`
+	TagValues []string `json:"tagValues,omitempty"`
 
 	// UpdateTime: The last update timestamp of this resource, at which the
 	// resource was last modified or deleted. The granularity is in seconds.
@@ -9524,12 +9549,12 @@ func (c *V1SearchAllResourcesCall) Query(query string) *V1SearchAllResourcesCall
 // "name,versionedResources". The read_mask paths must be valid field
 // paths listed but not limited to (both snake_case and camelCase are
 // supported): * name * assetType * project * displayName * description
-// * location * labels * networkTags * kmsKey * createTime * updateTime
-// * state * additionalAttributes * versionedResources If read_mask is
-// not specified, all fields except versionedResources will be returned.
-// If only '*' is specified, all fields including versionedResources
-// will be returned. Any invalid field path will trigger
-// INVALID_ARGUMENT error.
+// * location * tagKeys * tagValues * tagValueIds * labels * networkTags
+// * kmsKey * createTime * updateTime * state * additionalAttributes *
+// versionedResources If read_mask is not specified, all fields except
+// versionedResources will be returned. If only '*' is specified, all
+// fields including versionedResources will be returned. Any invalid
+// field path will trigger INVALID_ARGUMENT error.
 func (c *V1SearchAllResourcesCall) ReadMask(readMask string) *V1SearchAllResourcesCall {
 	c.urlParams_.Set("readMask", readMask)
 	return c
@@ -9670,7 +9695,7 @@ func (c *V1SearchAllResourcesCall) Do(opts ...googleapi.CallOption) (*SearchAllR
 	//       "type": "string"
 	//     },
 	//     "readMask": {
-	//       "description": "Optional. A comma-separated list of fields specifying which fields to be returned in ResourceSearchResult. Only '*' or combination of top level fields can be specified. Field names of both snake_case and camelCase are supported. Examples: `\"*\"`, `\"name,location\"`, `\"name,versionedResources\"`. The read_mask paths must be valid field paths listed but not limited to (both snake_case and camelCase are supported): * name * assetType * project * displayName * description * location * labels * networkTags * kmsKey * createTime * updateTime * state * additionalAttributes * versionedResources If read_mask is not specified, all fields except versionedResources will be returned. If only '*' is specified, all fields including versionedResources will be returned. Any invalid field path will trigger INVALID_ARGUMENT error.",
+	//       "description": "Optional. A comma-separated list of fields specifying which fields to be returned in ResourceSearchResult. Only '*' or combination of top level fields can be specified. Field names of both snake_case and camelCase are supported. Examples: `\"*\"`, `\"name,location\"`, `\"name,versionedResources\"`. The read_mask paths must be valid field paths listed but not limited to (both snake_case and camelCase are supported): * name * assetType * project * displayName * description * location * tagKeys * tagValues * tagValueIds * labels * networkTags * kmsKey * createTime * updateTime * state * additionalAttributes * versionedResources If read_mask is not specified, all fields except versionedResources will be returned. If only '*' is specified, all fields including versionedResources will be returned. Any invalid field path will trigger INVALID_ARGUMENT error.",
 	//       "format": "google-fieldmask",
 	//       "location": "query",
 	//       "type": "string"

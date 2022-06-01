@@ -79,7 +79,10 @@ spec:
                       attached. Possible values: ["COLLOCATED"].
                     type: string
                   vmCount:
-                    description: Immutable. Number of vms in this placement group.
+                    description: |-
+                      Immutable. Number of VMs in this placement group. Google does not recommend that you use this field
+                      unless you use a compact policy and you want your policy to work only if it contains this
+                      exact number of VMs.
                     type: integer
                 type: object
               instanceSchedulePolicy:

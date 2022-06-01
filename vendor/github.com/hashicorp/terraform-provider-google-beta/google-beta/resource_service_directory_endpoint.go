@@ -75,6 +75,7 @@ Metadata that goes beyond any these limits will be rejected.`,
 			"network": {
 				Type:        schema.TypeString,
 				Optional:    true,
+				ForceNew:    true,
 				Description: `The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME.`,
 			},
 			"port": {
@@ -232,12 +233,6 @@ func resourceServiceDirectoryEndpointUpdate(d *schema.ResourceData, meta interfa
 	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
-	networkProp, err := expandServiceDirectoryEndpointNetwork(d.Get("network"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
-		obj["network"] = networkProp
-	}
 
 	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
@@ -257,10 +252,6 @@ func resourceServiceDirectoryEndpointUpdate(d *schema.ResourceData, meta interfa
 
 	if d.HasChange("metadata") {
 		updateMask = append(updateMask, "metadata")
-	}
-
-	if d.HasChange("network") {
-		updateMask = append(updateMask, "network")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it

@@ -165,7 +165,9 @@ attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Number of vms in this placement group.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Number of VMs in this placement group. Google does not recommend that you use this field
+unless you use a compact policy and you want your policy to work only if it contains this
+exact number of VMs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -100,7 +100,7 @@ const (
 
 // NewService creates a new Service.
 func NewService(ctx context.Context, opts ...option.ClientOption) (*Service, error) {
-	scopesOption := option.WithScopes(
+	scopesOption := internaloption.WithDefaultScopes(
 		"https://www.googleapis.com/auth/cloud-platform",
 		"https://www.googleapis.com/auth/compute",
 		"https://www.googleapis.com/auth/compute.readonly",
@@ -940,6 +940,18 @@ type ContainerSpec struct {
 	// Image: Name of the docker container image. E.g.,
 	// gcr.io/project/some-image
 	Image string `json:"image,omitempty"`
+
+	// ImageRepositoryCertPath: Cloud Storage path to self-signed
+	// certificate of private registry.
+	ImageRepositoryCertPath string `json:"imageRepositoryCertPath,omitempty"`
+
+	// ImageRepositoryPasswordSecretId: Secret Manager secret id for
+	// password to authenticate to private registry.
+	ImageRepositoryPasswordSecretId string `json:"imageRepositoryPasswordSecretId,omitempty"`
+
+	// ImageRepositoryUsernameSecretId: Secret Manager secret id for
+	// username to authenticate to private registry.
+	ImageRepositoryUsernameSecretId string `json:"imageRepositoryUsernameSecretId,omitempty"`
 
 	// Metadata: Metadata describing a template including description and
 	// validation rules.
@@ -2676,8 +2688,9 @@ func (s *IntegerMean) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// Job: Defines a job to be run by the Cloud Dataflow service. nextID:
-// 26
+// Job: Defines a job to be run by the Cloud Dataflow service. Do not
+// enter confidential information when you supply string values using
+// the API.
 type Job struct {
 	// ClientRequestId: The client's unique identifier of the job, re-used
 	// across retried attempts. If this field is set, the service will
@@ -2791,7 +2804,8 @@ type Job struct {
 	Location string `json:"location,omitempty"`
 
 	// Name: The user-specified Cloud Dataflow job name. Only one Job with a
-	// given name may exist in a project at any given time. If a caller
+	// given name can exist in a project within one region at any given
+	// time. Jobs in different regions can have the same name. If a caller
 	// attempts to create a Job with the same name as an already-existing
 	// Job, the attempt returns the existing Job. The name must match the
 	// regular expression `[a-z]([-a-z0-9]{0,38}[a-z0-9])?`
@@ -3428,7 +3442,9 @@ func (s *LaunchFlexTemplateResponse) MarshalJSON() ([]byte, error) {
 }
 
 // LaunchTemplateParameters: Parameters to provide to the template being
-// launched.
+// launched. Note that the [metadata in the pipeline code]
+// (https://cloud.google.com/dataflow/docs/guides/templates/creating-templates#metadata)
+// determines which runtime parameters are valid.
 type LaunchTemplateParameters struct {
 	// Environment: The runtime environment for the job.
 	Environment *RuntimeEnvironment `json:"environment,omitempty"`
@@ -4944,7 +4960,7 @@ type RuntimeEnvironment struct {
 	// unspecified, the service will use the network "default".
 	Network string `json:"network,omitempty"`
 
-	// NumWorkers: The initial number of Google Compute Engine instnaces for
+	// NumWorkers: The initial number of Google Compute Engine instances for
 	// the job.
 	NumWorkers int64 `json:"numWorkers,omitempty"`
 
@@ -5079,9 +5095,14 @@ func (s *SDKInfo) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// SdkHarnessContainerImage: Defines a SDK harness container for
+// SdkHarnessContainerImage: Defines an SDK harness container for
 // executing Dataflow pipelines.
 type SdkHarnessContainerImage struct {
+	// Capabilities: The set of capabilities enumerated in the above
+	// Environment proto. See also beam_runner_api.proto
+	// (https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/org/apache/beam/model/pipeline/v1/beam_runner_api.proto)
+	Capabilities []string `json:"capabilities,omitempty"`
+
 	// ContainerImage: A docker container image that resides in Google
 	// Container Registry.
 	ContainerImage string `json:"containerImage,omitempty"`
@@ -5097,7 +5118,7 @@ type SdkHarnessContainerImage struct {
 	// service may choose to override this property if needed.
 	UseSingleCorePerContainer bool `json:"useSingleCorePerContainer,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "ContainerImage") to
+	// ForceSendFields is a list of field names (e.g. "Capabilities") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
@@ -5105,13 +5126,12 @@ type SdkHarnessContainerImage struct {
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "ContainerImage") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
+	// NullFields is a list of field names (e.g. "Capabilities") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -5168,6 +5188,7 @@ func (s *SdkVersion) MarshalJSON() ([]byte, error) {
 }
 
 // SendDebugCaptureRequest: Request to send encoded debug information.
+// Next ID: 8
 type SendDebugCaptureRequest struct {
 	// ComponentId: The internal component id for which debug information is
 	// sent.
@@ -5175,6 +5196,18 @@ type SendDebugCaptureRequest struct {
 
 	// Data: The encoded debug information.
 	Data string `json:"data,omitempty"`
+
+	// DataFormat: Format for the data field above (id=5).
+	//
+	// Possible values:
+	//   "DATA_FORMAT_UNSPECIFIED" - Format unspecified, parsing is
+	// determined based upon page type and legacy encoding.
+	// (go/protodosdonts#do-include-an-unspecified-value-in-an-enum)
+	//   "RAW" - Raw HTML string.
+	//   "JSON" - JSON-encoded string.
+	//   "ZLIB" - Websafe encoded zlib-compressed string.
+	//   "BROTLI" - Websafe encoded brotli-compressed string.
+	DataFormat string `json:"dataFormat,omitempty"`
 
 	// Location: The [regional endpoint]
 	// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -8581,7 +8614,8 @@ type ProjectsJobsCreateCall struct {
 // using `projects.locations.jobs.create` with a [regional endpoint]
 // (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
 // Using `projects.jobs.create` is not recommended, as your job will
-// always start in `us-central1`.
+// always start in `us-central1`. Do not enter confidential information
+// when you supply string values using the API.
 //
 // - projectId: The ID of the Cloud Platform project that the job
 //   belongs to.
@@ -8717,7 +8751,7 @@ func (c *ProjectsJobsCreateCall) Do(opts ...googleapi.CallOption) (*Job, error) 
 	}
 	return ret, nil
 	// {
-	//   "description": "Creates a Cloud Dataflow job. To create a job, we recommend using `projects.locations.jobs.create` with a [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using `projects.jobs.create` is not recommended, as your job will always start in `us-central1`.",
+	//   "description": "Creates a Cloud Dataflow job. To create a job, we recommend using `projects.locations.jobs.create` with a [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using `projects.jobs.create` is not recommended, as your job will always start in `us-central1`. Do not enter confidential information when you supply string values using the API.",
 	//   "flatPath": "v1b3/projects/{projectId}/jobs",
 	//   "httpMethod": "POST",
 	//   "id": "dataflow.projects.jobs.create",
@@ -11065,7 +11099,8 @@ type ProjectsLocationsJobsCreateCall struct {
 // using `projects.locations.jobs.create` with a [regional endpoint]
 // (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
 // Using `projects.jobs.create` is not recommended, as your job will
-// always start in `us-central1`.
+// always start in `us-central1`. Do not enter confidential information
+// when you supply string values using the API.
 //
 // - location: The [regional endpoint]
 //   (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -11197,7 +11232,7 @@ func (c *ProjectsLocationsJobsCreateCall) Do(opts ...googleapi.CallOption) (*Job
 	}
 	return ret, nil
 	// {
-	//   "description": "Creates a Cloud Dataflow job. To create a job, we recommend using `projects.locations.jobs.create` with a [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using `projects.jobs.create` is not recommended, as your job will always start in `us-central1`.",
+	//   "description": "Creates a Cloud Dataflow job. To create a job, we recommend using `projects.locations.jobs.create` with a [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using `projects.jobs.create` is not recommended, as your job will always start in `us-central1`. Do not enter confidential information when you supply string values using the API.",
 	//   "flatPath": "v1b3/projects/{projectId}/locations/{location}/jobs",
 	//   "httpMethod": "POST",
 	//   "id": "dataflow.projects.locations.jobs.create",
@@ -14612,7 +14647,8 @@ type ProjectsLocationsTemplatesCreateCall struct {
 	header_                      http.Header
 }
 
-// Create: Creates a Cloud Dataflow job from a template.
+// Create: Creates a Cloud Dataflow job from a template. Do not enter
+// confidential information when you supply string values using the API.
 //
 // - location: The [regional endpoint]
 //   (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -14719,7 +14755,7 @@ func (c *ProjectsLocationsTemplatesCreateCall) Do(opts ...googleapi.CallOption) 
 	}
 	return ret, nil
 	// {
-	//   "description": "Creates a Cloud Dataflow job from a template.",
+	//   "description": "Creates a Cloud Dataflow job from a template. Do not enter confidential information when you supply string values using the API.",
 	//   "flatPath": "v1b3/projects/{projectId}/locations/{location}/templates",
 	//   "httpMethod": "POST",
 	//   "id": "dataflow.projects.locations.templates.create",
@@ -15521,7 +15557,8 @@ type ProjectsTemplatesCreateCall struct {
 	header_                      http.Header
 }
 
-// Create: Creates a Cloud Dataflow job from a template.
+// Create: Creates a Cloud Dataflow job from a template. Do not enter
+// confidential information when you supply string values using the API.
 //
 // - projectId: The ID of the Cloud Platform project that the job
 //   belongs to.
@@ -15623,7 +15660,7 @@ func (c *ProjectsTemplatesCreateCall) Do(opts ...googleapi.CallOption) (*Job, er
 	}
 	return ret, nil
 	// {
-	//   "description": "Creates a Cloud Dataflow job from a template.",
+	//   "description": "Creates a Cloud Dataflow job from a template. Do not enter confidential information when you supply string values using the API.",
 	//   "flatPath": "v1b3/projects/{projectId}/templates",
 	//   "httpMethod": "POST",
 	//   "id": "dataflow.projects.templates.create",

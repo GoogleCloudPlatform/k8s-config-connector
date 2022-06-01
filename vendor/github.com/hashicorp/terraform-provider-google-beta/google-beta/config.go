@@ -262,6 +262,7 @@ type Config struct {
 	CloudResourceManagerBasePath string
 	ContainerAwsBasePath         string
 	ContainerAzureBasePath       string
+	DataplexBasePath             string
 	EventarcBasePath             string
 	FirebaserulesBasePath        string
 	GkeHubBasePath               string

@@ -61,6 +61,83 @@ spec:
               displayName:
                 description: A user-visible name for the instance.
                 type: string
+              maintenancePolicy:
+                description: Maintenance policy for an instance.
+                properties:
+                  createTime:
+                    description: |-
+                      Output only. The time when the policy was created.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  description:
+                    description: |-
+                      Optional. Description of what this policy is for.
+                      Create/Update methods return INVALID_ARGUMENT if the
+                      length is greater than 512.
+                    type: string
+                  updateTime:
+                    description: |-
+                      Output only. The time when the policy was updated.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                      resolution and up to nine fractional digits.
+                    type: string
+                  weeklyMaintenanceWindow:
+                    description: |-
+                      Required. Maintenance window that is applied to resources covered by this policy.
+                      Minimum 1. For the current version, the maximum number of weekly_maintenance_windows
+                      is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: |-
+                            Required. The day of week that maintenance updates occur.
+                            - DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
+                            - MONDAY: Monday
+                            - TUESDAY: Tuesday
+                            - WEDNESDAY: Wednesday
+                            - THURSDAY: Thursday
+                            - FRIDAY: Friday
+                            - SATURDAY: Saturday
+                            - SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].
+                          type: string
+                        duration:
+                          description: |-
+                            Required. The length of the maintenance window, ranging from 3 hours to 8 hours.
+                            A duration in seconds with up to nine fractional digits,
+                            terminated by 's'. Example: "3.5s".
+                          type: string
+                        startTime:
+                          description: Required. Start time of the window in UTC time.
+                          properties:
+                            hours:
+                              description: |-
+                                Hours of day in 24 hour format. Should be from 0 to 23.
+                                An API may choose to allow the value "24:00:00" for scenarios like business closing time.
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              type: integer
+                            seconds:
+                              description: |-
+                                Seconds of minutes of the time. Must normally be from 0 to 59.
+                                An API may allow the value 60 if it allows leap-seconds.
+                              type: integer
+                          type: object
+                      required:
+                      - day
+                      - duration
+                      - startTime
+                      type: object
+                    type: array
+                required:
+                - weeklyMaintenanceWindow
+                type: object
               memcacheParameters:
                 description: Immutable. User-specified parameters for this memcache
                   instance.
@@ -181,6 +258,31 @@ spec:
               discoveryEndpoint:
                 description: Endpoint for Discovery API.
                 type: string
+              maintenanceSchedule:
+                description: Output only. Published maintenance schedule.
+                items:
+                  properties:
+                    endTime:
+                      description: |-
+                        Output only. The end time of any upcoming scheduled maintenance for this instance.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                    scheduleDeadlineTime:
+                      description: |-
+                        Output only. The deadline that the maintenance schedule start time
+                        can not go beyond, including reschedule.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                    startTime:
+                      description: |-
+                        Output only. The start time of any upcoming scheduled maintenance for this instance.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                  type: object
+                type: array
               memcacheFullVersion:
                 description: The full version of memcached server running on this
                   instance.

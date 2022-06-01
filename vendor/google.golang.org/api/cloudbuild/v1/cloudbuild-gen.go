@@ -87,7 +87,7 @@ const (
 
 // NewService creates a new Service.
 func NewService(ctx context.Context, opts ...option.ClientOption) (*Service, error) {
-	scopesOption := option.WithScopes(
+	scopesOption := internaloption.WithDefaultScopes(
 		"https://www.googleapis.com/auth/cloud-platform",
 	)
 	// NOTE: prepend, so we don't override user-specified scopes.
@@ -324,75 +324,6 @@ func NewV1Service(s *Service) *V1Service {
 
 type V1Service struct {
 	s *Service
-}
-
-// AddBitbucketServerConnectedRepositoryRequest: RPC request object
-// accepted by the AddBitbucketServerConnectedRepository RPC method.
-type AddBitbucketServerConnectedRepositoryRequest struct {
-	// ConnectedRepository: The connected repository to add.
-	ConnectedRepository *BitbucketServerRepositoryId `json:"connectedRepository,omitempty"`
-
-	// ForceSendFields is a list of field names (e.g. "ConnectedRepository")
-	// to unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "ConnectedRepository") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *AddBitbucketServerConnectedRepositoryRequest) MarshalJSON() ([]byte, error) {
-	type NoMethod AddBitbucketServerConnectedRepositoryRequest
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
-}
-
-// AddBitbucketServerConnectedRepositoryResponse: RPC request object
-// returned by the AddBitbucketServerConnectedRepository RPC method.
-type AddBitbucketServerConnectedRepositoryResponse struct {
-	// Config: The name of the `BitbucketServerConfig` that added connected
-	// repository. Format:
-	// `projects/{project}/locations/{location}/bitbucketServerConfigs/{confi
-	// g}`
-	Config string `json:"config,omitempty"`
-
-	// ConnectedRepository: The connected repository.
-	ConnectedRepository *BitbucketServerRepositoryId `json:"connectedRepository,omitempty"`
-
-	// ServerResponse contains the HTTP response code and headers from the
-	// server.
-	googleapi.ServerResponse `json:"-"`
-
-	// ForceSendFields is a list of field names (e.g. "Config") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "Config") to include in API
-	// requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *AddBitbucketServerConnectedRepositoryResponse) MarshalJSON() ([]byte, error) {
-	type NoMethod AddBitbucketServerConnectedRepositoryResponse
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
 // ApprovalConfig: ApprovalConfig describes configuration for manual
@@ -2114,8 +2045,7 @@ func (s *DeleteWorkerPoolOperationMetadata) MarshalJSON() ([]byte, error) {
 // duplicated empty messages in your APIs. A typical example is to use
 // it as the request or the response type of an API method. For
 // instance: service Foo { rpc Bar(google.protobuf.Empty) returns
-// (google.protobuf.Empty); } The JSON representation for `Empty` is
-// empty JSON object `{}`.
+// (google.protobuf.Empty); }
 type Empty struct {
 	// ServerResponse contains the HTTP response code and headers from the
 	// server.
@@ -2197,6 +2127,17 @@ func (s *FileHashes) MarshalJSON() ([]byte, error) {
 // GitFileSource: GitFileSource describes a file within a (possibly
 // remote) code repository.
 type GitFileSource struct {
+	// BitbucketServerConfig: The full resource name of the bitbucket server
+	// config. Format:
+	// `projects/{project}/locations/{location}/bitbucketServerConfigs/{id}`.
+	BitbucketServerConfig string `json:"bitbucketServerConfig,omitempty"`
+
+	// GithubEnterpriseConfig: The full resource name of the github
+	// enterprise config. Format:
+	// `projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}`
+	// . `projects/{project}/githubEnterpriseConfigs/{id}`.
+	GithubEnterpriseConfig string `json:"githubEnterpriseConfig,omitempty"`
+
 	// Path: The path of the file, with the repo root as the root of the
 	// path.
 	Path string `json:"path,omitempty"`
@@ -2209,6 +2150,7 @@ type GitFileSource struct {
 	// Repositories-hosted repo.
 	//   "GITHUB" - A GitHub-hosted repo not necessarily on "github.com"
 	// (i.e. GitHub Enterprise).
+	//   "BITBUCKET_SERVER" - A Bitbucket Server-hosted repo.
 	RepoType string `json:"repoType,omitempty"`
 
 	// Revision: The branch, tag, arbitrary ref, or SHA version of the repo
@@ -2219,25 +2161,27 @@ type GitFileSource struct {
 	// revision from which to read the specified path.
 	Revision string `json:"revision,omitempty"`
 
-	// Uri: The URI of the repo (optional). If unspecified, the repo from
-	// which the trigger invocation originated is assumed to be the repo
-	// from which to read the specified path.
+	// Uri: The URI of the repo. Either uri or repository can be specified.
+	// If unspecified, the repo from which the trigger invocation originated
+	// is assumed to be the repo from which to read the specified path.
 	Uri string `json:"uri,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "Path") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
+	// ForceSendFields is a list of field names (e.g.
+	// "BitbucketServerConfig") to unconditionally include in API requests.
+	// By default, fields with empty or default values are omitted from API
+	// requests. However, any non-pointer, non-interface field appearing in
+	// ForceSendFields will be sent to the server regardless of whether the
+	// field is empty or not. This may be used to include empty fields in
+	// Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "Path") to include in API
-	// requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "BitbucketServerConfig") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 
@@ -2435,6 +2379,17 @@ func (s *GitHubEventsConfig) MarshalJSON() ([]byte, error) {
 // GitRepoSource: GitRepoSource describes a repo and ref of a code
 // repository.
 type GitRepoSource struct {
+	// BitbucketServerConfig: The full resource name of the bitbucket server
+	// config. Format:
+	// `projects/{project}/locations/{location}/bitbucketServerConfigs/{id}`.
+	BitbucketServerConfig string `json:"bitbucketServerConfig,omitempty"`
+
+	// GithubEnterpriseConfig: The full resource name of the github
+	// enterprise config. Format:
+	// `projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}`
+	// . `projects/{project}/githubEnterpriseConfigs/{id}`.
+	GithubEnterpriseConfig string `json:"githubEnterpriseConfig,omitempty"`
+
 	// Ref: The branch or tag to use. Must start with "refs/" (required).
 	Ref string `json:"ref,omitempty"`
 
@@ -2446,25 +2401,29 @@ type GitRepoSource struct {
 	// Repositories-hosted repo.
 	//   "GITHUB" - A GitHub-hosted repo not necessarily on "github.com"
 	// (i.e. GitHub Enterprise).
+	//   "BITBUCKET_SERVER" - A Bitbucket Server-hosted repo.
 	RepoType string `json:"repoType,omitempty"`
 
-	// Uri: The URI of the repo (required).
+	// Uri: The URI of the repo. Either uri or repository can be specified
+	// and is required.
 	Uri string `json:"uri,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "Ref") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
+	// ForceSendFields is a list of field names (e.g.
+	// "BitbucketServerConfig") to unconditionally include in API requests.
+	// By default, fields with empty or default values are omitted from API
+	// requests. However, any non-pointer, non-interface field appearing in
+	// ForceSendFields will be sent to the server regardless of whether the
+	// field is empty or not. This may be used to include empty fields in
+	// Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "Ref") to include in API
-	// requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "BitbucketServerConfig") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 
@@ -3743,6 +3702,58 @@ type RunBuildTriggerRequest struct {
 
 func (s *RunBuildTriggerRequest) MarshalJSON() ([]byte, error) {
 	type NoMethod RunBuildTriggerRequest
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// RunWorkflowCustomOperationMetadata: Represents the custom metadata of
+// the RunWorkflow long-running operation.
+type RunWorkflowCustomOperationMetadata struct {
+	// ApiVersion: Output only. API version used to start the operation.
+	ApiVersion string `json:"apiVersion,omitempty"`
+
+	// CreateTime: Output only. The time the operation was created.
+	CreateTime string `json:"createTime,omitempty"`
+
+	// EndTime: Output only. The time the operation finished running.
+	EndTime string `json:"endTime,omitempty"`
+
+	// PipelineRunId: Output only. ID of the pipeline run created by
+	// RunWorkflow.
+	PipelineRunId string `json:"pipelineRunId,omitempty"`
+
+	// RequestedCancellation: Output only. Identifies whether the user has
+	// requested cancellation of the operation. Operations that have
+	// successfully been cancelled have Operation.error value with a
+	// google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
+	RequestedCancellation bool `json:"requestedCancellation,omitempty"`
+
+	// Target: Output only. Server-defined resource path for the target of
+	// the operation.
+	Target string `json:"target,omitempty"`
+
+	// Verb: Output only. Name of the verb executed by the operation.
+	Verb string `json:"verb,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "ApiVersion") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "ApiVersion") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *RunWorkflowCustomOperationMetadata) MarshalJSON() ([]byte, error) {
+	type NoMethod RunWorkflowCustomOperationMetadata
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -5700,7 +5711,7 @@ func (c *ProjectsBuildsListCall) PageToken(pageToken string) *ProjectsBuildsList
 
 // Parent sets the optional parameter "parent": The parent of the
 // collection of `Builds`. Format:
-// `projects/{project}/locations/location`
+// `projects/{project}/locations/{location}`
 func (c *ProjectsBuildsListCall) Parent(parent string) *ProjectsBuildsListCall {
 	c.urlParams_.Set("parent", parent)
 	return c
@@ -5830,7 +5841,7 @@ func (c *ProjectsBuildsListCall) Do(opts ...googleapi.CallOption) (*ListBuildsRe
 	//       "type": "string"
 	//     },
 	//     "parent": {
-	//       "description": "The parent of the collection of `Builds`. Format: `projects/{project}/locations/location`",
+	//       "description": "The parent of the collection of `Builds`. Format: `projects/{project}/locations/{location}`",
 	//       "location": "query",
 	//       "type": "string"
 	//     },
@@ -6861,155 +6872,6 @@ func (c *ProjectsGithubEnterpriseConfigsPatchCall) Do(opts ...googleapi.CallOpti
 
 }
 
-// method id "cloudbuild.projects.locations.bitbucketServerConfigs.addBitbucketServerConnectedRepository":
-
-type ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall struct {
-	s                                            *Service
-	config                                       string
-	addbitbucketserverconnectedrepositoryrequest *AddBitbucketServerConnectedRepositoryRequest
-	urlParams_                                   gensupport.URLParams
-	ctx_                                         context.Context
-	header_                                      http.Header
-}
-
-// AddBitbucketServerConnectedRepository: Add a Bitbucket Server
-// repository to a given BitbucketServerConfig's connected repositories.
-// This API is experimental.
-//
-// - config: The name of the `BitbucketServerConfig` to add a connected
-//   repository. Format:
-//   `projects/{project}/locations/{location}/bitbucketServerConfigs/{con
-//   fig}`.
-func (r *ProjectsLocationsBitbucketServerConfigsService) AddBitbucketServerConnectedRepository(config string, addbitbucketserverconnectedrepositoryrequest *AddBitbucketServerConnectedRepositoryRequest) *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall {
-	c := &ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall{s: r.s, urlParams_: make(gensupport.URLParams)}
-	c.config = config
-	c.addbitbucketserverconnectedrepositoryrequest = addbitbucketserverconnectedrepositoryrequest
-	return c
-}
-
-// Fields allows partial responses to be retrieved. See
-// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
-// for more information.
-func (c *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall) Fields(s ...googleapi.Field) *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
-	return c
-}
-
-// Context sets the context to be used in this call's Do method. Any
-// pending HTTP request will be aborted if the provided context is
-// canceled.
-func (c *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall) Context(ctx context.Context) *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall {
-	c.ctx_ = ctx
-	return c
-}
-
-// Header returns an http.Header that can be modified by the caller to
-// add HTTP headers to the request.
-func (c *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall) Header() http.Header {
-	if c.header_ == nil {
-		c.header_ = make(http.Header)
-	}
-	return c.header_
-}
-
-func (c *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall) doRequest(alt string) (*http.Response, error) {
-	reqHeaders := make(http.Header)
-	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	reqHeaders.Set("User-Agent", c.s.userAgent())
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.addbitbucketserverconnectedrepositoryrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	c.urlParams_.Set("alt", alt)
-	c.urlParams_.Set("prettyPrint", "false")
-	urls := googleapi.ResolveRelative(c.s.BasePath, "v1/{+config}:addBitbucketServerConnectedRepository")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"config": c.config,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
-}
-
-// Do executes the "cloudbuild.projects.locations.bitbucketServerConfigs.addBitbucketServerConnectedRepository" call.
-// Exactly one of *AddBitbucketServerConnectedRepositoryResponse or
-// error will be non-nil. Any non-2xx status code is an error. Response
-// headers are in either
-// *AddBitbucketServerConnectedRepositoryResponse.ServerResponse.Header
-// or (if a response was returned at all) in
-// error.(*googleapi.Error).Header. Use googleapi.IsNotModified to check
-// whether the returned error was because http.StatusNotModified was
-// returned.
-func (c *ProjectsLocationsBitbucketServerConfigsAddBitbucketServerConnectedRepositoryCall) Do(opts ...googleapi.CallOption) (*AddBitbucketServerConnectedRepositoryResponse, error) {
-	gensupport.SetOptions(c.urlParams_, opts...)
-	res, err := c.doRequest("json")
-	if res != nil && res.StatusCode == http.StatusNotModified {
-		if res.Body != nil {
-			res.Body.Close()
-		}
-		return nil, &googleapi.Error{
-			Code:   res.StatusCode,
-			Header: res.Header,
-		}
-	}
-	if err != nil {
-		return nil, err
-	}
-	defer googleapi.CloseBody(res)
-	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
-	}
-	ret := &AddBitbucketServerConnectedRepositoryResponse{
-		ServerResponse: googleapi.ServerResponse{
-			Header:         res.Header,
-			HTTPStatusCode: res.StatusCode,
-		},
-	}
-	target := &ret
-	if err := gensupport.DecodeResponse(target, res); err != nil {
-		return nil, err
-	}
-	return ret, nil
-	// {
-	//   "description": "Add a Bitbucket Server repository to a given BitbucketServerConfig's connected repositories. This API is experimental.",
-	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/bitbucketServerConfigs/{bitbucketServerConfigsId}:addBitbucketServerConnectedRepository",
-	//   "httpMethod": "POST",
-	//   "id": "cloudbuild.projects.locations.bitbucketServerConfigs.addBitbucketServerConnectedRepository",
-	//   "parameterOrder": [
-	//     "config"
-	//   ],
-	//   "parameters": {
-	//     "config": {
-	//       "description": "Required. The name of the `BitbucketServerConfig` to add a connected repository. Format: `projects/{project}/locations/{location}/bitbucketServerConfigs/{config}`",
-	//       "location": "path",
-	//       "pattern": "^projects/[^/]+/locations/[^/]+/bitbucketServerConfigs/[^/]+$",
-	//       "required": true,
-	//       "type": "string"
-	//     }
-	//   },
-	//   "path": "v1/{+config}:addBitbucketServerConnectedRepository",
-	//   "request": {
-	//     "$ref": "AddBitbucketServerConnectedRepositoryRequest"
-	//   },
-	//   "response": {
-	//     "$ref": "AddBitbucketServerConnectedRepositoryResponse"
-	//   },
-	//   "scopes": [
-	//     "https://www.googleapis.com/auth/cloud-platform"
-	//   ]
-	// }
-
-}
-
 // method id "cloudbuild.projects.locations.bitbucketServerConfigs.create":
 
 type ProjectsLocationsBitbucketServerConfigsCreateCall struct {
@@ -7817,7 +7679,7 @@ type ProjectsLocationsBitbucketServerConfigsRemoveBitbucketServerConnectedReposi
 }
 
 // RemoveBitbucketServerConnectedRepository: Remove a Bitbucket Server
-// repository from an given BitbucketServerConfig’s connected
+// repository from a given BitbucketServerConfig's connected
 // repositories. This API is experimental.
 //
 // - config: The name of the `BitbucketServerConfig` to remove a
@@ -7922,7 +7784,7 @@ func (c *ProjectsLocationsBitbucketServerConfigsRemoveBitbucketServerConnectedRe
 	}
 	return ret, nil
 	// {
-	//   "description": "Remove a Bitbucket Server repository from an given BitbucketServerConfig’s connected repositories. This API is experimental.",
+	//   "description": "Remove a Bitbucket Server repository from a given BitbucketServerConfig's connected repositories. This API is experimental.",
 	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/bitbucketServerConfigs/{bitbucketServerConfigsId}:removeBitbucketServerConnectedRepository",
 	//   "httpMethod": "POST",
 	//   "id": "cloudbuild.projects.locations.bitbucketServerConfigs.removeBitbucketServerConnectedRepository",
@@ -8931,7 +8793,7 @@ type ProjectsLocationsBuildsListCall struct {
 // unsuccessfully.
 //
 // - parent: The parent of the collection of `Builds`. Format:
-//   `projects/{project}/locations/location`.
+//   `projects/{project}/locations/{location}`.
 func (r *ProjectsLocationsBuildsService) List(parent string) *ProjectsLocationsBuildsListCall {
 	c := &ProjectsLocationsBuildsListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -9094,7 +8956,7 @@ func (c *ProjectsLocationsBuildsListCall) Do(opts ...googleapi.CallOption) (*Lis
 	//       "type": "string"
 	//     },
 	//     "parent": {
-	//       "description": "The parent of the collection of `Builds`. Format: `projects/{project}/locations/location`",
+	//       "description": "The parent of the collection of `Builds`. Format: `projects/{project}/locations/{location}`",
 	//       "location": "path",
 	//       "pattern": "^projects/[^/]+/locations/[^/]+$",
 	//       "required": true,
@@ -11778,8 +11640,7 @@ type ProjectsLocationsWorkerPoolsDeleteCall struct {
 // Delete: Deletes a `WorkerPool`.
 //
 // - name: The name of the `WorkerPool` to delete. Format:
-//   `projects/{project}/locations/{workerPool}/workerPools/{workerPool}`
-//   .
+//   `projects/{project}/locations/{location}/workerPools/{workerPool}`.
 func (r *ProjectsLocationsWorkerPoolsService) Delete(name string) *ProjectsLocationsWorkerPoolsDeleteCall {
 	c := &ProjectsLocationsWorkerPoolsDeleteCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -11914,7 +11775,7 @@ func (c *ProjectsLocationsWorkerPoolsDeleteCall) Do(opts ...googleapi.CallOption
 	//       "type": "string"
 	//     },
 	//     "name": {
-	//       "description": "Required. The name of the `WorkerPool` to delete. Format: `projects/{project}/locations/{workerPool}/workerPools/{workerPool}`.",
+	//       "description": "Required. The name of the `WorkerPool` to delete. Format: `projects/{project}/locations/{location}/workerPools/{workerPool}`.",
 	//       "location": "path",
 	//       "pattern": "^projects/[^/]+/locations/[^/]+/workerPools/[^/]+$",
 	//       "required": true,
