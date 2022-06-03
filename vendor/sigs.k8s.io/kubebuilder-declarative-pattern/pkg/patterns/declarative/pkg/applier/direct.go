@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/cli-runtime/pkg/printers"
 	"k8s.io/cli-runtime/pkg/resource"
@@ -39,10 +40,18 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		RESTConfig: opt.RESTConfig,
 	}
 	b := resource.NewBuilder(restClientGetter)
+	f := cmdutil.NewFactory(&genericclioptions.ConfigFlags{})
 
 	if opt.Validate {
 		// This potentially causes redundant work, but validation isn't the common path
-		v, err := cmdutil.NewFactory(&genericclioptions.ConfigFlags{}).Validator(true)
+
+		dynamicClient, err := f.DynamicClient()
+		if err != nil {
+			return err
+		}
+		nqpv := resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamFieldValidation)
+
+		v, err := cmdutil.NewFactory(&genericclioptions.ConfigFlags{}).Validator(metav1.FieldValidationStrict, nqpv)
 		if err != nil {
 			return err
 		}
@@ -65,7 +74,27 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		}
 	}
 
-	applyOpts := apply.NewApplyOptions(ioStreams)
+	baseName := "declarative-direct"
+	applyFlags := apply.NewApplyFlags(f, ioStreams)
+	applyCmd := apply.NewCmdApply(baseName, f, ioStreams)
+	applyOpts, err := applyFlags.ToOptions(applyCmd, baseName, nil)
+	if err != nil {
+		return fmt.Errorf("error getting apply options: %w", err)
+	}
+
+	for i, arg := range opt.ExtraArgs {
+		switch arg {
+		case "--force":
+			applyOpts.ForceConflicts = true
+		case "--prune":
+			applyOpts.Prune = true
+		case "--selector":
+			applyOpts.Selector = opt.ExtraArgs[i+1]
+		default:
+			continue
+		}
+	}
+
 	applyOpts.Namespace = opt.Namespace
 	applyOpts.SetObjects(infos)
 	applyOpts.ToPrinter = func(operation string) (printers.ResourcePrinter, error) {
