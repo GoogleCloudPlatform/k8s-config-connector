@@ -148,6 +148,14 @@ func convertAssetNameToImportID(a *asset.Asset, rc *v1alpha1.ResourceConfig, nam
 			return fmt.Sprintf("#%v#%v", id.parentID, id.roleID), nil
 		}
 	}
+	if rc.Kind == "MonitoringAlertPolicy" {
+		partitions := strings.Split(name, "/")
+		if len(partitions) != 4 {
+			return "", fmt.Errorf("expected 4 partitions split by '/' for '%v'", name)
+		}
+		return fmt.Sprintf("%v projects/%v/alertPolicies/%v", partitions[1], partitions[1], partitions[3]), nil
+	}
+
 	return name, nil
 }
 
