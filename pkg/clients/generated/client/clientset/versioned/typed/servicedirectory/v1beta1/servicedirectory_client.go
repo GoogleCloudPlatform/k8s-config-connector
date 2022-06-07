@@ -31,6 +31,7 @@ import (
 
 type ServicedirectoryV1beta1Interface interface {
 	RESTClient() rest.Interface
+	ServiceDirectoryEndpointsGetter
 	ServiceDirectoryNamespacesGetter
 	ServiceDirectoryServicesGetter
 }
@@ -38,6 +39,10 @@ type ServicedirectoryV1beta1Interface interface {
 // ServicedirectoryV1beta1Client is used to interact with features provided by the servicedirectory.cnrm.cloud.google.com group.
 type ServicedirectoryV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ServicedirectoryV1beta1Client) ServiceDirectoryEndpoints(namespace string) ServiceDirectoryEndpointInterface {
+	return newServiceDirectoryEndpoints(c, namespace)
 }
 
 func (c *ServicedirectoryV1beta1Client) ServiceDirectoryNamespaces(namespace string) ServiceDirectoryNamespaceInterface {

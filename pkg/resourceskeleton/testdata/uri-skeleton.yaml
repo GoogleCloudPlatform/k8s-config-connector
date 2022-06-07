@@ -914,3 +914,15 @@
       name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/service-zzz
   ResourceConfigId: ServiceDirectoryService
   URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/service-zzz"
+- ExpectedSkeleton:
+    apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+    kind: ServiceDirectoryEndpoint
+    metadata:
+      name: endpoint-aaa
+    spec:
+      serviceRef:
+        external: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/zzzzbbb
+    status:
+      name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/zzzzbbb/endpoints/endpoint-aaa
+  ResourceConfigId: ServiceDirectoryEndpoint
+  URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/zzzzbbb/endpoints/endpoint-aaa"

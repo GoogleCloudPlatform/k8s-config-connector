@@ -22,6 +22,51 @@ spec:
   version: v1beta1
   serviceHostName: "servicedirectory.googleapis.com"
   resources:
+    - name: google_service_directory_endpoint
+      kind: ServiceDirectoryEndpoint
+      idTemplate: "{{service}}/endpoints/{{endpoint_id}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: endpoint_id
+        labels: metadata
+      resourceID:
+        targetField: endpoint_id
+      resourceReferences:
+        - tfField: service
+          description: |-
+            The ServiceDirectoryService that this endpoint belongs to.
+          key: serviceRef
+          gvk:
+            kind: ServiceDirectoryService
+            version: v1beta1
+            group: servicedirectory.cnrm.cloud.google.com
+          targetField: name
+          parent: true
+        - tfField: network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+          # TODO(b/235854488): remove external-only field description once project id is allowed for networkRef
+          description: |-
+            Only the `external` field is supported to configure the reference.
+
+            Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
+            projects/<project number>/locations/global/networks/*.
+
+            The project must be specified by project number (project id is rejected). Incorrectly formatted networks are
+            rejected, but no other validation is performed on this field (ex. network or project existence,
+            reachability, or permissions).
+        - tfField: address
+          key: addressRef
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
     - name: google_service_directory_namespace
       kind: ServiceDirectoryNamespace
       idTemplate: "projects/{{project}}/locations/{{location}}/namespaces/{{namespace_id}}"

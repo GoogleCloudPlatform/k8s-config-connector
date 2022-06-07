@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//This script will extract images of KCC components from stable `manifest.yaml` and generate a ConfigMap `image_configmap.yaml` under config/release directory.
-//The ConfigMap will be used for Component Release Pipeline to pre-load and validate images deployed by the operator.
+// This script will extract images of KCC components from stable `manifest.yaml` and generate a ConfigMap `image_configmap.yaml` under config/release directory.
+// The ConfigMap will be used for Component Release Pipeline to pre-load and validate images deployed by the operator.
 //
 // run `make manifests' to invoke the script, or directly go run scripts/generate-image-configmap/main.go"
 package main

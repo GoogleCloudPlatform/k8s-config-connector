@@ -31,6 +31,10 @@ type FakeServicedirectoryV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeServicedirectoryV1beta1) ServiceDirectoryEndpoints(namespace string) v1beta1.ServiceDirectoryEndpointInterface {
+	return &FakeServiceDirectoryEndpoints{c, namespace}
+}
+
 func (c *FakeServicedirectoryV1beta1) ServiceDirectoryNamespaces(namespace string) v1beta1.ServiceDirectoryNamespaceInterface {
 	return &FakeServiceDirectoryNamespaces{c, namespace}
 }

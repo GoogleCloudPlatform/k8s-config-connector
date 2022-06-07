@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type ServiceDirectoryEndpointExpansion interface{}
+
 type ServiceDirectoryNamespaceExpansion interface{}
 
 type ServiceDirectoryServiceExpansion interface{}

@@ -174,9 +174,12 @@ func (r *ConfigConnectorReconciler) handleReconcileSucceeded(ctx context.Context
 // Handle the lifecycle of the given components under different conditions:
 // 1) If the ConfigConnector object is pending deletion, ensure all deployed k8s components by CC controller don't exist or are deleted
 // 2) If the ConfigConnector object is active, and if it’s cluster mode, verify that all per-namespace controller manager workloads are deleted,
-//    then ensure KCC system components (shared components like CRDs and webhooks as well as cluster-mode-only components) are created.
+//
+//	then ensure KCC system components (shared components like CRDs and webhooks as well as cluster-mode-only components) are created.
+//
 // 3) If the ConfigConnector object is active, and if it’s namespaced mode, first remove cluster mode only components if any,
-//    then ensure shared KCC system components (excluding cluster-mode-only components) are created.
+//
+//	then ensure shared KCC system components (excluding cluster-mode-only components) are created.
 func (r *ConfigConnectorReconciler) handleConfigConnectorLifecycle() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		r.log.Info("handling the lifecycle of the ConfigConnector object", "name", o.GetName())

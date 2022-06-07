@@ -217,9 +217,13 @@ func (r *ConfigConnectorContextReconciler) addLabels() declarative.ObjectTransfo
 // Handle the lifecycle of the given per-namespace components under different conditions:
 // 1) If the ConfigConnector object is not found or pending deletion, this is the uninstallation case, finalize the deletion of per-namespace components.
 // 2) If the ConfigConnector object says the cluster mode, finalize the deletion of per-namespace components,
-//    returns some error like “ConfigConnector runs in cluster mode, this CCC is ignored and should be deleted”.
+//
+//	returns some error like “ConfigConnector runs in cluster mode, this CCC is ignored and should be deleted”.
+//
 // 3) If the ConfigConnector object says the namespaced mode, and if this ConfigConnectorContext object is active, verify that the controller manager workload for the cluster mode is deleted and the ‘cnrm-system’ namespace is created,
-//    then ensure per-namespace components are created.
+//
+//	then ensure per-namespace components are created.
+//
 // 4) If the ConfigConnector object says the namespaced mode, and if this ConfigConnectorContext object is pending deletion, verify that all KCC resource CRs are deleted, then finalize the deletion of per-namespace components.
 func (r *ConfigConnectorContextReconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {

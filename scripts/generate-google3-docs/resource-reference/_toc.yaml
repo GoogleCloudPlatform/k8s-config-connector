@@ -440,6 +440,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md
 - title: "Service Directory"
   section:
+  - title: "ServiceDirectoryEndpoint"
+    path: /config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryendpoint.md
   - title: "ServiceDirectoryNamespace"
     path: /config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace.md
   - title: "ServiceDirectoryService"
