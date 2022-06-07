@@ -1,0 +1,11 @@
+label: Config Connector ServiceDirectoryNamespace
+markdownDescription: Creates yaml for a ServiceDirectoryNamespace resource
+insertText: |
+  apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+  kind: ServiceDirectoryNamespace
+  metadata:
+    name: \${1:servicedirectorynamespace-name}
+  spec:
+    location: \${2:us-central1}
+    projectRef:
+      external: \${3:[PROJECT_ID?]}

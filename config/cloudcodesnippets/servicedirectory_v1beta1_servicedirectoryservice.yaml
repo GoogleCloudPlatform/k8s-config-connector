@@ -1,0 +1,12 @@
+label: Config Connector ServiceDirectoryService
+markdownDescription: Creates yaml for a ServiceDirectoryService resource
+insertText: |
+  apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+  kind: ServiceDirectoryService
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:servicedirectoryservice-name}
+  spec:
+    namespaceRef:
+      name: \${4:servicedirectoryservice-dep}
