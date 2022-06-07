@@ -96,6 +96,10 @@ func GetTypesGeneratedApisPath() string {
 	return filepath.Join(GetRootOrLogFatal(), "pkg", "clients", "generated", "apis")
 }
 
+func GetBasicIntegrationTestDataPath() string {
+	return filepath.Join(GetRootOrLogFatal(), "pkg", "test", "resourcefixture", "testdata", "basic")
+}
+
 func GetTypesTemplatePath() string {
 	return filepath.Join(GetRootOrLogFatal(), "scripts", "generate-go-crd-clients")
 }
