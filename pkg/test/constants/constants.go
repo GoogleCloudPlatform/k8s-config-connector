@@ -27,6 +27,12 @@ var TestNameRegexesToSkip = []string{
 	// (e.g. due to issues like b/196437940).
 	// ".*project(movedfoldertofolder|inorg|infolder).*",
 	// ".*(acmfeature|projectorgpolicy).*",
+	// TODO(b/220357089): re-enable eventfunction test in long-running CRUD test suite.
+	".*(eventfunction).*",
+	// TODO(b/215781076): re-enable gke hub tests in long-running CRUD test suite.
+	".*(gkehubfeaturemembership|mcifeature).*",
+	// TODO(b/228525841): re-enable streamingdataflowjobupdateparameters test.
+	".*(streamingdataflowjobupdateparameters).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
