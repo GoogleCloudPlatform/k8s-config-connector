@@ -35,12 +35,12 @@ type runnables struct {
 }
 
 // newRunnables creates a new runnables object.
-func newRunnables(baseContext BaseContextFunc, errChan chan error) *runnables {
+func newRunnables(errChan chan error) *runnables {
 	return &runnables{
-		Webhooks:       newRunnableGroup(baseContext, errChan),
-		Caches:         newRunnableGroup(baseContext, errChan),
-		LeaderElection: newRunnableGroup(baseContext, errChan),
-		Others:         newRunnableGroup(baseContext, errChan),
+		Webhooks:       newRunnableGroup(errChan),
+		Caches:         newRunnableGroup(errChan),
+		LeaderElection: newRunnableGroup(errChan),
+		Others:         newRunnableGroup(errChan),
 	}
 }
 
@@ -100,15 +100,14 @@ type runnableGroup struct {
 	wg *sync.WaitGroup
 }
 
-func newRunnableGroup(baseContext BaseContextFunc, errChan chan error) *runnableGroup {
+func newRunnableGroup(errChan chan error) *runnableGroup {
 	r := &runnableGroup{
 		startReadyCh: make(chan *readyRunnable),
 		errChan:      errChan,
 		ch:           make(chan *readyRunnable),
 		wg:           new(sync.WaitGroup),
 	}
-
-	r.ctx, r.cancel = context.WithCancel(baseContext())
+	r.ctx, r.cancel = context.WithCancel(context.Background())
 	return r
 }
 

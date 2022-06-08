@@ -251,7 +251,7 @@ func (r *ConfigConnectorReconciler) transformForClusterMode() declarative.Object
 func (r *ConfigConnectorReconciler) objectTransformForWorkloadIdentity(cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
 	transformed := make([]*manifest.Object, 0, len(m.Items))
 	for _, obj := range m.Items {
-		if obj.Kind == rbacv1.ServiceAccountKind && obj.GetName() == k8s.KCCControllerManagerComponent {
+		if obj.Kind == rbacv1.ServiceAccountKind && obj.Name == k8s.KCCControllerManagerComponent {
 			r.log.Info("annotating controller manager service account with workload identity annotation")
 			processed, err := controllers.AnnotateServiceAccountObject(obj, cc.Spec.GoogleServiceAccount)
 			if err != nil {
@@ -285,7 +285,7 @@ func (r *ConfigConnectorReconciler) objectTransformForGCPIdentity(cc *corev1beta
 
 func createCNRMSystemNamespace(ctx context.Context, c client.Client, m *manifest.Objects) error {
 	for _, obj := range m.Items {
-		if obj.Kind == "Namespace" && obj.GetName() == k8s.CNRMSystemNamespace {
+		if obj.Kind == "Namespace" && obj.Name == k8s.CNRMSystemNamespace {
 			if err := c.Create(ctx, obj.UnstructuredObject()); err != nil && !apierrors.IsAlreadyExists(err) {
 				return err
 			}

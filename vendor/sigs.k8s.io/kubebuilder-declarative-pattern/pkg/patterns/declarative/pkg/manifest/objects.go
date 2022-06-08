@@ -40,10 +40,9 @@ type Object struct {
 	object *unstructured.Unstructured
 
 	Group     string
-	Version   string
 	Kind      string
-	name      string
-	namespace string
+	Name      string
+	Namespace string
 
 	json []byte
 }
@@ -62,10 +61,9 @@ func ParseJSONToObject(json []byte) (*Object, error) {
 	return &Object{
 		object:    u,
 		Group:     gvk.Group,
-		Version:   gvk.Version,
 		Kind:      gvk.Kind,
-		name:      u.GetName(),
-		namespace: u.GetNamespace(),
+		Name:      u.GetName(),
+		Namespace: u.GetNamespace(),
 		json:      json,
 	}, nil
 }
@@ -83,30 +81,6 @@ func (o *Object) AddLabels(labels map[string]string) {
 	o.object.SetLabels(merged)
 	// Invalidate cached json
 	o.json = nil
-}
-
-func (o *Object) GetNamespace() string {
-	return o.namespace
-}
-
-func (o *Object) SetNamespace(ns string) error {
-	if err := o.SetNestedField(ns, "metadata", "namespace"); err != nil {
-		return fmt.Errorf("failed to set namespace: %w", err)
-	}
-	o.namespace = ns
-	return nil
-}
-
-func (o *Object) GetName() string {
-	return o.name
-}
-
-func (o *Object) SetName(name string) error {
-	if err := o.SetNestedField(name, "metadata", "name"); err != nil {
-		return fmt.Errorf("failed to set name: %w", err)
-	}
-	o.name = name
-	return nil
 }
 
 func (o *Object) SetNestedStringMap(value map[string]string, fields ...string) error {
@@ -152,20 +126,6 @@ func (o *Object) MutateContainers(fn func(map[string]interface{}) error) error {
 	containerList, ok := containers.([]interface{})
 	if !ok {
 		return fmt.Errorf("containers was not a list")
-	}
-
-	initContainers, found, err := nestedFieldNoCopy(o.object.Object, "spec", "template", "spec", "initContainers")
-	if err != nil {
-		return fmt.Errorf("error reading init containers: %v", err)
-	}
-
-	if found {
-		initContainerList, ok := initContainers.([]interface{})
-		if !ok {
-			return fmt.Errorf("init containers was not a list")
-		}
-
-		containerList = append(containerList, initContainerList...)
 	}
 
 	for _, co := range containerList {
@@ -329,7 +289,7 @@ func (o *Objects) Sort(score func(o *Object) int) {
 			(iScore == jScore &&
 				o.Items[i].Group == o.Items[j].Group &&
 				o.Items[i].Kind == o.Items[j].Kind &&
-				o.Items[i].name < o.Items[j].name)
+				o.Items[i].Name < o.Items[j].Name)
 	})
 }
 
@@ -401,8 +361,8 @@ func newObject(u *unstructured.Unstructured, json []byte) (*Object, error) {
 	gvk := u.GetObjectKind().GroupVersionKind()
 	o.Group = gvk.Group
 	o.Kind = gvk.Kind
-	o.name = u.GetName()
-	o.namespace = u.GetNamespace()
+	o.Name = u.GetName()
+	o.Namespace = u.GetNamespace()
 
 	return o, nil
 }

@@ -116,5 +116,5 @@ func IsControllerManagerService(obj *manifest.Object) bool {
 	if obj.Kind != "Service" {
 		return false
 	}
-	return obj.GetName() == k8s.NamespacedManagerServiceTmpl
+	return obj.Name == k8s.NamespacedManagerServiceTmpl
 }

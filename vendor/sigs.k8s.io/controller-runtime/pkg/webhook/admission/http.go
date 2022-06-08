@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	v1 "k8s.io/api/admission/v1"
@@ -59,7 +60,7 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer r.Body.Close()
-	if body, err = io.ReadAll(r.Body); err != nil {
+	if body, err = ioutil.ReadAll(r.Body); err != nil {
 		wh.log.Error(err, "unable to read the body from the incoming request")
 		reviewResponse = Errored(http.StatusBadRequest, err)
 		wh.writeResponse(w, reviewResponse)

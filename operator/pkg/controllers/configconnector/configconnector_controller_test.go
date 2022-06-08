@@ -432,7 +432,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 
 			for _, item := range m.Items {
 				if err := c.Create(ctx, item.UnstructuredObject()); err != nil && !apierrors.IsAlreadyExists(err) {
-					t.Fatalf("error creating %v %v: %v", item.GroupKind(), item.GetName(), err)
+					t.Fatalf("error creating %v %v: %v", item.GroupKind(), item.Name, err)
 				}
 			}
 
@@ -450,9 +450,9 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				}
 				// Simulate that CCC controller kicks in and deletes the controller manager pod.
 				for _, item := range m.Items {
-					if item.Kind == "Pod" && strings.Contains(item.GetName(), "cnrm-controller-manager") {
+					if item.Kind == "Pod" && strings.Contains(item.Name, "cnrm-controller-manager") {
 						if err := c.Delete(ctx, item.UnstructuredObject()); err != nil {
-							t.Fatalf("error deleting %v %v: %v", item.GroupKind(), item.GetName(), err)
+							t.Fatalf("error deleting %v %v: %v", item.GroupKind(), item.Name, err)
 						}
 					}
 				}
@@ -758,7 +758,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			installedManifest := testcontroller.ParseObjects(t, ctx, installedComponents)
 			for _, item := range installedManifest.Items {
 				if err := c.Create(ctx, item.UnstructuredObject()); err != nil && !apierrors.IsAlreadyExists(err) {
-					t.Fatalf("error creating %v %v: %v", item.GroupKind(), item.GetName(), err)
+					t.Fatalf("error creating %v %v: %v", item.GroupKind(), item.Name, err)
 				}
 			}
 
@@ -775,9 +775,9 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				}
 				// Simulate that CCC controller kicks in and deletes the controller manager pod.
 				for _, item := range installedManifest.Items {
-					if item.Kind == "Pod" && strings.Contains(item.GetName(), "cnrm-controller-manager") {
+					if item.Kind == "Pod" && strings.Contains(item.Name, "cnrm-controller-manager") {
 						if err := c.Delete(ctx, item.UnstructuredObject()); err != nil {
-							t.Fatalf("error deleting %v %v: %v", item.GroupKind(), item.GetName(), err)
+							t.Fatalf("error deleting %v %v: %v", item.GroupKind(), item.Name, err)
 						}
 					}
 				}
