@@ -559,6 +559,10 @@
 </tr>
 <tr>
   <td><a href="/pubsub/docs/">{{pubsub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/pubsub/pubsubschema.md">PubSubSchema</a></td>
+</tr>
+<tr>
+  <td><a href="/pubsub/docs/">{{pubsub_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/pubsub/pubsubsubscription.md">PubSubSubscription</a></td>
 </tr>
 <tr>

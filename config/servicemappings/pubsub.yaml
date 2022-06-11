@@ -22,6 +22,27 @@ spec:
   version: v1beta1
   serviceHostName: "pubsub.googleapis.com"
   resources:
+    - name: google_pubsub_schema
+      kind: PubSubSchema
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/schemas/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
     - name: google_pubsub_subscription
       kind: PubSubSubscription
       iamConfig:

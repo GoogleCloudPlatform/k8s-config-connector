@@ -743,6 +743,16 @@
   URI: "https://secretmanager.googleapis.com/v1/projects/kcc-test/secrets/secretmanagersecretversion-dep/versions/1?alt=json"
 - ExpectedSkeleton:
     apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+    kind: PubSubSchema
+    metadata:
+      name: pubsubschema-sample
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: PubSubSchema
+  URI: "https://pubsub.googleapis.com/v1/projects/kcc-test/schemas/pubsubschema-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
     kind: PubSubSubscription
     metadata:
       annotations:

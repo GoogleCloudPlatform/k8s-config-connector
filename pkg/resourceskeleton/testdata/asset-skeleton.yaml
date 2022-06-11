@@ -930,6 +930,8 @@
     status:
       number: "1234567890"
   resourceConfigId: Project
+# not supported by asset inventory
+- resourceConfigId: PubSubSchema
 - asset:
     ancestors:
     - projects/1234567890

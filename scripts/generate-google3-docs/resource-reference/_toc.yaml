@@ -408,6 +408,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md
 - title: "Pub/Sub"
   section:
+  - title: "PubSubSchema"
+    path: /config-connector/docs/reference/resource-docs/pubsub/pubsubschema.md
   - title: "PubSubSubscription"
     path: /config-connector/docs/reference/resource-docs/pubsub/pubsubsubscription.md
   - title: "PubSubTopic"

@@ -31,6 +31,7 @@ import (
 
 type PubsubV1beta1Interface interface {
 	RESTClient() rest.Interface
+	PubSubSchemasGetter
 	PubSubSubscriptionsGetter
 	PubSubTopicsGetter
 }
@@ -38,6 +39,10 @@ type PubsubV1beta1Interface interface {
 // PubsubV1beta1Client is used to interact with features provided by the pubsub.cnrm.cloud.google.com group.
 type PubsubV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *PubsubV1beta1Client) PubSubSchemas(namespace string) PubSubSchemaInterface {
+	return newPubSubSchemas(c, namespace)
 }
 
 func (c *PubsubV1beta1Client) PubSubSubscriptions(namespace string) PubSubSubscriptionInterface {

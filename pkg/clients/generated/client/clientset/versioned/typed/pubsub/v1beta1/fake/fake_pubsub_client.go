@@ -31,6 +31,10 @@ type FakePubsubV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakePubsubV1beta1) PubSubSchemas(namespace string) v1beta1.PubSubSchemaInterface {
+	return &FakePubSubSchemas{c, namespace}
+}
+
 func (c *FakePubsubV1beta1) PubSubSubscriptions(namespace string) v1beta1.PubSubSubscriptionInterface {
 	return &FakePubSubSubscriptions{c, namespace}
 }
