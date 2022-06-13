@@ -89,6 +89,25 @@ spec:
               cdnPolicy:
                 description: Cloud CDN configuration for this Backend Bucket.
                 properties:
+                  cacheKeyPolicy:
+                    description: The CacheKeyPolicy for this CdnPolicy.
+                    properties:
+                      includeHttpHeaders:
+                        description: |-
+                          Allows HTTP request headers (by name) to be used in the
+                          cache key.
+                        items:
+                          type: string
+                        type: array
+                      queryStringWhitelist:
+                        description: |-
+                          Names of query string parameters to include in cache keys.
+                          Default parameters are always included. '&' and '=' will
+                          be percent encoded and not treated as delimiters.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   cacheMode:
                     description: |-
                       Specifies the cache setting for all responses from this backend.

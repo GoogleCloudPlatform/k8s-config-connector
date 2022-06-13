@@ -35,7 +35,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type BackendbucketCacheKeyPolicy struct {
+	/* Allows HTTP request headers (by name) to be used in the
+	cache key. */
+	// +optional
+	IncludeHttpHeaders []string `json:"includeHttpHeaders,omitempty"`
+
+	/* Names of query string parameters to include in cache keys.
+	Default parameters are always included. '&' and '=' will
+	be percent encoded and not treated as delimiters. */
+	// +optional
+	QueryStringWhitelist []string `json:"queryStringWhitelist,omitempty"`
+}
+
 type BackendbucketCdnPolicy struct {
+	/* The CacheKeyPolicy for this CdnPolicy. */
+	// +optional
+	CacheKeyPolicy *BackendbucketCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
+
 	/* Specifies the cache setting for all responses from this backend.
 	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
 	// +optional

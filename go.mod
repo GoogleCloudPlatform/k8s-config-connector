@@ -20,8 +20,8 @@ require (
 	github.com/gosimple/slug v1.9.0
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/hcl v1.0.0
-	github.com/hashicorp/hcl/v2 v2.6.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.1
+	github.com/hashicorp/hcl/v2 v2.12.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.16.0
 	github.com/hashicorp/terraform-provider-google-beta v3.73.0+incompatible
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
 	github.com/olekukonko/tablewriter v0.0.5
@@ -34,7 +34,7 @@ require (
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/pflag v1.0.5
-	github.com/zclconf/go-cty v1.9.1
+	github.com/zclconf/go-cty v1.10.0
 	go.opencensus.io v0.23.0
 	go.uber.org/zap v1.19.1
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5
@@ -73,7 +73,6 @@ require (
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/agext/levenshtein v1.2.2 // indirect
 	github.com/apparentlymart/go-cidr v1.1.0 // indirect
-	github.com/apparentlymart/go-textseg/v12 v12.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
@@ -116,17 +115,17 @@ require (
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-hclog v0.16.1 // indirect
+	github.com/hashicorp/go-hclog v1.2.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
-	github.com/hashicorp/go-plugin v1.4.1 // indirect
-	github.com/hashicorp/go-uuid v1.0.2 // indirect
-	github.com/hashicorp/go-version v1.3.0 // indirect
-	github.com/hashicorp/hc-install v0.3.1 // indirect
+	github.com/hashicorp/go-plugin v1.4.3 // indirect
+	github.com/hashicorp/go-uuid v1.0.3 // indirect
+	github.com/hashicorp/go-version v1.4.0 // indirect
+	github.com/hashicorp/hc-install v0.3.2 // indirect
 	github.com/hashicorp/logutils v1.0.0 // indirect
-	github.com/hashicorp/terraform-exec v0.15.0 // indirect
+	github.com/hashicorp/terraform-exec v0.16.1 // indirect
 	github.com/hashicorp/terraform-json v0.13.0 // indirect
-	github.com/hashicorp/terraform-plugin-go v0.5.0 // indirect
-	github.com/hashicorp/terraform-plugin-log v0.2.0 // indirect
+	github.com/hashicorp/terraform-plugin-go v0.9.0 // indirect
+	github.com/hashicorp/terraform-plugin-log v0.4.0 // indirect
 	github.com/hashicorp/terraform-registry-address v0.0.0-20210412075316-9b2996cce896 // indirect
 	github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734 // indirect
 	github.com/hashicorp/yamux v0.0.0-20181012175058-2f1d1f20f75d // indirect
@@ -150,7 +149,7 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.0 // indirect
 	github.com/mitchellh/hashstructure v1.1.0 // indirect
-	github.com/mitchellh/mapstructure v1.4.1 // indirect
+	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/moby/spdystream v0.2.0 // indirect
 	github.com/moby/term v0.0.0-20210610120745-9d4ed1856297 // indirect
@@ -169,6 +168,8 @@ require (
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
+	github.com/vmihailenco/msgpack/v4 v4.3.12 // indirect
+	github.com/vmihailenco/tagparser v0.1.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
 	github.com/xlab/treeprint v0.0.0-20181112141820-a009c3971eca // indirect
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect

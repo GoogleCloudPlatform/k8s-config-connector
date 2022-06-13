@@ -78,6 +78,11 @@
     name: string
     namespace: string
   cdnPolicy:
+    cacheKeyPolicy:
+      includeHttpHeaders:
+      - string
+      queryStringWhitelist:
+      - string
     cacheMode: string
     clientTtl: integer
     defaultTtl: integer
@@ -151,6 +156,59 @@
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Cloud CDN configuration for this Backend Bucket.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The CacheKeyPolicy for this CdnPolicy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeHttpHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Allows HTTP request headers (by name) to be used in the
+cache key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeHttpHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.queryStringWhitelist</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Names of query string parameters to include in cache keys.
+Default parameters are always included. '&' and '=' will
+be percent encoded and not treated as delimiters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.queryStringWhitelist[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
