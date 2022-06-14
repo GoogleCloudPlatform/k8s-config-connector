@@ -17,6 +17,10 @@ kind: ComputeSecurityPolicy
 metadata:
   name: computesecuritypolicy-${uniqueId}
 spec:
+  adaptiveProtectionConfig:
+    layer7DdosDefenseConfig:
+      enable: true
+      ruleVisibility: STANDARD
   rule:
   - action: allow
     priority: 2147483647

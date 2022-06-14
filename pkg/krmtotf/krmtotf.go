@@ -150,6 +150,8 @@ func krmObjectToTFObject(obj map[string]interface{}, resource *tfschema.Resource
 		tfKey := text.AsSnakeCase(k)
 		schema, ok := resource.Schema[tfKey]
 		if !ok {
+			// TODO(b/239223470): We want to error out explicity if certain field from spec
+			// cannot be mapped to TFObject, instead of silently swallow the error.
 			continue
 		}
 		if includeConfigurableFieldsOnly && !tfresource.IsConfigurableField(schema) {

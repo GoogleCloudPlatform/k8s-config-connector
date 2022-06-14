@@ -261,3 +261,6 @@ apply-patches:
 	# Ignore routing_policy due to complexity introduced with top layer rrdatas/rrdatasRefs
 	# See b/233267548 for context
 	git apply ../hack/terraform-overrides/dns_ignore_routing_policy.patch
+	# Change field "layer_7_ddos_defense_config" to "layer7_ddos_defense_config"
+	# See b/220930832 for context
+	git apply ../hack/terraform-overrides/compute_security_policy_fieldname.patch

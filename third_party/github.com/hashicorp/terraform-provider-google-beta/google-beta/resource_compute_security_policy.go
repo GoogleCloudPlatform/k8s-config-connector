@@ -340,7 +340,7 @@ func resourceComputeSecurityPolicy() *schema.Resource {
 				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"layer_7_ddos_defense_config": {
+						"layer7_ddos_defense_config": {
 							Type:        schema.TypeList,
 							Description: `Layer 7 DDoS Defense Config of this security policy`,
 							Optional:    true,
@@ -796,7 +796,7 @@ func expandSecurityPolicyAdaptiveProtectionConfig(configured []interface{}) *com
 
 	data := configured[0].(map[string]interface{})
 	return &compute.SecurityPolicyAdaptiveProtectionConfig{
-		Layer7DdosDefenseConfig: expandLayer7DdosDefenseConfig(data["layer_7_ddos_defense_config"].([]interface{})),
+		Layer7DdosDefenseConfig: expandLayer7DdosDefenseConfig(data["layer7_ddos_defense_config"].([]interface{})),
 	}
 }
 
@@ -818,7 +818,7 @@ func flattenSecurityPolicyAdaptiveProtectionConfig(conf *compute.SecurityPolicyA
 	}
 
 	data := map[string]interface{}{
-		"layer_7_ddos_defense_config": flattenLayer7DdosDefenseConfig(conf.Layer7DdosDefenseConfig),
+		"layer7_ddos_defense_config": flattenLayer7DdosDefenseConfig(conf.Layer7DdosDefenseConfig),
 	}
 
 	return []map[string]interface{}{data}
