@@ -45,6 +45,15 @@ type TopicMessageStoragePolicy struct {
 	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
 }
 
+type TopicSchemaSettings struct {
+	/* The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"]. */
+	// +optional
+	Encoding *string `json:"encoding,omitempty"`
+
+	/*  */
+	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
+}
+
 type PubSubTopicSpec struct {
 	/* The KMSCryptoKey to be used to protect access to messages published
 	on this topic. Your project's Pub/Sub service account
@@ -73,6 +82,10 @@ type PubSubTopicSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Settings for validating messages published against a schema. */
+	// +optional
+	SchemaSettings *TopicSchemaSettings `json:"schemaSettings,omitempty"`
 }
 
 type PubSubTopicStatus struct {

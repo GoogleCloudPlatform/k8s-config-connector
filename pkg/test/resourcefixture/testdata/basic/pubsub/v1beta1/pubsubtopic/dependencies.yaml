@@ -13,15 +13,11 @@
 # limitations under the License.
 
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
+kind: PubSubSchema
 metadata:
-  labels:
-    label-one: "value-one"
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-  name: pubsubtopic-sample-${uniqueId}
+  name: pubsubschema-${uniqueId}
 spec:
-  schemaSettings:
-    schemaRef:
-      name: pubsubschema-${uniqueId}
-    encoding: JSON
+  type: PROTOCOL_BUFFER
+  definition: "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}"
+  projectRef:
+    external: ${projectId}

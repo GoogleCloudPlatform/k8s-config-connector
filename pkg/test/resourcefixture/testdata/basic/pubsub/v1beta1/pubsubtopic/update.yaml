@@ -21,3 +21,8 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubtopic-sample-${uniqueId}
+spec:
+  schemaSettings:
+    schemaRef:
+      name: pubsubschema-${uniqueId}
+    encoding: JSON

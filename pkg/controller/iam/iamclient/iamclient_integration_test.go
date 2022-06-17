@@ -345,7 +345,7 @@ func TestProjectIdAsNamespace(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// this test does not load dependencies and we only need to verify that this functionality works
 		// for a single resource.
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "PubSubTopic"
+		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
 	}
 	testCaseFunc := func(t *testing.T, tstCtx testrunner.TestContext, sysCtx testrunner.SystemContext) {
 		projectId := testgcp.GetDefaultProjectID(t)

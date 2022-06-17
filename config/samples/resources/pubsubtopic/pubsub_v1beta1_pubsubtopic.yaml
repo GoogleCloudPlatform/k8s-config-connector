@@ -20,3 +20,7 @@ metadata:
   name: pubsubtopic-sample
 spec:
   resourceID: pubsubtopic-sample
+  schemaSettings:
+    schemaRef:
+      name: pubsubtopic-dep
+    encoding: JSON

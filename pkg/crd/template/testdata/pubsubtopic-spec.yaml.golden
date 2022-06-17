@@ -7,3 +7,9 @@ messageStoragePolicy:
   allowedPersistenceRegions:
   - string
 resourceID: string
+schemaSettings:
+  encoding: string
+  schemaRef:
+    external: string
+    name: string
+    namespace: string

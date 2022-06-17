@@ -40,7 +40,7 @@ import (
 func TestObtainAndReleaseResourceLease(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// only need to test contention for a single resource since the logic will apply to all resources
-		return fixture.GVK.Kind == "PubSubTopic"
+		return fixture.GVK.Kind == "BigQueryDataset"
 	}
 	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		u := testContext.CreateUnstruct

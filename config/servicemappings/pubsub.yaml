@@ -87,11 +87,6 @@ spec:
         referenceField:
           name: topic
           type: name
-      # Ignore schema_settings until we have support for the PubSubSchema
-      # resource and references from TF-based to DCL-based resources
-      # (b/189392623)
-      ignoredFields:
-        - schema_settings
       resourceReferences:
         - tfField: kms_key_name
           description: |-
@@ -106,6 +101,13 @@ spec:
             version: v1beta1
             group: kms.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: schema_settings.schema
+          key: schemaRef
+          gvk:
+            kind: PubSubSchema
+            version: v1beta1
+            group: pubsub.cnrm.cloud.google.com
+          valueTemplate: "projects/{{project}}/schemas/{{value}}"
       metadataMapping:
         name: name
         labels: labels

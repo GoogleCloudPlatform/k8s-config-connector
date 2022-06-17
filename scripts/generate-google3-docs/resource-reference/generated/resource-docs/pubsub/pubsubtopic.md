@@ -100,6 +100,12 @@
     allowedPersistenceRegions:
     - string
   resourceID: string
+  schemaSettings:
+    encoding: string
+    schemaRef:
+      external: string
+      name: string
+      namespace: string
   ```
 
 <table class="properties responsive">
@@ -216,6 +222,66 @@ and is not a valid configuration.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Settings for validating messages published against a schema.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings.encoding</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings.schemaRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings.schemaRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/schemas/{{value}}`, where {{value}} is the `name` field of a `PubSubSchema` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings.schemaRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schemaSettings.schemaRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -327,6 +393,21 @@ and is not a valid configuration.{% endverbatim %}</p>
     name: pubsubtopic-sample
   spec:
     resourceID: pubsubtopic-sample
+    schemaSettings:
+      schemaRef:
+        name: pubsubtopic-dep
+      encoding: JSON
+  ---
+  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+  kind: PubSubSchema
+  metadata:
+    name: pubsubtopic-dep
+  spec:
+    type: PROTOCOL_BUFFER
+    definition: "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}"
+    # Replace ${PROJECT_ID?} below with your project ID
+    projectRef:
+      external: ${PROJECT_ID?}
   ```
 
 
