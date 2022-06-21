@@ -23,18 +23,18 @@ metadata:
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
-  name: computetargettcpproxies.compute.cnrm.cloud.google.com
+  name: pubsubschemas.pubsub.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: pubsub.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeTargetTCPProxy
-    plural: computetargettcpproxies
+    kind: PubSubSchema
+    plural: pubsubschemas
     shortNames:
-    - gcpcomputetargettcpproxy
-    - gcpcomputetargettcpproxies
-    singular: computetargettcpproxy
+    - gcppubsubschema
+    - gcppubsubschemas
+    singular: pubsubschema
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -71,8 +71,14 @@ spec:
             type: object
           spec:
             properties:
-              backendServiceRef:
-                description: A reference to the ComputeBackendService resource.
+              definition:
+                description: |-
+                  Immutable. The definition of the schema.
+                  This should contain a string representing the full definition of the schema
+                  that is a valid schema definition of the type specified in type.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -89,8 +95,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeBackendService`
-                      resource.'
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -99,26 +104,18 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-              description:
-                description: Immutable. An optional description of this resource.
-                type: string
-              proxyBind:
-                description: |-
-                  Immutable. This field only applies when the forwarding rule that references
-                  this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.
-                type: boolean
-              proxyHeader:
-                description: |-
-                  Specifies the type of proxy header to append before sending data to
-                  the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
-                type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              type:
+                description: 'Immutable. The type of the schema definition Default
+                  value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED",
+                  "PROTOCOL_BUFFER", "AVRO"].'
+                type: string
             required:
-            - backendServiceRef
+            - projectRef
             type: object
           status:
             properties:
@@ -148,9 +145,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              creationTimestamp:
-                description: Creation timestamp in RFC3339 text format.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -158,11 +152,6 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              proxyId:
-                description: The unique identifier for the resource.
-                type: integer
-              selfLink:
-                type: string
             type: object
         required:
         - spec
