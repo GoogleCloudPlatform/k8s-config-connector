@@ -1,0 +1,19 @@
+label: Config Connector PubSubSchema
+markdownDescription: Creates yaml for a PubSubSchema resource
+insertText: |
+  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+  kind: PubSubSchema
+  metadata:
+    name: \${1:pubsubschema-name}
+  spec:
+    type: \${2:PROTOCOL_BUFFER}
+    definition: |-
+      \${3:syntax = "proto3";
+      message Results [
+      string message_request = 1;
+      string message_response = 2;
+      string timestamp_request = 3;
+      string timestamp_response = 4;
+      ]}
+    projectRef:
+      external: \${4:[PROJECT_ID?]}
