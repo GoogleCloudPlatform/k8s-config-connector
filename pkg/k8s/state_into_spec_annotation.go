@@ -69,7 +69,7 @@ func isAcceptedValue(val string) bool {
 // allow the 'state-into-spec' annotation to be set to 'absent'.
 func resourceSupportsStateAbsentInSpec(kind string) bool {
 	switch kind {
-	case "BigQueryDataset", "ContainerCluster":
+	case "BigQueryDataset", "ContainerCluster", "MonitoringAlertPolicy":
 		return true
 	}
 	return false
