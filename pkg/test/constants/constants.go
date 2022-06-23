@@ -33,6 +33,10 @@ var TestNameRegexesToSkip = []string{
 	".*(gkehubfeaturemembership|mcifeature).*",
 	// TODO(b/228525841): re-enable streamingdataflowjobupdateparameters test.
 	".*(streamingdataflowjobupdateparameters).*",
+	//TODO(b/240747818): Remove gameservicesrealm from regex once the resource is removed.
+	// Game Services seem to be changed from public to private due to deprecation and
+	// caused integration test failures.
+	".*(gameservicesrealm).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to

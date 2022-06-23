@@ -98,7 +98,9 @@ var (
 	}
 	periodicCRUDTests = []string{
 		"cloudidentitygroup",
-		"cloudidentitymembership",
+		"addexpirydatecloudidentitymembership",
+		"addrolecloudidentitymembership",
+		"removerolecloudidentitymembership",
 		"computeinterconnectattachment",
 		"computefirewallpolicy",
 		"computefirewallpolicyassociation",
