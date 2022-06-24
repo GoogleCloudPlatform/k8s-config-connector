@@ -33,6 +33,7 @@ type DlpV1beta1Interface interface {
 	RESTClient() rest.Interface
 	DLPDeidentifyTemplatesGetter
 	DLPInspectTemplatesGetter
+	DLPJobTriggersGetter
 	DLPStoredInfoTypesGetter
 }
 
@@ -47,6 +48,10 @@ func (c *DlpV1beta1Client) DLPDeidentifyTemplates(namespace string) DLPDeidentif
 
 func (c *DlpV1beta1Client) DLPInspectTemplates(namespace string) DLPInspectTemplateInterface {
 	return newDLPInspectTemplates(c, namespace)
+}
+
+func (c *DlpV1beta1Client) DLPJobTriggers(namespace string) DLPJobTriggerInterface {
+	return newDLPJobTriggers(c, namespace)
 }
 
 func (c *DlpV1beta1Client) DLPStoredInfoTypes(namespace string) DLPStoredInfoTypeInterface {

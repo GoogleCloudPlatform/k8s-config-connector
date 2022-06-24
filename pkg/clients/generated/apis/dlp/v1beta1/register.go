@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(DLPInspectTemplate{}).Name(),
 	}
 
+	DLPJobTriggerGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DLPJobTrigger{}).Name(),
+	}
+
 	DLPStoredInfoTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

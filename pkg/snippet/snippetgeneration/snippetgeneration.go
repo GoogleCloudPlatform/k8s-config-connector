@@ -68,6 +68,7 @@ var preferredSampleForResource = map[string]string{
 	"dlpstoredinfotype":                 "big-query-field-stored-info-type",
 	"dlpdeidentifytemplate":             "info-type-deidentify-template",
 	"dlpinspecttemplate":                "custom-inspect-template",
+	"dlpjobtrigger":                     "big-query-job-trigger",
 	"dnsrecordset":                      "dns-a-record-set",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",

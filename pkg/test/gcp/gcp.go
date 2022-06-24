@@ -48,6 +48,7 @@ const (
 	InterconnectTestProject                 = "INTERCONNECT_TEST_PROJECT"
 	HighCPUQuotaTestProject                 = "HIGH_CPU_QUOTA_TEST_PROJECT"
 	RecaptchaEnterpriseTestProject          = "RECAPTCHA_ENTERPRISE_TEST_PROJECT"
+	DLPTestBucket                           = "DLP_TEST_BUCKET"
 )
 
 var (
@@ -65,6 +66,7 @@ var (
 	interconnectTestProject                 = os.Getenv(InterconnectTestProject)
 	highCpuQuotaTestProject                 = os.Getenv(HighCPUQuotaTestProject)
 	recaptchaEnterpriseTestProject          = os.Getenv(RecaptchaEnterpriseTestProject)
+	dlpTestBucket                           = os.Getenv(DLPTestBucket)
 )
 
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
@@ -156,8 +158,13 @@ func GetInterconnectTestProject(t *testing.T) string {
 func GetHighCpuQuotaTestProject(t *testing.T) string {
 	return highCpuQuotaTestProject
 }
+
 func GetRecaptchaEnterpriseTestProject(t *testing.T) string {
 	return recaptchaEnterpriseTestProject
+}
+
+func GetDLPTestBucket(t *testing.T) string {
+	return dlpTestBucket
 }
 
 // attempts to return a valid IAM policy binding for the current credential by searching for an email in the cloud credentials file and defaulting to the

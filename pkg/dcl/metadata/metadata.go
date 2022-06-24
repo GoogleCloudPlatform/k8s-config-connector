@@ -291,6 +291,11 @@ var serviceList = []ServiceMetadata{
 				SupportsHierarchicalReferences: true,
 			},
 			{
+				Kind:                           "DLPJobTrigger",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
+			},
+			{
 				Kind:                           "DLPStoredInfoType",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

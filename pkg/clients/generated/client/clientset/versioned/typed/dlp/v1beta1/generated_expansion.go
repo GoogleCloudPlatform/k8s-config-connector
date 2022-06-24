@@ -25,4 +25,6 @@ type DLPDeidentifyTemplateExpansion interface{}
 
 type DLPInspectTemplateExpansion interface{}
 
+type DLPJobTriggerExpansion interface{}
+
 type DLPStoredInfoTypeExpansion interface{}

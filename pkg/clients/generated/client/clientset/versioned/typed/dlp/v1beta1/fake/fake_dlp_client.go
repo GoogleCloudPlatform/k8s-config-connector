@@ -39,6 +39,10 @@ func (c *FakeDlpV1beta1) DLPInspectTemplates(namespace string) v1beta1.DLPInspec
 	return &FakeDLPInspectTemplates{c, namespace}
 }
 
+func (c *FakeDlpV1beta1) DLPJobTriggers(namespace string) v1beta1.DLPJobTriggerInterface {
+	return &FakeDLPJobTriggers{c, namespace}
+}
+
 func (c *FakeDlpV1beta1) DLPStoredInfoTypes(namespace string) v1beta1.DLPStoredInfoTypeInterface {
 	return &FakeDLPStoredInfoTypes{c, namespace}
 }

@@ -676,7 +676,8 @@ spec:
   location: "us-west2"
   largeCustomDictionary:
     outputPath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2"
+      # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+      path: "gs://${DLP_TEST_BUCKET?}/large-custom-dictionary-2"
     bigQueryField:
       table:
         projectRef:
@@ -718,7 +719,8 @@ spec:
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
-    external: aaa-dont-delete-kcc-dlp-testing
+    # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+    external: "${DLP_TEST_BUCKET?}"
 ```
 
 ### Cloud Storage File Set Stored Info Type
@@ -748,9 +750,11 @@ spec:
   location: "us-west2"
   largeCustomDictionary:
     outputPath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-1"
+      # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+      path: "gs://${DLP_TEST_BUCKET?}/large-custom-dictionary-1"
     cloudStorageFileSet:
-      url: "gs://aaa-dont-delete-kcc-dlp-testing/*"
+      # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+      url: "gs://${DLP_TEST_BUCKET?}/*"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
@@ -765,7 +769,8 @@ spec:
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
-    external: aaa-dont-delete-kcc-dlp-testing
+    # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+    external: "${DLP_TEST_BUCKET?}"
 ```
 
 ### Cloud Storage Path Stored Info Type
@@ -795,7 +800,8 @@ spec:
   location: "us-west2"
   dictionary:
     cloudStoragePath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+      # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+      path: "gs://${DLP_TEST_BUCKET?}/dictionary-1"
 ```
 
 ### Regex Stored Info Type

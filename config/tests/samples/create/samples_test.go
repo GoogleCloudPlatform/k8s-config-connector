@@ -480,6 +480,7 @@ func newSubstitutionVariables(t *testing.T) map[string]string {
 	subs["${BILLING_ACCOUNT_ID?}"] = testgcp.GetBillingAccountID(t)
 	subs["${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"] = testgcp.GetTestBillingAccountIDForBillingResources(t)
 	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t)
+	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	return subs
 }
 

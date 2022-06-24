@@ -88,6 +88,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dlp/dlpdeidentifytemplate.md
   - title: "DLPInspectTemplate"
     path: /config-connector/docs/reference/resource-docs/dlp/dlpinspecttemplate.md
+  - title: "DLPJobTrigger"
+    path: /config-connector/docs/reference/resource-docs/dlp/dlpjobtrigger.md
   - title: "DLPStoredInfoType"
     path: /config-connector/docs/reference/resource-docs/dlp/dlpstoredinfotype.md
 - title: "Cloud DNS"

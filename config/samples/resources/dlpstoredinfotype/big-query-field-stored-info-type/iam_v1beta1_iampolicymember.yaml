@@ -25,5 +25,6 @@ spec:
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
-    external: aaa-dont-delete-kcc-dlp-testing
+    # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+    external: "${DLP_TEST_BUCKET?}"
 

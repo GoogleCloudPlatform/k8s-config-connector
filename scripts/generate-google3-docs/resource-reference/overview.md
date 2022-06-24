@@ -358,6 +358,10 @@
 </tr>
 <tr>
   <td><a href="/dlp/docs/">{{dlp_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/dlp/dlpjobtrigger.md">DLPJobTrigger</a></td>
+</tr>
+<tr>
+  <td><a href="/dlp/docs/">{{dlp_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/dlp/dlpstoredinfotype.md">DLPStoredInfoType</a></td>
 </tr>
 <tr>

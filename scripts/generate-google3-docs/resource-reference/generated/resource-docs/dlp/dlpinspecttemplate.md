@@ -1185,7 +1185,8 @@ spec:
         name: "AGE"
       dictionary:
         cloudStoragePath:
-          path: "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+          # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+          path: "gs://${DLP_TEST_BUCKET?}/dictionary-1"
     - infoType:
         name: "HOME_ADDRESS"
       storedType:
@@ -1220,7 +1221,8 @@ spec:
           matchingType: "MATCHING_TYPE_FULL_MATCH"
           dictionary:
             cloudStoragePath:
-              path: "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+              # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+              path: "gs://${DLP_TEST_BUCKET?}/dictionary-1"
       - exclusionRule:
           matchingType: "MATCHING_TYPE_FULL_MATCH"
           regex:
