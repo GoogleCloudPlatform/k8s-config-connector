@@ -1571,7 +1571,7 @@ sigs.k8s.io/controller-tools/pkg/version
 ## explicit; go 1.16
 sigs.k8s.io/json
 sigs.k8s.io/json/internal/golang/encoding/json
-# sigs.k8s.io/kubebuilder-declarative-pattern v0.0.0-20220110041111-fea7e5cc7012
+# sigs.k8s.io/kubebuilder-declarative-pattern v0.11.20220512
 ## explicit; go 1.17
 sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon
 sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1
@@ -1585,7 +1585,6 @@ sigs.k8s.io/kubebuilder-declarative-pattern/pkg/test/mocks
 # sigs.k8s.io/kustomize/api v0.10.1
 ## explicit; go 1.16
 sigs.k8s.io/kustomize/api/builtins
-sigs.k8s.io/kustomize/api/filesys
 sigs.k8s.io/kustomize/api/filters/annotations
 sigs.k8s.io/kustomize/api/filters/fieldspec
 sigs.k8s.io/kustomize/api/filters/filtersutil

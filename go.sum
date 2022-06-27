@@ -1966,8 +1966,8 @@ sigs.k8s.io/controller-tools v0.6.2 h1:+Y8L0UsAugDipGRw8lrkPoAi6XqlQVZuf1DQHME3P
 sigs.k8s.io/controller-tools v0.6.2/go.mod h1:oaeGpjXn6+ZSEIQkUe/+3I40PNiDYp9aeawbt3xTgJ8=
 sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 h1:fD1pz4yfdADVNfFmcP2aBEtudwUQ1AlLnRBALr33v3s=
 sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6/go.mod h1:p4QtZmO4uMYipTQNzagwnNoseA6OxSUutVw05NhYDRs=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.0.0-20220110041111-fea7e5cc7012 h1:Yc8XUTjAY0EvesY4SuWeiLdCdviPinmZl/qFB6NJxSs=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.0.0-20220110041111-fea7e5cc7012/go.mod h1:VZGyJrlEAx8A5271hx7Rbkp5h+0+sj72fvVfkeky7q0=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.11.20220512 h1:yKkpS4NCbwu/+xzyxHG2Q80jXIIcN8in2qOTfYUJrAA=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.11.20220512/go.mod h1:ra/SQbckCVGIGru091P88Ku0dLROUH5rWRLG4Y5BpYA=
 sigs.k8s.io/kustomize/api v0.8.8/go.mod h1:He1zoK0nk43Pc6NlV085xDXDXTNprtcyKZVm3swsdNY=
 sigs.k8s.io/kustomize/api v0.8.11/go.mod h1:a77Ls36JdfCWojpUqR6m60pdGY1AYFix4AH83nJtY1g=
 sigs.k8s.io/kustomize/api v0.10.1 h1:KgU7hfYoscuqag84kxtzKdEC3mKMb99DPI3a0eaV1d0=
