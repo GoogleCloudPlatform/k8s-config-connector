@@ -44,6 +44,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -108,6 +109,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorReconcile
 		declarative.WithOwner(declarative.SourceAsOwner),
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
+		declarative.WithObjectTransform(addon.ApplyPatches),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
