@@ -124,7 +124,7 @@ func ProtoCamelCase(s string) string {
 	return result
 }
 
-// TitleToSnakeCase takes in a snake_case string and returns a TitleCase string.
+// TitleToSnakeCase takes in a TitleCase string and returns a snake_case string.
 func TitleToSnakeCase(s string) string {
 	for k, v := range initialisms {
 		kCap := strings.ToUpper(k[0:1]) + k[1:]

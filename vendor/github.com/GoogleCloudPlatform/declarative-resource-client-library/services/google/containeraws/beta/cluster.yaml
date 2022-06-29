@@ -69,6 +69,7 @@ components:
       title: Cluster
       x-dcl-id: projects/{{project}}/locations/{{location}}/awsClusters/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -192,7 +193,6 @@ components:
               x-dcl-go-name: IamInstanceProfile
               description: The name of the AWS IAM instance pofile to assign to each
                 control plane replica.
-              x-kubernetes-immutable: true
             instancePlacement:
               type: object
               x-dcl-go-name: InstancePlacement
@@ -450,7 +450,6 @@ components:
           x-dcl-go-name: LoggingConfig
           x-dcl-go-type: ClusterLoggingConfig
           description: Logging configuration.
-          x-kubernetes-immutable: true
           x-dcl-server-default: true
           properties:
             componentConfig:
@@ -458,14 +457,12 @@ components:
               x-dcl-go-name: ComponentConfig
               x-dcl-go-type: ClusterLoggingConfigComponentConfig
               description: Configuration of the logging components.
-              x-kubernetes-immutable: true
               x-dcl-server-default: true
               properties:
                 enableComponents:
                   type: array
                   x-dcl-go-name: EnableComponents
                   description: Components of the logging configuration to be enabled.
-                  x-kubernetes-immutable: true
                   x-dcl-server-default: true
                   x-dcl-send-empty: true
                   x-dcl-list-type: list

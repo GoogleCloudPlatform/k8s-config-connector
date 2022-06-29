@@ -1735,105 +1735,105 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Endpoint, actual.Endpoint, dcl.Info{ObjectFunction: compareMembershipEndpointNewStyle, EmptyObject: EmptyMembershipEndpoint, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Endpoint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Endpoint, actual.Endpoint, dcl.DiffInfo{ObjectFunction: compareMembershipEndpointNewStyle, EmptyObject: EmptyMembershipEndpoint, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Endpoint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipStateNewStyle, EmptyObject: EmptyMembershipState, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareMembershipStateNewStyle, EmptyObject: EmptyMembershipState, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeleteTime, actual.DeleteTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeleteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeleteTime, actual.DeleteTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeleteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalId, actual.ExternalId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("ExternalId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalId, actual.ExternalId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("ExternalId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastConnectionTime, actual.LastConnectionTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastConnectionTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastConnectionTime, actual.LastConnectionTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastConnectionTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UniqueId, actual.UniqueId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UniqueId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UniqueId, actual.UniqueId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UniqueId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Authority, actual.Authority, dcl.Info{ObjectFunction: compareMembershipAuthorityNewStyle, EmptyObject: EmptyMembershipAuthority, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Authority")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Authority, actual.Authority, dcl.DiffInfo{ObjectFunction: compareMembershipAuthorityNewStyle, EmptyObject: EmptyMembershipAuthority, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Authority")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InfrastructureType, actual.InfrastructureType, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("InfrastructureType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfrastructureType, actual.InfrastructureType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("InfrastructureType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1862,21 +1862,21 @@ func compareMembershipEndpointNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.GkeCluster, actual.GkeCluster, dcl.Info{ObjectFunction: compareMembershipEndpointGkeClusterNewStyle, EmptyObject: EmptyMembershipEndpointGkeCluster, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeCluster")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GkeCluster, actual.GkeCluster, dcl.DiffInfo{ObjectFunction: compareMembershipEndpointGkeClusterNewStyle, EmptyObject: EmptyMembershipEndpointGkeCluster, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeCluster")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KubernetesMetadata, actual.KubernetesMetadata, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesMetadataNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesMetadata, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesMetadata")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KubernetesMetadata, actual.KubernetesMetadata, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesMetadataNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesMetadata, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesMetadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KubernetesResource, actual.KubernetesResource, dcl.Info{ObjectFunction: compareMembershipEndpointKubernetesResourceNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResource, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesResource")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KubernetesResource, actual.KubernetesResource, dcl.DiffInfo{ObjectFunction: compareMembershipEndpointKubernetesResourceNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResource, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesResource")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1905,7 +1905,7 @@ func compareMembershipEndpointGkeClusterNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceLink, actual.ResourceLink, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceLink, actual.ResourceLink, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1934,42 +1934,42 @@ func compareMembershipEndpointKubernetesMetadataNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KubernetesApiServerVersion, actual.KubernetesApiServerVersion, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesApiServerVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KubernetesApiServerVersion, actual.KubernetesApiServerVersion, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesApiServerVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NodeProviderId, actual.NodeProviderId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodeProviderId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NodeProviderId, actual.NodeProviderId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodeProviderId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NodeCount, actual.NodeCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodeCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NodeCount, actual.NodeCount, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodeCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VcpuCount, actual.VcpuCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VcpuCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VcpuCount, actual.VcpuCount, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VcpuCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MemoryMb, actual.MemoryMb, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryMb")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemoryMb, actual.MemoryMb, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryMb")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1998,28 +1998,28 @@ func compareMembershipEndpointKubernetesResourceNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MembershipCrManifest, actual.MembershipCrManifest, dcl.Info{Ignore: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MembershipCrManifest")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MembershipCrManifest, actual.MembershipCrManifest, dcl.DiffInfo{Ignore: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MembershipCrManifest")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MembershipResources, actual.MembershipResources, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesResourceMembershipResourcesNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceMembershipResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MembershipResources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MembershipResources, actual.MembershipResources, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesResourceMembershipResourcesNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceMembershipResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MembershipResources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConnectResources, actual.ConnectResources, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesResourceConnectResourcesNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceConnectResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectResources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConnectResources, actual.ConnectResources, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareMembershipEndpointKubernetesResourceConnectResourcesNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceConnectResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectResources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceOptions, actual.ResourceOptions, dcl.Info{ObjectFunction: compareMembershipEndpointKubernetesResourceResourceOptionsNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceResourceOptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceOptions, actual.ResourceOptions, dcl.DiffInfo{ObjectFunction: compareMembershipEndpointKubernetesResourceResourceOptionsNewStyle, EmptyObject: EmptyMembershipEndpointKubernetesResourceResourceOptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2048,14 +2048,14 @@ func compareMembershipEndpointKubernetesResourceMembershipResourcesNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Manifest, actual.Manifest, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Manifest")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Manifest, actual.Manifest, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Manifest")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClusterScoped, actual.ClusterScoped, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterScoped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClusterScoped, actual.ClusterScoped, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterScoped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2084,14 +2084,14 @@ func compareMembershipEndpointKubernetesResourceConnectResourcesNewStyle(d, a in
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Manifest, actual.Manifest, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Manifest")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Manifest, actual.Manifest, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Manifest")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClusterScoped, actual.ClusterScoped, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterScoped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClusterScoped, actual.ClusterScoped, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterScoped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2120,14 +2120,14 @@ func compareMembershipEndpointKubernetesResourceResourceOptionsNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ConnectVersion, actual.ConnectVersion, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConnectVersion, actual.ConnectVersion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.V1Beta1Crd, actual.V1Beta1Crd, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("V1beta1Crd")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.V1Beta1Crd, actual.V1Beta1Crd, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("V1beta1Crd")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2156,7 +2156,7 @@ func compareMembershipStateNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2185,21 +2185,21 @@ func compareMembershipAuthorityNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Issuer, actual.Issuer, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Issuer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Issuer, actual.Issuer, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Issuer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WorkloadIdentityPool, actual.WorkloadIdentityPool, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkloadIdentityPool")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WorkloadIdentityPool, actual.WorkloadIdentityPool, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkloadIdentityPool")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IdentityProvider, actual.IdentityProvider, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdentityProvider")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IdentityProvider, actual.IdentityProvider, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdentityProvider")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

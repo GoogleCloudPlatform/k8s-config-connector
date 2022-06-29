@@ -19,8 +19,8 @@ import (
 	"reflect"
 )
 
-// Info is a struct that contains all information about the diff that's about to occur.
-type Info struct {
+// DiffInfo is a struct that contains all information about the diff that's about to occur.
+type DiffInfo struct {
 	// Ignore + OutputOnly cause the diff checker to always return no-diff.
 	Ignore          bool
 	OutputOnly      bool
@@ -101,7 +101,7 @@ func stringValue(i interface{}) string {
 }
 
 // Diff takes in two interfaces and diffs them according to Info.
-func Diff(desired, actual interface{}, info Info, fn FieldName) ([]*FieldDiff, error) {
+func Diff(desired, actual interface{}, info DiffInfo, fn FieldName) ([]*FieldDiff, error) {
 	var diffs []*FieldDiff
 	// All Output-only fields should not be diffed.
 	if info.OutputOnly || info.Ignore {
@@ -316,7 +316,7 @@ func Diff(desired, actual interface{}, info Info, fn FieldName) ([]*FieldDiff, e
 	return diffs, nil
 }
 
-func arrayDiff(desired, actual []interface{}, info Info, fn FieldName) ([]*FieldDiff, error) {
+func arrayDiff(desired, actual []interface{}, info DiffInfo, fn FieldName) ([]*FieldDiff, error) {
 	var diffs []*FieldDiff
 
 	// Nothing to diff against.
@@ -342,7 +342,7 @@ func arrayDiff(desired, actual []interface{}, info Info, fn FieldName) ([]*Field
 	return diffs, nil
 }
 
-func setDiff(desired, actual []interface{}, info Info, fn FieldName) ([]*FieldDiff, error) {
+func setDiff(desired, actual []interface{}, info DiffInfo, fn FieldName) ([]*FieldDiff, error) {
 	var diffs []*FieldDiff
 
 	// Everything should be added.
@@ -526,7 +526,7 @@ func slice(slice interface{}) ([]interface{}, error) {
 	return ret, nil
 }
 
-func addOperationToDiffs(fds []*FieldDiff, i Info) {
+func addOperationToDiffs(fds []*FieldDiff, i DiffInfo) {
 	for _, fd := range fds {
 		// Do not overwrite update operations on nested fields with parent field operations.
 		if len(fd.ResultingOperation) == 0 {
@@ -535,7 +535,7 @@ func addOperationToDiffs(fds []*FieldDiff, i Info) {
 	}
 }
 
-func mapCompare(d, a map[string]interface{}, ignorePrefixes []string, info Info, fn FieldName) ([]*FieldDiff, error) {
+func mapCompare(d, a map[string]interface{}, ignorePrefixes []string, info DiffInfo, fn FieldName) ([]*FieldDiff, error) {
 	var diffs []*FieldDiff
 	for k, v := range d {
 		if isIgnored(k, ignorePrefixes) {

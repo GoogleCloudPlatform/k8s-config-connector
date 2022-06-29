@@ -637,8 +637,9 @@ func (c *Client) GetBucket(ctx context.Context, r *Bucket) (*Bucket, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -789,7 +790,7 @@ func applyBucketHelper(c *Client, ctx context.Context, rawDesired *Bucket, opts 
 func applyBucketDiff(c *Client, ctx context.Context, desired *Bucket, rawDesired *Bucket, ops []bucketApiOperation, opts ...dcl.ApplyOption) (*Bucket, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetBucket(ctx, desired.urlNormalized())
+	rawNew, err := c.GetBucket(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

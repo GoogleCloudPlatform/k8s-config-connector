@@ -1015,63 +1015,63 @@ func diffInstance(c *Client, desired, actual *Instance, opts ...dcl.ApplyOption)
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BundlesConfig, actual.BundlesConfig, dcl.Info{ObjectFunction: compareInstanceBundlesConfigNewStyle, EmptyObject: EmptyInstanceBundlesConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BundlesConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BundlesConfig, actual.BundlesConfig, dcl.DiffInfo{ObjectFunction: compareInstanceBundlesConfigNewStyle, EmptyObject: EmptyInstanceBundlesConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BundlesConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UsePrivateEndpoint, actual.UsePrivateEndpoint, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UsePrivateEndpoint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UsePrivateEndpoint, actual.UsePrivateEndpoint, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UsePrivateEndpoint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GkeResourceLink, actual.GkeResourceLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeResourceLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GkeResourceLink, actual.GkeResourceLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeResourceLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManagementConfig, actual.ManagementConfig, dcl.Info{ObjectFunction: compareInstanceManagementConfigNewStyle, EmptyObject: EmptyInstanceManagementConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagementConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManagementConfig, actual.ManagementConfig, dcl.DiffInfo{ObjectFunction: compareInstanceManagementConfigNewStyle, EmptyObject: EmptyInstanceManagementConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagementConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1100,7 +1100,7 @@ func compareInstanceBundlesConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ConfigControllerConfig, actual.ConfigControllerConfig, dcl.Info{ObjectFunction: compareInstanceBundlesConfigConfigControllerConfigNewStyle, EmptyObject: EmptyInstanceBundlesConfigConfigControllerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigControllerConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConfigControllerConfig, actual.ConfigControllerConfig, dcl.DiffInfo{ObjectFunction: compareInstanceBundlesConfigConfigControllerConfigNewStyle, EmptyObject: EmptyInstanceBundlesConfigConfigControllerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigControllerConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1129,7 +1129,7 @@ func compareInstanceBundlesConfigConfigControllerConfigNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1158,7 +1158,7 @@ func compareInstanceManagementConfigNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.StandardManagementConfig, actual.StandardManagementConfig, dcl.Info{ObjectFunction: compareInstanceManagementConfigStandardManagementConfigNewStyle, EmptyObject: EmptyInstanceManagementConfigStandardManagementConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StandardManagementConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StandardManagementConfig, actual.StandardManagementConfig, dcl.DiffInfo{ObjectFunction: compareInstanceManagementConfigStandardManagementConfigNewStyle, EmptyObject: EmptyInstanceManagementConfigStandardManagementConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StandardManagementConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1187,49 +1187,49 @@ func compareInstanceManagementConfigStandardManagementConfigNewStyle(d, a interf
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MasterIPv4CidrBlock, actual.MasterIPv4CidrBlock, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MasterIpv4CidrBlock")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MasterIPv4CidrBlock, actual.MasterIPv4CidrBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MasterIpv4CidrBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManBlock, actual.ManBlock, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManBlock")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManBlock, actual.ManBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClusterCidrBlock, actual.ClusterCidrBlock, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterCidrBlock")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClusterCidrBlock, actual.ClusterCidrBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterCidrBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServicesCidrBlock, actual.ServicesCidrBlock, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesCidrBlock")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServicesCidrBlock, actual.ServicesCidrBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesCidrBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClusterNamedRange, actual.ClusterNamedRange, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterNamedRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClusterNamedRange, actual.ClusterNamedRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterNamedRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServicesNamedRange, actual.ServicesNamedRange, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesNamedRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServicesNamedRange, actual.ServicesNamedRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesNamedRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

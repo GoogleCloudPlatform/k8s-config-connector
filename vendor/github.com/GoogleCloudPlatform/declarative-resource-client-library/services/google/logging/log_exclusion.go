@@ -148,8 +148,9 @@ func (c *Client) GetLogExclusion(ctx context.Context, r *LogExclusion) (*LogExcl
 	if err != nil {
 		return nil, err
 	}
-	result.Parent = r.Parent
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Parent = nr.Parent
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -300,7 +301,7 @@ func applyLogExclusionHelper(c *Client, ctx context.Context, rawDesired *LogExcl
 func applyLogExclusionDiff(c *Client, ctx context.Context, desired *LogExclusion, rawDesired *LogExclusion, ops []logExclusionApiOperation, opts ...dcl.ApplyOption) (*LogExclusion, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetLogExclusion(ctx, desired.urlNormalized())
+	rawNew, err := c.GetLogExclusion(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

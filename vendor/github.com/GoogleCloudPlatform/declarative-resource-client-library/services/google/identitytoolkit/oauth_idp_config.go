@@ -204,8 +204,9 @@ func (c *Client) GetOAuthIdpConfig(ctx context.Context, r *OAuthIdpConfig) (*OAu
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -356,7 +357,7 @@ func applyOAuthIdpConfigHelper(c *Client, ctx context.Context, rawDesired *OAuth
 func applyOAuthIdpConfigDiff(c *Client, ctx context.Context, desired *OAuthIdpConfig, rawDesired *OAuthIdpConfig, ops []oAuthIdpConfigApiOperation, opts ...dcl.ApplyOption) (*OAuthIdpConfig, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetOAuthIdpConfig(ctx, desired.urlNormalized())
+	rawNew, err := c.GetOAuthIdpConfig(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -92,7 +92,9 @@ func newUpdateReleaseUpdateReleaseRequest(ctx context.Context, f *Release, c *Cl
 	res := f
 	_ = res
 
-	if v := f.RulesetName; !dcl.IsEmptyValueIndirect(v) {
+	if v, err := dcl.DeriveField("projects/%s/rulesets/%s", f.RulesetName, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.RulesetName)); err != nil {
+		return nil, fmt.Errorf("error expanding RulesetName into rulesetName: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["rulesetName"] = v
 	}
 	req["name"] = fmt.Sprintf("projects/%s/releases/%s", *f.Project, *f.Name)
@@ -390,8 +392,7 @@ func canonicalizeReleaseDesiredState(rawDesired, rawInitial *Release, opts ...dc
 	} else {
 		canonicalDesired.Name = rawDesired.Name
 	}
-	if dcl.IsZeroValue(rawDesired.RulesetName) || (dcl.IsEmptyValueIndirect(rawDesired.RulesetName) && dcl.IsEmptyValueIndirect(rawInitial.RulesetName)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+	if dcl.PartialSelfLinkToSelfLink(rawDesired.RulesetName, rawInitial.RulesetName) {
 		canonicalDesired.RulesetName = rawInitial.RulesetName
 	} else {
 		canonicalDesired.RulesetName = rawDesired.RulesetName
@@ -418,6 +419,9 @@ func canonicalizeReleaseNewState(c *Client, rawNew, rawDesired *Release) (*Relea
 	if dcl.IsNotReturnedByServer(rawNew.RulesetName) && dcl.IsNotReturnedByServer(rawDesired.RulesetName) {
 		rawNew.RulesetName = rawDesired.RulesetName
 	} else {
+		if dcl.PartialSelfLinkToSelfLink(rawDesired.RulesetName, rawNew.RulesetName) {
+			rawNew.RulesetName = rawDesired.RulesetName
+		}
 	}
 
 	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
@@ -461,42 +465,42 @@ func diffRelease(c *Client, desired, actual *Release, opts ...dcl.ApplyOption) (
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RulesetName, actual.RulesetName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateReleaseUpdateReleaseOperation")}, fn.AddNest("RulesetName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RulesetName, actual.RulesetName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateReleaseUpdateReleaseOperation")}, fn.AddNest("RulesetName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -571,7 +575,9 @@ func expandRelease(c *Client, f *Release) (map[string]interface{}, error) {
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v
 	}
-	if v := f.RulesetName; dcl.ValueShouldBeSent(v) {
+	if v, err := dcl.DeriveField("projects/%s/rulesets/%s", f.RulesetName, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.RulesetName)); err != nil {
+		return nil, fmt.Errorf("error expanding RulesetName into rulesetName: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["rulesetName"] = v
 	}
 	if v, err := dcl.EmptyValue(); err != nil {

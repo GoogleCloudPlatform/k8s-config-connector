@@ -1031,21 +1031,21 @@ func diffPolicy(c *Client, desired, actual *Policy, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{CustomDiff: canonicalizePolicyName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{CustomDiff: canonicalizePolicyName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Spec, actual.Spec, dcl.Info{ObjectFunction: comparePolicySpecNewStyle, EmptyObject: EmptyPolicySpec, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Spec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Spec, actual.Spec, dcl.DiffInfo{ObjectFunction: comparePolicySpecNewStyle, EmptyObject: EmptyPolicySpec, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Spec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1074,35 +1074,35 @@ func comparePolicySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: comparePolicySpecRulesNewStyle, EmptyObject: EmptyPolicySpecRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: comparePolicySpecRulesNewStyle, EmptyObject: EmptyPolicySpecRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InheritFromParent, actual.InheritFromParent, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("InheritFromParent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InheritFromParent, actual.InheritFromParent, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("InheritFromParent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Reset, actual.Reset, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Reset")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Reset, actual.Reset, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Reset")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1131,35 +1131,35 @@ func comparePolicySpecRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Values, actual.Values, dcl.Info{ObjectFunction: comparePolicySpecRulesValuesNewStyle, EmptyObject: EmptyPolicySpecRulesValues, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Values")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Values, actual.Values, dcl.DiffInfo{ObjectFunction: comparePolicySpecRulesValuesNewStyle, EmptyObject: EmptyPolicySpecRulesValues, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Values")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowAll, actual.AllowAll, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AllowAll")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowAll, actual.AllowAll, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AllowAll")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DenyAll, actual.DenyAll, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DenyAll")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DenyAll, actual.DenyAll, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DenyAll")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Enforce, actual.Enforce, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Enforce")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enforce, actual.Enforce, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Enforce")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.Info{ObjectFunction: comparePolicySpecRulesConditionNewStyle, EmptyObject: EmptyPolicySpecRulesCondition, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.DiffInfo{ObjectFunction: comparePolicySpecRulesConditionNewStyle, EmptyObject: EmptyPolicySpecRulesCondition, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1188,14 +1188,14 @@ func comparePolicySpecRulesValuesNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedValues, actual.AllowedValues, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AllowedValues")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedValues, actual.AllowedValues, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AllowedValues")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeniedValues, actual.DeniedValues, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DeniedValues")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeniedValues, actual.DeniedValues, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DeniedValues")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1224,28 +1224,28 @@ func comparePolicySpecRulesConditionNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Expression, actual.Expression, dcl.Info{CustomDiff: canonicalizePolicyRulesConditionExpression, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Expression")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Expression, actual.Expression, dcl.DiffInfo{CustomDiff: canonicalizePolicyRulesConditionExpression, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Expression")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

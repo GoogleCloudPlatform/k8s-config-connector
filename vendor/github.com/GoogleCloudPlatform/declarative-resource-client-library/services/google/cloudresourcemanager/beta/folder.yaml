@@ -54,6 +54,7 @@ components:
     Folder:
       title: Folder
       x-dcl-id: folders/{{name}}
+      x-dcl-has-create: true
       x-dcl-has-iam: true
       type: object
       required:

@@ -61,6 +61,18 @@ type InstancegroupmanagerDistributionPolicy struct {
 	Zones []InstancegroupmanagerZones `json:"zones,omitempty"`
 }
 
+type InstancegroupmanagerExternalIps struct {
+	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Possible values: NEVER, ON_PERMANENT_INSTANCE_DELETION */
+	// +optional
+	AutoDelete *string `json:"autoDelete,omitempty"`
+}
+
+type InstancegroupmanagerInternalIps struct {
+	/* These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Possible values: NEVER, ON_PERMANENT_INSTANCE_DELETION */
+	// +optional
+	AutoDelete *string `json:"autoDelete,omitempty"`
+}
+
 type InstancegroupmanagerMaxSurge struct {
 	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
@@ -95,6 +107,14 @@ type InstancegroupmanagerPreservedState struct {
 	/* Disks created on the instances that will be preserved on instance delete, update, etc. This map is keyed with the device names of the disks. */
 	// +optional
 	Disks map[string]InstancegroupmanagerDisks `json:"disks,omitempty"`
+
+	/* External network IPs assigned to the instances that will be preserved on instance delete, update, etc. This map is keyed with the network interface name. */
+	// +optional
+	ExternalIps map[string]InstancegroupmanagerExternalIps `json:"externalIps,omitempty"`
+
+	/* Internal network IPs assigned to the instances that will be preserved on instance delete, update, etc. This map is keyed with the network interface name. */
+	// +optional
+	InternalIps map[string]InstancegroupmanagerInternalIps `json:"internalIps,omitempty"`
 }
 
 type InstancegroupmanagerStatefulPolicy struct {

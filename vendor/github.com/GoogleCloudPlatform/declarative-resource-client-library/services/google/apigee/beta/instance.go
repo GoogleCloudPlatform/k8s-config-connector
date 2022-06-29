@@ -212,8 +212,9 @@ func (c *Client) GetInstance(ctx context.Context, r *Instance) (*Instance, error
 	if err != nil {
 		return nil, err
 	}
-	result.ApigeeOrganization = r.ApigeeOrganization
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.ApigeeOrganization = nr.ApigeeOrganization
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -364,7 +365,7 @@ func applyInstanceHelper(c *Client, ctx context.Context, rawDesired *Instance, o
 func applyInstanceDiff(c *Client, ctx context.Context, desired *Instance, rawDesired *Instance, ops []instanceApiOperation, opts ...dcl.ApplyOption) (*Instance, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetInstance(ctx, desired.urlNormalized())
+	rawNew, err := c.GetInstance(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

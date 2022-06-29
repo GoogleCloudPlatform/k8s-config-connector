@@ -1879,8 +1879,9 @@ func (c *Client) GetPatchDeployment(ctx context.Context, r *PatchDeployment) (*P
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -2031,7 +2032,7 @@ func applyPatchDeploymentHelper(c *Client, ctx context.Context, rawDesired *Patc
 func applyPatchDeploymentDiff(c *Client, ctx context.Context, desired *PatchDeployment, rawDesired *PatchDeployment, ops []patchDeploymentApiOperation, opts ...dcl.ApplyOption) (*PatchDeployment, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetPatchDeployment(ctx, desired.urlNormalized())
+	rawNew, err := c.GetPatchDeployment(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

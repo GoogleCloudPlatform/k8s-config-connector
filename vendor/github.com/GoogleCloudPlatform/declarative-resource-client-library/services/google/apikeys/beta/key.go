@@ -596,7 +596,7 @@ func applyKeyHelper(c *Client, ctx context.Context, rawDesired *Key, opts ...dcl
 func applyKeyDiff(c *Client, ctx context.Context, desired *Key, rawDesired *Key, ops []keyApiOperation, opts ...dcl.ApplyOption) (*Key, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetKey(ctx, desired.urlNormalized())
+	rawNew, err := c.GetKey(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -581,8 +581,9 @@ func (c *Client) GetUptimeCheckConfig(ctx context.Context, r *UptimeCheckConfig)
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 	if dcl.IsZeroValue(result.Period) {
 		result.Period = dcl.String("60s")
 	}
@@ -736,7 +737,7 @@ func applyUptimeCheckConfigHelper(c *Client, ctx context.Context, rawDesired *Up
 func applyUptimeCheckConfigDiff(c *Client, ctx context.Context, desired *UptimeCheckConfig, rawDesired *UptimeCheckConfig, ops []uptimeCheckConfigApiOperation, opts ...dcl.ApplyOption) (*UptimeCheckConfig, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetUptimeCheckConfig(ctx, desired.urlNormalized())
+	rawNew, err := c.GetUptimeCheckConfig(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

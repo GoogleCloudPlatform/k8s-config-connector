@@ -249,8 +249,9 @@ func (c *Client) GetRoute(ctx context.Context, r *Route) (*Route, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 	if dcl.IsZeroValue(result.Priority) {
 		result.Priority = dcl.Int64(1000)
 	}
@@ -404,7 +405,7 @@ func applyRouteHelper(c *Client, ctx context.Context, rawDesired *Route, opts ..
 func applyRouteDiff(c *Client, ctx context.Context, desired *Route, rawDesired *Route, ops []routeApiOperation, opts ...dcl.ApplyOption) (*Route, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetRoute(ctx, desired.urlNormalized())
+	rawNew, err := c.GetRoute(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -399,8 +399,9 @@ func (c *Client) GetMetricDescriptor(ctx context.Context, r *MetricDescriptor) (
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Type = r.Type
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Type = nr.Type
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -551,7 +552,7 @@ func applyMetricDescriptorHelper(c *Client, ctx context.Context, rawDesired *Met
 func applyMetricDescriptorDiff(c *Client, ctx context.Context, desired *MetricDescriptor, rawDesired *MetricDescriptor, ops []metricDescriptorApiOperation, opts ...dcl.ApplyOption) (*MetricDescriptor, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetMetricDescriptor(ctx, desired.urlNormalized())
+	rawNew, err := c.GetMetricDescriptor(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

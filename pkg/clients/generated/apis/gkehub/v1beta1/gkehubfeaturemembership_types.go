@@ -46,6 +46,10 @@ type FeaturemembershipConfigSync struct {
 	// +optional
 	Git *FeaturemembershipGit `json:"git,omitempty"`
 
+	/* Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts. */
+	// +optional
+	PreventDrift *bool `json:"preventDrift,omitempty"`
+
 	/* Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode. */
 	// +optional
 	SourceFormat *string `json:"sourceFormat,omitempty"`

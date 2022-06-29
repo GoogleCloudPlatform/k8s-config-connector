@@ -577,8 +577,9 @@ func (c *Client) GetMembership(ctx context.Context, r *Membership) (*Membership,
 	if err != nil {
 		return nil, err
 	}
-	result.Group = r.Group
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Group = nr.Group
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -729,7 +730,7 @@ func applyMembershipHelper(c *Client, ctx context.Context, rawDesired *Membershi
 func applyMembershipDiff(c *Client, ctx context.Context, desired *Membership, rawDesired *Membership, ops []membershipApiOperation, opts ...dcl.ApplyOption) (*Membership, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetMembership(ctx, desired.urlNormalized())
+	rawNew, err := c.GetMembership(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

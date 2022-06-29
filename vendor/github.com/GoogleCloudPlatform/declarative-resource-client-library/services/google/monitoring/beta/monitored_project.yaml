@@ -67,6 +67,7 @@ components:
       x-dcl-id: locations/global/metricsScopes/{{metrics_scope}}/projects/{{name}}
       x-dcl-locations:
       - global
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

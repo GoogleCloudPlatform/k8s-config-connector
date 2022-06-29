@@ -1795,7 +1795,8 @@ func (c *Client) GetConfig(ctx context.Context, r *Config) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
+	nr := r.urlNormalized()
+	result.Project = nr.Project
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1895,7 +1896,7 @@ func applyConfigHelper(c *Client, ctx context.Context, rawDesired *Config, opts 
 func applyConfigDiff(c *Client, ctx context.Context, desired *Config, rawDesired *Config, ops []configApiOperation, opts ...dcl.ApplyOption) (*Config, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetConfig(ctx, desired.urlNormalized())
+	rawNew, err := c.GetConfig(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

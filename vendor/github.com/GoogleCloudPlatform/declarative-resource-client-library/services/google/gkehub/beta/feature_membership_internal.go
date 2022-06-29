@@ -471,6 +471,11 @@ func canonicalizeFeatureMembershipConfigmanagementConfigSync(des, initial *Featu
 	} else {
 		cDes.SourceFormat = des.SourceFormat
 	}
+	if dcl.BoolCanonicalize(des.PreventDrift, initial.PreventDrift) || dcl.IsZeroValue(des.PreventDrift) {
+		cDes.PreventDrift = initial.PreventDrift
+	} else {
+		cDes.PreventDrift = des.PreventDrift
+	}
 
 	return cDes
 }
@@ -520,6 +525,9 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSync(c *Client, des, 
 	nw.Git = canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGit(c, des.Git, nw.Git)
 	if dcl.StringCanonicalize(des.SourceFormat, nw.SourceFormat) {
 		nw.SourceFormat = des.SourceFormat
+	}
+	if dcl.BoolCanonicalize(des.PreventDrift, nw.PreventDrift) {
+		nw.PreventDrift = des.PreventDrift
 	}
 
 	return nw
@@ -1156,35 +1164,35 @@ func diffFeatureMembership(c *Client, desired, actual *FeatureMembership, opts .
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Configmanagement, actual.Configmanagement, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagement, OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Configmanagement")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Configmanagement, actual.Configmanagement, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagement, OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Configmanagement")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Feature, actual.Feature, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Feature")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Feature, actual.Feature, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Feature")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Membership, actual.Membership, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Membership")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Membership, actual.Membership, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Membership")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1213,35 +1221,35 @@ func compareFeatureMembershipConfigmanagementNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ConfigSync, actual.ConfigSync, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementConfigSyncNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementConfigSync, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigSync")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConfigSync, actual.ConfigSync, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementConfigSyncNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementConfigSync, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigSync")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PolicyController, actual.PolicyController, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementPolicyControllerNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementPolicyController, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyController")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PolicyController, actual.PolicyController, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementPolicyControllerNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementPolicyController, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyController")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Binauthz, actual.Binauthz, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementBinauthzNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementBinauthz, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Binauthz")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Binauthz, actual.Binauthz, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementBinauthzNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementBinauthz, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Binauthz")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HierarchyController, actual.HierarchyController, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementHierarchyControllerNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementHierarchyController, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HierarchyController")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HierarchyController, actual.HierarchyController, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementHierarchyControllerNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementHierarchyController, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HierarchyController")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1270,14 +1278,21 @@ func compareFeatureMembershipConfigmanagementConfigSyncNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Git, actual.Git, dcl.Info{ObjectFunction: compareFeatureMembershipConfigmanagementConfigSyncGitNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementConfigSyncGit, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Git")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Git, actual.Git, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementConfigSyncGitNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementConfigSyncGit, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Git")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SourceFormat, actual.SourceFormat, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceFormat")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SourceFormat, actual.SourceFormat, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceFormat")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PreventDrift, actual.PreventDrift, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PreventDrift")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1306,56 +1321,56 @@ func compareFeatureMembershipConfigmanagementConfigSyncGitNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SyncRepo, actual.SyncRepo, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncRepo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SyncRepo, actual.SyncRepo, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncRepo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SyncBranch, actual.SyncBranch, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncBranch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SyncBranch, actual.SyncBranch, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncBranch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PolicyDir, actual.PolicyDir, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyDir")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PolicyDir, actual.PolicyDir, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyDir")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SyncWaitSecs, actual.SyncWaitSecs, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncWaitSecs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SyncWaitSecs, actual.SyncWaitSecs, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncWaitSecs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SyncRev, actual.SyncRev, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncRev")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SyncRev, actual.SyncRev, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SyncRev")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecretType, actual.SecretType, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecretType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecretType, actual.SecretType, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecretType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HttpsProxy, actual.HttpsProxy, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HttpsProxy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpsProxy, actual.HttpsProxy, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HttpsProxy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcpServiceAccountEmail, actual.GcpServiceAccountEmail, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GcpServiceAccountEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcpServiceAccountEmail, actual.GcpServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GcpServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1384,42 +1399,42 @@ func compareFeatureMembershipConfigmanagementPolicyControllerNewStyle(d, a inter
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExemptableNamespaces, actual.ExemptableNamespaces, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExemptableNamespaces")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExemptableNamespaces, actual.ExemptableNamespaces, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExemptableNamespaces")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReferentialRulesEnabled, actual.ReferentialRulesEnabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReferentialRulesEnabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReferentialRulesEnabled, actual.ReferentialRulesEnabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReferentialRulesEnabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LogDeniesEnabled, actual.LogDeniesEnabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LogDeniesEnabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogDeniesEnabled, actual.LogDeniesEnabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LogDeniesEnabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TemplateLibraryInstalled, actual.TemplateLibraryInstalled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TemplateLibraryInstalled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TemplateLibraryInstalled, actual.TemplateLibraryInstalled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TemplateLibraryInstalled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuditIntervalSeconds, actual.AuditIntervalSeconds, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AuditIntervalSeconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuditIntervalSeconds, actual.AuditIntervalSeconds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AuditIntervalSeconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1448,7 +1463,7 @@ func compareFeatureMembershipConfigmanagementBinauthzNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1477,21 +1492,21 @@ func compareFeatureMembershipConfigmanagementHierarchyControllerNewStyle(d, a in
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnablePodTreeLabels, actual.EnablePodTreeLabels, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnablePodTreeLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnablePodTreeLabels, actual.EnablePodTreeLabels, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnablePodTreeLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableHierarchicalResourceQuota, actual.EnableHierarchicalResourceQuota, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableHierarchicalResourceQuota")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableHierarchicalResourceQuota, actual.EnableHierarchicalResourceQuota, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableHierarchicalResourceQuota")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1847,6 +1862,9 @@ func expandFeatureMembershipConfigmanagementConfigSync(c *Client, f *FeatureMemb
 	if v := f.SourceFormat; !dcl.IsEmptyValueIndirect(v) {
 		m["sourceFormat"] = v
 	}
+	if v := f.PreventDrift; !dcl.IsEmptyValueIndirect(v) {
+		m["preventDrift"] = v
+	}
 
 	return m, nil
 }
@@ -1866,6 +1884,7 @@ func flattenFeatureMembershipConfigmanagementConfigSync(c *Client, i interface{}
 	}
 	r.Git = flattenFeatureMembershipConfigmanagementConfigSyncGit(c, m["git"], res)
 	r.SourceFormat = dcl.FlattenString(m["sourceFormat"])
+	r.PreventDrift = dcl.FlattenBool(m["preventDrift"])
 
 	return r
 }

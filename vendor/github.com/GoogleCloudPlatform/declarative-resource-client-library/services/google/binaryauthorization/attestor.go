@@ -329,8 +329,9 @@ func (c *Client) GetAttestor(ctx context.Context, r *Attestor) (*Attestor, error
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -481,7 +482,7 @@ func applyAttestorHelper(c *Client, ctx context.Context, rawDesired *Attestor, o
 func applyAttestorDiff(c *Client, ctx context.Context, desired *Attestor, rawDesired *Attestor, ops []attestorApiOperation, opts ...dcl.ApplyOption) (*Attestor, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetAttestor(ctx, desired.urlNormalized())
+	rawNew, err := c.GetAttestor(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

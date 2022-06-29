@@ -173,8 +173,9 @@ func (c *Client) GetEnvironmentGroup(ctx context.Context, r *EnvironmentGroup) (
 	if err != nil {
 		return nil, err
 	}
-	result.ApigeeOrganization = r.ApigeeOrganization
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.ApigeeOrganization = nr.ApigeeOrganization
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -325,7 +326,7 @@ func applyEnvironmentGroupHelper(c *Client, ctx context.Context, rawDesired *Env
 func applyEnvironmentGroupDiff(c *Client, ctx context.Context, desired *EnvironmentGroup, rawDesired *EnvironmentGroup, ops []environmentGroupApiOperation, opts ...dcl.ApplyOption) (*EnvironmentGroup, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetEnvironmentGroup(ctx, desired.urlNormalized())
+	rawNew, err := c.GetEnvironmentGroup(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -1827,56 +1827,56 @@ func diffBudget(c *Client, desired, actual *Budget, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BudgetFilter, actual.BudgetFilter, dcl.Info{ObjectFunction: compareBudgetBudgetFilterNewStyle, EmptyObject: EmptyBudgetBudgetFilter, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BudgetFilter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BudgetFilter, actual.BudgetFilter, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterNewStyle, EmptyObject: EmptyBudgetBudgetFilter, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BudgetFilter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Amount, actual.Amount, dcl.Info{ObjectFunction: compareBudgetAmountNewStyle, EmptyObject: EmptyBudgetAmount, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Amount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Amount, actual.Amount, dcl.DiffInfo{ObjectFunction: compareBudgetAmountNewStyle, EmptyObject: EmptyBudgetAmount, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Amount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ThresholdRules, actual.ThresholdRules, dcl.Info{ObjectFunction: compareBudgetThresholdRulesNewStyle, EmptyObject: EmptyBudgetThresholdRules, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("ThresholdRules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ThresholdRules, actual.ThresholdRules, dcl.DiffInfo{ObjectFunction: compareBudgetThresholdRulesNewStyle, EmptyObject: EmptyBudgetThresholdRules, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("ThresholdRules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllUpdatesRule, actual.AllUpdatesRule, dcl.Info{ObjectFunction: compareBudgetAllUpdatesRuleNewStyle, EmptyObject: EmptyBudgetAllUpdatesRule, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllUpdatesRule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllUpdatesRule, actual.AllUpdatesRule, dcl.DiffInfo{ObjectFunction: compareBudgetAllUpdatesRuleNewStyle, EmptyObject: EmptyBudgetAllUpdatesRule, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllUpdatesRule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BillingAccount, actual.BillingAccount, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BillingAccount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BillingAccount, actual.BillingAccount, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BillingAccount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1905,56 +1905,56 @@ func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Projects, actual.Projects, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Projects")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Projects, actual.Projects, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Projects")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreditTypes, actual.CreditTypes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreditTypes, actual.CreditTypes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreditTypesTreatment, actual.CreditTypesTreatment, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypesTreatment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreditTypesTreatment, actual.CreditTypesTreatment, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypesTreatment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Services, actual.Services, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Services")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Services, actual.Services, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Services")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subaccounts, actual.Subaccounts, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Subaccounts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subaccounts, actual.Subaccounts, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Subaccounts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{ObjectFunction: compareBudgetBudgetFilterLabelsNewStyle, EmptyObject: EmptyBudgetBudgetFilterLabels, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterLabelsNewStyle, EmptyObject: EmptyBudgetBudgetFilterLabels, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CalendarPeriod, actual.CalendarPeriod, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CalendarPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CalendarPeriod, actual.CalendarPeriod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CalendarPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomPeriod, actual.CustomPeriod, dcl.Info{ObjectFunction: compareBudgetBudgetFilterCustomPeriodNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriod, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CustomPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomPeriod, actual.CustomPeriod, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterCustomPeriodNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriod, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CustomPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1983,7 +1983,7 @@ func compareBudgetBudgetFilterLabelsNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Values, actual.Values, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Values")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Values, actual.Values, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Values")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2012,14 +2012,14 @@ func compareBudgetBudgetFilterCustomPeriodNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.StartDate, actual.StartDate, dcl.Info{ObjectFunction: compareBudgetBudgetFilterCustomPeriodStartDateNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriodStartDate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StartDate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StartDate, actual.StartDate, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterCustomPeriodStartDateNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriodStartDate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StartDate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EndDate, actual.EndDate, dcl.Info{ObjectFunction: compareBudgetBudgetFilterCustomPeriodEndDateNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriodEndDate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EndDate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EndDate, actual.EndDate, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterCustomPeriodEndDateNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriodEndDate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EndDate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2048,21 +2048,21 @@ func compareBudgetBudgetFilterCustomPeriodStartDateNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2091,21 +2091,21 @@ func compareBudgetBudgetFilterCustomPeriodEndDateNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2134,14 +2134,14 @@ func compareBudgetAmountNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SpecifiedAmount, actual.SpecifiedAmount, dcl.Info{ObjectFunction: compareBudgetAmountSpecifiedAmountNewStyle, EmptyObject: EmptyBudgetAmountSpecifiedAmount, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpecifiedAmount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SpecifiedAmount, actual.SpecifiedAmount, dcl.DiffInfo{ObjectFunction: compareBudgetAmountSpecifiedAmountNewStyle, EmptyObject: EmptyBudgetAmountSpecifiedAmount, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpecifiedAmount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastPeriodAmount, actual.LastPeriodAmount, dcl.Info{ObjectFunction: compareBudgetAmountLastPeriodAmountNewStyle, EmptyObject: EmptyBudgetAmountLastPeriodAmount, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("LastPeriodAmount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastPeriodAmount, actual.LastPeriodAmount, dcl.DiffInfo{ObjectFunction: compareBudgetAmountLastPeriodAmountNewStyle, EmptyObject: EmptyBudgetAmountLastPeriodAmount, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("LastPeriodAmount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2170,21 +2170,21 @@ func compareBudgetAmountSpecifiedAmountNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CurrencyCode, actual.CurrencyCode, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CurrencyCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CurrencyCode, actual.CurrencyCode, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CurrencyCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Units, actual.Units, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Units")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Units, actual.Units, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Units")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2219,14 +2219,14 @@ func compareBudgetThresholdRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ThresholdPercent, actual.ThresholdPercent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ThresholdPercent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ThresholdPercent, actual.ThresholdPercent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ThresholdPercent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SpendBasis, actual.SpendBasis, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpendBasis")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SpendBasis, actual.SpendBasis, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpendBasis")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2255,28 +2255,28 @@ func compareBudgetAllUpdatesRuleNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PubsubTopic, actual.PubsubTopic, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("PubsubTopic")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PubsubTopic, actual.PubsubTopic, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("PubsubTopic")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SchemaVersion, actual.SchemaVersion, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("SchemaVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SchemaVersion, actual.SchemaVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("SchemaVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MonitoringNotificationChannels, actual.MonitoringNotificationChannels, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("MonitoringNotificationChannels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MonitoringNotificationChannels, actual.MonitoringNotificationChannels, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("MonitoringNotificationChannels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisableDefaultIamRecipients, actual.DisableDefaultIamRecipients, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("DisableDefaultIamRecipients")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisableDefaultIamRecipients, actual.DisableDefaultIamRecipients, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("DisableDefaultIamRecipients")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

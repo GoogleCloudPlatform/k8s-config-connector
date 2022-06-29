@@ -38,6 +38,7 @@ type DeliveryPipeline struct {
 	Etag           *string                         `json:"etag"`
 	Project        *string                         `json:"project"`
 	Location       *string                         `json:"location"`
+	Suspended      *bool                           `json:"suspended"`
 }
 
 func (r *DeliveryPipeline) String() string {
@@ -317,6 +318,7 @@ func (r *DeliveryPipeline) ID() (string, error) {
 		"etag":           dcl.ValueOrEmptyString(nr.Etag),
 		"project":        dcl.ValueOrEmptyString(nr.Project),
 		"location":       dcl.ValueOrEmptyString(nr.Location),
+		"suspended":      dcl.ValueOrEmptyString(nr.Suspended),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/deliveryPipelines/{{name}}", params), nil
 }
@@ -407,9 +409,10 @@ func (c *Client) GetDeliveryPipeline(ctx context.Context, r *DeliveryPipeline) (
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -560,7 +563,7 @@ func applyDeliveryPipelineHelper(c *Client, ctx context.Context, rawDesired *Del
 func applyDeliveryPipelineDiff(c *Client, ctx context.Context, desired *DeliveryPipeline, rawDesired *DeliveryPipeline, ops []deliveryPipelineApiOperation, opts ...dcl.ApplyOption) (*DeliveryPipeline, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetDeliveryPipeline(ctx, desired.urlNormalized())
+	rawNew, err := c.GetDeliveryPipeline(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

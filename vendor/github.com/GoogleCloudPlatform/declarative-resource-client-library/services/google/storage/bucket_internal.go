@@ -1588,63 +1588,63 @@ func diffBucket(c *Client, desired, actual *Bucket, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Cors, actual.Cors, dcl.Info{ObjectFunction: compareBucketCorsNewStyle, EmptyObject: EmptyBucketCors, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Cors")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Cors, actual.Cors, dcl.DiffInfo{ObjectFunction: compareBucketCorsNewStyle, EmptyObject: EmptyBucketCors, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Cors")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Lifecycle, actual.Lifecycle, dcl.Info{ObjectFunction: compareBucketLifecycleNewStyle, EmptyObject: EmptyBucketLifecycle, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Lifecycle")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Lifecycle, actual.Lifecycle, dcl.DiffInfo{ObjectFunction: compareBucketLifecycleNewStyle, EmptyObject: EmptyBucketLifecycle, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Lifecycle")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Logging, actual.Logging, dcl.Info{ObjectFunction: compareBucketLoggingNewStyle, EmptyObject: EmptyBucketLogging, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Logging")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Logging, actual.Logging, dcl.DiffInfo{ObjectFunction: compareBucketLoggingNewStyle, EmptyObject: EmptyBucketLogging, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Logging")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StorageClass, actual.StorageClass, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("StorageClass")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StorageClass, actual.StorageClass, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("StorageClass")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Versioning, actual.Versioning, dcl.Info{ObjectFunction: compareBucketVersioningNewStyle, EmptyObject: EmptyBucketVersioning, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Versioning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Versioning, actual.Versioning, dcl.DiffInfo{ObjectFunction: compareBucketVersioningNewStyle, EmptyObject: EmptyBucketVersioning, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Versioning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Website, actual.Website, dcl.Info{ObjectFunction: compareBucketWebsiteNewStyle, EmptyObject: EmptyBucketWebsite, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Website")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Website, actual.Website, dcl.DiffInfo{ObjectFunction: compareBucketWebsiteNewStyle, EmptyObject: EmptyBucketWebsite, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Website")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1673,28 +1673,28 @@ func compareBucketCorsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MaxAgeSeconds, actual.MaxAgeSeconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MaxAgeSeconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxAgeSeconds, actual.MaxAgeSeconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MaxAgeSeconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Origin, actual.Origin, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Origin")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Origin, actual.Origin, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Origin")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResponseHeader, actual.ResponseHeader, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("ResponseHeader")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResponseHeader, actual.ResponseHeader, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("ResponseHeader")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1723,7 +1723,7 @@ func compareBucketLifecycleNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Rule, actual.Rule, dcl.Info{ObjectFunction: compareBucketLifecycleRuleNewStyle, EmptyObject: EmptyBucketLifecycleRule, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Rule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rule, actual.Rule, dcl.DiffInfo{ObjectFunction: compareBucketLifecycleRuleNewStyle, EmptyObject: EmptyBucketLifecycleRule, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Rule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1752,14 +1752,14 @@ func compareBucketLifecycleRuleNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.Info{ObjectFunction: compareBucketLifecycleRuleActionNewStyle, EmptyObject: EmptyBucketLifecycleRuleAction, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.DiffInfo{ObjectFunction: compareBucketLifecycleRuleActionNewStyle, EmptyObject: EmptyBucketLifecycleRuleAction, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.Info{ObjectFunction: compareBucketLifecycleRuleConditionNewStyle, EmptyObject: EmptyBucketLifecycleRuleCondition, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.DiffInfo{ObjectFunction: compareBucketLifecycleRuleConditionNewStyle, EmptyObject: EmptyBucketLifecycleRuleCondition, OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1788,14 +1788,14 @@ func compareBucketLifecycleRuleActionNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.StorageClass, actual.StorageClass, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("StorageClass")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StorageClass, actual.StorageClass, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("StorageClass")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1824,35 +1824,35 @@ func compareBucketLifecycleRuleConditionNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Age, actual.Age, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Age")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Age, actual.Age, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Age")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreatedBefore, actual.CreatedBefore, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("CreatedBefore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreatedBefore, actual.CreatedBefore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("CreatedBefore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WithState, actual.WithState, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("IsLive")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WithState, actual.WithState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("IsLive")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MatchesStorageClass, actual.MatchesStorageClass, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MatchesStorageClass")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MatchesStorageClass, actual.MatchesStorageClass, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MatchesStorageClass")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumNewerVersions, actual.NumNewerVersions, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("NumNewerVersions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumNewerVersions, actual.NumNewerVersions, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("NumNewerVersions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1881,14 +1881,14 @@ func compareBucketLoggingNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LogBucket, actual.LogBucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("LogBucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogBucket, actual.LogBucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("LogBucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LogObjectPrefix, actual.LogObjectPrefix, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("LogObjectPrefix")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogObjectPrefix, actual.LogObjectPrefix, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("LogObjectPrefix")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1917,7 +1917,7 @@ func compareBucketVersioningNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1946,14 +1946,14 @@ func compareBucketWebsiteNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MainPageSuffix, actual.MainPageSuffix, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MainPageSuffix")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MainPageSuffix, actual.MainPageSuffix, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("MainPageSuffix")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NotFoundPage, actual.NotFoundPage, dcl.Info{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("NotFoundPage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NotFoundPage, actual.NotFoundPage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBucketUpdateOperation")}, fn.AddNest("NotFoundPage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

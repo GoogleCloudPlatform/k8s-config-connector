@@ -1649,9 +1649,10 @@ func (c *Client) GetInspectTemplate(ctx context.Context, r *InspectTemplate) (*I
 	if err != nil {
 		return nil, err
 	}
-	result.Location = r.Location
-	result.Parent = r.Parent
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Location = nr.Location
+	result.Parent = nr.Parent
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1802,7 +1803,7 @@ func applyInspectTemplateHelper(c *Client, ctx context.Context, rawDesired *Insp
 func applyInspectTemplateDiff(c *Client, ctx context.Context, desired *InspectTemplate, rawDesired *InspectTemplate, ops []inspectTemplateApiOperation, opts ...dcl.ApplyOption) (*InspectTemplate, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetInspectTemplate(ctx, desired.urlNormalized())
+	rawNew, err := c.GetInspectTemplate(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

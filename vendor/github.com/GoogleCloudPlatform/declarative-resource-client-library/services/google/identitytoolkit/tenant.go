@@ -257,8 +257,9 @@ func (c *Client) GetTenant(ctx context.Context, r *Tenant) (*Tenant, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -409,7 +410,7 @@ func applyTenantHelper(c *Client, ctx context.Context, rawDesired *Tenant, opts 
 func applyTenantDiff(c *Client, ctx context.Context, desired *Tenant, rawDesired *Tenant, ops []tenantApiOperation, opts ...dcl.ApplyOption) (*Tenant, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetTenant(ctx, desired.urlNormalized())
+	rawNew, err := c.GetTenant(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

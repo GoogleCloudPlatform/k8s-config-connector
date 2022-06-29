@@ -93,6 +93,10 @@
     preservedState:
       disks:
         string: object
+      externalIps:
+        string: object
+      internalIps:
+        string: object
   targetPools:
   - external: string
     name: string
@@ -496,6 +500,26 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         <td>
             <p><code class="apitype">map (key: string, value: object)</code></p>
             <p>{% verbatim %}Disks created on the instances that will be preserved on instance delete, update, etc. This map is keyed with the device names of the disks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>statefulPolicy.preservedState.externalIps</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: object)</code></p>
+            <p>{% verbatim %}External network IPs assigned to the instances that will be preserved on instance delete, update, etc. This map is keyed with the network interface name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>statefulPolicy.preservedState.internalIps</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: object)</code></p>
+            <p>{% verbatim %}Internal network IPs assigned to the instances that will be preserved on instance delete, update, etc. This map is keyed with the network interface name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

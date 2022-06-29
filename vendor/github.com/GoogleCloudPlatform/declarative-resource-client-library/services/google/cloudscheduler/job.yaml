@@ -63,6 +63,7 @@ components:
       title: Job
       x-dcl-id: projects/{{project}}/locations/{{location}}/jobs/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

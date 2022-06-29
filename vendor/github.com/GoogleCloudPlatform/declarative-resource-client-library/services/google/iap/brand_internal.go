@@ -352,35 +352,35 @@ func diffBrand(c *Client, desired, actual *Brand, opts ...dcl.ApplyOption) ([]*d
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.ApplicationTitle, actual.ApplicationTitle, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ApplicationTitle")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ApplicationTitle, actual.ApplicationTitle, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ApplicationTitle")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OrgInternalOnly, actual.OrgInternalOnly, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OrgInternalOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OrgInternalOnly, actual.OrgInternalOnly, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OrgInternalOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SupportEmail, actual.SupportEmail, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SupportEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SupportEmail, actual.SupportEmail, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SupportEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

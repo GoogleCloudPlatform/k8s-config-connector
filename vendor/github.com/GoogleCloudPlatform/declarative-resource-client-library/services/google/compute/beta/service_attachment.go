@@ -373,9 +373,10 @@ func (c *Client) GetServiceAttachment(ctx context.Context, r *ServiceAttachment)
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -526,7 +527,7 @@ func applyServiceAttachmentHelper(c *Client, ctx context.Context, rawDesired *Se
 func applyServiceAttachmentDiff(c *Client, ctx context.Context, desired *ServiceAttachment, rawDesired *ServiceAttachment, ops []serviceAttachmentApiOperation, opts ...dcl.ApplyOption) (*ServiceAttachment, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetServiceAttachment(ctx, desired.urlNormalized())
+	rawNew, err := c.GetServiceAttachment(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

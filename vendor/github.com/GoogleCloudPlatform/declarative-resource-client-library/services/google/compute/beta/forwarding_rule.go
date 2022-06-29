@@ -52,6 +52,8 @@ type ForwardingRule struct {
 	Project                       *string                                       `json:"project"`
 	Location                      *string                                       `json:"location"`
 	ServiceDirectoryRegistrations []ForwardingRuleServiceDirectoryRegistrations `json:"serviceDirectoryRegistrations"`
+	PscConnectionId               *string                                       `json:"pscConnectionId"`
+	PscConnectionStatus           *ForwardingRulePscConnectionStatusEnum        `json:"pscConnectionStatus"`
 }
 
 func (r *ForwardingRule) String() string {
@@ -188,6 +190,33 @@ func (v ForwardingRuleNetworkTierEnum) Validate() error {
 	}
 	return &dcl.EnumInvalidError{
 		Enum:  "ForwardingRuleNetworkTierEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
+// The enum ForwardingRulePscConnectionStatusEnum.
+type ForwardingRulePscConnectionStatusEnum string
+
+// ForwardingRulePscConnectionStatusEnumRef returns a *ForwardingRulePscConnectionStatusEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func ForwardingRulePscConnectionStatusEnumRef(s string) *ForwardingRulePscConnectionStatusEnum {
+	v := ForwardingRulePscConnectionStatusEnum(s)
+	return &v
+}
+
+func (v ForwardingRulePscConnectionStatusEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"STATUS_UNSPECIFIED", "PENDING", "ACCEPTED", "REJECTED", "CLOSED"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "ForwardingRulePscConnectionStatusEnum",
 		Value: string(v),
 		Valid: []string{},
 	}
@@ -383,6 +412,8 @@ func (r *ForwardingRule) ID() (string, error) {
 		"project":                       dcl.ValueOrEmptyString(nr.Project),
 		"location":                      dcl.ValueOrEmptyString(nr.Location),
 		"serviceDirectoryRegistrations": dcl.ValueOrEmptyString(nr.ServiceDirectoryRegistrations),
+		"pscConnectionId":               dcl.ValueOrEmptyString(nr.PscConnectionId),
+		"pscConnectionStatus":           dcl.ValueOrEmptyString(nr.PscConnectionStatus),
 	}
 	return dcl.Nprintf("projects/{{project}}/global/forwardingRules/{{name}}", params), nil
 }
@@ -487,9 +518,10 @@ func (c *Client) GetForwardingRule(ctx context.Context, r *ForwardingRule) (*For
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -658,7 +690,7 @@ func applyForwardingRuleHelper(c *Client, ctx context.Context, rawDesired *Forwa
 func applyForwardingRuleDiff(c *Client, ctx context.Context, desired *ForwardingRule, rawDesired *ForwardingRule, ops []forwardingRuleApiOperation, opts ...dcl.ApplyOption) (*ForwardingRule, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetForwardingRule(ctx, desired.urlNormalized())
+	rawNew, err := c.GetForwardingRule(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

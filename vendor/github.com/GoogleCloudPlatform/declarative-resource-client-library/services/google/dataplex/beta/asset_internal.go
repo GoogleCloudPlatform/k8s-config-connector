@@ -1793,119 +1793,119 @@ func diffAsset(c *Client, desired, actual *Asset, opts ...dcl.ApplyOption) ([]*d
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uid, actual.Uid, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uid")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uid, actual.Uid, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uid")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceSpec, actual.ResourceSpec, dcl.Info{ObjectFunction: compareAssetResourceSpecNewStyle, EmptyObject: EmptyAssetResourceSpec, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("ResourceSpec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceSpec, actual.ResourceSpec, dcl.DiffInfo{ObjectFunction: compareAssetResourceSpecNewStyle, EmptyObject: EmptyAssetResourceSpec, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("ResourceSpec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceStatus, actual.ResourceStatus, dcl.Info{OutputOnly: true, ObjectFunction: compareAssetResourceStatusNewStyle, EmptyObject: EmptyAssetResourceStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceStatus, actual.ResourceStatus, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareAssetResourceStatusNewStyle, EmptyObject: EmptyAssetResourceStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecurityStatus, actual.SecurityStatus, dcl.Info{OutputOnly: true, ObjectFunction: compareAssetSecurityStatusNewStyle, EmptyObject: EmptyAssetSecurityStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecurityStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecurityStatus, actual.SecurityStatus, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareAssetSecurityStatusNewStyle, EmptyObject: EmptyAssetSecurityStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecurityStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiscoverySpec, actual.DiscoverySpec, dcl.Info{ObjectFunction: compareAssetDiscoverySpecNewStyle, EmptyObject: EmptyAssetDiscoverySpec, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DiscoverySpec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiscoverySpec, actual.DiscoverySpec, dcl.DiffInfo{ObjectFunction: compareAssetDiscoverySpecNewStyle, EmptyObject: EmptyAssetDiscoverySpec, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DiscoverySpec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiscoveryStatus, actual.DiscoveryStatus, dcl.Info{OutputOnly: true, ObjectFunction: compareAssetDiscoveryStatusNewStyle, EmptyObject: EmptyAssetDiscoveryStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiscoveryStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiscoveryStatus, actual.DiscoveryStatus, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareAssetDiscoveryStatusNewStyle, EmptyObject: EmptyAssetDiscoveryStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiscoveryStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Lake, actual.Lake, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Lake")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Lake, actual.Lake, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Lake")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zone, actual.Zone, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zone, actual.Zone, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1934,14 +1934,14 @@ func compareAssetResourceSpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1970,21 +1970,21 @@ func compareAssetResourceStatusNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2013,21 +2013,21 @@ func compareAssetSecurityStatusNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2056,42 +2056,42 @@ func compareAssetDiscoverySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IncludePatterns, actual.IncludePatterns, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("IncludePatterns")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IncludePatterns, actual.IncludePatterns, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("IncludePatterns")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExcludePatterns, actual.ExcludePatterns, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("ExcludePatterns")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExcludePatterns, actual.ExcludePatterns, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("ExcludePatterns")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.Info{ObjectFunction: compareAssetDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.DiffInfo{ObjectFunction: compareAssetDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.Info{ObjectFunction: compareAssetDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.DiffInfo{ObjectFunction: compareAssetDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Schedule, actual.Schedule, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Schedule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Schedule, actual.Schedule, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Schedule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2120,28 +2120,28 @@ func compareAssetDiscoverySpecCsvOptionsNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HeaderRows, actual.HeaderRows, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("HeaderRows")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HeaderRows, actual.HeaderRows, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("HeaderRows")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Delimiter, actual.Delimiter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Delimiter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Delimiter, actual.Delimiter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Delimiter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Encoding, actual.Encoding, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Encoding")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Encoding, actual.Encoding, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Encoding")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisableTypeInference, actual.DisableTypeInference, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisableTypeInference")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisableTypeInference, actual.DisableTypeInference, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisableTypeInference")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2170,14 +2170,14 @@ func compareAssetDiscoverySpecJsonOptionsNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Encoding, actual.Encoding, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Encoding")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Encoding, actual.Encoding, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Encoding")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisableTypeInference, actual.DisableTypeInference, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisableTypeInference")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisableTypeInference, actual.DisableTypeInference, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DisableTypeInference")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2206,42 +2206,42 @@ func compareAssetDiscoveryStatusNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastRunTime, actual.LastRunTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("LastRunTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastRunTime, actual.LastRunTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("LastRunTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Stats, actual.Stats, dcl.Info{ObjectFunction: compareAssetDiscoveryStatusStatsNewStyle, EmptyObject: EmptyAssetDiscoveryStatusStats, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Stats")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Stats, actual.Stats, dcl.DiffInfo{ObjectFunction: compareAssetDiscoveryStatusStatsNewStyle, EmptyObject: EmptyAssetDiscoveryStatusStats, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Stats")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastRunDuration, actual.LastRunDuration, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("LastRunDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastRunDuration, actual.LastRunDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("LastRunDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2270,28 +2270,28 @@ func compareAssetDiscoveryStatusStatsNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DataItems, actual.DataItems, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DataItems")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataItems, actual.DataItems, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DataItems")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DataSize, actual.DataSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DataSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataSize, actual.DataSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("DataSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tables, actual.Tables, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Tables")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tables, actual.Tables, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Tables")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Filesets, actual.Filesets, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Filesets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Filesets, actual.Filesets, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("Filesets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

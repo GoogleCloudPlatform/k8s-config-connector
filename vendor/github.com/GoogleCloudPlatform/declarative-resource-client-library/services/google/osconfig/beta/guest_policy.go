@@ -1913,8 +1913,9 @@ func (c *Client) GetGuestPolicy(ctx context.Context, r *GuestPolicy) (*GuestPoli
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -2065,7 +2066,7 @@ func applyGuestPolicyHelper(c *Client, ctx context.Context, rawDesired *GuestPol
 func applyGuestPolicyDiff(c *Client, ctx context.Context, desired *GuestPolicy, rawDesired *GuestPolicy, ops []guestPolicyApiOperation, opts ...dcl.ApplyOption) (*GuestPolicy, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetGuestPolicy(ctx, desired.urlNormalized())
+	rawNew, err := c.GetGuestPolicy(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

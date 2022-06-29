@@ -980,133 +980,133 @@ func diffOrganization(c *Client, desired, actual *Organization, opts ...dcl.Appl
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreatedAt, actual.CreatedAt, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreatedAt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreatedAt, actual.CreatedAt, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreatedAt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastModifiedAt, actual.LastModifiedAt, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastModifiedAt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastModifiedAt, actual.LastModifiedAt, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastModifiedAt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExpiresAt, actual.ExpiresAt, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpiresAt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExpiresAt, actual.ExpiresAt, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpiresAt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Environments, actual.Environments, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Environments")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Environments, actual.Environments, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Environments")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AnalyticsRegion, actual.AnalyticsRegion, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AnalyticsRegion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AnalyticsRegion, actual.AnalyticsRegion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AnalyticsRegion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizedNetwork, actual.AuthorizedNetwork, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("AuthorizedNetwork")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorizedNetwork, actual.AuthorizedNetwork, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("AuthorizedNetwork")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RuntimeType, actual.RuntimeType, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RuntimeType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RuntimeType, actual.RuntimeType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RuntimeType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubscriptionType, actual.SubscriptionType, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubscriptionType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubscriptionType, actual.SubscriptionType, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubscriptionType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BillingType, actual.BillingType, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BillingType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BillingType, actual.BillingType, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BillingType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AddonsConfig, actual.AddonsConfig, dcl.Info{ObjectFunction: compareOrganizationAddonsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfig, OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("AddonsConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AddonsConfig, actual.AddonsConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfig, OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("AddonsConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaCertificate, actual.CaCertificate, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaCertificate, actual.CaCertificate, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RuntimeDatabaseEncryptionKeyName, actual.RuntimeDatabaseEncryptionKeyName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("RuntimeDatabaseEncryptionKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RuntimeDatabaseEncryptionKeyName, actual.RuntimeDatabaseEncryptionKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateOrganizationUpdateOrganizationOperation")}, fn.AddNest("RuntimeDatabaseEncryptionKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ProjectId, actual.ProjectId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProjectId, actual.ProjectId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1135,14 +1135,14 @@ func compareOrganizationAddonsConfigNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AdvancedApiOpsConfig, actual.AdvancedApiOpsConfig, dcl.Info{ObjectFunction: compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigAdvancedApiOpsConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdvancedApiOpsConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdvancedApiOpsConfig, actual.AdvancedApiOpsConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigAdvancedApiOpsConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdvancedApiOpsConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MonetizationConfig, actual.MonetizationConfig, dcl.Info{ObjectFunction: compareOrganizationAddonsConfigMonetizationConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigMonetizationConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MonetizationConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MonetizationConfig, actual.MonetizationConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigMonetizationConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigMonetizationConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MonetizationConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1171,7 +1171,7 @@ func compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1200,7 +1200,7 @@ func compareOrganizationAddonsConfigMonetizationConfigNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

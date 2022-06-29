@@ -63,6 +63,7 @@ components:
       title: Service
       x-dcl-id: projects/{{project}}/locations/{{location}}/services/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: true
       type: object
       required:

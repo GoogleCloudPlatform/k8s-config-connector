@@ -271,7 +271,7 @@ func applyMonitoredProjectHelper(c *Client, ctx context.Context, rawDesired *Mon
 func applyMonitoredProjectDiff(c *Client, ctx context.Context, desired *MonitoredProject, rawDesired *MonitoredProject, ops []monitoredProjectApiOperation, opts ...dcl.ApplyOption) (*MonitoredProject, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetMonitoredProject(ctx, desired.urlNormalized())
+	rawNew, err := c.GetMonitoredProject(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

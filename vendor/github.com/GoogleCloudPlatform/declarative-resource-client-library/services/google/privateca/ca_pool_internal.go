@@ -3070,49 +3070,49 @@ func diffCaPool(c *Client, desired, actual *CaPool, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tier, actual.Tier, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tier, actual.Tier, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IssuancePolicy, actual.IssuancePolicy, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyNewStyle, EmptyObject: EmptyCaPoolIssuancePolicy, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IssuancePolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IssuancePolicy, actual.IssuancePolicy, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyNewStyle, EmptyObject: EmptyCaPoolIssuancePolicy, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IssuancePolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublishingOptions, actual.PublishingOptions, dcl.Info{ObjectFunction: compareCaPoolPublishingOptionsNewStyle, EmptyObject: EmptyCaPoolPublishingOptions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishingOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublishingOptions, actual.PublishingOptions, dcl.DiffInfo{ObjectFunction: compareCaPoolPublishingOptionsNewStyle, EmptyObject: EmptyCaPoolPublishingOptions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishingOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3141,42 +3141,42 @@ func compareCaPoolIssuancePolicyNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedKeyTypes, actual.AllowedKeyTypes, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypes, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowedKeyTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedKeyTypes, actual.AllowedKeyTypes, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypes, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowedKeyTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaximumLifetime, actual.MaximumLifetime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaximumLifetime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaximumLifetime, actual.MaximumLifetime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaximumLifetime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedIssuanceModes, actual.AllowedIssuanceModes, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyAllowedIssuanceModesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedIssuanceModes, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowedIssuanceModes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedIssuanceModes, actual.AllowedIssuanceModes, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyAllowedIssuanceModesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedIssuanceModes, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowedIssuanceModes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BaselineValues, actual.BaselineValues, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValues, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("BaselineValues")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaselineValues, actual.BaselineValues, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValues, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("BaselineValues")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IdentityConstraints, actual.IdentityConstraints, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyIdentityConstraintsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyIdentityConstraints, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IdentityConstraints")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IdentityConstraints, actual.IdentityConstraints, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyIdentityConstraintsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyIdentityConstraints, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IdentityConstraints")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PassthroughExtensions, actual.PassthroughExtensions, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyPassthroughExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyPassthroughExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PassthroughExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PassthroughExtensions, actual.PassthroughExtensions, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyPassthroughExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyPassthroughExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PassthroughExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3205,14 +3205,14 @@ func compareCaPoolIssuancePolicyAllowedKeyTypesNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Rsa, actual.Rsa, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesRsaNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypesRsa, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Rsa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rsa, actual.Rsa, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesRsaNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypesRsa, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Rsa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EllipticCurve, actual.EllipticCurve, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EllipticCurve")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EllipticCurve, actual.EllipticCurve, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EllipticCurve")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3241,14 +3241,14 @@ func compareCaPoolIssuancePolicyAllowedKeyTypesRsaNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MinModulusSize, actual.MinModulusSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MinModulusSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinModulusSize, actual.MinModulusSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MinModulusSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxModulusSize, actual.MaxModulusSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaxModulusSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxModulusSize, actual.MaxModulusSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaxModulusSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3277,7 +3277,7 @@ func compareCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveNewStyle(d, a interf
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SignatureAlgorithm, actual.SignatureAlgorithm, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("SignatureAlgorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignatureAlgorithm, actual.SignatureAlgorithm, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("SignatureAlgorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3306,14 +3306,14 @@ func compareCaPoolIssuancePolicyAllowedIssuanceModesNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowCsrBasedIssuance, actual.AllowCsrBasedIssuance, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowCsrBasedIssuance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowCsrBasedIssuance, actual.AllowCsrBasedIssuance, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowCsrBasedIssuance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowConfigBasedIssuance, actual.AllowConfigBasedIssuance, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowConfigBasedIssuance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowConfigBasedIssuance, actual.AllowConfigBasedIssuance, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowConfigBasedIssuance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3342,35 +3342,35 @@ func compareCaPoolIssuancePolicyBaselineValuesNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesCaOptionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesCaOptions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesCaOptionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesCaOptions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesPolicyIdsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesPolicyIds, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesPolicyIdsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesPolicyIds, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3399,21 +3399,21 @@ func compareCaPoolIssuancePolicyBaselineValuesKeyUsageNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3442,63 +3442,63 @@ func compareCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3527,42 +3527,42 @@ func compareCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageNewStyle(d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3591,7 +3591,7 @@ func compareCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsagesNe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3620,14 +3620,14 @@ func compareCaPoolIssuancePolicyBaselineValuesCaOptionsNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3656,7 +3656,7 @@ func compareCaPoolIssuancePolicyBaselineValuesPolicyIdsNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3685,21 +3685,21 @@ func compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3728,7 +3728,7 @@ func compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdNewSty
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3757,21 +3757,21 @@ func compareCaPoolIssuancePolicyIdentityConstraintsNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CelExpression, actual.CelExpression, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyIdentityConstraintsCelExpressionNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyIdentityConstraintsCelExpression, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CelExpression")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CelExpression, actual.CelExpression, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyIdentityConstraintsCelExpressionNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyIdentityConstraintsCelExpression, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("CelExpression")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowSubjectPassthrough, actual.AllowSubjectPassthrough, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowSubjectPassthrough")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowSubjectPassthrough, actual.AllowSubjectPassthrough, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowSubjectPassthrough")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowSubjectAltNamesPassthrough, actual.AllowSubjectAltNamesPassthrough, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowSubjectAltNamesPassthrough")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowSubjectAltNamesPassthrough, actual.AllowSubjectAltNamesPassthrough, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AllowSubjectAltNamesPassthrough")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3800,28 +3800,28 @@ func compareCaPoolIssuancePolicyIdentityConstraintsCelExpressionNewStyle(d, a in
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Expression, actual.Expression, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Expression")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Expression, actual.Expression, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Expression")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3850,14 +3850,14 @@ func compareCaPoolIssuancePolicyPassthroughExtensionsNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KnownExtensions, actual.KnownExtensions, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KnownExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KnownExtensions, actual.KnownExtensions, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("KnownExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.Info{ObjectFunction: compareCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.DiffInfo{ObjectFunction: compareCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensionsNewStyle, EmptyObject: EmptyCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3886,7 +3886,7 @@ func compareCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensionsNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3915,14 +3915,14 @@ func compareCaPoolPublishingOptionsNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PublishCaCert, actual.PublishCaCert, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishCaCert")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublishCaCert, actual.PublishCaCert, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishCaCert")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublishCrl, actual.PublishCrl, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishCrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublishCrl, actual.PublishCrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCaPoolUpdateCaPoolOperation")}, fn.AddNest("PublishCrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

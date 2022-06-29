@@ -683,63 +683,63 @@ func diffTenant(c *Client, desired, actual *Tenant, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowPasswordSignup, actual.AllowPasswordSignup, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("AllowPasswordSignup")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowPasswordSignup, actual.AllowPasswordSignup, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("AllowPasswordSignup")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableEmailLinkSignin, actual.EnableEmailLinkSignin, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("EnableEmailLinkSignin")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableEmailLinkSignin, actual.EnableEmailLinkSignin, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("EnableEmailLinkSignin")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisableAuth, actual.DisableAuth, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("DisableAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisableAuth, actual.DisableAuth, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("DisableAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableAnonymousUser, actual.EnableAnonymousUser, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("EnableAnonymousUser")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableAnonymousUser, actual.EnableAnonymousUser, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("EnableAnonymousUser")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MfaConfig, actual.MfaConfig, dcl.Info{ObjectFunction: compareTenantMfaConfigNewStyle, EmptyObject: EmptyTenantMfaConfig, OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("MfaConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MfaConfig, actual.MfaConfig, dcl.DiffInfo{ObjectFunction: compareTenantMfaConfigNewStyle, EmptyObject: EmptyTenantMfaConfig, OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("MfaConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TestPhoneNumbers, actual.TestPhoneNumbers, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("TestPhoneNumbers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TestPhoneNumbers, actual.TestPhoneNumbers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTenantUpdateTenantOperation")}, fn.AddNest("TestPhoneNumbers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -768,14 +768,14 @@ func compareTenantMfaConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnabledProviders, actual.EnabledProviders, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnabledProviders")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnabledProviders, actual.EnabledProviders, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnabledProviders")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -13,9 +13,15 @@
 # limitations under the License.
 info:
   title: Firebaserules/Release
-  description: The Firebaserules Release resource
+  description: ""
   x-dcl-struct-name: Release
   x-dcl-has-iam: false
+  x-dcl-ref:
+    text: Firebase Rules API Documentation
+    url: https://firebase.google.com/docs/reference/rules/rest#rest-resource:-v1.projects.releases
+  x-dcl-guides:
+  - text: Get started with Firebase Security Rules
+    url: https://firebase.google.com/docs/rules/get-started
 paths:
   get:
     description: The function used to get information about a Release
@@ -55,6 +61,7 @@ components:
       title: Release
       x-dcl-id: projects/{{project}}/releases/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -79,7 +86,8 @@ components:
         name:
           type: string
           x-dcl-go-name: Name
-          description: 'Format: `projects/{project_id}/releases/{release_id}`'
+          description: 'Format: `projects/{project_id}/releases/{release_id}`\Firestore
+            Rules Releases will **always** have the name ''cloud.firestore'''
           x-kubernetes-immutable: true
           x-dcl-forward-slash-allowed: true
         project:
@@ -95,7 +103,7 @@ components:
           type: string
           x-dcl-go-name: RulesetName
           description: Name of the `Ruleset` referred to by this `Release`. The `Ruleset`
-            must exist the `Release` to be created.
+            must exist for the `Release` to be created.
           x-dcl-references:
           - resource: Firebaserules/Ruleset
             field: name

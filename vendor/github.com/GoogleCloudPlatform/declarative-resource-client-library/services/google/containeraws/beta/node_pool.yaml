@@ -77,6 +77,7 @@ components:
       title: NodePool
       x-dcl-id: projects/{{project}}/locations/{{location}}/awsClusters/{{cluster}}/awsNodePools/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -157,7 +158,6 @@ components:
               type: string
               x-dcl-go-name: IamInstanceProfile
               description: The name of the AWS IAM role assigned to nodes in the pool.
-              x-kubernetes-immutable: true
             imageType:
               type: string
               x-dcl-go-name: ImageType

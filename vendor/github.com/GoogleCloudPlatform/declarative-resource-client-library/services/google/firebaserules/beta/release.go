@@ -146,8 +146,9 @@ func (c *Client) GetRelease(ctx context.Context, r *Release) (*Release, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -298,7 +299,7 @@ func applyReleaseHelper(c *Client, ctx context.Context, rawDesired *Release, opt
 func applyReleaseDiff(c *Client, ctx context.Context, desired *Release, rawDesired *Release, ops []releaseApiOperation, opts ...dcl.ApplyOption) (*Release, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetRelease(ctx, desired.urlNormalized())
+	rawNew, err := c.GetRelease(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

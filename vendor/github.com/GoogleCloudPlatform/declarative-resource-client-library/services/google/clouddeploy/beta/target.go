@@ -345,9 +345,10 @@ func (c *Client) GetTarget(ctx context.Context, r *Target) (*Target, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -498,7 +499,7 @@ func applyTargetHelper(c *Client, ctx context.Context, rawDesired *Target, opts 
 func applyTargetDiff(c *Client, ctx context.Context, desired *Target, rawDesired *Target, ops []targetApiOperation, opts ...dcl.ApplyOption) (*Target, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetTarget(ctx, desired.urlNormalized())
+	rawNew, err := c.GetTarget(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -13,9 +13,15 @@
 # limitations under the License.
 info:
   title: Firebaserules/Ruleset
-  description: The Firebaserules Ruleset resource
+  description: ""
   x-dcl-struct-name: Ruleset
   x-dcl-has-iam: false
+  x-dcl-ref:
+    text: Firebase Ruleset API Documentation
+    url: https://firebase.google.com/docs/reference/rules/rest#rest-resource:-v1.projects.rulesets
+  x-dcl-guides:
+  - text: Get started with Firebase Security Rules
+    url: https://firebase.google.com/docs/rules/get-started
 paths:
   get:
     description: The function used to get information about a Ruleset
@@ -55,6 +61,7 @@ components:
       title: Ruleset
       x-dcl-id: projects/{{project}}/rulesets/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

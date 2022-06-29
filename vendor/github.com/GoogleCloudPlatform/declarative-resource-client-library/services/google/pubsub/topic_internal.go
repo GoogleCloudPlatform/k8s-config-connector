@@ -632,35 +632,35 @@ func diffTopic(c *Client, desired, actual *Topic, opts ...dcl.ApplyOption) ([]*d
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsKeyName, actual.KmsKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("KmsKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsKeyName, actual.KmsKeyName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("KmsKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MessageStoragePolicy, actual.MessageStoragePolicy, dcl.Info{ObjectFunction: compareTopicMessageStoragePolicyNewStyle, EmptyObject: EmptyTopicMessageStoragePolicy, OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("MessageStoragePolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MessageStoragePolicy, actual.MessageStoragePolicy, dcl.DiffInfo{ObjectFunction: compareTopicMessageStoragePolicyNewStyle, EmptyObject: EmptyTopicMessageStoragePolicy, OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("MessageStoragePolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -689,7 +689,7 @@ func compareTopicMessageStoragePolicyNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedPersistenceRegions, actual.AllowedPersistenceRegions, dcl.Info{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedPersistenceRegions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedPersistenceRegions, actual.AllowedPersistenceRegions, dcl.DiffInfo{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedPersistenceRegions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

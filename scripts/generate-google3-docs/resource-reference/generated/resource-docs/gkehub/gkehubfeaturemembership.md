@@ -78,6 +78,7 @@ Note: GKE Hub REST documentation is under construction.
         syncRepo: string
         syncRev: string
         syncWaitSecs: string
+      preventDrift: boolean
       sourceFormat: string
     hierarchyController:
       enableHierarchicalResourceQuota: boolean
@@ -274,6 +275,16 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Period in seconds between consecutive syncs. Default: 15.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.preventDrift</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -689,154 +689,154 @@ func diffVpnTunnel(c *Client, desired, actual *VpnTunnel, opts ...dcl.ApplyOptio
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateVpnTunnelSetLabelsOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateVpnTunnelSetLabelsOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TargetVpnGateway, actual.TargetVpnGateway, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetVpnGateway")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TargetVpnGateway, actual.TargetVpnGateway, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetVpnGateway")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VpnGateway, actual.VpnGateway, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VpnGateway")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VpnGateway, actual.VpnGateway, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VpnGateway")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VpnGatewayInterface, actual.VpnGatewayInterface, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VpnGatewayInterface")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VpnGatewayInterface, actual.VpnGatewayInterface, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VpnGatewayInterface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PeerExternalGateway, actual.PeerExternalGateway, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerExternalGateway")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PeerExternalGateway, actual.PeerExternalGateway, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerExternalGateway")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PeerExternalGatewayInterface, actual.PeerExternalGatewayInterface, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerExternalGatewayInterface")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PeerExternalGatewayInterface, actual.PeerExternalGatewayInterface, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerExternalGatewayInterface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PeerGcpGateway, actual.PeerGcpGateway, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerGcpGateway")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PeerGcpGateway, actual.PeerGcpGateway, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerGcpGateway")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Router, actual.Router, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Router")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Router, actual.Router, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Router")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PeerIP, actual.PeerIP, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerIp")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PeerIP, actual.PeerIP, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerIp")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SharedSecret, actual.SharedSecret, dcl.Info{Ignore: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SharedSecret")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SharedSecret, actual.SharedSecret, dcl.DiffInfo{Ignore: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SharedSecret")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SharedSecretHash, actual.SharedSecretHash, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SharedSecretHash")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SharedSecretHash, actual.SharedSecretHash, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SharedSecretHash")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IkeVersion, actual.IkeVersion, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IkeVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IkeVersion, actual.IkeVersion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IkeVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DetailedStatus, actual.DetailedStatus, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DetailedStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DetailedStatus, actual.DetailedStatus, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DetailedStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalTrafficSelector, actual.LocalTrafficSelector, dcl.Info{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalTrafficSelector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalTrafficSelector, actual.LocalTrafficSelector, dcl.DiffInfo{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalTrafficSelector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RemoteTrafficSelector, actual.RemoteTrafficSelector, dcl.Info{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RemoteTrafficSelector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RemoteTrafficSelector, actual.RemoteTrafficSelector, dcl.DiffInfo{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RemoteTrafficSelector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

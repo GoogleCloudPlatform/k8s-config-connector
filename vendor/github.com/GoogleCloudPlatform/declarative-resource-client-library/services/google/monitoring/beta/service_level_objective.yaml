@@ -64,6 +64,7 @@ components:
       x-dcl-id: projects/{{project}}/services/{{service}}/serviceLevelObjectives/{{name}}
       x-dcl-parent-container: project
       x-dcl-labels: userLabels
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

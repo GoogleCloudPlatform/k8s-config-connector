@@ -97,6 +97,7 @@ type FeatureMembershipConfigmanagementConfigSync struct {
 	empty        bool                                            `json:"-"`
 	Git          *FeatureMembershipConfigmanagementConfigSyncGit `json:"git"`
 	SourceFormat *string                                         `json:"sourceFormat"`
+	PreventDrift *bool                                           `json:"preventDrift"`
 }
 
 type jsonFeatureMembershipConfigmanagementConfigSync FeatureMembershipConfigmanagementConfigSync
@@ -117,6 +118,8 @@ func (r *FeatureMembershipConfigmanagementConfigSync) UnmarshalJSON(data []byte)
 		r.Git = res.Git
 
 		r.SourceFormat = res.SourceFormat
+
+		r.PreventDrift = res.PreventDrift
 
 	}
 	return nil
@@ -540,7 +543,7 @@ func applyFeatureMembershipHelper(c *Client, ctx context.Context, rawDesired *Fe
 func applyFeatureMembershipDiff(c *Client, ctx context.Context, desired *FeatureMembership, rawDesired *FeatureMembership, ops []featureMembershipApiOperation, opts ...dcl.ApplyOption) (*FeatureMembership, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetFeatureMembership(ctx, desired.urlNormalized())
+	rawNew, err := c.GetFeatureMembership(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

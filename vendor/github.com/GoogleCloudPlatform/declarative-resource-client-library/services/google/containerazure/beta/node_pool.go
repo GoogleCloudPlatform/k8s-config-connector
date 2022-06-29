@@ -496,10 +496,11 @@ func (c *Client) GetNodePool(ctx context.Context, r *NodePool) (*NodePool, error
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Cluster = r.Cluster
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Cluster = nr.Cluster
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -650,7 +651,7 @@ func applyNodePoolHelper(c *Client, ctx context.Context, rawDesired *NodePool, o
 func applyNodePoolDiff(c *Client, ctx context.Context, desired *NodePool, rawDesired *NodePool, ops []nodePoolApiOperation, opts ...dcl.ApplyOption) (*NodePool, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetNodePool(ctx, desired.urlNormalized())
+	rawNew, err := c.GetNodePool(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -3814,77 +3814,77 @@ func diffConfig(c *Client, desired, actual *Config, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.SignIn, actual.SignIn, dcl.Info{ObjectFunction: compareConfigSignInNewStyle, EmptyObject: EmptyConfigSignIn, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignIn")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignIn, actual.SignIn, dcl.DiffInfo{ObjectFunction: compareConfigSignInNewStyle, EmptyObject: EmptyConfigSignIn, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignIn")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Notification, actual.Notification, dcl.Info{ObjectFunction: compareConfigNotificationNewStyle, EmptyObject: EmptyConfigNotification, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Notification")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Notification, actual.Notification, dcl.DiffInfo{ObjectFunction: compareConfigNotificationNewStyle, EmptyObject: EmptyConfigNotification, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Notification")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.Info{ObjectFunction: compareConfigQuotaNewStyle, EmptyObject: EmptyConfigQuota, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.DiffInfo{ObjectFunction: compareConfigQuotaNewStyle, EmptyObject: EmptyConfigQuota, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.Info{ObjectFunction: compareConfigMonitoringNewStyle, EmptyObject: EmptyConfigMonitoring, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ObjectFunction: compareConfigMonitoringNewStyle, EmptyObject: EmptyConfigMonitoring, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MultiTenant, actual.MultiTenant, dcl.Info{ObjectFunction: compareConfigMultiTenantNewStyle, EmptyObject: EmptyConfigMultiTenant, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("MultiTenant")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MultiTenant, actual.MultiTenant, dcl.DiffInfo{ObjectFunction: compareConfigMultiTenantNewStyle, EmptyObject: EmptyConfigMultiTenant, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("MultiTenant")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizedDomains, actual.AuthorizedDomains, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AuthorizedDomains")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorizedDomains, actual.AuthorizedDomains, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AuthorizedDomains")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subtype, actual.Subtype, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subtype")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subtype, actual.Subtype, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subtype")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Client, actual.Client, dcl.Info{ObjectFunction: compareConfigClientNewStyle, EmptyObject: EmptyConfigClient, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Client")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Client, actual.Client, dcl.DiffInfo{ObjectFunction: compareConfigClientNewStyle, EmptyObject: EmptyConfigClient, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Client")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mfa, actual.Mfa, dcl.Info{ObjectFunction: compareConfigMfaNewStyle, EmptyObject: EmptyConfigMfa, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Mfa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mfa, actual.Mfa, dcl.DiffInfo{ObjectFunction: compareConfigMfaNewStyle, EmptyObject: EmptyConfigMfa, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Mfa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BlockingFunctions, actual.BlockingFunctions, dcl.Info{ObjectFunction: compareConfigBlockingFunctionsNewStyle, EmptyObject: EmptyConfigBlockingFunctions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BlockingFunctions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BlockingFunctions, actual.BlockingFunctions, dcl.DiffInfo{ObjectFunction: compareConfigBlockingFunctionsNewStyle, EmptyObject: EmptyConfigBlockingFunctions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BlockingFunctions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3913,35 +3913,35 @@ func compareConfigSignInNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Email, actual.Email, dcl.Info{ObjectFunction: compareConfigSignInEmailNewStyle, EmptyObject: EmptyConfigSignInEmail, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Email")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Email, actual.Email, dcl.DiffInfo{ObjectFunction: compareConfigSignInEmailNewStyle, EmptyObject: EmptyConfigSignInEmail, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Email")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PhoneNumber, actual.PhoneNumber, dcl.Info{ObjectFunction: compareConfigSignInPhoneNumberNewStyle, EmptyObject: EmptyConfigSignInPhoneNumber, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("PhoneNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PhoneNumber, actual.PhoneNumber, dcl.DiffInfo{ObjectFunction: compareConfigSignInPhoneNumberNewStyle, EmptyObject: EmptyConfigSignInPhoneNumber, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("PhoneNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Anonymous, actual.Anonymous, dcl.Info{ObjectFunction: compareConfigSignInAnonymousNewStyle, EmptyObject: EmptyConfigSignInAnonymous, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Anonymous")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Anonymous, actual.Anonymous, dcl.DiffInfo{ObjectFunction: compareConfigSignInAnonymousNewStyle, EmptyObject: EmptyConfigSignInAnonymous, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Anonymous")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowDuplicateEmails, actual.AllowDuplicateEmails, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AllowDuplicateEmails")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowDuplicateEmails, actual.AllowDuplicateEmails, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AllowDuplicateEmails")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HashConfig, actual.HashConfig, dcl.Info{OutputOnly: true, ObjectFunction: compareConfigSignInHashConfigNewStyle, EmptyObject: EmptyConfigSignInHashConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HashConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HashConfig, actual.HashConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareConfigSignInHashConfigNewStyle, EmptyObject: EmptyConfigSignInHashConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HashConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3970,21 +3970,21 @@ func compareConfigSignInEmailNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PasswordRequired, actual.PasswordRequired, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("PasswordRequired")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PasswordRequired, actual.PasswordRequired, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("PasswordRequired")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HashConfig, actual.HashConfig, dcl.Info{OutputOnly: true, ObjectFunction: compareConfigSignInEmailHashConfigNewStyle, EmptyObject: EmptyConfigSignInEmailHashConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HashConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HashConfig, actual.HashConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareConfigSignInEmailHashConfigNewStyle, EmptyObject: EmptyConfigSignInEmailHashConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HashConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4013,35 +4013,35 @@ func compareConfigSignInEmailHashConfigNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SignerKey, actual.SignerKey, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SignerKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignerKey, actual.SignerKey, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SignerKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SaltSeparator, actual.SaltSeparator, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SaltSeparator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SaltSeparator, actual.SaltSeparator, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SaltSeparator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rounds, actual.Rounds, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Rounds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rounds, actual.Rounds, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Rounds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MemoryCost, actual.MemoryCost, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryCost")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemoryCost, actual.MemoryCost, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryCost")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4070,14 +4070,14 @@ func compareConfigSignInPhoneNumberNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TestPhoneNumbers, actual.TestPhoneNumbers, dcl.Info{CustomDiff: canonicalizeConfigTestPhoneNumbers, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("TestPhoneNumbers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TestPhoneNumbers, actual.TestPhoneNumbers, dcl.DiffInfo{CustomDiff: canonicalizeConfigTestPhoneNumbers, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("TestPhoneNumbers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4106,7 +4106,7 @@ func compareConfigSignInAnonymousNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4135,35 +4135,35 @@ func compareConfigSignInHashConfigNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SignerKey, actual.SignerKey, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SignerKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignerKey, actual.SignerKey, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SignerKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SaltSeparator, actual.SaltSeparator, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SaltSeparator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SaltSeparator, actual.SaltSeparator, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SaltSeparator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rounds, actual.Rounds, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Rounds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rounds, actual.Rounds, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Rounds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MemoryCost, actual.MemoryCost, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryCost")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemoryCost, actual.MemoryCost, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemoryCost")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4192,21 +4192,21 @@ func compareConfigNotificationNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SendEmail, actual.SendEmail, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailNewStyle, EmptyObject: EmptyConfigNotificationSendEmail, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SendEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SendEmail, actual.SendEmail, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailNewStyle, EmptyObject: EmptyConfigNotificationSendEmail, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SendEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SendSms, actual.SendSms, dcl.Info{ObjectFunction: compareConfigNotificationSendSmsNewStyle, EmptyObject: EmptyConfigNotificationSendSms, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SendSms")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SendSms, actual.SendSms, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendSmsNewStyle, EmptyObject: EmptyConfigNotificationSendSms, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SendSms")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DefaultLocale, actual.DefaultLocale, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DefaultLocale")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DefaultLocale, actual.DefaultLocale, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DefaultLocale")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4235,56 +4235,56 @@ func compareConfigNotificationSendEmailNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Smtp, actual.Smtp, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailSmtpNewStyle, EmptyObject: EmptyConfigNotificationSendEmailSmtp, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Smtp")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Smtp, actual.Smtp, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailSmtpNewStyle, EmptyObject: EmptyConfigNotificationSendEmailSmtp, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Smtp")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResetPasswordTemplate, actual.ResetPasswordTemplate, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailResetPasswordTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailResetPasswordTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResetPasswordTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResetPasswordTemplate, actual.ResetPasswordTemplate, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailResetPasswordTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailResetPasswordTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResetPasswordTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VerifyEmailTemplate, actual.VerifyEmailTemplate, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailVerifyEmailTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailVerifyEmailTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VerifyEmailTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VerifyEmailTemplate, actual.VerifyEmailTemplate, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailVerifyEmailTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailVerifyEmailTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VerifyEmailTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ChangeEmailTemplate, actual.ChangeEmailTemplate, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailChangeEmailTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailChangeEmailTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ChangeEmailTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ChangeEmailTemplate, actual.ChangeEmailTemplate, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailChangeEmailTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailChangeEmailTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ChangeEmailTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CallbackUri, actual.CallbackUri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("CallbackUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CallbackUri, actual.CallbackUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("CallbackUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DnsInfo, actual.DnsInfo, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailDnsInfoNewStyle, EmptyObject: EmptyConfigNotificationSendEmailDnsInfo, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DnsInfo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DnsInfo, actual.DnsInfo, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailDnsInfoNewStyle, EmptyObject: EmptyConfigNotificationSendEmailDnsInfo, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DnsInfo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RevertSecondFactorAdditionTemplate, actual.RevertSecondFactorAdditionTemplate, dcl.Info{ObjectFunction: compareConfigNotificationSendEmailRevertSecondFactorAdditionTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailRevertSecondFactorAdditionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevertSecondFactorAdditionTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RevertSecondFactorAdditionTemplate, actual.RevertSecondFactorAdditionTemplate, dcl.DiffInfo{ObjectFunction: compareConfigNotificationSendEmailRevertSecondFactorAdditionTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendEmailRevertSecondFactorAdditionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevertSecondFactorAdditionTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4313,42 +4313,42 @@ func compareConfigNotificationSendEmailSmtpNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SenderEmail, actual.SenderEmail, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderEmail, actual.SenderEmail, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Host, actual.Host, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Host")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Host, actual.Host, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Host")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Port, actual.Port, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Port")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Port, actual.Port, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Port")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Username, actual.Username, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Username")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Username, actual.Username, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Username")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Password, actual.Password, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Password")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Password, actual.Password, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Password")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecurityMode, actual.SecurityMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SecurityMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecurityMode, actual.SecurityMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SecurityMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4377,49 +4377,49 @@ func compareConfigNotificationSendEmailResetPasswordTemplateNewStyle(d, a interf
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4448,49 +4448,49 @@ func compareConfigNotificationSendEmailVerifyEmailTemplateNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4519,49 +4519,49 @@ func compareConfigNotificationSendEmailChangeEmailTemplateNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4590,35 +4590,35 @@ func compareConfigNotificationSendEmailDnsInfoNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CustomDomain, actual.CustomDomain, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomDomain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomDomain, actual.CustomDomain, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomDomain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UseCustomDomain, actual.UseCustomDomain, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("UseCustomDomain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UseCustomDomain, actual.UseCustomDomain, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("UseCustomDomain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PendingCustomDomain, actual.PendingCustomDomain, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PendingCustomDomain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PendingCustomDomain, actual.PendingCustomDomain, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PendingCustomDomain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomDomainState, actual.CustomDomainState, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomDomainState")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomDomainState, actual.CustomDomainState, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomDomainState")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DomainVerificationRequestTime, actual.DomainVerificationRequestTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DomainVerificationRequestTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DomainVerificationRequestTime, actual.DomainVerificationRequestTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DomainVerificationRequestTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4647,49 +4647,49 @@ func compareConfigNotificationSendEmailRevertSecondFactorAdditionTemplateNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderLocalPart, actual.SenderLocalPart, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderLocalPart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SenderDisplayName, actual.SenderDisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SenderDisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BodyFormat, actual.BodyFormat, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BodyFormat")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplyTo, actual.ReplyTo, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("ReplyTo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Customized, actual.Customized, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Customized")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4718,14 +4718,14 @@ func compareConfigNotificationSendSmsNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UseDeviceLocale, actual.UseDeviceLocale, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("UseDeviceLocale")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UseDeviceLocale, actual.UseDeviceLocale, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("UseDeviceLocale")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SmsTemplate, actual.SmsTemplate, dcl.Info{OutputOnly: true, ObjectFunction: compareConfigNotificationSendSmsSmsTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendSmsSmsTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SmsTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SmsTemplate, actual.SmsTemplate, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareConfigNotificationSendSmsSmsTemplateNewStyle, EmptyObject: EmptyConfigNotificationSendSmsSmsTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SmsTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4754,7 +4754,7 @@ func compareConfigNotificationSendSmsSmsTemplateNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4783,7 +4783,7 @@ func compareConfigQuotaNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SignUpQuotaConfig, actual.SignUpQuotaConfig, dcl.Info{ObjectFunction: compareConfigQuotaSignUpQuotaConfigNewStyle, EmptyObject: EmptyConfigQuotaSignUpQuotaConfig, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignUpQuotaConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignUpQuotaConfig, actual.SignUpQuotaConfig, dcl.DiffInfo{ObjectFunction: compareConfigQuotaSignUpQuotaConfigNewStyle, EmptyObject: EmptyConfigQuotaSignUpQuotaConfig, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignUpQuotaConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4812,21 +4812,21 @@ func compareConfigQuotaSignUpQuotaConfigNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StartTime, actual.StartTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("StartTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StartTime, actual.StartTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("StartTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.QuotaDuration, actual.QuotaDuration, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("QuotaDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.QuotaDuration, actual.QuotaDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("QuotaDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4855,7 +4855,7 @@ func compareConfigMonitoringNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RequestLogging, actual.RequestLogging, dcl.Info{ObjectFunction: compareConfigMonitoringRequestLoggingNewStyle, EmptyObject: EmptyConfigMonitoringRequestLogging, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("RequestLogging")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequestLogging, actual.RequestLogging, dcl.DiffInfo{ObjectFunction: compareConfigMonitoringRequestLoggingNewStyle, EmptyObject: EmptyConfigMonitoringRequestLogging, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("RequestLogging")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4884,7 +4884,7 @@ func compareConfigMonitoringRequestLoggingNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4913,14 +4913,14 @@ func compareConfigMultiTenantNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowTenants, actual.AllowTenants, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AllowTenants")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowTenants, actual.AllowTenants, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AllowTenants")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DefaultTenantLocation, actual.DefaultTenantLocation, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DefaultTenantLocation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DefaultTenantLocation, actual.DefaultTenantLocation, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DefaultTenantLocation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4949,21 +4949,21 @@ func compareConfigClientNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ApiKey, actual.ApiKey, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ApiKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ApiKey, actual.ApiKey, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ApiKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.Info{ObjectFunction: compareConfigClientPermissionsNewStyle, EmptyObject: EmptyConfigClientPermissions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{ObjectFunction: compareConfigClientPermissionsNewStyle, EmptyObject: EmptyConfigClientPermissions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FirebaseSubdomain, actual.FirebaseSubdomain, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FirebaseSubdomain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FirebaseSubdomain, actual.FirebaseSubdomain, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FirebaseSubdomain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4992,14 +4992,14 @@ func compareConfigClientPermissionsNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DisabledUserSignup, actual.DisabledUserSignup, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DisabledUserSignup")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisabledUserSignup, actual.DisabledUserSignup, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DisabledUserSignup")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisabledUserDeletion, actual.DisabledUserDeletion, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DisabledUserDeletion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisabledUserDeletion, actual.DisabledUserDeletion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("DisabledUserDeletion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5028,7 +5028,7 @@ func compareConfigMfaNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldD
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5057,7 +5057,7 @@ func compareConfigBlockingFunctionsNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Triggers, actual.Triggers, dcl.Info{ObjectFunction: compareConfigBlockingFunctionsTriggersNewStyle, EmptyObject: EmptyConfigBlockingFunctionsTriggers, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Triggers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Triggers, actual.Triggers, dcl.DiffInfo{ObjectFunction: compareConfigBlockingFunctionsTriggersNewStyle, EmptyObject: EmptyConfigBlockingFunctionsTriggers, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Triggers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5086,14 +5086,14 @@ func compareConfigBlockingFunctionsTriggersNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FunctionUri, actual.FunctionUri, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("FunctionUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FunctionUri, actual.FunctionUri, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("FunctionUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

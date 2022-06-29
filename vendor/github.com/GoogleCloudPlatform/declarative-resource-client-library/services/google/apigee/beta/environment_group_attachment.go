@@ -142,8 +142,9 @@ func (c *Client) GetEnvironmentGroupAttachment(ctx context.Context, r *Environme
 	if err != nil {
 		return nil, err
 	}
-	result.Envgroup = r.Envgroup
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Envgroup = nr.Envgroup
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -294,7 +295,7 @@ func applyEnvironmentGroupAttachmentHelper(c *Client, ctx context.Context, rawDe
 func applyEnvironmentGroupAttachmentDiff(c *Client, ctx context.Context, desired *EnvironmentGroupAttachment, rawDesired *EnvironmentGroupAttachment, ops []environmentGroupAttachmentApiOperation, opts ...dcl.ApplyOption) (*EnvironmentGroupAttachment, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetEnvironmentGroupAttachment(ctx, desired.urlNormalized())
+	rawNew, err := c.GetEnvironmentGroupAttachment(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

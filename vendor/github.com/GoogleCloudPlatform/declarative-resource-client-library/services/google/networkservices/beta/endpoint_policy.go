@@ -407,9 +407,10 @@ func (c *Client) GetEndpointPolicy(ctx context.Context, r *EndpointPolicy) (*End
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -560,7 +561,7 @@ func applyEndpointPolicyHelper(c *Client, ctx context.Context, rawDesired *Endpo
 func applyEndpointPolicyDiff(c *Client, ctx context.Context, desired *EndpointPolicy, rawDesired *EndpointPolicy, ops []endpointPolicyApiOperation, opts ...dcl.ApplyOption) (*EndpointPolicy, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetEndpointPolicy(ctx, desired.urlNormalized())
+	rawNew, err := c.GetEndpointPolicy(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

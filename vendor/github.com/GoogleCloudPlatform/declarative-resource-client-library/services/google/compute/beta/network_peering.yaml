@@ -55,6 +55,7 @@ components:
       title: NetworkPeering
       x-dcl-id: names/{{name}}
       x-dcl-uses-state-hint: true
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       properties:

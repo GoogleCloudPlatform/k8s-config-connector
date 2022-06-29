@@ -206,9 +206,10 @@ func (c *Client) GetVpnTunnel(ctx context.Context, r *VpnTunnel) (*VpnTunnel, er
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Region = r.Region
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Region = nr.Region
+	result.Name = nr.Name
 	if dcl.IsZeroValue(result.IkeVersion) {
 		result.IkeVersion = dcl.Int64(2)
 	}
@@ -362,7 +363,7 @@ func applyVpnTunnelHelper(c *Client, ctx context.Context, rawDesired *VpnTunnel,
 func applyVpnTunnelDiff(c *Client, ctx context.Context, desired *VpnTunnel, rawDesired *VpnTunnel, ops []vpnTunnelApiOperation, opts ...dcl.ApplyOption) (*VpnTunnel, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetVpnTunnel(ctx, desired.urlNormalized())
+	rawNew, err := c.GetVpnTunnel(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

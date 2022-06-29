@@ -4708,84 +4708,84 @@ func diffPatchDeployment(c *Client, desired, actual *PatchDeployment, opts ...dc
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceFilter, actual.InstanceFilter, dcl.Info{ObjectFunction: comparePatchDeploymentInstanceFilterNewStyle, EmptyObject: EmptyPatchDeploymentInstanceFilter, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("InstanceFilter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceFilter, actual.InstanceFilter, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentInstanceFilterNewStyle, EmptyObject: EmptyPatchDeploymentInstanceFilter, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("InstanceFilter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PatchConfig, actual.PatchConfig, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PatchConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PatchConfig, actual.PatchConfig, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PatchConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Duration, actual.Duration, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Duration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Duration, actual.Duration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Duration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OneTimeSchedule, actual.OneTimeSchedule, dcl.Info{ObjectFunction: comparePatchDeploymentOneTimeScheduleNewStyle, EmptyObject: EmptyPatchDeploymentOneTimeSchedule, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("OneTimeSchedule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OneTimeSchedule, actual.OneTimeSchedule, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentOneTimeScheduleNewStyle, EmptyObject: EmptyPatchDeploymentOneTimeSchedule, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("OneTimeSchedule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RecurringSchedule, actual.RecurringSchedule, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleNewStyle, EmptyObject: EmptyPatchDeploymentRecurringSchedule, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("RecurringSchedule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RecurringSchedule, actual.RecurringSchedule, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleNewStyle, EmptyObject: EmptyPatchDeploymentRecurringSchedule, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("RecurringSchedule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastExecuteTime, actual.LastExecuteTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastExecuteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastExecuteTime, actual.LastExecuteTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastExecuteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rollout, actual.Rollout, dcl.Info{ObjectFunction: comparePatchDeploymentRolloutNewStyle, EmptyObject: EmptyPatchDeploymentRollout, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Rollout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rollout, actual.Rollout, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRolloutNewStyle, EmptyObject: EmptyPatchDeploymentRollout, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Rollout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4814,35 +4814,35 @@ func comparePatchDeploymentInstanceFilterNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.All, actual.All, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("All")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.All, actual.All, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("All")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupLabels, actual.GroupLabels, dcl.Info{ObjectFunction: comparePatchDeploymentInstanceFilterGroupLabelsNewStyle, EmptyObject: EmptyPatchDeploymentInstanceFilterGroupLabels, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GroupLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupLabels, actual.GroupLabels, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentInstanceFilterGroupLabelsNewStyle, EmptyObject: EmptyPatchDeploymentInstanceFilterGroupLabels, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GroupLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zones, actual.Zones, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Zones")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zones, actual.Zones, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Zones")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceNamePrefixes, actual.InstanceNamePrefixes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("InstanceNamePrefixes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceNamePrefixes, actual.InstanceNamePrefixes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("InstanceNamePrefixes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4871,7 +4871,7 @@ func comparePatchDeploymentInstanceFilterGroupLabelsNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4900,56 +4900,56 @@ func comparePatchDeploymentPatchConfigNewStyle(d, a interface{}, fn dcl.FieldNam
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RebootConfig, actual.RebootConfig, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("RebootConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RebootConfig, actual.RebootConfig, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("RebootConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigAptNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigApt, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigAptNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigApt, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigYumNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigYum, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigYumNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigYum, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigGooNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigGoo, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigGooNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigGoo, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigZypperNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigZypper, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigZypperNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigZypper, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WindowsUpdate, actual.WindowsUpdate, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigWindowsUpdateNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigWindowsUpdate, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsUpdate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowsUpdate, actual.WindowsUpdate, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigWindowsUpdateNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigWindowsUpdate, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsUpdate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PreStep, actual.PreStep, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPreStepNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStep, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PreStep")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PreStep, actual.PreStep, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPreStepNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStep, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PreStep")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PostStep, actual.PostStep, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPostStepNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStep, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PostStep")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PostStep, actual.PostStep, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPostStepNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStep, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("PostStep")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4978,21 +4978,21 @@ func comparePatchDeploymentPatchConfigAptNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusivePackages, actual.ExclusivePackages, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePackages")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusivePackages, actual.ExclusivePackages, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePackages")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5021,28 +5021,28 @@ func comparePatchDeploymentPatchConfigYumNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Security, actual.Security, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Security")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Security, actual.Security, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Security")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minimal, actual.Minimal, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Minimal")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minimal, actual.Minimal, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Minimal")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusivePackages, actual.ExclusivePackages, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePackages")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusivePackages, actual.ExclusivePackages, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePackages")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5077,42 +5077,42 @@ func comparePatchDeploymentPatchConfigZypperNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WithOptional, actual.WithOptional, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WithOptional")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WithOptional, actual.WithOptional, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WithOptional")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WithUpdate, actual.WithUpdate, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WithUpdate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WithUpdate, actual.WithUpdate, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WithUpdate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Categories, actual.Categories, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Categories")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Categories, actual.Categories, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Categories")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Severities, actual.Severities, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Severities")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Severities, actual.Severities, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Severities")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusivePatches, actual.ExclusivePatches, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePatches")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusivePatches, actual.ExclusivePatches, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePatches")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5141,21 +5141,21 @@ func comparePatchDeploymentPatchConfigWindowsUpdateNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Classifications, actual.Classifications, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Classifications")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Classifications, actual.Classifications, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Classifications")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Excludes, actual.Excludes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Excludes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusivePatches, actual.ExclusivePatches, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePatches")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusivePatches, actual.ExclusivePatches, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExclusivePatches")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5184,14 +5184,14 @@ func comparePatchDeploymentPatchConfigPreStepNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LinuxExecStepConfig, actual.LinuxExecStepConfig, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepLinuxExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LinuxExecStepConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinuxExecStepConfig, actual.LinuxExecStepConfig, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepLinuxExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LinuxExecStepConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WindowsExecStepConfig, actual.WindowsExecStepConfig, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepWindowsExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsExecStepConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowsExecStepConfig, actual.WindowsExecStepConfig, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepWindowsExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsExecStepConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5220,28 +5220,28 @@ func comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigNewStyle(d, a in
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5270,21 +5270,21 @@ func comparePatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjectNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5313,28 +5313,28 @@ func comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5363,21 +5363,21 @@ func comparePatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObjectNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5406,14 +5406,14 @@ func comparePatchDeploymentPatchConfigPostStepNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LinuxExecStepConfig, actual.LinuxExecStepConfig, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepLinuxExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LinuxExecStepConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinuxExecStepConfig, actual.LinuxExecStepConfig, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepLinuxExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LinuxExecStepConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WindowsExecStepConfig, actual.WindowsExecStepConfig, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepWindowsExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsExecStepConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowsExecStepConfig, actual.WindowsExecStepConfig, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepWindowsExecStepConfig, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WindowsExecStepConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5442,28 +5442,28 @@ func comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5492,21 +5492,21 @@ func comparePatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObjectNewSty
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5535,28 +5535,28 @@ func comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.Info{ObjectFunction: comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcsObject, actual.GcsObject, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObjectNewStyle, EmptyObject: EmptyPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObject, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GcsObject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedSuccessCodes, actual.AllowedSuccessCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("AllowedSuccessCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5585,21 +5585,21 @@ func comparePatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObjectNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GenerationNumber, actual.GenerationNumber, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("GenerationNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5628,7 +5628,7 @@ func comparePatchDeploymentOneTimeScheduleNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ExecuteTime, actual.ExecuteTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExecuteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExecuteTime, actual.ExecuteTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("ExecuteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5657,63 +5657,63 @@ func comparePatchDeploymentRecurringScheduleNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.TimeZone, actual.TimeZone, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleTimeZoneNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleTimeZone, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("TimeZone")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeZone, actual.TimeZone, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleTimeZoneNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleTimeZone, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("TimeZone")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StartTime, actual.StartTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("StartTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StartTime, actual.StartTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("StartTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EndTime, actual.EndTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("EndTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EndTime, actual.EndTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("EndTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeOfDay, actual.TimeOfDay, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleTimeOfDayNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleTimeOfDay, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("TimeOfDay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeOfDay, actual.TimeOfDay, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleTimeOfDayNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleTimeOfDay, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("TimeOfDay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Frequency, actual.Frequency, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Frequency")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Frequency, actual.Frequency, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Frequency")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Weekly, actual.Weekly, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleWeeklyNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleWeekly, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Weekly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weekly, actual.Weekly, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleWeeklyNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleWeekly, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Weekly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Monthly, actual.Monthly, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleMonthlyNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleMonthly, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Monthly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Monthly, actual.Monthly, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleMonthlyNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleMonthly, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Monthly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LastExecuteTime, actual.LastExecuteTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastExecuteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LastExecuteTime, actual.LastExecuteTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LastExecuteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NextExecuteTime, actual.NextExecuteTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NextExecuteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NextExecuteTime, actual.NextExecuteTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NextExecuteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5742,14 +5742,14 @@ func comparePatchDeploymentRecurringScheduleTimeZoneNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5778,28 +5778,28 @@ func comparePatchDeploymentRecurringScheduleTimeOfDayNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5828,7 +5828,7 @@ func comparePatchDeploymentRecurringScheduleWeeklyNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeek, actual.DayOfWeek, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DayOfWeek")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeek, actual.DayOfWeek, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DayOfWeek")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5857,14 +5857,14 @@ func comparePatchDeploymentRecurringScheduleMonthlyNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WeekDayOfMonth, actual.WeekDayOfMonth, dcl.Info{ObjectFunction: comparePatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WeekDayOfMonth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WeekDayOfMonth, actual.WeekDayOfMonth, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthNewStyle, EmptyObject: EmptyPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WeekDayOfMonth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MonthDay, actual.MonthDay, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("MonthDay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MonthDay, actual.MonthDay, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("MonthDay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5893,14 +5893,14 @@ func comparePatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WeekOrdinal, actual.WeekOrdinal, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WeekOrdinal")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WeekOrdinal, actual.WeekOrdinal, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("WeekOrdinal")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeek, actual.DayOfWeek, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DayOfWeek")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeek, actual.DayOfWeek, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DayOfWeek")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5929,14 +5929,14 @@ func comparePatchDeploymentRolloutNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisruptionBudget, actual.DisruptionBudget, dcl.Info{ObjectFunction: comparePatchDeploymentRolloutDisruptionBudgetNewStyle, EmptyObject: EmptyPatchDeploymentRolloutDisruptionBudget, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DisruptionBudget")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisruptionBudget, actual.DisruptionBudget, dcl.DiffInfo{ObjectFunction: comparePatchDeploymentRolloutDisruptionBudgetNewStyle, EmptyObject: EmptyPatchDeploymentRolloutDisruptionBudget, OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("DisruptionBudget")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5965,14 +5965,14 @@ func comparePatchDeploymentRolloutDisruptionBudgetNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Fixed, actual.Fixed, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Fixed")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fixed, actual.Fixed, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Fixed")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percent, actual.Percent, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Percent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percent, actual.Percent, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePatchDeploymentUpdatePatchDeploymentOperation")}, fn.AddNest("Percent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

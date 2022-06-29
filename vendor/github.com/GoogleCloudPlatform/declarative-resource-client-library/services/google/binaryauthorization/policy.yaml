@@ -35,6 +35,7 @@ components:
       title: Policy
       x-dcl-id: projects/{{project}}/policy
       x-dcl-parent-container: project
+      x-dcl-has-create: false
       x-dcl-has-iam: true
       type: object
       required:

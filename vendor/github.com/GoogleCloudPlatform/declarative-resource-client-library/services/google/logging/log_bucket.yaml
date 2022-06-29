@@ -62,6 +62,7 @@ components:
     LogBucket:
       title: LogBucket
       x-dcl-id: '{{parent}}/locations/{{location}}/buckets/{{name}}'
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

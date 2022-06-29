@@ -204,9 +204,10 @@ func (c *Client) GetAssignment(ctx context.Context, r *Assignment) (*Assignment,
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Reservation = r.Reservation
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Reservation = nr.Reservation
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -357,7 +358,7 @@ func applyAssignmentHelper(c *Client, ctx context.Context, rawDesired *Assignmen
 func applyAssignmentDiff(c *Client, ctx context.Context, desired *Assignment, rawDesired *Assignment, ops []assignmentApiOperation, opts ...dcl.ApplyOption) (*Assignment, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetAssignment(ctx, desired.urlNormalized())
+	rawNew, err := c.GetAssignment(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

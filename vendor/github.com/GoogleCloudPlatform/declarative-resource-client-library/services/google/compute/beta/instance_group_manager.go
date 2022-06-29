@@ -245,6 +245,60 @@ func (v InstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnum) Val
 	}
 }
 
+// The enum InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum.
+type InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum string
+
+// InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumRef returns a *InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumRef(s string) *InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum {
+	v := InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum(s)
+	return &v
+}
+
+func (v InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
+// The enum InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum.
+type InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum string
+
+// InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumRef returns a *InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumRef(s string) *InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum {
+	v := InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum(s)
+	return &v
+}
+
+func (v InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
 // The enum InstanceGroupManagerFailoverActionEnum.
 type InstanceGroupManagerFailoverActionEnum string
 
@@ -1056,8 +1110,10 @@ func (r *InstanceGroupManagerStatefulPolicy) HashCode() string {
 }
 
 type InstanceGroupManagerStatefulPolicyPreservedState struct {
-	empty bool                                                             `json:"-"`
-	Disks map[string]InstanceGroupManagerStatefulPolicyPreservedStateDisks `json:"disks"`
+	empty       bool                                                                   `json:"-"`
+	Disks       map[string]InstanceGroupManagerStatefulPolicyPreservedStateDisks       `json:"disks"`
+	InternalIps map[string]InstanceGroupManagerStatefulPolicyPreservedStateInternalIps `json:"internalIps"`
+	ExternalIps map[string]InstanceGroupManagerStatefulPolicyPreservedStateExternalIps `json:"externalIps"`
 }
 
 type jsonInstanceGroupManagerStatefulPolicyPreservedState InstanceGroupManagerStatefulPolicyPreservedState
@@ -1076,6 +1132,10 @@ func (r *InstanceGroupManagerStatefulPolicyPreservedState) UnmarshalJSON(data []
 	} else {
 
 		r.Disks = res.Disks
+
+		r.InternalIps = res.InternalIps
+
+		r.ExternalIps = res.ExternalIps
 
 	}
 	return nil
@@ -1141,6 +1201,98 @@ func (r *InstanceGroupManagerStatefulPolicyPreservedStateDisks) String() string 
 }
 
 func (r *InstanceGroupManagerStatefulPolicyPreservedStateDisks) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type InstanceGroupManagerStatefulPolicyPreservedStateInternalIps struct {
+	empty      bool                                                                       `json:"-"`
+	AutoDelete *InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum `json:"autoDelete"`
+}
+
+type jsonInstanceGroupManagerStatefulPolicyPreservedStateInternalIps InstanceGroupManagerStatefulPolicyPreservedStateInternalIps
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateInternalIps) UnmarshalJSON(data []byte) error {
+	var res jsonInstanceGroupManagerStatefulPolicyPreservedStateInternalIps
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyInstanceGroupManagerStatefulPolicyPreservedStateInternalIps
+	} else {
+
+		r.AutoDelete = res.AutoDelete
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this InstanceGroupManagerStatefulPolicyPreservedStateInternalIps is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyInstanceGroupManagerStatefulPolicyPreservedStateInternalIps *InstanceGroupManagerStatefulPolicyPreservedStateInternalIps = &InstanceGroupManagerStatefulPolicyPreservedStateInternalIps{empty: true}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateInternalIps) Empty() bool {
+	return r.empty
+}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateInternalIps) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateInternalIps) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type InstanceGroupManagerStatefulPolicyPreservedStateExternalIps struct {
+	empty      bool                                                                       `json:"-"`
+	AutoDelete *InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum `json:"autoDelete"`
+}
+
+type jsonInstanceGroupManagerStatefulPolicyPreservedStateExternalIps InstanceGroupManagerStatefulPolicyPreservedStateExternalIps
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateExternalIps) UnmarshalJSON(data []byte) error {
+	var res jsonInstanceGroupManagerStatefulPolicyPreservedStateExternalIps
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyInstanceGroupManagerStatefulPolicyPreservedStateExternalIps
+	} else {
+
+		r.AutoDelete = res.AutoDelete
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this InstanceGroupManagerStatefulPolicyPreservedStateExternalIps is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyInstanceGroupManagerStatefulPolicyPreservedStateExternalIps *InstanceGroupManagerStatefulPolicyPreservedStateExternalIps = &InstanceGroupManagerStatefulPolicyPreservedStateExternalIps{empty: true}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateExternalIps) Empty() bool {
+	return r.empty
+}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateExternalIps) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *InstanceGroupManagerStatefulPolicyPreservedStateExternalIps) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))
@@ -1292,9 +1444,10 @@ func (c *Client) GetInstanceGroupManager(ctx context.Context, r *InstanceGroupMa
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1459,7 +1612,7 @@ func applyInstanceGroupManagerHelper(c *Client, ctx context.Context, rawDesired 
 func applyInstanceGroupManagerDiff(c *Client, ctx context.Context, desired *InstanceGroupManager, rawDesired *InstanceGroupManager, ops []instanceGroupManagerApiOperation, opts ...dcl.ApplyOption) (*InstanceGroupManager, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetInstanceGroupManager(ctx, desired.urlNormalized())
+	rawNew, err := c.GetInstanceGroupManager(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

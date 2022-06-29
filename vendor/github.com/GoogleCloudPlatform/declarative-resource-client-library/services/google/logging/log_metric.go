@@ -645,8 +645,9 @@ func (c *Client) GetLogMetric(ctx context.Context, r *LogMetric) (*LogMetric, er
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -797,7 +798,7 @@ func applyLogMetricHelper(c *Client, ctx context.Context, rawDesired *LogMetric,
 func applyLogMetricDiff(c *Client, ctx context.Context, desired *LogMetric, rawDesired *LogMetric, ops []logMetricApiOperation, opts ...dcl.ApplyOption) (*LogMetric, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetLogMetric(ctx, desired.urlNormalized())
+	rawNew, err := c.GetLogMetric(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

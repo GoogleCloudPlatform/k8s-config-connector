@@ -3073,168 +3073,168 @@ func diffInstance(c *Client, desired, actual *Instance, opts ...dcl.ApplyOption)
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.CanIPForward, actual.CanIPForward, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanIpForward")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CanIPForward, actual.CanIPForward, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanIpForward")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CpuPlatform, actual.CpuPlatform, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CpuPlatform")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CpuPlatform, actual.CpuPlatform, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CpuPlatform")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreationTimestamp, actual.CreationTimestamp, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreationTimestamp")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreationTimestamp, actual.CreationTimestamp, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreationTimestamp")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeletionProtection, actual.DeletionProtection, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceSetDeletionProtectionOperation")}, fn.AddNest("DeletionProtection")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeletionProtection, actual.DeletionProtection, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceSetDeletionProtectionOperation")}, fn.AddNest("DeletionProtection")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Disks, actual.Disks, dcl.Info{Ignore: true, ObjectFunction: compareInstanceDisksNewStyle, EmptyObject: EmptyInstanceDisks, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Disks")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Disks, actual.Disks, dcl.DiffInfo{Ignore: true, ObjectFunction: compareInstanceDisksNewStyle, EmptyObject: EmptyInstanceDisks, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Disks")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GuestAccelerators, actual.GuestAccelerators, dcl.Info{ObjectFunction: compareInstanceGuestAcceleratorsNewStyle, EmptyObject: EmptyInstanceGuestAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GuestAccelerators")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GuestAccelerators, actual.GuestAccelerators, dcl.DiffInfo{ObjectFunction: compareInstanceGuestAcceleratorsNewStyle, EmptyObject: EmptyInstanceGuestAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GuestAccelerators")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Hostname, actual.Hostname, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Hostname")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hostname, actual.Hostname, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Hostname")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceSetLabelsOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceSetLabelsOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Metadata, actual.Metadata, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceSetMetadataOperation")}, fn.AddNest("Metadata")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Metadata, actual.Metadata, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceSetMetadataOperation")}, fn.AddNest("Metadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MachineType, actual.MachineType, dcl.Info{Type: "ReferenceType", OperationSelector: machineTypeOperations()}, fn.AddNest("MachineType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MachineType, actual.MachineType, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: machineTypeOperations()}, fn.AddNest("MachineType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NetworkInterfaces, actual.NetworkInterfaces, dcl.Info{ObjectFunction: compareInstanceNetworkInterfacesNewStyle, EmptyObject: EmptyInstanceNetworkInterfaces, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkInterfaces")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NetworkInterfaces, actual.NetworkInterfaces, dcl.DiffInfo{ObjectFunction: compareInstanceNetworkInterfacesNewStyle, EmptyObject: EmptyInstanceNetworkInterfaces, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkInterfaces")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Scheduling, actual.Scheduling, dcl.Info{ObjectFunction: compareInstanceSchedulingNewStyle, EmptyObject: EmptyInstanceScheduling, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scheduling")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Scheduling, actual.Scheduling, dcl.DiffInfo{ObjectFunction: compareInstanceSchedulingNewStyle, EmptyObject: EmptyInstanceScheduling, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scheduling")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccounts, actual.ServiceAccounts, dcl.Info{ObjectFunction: compareInstanceServiceAccountsNewStyle, EmptyObject: EmptyInstanceServiceAccounts, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccounts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccounts, actual.ServiceAccounts, dcl.DiffInfo{ObjectFunction: compareInstanceServiceAccountsNewStyle, EmptyObject: EmptyInstanceServiceAccounts, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccounts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ShieldedInstanceConfig, actual.ShieldedInstanceConfig, dcl.Info{ObjectFunction: compareInstanceShieldedInstanceConfigNewStyle, EmptyObject: EmptyInstanceShieldedInstanceConfig, OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("ShieldedInstanceConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ShieldedInstanceConfig, actual.ShieldedInstanceConfig, dcl.DiffInfo{ObjectFunction: compareInstanceShieldedInstanceConfigNewStyle, EmptyObject: EmptyInstanceShieldedInstanceConfig, OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("ShieldedInstanceConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StatusMessage, actual.StatusMessage, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StatusMessage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StatusMessage, actual.StatusMessage, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StatusMessage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceSetTagsOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceSetTagsOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zone, actual.Zone, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zone, actual.Zone, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3263,70 +3263,70 @@ func compareInstanceDisksNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AutoDelete, actual.AutoDelete, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoDelete")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AutoDelete, actual.AutoDelete, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoDelete")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Boot, actual.Boot, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Boot")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Boot, actual.Boot, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Boot")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeviceName, actual.DeviceName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeviceName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeviceName, actual.DeviceName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeviceName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskEncryptionKey, actual.DiskEncryptionKey, dcl.Info{ObjectFunction: compareInstanceDisksDiskEncryptionKeyNewStyle, EmptyObject: EmptyInstanceDisksDiskEncryptionKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskEncryptionKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskEncryptionKey, actual.DiskEncryptionKey, dcl.DiffInfo{ObjectFunction: compareInstanceDisksDiskEncryptionKeyNewStyle, EmptyObject: EmptyInstanceDisksDiskEncryptionKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskEncryptionKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Index, actual.Index, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Index")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Index, actual.Index, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Index")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InitializeParams, actual.InitializeParams, dcl.Info{Ignore: true, ObjectFunction: compareInstanceDisksInitializeParamsNewStyle, EmptyObject: EmptyInstanceDisksInitializeParams, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InitializeParams")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InitializeParams, actual.InitializeParams, dcl.DiffInfo{Ignore: true, ObjectFunction: compareInstanceDisksInitializeParamsNewStyle, EmptyObject: EmptyInstanceDisksInitializeParams, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InitializeParams")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interface, actual.Interface, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Interface")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interface, actual.Interface, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Interface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3355,21 +3355,21 @@ func compareInstanceDisksDiskEncryptionKeyNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RawKey, actual.RawKey, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RawKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RawKey, actual.RawKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RawKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RsaEncryptedKey, actual.RsaEncryptedKey, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RsaEncryptedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RsaEncryptedKey, actual.RsaEncryptedKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RsaEncryptedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256, actual.Sha256, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Sha256")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256, actual.Sha256, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Sha256")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3398,35 +3398,35 @@ func compareInstanceDisksInitializeParamsNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DiskName, actual.DiskName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskName, actual.DiskName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskSizeGb, actual.DiskSizeGb, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskSizeGb")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskSizeGb, actual.DiskSizeGb, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskSizeGb")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskType, actual.DiskType, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskType, actual.DiskType, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SourceImage, actual.SourceImage, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceImage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SourceImage, actual.SourceImage, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceImage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SourceImageEncryptionKey, actual.SourceImageEncryptionKey, dcl.Info{ObjectFunction: compareInstanceDisksInitializeParamsSourceImageEncryptionKeyNewStyle, EmptyObject: EmptyInstanceDisksInitializeParamsSourceImageEncryptionKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceImageEncryptionKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SourceImageEncryptionKey, actual.SourceImageEncryptionKey, dcl.DiffInfo{ObjectFunction: compareInstanceDisksInitializeParamsSourceImageEncryptionKeyNewStyle, EmptyObject: EmptyInstanceDisksInitializeParamsSourceImageEncryptionKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceImageEncryptionKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3455,14 +3455,14 @@ func compareInstanceDisksInitializeParamsSourceImageEncryptionKeyNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RawKey, actual.RawKey, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RawKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RawKey, actual.RawKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RawKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256, actual.Sha256, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Sha256")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256, actual.Sha256, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Sha256")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3491,14 +3491,14 @@ func compareInstanceGuestAcceleratorsNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AcceleratorCount, actual.AcceleratorCount, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AcceleratorCount, actual.AcceleratorCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AcceleratorType, actual.AcceleratorType, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AcceleratorType, actual.AcceleratorType, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3527,49 +3527,49 @@ func compareInstanceNetworkInterfacesNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AccessConfigs, actual.AccessConfigs, dcl.Info{ObjectFunction: compareInstanceNetworkInterfacesAccessConfigsNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesAccessConfigs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AccessConfigs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AccessConfigs, actual.AccessConfigs, dcl.DiffInfo{ObjectFunction: compareInstanceNetworkInterfacesAccessConfigsNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesAccessConfigs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AccessConfigs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPv6AccessConfigs, actual.IPv6AccessConfigs, dcl.Info{ObjectFunction: compareInstanceNetworkInterfacesIPv6AccessConfigsNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesIPv6AccessConfigs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Ipv6AccessConfigs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPv6AccessConfigs, actual.IPv6AccessConfigs, dcl.DiffInfo{ObjectFunction: compareInstanceNetworkInterfacesIPv6AccessConfigsNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesIPv6AccessConfigs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Ipv6AccessConfigs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AliasIPRanges, actual.AliasIPRanges, dcl.Info{ObjectFunction: compareInstanceNetworkInterfacesAliasIPRangesNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesAliasIPRanges, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AliasIPRanges")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AliasIPRanges, actual.AliasIPRanges, dcl.DiffInfo{ObjectFunction: compareInstanceNetworkInterfacesAliasIPRangesNewStyle, EmptyObject: EmptyInstanceNetworkInterfacesAliasIPRanges, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AliasIPRanges")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NetworkIP, actual.NetworkIP, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkIP")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NetworkIP, actual.NetworkIP, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkIP")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Subnetwork, actual.Subnetwork, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subnetwork")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subnetwork, actual.Subnetwork, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subnetwork")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3598,56 +3598,56 @@ func compareInstanceNetworkInterfacesAccessConfigsNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NatIP, actual.NatIP, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NatIP")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NatIP, actual.NatIP, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NatIP")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalIPv6, actual.ExternalIPv6, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalIPv6, actual.ExternalIPv6, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalIPv6PrefixLength, actual.ExternalIPv6PrefixLength, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6PrefixLength")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalIPv6PrefixLength, actual.ExternalIPv6PrefixLength, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6PrefixLength")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SetPublicPtr, actual.SetPublicPtr, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SetPublicPtr")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SetPublicPtr, actual.SetPublicPtr, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SetPublicPtr")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublicPtrDomainName, actual.PublicPtrDomainName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicPtrDomainName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicPtrDomainName, actual.PublicPtrDomainName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicPtrDomainName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NetworkTier, actual.NetworkTier, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkTier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NetworkTier, actual.NetworkTier, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkTier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3676,56 +3676,56 @@ func compareInstanceNetworkInterfacesIPv6AccessConfigsNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NatIP, actual.NatIP, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NatIP")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NatIP, actual.NatIP, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NatIP")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalIPv6, actual.ExternalIPv6, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalIPv6, actual.ExternalIPv6, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalIPv6PrefixLength, actual.ExternalIPv6PrefixLength, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6PrefixLength")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalIPv6PrefixLength, actual.ExternalIPv6PrefixLength, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExternalIPv6PrefixLength")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SetPublicPtr, actual.SetPublicPtr, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SetPublicPtr")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SetPublicPtr, actual.SetPublicPtr, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SetPublicPtr")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublicPtrDomainName, actual.PublicPtrDomainName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicPtrDomainName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicPtrDomainName, actual.PublicPtrDomainName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicPtrDomainName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NetworkTier, actual.NetworkTier, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkTier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NetworkTier, actual.NetworkTier, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkTier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3754,14 +3754,14 @@ func compareInstanceNetworkInterfacesAliasIPRangesNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubnetworkRangeName, actual.SubnetworkRangeName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubnetworkRangeName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubnetworkRangeName, actual.SubnetworkRangeName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubnetworkRangeName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3790,21 +3790,21 @@ func compareInstanceSchedulingNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AutomaticRestart, actual.AutomaticRestart, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutomaticRestart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AutomaticRestart, actual.AutomaticRestart, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutomaticRestart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OnHostMaintenance, actual.OnHostMaintenance, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OnHostMaintenance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OnHostMaintenance, actual.OnHostMaintenance, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OnHostMaintenance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Preemptible, actual.Preemptible, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Preemptible")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Preemptible, actual.Preemptible, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Preemptible")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3833,14 +3833,14 @@ func compareInstanceServiceAccountsNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Email, actual.Email, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Email")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Email, actual.Email, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Email")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Scopes, actual.Scopes, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scopes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Scopes, actual.Scopes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scopes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3869,21 +3869,21 @@ func compareInstanceShieldedInstanceConfigNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EnableSecureBoot, actual.EnableSecureBoot, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableSecureBoot")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableSecureBoot, actual.EnableSecureBoot, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableSecureBoot")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableVtpm, actual.EnableVtpm, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableVtpm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableVtpm, actual.EnableVtpm, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableVtpm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableIntegrityMonitoring, actual.EnableIntegrityMonitoring, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableIntegrityMonitoring")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableIntegrityMonitoring, actual.EnableIntegrityMonitoring, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateShieldedInstanceConfigOperation")}, fn.AddNest("EnableIntegrityMonitoring")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

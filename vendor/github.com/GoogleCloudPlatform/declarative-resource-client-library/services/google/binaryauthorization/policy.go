@@ -711,7 +711,8 @@ func (c *Client) GetPolicy(ctx context.Context, r *Policy) (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
+	nr := r.urlNormalized()
+	result.Project = nr.Project
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -811,7 +812,7 @@ func applyPolicyHelper(c *Client, ctx context.Context, rawDesired *Policy, opts 
 func applyPolicyDiff(c *Client, ctx context.Context, desired *Policy, rawDesired *Policy, ops []policyApiOperation, opts ...dcl.ApplyOption) (*Policy, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetPolicy(ctx, desired.urlNormalized())
+	rawNew, err := c.GetPolicy(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

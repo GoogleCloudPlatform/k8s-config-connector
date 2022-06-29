@@ -5959,140 +5959,140 @@ func diffCertificateAuthority(c *Client, desired, actual *CertificateAuthority, 
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Config, actual.Config, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Config")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Config, actual.Config, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Config")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Lifetime, actual.Lifetime, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Lifetime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Lifetime, actual.Lifetime, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Lifetime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeySpec, actual.KeySpec, dcl.Info{ObjectFunction: compareCertificateAuthorityKeySpecNewStyle, EmptyObject: EmptyCertificateAuthorityKeySpec, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeySpec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeySpec, actual.KeySpec, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityKeySpecNewStyle, EmptyObject: EmptyCertificateAuthorityKeySpec, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeySpec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubordinateConfig, actual.SubordinateConfig, dcl.Info{OutputOnly: true, ObjectFunction: compareCertificateAuthoritySubordinateConfigNewStyle, EmptyObject: EmptyCertificateAuthoritySubordinateConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubordinateConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubordinateConfig, actual.SubordinateConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCertificateAuthoritySubordinateConfigNewStyle, EmptyObject: EmptyCertificateAuthoritySubordinateConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubordinateConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tier, actual.Tier, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tier, actual.Tier, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PemCaCertificates, actual.PemCaCertificates, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemCaCertificates")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PemCaCertificates, actual.PemCaCertificates, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemCaCertificates")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaCertificateDescriptions, actual.CaCertificateDescriptions, dcl.Info{OutputOnly: true, ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificateDescriptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaCertificateDescriptions, actual.CaCertificateDescriptions, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificateDescriptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GcsBucket, actual.GcsBucket, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GcsBucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GcsBucket, actual.GcsBucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GcsBucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AccessUrls, actual.AccessUrls, dcl.Info{OutputOnly: true, ObjectFunction: compareCertificateAuthorityAccessUrlsNewStyle, EmptyObject: EmptyCertificateAuthorityAccessUrls, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AccessUrls")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AccessUrls, actual.AccessUrls, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCertificateAuthorityAccessUrlsNewStyle, EmptyObject: EmptyCertificateAuthorityAccessUrls, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AccessUrls")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeleteTime, actual.DeleteTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeleteTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeleteTime, actual.DeleteTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeleteTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExpireTime, actual.ExpireTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpireTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExpireTime, actual.ExpireTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpireTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaPool, actual.CaPool, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaPool")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaPool, actual.CaPool, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaPool")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6121,21 +6121,21 @@ func compareCertificateAuthorityConfigNewStyle(d, a interface{}, fn dcl.FieldNam
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SubjectConfig, actual.SubjectConfig, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubjectConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubjectConfig, actual.SubjectConfig, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubjectConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.X509Config, actual.X509Config, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509Config, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("X509Config")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.X509Config, actual.X509Config, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509Config, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("X509Config")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.Info{OutputOnly: true, ObjectFunction: compareCertificateAuthorityConfigPublicKeyNewStyle, EmptyObject: EmptyCertificateAuthorityConfigPublicKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCertificateAuthorityConfigPublicKeyNewStyle, EmptyObject: EmptyCertificateAuthorityConfigPublicKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6164,14 +6164,14 @@ func compareCertificateAuthorityConfigSubjectConfigNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubject, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubject, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubjectAltName, actual.SubjectAltName, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubjectAltName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubjectAltName, actual.SubjectAltName, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SubjectAltName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6200,56 +6200,56 @@ func compareCertificateAuthorityConfigSubjectConfigSubjectNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CommonName, actual.CommonName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommonName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonName, actual.CommonName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommonName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CountryCode, actual.CountryCode, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CountryCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CountryCode, actual.CountryCode, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CountryCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Organization, actual.Organization, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Organization")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Organization, actual.Organization, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Organization")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OrganizationalUnit, actual.OrganizationalUnit, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OrganizationalUnit")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OrganizationalUnit, actual.OrganizationalUnit, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OrganizationalUnit")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Locality, actual.Locality, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Locality")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Locality, actual.Locality, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Locality")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Province, actual.Province, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Province")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Province, actual.Province, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Province")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StreetAddress, actual.StreetAddress, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StreetAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StreetAddress, actual.StreetAddress, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StreetAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PostalCode, actual.PostalCode, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PostalCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PostalCode, actual.PostalCode, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PostalCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6278,35 +6278,35 @@ func compareCertificateAuthorityConfigSubjectConfigSubjectAltNameNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DnsNames, actual.DnsNames, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DnsNames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DnsNames, actual.DnsNames, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DnsNames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EmailAddresses, actual.EmailAddresses, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EmailAddresses")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EmailAddresses, actual.EmailAddresses, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EmailAddresses")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPAddresses, actual.IPAddresses, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpAddresses")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPAddresses, actual.IPAddresses, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpAddresses")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomSans, actual.CustomSans, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomSans")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomSans, actual.CustomSans, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomSans")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6335,21 +6335,21 @@ func compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6378,7 +6378,7 @@ func compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjec
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6407,35 +6407,35 @@ func compareCertificateAuthorityConfigX509ConfigNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigCaOptionsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigCaOptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigCaOptionsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigCaOptions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigPolicyIdsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigPolicyIds, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigPolicyIdsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigPolicyIds, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigAdditionalExtensions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigAdditionalExtensions, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6464,21 +6464,21 @@ func compareCertificateAuthorityConfigX509ConfigKeyUsageNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6507,63 +6507,63 @@ func compareCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageNewStyle(d, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6592,42 +6592,42 @@ func compareCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsageNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6656,7 +6656,7 @@ func compareCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6685,14 +6685,14 @@ func compareCertificateAuthorityConfigX509ConfigCaOptionsNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6721,7 +6721,7 @@ func compareCertificateAuthorityConfigX509ConfigPolicyIdsNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6750,21 +6750,21 @@ func compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsNewStyle(d, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.Info{ObjectFunction: compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6793,7 +6793,7 @@ func compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectIdNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6822,14 +6822,14 @@ func compareCertificateAuthorityConfigPublicKeyNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6858,14 +6858,14 @@ func compareCertificateAuthorityKeySpecNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CloudKmsKeyVersion, actual.CloudKmsKeyVersion, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudKmsKeyVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudKmsKeyVersion, actual.CloudKmsKeyVersion, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudKmsKeyVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6894,14 +6894,14 @@ func compareCertificateAuthoritySubordinateConfigNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CertificateAuthority, actual.CertificateAuthority, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateAuthority")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertificateAuthority, actual.CertificateAuthority, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateAuthority")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PemIssuerChain, actual.PemIssuerChain, dcl.Info{ObjectFunction: compareCertificateAuthoritySubordinateConfigPemIssuerChainNewStyle, EmptyObject: EmptyCertificateAuthoritySubordinateConfigPemIssuerChain, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemIssuerChain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PemIssuerChain, actual.PemIssuerChain, dcl.DiffInfo{ObjectFunction: compareCertificateAuthoritySubordinateConfigPemIssuerChainNewStyle, EmptyObject: EmptyCertificateAuthoritySubordinateConfigPemIssuerChain, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemIssuerChain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6930,7 +6930,7 @@ func compareCertificateAuthoritySubordinateConfigPemIssuerChainNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PemCertificates, actual.PemCertificates, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemCertificates")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PemCertificates, actual.PemCertificates, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PemCertificates")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6959,56 +6959,56 @@ func compareCertificateAuthorityCaCertificateDescriptionsNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SubjectDescription, actual.SubjectDescription, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescription, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectDescription")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubjectDescription, actual.SubjectDescription, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescription, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectDescription")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.X509Description, actual.X509Description, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509Description, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("X509Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.X509Description, actual.X509Description, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509Description, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("X509Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsPublicKeyNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsPublicKey, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsPublicKeyNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsPublicKey, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubjectKeyId, actual.SubjectKeyId, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectKeyId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectKeyId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubjectKeyId, actual.SubjectKeyId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectKeyId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectKeyId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorityKeyId, actual.AuthorityKeyId, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsAuthorityKeyId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AuthorityKeyId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorityKeyId, actual.AuthorityKeyId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsAuthorityKeyId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AuthorityKeyId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CrlDistributionPoints, actual.CrlDistributionPoints, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CrlDistributionPoints")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CrlDistributionPoints, actual.CrlDistributionPoints, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CrlDistributionPoints")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AiaIssuingCertificateUrls, actual.AiaIssuingCertificateUrls, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AiaIssuingCertificateUrls")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AiaIssuingCertificateUrls, actual.AiaIssuingCertificateUrls, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AiaIssuingCertificateUrls")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertFingerprint, actual.CertFingerprint, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsCertFingerprintNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsCertFingerprint, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CertFingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertFingerprint, actual.CertFingerprint, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsCertFingerprintNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsCertFingerprint, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CertFingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7037,42 +7037,42 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subject, actual.Subject, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Subject")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SubjectAltName, actual.SubjectAltName, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectAltName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SubjectAltName, actual.SubjectAltName, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("SubjectAltName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HexSerialNumber, actual.HexSerialNumber, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("HexSerialNumber")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HexSerialNumber, actual.HexSerialNumber, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("HexSerialNumber")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Lifetime, actual.Lifetime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Lifetime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Lifetime, actual.Lifetime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Lifetime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NotBeforeTime, actual.NotBeforeTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("NotBeforeTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NotBeforeTime, actual.NotBeforeTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("NotBeforeTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NotAfterTime, actual.NotAfterTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("NotAfterTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NotAfterTime, actual.NotAfterTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("NotAfterTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7101,56 +7101,56 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubje
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CommonName, actual.CommonName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CommonName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonName, actual.CommonName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CommonName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CountryCode, actual.CountryCode, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CountryCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CountryCode, actual.CountryCode, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CountryCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Organization, actual.Organization, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Organization")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Organization, actual.Organization, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Organization")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OrganizationalUnit, actual.OrganizationalUnit, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("OrganizationalUnit")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OrganizationalUnit, actual.OrganizationalUnit, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("OrganizationalUnit")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Locality, actual.Locality, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Locality")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Locality, actual.Locality, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Locality")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Province, actual.Province, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Province")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Province, actual.Province, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Province")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StreetAddress, actual.StreetAddress, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("StreetAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StreetAddress, actual.StreetAddress, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("StreetAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PostalCode, actual.PostalCode, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PostalCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PostalCode, actual.PostalCode, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PostalCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7179,35 +7179,35 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubje
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DnsNames, actual.DnsNames, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DnsNames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DnsNames, actual.DnsNames, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DnsNames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EmailAddresses, actual.EmailAddresses, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EmailAddresses")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EmailAddresses, actual.EmailAddresses, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EmailAddresses")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPAddresses, actual.IPAddresses, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("IpAddresses")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPAddresses, actual.IPAddresses, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("IpAddresses")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomSans, actual.CustomSans, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CustomSans")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomSans, actual.CustomSans, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CustomSans")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7236,21 +7236,21 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubje
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7279,7 +7279,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubje
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7308,35 +7308,35 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyUsage, actual.KeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaOptions, actual.CaOptions, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CaOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIdsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PolicyIds, actual.PolicyIds, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIdsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("PolicyIds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AiaOcspServers, actual.AiaOcspServers, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AiaOcspServers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdditionalExtensions, actual.AdditionalExtensions, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("AdditionalExtensions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7365,21 +7365,21 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseKeyUsage, actual.BaseKeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("BaseKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExtendedKeyUsage, actual.ExtendedKeyUsage, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsageNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ExtendedKeyUsage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UnknownExtendedKeyUsages, actual.UnknownExtendedKeyUsages, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsagesNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("UnknownExtendedKeyUsages")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7408,63 +7408,63 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DigitalSignature, actual.DigitalSignature, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DigitalSignature")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ContentCommitment, actual.ContentCommitment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ContentCommitment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyEncipherment, actual.KeyEncipherment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataEncipherment, actual.DataEncipherment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DataEncipherment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyAgreement, actual.KeyAgreement, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyAgreement")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertSign, actual.CertSign, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CertSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CrlSign, actual.CrlSign, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CrlSign")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EncipherOnly, actual.EncipherOnly, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EncipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DecipherOnly, actual.DecipherOnly, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("DecipherOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7493,42 +7493,42 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerAuth, actual.ServerAuth, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ServerAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientAuth, actual.ClientAuth, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ClientAuth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CodeSigning, actual.CodeSigning, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("CodeSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EmailProtection, actual.EmailProtection, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("EmailProtection")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeStamping, actual.TimeStamping, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("TimeStamping")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OcspSigning, actual.OcspSigning, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("OcspSigning")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7557,7 +7557,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7586,14 +7586,14 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOption
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IsCa, actual.IsCa, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("IsCa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxIssuerPathLength, actual.MaxIssuerPathLength, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("MaxIssuerPathLength")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7622,7 +7622,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyId
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7651,21 +7651,21 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAddition
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.Info{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectId, actual.ObjectId, dcl.DiffInfo{ObjectFunction: compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectIdNewStyle, EmptyObject: EmptyCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId, OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Critical, actual.Critical, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Critical")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7694,7 +7694,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAddition
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ObjectIdPath, actual.ObjectIdPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("ObjectIdPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7723,14 +7723,14 @@ func compareCertificateAuthorityCaCertificateDescriptionsPublicKeyNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7759,7 +7759,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KeyId, actual.KeyId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyId, actual.KeyId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7788,7 +7788,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdNewStyle(
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.KeyId, actual.KeyId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyId, actual.KeyId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("KeyId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7817,7 +7817,7 @@ func compareCertificateAuthorityCaCertificateDescriptionsCertFingerprintNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Hash, actual.Sha256Hash, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Sha256Hash")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Hash, actual.Sha256Hash, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCertificateAuthorityUpdateCertificateAuthorityOperation")}, fn.AddNest("Sha256Hash")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7846,14 +7846,14 @@ func compareCertificateAuthorityAccessUrlsNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CaCertificateAccessUrl, actual.CaCertificateAccessUrl, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificateAccessUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaCertificateAccessUrl, actual.CaCertificateAccessUrl, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CaCertificateAccessUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CrlAccessUrls, actual.CrlAccessUrls, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CrlAccessUrls")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CrlAccessUrls, actual.CrlAccessUrls, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CrlAccessUrls")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

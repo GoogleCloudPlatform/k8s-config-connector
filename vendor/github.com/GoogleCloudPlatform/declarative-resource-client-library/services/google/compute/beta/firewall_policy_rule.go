@@ -288,8 +288,9 @@ func (c *Client) GetFirewallPolicyRule(ctx context.Context, r *FirewallPolicyRul
 	if err != nil {
 		return nil, err
 	}
-	result.FirewallPolicy = r.FirewallPolicy
-	result.Priority = r.Priority
+	nr := r.urlNormalized()
+	result.FirewallPolicy = nr.FirewallPolicy
+	result.Priority = nr.Priority
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -440,7 +441,7 @@ func applyFirewallPolicyRuleHelper(c *Client, ctx context.Context, rawDesired *F
 func applyFirewallPolicyRuleDiff(c *Client, ctx context.Context, desired *FirewallPolicyRule, rawDesired *FirewallPolicyRule, ops []firewallPolicyRuleApiOperation, opts ...dcl.ApplyOption) (*FirewallPolicyRule, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetFirewallPolicyRule(ctx, desired.urlNormalized())
+	rawNew, err := c.GetFirewallPolicyRule(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

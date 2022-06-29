@@ -152,10 +152,11 @@ func (c *Client) GetLogView(ctx context.Context, r *LogView) (*LogView, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Location = r.Location
-	result.Bucket = r.Bucket
-	result.Parent = r.Parent
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Location = nr.Location
+	result.Bucket = nr.Bucket
+	result.Parent = nr.Parent
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -306,7 +307,7 @@ func applyLogViewHelper(c *Client, ctx context.Context, rawDesired *LogView, opt
 func applyLogViewDiff(c *Client, ctx context.Context, desired *LogView, rawDesired *LogView, ops []logViewApiOperation, opts ...dcl.ApplyOption) (*LogView, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetLogView(ctx, desired.urlNormalized())
+	rawNew, err := c.GetLogView(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

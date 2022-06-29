@@ -179,8 +179,9 @@ func (c *Client) GetNotificationChannel(ctx context.Context, r *NotificationChan
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 	if dcl.IsZeroValue(result.Enabled) {
 		result.Enabled = dcl.Bool(true)
 	}
@@ -334,7 +335,7 @@ func applyNotificationChannelHelper(c *Client, ctx context.Context, rawDesired *
 func applyNotificationChannelDiff(c *Client, ctx context.Context, desired *NotificationChannel, rawDesired *NotificationChannel, ops []notificationChannelApiOperation, opts ...dcl.ApplyOption) (*NotificationChannel, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetNotificationChannel(ctx, desired.urlNormalized())
+	rawNew, err := c.GetNotificationChannel(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

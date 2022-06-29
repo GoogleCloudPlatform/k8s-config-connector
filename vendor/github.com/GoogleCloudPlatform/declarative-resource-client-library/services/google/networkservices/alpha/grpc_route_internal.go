@@ -2034,91 +2034,91 @@ func diffGrpcRoute(c *Client, desired, actual *GrpcRoute, opts ...dcl.ApplyOptio
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Hostnames, actual.Hostnames, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Hostnames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hostnames, actual.Hostnames, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Hostnames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: compareGrpcRouteRulesNewStyle, EmptyObject: EmptyGrpcRouteRules, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesNewStyle, EmptyObject: EmptyGrpcRouteRules, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2147,14 +2147,14 @@ func compareGrpcRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.Info{ObjectFunction: compareGrpcRouteRulesMatchesNewStyle, EmptyObject: EmptyGrpcRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesMatchesNewStyle, EmptyObject: EmptyGrpcRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionNewStyle, EmptyObject: EmptyGrpcRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionNewStyle, EmptyObject: EmptyGrpcRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2183,14 +2183,14 @@ func compareGrpcRouteRulesMatchesNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.Info{ObjectFunction: compareGrpcRouteRulesMatchesMethodNewStyle, EmptyObject: EmptyGrpcRouteRulesMatchesMethod, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Method, actual.Method, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesMatchesMethodNewStyle, EmptyObject: EmptyGrpcRouteRulesMatchesMethod, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Method")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.Info{ObjectFunction: compareGrpcRouteRulesMatchesHeadersNewStyle, EmptyObject: EmptyGrpcRouteRulesMatchesHeaders, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesMatchesHeadersNewStyle, EmptyObject: EmptyGrpcRouteRulesMatchesHeaders, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2219,28 +2219,28 @@ func compareGrpcRouteRulesMatchesMethodNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GrpcService, actual.GrpcService, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("GrpcService")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GrpcService, actual.GrpcService, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("GrpcService")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GrpcMethod, actual.GrpcMethod, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("GrpcMethod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GrpcMethod, actual.GrpcMethod, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("GrpcMethod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CaseSensitive, actual.CaseSensitive, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("CaseSensitive")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaseSensitive, actual.CaseSensitive, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("CaseSensitive")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2269,21 +2269,21 @@ func compareGrpcRouteRulesMatchesHeadersNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2312,28 +2312,28 @@ func compareGrpcRouteRulesActionNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyGrpcRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyGrpcRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FaultInjectionPolicy, actual.FaultInjectionPolicy, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicy, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("FaultInjectionPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FaultInjectionPolicy, actual.FaultInjectionPolicy, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicy, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("FaultInjectionPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RetryPolicy, actual.RetryPolicy, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionRetryPolicyNewStyle, EmptyObject: EmptyGrpcRouteRulesActionRetryPolicy, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("RetryPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RetryPolicy, actual.RetryPolicy, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionRetryPolicyNewStyle, EmptyObject: EmptyGrpcRouteRulesActionRetryPolicy, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("RetryPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2362,14 +2362,14 @@ func compareGrpcRouteRulesActionDestinationsNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2398,14 +2398,14 @@ func compareGrpcRouteRulesActionFaultInjectionPolicyNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Delay, actual.Delay, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyDelayNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicyDelay, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Delay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Delay, actual.Delay, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyDelayNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicyDelay, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Delay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Abort, actual.Abort, dcl.Info{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyAbortNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicyAbort, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Abort")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Abort, actual.Abort, dcl.DiffInfo{ObjectFunction: compareGrpcRouteRulesActionFaultInjectionPolicyAbortNewStyle, EmptyObject: EmptyGrpcRouteRulesActionFaultInjectionPolicyAbort, OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Abort")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2434,14 +2434,14 @@ func compareGrpcRouteRulesActionFaultInjectionPolicyDelayNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FixedDelay, actual.FixedDelay, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("FixedDelay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedDelay, actual.FixedDelay, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("FixedDelay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2470,14 +2470,14 @@ func compareGrpcRouteRulesActionFaultInjectionPolicyAbortNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HttpStatus, actual.HttpStatus, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("HttpStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpStatus, actual.HttpStatus, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("HttpStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2506,14 +2506,14 @@ func compareGrpcRouteRulesActionRetryPolicyNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RetryConditions, actual.RetryConditions, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("RetryConditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RetryConditions, actual.RetryConditions, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("RetryConditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumRetries, actual.NumRetries, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("NumRetries")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumRetries, actual.NumRetries, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("NumRetries")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

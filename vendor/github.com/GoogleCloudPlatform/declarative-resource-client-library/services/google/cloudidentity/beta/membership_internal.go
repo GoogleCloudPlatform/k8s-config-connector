@@ -1429,70 +1429,70 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PreferredMemberKey, actual.PreferredMemberKey, dcl.Info{ObjectFunction: compareMembershipPreferredMemberKeyNewStyle, EmptyObject: EmptyMembershipPreferredMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PreferredMemberKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PreferredMemberKey, actual.PreferredMemberKey, dcl.DiffInfo{ObjectFunction: compareMembershipPreferredMemberKeyNewStyle, EmptyObject: EmptyMembershipPreferredMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PreferredMemberKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Roles, actual.Roles, dcl.Info{Type: "Set", ObjectFunction: compareMembershipRolesNewStyle, EmptyObject: EmptyMembershipRoles, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Roles")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Roles, actual.Roles, dcl.DiffInfo{Type: "Set", ObjectFunction: compareMembershipRolesNewStyle, EmptyObject: EmptyMembershipRoles, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Roles")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeliverySetting, actual.DeliverySetting, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeliverySetting")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeliverySetting, actual.DeliverySetting, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DeliverySetting")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OutputOnly: true, ObjectFunction: compareMembershipDisplayNameNewStyle, EmptyObject: EmptyMembershipDisplayName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareMembershipDisplayNameNewStyle, EmptyObject: EmptyMembershipDisplayName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MemberKey, actual.MemberKey, dcl.Info{ObjectFunction: compareMembershipMemberKeyNewStyle, EmptyObject: EmptyMembershipMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemberKey, actual.MemberKey, dcl.DiffInfo{ObjectFunction: compareMembershipMemberKeyNewStyle, EmptyObject: EmptyMembershipMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Group, actual.Group, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Group")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Group, actual.Group, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Group")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1521,14 +1521,14 @@ func compareMembershipPreferredMemberKeyNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1557,21 +1557,21 @@ func compareMembershipRolesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExpiryDetail, actual.ExpiryDetail, dcl.Info{ObjectFunction: compareMembershipRolesExpiryDetailNewStyle, EmptyObject: EmptyMembershipRolesExpiryDetail, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpiryDetail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExpiryDetail, actual.ExpiryDetail, dcl.DiffInfo{ObjectFunction: compareMembershipRolesExpiryDetailNewStyle, EmptyObject: EmptyMembershipRolesExpiryDetail, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpiryDetail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RestrictionEvaluations, actual.RestrictionEvaluations, dcl.Info{ObjectFunction: compareMembershipRolesRestrictionEvaluationsNewStyle, EmptyObject: EmptyMembershipRolesRestrictionEvaluations, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RestrictionEvaluations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RestrictionEvaluations, actual.RestrictionEvaluations, dcl.DiffInfo{ObjectFunction: compareMembershipRolesRestrictionEvaluationsNewStyle, EmptyObject: EmptyMembershipRolesRestrictionEvaluations, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RestrictionEvaluations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1600,7 +1600,7 @@ func compareMembershipRolesExpiryDetailNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ExpireTime, actual.ExpireTime, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpireTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExpireTime, actual.ExpireTime, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExpireTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1629,7 +1629,7 @@ func compareMembershipRolesRestrictionEvaluationsNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MemberRestrictionEvaluation, actual.MemberRestrictionEvaluation, dcl.Info{ObjectFunction: compareMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationNewStyle, EmptyObject: EmptyMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberRestrictionEvaluation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemberRestrictionEvaluation, actual.MemberRestrictionEvaluation, dcl.DiffInfo{ObjectFunction: compareMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationNewStyle, EmptyObject: EmptyMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberRestrictionEvaluation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1658,7 +1658,7 @@ func compareMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1687,21 +1687,21 @@ func compareMembershipDisplayNameNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.GivenName, actual.GivenName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GivenName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GivenName, actual.GivenName, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GivenName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FamilyName, actual.FamilyName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FamilyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FamilyName, actual.FamilyName, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FamilyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1730,14 +1730,14 @@ func compareMembershipMemberKeyNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -885,84 +885,84 @@ func diffWorkloadIdentityPoolProvider(c *Client, desired, actual *WorkloadIdenti
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AttributeMapping, actual.AttributeMapping, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AttributeMapping")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AttributeMapping, actual.AttributeMapping, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AttributeMapping")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AttributeCondition, actual.AttributeCondition, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AttributeCondition")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AttributeCondition, actual.AttributeCondition, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AttributeCondition")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Aws, actual.Aws, dcl.Info{ObjectFunction: compareWorkloadIdentityPoolProviderAwsNewStyle, EmptyObject: EmptyWorkloadIdentityPoolProviderAws, OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Aws")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Aws, actual.Aws, dcl.DiffInfo{ObjectFunction: compareWorkloadIdentityPoolProviderAwsNewStyle, EmptyObject: EmptyWorkloadIdentityPoolProviderAws, OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Aws")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Oidc, actual.Oidc, dcl.Info{ObjectFunction: compareWorkloadIdentityPoolProviderOidcNewStyle, EmptyObject: EmptyWorkloadIdentityPoolProviderOidc, OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Oidc")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Oidc, actual.Oidc, dcl.DiffInfo{ObjectFunction: compareWorkloadIdentityPoolProviderOidcNewStyle, EmptyObject: EmptyWorkloadIdentityPoolProviderOidc, OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("Oidc")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WorkloadIdentityPool, actual.WorkloadIdentityPool, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkloadIdentityPool")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WorkloadIdentityPool, actual.WorkloadIdentityPool, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkloadIdentityPool")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -991,14 +991,14 @@ func compareWorkloadIdentityPoolProviderAwsNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AccountId, actual.AccountId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AccountId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AccountId, actual.AccountId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AccountId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StsUri, actual.StsUri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("StsUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StsUri, actual.StsUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("StsUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1027,14 +1027,14 @@ func compareWorkloadIdentityPoolProviderOidcNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IssuerUri, actual.IssuerUri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("IssuerUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IssuerUri, actual.IssuerUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("IssuerUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedAudiences, actual.AllowedAudiences, dcl.Info{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AllowedAudiences")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedAudiences, actual.AllowedAudiences, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkloadIdentityPoolProviderUpdateWorkloadIdentityPoolProviderOperation")}, fn.AddNest("AllowedAudiences")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

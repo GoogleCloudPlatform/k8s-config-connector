@@ -1624,105 +1624,105 @@ func diffGroup(c *Client, desired, actual *Group, opts ...dcl.ApplyOption) ([]*d
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupKey, actual.GroupKey, dcl.Info{ObjectFunction: compareGroupGroupKeyNewStyle, EmptyObject: EmptyGroupGroupKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupKey, actual.GroupKey, dcl.DiffInfo{ObjectFunction: compareGroupGroupKeyNewStyle, EmptyObject: EmptyGroupGroupKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdditionalGroupKeys, actual.AdditionalGroupKeys, dcl.Info{ObjectFunction: compareGroupAdditionalGroupKeysNewStyle, EmptyObject: EmptyGroupAdditionalGroupKeys, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdditionalGroupKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdditionalGroupKeys, actual.AdditionalGroupKeys, dcl.DiffInfo{ObjectFunction: compareGroupAdditionalGroupKeysNewStyle, EmptyObject: EmptyGroupAdditionalGroupKeys, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdditionalGroupKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DirectMemberCount, actual.DirectMemberCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DirectMemberCount, actual.DirectMemberCount, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DirectMemberCountPerType, actual.DirectMemberCountPerType, dcl.Info{OutputOnly: true, ObjectFunction: compareGroupDirectMemberCountPerTypeNewStyle, EmptyObject: EmptyGroupDirectMemberCountPerType, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCountPerType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DirectMemberCountPerType, actual.DirectMemberCountPerType, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareGroupDirectMemberCountPerTypeNewStyle, EmptyObject: EmptyGroupDirectMemberCountPerType, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DirectMemberCountPerType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DerivedAliases, actual.DerivedAliases, dcl.Info{OutputOnly: true, ObjectFunction: compareGroupDerivedAliasesNewStyle, EmptyObject: EmptyGroupDerivedAliases, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DerivedAliases")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DerivedAliases, actual.DerivedAliases, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareGroupDerivedAliasesNewStyle, EmptyObject: EmptyGroupDerivedAliases, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DerivedAliases")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DynamicGroupMetadata, actual.DynamicGroupMetadata, dcl.Info{ObjectFunction: compareGroupDynamicGroupMetadataNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadata, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("DynamicGroupMetadata")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DynamicGroupMetadata, actual.DynamicGroupMetadata, dcl.DiffInfo{ObjectFunction: compareGroupDynamicGroupMetadataNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadata, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("DynamicGroupMetadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PosixGroups, actual.PosixGroups, dcl.Info{ObjectFunction: compareGroupPosixGroupsNewStyle, EmptyObject: EmptyGroupPosixGroups, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("PosixGroups")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PosixGroups, actual.PosixGroups, dcl.DiffInfo{ObjectFunction: compareGroupPosixGroupsNewStyle, EmptyObject: EmptyGroupPosixGroups, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("PosixGroups")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InitialGroupConfig, actual.InitialGroupConfig, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InitialGroupConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InitialGroupConfig, actual.InitialGroupConfig, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InitialGroupConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1751,14 +1751,14 @@ func compareGroupGroupKeyNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1787,14 +1787,14 @@ func compareGroupAdditionalGroupKeysNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1823,14 +1823,14 @@ func compareGroupDirectMemberCountPerTypeNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UserCount, actual.UserCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UserCount, actual.UserCount, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupCount, actual.GroupCount, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupCount, actual.GroupCount, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1859,14 +1859,14 @@ func compareGroupDerivedAliasesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Namespace, actual.Namespace, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Namespace")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1895,14 +1895,14 @@ func compareGroupDynamicGroupMetadataNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Queries, actual.Queries, dcl.Info{ObjectFunction: compareGroupDynamicGroupMetadataQueriesNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadataQueries, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Queries")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Queries, actual.Queries, dcl.DiffInfo{ObjectFunction: compareGroupDynamicGroupMetadataQueriesNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadataQueries, OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Queries")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.Info{OutputOnly: true, ObjectFunction: compareGroupDynamicGroupMetadataStatusNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadataStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareGroupDynamicGroupMetadataStatusNewStyle, EmptyObject: EmptyGroupDynamicGroupMetadataStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1931,14 +1931,14 @@ func compareGroupDynamicGroupMetadataQueriesNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceType, actual.ResourceType, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("ResourceType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceType, actual.ResourceType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("ResourceType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Query, actual.Query, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Query")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Query, actual.Query, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Query")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1967,14 +1967,14 @@ func compareGroupDynamicGroupMetadataStatusNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StatusTime, actual.StatusTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("StatusTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StatusTime, actual.StatusTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGroupUpdateGroupOperation")}, fn.AddNest("StatusTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2003,21 +2003,21 @@ func compareGroupPosixGroupsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gid, actual.Gid, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Gid")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gid, actual.Gid, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Gid")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SystemId, actual.SystemId, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SystemId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SystemId, actual.SystemId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SystemId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

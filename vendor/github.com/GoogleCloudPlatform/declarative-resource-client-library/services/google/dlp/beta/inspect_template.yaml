@@ -64,6 +64,7 @@ components:
       x-dcl-id: '{{parent}}/inspectTemplates/{{name}}'
       x-dcl-locations:
       - region
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -260,6 +261,10 @@ components:
                         description: Resource name of the requested `StoredInfoType`,
                           for example `organizations/433245324/storedInfoTypes/432452342`
                           or `projects/project-id/storedInfoTypes/432452342`.
+                        x-dcl-references:
+                        - resource: Dlp/StoredInfoType
+                          field: name
+                          parent: true
                   surrogateType:
                     type: object
                     x-dcl-go-name: SurrogateType

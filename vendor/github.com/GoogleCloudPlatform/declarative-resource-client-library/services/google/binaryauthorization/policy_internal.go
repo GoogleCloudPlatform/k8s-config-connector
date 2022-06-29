@@ -1273,77 +1273,77 @@ func diffPolicy(c *Client, desired, actual *Policy, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.AdmissionWhitelistPatterns, actual.AdmissionWhitelistPatterns, dcl.Info{ObjectFunction: comparePolicyAdmissionWhitelistPatternsNewStyle, EmptyObject: EmptyPolicyAdmissionWhitelistPatterns, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AdmissionWhitelistPatterns")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdmissionWhitelistPatterns, actual.AdmissionWhitelistPatterns, dcl.DiffInfo{ObjectFunction: comparePolicyAdmissionWhitelistPatternsNewStyle, EmptyObject: EmptyPolicyAdmissionWhitelistPatterns, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("AdmissionWhitelistPatterns")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClusterAdmissionRules, actual.ClusterAdmissionRules, dcl.Info{ObjectFunction: comparePolicyClusterAdmissionRulesNewStyle, EmptyObject: EmptyPolicyClusterAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("ClusterAdmissionRules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClusterAdmissionRules, actual.ClusterAdmissionRules, dcl.DiffInfo{ObjectFunction: comparePolicyClusterAdmissionRulesNewStyle, EmptyObject: EmptyPolicyClusterAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("ClusterAdmissionRules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KubernetesNamespaceAdmissionRules, actual.KubernetesNamespaceAdmissionRules, dcl.Info{ObjectFunction: comparePolicyKubernetesNamespaceAdmissionRulesNewStyle, EmptyObject: EmptyPolicyKubernetesNamespaceAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("KubernetesNamespaceAdmissionRules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KubernetesNamespaceAdmissionRules, actual.KubernetesNamespaceAdmissionRules, dcl.DiffInfo{ObjectFunction: comparePolicyKubernetesNamespaceAdmissionRulesNewStyle, EmptyObject: EmptyPolicyKubernetesNamespaceAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("KubernetesNamespaceAdmissionRules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KubernetesServiceAccountAdmissionRules, actual.KubernetesServiceAccountAdmissionRules, dcl.Info{ObjectFunction: comparePolicyKubernetesServiceAccountAdmissionRulesNewStyle, EmptyObject: EmptyPolicyKubernetesServiceAccountAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("KubernetesServiceAccountAdmissionRules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KubernetesServiceAccountAdmissionRules, actual.KubernetesServiceAccountAdmissionRules, dcl.DiffInfo{ObjectFunction: comparePolicyKubernetesServiceAccountAdmissionRulesNewStyle, EmptyObject: EmptyPolicyKubernetesServiceAccountAdmissionRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("KubernetesServiceAccountAdmissionRules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IstioServiceIdentityAdmissionRules, actual.IstioServiceIdentityAdmissionRules, dcl.Info{ObjectFunction: comparePolicyIstioServiceIdentityAdmissionRulesNewStyle, EmptyObject: EmptyPolicyIstioServiceIdentityAdmissionRules, CustomDiff: canonicalizePolicyISIAR, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("IstioServiceIdentityAdmissionRules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IstioServiceIdentityAdmissionRules, actual.IstioServiceIdentityAdmissionRules, dcl.DiffInfo{ObjectFunction: comparePolicyIstioServiceIdentityAdmissionRulesNewStyle, EmptyObject: EmptyPolicyIstioServiceIdentityAdmissionRules, CustomDiff: canonicalizePolicyISIAR, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("IstioServiceIdentityAdmissionRules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DefaultAdmissionRule, actual.DefaultAdmissionRule, dcl.Info{ObjectFunction: comparePolicyDefaultAdmissionRuleNewStyle, EmptyObject: EmptyPolicyDefaultAdmissionRule, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DefaultAdmissionRule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DefaultAdmissionRule, actual.DefaultAdmissionRule, dcl.DiffInfo{ObjectFunction: comparePolicyDefaultAdmissionRuleNewStyle, EmptyObject: EmptyPolicyDefaultAdmissionRule, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("DefaultAdmissionRule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GlobalPolicyEvaluationMode, actual.GlobalPolicyEvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("GlobalPolicyEvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GlobalPolicyEvaluationMode, actual.GlobalPolicyEvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("GlobalPolicyEvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1372,7 +1372,7 @@ func comparePolicyAdmissionWhitelistPatternsNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NamePattern, actual.NamePattern, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("NamePattern")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NamePattern, actual.NamePattern, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("NamePattern")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1401,21 +1401,21 @@ func comparePolicyClusterAdmissionRulesNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1444,21 +1444,21 @@ func comparePolicyKubernetesNamespaceAdmissionRulesNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1487,21 +1487,21 @@ func comparePolicyKubernetesServiceAccountAdmissionRulesNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1530,21 +1530,21 @@ func comparePolicyIstioServiceIdentityAdmissionRulesNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1573,21 +1573,21 @@ func comparePolicyDefaultAdmissionRuleNewStyle(d, a interface{}, fn dcl.FieldNam
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EvaluationMode, actual.EvaluationMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EvaluationMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequireAttestationsBy, actual.RequireAttestationsBy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("RequireAttestationsBy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnforcementMode, actual.EnforcementMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("EnforcementMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

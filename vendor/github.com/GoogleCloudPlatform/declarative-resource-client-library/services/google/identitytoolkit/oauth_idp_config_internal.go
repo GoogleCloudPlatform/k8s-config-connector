@@ -676,56 +676,56 @@ func diffOAuthIdpConfig(c *Client, desired, actual *OAuthIdpConfig, opts ...dcl.
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientId, actual.ClientId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ClientId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientId, actual.ClientId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ClientId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Issuer, actual.Issuer, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Issuer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Issuer, actual.Issuer, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Issuer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientSecret, actual.ClientSecret, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ClientSecret")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientSecret, actual.ClientSecret, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ClientSecret")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResponseType, actual.ResponseType, dcl.Info{ObjectFunction: compareOAuthIdpConfigResponseTypeNewStyle, EmptyObject: EmptyOAuthIdpConfigResponseType, OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ResponseType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResponseType, actual.ResponseType, dcl.DiffInfo{ObjectFunction: compareOAuthIdpConfigResponseTypeNewStyle, EmptyObject: EmptyOAuthIdpConfigResponseType, OperationSelector: dcl.TriggersOperation("updateOAuthIdpConfigUpdateConfigOperation")}, fn.AddNest("ResponseType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -754,21 +754,21 @@ func compareOAuthIdpConfigResponseTypeNewStyle(d, a interface{}, fn dcl.FieldNam
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IdToken, actual.IdToken, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdToken")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IdToken, actual.IdToken, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdToken")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Token, actual.Token, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Token")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Token, actual.Token, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Token")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -1154,91 +1154,91 @@ func diffSpoke(c *Client, desired, actual *Spoke, opts ...dcl.ApplyOption) ([]*d
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateSpokeUpdateSpokeOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateSpokeUpdateSpokeOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateSpokeUpdateSpokeOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateSpokeUpdateSpokeOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Hub, actual.Hub, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Hub")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hub, actual.Hub, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Hub")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LinkedVpnTunnels, actual.LinkedVpnTunnels, dcl.Info{ObjectFunction: compareSpokeLinkedVpnTunnelsNewStyle, EmptyObject: EmptySpokeLinkedVpnTunnels, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedVpnTunnels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinkedVpnTunnels, actual.LinkedVpnTunnels, dcl.DiffInfo{ObjectFunction: compareSpokeLinkedVpnTunnelsNewStyle, EmptyObject: EmptySpokeLinkedVpnTunnels, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedVpnTunnels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LinkedInterconnectAttachments, actual.LinkedInterconnectAttachments, dcl.Info{ObjectFunction: compareSpokeLinkedInterconnectAttachmentsNewStyle, EmptyObject: EmptySpokeLinkedInterconnectAttachments, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedInterconnectAttachments")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinkedInterconnectAttachments, actual.LinkedInterconnectAttachments, dcl.DiffInfo{ObjectFunction: compareSpokeLinkedInterconnectAttachmentsNewStyle, EmptyObject: EmptySpokeLinkedInterconnectAttachments, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedInterconnectAttachments")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LinkedRouterApplianceInstances, actual.LinkedRouterApplianceInstances, dcl.Info{ObjectFunction: compareSpokeLinkedRouterApplianceInstancesNewStyle, EmptyObject: EmptySpokeLinkedRouterApplianceInstances, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedRouterApplianceInstances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinkedRouterApplianceInstances, actual.LinkedRouterApplianceInstances, dcl.DiffInfo{ObjectFunction: compareSpokeLinkedRouterApplianceInstancesNewStyle, EmptyObject: EmptySpokeLinkedRouterApplianceInstances, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinkedRouterApplianceInstances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UniqueId, actual.UniqueId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UniqueId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UniqueId, actual.UniqueId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UniqueId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1267,14 +1267,14 @@ func compareSpokeLinkedVpnTunnelsNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1303,14 +1303,14 @@ func compareSpokeLinkedInterconnectAttachmentsNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uris, actual.Uris, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uris")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1339,14 +1339,14 @@ func compareSpokeLinkedRouterApplianceInstancesNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.Info{ObjectFunction: compareSpokeLinkedRouterApplianceInstancesInstancesNewStyle, EmptyObject: EmptySpokeLinkedRouterApplianceInstancesInstances, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.DiffInfo{ObjectFunction: compareSpokeLinkedRouterApplianceInstancesInstancesNewStyle, EmptyObject: EmptySpokeLinkedRouterApplianceInstancesInstances, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SiteToSiteDataTransfer, actual.SiteToSiteDataTransfer, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SiteToSiteDataTransfer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1375,14 +1375,14 @@ func compareSpokeLinkedRouterApplianceInstancesInstancesNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.VirtualMachine, actual.VirtualMachine, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VirtualMachine")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VirtualMachine, actual.VirtualMachine, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VirtualMachine")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPAddress, actual.IPAddress, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPAddress, actual.IPAddress, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

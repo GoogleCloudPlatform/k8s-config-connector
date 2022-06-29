@@ -160,6 +160,28 @@ func InstanceGroupManagerToUnstructured(r *dclService.InstanceGroupManager) *uns
 				}
 				rStatefulPolicyPreservedState["disks"] = rStatefulPolicyPreservedStateDisks
 			}
+			if r.StatefulPolicy.PreservedState.ExternalIps != nil {
+				rStatefulPolicyPreservedStateExternalIps := make(map[string]interface{})
+				for k, v := range r.StatefulPolicy.PreservedState.ExternalIps {
+					rStatefulPolicyPreservedStateExternalIpsMap := make(map[string]interface{})
+					if v.AutoDelete != nil {
+						rStatefulPolicyPreservedStateExternalIpsMap["autoDelete"] = string(*v.AutoDelete)
+					}
+					rStatefulPolicyPreservedStateExternalIps[k] = rStatefulPolicyPreservedStateExternalIpsMap
+				}
+				rStatefulPolicyPreservedState["externalIps"] = rStatefulPolicyPreservedStateExternalIps
+			}
+			if r.StatefulPolicy.PreservedState.InternalIps != nil {
+				rStatefulPolicyPreservedStateInternalIps := make(map[string]interface{})
+				for k, v := range r.StatefulPolicy.PreservedState.InternalIps {
+					rStatefulPolicyPreservedStateInternalIpsMap := make(map[string]interface{})
+					if v.AutoDelete != nil {
+						rStatefulPolicyPreservedStateInternalIpsMap["autoDelete"] = string(*v.AutoDelete)
+					}
+					rStatefulPolicyPreservedStateInternalIps[k] = rStatefulPolicyPreservedStateInternalIpsMap
+				}
+				rStatefulPolicyPreservedState["internalIps"] = rStatefulPolicyPreservedStateInternalIps
+			}
 			rStatefulPolicy["preservedState"] = rStatefulPolicyPreservedState
 		}
 		u.Object["statefulPolicy"] = rStatefulPolicy
@@ -567,6 +589,52 @@ func UnstructuredToInstanceGroupManager(u *unstructured.Resource) (*dclService.I
 							r.StatefulPolicy.PreservedState.Disks = m
 						} else {
 							return nil, fmt.Errorf("r.StatefulPolicy.PreservedState.Disks: expected map[string]interface{}")
+						}
+					}
+					if _, ok := rStatefulPolicyPreservedState["externalIps"]; ok {
+						if rStatefulPolicyPreservedStateExternalIps, ok := rStatefulPolicyPreservedState["externalIps"].(map[string]interface{}); ok {
+							m := make(map[string]dclService.InstanceGroupManagerStatefulPolicyPreservedStateExternalIps)
+							for k, v := range rStatefulPolicyPreservedStateExternalIps {
+								if objval, ok := v.(map[string]interface{}); ok {
+									var rStatefulPolicyPreservedStateExternalIpsObj dclService.InstanceGroupManagerStatefulPolicyPreservedStateExternalIps
+									if _, ok := objval["autoDelete"]; ok {
+										if s, ok := objval["autoDelete"].(string); ok {
+											rStatefulPolicyPreservedStateExternalIpsObj.AutoDelete = dclService.InstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumRef(s)
+										} else {
+											return nil, fmt.Errorf("rStatefulPolicyPreservedStateExternalIpsObj.AutoDelete: expected string")
+										}
+									}
+									m[k] = rStatefulPolicyPreservedStateExternalIpsObj
+								} else {
+									return nil, fmt.Errorf("r.StatefulPolicy.PreservedState.ExternalIps: expected map[string]interface{}")
+								}
+							}
+							r.StatefulPolicy.PreservedState.ExternalIps = m
+						} else {
+							return nil, fmt.Errorf("r.StatefulPolicy.PreservedState.ExternalIps: expected map[string]interface{}")
+						}
+					}
+					if _, ok := rStatefulPolicyPreservedState["internalIps"]; ok {
+						if rStatefulPolicyPreservedStateInternalIps, ok := rStatefulPolicyPreservedState["internalIps"].(map[string]interface{}); ok {
+							m := make(map[string]dclService.InstanceGroupManagerStatefulPolicyPreservedStateInternalIps)
+							for k, v := range rStatefulPolicyPreservedStateInternalIps {
+								if objval, ok := v.(map[string]interface{}); ok {
+									var rStatefulPolicyPreservedStateInternalIpsObj dclService.InstanceGroupManagerStatefulPolicyPreservedStateInternalIps
+									if _, ok := objval["autoDelete"]; ok {
+										if s, ok := objval["autoDelete"].(string); ok {
+											rStatefulPolicyPreservedStateInternalIpsObj.AutoDelete = dclService.InstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumRef(s)
+										} else {
+											return nil, fmt.Errorf("rStatefulPolicyPreservedStateInternalIpsObj.AutoDelete: expected string")
+										}
+									}
+									m[k] = rStatefulPolicyPreservedStateInternalIpsObj
+								} else {
+									return nil, fmt.Errorf("r.StatefulPolicy.PreservedState.InternalIps: expected map[string]interface{}")
+								}
+							}
+							r.StatefulPolicy.PreservedState.InternalIps = m
+						} else {
+							return nil, fmt.Errorf("r.StatefulPolicy.PreservedState.InternalIps: expected map[string]interface{}")
 						}
 					}
 				} else {

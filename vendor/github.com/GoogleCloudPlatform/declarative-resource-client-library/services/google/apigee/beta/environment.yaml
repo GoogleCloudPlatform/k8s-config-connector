@@ -54,6 +54,7 @@ components:
     Environment:
       title: Environment
       x-dcl-id: organizations/{{apigee_organization}}/environments/{{name}}
+      x-dcl-has-create: true
       x-dcl-has-iam: true
       type: object
       required:

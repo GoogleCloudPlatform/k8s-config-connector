@@ -35,7 +35,7 @@ func equalsPolicyISIAR(m, n map[string]PolicyIstioServiceIdentityAdmissionRules)
 	}
 	m = withoutSpiffe(m)
 	n = withoutSpiffe(n)
-	ds, err := dcl.Diff(m, n, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, dcl.FieldName{})
+	ds, err := dcl.Diff(m, n, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, dcl.FieldName{})
 	return len(ds) == 0 && err == nil
 }
 

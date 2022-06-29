@@ -73,6 +73,7 @@ components:
       - region
       - zone
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       properties:

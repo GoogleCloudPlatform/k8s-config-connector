@@ -3237,91 +3237,91 @@ func diffHttpRoute(c *Client, desired, actual *HttpRoute, opts ...dcl.ApplyOptio
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Hostnames, actual.Hostnames, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Hostnames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hostnames, actual.Hostnames, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Hostnames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: compareHttpRouteRulesNewStyle, EmptyObject: EmptyHttpRouteRules, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesNewStyle, EmptyObject: EmptyHttpRouteRules, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3350,14 +3350,14 @@ func compareHttpRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.Info{ObjectFunction: compareHttpRouteRulesMatchesNewStyle, EmptyObject: EmptyHttpRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesMatchesNewStyle, EmptyObject: EmptyHttpRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.Info{ObjectFunction: compareHttpRouteRulesActionNewStyle, EmptyObject: EmptyHttpRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionNewStyle, EmptyObject: EmptyHttpRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3386,42 +3386,42 @@ func compareHttpRouteRulesMatchesNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FullPathMatch, actual.FullPathMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FullPathMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullPathMatch, actual.FullPathMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FullPathMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrefixMatch, actual.PrefixMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrefixMatch, actual.PrefixMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IgnoreCase, actual.IgnoreCase, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("IgnoreCase")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IgnoreCase, actual.IgnoreCase, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("IgnoreCase")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.Info{ObjectFunction: compareHttpRouteRulesMatchesHeadersNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesHeaders, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesMatchesHeadersNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesHeaders, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.QueryParameters, actual.QueryParameters, dcl.Info{ObjectFunction: compareHttpRouteRulesMatchesQueryParametersNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesQueryParameters, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("QueryParameters")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.QueryParameters, actual.QueryParameters, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesMatchesQueryParametersNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesQueryParameters, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("QueryParameters")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3450,56 +3450,56 @@ func compareHttpRouteRulesMatchesHeadersNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Header, actual.Header, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Header")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Header, actual.Header, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Header")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExactMatch, actual.ExactMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExactMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExactMatch, actual.ExactMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExactMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrefixMatch, actual.PrefixMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrefixMatch, actual.PrefixMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PresentMatch, actual.PresentMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PresentMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PresentMatch, actual.PresentMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PresentMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SuffixMatch, actual.SuffixMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("SuffixMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SuffixMatch, actual.SuffixMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("SuffixMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RangeMatch, actual.RangeMatch, dcl.Info{ObjectFunction: compareHttpRouteRulesMatchesHeadersRangeMatchNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesHeadersRangeMatch, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RangeMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RangeMatch, actual.RangeMatch, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesMatchesHeadersRangeMatchNewStyle, EmptyObject: EmptyHttpRouteRulesMatchesHeadersRangeMatch, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RangeMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InvertMatch, actual.InvertMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("InvertMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InvertMatch, actual.InvertMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("InvertMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3528,14 +3528,14 @@ func compareHttpRouteRulesMatchesHeadersRangeMatchNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Start, actual.Start, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Start")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Start, actual.Start, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Start")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.End, actual.End, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("End")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.End, actual.End, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("End")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3564,28 +3564,28 @@ func compareHttpRouteRulesMatchesQueryParametersNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.QueryParameter, actual.QueryParameter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("QueryParameter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.QueryParameter, actual.QueryParameter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("QueryParameter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExactMatch, actual.ExactMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExactMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExactMatch, actual.ExactMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExactMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PresentMatch, actual.PresentMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PresentMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PresentMatch, actual.PresentMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PresentMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3614,77 +3614,77 @@ func compareHttpRouteRulesActionNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.Info{ObjectFunction: compareHttpRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyHttpRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyHttpRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Redirect, actual.Redirect, dcl.Info{ObjectFunction: compareHttpRouteRulesActionRedirectNewStyle, EmptyObject: EmptyHttpRouteRulesActionRedirect, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Redirect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Redirect, actual.Redirect, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRedirectNewStyle, EmptyObject: EmptyHttpRouteRulesActionRedirect, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Redirect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OriginalDestination, actual.OriginalDestination, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("OriginalDestination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OriginalDestination, actual.OriginalDestination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("OriginalDestination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FaultInjectionPolicy, actual.FaultInjectionPolicy, dcl.Info{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FaultInjectionPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FaultInjectionPolicy, actual.FaultInjectionPolicy, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FaultInjectionPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequestHeaderModifier, actual.RequestHeaderModifier, dcl.Info{ObjectFunction: compareHttpRouteRulesActionRequestHeaderModifierNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestHeaderModifier, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RequestHeaderModifier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequestHeaderModifier, actual.RequestHeaderModifier, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRequestHeaderModifierNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestHeaderModifier, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RequestHeaderModifier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResponseHeaderModifier, actual.ResponseHeaderModifier, dcl.Info{ObjectFunction: compareHttpRouteRulesActionResponseHeaderModifierNewStyle, EmptyObject: EmptyHttpRouteRulesActionResponseHeaderModifier, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ResponseHeaderModifier")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResponseHeaderModifier, actual.ResponseHeaderModifier, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionResponseHeaderModifierNewStyle, EmptyObject: EmptyHttpRouteRulesActionResponseHeaderModifier, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ResponseHeaderModifier")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UrlRewrite, actual.UrlRewrite, dcl.Info{ObjectFunction: compareHttpRouteRulesActionUrlRewriteNewStyle, EmptyObject: EmptyHttpRouteRulesActionUrlRewrite, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("UrlRewrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UrlRewrite, actual.UrlRewrite, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionUrlRewriteNewStyle, EmptyObject: EmptyHttpRouteRulesActionUrlRewrite, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("UrlRewrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RetryPolicy, actual.RetryPolicy, dcl.Info{ObjectFunction: compareHttpRouteRulesActionRetryPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionRetryPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RetryPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RetryPolicy, actual.RetryPolicy, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRetryPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionRetryPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RetryPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RequestMirrorPolicy, actual.RequestMirrorPolicy, dcl.Info{ObjectFunction: compareHttpRouteRulesActionRequestMirrorPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestMirrorPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RequestMirrorPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RequestMirrorPolicy, actual.RequestMirrorPolicy, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRequestMirrorPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestMirrorPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RequestMirrorPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CorsPolicy, actual.CorsPolicy, dcl.Info{ObjectFunction: compareHttpRouteRulesActionCorsPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionCorsPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("CorsPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CorsPolicy, actual.CorsPolicy, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionCorsPolicyNewStyle, EmptyObject: EmptyHttpRouteRulesActionCorsPolicy, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("CorsPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3713,14 +3713,14 @@ func compareHttpRouteRulesActionDestinationsNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3749,49 +3749,49 @@ func compareHttpRouteRulesActionRedirectNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HostRedirect, actual.HostRedirect, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HostRedirect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HostRedirect, actual.HostRedirect, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HostRedirect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PathRedirect, actual.PathRedirect, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PathRedirect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PathRedirect, actual.PathRedirect, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PathRedirect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrefixRewrite, actual.PrefixRewrite, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixRewrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrefixRewrite, actual.PrefixRewrite, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PrefixRewrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResponseCode, actual.ResponseCode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ResponseCode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResponseCode, actual.ResponseCode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ResponseCode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HttpsRedirect, actual.HttpsRedirect, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HttpsRedirect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpsRedirect, actual.HttpsRedirect, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HttpsRedirect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StripQuery, actual.StripQuery, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("StripQuery")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StripQuery, actual.StripQuery, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("StripQuery")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PortRedirect, actual.PortRedirect, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PortRedirect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PortRedirect, actual.PortRedirect, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PortRedirect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3820,14 +3820,14 @@ func compareHttpRouteRulesActionFaultInjectionPolicyNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Delay, actual.Delay, dcl.Info{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyDelayNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicyDelay, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Delay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Delay, actual.Delay, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyDelayNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicyDelay, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Delay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Abort, actual.Abort, dcl.Info{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyAbortNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicyAbort, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Abort")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Abort, actual.Abort, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionFaultInjectionPolicyAbortNewStyle, EmptyObject: EmptyHttpRouteRulesActionFaultInjectionPolicyAbort, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Abort")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3856,14 +3856,14 @@ func compareHttpRouteRulesActionFaultInjectionPolicyDelayNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FixedDelay, actual.FixedDelay, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FixedDelay")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedDelay, actual.FixedDelay, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("FixedDelay")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3892,14 +3892,14 @@ func compareHttpRouteRulesActionFaultInjectionPolicyAbortNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HttpStatus, actual.HttpStatus, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HttpStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpStatus, actual.HttpStatus, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HttpStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percentage, actual.Percentage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Percentage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3928,21 +3928,21 @@ func compareHttpRouteRulesActionRequestHeaderModifierNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Set, actual.Set, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Set")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Set, actual.Set, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Set")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Add, actual.Add, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Add")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Add, actual.Add, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Add")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Remove, actual.Remove, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Remove")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remove, actual.Remove, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Remove")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3971,21 +3971,21 @@ func compareHttpRouteRulesActionResponseHeaderModifierNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Set, actual.Set, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Set")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Set, actual.Set, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Set")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Add, actual.Add, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Add")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Add, actual.Add, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Add")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Remove, actual.Remove, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Remove")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remove, actual.Remove, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Remove")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4014,14 +4014,14 @@ func compareHttpRouteRulesActionUrlRewriteNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PathPrefixRewrite, actual.PathPrefixRewrite, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PathPrefixRewrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PathPrefixRewrite, actual.PathPrefixRewrite, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PathPrefixRewrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HostRewrite, actual.HostRewrite, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HostRewrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HostRewrite, actual.HostRewrite, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("HostRewrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4050,21 +4050,21 @@ func compareHttpRouteRulesActionRetryPolicyNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RetryConditions, actual.RetryConditions, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RetryConditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RetryConditions, actual.RetryConditions, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("RetryConditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumRetries, actual.NumRetries, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("NumRetries")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumRetries, actual.NumRetries, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("NumRetries")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PerTryTimeout, actual.PerTryTimeout, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PerTryTimeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PerTryTimeout, actual.PerTryTimeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("PerTryTimeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4093,7 +4093,7 @@ func compareHttpRouteRulesActionRequestMirrorPolicyNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.Info{ObjectFunction: compareHttpRouteRulesActionRequestMirrorPolicyDestinationNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestMirrorPolicyDestination, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRequestMirrorPolicyDestinationNewStyle, EmptyObject: EmptyHttpRouteRulesActionRequestMirrorPolicyDestination, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4122,14 +4122,14 @@ func compareHttpRouteRulesActionRequestMirrorPolicyDestinationNewStyle(d, a inte
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4158,56 +4158,56 @@ func compareHttpRouteRulesActionCorsPolicyNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowOrigins, actual.AllowOrigins, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowOrigins")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowOrigins, actual.AllowOrigins, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowOrigins")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowOriginRegexes, actual.AllowOriginRegexes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowOriginRegexes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowOriginRegexes, actual.AllowOriginRegexes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowOriginRegexes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowMethods, actual.AllowMethods, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowMethods")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowMethods, actual.AllowMethods, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowMethods")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowHeaders, actual.AllowHeaders, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowHeaders")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowHeaders, actual.AllowHeaders, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowHeaders")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExposeHeaders, actual.ExposeHeaders, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExposeHeaders")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExposeHeaders, actual.ExposeHeaders, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("ExposeHeaders")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxAge, actual.MaxAge, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("MaxAge")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxAge, actual.MaxAge, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("MaxAge")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowCredentials, actual.AllowCredentials, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowCredentials")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowCredentials, actual.AllowCredentials, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("AllowCredentials")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Disabled, actual.Disabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Disabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

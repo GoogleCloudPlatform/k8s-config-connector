@@ -40,6 +40,7 @@ components:
     TagKey:
       title: TagKey
       x-dcl-id: tagKeys/{{name}}
+      x-dcl-has-create: true
       x-dcl-has-iam: true
       type: object
       required:

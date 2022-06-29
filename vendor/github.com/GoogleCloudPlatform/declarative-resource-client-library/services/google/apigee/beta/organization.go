@@ -374,7 +374,8 @@ func (c *Client) GetOrganization(ctx context.Context, r *Organization) (*Organiz
 	if err != nil {
 		return nil, err
 	}
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -529,7 +530,7 @@ func applyOrganizationHelper(c *Client, ctx context.Context, rawDesired *Organiz
 func applyOrganizationDiff(c *Client, ctx context.Context, desired *Organization, rawDesired *Organization, ops []organizationApiOperation, opts ...dcl.ApplyOption) (*Organization, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetOrganization(ctx, desired.urlNormalized())
+	rawNew, err := c.GetOrganization(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

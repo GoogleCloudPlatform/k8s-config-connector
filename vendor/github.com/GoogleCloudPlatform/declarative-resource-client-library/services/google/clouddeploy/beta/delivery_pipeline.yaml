@@ -13,9 +13,12 @@
 # limitations under the License.
 info:
   title: Clouddeploy/DeliveryPipeline
-  description: The Clouddeploy DeliveryPipeline resource
+  description: The Cloud Deploy `DeliveryPipeline` resource
   x-dcl-struct-name: DeliveryPipeline
   x-dcl-has-iam: false
+  x-dcl-ref:
+    text: REST API
+    url: https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines
 paths:
   get:
     description: The function used to get information about a DeliveryPipeline
@@ -63,6 +66,7 @@ components:
       title: DeliveryPipeline
       x-dcl-id: projects/{{project}}/locations/{{location}}/deliveryPipelines/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -217,6 +221,11 @@ components:
                       example, this field would just be `my-target` (rather than `projects/project/locations/location/targets/my-target`).
                       The location of the `Target` is inferred to be the same as the
                       location of the `DeliveryPipeline` that contains this `Stage`.
+        suspended:
+          type: boolean
+          x-dcl-go-name: Suspended
+          description: When suspended, no new releases or rollouts can be created,
+            but in-progress ones will complete.
         uid:
           type: string
           x-dcl-go-name: Uid

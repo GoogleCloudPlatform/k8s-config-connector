@@ -1202,91 +1202,91 @@ func diffCryptoKey(c *Client, desired, actual *CryptoKey, opts ...dcl.ApplyOptio
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Primary, actual.Primary, dcl.Info{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryNewStyle, EmptyObject: EmptyCryptoKeyPrimary, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Primary")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Primary, actual.Primary, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryNewStyle, EmptyObject: EmptyCryptoKeyPrimary, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Primary")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Purpose, actual.Purpose, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Purpose")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Purpose, actual.Purpose, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Purpose")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NextRotationTime, actual.NextRotationTime, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("NextRotationTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NextRotationTime, actual.NextRotationTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("NextRotationTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RotationPeriod, actual.RotationPeriod, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("RotationPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RotationPeriod, actual.RotationPeriod, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("RotationPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VersionTemplate, actual.VersionTemplate, dcl.Info{ObjectFunction: compareCryptoKeyVersionTemplateNewStyle, EmptyObject: EmptyCryptoKeyVersionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VersionTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VersionTemplate, actual.VersionTemplate, dcl.DiffInfo{ObjectFunction: compareCryptoKeyVersionTemplateNewStyle, EmptyObject: EmptyCryptoKeyVersionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VersionTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ImportOnly, actual.ImportOnly, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ImportOnly, actual.ImportOnly, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DestroyScheduledDuration, actual.DestroyScheduledDuration, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyScheduledDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DestroyScheduledDuration, actual.DestroyScheduledDuration, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyScheduledDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyRing, actual.KeyRing, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyRing")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyRing, actual.KeyRing, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyRing")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1315,98 +1315,98 @@ func compareCryptoKeyPrimaryNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Attestation, actual.Attestation, dcl.Info{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryAttestationNewStyle, EmptyObject: EmptyCryptoKeyPrimaryAttestation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Attestation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Attestation, actual.Attestation, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryAttestationNewStyle, EmptyObject: EmptyCryptoKeyPrimaryAttestation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Attestation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GenerateTime, actual.GenerateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GenerateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GenerateTime, actual.GenerateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GenerateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DestroyTime, actual.DestroyTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DestroyTime, actual.DestroyTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DestroyEventTime, actual.DestroyEventTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyEventTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DestroyEventTime, actual.DestroyEventTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyEventTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ImportJob, actual.ImportJob, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportJob")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ImportJob, actual.ImportJob, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportJob")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ImportTime, actual.ImportTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ImportTime, actual.ImportTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ImportFailureReason, actual.ImportFailureReason, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportFailureReason")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ImportFailureReason, actual.ImportFailureReason, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImportFailureReason")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalProtectionLevelOptions, actual.ExternalProtectionLevelOptions, dcl.Info{ObjectFunction: compareCryptoKeyPrimaryExternalProtectionLevelOptionsNewStyle, EmptyObject: EmptyCryptoKeyPrimaryExternalProtectionLevelOptions, OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("ExternalProtectionLevelOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalProtectionLevelOptions, actual.ExternalProtectionLevelOptions, dcl.DiffInfo{ObjectFunction: compareCryptoKeyPrimaryExternalProtectionLevelOptionsNewStyle, EmptyObject: EmptyCryptoKeyPrimaryExternalProtectionLevelOptions, OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("ExternalProtectionLevelOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReimportEligible, actual.ReimportEligible, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReimportEligible")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReimportEligible, actual.ReimportEligible, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReimportEligible")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1435,21 +1435,21 @@ func compareCryptoKeyPrimaryAttestationNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Format, actual.Format, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Format")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertChains, actual.CertChains, dcl.Info{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryAttestationCertChainsNewStyle, EmptyObject: EmptyCryptoKeyPrimaryAttestationCertChains, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertChains")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertChains, actual.CertChains, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCryptoKeyPrimaryAttestationCertChainsNewStyle, EmptyObject: EmptyCryptoKeyPrimaryAttestationCertChains, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertChains")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1478,21 +1478,21 @@ func compareCryptoKeyPrimaryAttestationCertChainsNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CaviumCerts, actual.CaviumCerts, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("CaviumCerts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CaviumCerts, actual.CaviumCerts, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("CaviumCerts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GoogleCardCerts, actual.GoogleCardCerts, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("GoogleCardCerts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GoogleCardCerts, actual.GoogleCardCerts, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("GoogleCardCerts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GooglePartitionCerts, actual.GooglePartitionCerts, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("GooglePartitionCerts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GooglePartitionCerts, actual.GooglePartitionCerts, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("GooglePartitionCerts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1521,7 +1521,7 @@ func compareCryptoKeyPrimaryExternalProtectionLevelOptionsNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalKeyUri, actual.ExternalKeyUri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("ExternalKeyUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalKeyUri, actual.ExternalKeyUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("ExternalKeyUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1550,14 +1550,14 @@ func compareCryptoKeyVersionTemplateNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Algorithm, actual.Algorithm, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCryptoKeyUpdateCryptoKeyOperation")}, fn.AddNest("Algorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

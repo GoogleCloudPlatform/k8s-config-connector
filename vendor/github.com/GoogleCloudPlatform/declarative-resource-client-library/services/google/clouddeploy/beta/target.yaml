@@ -13,9 +13,12 @@
 # limitations under the License.
 info:
   title: Clouddeploy/Target
-  description: The Clouddeploy Target resource
+  description: The Cloud Deploy `Target` resource
   x-dcl-struct-name: Target
   x-dcl-has-iam: false
+  x-dcl-ref:
+    text: REST API
+    url: https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.targets
 paths:
   get:
     description: The function used to get information about a Target
@@ -63,6 +66,7 @@ components:
       title: Target
       x-dcl-id: projects/{{project}}/locations/{{location}}/targets/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -122,6 +126,7 @@ components:
             are specified, they must include the `RENDER` and `DEPLOY` `ExecutionEnvironmentUsage`
             values. When no configurations are specified, execution will use the default
             specified in `DefaultPool`.
+          x-dcl-server-default: true
           x-dcl-send-empty: true
           x-dcl-list-type: list
           items:
@@ -137,12 +142,14 @@ components:
                   outputs. This can either be a bucket ("gs://my-bucket") or a path
                   within a bucket ("gs://my-bucket/my-dir"). If unspecified, a default
                   bucket located in the same region will be used.
+                x-dcl-server-default: true
               serviceAccount:
                 type: string
                 x-dcl-go-name: ServiceAccount
                 description: Optional. Google service account to use for execution.
                   If unspecified, the project execution service account (-compute@developer.gserviceaccount.com)
                   is used.
+                x-dcl-server-default: true
               usages:
                 type: array
                 x-dcl-go-name: Usages

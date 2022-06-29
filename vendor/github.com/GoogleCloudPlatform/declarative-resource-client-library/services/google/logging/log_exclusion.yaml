@@ -54,6 +54,7 @@ components:
     LogExclusion:
       title: LogExclusion
       x-dcl-id: '{{parent}}/exclusions/{{name}}'
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

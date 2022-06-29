@@ -1492,70 +1492,70 @@ func diffServerTlsPolicy(c *Client, desired, actual *ServerTlsPolicy, opts ...dc
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowOpen, actual.AllowOpen, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("AllowOpen")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowOpen, actual.AllowOpen, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("AllowOpen")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServerCertificate, actual.ServerCertificate, dcl.Info{ObjectFunction: compareServerTlsPolicyServerCertificateNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificate, OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("ServerCertificate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerCertificate, actual.ServerCertificate, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyServerCertificateNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificate, OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("ServerCertificate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MtlsPolicy, actual.MtlsPolicy, dcl.Info{ObjectFunction: compareServerTlsPolicyMtlsPolicyNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicy, OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("MtlsPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MtlsPolicy, actual.MtlsPolicy, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyMtlsPolicyNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicy, OperationSelector: dcl.TriggersOperation("updateServerTlsPolicyUpdateServerTlsPolicyOperation")}, fn.AddNest("MtlsPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1584,14 +1584,14 @@ func compareServerTlsPolicyServerCertificateNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.GrpcEndpoint, actual.GrpcEndpoint, dcl.Info{ObjectFunction: compareServerTlsPolicyServerCertificateGrpcEndpointNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificateGrpcEndpoint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GrpcEndpoint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GrpcEndpoint, actual.GrpcEndpoint, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyServerCertificateGrpcEndpointNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificateGrpcEndpoint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GrpcEndpoint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertificateProviderInstance, actual.CertificateProviderInstance, dcl.Info{ObjectFunction: compareServerTlsPolicyServerCertificateCertificateProviderInstanceNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificateCertificateProviderInstance, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateProviderInstance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertificateProviderInstance, actual.CertificateProviderInstance, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyServerCertificateCertificateProviderInstanceNewStyle, EmptyObject: EmptyServerTlsPolicyServerCertificateCertificateProviderInstance, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateProviderInstance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1620,7 +1620,7 @@ func compareServerTlsPolicyServerCertificateGrpcEndpointNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.TargetUri, actual.TargetUri, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TargetUri, actual.TargetUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1649,7 +1649,7 @@ func compareServerTlsPolicyServerCertificateCertificateProviderInstanceNewStyle(
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PluginInstance, actual.PluginInstance, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PluginInstance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PluginInstance, actual.PluginInstance, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PluginInstance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1678,7 +1678,7 @@ func compareServerTlsPolicyMtlsPolicyNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ClientValidationCa, actual.ClientValidationCa, dcl.Info{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCa, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClientValidationCa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientValidationCa, actual.ClientValidationCa, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCa, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClientValidationCa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1707,14 +1707,14 @@ func compareServerTlsPolicyMtlsPolicyClientValidationCaNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.GrpcEndpoint, actual.GrpcEndpoint, dcl.Info{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GrpcEndpoint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GrpcEndpoint, actual.GrpcEndpoint, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GrpcEndpoint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CertificateProviderInstance, actual.CertificateProviderInstance, dcl.Info{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateProviderInstance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CertificateProviderInstance, actual.CertificateProviderInstance, dcl.DiffInfo{ObjectFunction: compareServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceNewStyle, EmptyObject: EmptyServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CertificateProviderInstance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1743,7 +1743,7 @@ func compareServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.TargetUri, actual.TargetUri, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TargetUri, actual.TargetUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1772,7 +1772,7 @@ func compareServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstan
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PluginInstance, actual.PluginInstance, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PluginInstance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PluginInstance, actual.PluginInstance, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PluginInstance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

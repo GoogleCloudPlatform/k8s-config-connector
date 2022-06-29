@@ -53,6 +53,6 @@ func canonicalizeConfigTestPhoneNumbers(m, n interface{}) bool {
 	nMap, _ := n.(map[string]string)
 	mNormalized := normalizeNumbers(mMap)
 	nNormalized := normalizeNumbers(nMap)
-	ds, err := dcl.Diff(mNormalized, nNormalized, dcl.Info{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, dcl.FieldName{})
+	ds, err := dcl.Diff(mNormalized, nNormalized, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, dcl.FieldName{})
 	return len(ds) == 0 && err == nil
 }

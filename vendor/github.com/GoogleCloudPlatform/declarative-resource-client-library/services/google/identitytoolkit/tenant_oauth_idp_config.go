@@ -207,9 +207,10 @@ func (c *Client) GetTenantOAuthIdpConfig(ctx context.Context, r *TenantOAuthIdpC
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Tenant = r.Tenant
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Tenant = nr.Tenant
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -360,7 +361,7 @@ func applyTenantOAuthIdpConfigHelper(c *Client, ctx context.Context, rawDesired 
 func applyTenantOAuthIdpConfigDiff(c *Client, ctx context.Context, desired *TenantOAuthIdpConfig, rawDesired *TenantOAuthIdpConfig, ops []tenantOAuthIdpConfigApiOperation, opts ...dcl.ApplyOption) (*TenantOAuthIdpConfig, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetTenantOAuthIdpConfig(ctx, desired.urlNormalized())
+	rawNew, err := c.GetTenantOAuthIdpConfig(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

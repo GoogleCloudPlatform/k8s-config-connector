@@ -867,35 +867,35 @@ func diffAttestor(c *Client, desired, actual *Attestor, opts ...dcl.ApplyOption)
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UserOwnedDrydockNote, actual.UserOwnedDrydockNote, dcl.Info{ObjectFunction: compareAttestorUserOwnedDrydockNoteNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNote, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserOwnedGrafeasNote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UserOwnedDrydockNote, actual.UserOwnedDrydockNote, dcl.DiffInfo{ObjectFunction: compareAttestorUserOwnedDrydockNoteNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNote, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserOwnedGrafeasNote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -924,21 +924,21 @@ func compareAttestorUserOwnedDrydockNoteNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NoteReference, actual.NoteReference, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NoteReference")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NoteReference, actual.NoteReference, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NoteReference")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PublicKeys, actual.PublicKeys, dcl.Info{ObjectFunction: compareAttestorUserOwnedDrydockNotePublicKeysNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNotePublicKeys, OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PublicKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicKeys, actual.PublicKeys, dcl.DiffInfo{ObjectFunction: compareAttestorUserOwnedDrydockNotePublicKeysNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNotePublicKeys, OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PublicKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DelegationServiceAccountEmail, actual.DelegationServiceAccountEmail, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DelegationServiceAccountEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DelegationServiceAccountEmail, actual.DelegationServiceAccountEmail, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DelegationServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -967,28 +967,28 @@ func compareAttestorUserOwnedDrydockNotePublicKeysNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Comment, actual.Comment, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Comment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Comment, actual.Comment, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Comment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AsciiArmoredPgpPublicKey, actual.AsciiArmoredPgpPublicKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("AsciiArmoredPgpPublicKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AsciiArmoredPgpPublicKey, actual.AsciiArmoredPgpPublicKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("AsciiArmoredPgpPublicKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PkixPublicKey, actual.PkixPublicKey, dcl.Info{ObjectFunction: compareAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey, OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PkixPublicKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PkixPublicKey, actual.PkixPublicKey, dcl.DiffInfo{ObjectFunction: compareAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyNewStyle, EmptyObject: EmptyAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey, OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PkixPublicKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1017,14 +1017,14 @@ func compareAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PublicKeyPem, actual.PublicKeyPem, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PublicKeyPem")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PublicKeyPem, actual.PublicKeyPem, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("PublicKeyPem")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SignatureAlgorithm, actual.SignatureAlgorithm, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("SignatureAlgorithm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignatureAlgorithm, actual.SignatureAlgorithm, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAttestorUpdateAttestorOperation")}, fn.AddNest("SignatureAlgorithm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -1015,112 +1015,112 @@ func diffServiceAttachment(c *Client, desired, actual *ServiceAttachment, opts .
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TargetService, actual.TargetService, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetService")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TargetService, actual.TargetService, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TargetService")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConnectionPreference, actual.ConnectionPreference, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConnectionPreference")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConnectionPreference, actual.ConnectionPreference, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConnectionPreference")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConnectedEndpoints, actual.ConnectedEndpoints, dcl.Info{OutputOnly: true, ObjectFunction: compareServiceAttachmentConnectedEndpointsNewStyle, EmptyObject: EmptyServiceAttachmentConnectedEndpoints, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectedEndpoints")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConnectedEndpoints, actual.ConnectedEndpoints, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareServiceAttachmentConnectedEndpointsNewStyle, EmptyObject: EmptyServiceAttachmentConnectedEndpoints, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConnectedEndpoints")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NatSubnets, actual.NatSubnets, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("NatSubnets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NatSubnets, actual.NatSubnets, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("NatSubnets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableProxyProtocol, actual.EnableProxyProtocol, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableProxyProtocol")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableProxyProtocol, actual.EnableProxyProtocol, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableProxyProtocol")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConsumerRejectLists, actual.ConsumerRejectLists, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConsumerRejectLists")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConsumerRejectLists, actual.ConsumerRejectLists, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConsumerRejectLists")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConsumerAcceptLists, actual.ConsumerAcceptLists, dcl.Info{ObjectFunction: compareServiceAttachmentConsumerAcceptListsNewStyle, EmptyObject: EmptyServiceAttachmentConsumerAcceptLists, OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConsumerAcceptLists")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConsumerAcceptLists, actual.ConsumerAcceptLists, dcl.DiffInfo{ObjectFunction: compareServiceAttachmentConsumerAcceptListsNewStyle, EmptyObject: EmptyServiceAttachmentConsumerAcceptLists, OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConsumerAcceptLists")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PscServiceAttachmentId, actual.PscServiceAttachmentId, dcl.Info{OutputOnly: true, ObjectFunction: compareServiceAttachmentPscServiceAttachmentIdNewStyle, EmptyObject: EmptyServiceAttachmentPscServiceAttachmentId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PscServiceAttachmentId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PscServiceAttachmentId, actual.PscServiceAttachmentId, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareServiceAttachmentPscServiceAttachmentIdNewStyle, EmptyObject: EmptyServiceAttachmentPscServiceAttachmentId, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PscServiceAttachmentId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1149,21 +1149,21 @@ func compareServiceAttachmentConnectedEndpointsNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Status, actual.Status, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Status")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PscConnectionId, actual.PscConnectionId, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("PscConnectionId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PscConnectionId, actual.PscConnectionId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("PscConnectionId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Endpoint, actual.Endpoint, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Endpoint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Endpoint, actual.Endpoint, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("Endpoint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1192,14 +1192,14 @@ func compareServiceAttachmentConsumerAcceptListsNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ProjectIdOrNum, actual.ProjectIdOrNum, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ProjectIdOrNum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProjectIdOrNum, actual.ProjectIdOrNum, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ProjectIdOrNum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConnectionLimit, actual.ConnectionLimit, dcl.Info{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConnectionLimit")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConnectionLimit, actual.ConnectionLimit, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceAttachmentPatchOperation")}, fn.AddNest("ConnectionLimit")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1228,14 +1228,14 @@ func compareServiceAttachmentPscServiceAttachmentIdNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.High, actual.High, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("High")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.High, actual.High, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("High")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Low, actual.Low, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Low")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Low, actual.Low, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Low")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

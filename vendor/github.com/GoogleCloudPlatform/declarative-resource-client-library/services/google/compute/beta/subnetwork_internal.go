@@ -1036,112 +1036,112 @@ func diffSubnetwork(c *Client, desired, actual *Subnetwork, opts ...dcl.ApplyOpt
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.CreationTimestamp, actual.CreationTimestamp, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreationTimestamp")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreationTimestamp, actual.CreationTimestamp, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreationTimestamp")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GatewayAddress, actual.GatewayAddress, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GatewayAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GatewayAddress, actual.GatewayAddress, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GatewayAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.Info{OperationSelector: dcl.TriggersOperation("updateSubnetworkExpandIpCidrRangeOperation")}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateSubnetworkExpandIpCidrRangeOperation")}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Purpose, actual.Purpose, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Purpose")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Purpose, actual.Purpose, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Purpose")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Role, actual.Role, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("Role")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Role, actual.Role, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("Role")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecondaryIPRanges, actual.SecondaryIPRanges, dcl.Info{ObjectFunction: compareSubnetworkSecondaryIPRangesNewStyle, EmptyObject: EmptySubnetworkSecondaryIPRanges, OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("SecondaryIpRanges")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecondaryIPRanges, actual.SecondaryIPRanges, dcl.DiffInfo{ObjectFunction: compareSubnetworkSecondaryIPRangesNewStyle, EmptyObject: EmptySubnetworkSecondaryIPRanges, OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("SecondaryIpRanges")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrivateIPGoogleAccess, actual.PrivateIPGoogleAccess, dcl.Info{OperationSelector: dcl.TriggersOperation("updateSubnetworkSetPrivateIpGoogleAccessOperation")}, fn.AddNest("PrivateIpGoogleAccess")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrivateIPGoogleAccess, actual.PrivateIPGoogleAccess, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateSubnetworkSetPrivateIpGoogleAccessOperation")}, fn.AddNest("PrivateIpGoogleAccess")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LogConfig, actual.LogConfig, dcl.Info{ObjectFunction: compareSubnetworkLogConfigNewStyle, EmptyObject: EmptySubnetworkLogConfig, OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("LogConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogConfig, actual.LogConfig, dcl.DiffInfo{ObjectFunction: compareSubnetworkLogConfigNewStyle, EmptyObject: EmptySubnetworkLogConfig, OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("LogConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EnableFlowLogs, actual.EnableFlowLogs, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableFlowLogs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EnableFlowLogs, actual.EnableFlowLogs, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableFlowLogs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1170,14 +1170,14 @@ func compareSubnetworkSecondaryIPRangesNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RangeName, actual.RangeName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RangeName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RangeName, actual.RangeName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RangeName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPCidrRange, actual.IPCidrRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpCidrRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1206,21 +1206,21 @@ func compareSubnetworkLogConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AggregationInterval, actual.AggregationInterval, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("AggregationInterval")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AggregationInterval, actual.AggregationInterval, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("AggregationInterval")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FlowSampling, actual.FlowSampling, dcl.Info{OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("FlowSampling")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FlowSampling, actual.FlowSampling, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("FlowSampling")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Metadata, actual.Metadata, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("Metadata")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Metadata, actual.Metadata, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateSubnetworkUpdateOperation")}, fn.AddNest("Metadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

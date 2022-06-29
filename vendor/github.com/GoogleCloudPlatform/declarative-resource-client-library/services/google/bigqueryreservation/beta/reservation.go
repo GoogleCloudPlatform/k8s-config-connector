@@ -151,9 +151,10 @@ func (c *Client) GetReservation(ctx context.Context, r *Reservation) (*Reservati
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -304,7 +305,7 @@ func applyReservationHelper(c *Client, ctx context.Context, rawDesired *Reservat
 func applyReservationDiff(c *Client, ctx context.Context, desired *Reservation, rawDesired *Reservation, ops []reservationApiOperation, opts ...dcl.ApplyOption) (*Reservation, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetReservation(ctx, desired.urlNormalized())
+	rawNew, err := c.GetReservation(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

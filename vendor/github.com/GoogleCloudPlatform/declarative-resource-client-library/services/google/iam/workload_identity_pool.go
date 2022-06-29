@@ -286,7 +286,7 @@ func applyWorkloadIdentityPoolHelper(c *Client, ctx context.Context, rawDesired 
 func applyWorkloadIdentityPoolDiff(c *Client, ctx context.Context, desired *WorkloadIdentityPool, rawDesired *WorkloadIdentityPool, ops []workloadIdentityPoolApiOperation, opts ...dcl.ApplyOption) (*WorkloadIdentityPool, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetWorkloadIdentityPool(ctx, desired.urlNormalized())
+	rawNew, err := c.GetWorkloadIdentityPool(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

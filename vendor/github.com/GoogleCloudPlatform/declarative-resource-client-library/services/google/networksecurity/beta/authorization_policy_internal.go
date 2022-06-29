@@ -1093,63 +1093,63 @@ func diffAuthorizationPolicy(c *Client, desired, actual *AuthorizationPolicy, op
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: compareAuthorizationPolicyRulesNewStyle, EmptyObject: EmptyAuthorizationPolicyRules, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: compareAuthorizationPolicyRulesNewStyle, EmptyObject: EmptyAuthorizationPolicyRules, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1178,14 +1178,14 @@ func compareAuthorizationPolicyRulesNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Sources, actual.Sources, dcl.Info{ObjectFunction: compareAuthorizationPolicyRulesSourcesNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesSources, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Sources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sources, actual.Sources, dcl.DiffInfo{ObjectFunction: compareAuthorizationPolicyRulesSourcesNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesSources, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Sources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.Info{ObjectFunction: compareAuthorizationPolicyRulesDestinationsNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesDestinations, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.DiffInfo{ObjectFunction: compareAuthorizationPolicyRulesDestinationsNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesDestinations, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1214,14 +1214,14 @@ func compareAuthorizationPolicyRulesSourcesNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Principals, actual.Principals, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Principals")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Principals, actual.Principals, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Principals")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPBlocks, actual.IPBlocks, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("IpBlocks")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPBlocks, actual.IPBlocks, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("IpBlocks")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1250,28 +1250,28 @@ func compareAuthorizationPolicyRulesDestinationsNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hosts, actual.Hosts, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Hosts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hosts, actual.Hosts, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Hosts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Ports, actual.Ports, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Ports")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Ports, actual.Ports, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Ports")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Methods, actual.Methods, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Methods")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Methods, actual.Methods, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("Methods")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HttpHeaderMatch, actual.HttpHeaderMatch, dcl.Info{ObjectFunction: compareAuthorizationPolicyRulesDestinationsHttpHeaderMatchNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesDestinationsHttpHeaderMatch, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("HttpHeaderMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpHeaderMatch, actual.HttpHeaderMatch, dcl.DiffInfo{ObjectFunction: compareAuthorizationPolicyRulesDestinationsHttpHeaderMatchNewStyle, EmptyObject: EmptyAuthorizationPolicyRulesDestinationsHttpHeaderMatch, OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("HttpHeaderMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1300,14 +1300,14 @@ func compareAuthorizationPolicyRulesDestinationsHttpHeaderMatchNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HeaderName, actual.HeaderName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("HeaderName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HeaderName, actual.HeaderName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("HeaderName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RegexMatch, actual.RegexMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAuthorizationPolicyUpdateAuthorizationPolicyOperation")}, fn.AddNest("RegexMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

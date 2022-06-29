@@ -1355,91 +1355,91 @@ func diffPacketMirroring(c *Client, desired, actual *PacketMirroring, opts ...dc
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.Info{ObjectFunction: comparePacketMirroringNetworkNewStyle, EmptyObject: EmptyPacketMirroringNetwork, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{ObjectFunction: comparePacketMirroringNetworkNewStyle, EmptyObject: EmptyPacketMirroringNetwork, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Priority, actual.Priority, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Priority")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Priority, actual.Priority, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Priority")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CollectorIlb, actual.CollectorIlb, dcl.Info{ObjectFunction: comparePacketMirroringCollectorIlbNewStyle, EmptyObject: EmptyPacketMirroringCollectorIlb, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("CollectorIlb")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CollectorIlb, actual.CollectorIlb, dcl.DiffInfo{ObjectFunction: comparePacketMirroringCollectorIlbNewStyle, EmptyObject: EmptyPacketMirroringCollectorIlb, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("CollectorIlb")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MirroredResources, actual.MirroredResources, dcl.Info{ObjectFunction: comparePacketMirroringMirroredResourcesNewStyle, EmptyObject: EmptyPacketMirroringMirroredResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MirroredResources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MirroredResources, actual.MirroredResources, dcl.DiffInfo{ObjectFunction: comparePacketMirroringMirroredResourcesNewStyle, EmptyObject: EmptyPacketMirroringMirroredResources, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MirroredResources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Filter, actual.Filter, dcl.Info{ObjectFunction: comparePacketMirroringFilterNewStyle, EmptyObject: EmptyPacketMirroringFilter, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Filter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Filter, actual.Filter, dcl.DiffInfo{ObjectFunction: comparePacketMirroringFilterNewStyle, EmptyObject: EmptyPacketMirroringFilter, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Filter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Enable, actual.Enable, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Enable")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enable, actual.Enable, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Enable")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1468,14 +1468,14 @@ func comparePacketMirroringNetworkNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1504,14 +1504,14 @@ func comparePacketMirroringCollectorIlbNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1540,21 +1540,21 @@ func comparePacketMirroringMirroredResourcesNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Subnetworks, actual.Subnetworks, dcl.Info{ObjectFunction: comparePacketMirroringMirroredResourcesSubnetworksNewStyle, EmptyObject: EmptyPacketMirroringMirroredResourcesSubnetworks, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subnetworks")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Subnetworks, actual.Subnetworks, dcl.DiffInfo{ObjectFunction: comparePacketMirroringMirroredResourcesSubnetworksNewStyle, EmptyObject: EmptyPacketMirroringMirroredResourcesSubnetworks, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Subnetworks")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.Info{ObjectFunction: comparePacketMirroringMirroredResourcesInstancesNewStyle, EmptyObject: EmptyPacketMirroringMirroredResourcesInstances, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.DiffInfo{ObjectFunction: comparePacketMirroringMirroredResourcesInstancesNewStyle, EmptyObject: EmptyPacketMirroringMirroredResourcesInstances, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1583,14 +1583,14 @@ func comparePacketMirroringMirroredResourcesSubnetworksNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1619,14 +1619,14 @@ func comparePacketMirroringMirroredResourcesInstancesNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CanonicalUrl, actual.CanonicalUrl, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CanonicalUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1655,21 +1655,21 @@ func comparePacketMirroringFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CidrRanges, actual.CidrRanges, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("CidrRanges")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CidrRanges, actual.CidrRanges, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("CidrRanges")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IPProtocols, actual.IPProtocols, dcl.Info{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("IPProtocols")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPProtocols, actual.IPProtocols, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("IPProtocols")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Direction, actual.Direction, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Direction")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Direction, actual.Direction, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Direction")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

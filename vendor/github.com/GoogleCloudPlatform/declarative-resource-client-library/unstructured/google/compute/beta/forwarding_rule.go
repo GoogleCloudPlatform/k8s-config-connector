@@ -116,6 +116,12 @@ func ForwardingRuleToUnstructured(r *dclService.ForwardingRule) *unstructured.Re
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
 	}
+	if r.PscConnectionId != nil {
+		u.Object["pscConnectionId"] = *r.PscConnectionId
+	}
+	if r.PscConnectionStatus != nil {
+		u.Object["pscConnectionStatus"] = string(*r.PscConnectionStatus)
+	}
 	if r.Region != nil {
 		u.Object["region"] = *r.Region
 	}
@@ -337,6 +343,20 @@ func UnstructuredToForwardingRule(u *unstructured.Resource) (*dclService.Forward
 			r.Project = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Project: expected string")
+		}
+	}
+	if _, ok := u.Object["pscConnectionId"]; ok {
+		if s, ok := u.Object["pscConnectionId"].(string); ok {
+			r.PscConnectionId = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.PscConnectionId: expected string")
+		}
+	}
+	if _, ok := u.Object["pscConnectionStatus"]; ok {
+		if s, ok := u.Object["pscConnectionStatus"].(string); ok {
+			r.PscConnectionStatus = dclService.ForwardingRulePscConnectionStatusEnumRef(s)
+		} else {
+			return nil, fmt.Errorf("r.PscConnectionStatus: expected string")
 		}
 	}
 	if _, ok := u.Object["region"]; ok {

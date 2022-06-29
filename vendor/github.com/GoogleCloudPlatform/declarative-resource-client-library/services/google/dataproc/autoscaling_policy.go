@@ -360,9 +360,10 @@ func (c *Client) GetAutoscalingPolicy(ctx context.Context, r *AutoscalingPolicy)
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -513,7 +514,7 @@ func applyAutoscalingPolicyHelper(c *Client, ctx context.Context, rawDesired *Au
 func applyAutoscalingPolicyDiff(c *Client, ctx context.Context, desired *AutoscalingPolicy, rawDesired *AutoscalingPolicy, ops []autoscalingPolicyApiOperation, opts ...dcl.ApplyOption) (*AutoscalingPolicy, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetAutoscalingPolicy(ctx, desired.urlNormalized())
+	rawNew, err := c.GetAutoscalingPolicy(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

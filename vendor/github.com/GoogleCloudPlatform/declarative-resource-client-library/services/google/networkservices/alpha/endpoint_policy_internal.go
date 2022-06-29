@@ -1102,91 +1102,91 @@ func diffEndpointPolicy(c *Client, desired, actual *EndpointPolicy, opts ...dcl.
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizationPolicy, actual.AuthorizationPolicy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("AuthorizationPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorizationPolicy, actual.AuthorizationPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("AuthorizationPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EndpointMatcher, actual.EndpointMatcher, dcl.Info{ObjectFunction: compareEndpointPolicyEndpointMatcherNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcher, OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("EndpointMatcher")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EndpointMatcher, actual.EndpointMatcher, dcl.DiffInfo{ObjectFunction: compareEndpointPolicyEndpointMatcherNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcher, OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("EndpointMatcher")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TrafficPortSelector, actual.TrafficPortSelector, dcl.Info{ObjectFunction: compareEndpointPolicyTrafficPortSelectorNewStyle, EmptyObject: EmptyEndpointPolicyTrafficPortSelector, OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("TrafficPortSelector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TrafficPortSelector, actual.TrafficPortSelector, dcl.DiffInfo{ObjectFunction: compareEndpointPolicyTrafficPortSelectorNewStyle, EmptyObject: EmptyEndpointPolicyTrafficPortSelector, OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("TrafficPortSelector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServerTlsPolicy, actual.ServerTlsPolicy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("ServerTlsPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerTlsPolicy, actual.ServerTlsPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("ServerTlsPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ClientTlsPolicy, actual.ClientTlsPolicy, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("ClientTlsPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ClientTlsPolicy, actual.ClientTlsPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateEndpointPolicyUpdateEndpointPolicyOperation")}, fn.AddNest("ClientTlsPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1215,7 +1215,7 @@ func compareEndpointPolicyEndpointMatcherNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MetadataLabelMatcher, actual.MetadataLabelMatcher, dcl.Info{ObjectFunction: compareEndpointPolicyEndpointMatcherMetadataLabelMatcherNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcherMetadataLabelMatcher, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabelMatcher")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MetadataLabelMatcher, actual.MetadataLabelMatcher, dcl.DiffInfo{ObjectFunction: compareEndpointPolicyEndpointMatcherMetadataLabelMatcherNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcherMetadataLabelMatcher, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabelMatcher")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1244,14 +1244,14 @@ func compareEndpointPolicyEndpointMatcherMetadataLabelMatcherNewStyle(d, a inter
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MetadataLabelMatchCriteria, actual.MetadataLabelMatchCriteria, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabelMatchCriteria")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MetadataLabelMatchCriteria, actual.MetadataLabelMatchCriteria, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabelMatchCriteria")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MetadataLabels, actual.MetadataLabels, dcl.Info{ObjectFunction: compareEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelsNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MetadataLabels, actual.MetadataLabels, dcl.DiffInfo{ObjectFunction: compareEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelsNewStyle, EmptyObject: EmptyEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetadataLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1280,14 +1280,14 @@ func compareEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelsNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LabelName, actual.LabelName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LabelName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LabelName, actual.LabelName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LabelName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LabelValue, actual.LabelValue, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LabelValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LabelValue, actual.LabelValue, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LabelValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1316,7 +1316,7 @@ func compareEndpointPolicyTrafficPortSelectorNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Ports, actual.Ports, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Ports")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Ports, actual.Ports, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Ports")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

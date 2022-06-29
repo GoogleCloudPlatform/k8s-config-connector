@@ -1615,8 +1615,9 @@ func (c *Client) GetNote(ctx context.Context, r *Note) (*Note, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1767,7 +1768,7 @@ func applyNoteHelper(c *Client, ctx context.Context, rawDesired *Note, opts ...d
 func applyNoteDiff(c *Client, ctx context.Context, desired *Note, rawDesired *Note, ops []noteApiOperation, opts ...dcl.ApplyOption) (*Note, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetNote(ctx, desired.urlNormalized())
+	rawNew, err := c.GetNote(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

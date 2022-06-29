@@ -389,9 +389,10 @@ func (c *Client) GetWorkload(ctx context.Context, r *Workload) (*Workload, error
 	if err != nil {
 		return nil, err
 	}
-	result.Organization = r.Organization
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Organization = nr.Organization
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -542,7 +543,7 @@ func applyWorkloadHelper(c *Client, ctx context.Context, rawDesired *Workload, o
 func applyWorkloadDiff(c *Client, ctx context.Context, desired *Workload, rawDesired *Workload, ops []workloadApiOperation, opts ...dcl.ApplyOption) (*Workload, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetWorkload(ctx, desired.urlNormalized())
+	rawNew, err := c.GetWorkload(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

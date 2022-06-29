@@ -1082,70 +1082,70 @@ func diffTlsRoute(c *Client, desired, actual *TlsRoute, opts ...dcl.ApplyOption)
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: compareTlsRouteRulesNewStyle, EmptyObject: EmptyTlsRouteRules, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: compareTlsRouteRulesNewStyle, EmptyObject: EmptyTlsRouteRules, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gateways, actual.Gateways, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Gateways")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1174,14 +1174,14 @@ func compareTlsRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.Info{ObjectFunction: compareTlsRouteRulesMatchesNewStyle, EmptyObject: EmptyTlsRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Matches, actual.Matches, dcl.DiffInfo{ObjectFunction: compareTlsRouteRulesMatchesNewStyle, EmptyObject: EmptyTlsRouteRulesMatches, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Matches")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.Info{ObjectFunction: compareTlsRouteRulesActionNewStyle, EmptyObject: EmptyTlsRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Action, actual.Action, dcl.DiffInfo{ObjectFunction: compareTlsRouteRulesActionNewStyle, EmptyObject: EmptyTlsRouteRulesAction, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Action")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1210,14 +1210,14 @@ func compareTlsRouteRulesMatchesNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SniHost, actual.SniHost, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("SniHost")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SniHost, actual.SniHost, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("SniHost")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Alpn, actual.Alpn, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Alpn")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Alpn, actual.Alpn, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Alpn")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1246,7 +1246,7 @@ func compareTlsRouteRulesActionNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.Info{ObjectFunction: compareTlsRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyTlsRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destinations, actual.Destinations, dcl.DiffInfo{ObjectFunction: compareTlsRouteRulesActionDestinationsNewStyle, EmptyObject: EmptyTlsRouteRulesActionDestinations, OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Destinations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1275,14 +1275,14 @@ func compareTlsRouteRulesActionDestinationsNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceName, actual.ServiceName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("ServiceName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.Info{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTlsRouteUpdateTlsRouteOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

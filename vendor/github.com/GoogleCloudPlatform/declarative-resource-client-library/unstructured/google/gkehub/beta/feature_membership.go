@@ -71,6 +71,9 @@ func FeatureMembershipToUnstructured(r *dclService.FeatureMembership) *unstructu
 				}
 				rConfigmanagementConfigSync["git"] = rConfigmanagementConfigSyncGit
 			}
+			if r.Configmanagement.ConfigSync.PreventDrift != nil {
+				rConfigmanagementConfigSync["preventDrift"] = *r.Configmanagement.ConfigSync.PreventDrift
+			}
 			if r.Configmanagement.ConfigSync.SourceFormat != nil {
 				rConfigmanagementConfigSync["sourceFormat"] = *r.Configmanagement.ConfigSync.SourceFormat
 			}
@@ -216,6 +219,13 @@ func UnstructuredToFeatureMembership(u *unstructured.Resource) (*dclService.Feat
 							}
 						} else {
 							return nil, fmt.Errorf("r.Configmanagement.ConfigSync.Git: expected map[string]interface{}")
+						}
+					}
+					if _, ok := rConfigmanagementConfigSync["preventDrift"]; ok {
+						if b, ok := rConfigmanagementConfigSync["preventDrift"].(bool); ok {
+							r.Configmanagement.ConfigSync.PreventDrift = dcl.Bool(b)
+						} else {
+							return nil, fmt.Errorf("r.Configmanagement.ConfigSync.PreventDrift: expected bool")
 						}
 					}
 					if _, ok := rConfigmanagementConfigSync["sourceFormat"]; ok {

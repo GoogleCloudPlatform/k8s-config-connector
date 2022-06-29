@@ -69,6 +69,7 @@ components:
       title: Cluster
       x-dcl-id: projects/{{project}}/locations/{{location}}/azureClusters/{{name}}
       x-dcl-parent-container: project
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:
@@ -265,7 +266,6 @@ components:
               x-dcl-go-type: ClusterControlPlaneSshConfig
               description: SSH configuration for how to access the underlying control
                 plane machines.
-              x-kubernetes-immutable: true
               required:
               - authorizedKey
               properties:
@@ -275,7 +275,6 @@ components:
                   description: The SSH public key data for VMs managed by Anthos.
                     This accepts the authorized_keys file format used in OpenSSH according
                     to the sshd(8) manual page.
-                  x-kubernetes-immutable: true
             subnetId:
               type: string
               x-dcl-go-name: SubnetId
@@ -365,7 +364,6 @@ components:
           x-dcl-go-name: LoggingConfig
           x-dcl-go-type: ClusterLoggingConfig
           description: Logging configuration.
-          x-kubernetes-immutable: true
           x-dcl-server-default: true
           properties:
             componentConfig:
@@ -373,14 +371,12 @@ components:
               x-dcl-go-name: ComponentConfig
               x-dcl-go-type: ClusterLoggingConfigComponentConfig
               description: Configuration of the logging components.
-              x-kubernetes-immutable: true
               x-dcl-server-default: true
               properties:
                 enableComponents:
                   type: array
                   x-dcl-go-name: EnableComponents
                   description: Components of the logging configuration to be enabled.
-                  x-kubernetes-immutable: true
                   x-dcl-server-default: true
                   x-dcl-send-empty: true
                   x-dcl-list-type: list

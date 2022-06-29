@@ -1548,9 +1548,10 @@ func (c *Client) GetServiceLevelObjective(ctx context.Context, r *ServiceLevelOb
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Service = r.Service
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Service = nr.Service
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1701,7 +1702,7 @@ func applyServiceLevelObjectiveHelper(c *Client, ctx context.Context, rawDesired
 func applyServiceLevelObjectiveDiff(c *Client, ctx context.Context, desired *ServiceLevelObjective, rawDesired *ServiceLevelObjective, ops []serviceLevelObjectiveApiOperation, opts ...dcl.ApplyOption) (*ServiceLevelObjective, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetServiceLevelObjective(ctx, desired.urlNormalized())
+	rawNew, err := c.GetServiceLevelObjective(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

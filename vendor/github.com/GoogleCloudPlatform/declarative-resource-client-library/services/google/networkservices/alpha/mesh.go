@@ -154,9 +154,10 @@ func (c *Client) GetMesh(ctx context.Context, r *Mesh) (*Mesh, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -307,7 +308,7 @@ func applyMeshHelper(c *Client, ctx context.Context, rawDesired *Mesh, opts ...d
 func applyMeshDiff(c *Client, ctx context.Context, desired *Mesh, rawDesired *Mesh, ops []meshApiOperation, opts ...dcl.ApplyOption) (*Mesh, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetMesh(ctx, desired.urlNormalized())
+	rawNew, err := c.GetMesh(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -647,9 +647,10 @@ func (c *Client) GetStoredInfoType(ctx context.Context, r *StoredInfoType) (*Sto
 	if err != nil {
 		return nil, err
 	}
-	result.Location = r.Location
-	result.Parent = r.Parent
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Location = nr.Location
+	result.Parent = nr.Parent
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -800,7 +801,7 @@ func applyStoredInfoTypeHelper(c *Client, ctx context.Context, rawDesired *Store
 func applyStoredInfoTypeDiff(c *Client, ctx context.Context, desired *StoredInfoType, rawDesired *StoredInfoType, ops []storedInfoTypeApiOperation, opts ...dcl.ApplyOption) (*StoredInfoType, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetStoredInfoType(ctx, desired.urlNormalized())
+	rawNew, err := c.GetStoredInfoType(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

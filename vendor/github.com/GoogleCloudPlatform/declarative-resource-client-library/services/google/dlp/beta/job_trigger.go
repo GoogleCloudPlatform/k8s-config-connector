@@ -3730,9 +3730,10 @@ func (c *Client) GetJobTrigger(ctx context.Context, r *JobTrigger) (*JobTrigger,
 	if err != nil {
 		return nil, err
 	}
-	result.Location = r.Location
-	result.Parent = r.Parent
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Location = nr.Location
+	result.Parent = nr.Parent
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -3883,7 +3884,7 @@ func applyJobTriggerHelper(c *Client, ctx context.Context, rawDesired *JobTrigge
 func applyJobTriggerDiff(c *Client, ctx context.Context, desired *JobTrigger, rawDesired *JobTrigger, ops []jobTriggerApiOperation, opts ...dcl.ApplyOption) (*JobTrigger, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetJobTrigger(ctx, desired.urlNormalized())
+	rawNew, err := c.GetJobTrigger(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

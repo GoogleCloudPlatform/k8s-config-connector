@@ -628,63 +628,63 @@ func diffNetwork(c *Client, desired, actual *Network, opts ...dcl.ApplyOption) (
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GatewayIPv4, actual.GatewayIPv4, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GatewayIPv4")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GatewayIPv4, actual.GatewayIPv4, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GatewayIPv4")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AutoCreateSubnetworks, actual.AutoCreateSubnetworks, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoCreateSubnetworks")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AutoCreateSubnetworks, actual.AutoCreateSubnetworks, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoCreateSubnetworks")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RoutingConfig, actual.RoutingConfig, dcl.Info{ObjectFunction: compareNetworkRoutingConfigNewStyle, EmptyObject: EmptyNetworkRoutingConfig, OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RoutingConfig, actual.RoutingConfig, dcl.DiffInfo{ObjectFunction: compareNetworkRoutingConfigNewStyle, EmptyObject: EmptyNetworkRoutingConfig, OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mtu, actual.Mtu, dcl.Info{OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("Mtu")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mtu, actual.Mtu, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("Mtu")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLinkWithId, actual.SelfLinkWithId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLinkWithId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLinkWithId, actual.SelfLinkWithId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLinkWithId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -713,7 +713,7 @@ func compareNetworkRoutingConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

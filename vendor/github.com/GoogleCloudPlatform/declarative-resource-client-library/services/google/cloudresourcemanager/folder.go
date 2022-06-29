@@ -178,7 +178,8 @@ func (c *Client) GetFolder(ctx context.Context, r *Folder) (*Folder, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -329,7 +330,7 @@ func applyFolderHelper(c *Client, ctx context.Context, rawDesired *Folder, opts 
 func applyFolderDiff(c *Client, ctx context.Context, desired *Folder, rawDesired *Folder, ops []folderApiOperation, opts ...dcl.ApplyOption) (*Folder, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetFolder(ctx, desired.urlNormalized())
+	rawNew, err := c.GetFolder(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

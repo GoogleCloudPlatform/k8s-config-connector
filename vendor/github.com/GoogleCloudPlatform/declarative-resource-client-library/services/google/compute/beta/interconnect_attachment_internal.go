@@ -1035,203 +1035,203 @@ func diffInterconnectAttachment(c *Client, desired, actual *InterconnectAttachme
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SelfLink, actual.SelfLink, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SelfLink")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interconnect, actual.Interconnect, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Interconnect")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interconnect, actual.Interconnect, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Interconnect")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Router, actual.Router, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Router")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Router, actual.Router, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Router")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mtu, actual.Mtu, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Mtu")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mtu, actual.Mtu, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Mtu")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrivateInterconnectInfo, actual.PrivateInterconnectInfo, dcl.Info{OutputOnly: true, ObjectFunction: compareInterconnectAttachmentPrivateInterconnectInfoNewStyle, EmptyObject: EmptyInterconnectAttachmentPrivateInterconnectInfo, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PrivateInterconnectInfo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrivateInterconnectInfo, actual.PrivateInterconnectInfo, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareInterconnectAttachmentPrivateInterconnectInfoNewStyle, EmptyObject: EmptyInterconnectAttachmentPrivateInterconnectInfo, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PrivateInterconnectInfo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OperationalStatus, actual.OperationalStatus, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OperationalStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OperationalStatus, actual.OperationalStatus, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OperationalStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CloudRouterIPAddress, actual.CloudRouterIPAddress, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudRouterIpAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudRouterIPAddress, actual.CloudRouterIPAddress, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudRouterIpAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomerRouterIPAddress, actual.CustomerRouterIPAddress, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomerRouterIpAddress")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomerRouterIPAddress, actual.CustomerRouterIPAddress, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CustomerRouterIpAddress")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PairingKey, actual.PairingKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PairingKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PairingKey, actual.PairingKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PairingKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AdminEnabled, actual.AdminEnabled, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("AdminEnabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdminEnabled, actual.AdminEnabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("AdminEnabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VlanTag8021q, actual.VlanTag8021q, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("VlanTag8021q")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VlanTag8021q, actual.VlanTag8021q, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("VlanTag8021q")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EdgeAvailabilityDomain, actual.EdgeAvailabilityDomain, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("EdgeAvailabilityDomain")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EdgeAvailabilityDomain, actual.EdgeAvailabilityDomain, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("EdgeAvailabilityDomain")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CandidateSubnets, actual.CandidateSubnets, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("CandidateSubnets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CandidateSubnets, actual.CandidateSubnets, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("CandidateSubnets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Bandwidth, actual.Bandwidth, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Bandwidth")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bandwidth, actual.Bandwidth, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Bandwidth")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PartnerMetadata, actual.PartnerMetadata, dcl.Info{ObjectFunction: compareInterconnectAttachmentPartnerMetadataNewStyle, EmptyObject: EmptyInterconnectAttachmentPartnerMetadata, OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerMetadata")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartnerMetadata, actual.PartnerMetadata, dcl.DiffInfo{ObjectFunction: compareInterconnectAttachmentPartnerMetadataNewStyle, EmptyObject: EmptyInterconnectAttachmentPartnerMetadata, OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerMetadata")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PartnerAsn, actual.PartnerAsn, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerAsn")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartnerAsn, actual.PartnerAsn, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerAsn")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Encryption, actual.Encryption, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Encryption")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Encryption, actual.Encryption, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Encryption")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IpsecInternalAddresses, actual.IpsecInternalAddresses, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("IpsecInternalAddresses")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IpsecInternalAddresses, actual.IpsecInternalAddresses, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("IpsecInternalAddresses")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DataplaneVersion, actual.DataplaneVersion, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("DataplaneVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataplaneVersion, actual.DataplaneVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("DataplaneVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SatisfiesPzs, actual.SatisfiesPzs, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SatisfiesPzs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SatisfiesPzs, actual.SatisfiesPzs, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SatisfiesPzs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LabelFingerprint, actual.LabelFingerprint, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("LabelFingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LabelFingerprint, actual.LabelFingerprint, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("LabelFingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1260,7 +1260,7 @@ func compareInterconnectAttachmentPrivateInterconnectInfoNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Tag8021q, actual.Tag8021q, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tag8021q")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tag8021q, actual.Tag8021q, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tag8021q")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1289,21 +1289,21 @@ func compareInterconnectAttachmentPartnerMetadataNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PartnerName, actual.PartnerName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartnerName, actual.PartnerName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PartnerName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InterconnectName, actual.InterconnectName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("InterconnectName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InterconnectName, actual.InterconnectName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("InterconnectName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PortalUrl, actual.PortalUrl, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PortalUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PortalUrl, actual.PortalUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInterconnectAttachmentPatchOperation")}, fn.AddNest("PortalUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

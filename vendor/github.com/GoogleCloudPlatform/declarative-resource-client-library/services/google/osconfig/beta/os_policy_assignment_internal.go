@@ -7145,105 +7145,105 @@ func diffOSPolicyAssignment(c *Client, desired, actual *OSPolicyAssignment, opts
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSPolicies, actual.OSPolicies, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPolicies, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsPolicies")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSPolicies, actual.OSPolicies, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPolicies, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsPolicies")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceFilter, actual.InstanceFilter, dcl.Info{ObjectFunction: compareOSPolicyAssignmentInstanceFilterNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilter, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InstanceFilter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceFilter, actual.InstanceFilter, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentInstanceFilterNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilter, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InstanceFilter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rollout, actual.Rollout, dcl.Info{ObjectFunction: compareOSPolicyAssignmentRolloutNewStyle, EmptyObject: EmptyOSPolicyAssignmentRollout, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Rollout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rollout, actual.Rollout, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentRolloutNewStyle, EmptyObject: EmptyOSPolicyAssignmentRollout, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Rollout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RevisionId, actual.RevisionId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevisionId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RevisionId, actual.RevisionId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevisionId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RevisionCreateTime, actual.RevisionCreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevisionCreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RevisionCreateTime, actual.RevisionCreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RevisionCreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RolloutState, actual.RolloutState, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RolloutState")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RolloutState, actual.RolloutState, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RolloutState")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Baseline, actual.Baseline, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Baseline")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Baseline, actual.Baseline, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Baseline")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Deleted, actual.Deleted, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Deleted")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Deleted, actual.Deleted, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Deleted")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Reconciling, actual.Reconciling, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Reconciling")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Reconciling, actual.Reconciling, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Reconciling")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uid, actual.Uid, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uid")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uid, actual.Uid, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uid")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7272,35 +7272,35 @@ func compareOSPolicyAssignmentOSPoliciesNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceGroups, actual.ResourceGroups, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroups, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ResourceGroups")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceGroups, actual.ResourceGroups, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroups, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ResourceGroups")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowNoResourceGroupMatch, actual.AllowNoResourceGroupMatch, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowNoResourceGroupMatch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowNoResourceGroupMatch, actual.AllowNoResourceGroupMatch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowNoResourceGroupMatch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7329,14 +7329,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InventoryFilters, actual.InventoryFilters, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InventoryFilters")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InventoryFilters, actual.InventoryFilters, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InventoryFilters")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Resources, actual.Resources, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResources, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Resources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Resources, actual.Resources, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResources, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Resources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7365,14 +7365,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersNewStyle(d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7401,35 +7401,35 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Pkg, actual.Pkg, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Pkg")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Pkg, actual.Pkg, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Pkg")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Repository, actual.Repository, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Repository")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Repository, actual.Repository, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Repository")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Exec, actual.Exec, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Exec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Exec, actual.Exec, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Exec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.File, actual.File, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.File, actual.File, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7458,56 +7458,56 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Deb, actual.Deb, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Deb")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Deb, actual.Deb, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Deb")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rpm, actual.Rpm, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Rpm")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rpm, actual.Rpm, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Rpm")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Googet, actual.Googet, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Googet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Googet, actual.Googet, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Googet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Msi, actual.Msi, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Msi")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Msi, actual.Msi, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Msi")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7536,7 +7536,7 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7565,14 +7565,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PullDeps, actual.PullDeps, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("PullDeps")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PullDeps, actual.PullDeps, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("PullDeps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7601,28 +7601,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7651,14 +7651,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemot
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7687,21 +7687,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsNe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7730,7 +7730,7 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7759,7 +7759,7 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7788,14 +7788,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PullDeps, actual.PullDeps, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("PullDeps")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PullDeps, actual.PullDeps, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("PullDeps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7824,28 +7824,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7874,14 +7874,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemot
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7910,21 +7910,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsNe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7953,7 +7953,7 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7982,14 +7982,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Source, actual.Source, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Source")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8018,28 +8018,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8068,14 +8068,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemot
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8104,21 +8104,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsNe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8147,28 +8147,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8197,35 +8197,35 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArchiveType, actual.ArchiveType, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ArchiveType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArchiveType, actual.ArchiveType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ArchiveType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Components, actual.Components, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Components")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Components, actual.Components, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Components")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKey, actual.GpgKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKey, actual.GpgKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8254,28 +8254,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8304,28 +8304,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8354,14 +8354,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8390,14 +8390,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Validate, actual.Validate, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Validate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Validate, actual.Validate, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Validate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Enforce, actual.Enforce, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Enforce")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enforce, actual.Enforce, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Enforce")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8426,35 +8426,35 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.File, actual.File, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.File, actual.File, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OutputFilePath, actual.OutputFilePath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OutputFilePath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OutputFilePath, actual.OutputFilePath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OutputFilePath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8483,28 +8483,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8533,14 +8533,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileR
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8569,21 +8569,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileG
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8612,35 +8612,35 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceNewSty
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.File, actual.File, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.File, actual.File, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OutputFilePath, actual.OutputFilePath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OutputFilePath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OutputFilePath, actual.OutputFilePath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OutputFilePath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8669,28 +8669,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileNe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8719,14 +8719,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRe
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8755,21 +8755,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8798,35 +8798,35 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.File, actual.File, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.File, actual.File, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("File")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Content, actual.Content, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Content")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8855,28 +8855,28 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileNewStyle(
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.Info{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsNewStyle, EmptyObject: EmptyOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8905,14 +8905,14 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteNew
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha256Checksum, actual.Sha256Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Sha256Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8941,21 +8941,21 @@ func compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsNewSty
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8984,28 +8984,28 @@ func compareOSPolicyAssignmentInstanceFilterNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.All, actual.All, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("All")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.All, actual.All, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("All")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InclusionLabels, actual.InclusionLabels, dcl.Info{ObjectFunction: compareOSPolicyAssignmentInstanceFilterInclusionLabelsNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterInclusionLabels, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InclusionLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InclusionLabels, actual.InclusionLabels, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentInstanceFilterInclusionLabelsNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterInclusionLabels, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("InclusionLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusionLabels, actual.ExclusionLabels, dcl.Info{ObjectFunction: compareOSPolicyAssignmentInstanceFilterExclusionLabelsNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterExclusionLabels, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ExclusionLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusionLabels, actual.ExclusionLabels, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentInstanceFilterExclusionLabelsNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterExclusionLabels, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("ExclusionLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Inventories, actual.Inventories, dcl.Info{ObjectFunction: compareOSPolicyAssignmentInstanceFilterInventoriesNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterInventories, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Inventories")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Inventories, actual.Inventories, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentInstanceFilterInventoriesNewStyle, EmptyObject: EmptyOSPolicyAssignmentInstanceFilterInventories, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Inventories")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9034,7 +9034,7 @@ func compareOSPolicyAssignmentInstanceFilterInclusionLabelsNewStyle(d, a interfa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9063,7 +9063,7 @@ func compareOSPolicyAssignmentInstanceFilterExclusionLabelsNewStyle(d, a interfa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9092,14 +9092,14 @@ func compareOSPolicyAssignmentInstanceFilterInventoriesNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9128,14 +9128,14 @@ func compareOSPolicyAssignmentRolloutNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.DisruptionBudget, actual.DisruptionBudget, dcl.Info{ObjectFunction: compareOSPolicyAssignmentRolloutDisruptionBudgetNewStyle, EmptyObject: EmptyOSPolicyAssignmentRolloutDisruptionBudget, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisruptionBudget")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisruptionBudget, actual.DisruptionBudget, dcl.DiffInfo{ObjectFunction: compareOSPolicyAssignmentRolloutDisruptionBudgetNewStyle, EmptyObject: EmptyOSPolicyAssignmentRolloutDisruptionBudget, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("DisruptionBudget")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinWaitDuration, actual.MinWaitDuration, dcl.Info{CustomDiff: canonicalizeOSPolicyAssignmentRolloutMinWaitDuration, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("MinWaitDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinWaitDuration, actual.MinWaitDuration, dcl.DiffInfo{CustomDiff: canonicalizeOSPolicyAssignmentRolloutMinWaitDuration, OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("MinWaitDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9164,14 +9164,14 @@ func compareOSPolicyAssignmentRolloutDisruptionBudgetNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Fixed, actual.Fixed, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Fixed")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fixed, actual.Fixed, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Fixed")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Percent, actual.Percent, dcl.Info{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Percent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Percent, actual.Percent, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("Percent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

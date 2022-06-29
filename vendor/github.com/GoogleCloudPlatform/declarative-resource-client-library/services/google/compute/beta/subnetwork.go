@@ -392,9 +392,10 @@ func (c *Client) GetSubnetwork(ctx context.Context, r *Subnetwork) (*Subnetwork,
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Region = r.Region
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Region = nr.Region
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -559,7 +560,7 @@ func applySubnetworkHelper(c *Client, ctx context.Context, rawDesired *Subnetwor
 func applySubnetworkDiff(c *Client, ctx context.Context, desired *Subnetwork, rawDesired *Subnetwork, ops []subnetworkApiOperation, opts ...dcl.ApplyOption) (*Subnetwork, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetSubnetwork(ctx, desired.urlNormalized())
+	rawNew, err := c.GetSubnetwork(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

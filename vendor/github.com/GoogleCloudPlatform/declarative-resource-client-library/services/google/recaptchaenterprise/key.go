@@ -440,8 +440,9 @@ func (c *Client) GetKey(ctx context.Context, r *Key) (*Key, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -592,7 +593,7 @@ func applyKeyHelper(c *Client, ctx context.Context, rawDesired *Key, opts ...dcl
 func applyKeyDiff(c *Client, ctx context.Context, desired *Key, rawDesired *Key, ops []keyApiOperation, opts ...dcl.ApplyOption) (*Key, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetKey(ctx, desired.urlNormalized())
+	rawNew, err := c.GetKey(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

@@ -1217,9 +1217,10 @@ func (c *Client) GetCaPool(ctx context.Context, r *CaPool) (*CaPool, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -1370,7 +1371,7 @@ func applyCaPoolHelper(c *Client, ctx context.Context, rawDesired *CaPool, opts 
 func applyCaPoolDiff(c *Client, ctx context.Context, desired *CaPool, rawDesired *CaPool, ops []caPoolApiOperation, opts ...dcl.ApplyOption) (*CaPool, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetCaPool(ctx, desired.urlNormalized())
+	rawNew, err := c.GetCaPool(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

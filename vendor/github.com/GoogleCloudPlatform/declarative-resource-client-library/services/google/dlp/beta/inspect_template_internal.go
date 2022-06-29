@@ -2186,7 +2186,8 @@ func canonicalizeInspectTemplateInspectConfigCustomInfoTypesStoredType(des, init
 
 	cDes := &InspectTemplateInspectConfigCustomInfoTypesStoredType{}
 
-	if dcl.StringCanonicalize(des.Name, initial.Name) || dcl.IsZeroValue(des.Name) {
+	if dcl.IsZeroValue(des.Name) || (dcl.IsEmptyValueIndirect(des.Name) && dcl.IsEmptyValueIndirect(initial.Name)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.Name = initial.Name
 	} else {
 		cDes.Name = des.Name
@@ -2235,10 +2236,6 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesStoredType(c *Cli
 			return des
 		}
 		return nil
-	}
-
-	if dcl.StringCanonicalize(des.Name, nw.Name) {
-		nw.Name = des.Name
 	}
 
 	return nw
@@ -4007,63 +4004,63 @@ func diffInspectTemplate(c *Client, desired, actual *InspectTemplate, opts ...dc
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InspectConfig, actual.InspectConfig, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigNewStyle, EmptyObject: EmptyInspectTemplateInspectConfig, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InspectConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InspectConfig, actual.InspectConfig, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigNewStyle, EmptyObject: EmptyInspectTemplateInspectConfig, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InspectConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocationId, actual.LocationId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocationId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocationId, actual.LocationId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocationId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4092,56 +4089,56 @@ func compareInspectTemplateInspectConfigNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinLikelihood, actual.MinLikelihood, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MinLikelihood")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinLikelihood, actual.MinLikelihood, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MinLikelihood")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Limits, actual.Limits, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigLimitsNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimits, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Limits")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Limits, actual.Limits, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigLimitsNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimits, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Limits")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IncludeQuote, actual.IncludeQuote, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("IncludeQuote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IncludeQuote, actual.IncludeQuote, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("IncludeQuote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExcludeInfoTypes, actual.ExcludeInfoTypes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExcludeInfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExcludeInfoTypes, actual.ExcludeInfoTypes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExcludeInfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomInfoTypes, actual.CustomInfoTypes, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CustomInfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomInfoTypes, actual.CustomInfoTypes, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CustomInfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ContentOptions, actual.ContentOptions, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ContentOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ContentOptions, actual.ContentOptions, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ContentOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RuleSet, actual.RuleSet, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSet, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("RuleSet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RuleSet, actual.RuleSet, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSet, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("RuleSet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4170,7 +4167,7 @@ func compareInspectTemplateInspectConfigInfoTypesNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4199,21 +4196,21 @@ func compareInspectTemplateInspectConfigLimitsNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MaxFindingsPerItem, actual.MaxFindingsPerItem, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerItem")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxFindingsPerItem, actual.MaxFindingsPerItem, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerItem")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxFindingsPerRequest, actual.MaxFindingsPerRequest, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerRequest")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxFindingsPerRequest, actual.MaxFindingsPerRequest, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerRequest")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxFindingsPerInfoType, actual.MaxFindingsPerInfoType, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxFindingsPerInfoType, actual.MaxFindingsPerInfoType, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindingsPerInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4242,14 +4239,14 @@ func compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeNewStyle(d, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoType, actual.InfoType, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoType, actual.InfoType, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxFindings, actual.MaxFindings, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindings")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxFindings, actual.MaxFindings, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MaxFindings")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4278,7 +4275,7 @@ func compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeNewS
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4307,49 +4304,49 @@ func compareInspectTemplateInspectConfigCustomInfoTypesNewStyle(d, a interface{}
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoType, actual.InfoType, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoType, actual.InfoType, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesInfoTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesInfoType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Likelihood, actual.Likelihood, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Likelihood")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Likelihood, actual.Likelihood, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Likelihood")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionary, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionary, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateType, actual.SurrogateType, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesSurrogateType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("SurrogateType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateType, actual.SurrogateType, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesSurrogateType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("SurrogateType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StoredType, actual.StoredType, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesStoredTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesStoredType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("StoredType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StoredType, actual.StoredType, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesStoredTypeNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesStoredType, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("StoredType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusionType, actual.ExclusionType, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExclusionType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusionType, actual.ExclusionType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExclusionType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4378,7 +4375,7 @@ func compareInspectTemplateInspectConfigCustomInfoTypesInfoTypeNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4407,14 +4404,14 @@ func compareInspectTemplateInspectConfigCustomInfoTypesDictionaryNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionaryWordList, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionaryWordList, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4443,7 +4440,7 @@ func compareInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4472,7 +4469,7 @@ func compareInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4501,14 +4498,14 @@ func compareInspectTemplateInspectConfigCustomInfoTypesRegexNewStyle(d, a interf
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4543,14 +4540,14 @@ func compareInspectTemplateInspectConfigCustomInfoTypesStoredTypeNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4579,14 +4576,14 @@ func compareInspectTemplateInspectConfigRuleSetNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRules, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRules, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4615,7 +4612,7 @@ func compareInspectTemplateInspectConfigRuleSetInfoTypesNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4644,14 +4641,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HotwordRule, actual.HotwordRule, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRule, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("HotwordRule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HotwordRule, actual.HotwordRule, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRule, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("HotwordRule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExclusionRule, actual.ExclusionRule, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRule, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExclusionRule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExclusionRule, actual.ExclusionRule, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRule, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExclusionRule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4680,21 +4677,21 @@ func compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleNewStyle(d, a int
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HotwordRegex, actual.HotwordRegex, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("HotwordRegex")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HotwordRegex, actual.HotwordRegex, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("HotwordRegex")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Proximity, actual.Proximity, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Proximity")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Proximity, actual.Proximity, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Proximity")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LikelihoodAdjustment, actual.LikelihoodAdjustment, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("LikelihoodAdjustment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LikelihoodAdjustment, actual.LikelihoodAdjustment, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("LikelihoodAdjustment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4723,14 +4720,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4759,14 +4756,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityNewStyle
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WindowBefore, actual.WindowBefore, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WindowBefore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowBefore, actual.WindowBefore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WindowBefore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WindowAfter, actual.WindowAfter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WindowAfter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowAfter, actual.WindowAfter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WindowAfter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4795,14 +4792,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustm
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FixedLikelihood, actual.FixedLikelihood, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("FixedLikelihood")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedLikelihood, actual.FixedLikelihood, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("FixedLikelihood")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RelativeLikelihood, actual.RelativeLikelihood, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("RelativeLikelihood")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RelativeLikelihood, actual.RelativeLikelihood, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("RelativeLikelihood")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4831,28 +4828,28 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExcludeInfoTypes, actual.ExcludeInfoTypes, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExcludeInfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExcludeInfoTypes, actual.ExcludeInfoTypes, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("ExcludeInfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MatchingType, actual.MatchingType, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MatchingType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MatchingType, actual.MatchingType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("MatchingType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4881,14 +4878,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryNewSt
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4917,7 +4914,7 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordL
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4946,7 +4943,7 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloud
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4975,14 +4972,14 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexNewStyle(d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5011,7 +5008,7 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoType
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.Info{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.DiffInfo{ObjectFunction: compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesNewStyle, EmptyObject: EmptyInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes, OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5040,7 +5037,7 @@ func compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoType
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInspectTemplateUpdateInspectTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

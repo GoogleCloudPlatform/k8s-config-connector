@@ -143,9 +143,10 @@ func (c *Client) GetKeyRing(ctx context.Context, r *KeyRing) (*KeyRing, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Location = r.Location
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Location = nr.Location
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -259,7 +260,7 @@ func applyKeyRingHelper(c *Client, ctx context.Context, rawDesired *KeyRing, opt
 func applyKeyRingDiff(c *Client, ctx context.Context, desired *KeyRing, rawDesired *KeyRing, ops []keyRingApiOperation, opts ...dcl.ApplyOption) (*KeyRing, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetKeyRing(ctx, desired.urlNormalized())
+	rawNew, err := c.GetKeyRing(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

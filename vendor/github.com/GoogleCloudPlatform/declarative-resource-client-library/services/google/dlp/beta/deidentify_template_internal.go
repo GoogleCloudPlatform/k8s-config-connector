@@ -4529,7 +4529,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransf
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -4582,9 +4583,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -8344,7 +8342,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransf
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -8397,9 +8396,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -9088,7 +9084,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransf
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -9141,9 +9138,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -9697,7 +9691,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransf
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -9750,9 +9745,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -13216,7 +13208,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -13269,9 +13262,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -17031,7 +17021,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -17084,9 +17075,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -17775,7 +17763,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -17828,9 +17817,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -18384,7 +18370,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -18437,9 +18424,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -20817,7 +20801,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -20870,9 +20855,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -24632,7 +24614,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -24685,9 +24668,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -25376,7 +25356,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -25429,9 +25410,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -25985,7 +25963,8 @@ func canonicalizeDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTra
 	} else {
 		cDes.WrappedKey = des.WrappedKey
 	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, initial.CryptoKeyName) || dcl.IsZeroValue(des.CryptoKeyName) {
+	if dcl.IsZeroValue(des.CryptoKeyName) || (dcl.IsEmptyValueIndirect(des.CryptoKeyName) && dcl.IsEmptyValueIndirect(initial.CryptoKeyName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.CryptoKeyName = initial.CryptoKeyName
 	} else {
 		cDes.CryptoKeyName = des.CryptoKeyName
@@ -26038,9 +26017,6 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 
 	if dcl.StringCanonicalize(des.WrappedKey, nw.WrappedKey) {
 		nw.WrappedKey = des.WrappedKey
-	}
-	if dcl.StringCanonicalize(des.CryptoKeyName, nw.CryptoKeyName) {
-		nw.CryptoKeyName = des.CryptoKeyName
 	}
 
 	return nw
@@ -27845,63 +27821,63 @@ func diffDeidentifyTemplate(c *Client, desired, actual *DeidentifyTemplate, opts
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreateTime, actual.CreateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CreateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateTime, actual.UpdateTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DeidentifyConfig, actual.DeidentifyConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DeidentifyConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DeidentifyConfig, actual.DeidentifyConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DeidentifyConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocationId, actual.LocationId, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocationId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocationId, actual.LocationId, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocationId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -27930,21 +27906,21 @@ func compareDeidentifyTemplateDeidentifyConfigNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypeTransformations, actual.InfoTypeTransformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypeTransformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypeTransformations, actual.InfoTypeTransformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypeTransformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RecordTransformations, actual.RecordTransformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RecordTransformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RecordTransformations, actual.RecordTransformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RecordTransformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TransformationErrorHandling, actual.TransformationErrorHandling, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandling, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TransformationErrorHandling")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TransformationErrorHandling, actual.TransformationErrorHandling, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandling, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TransformationErrorHandling")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -27973,7 +27949,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsNewStyle(d,
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transformations, actual.Transformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transformations, actual.Transformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28002,14 +27978,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsInfoTypesNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsInfoTypes, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsInfoTypesNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsInfoTypes, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28038,7 +28014,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28067,77 +28043,77 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28166,7 +28142,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28195,56 +28171,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28273,28 +28249,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28323,21 +28299,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28372,28 +28348,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28422,14 +28398,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28458,42 +28434,42 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28522,21 +28498,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28565,7 +28541,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28594,7 +28570,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28623,14 +28599,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28659,7 +28635,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28688,7 +28664,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28717,21 +28693,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28760,56 +28736,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28838,28 +28814,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28888,21 +28864,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -28931,56 +28907,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29009,28 +28985,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29059,21 +29035,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29102,7 +29078,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29131,21 +29107,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29174,56 +29150,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29252,28 +29228,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29302,21 +29278,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29345,56 +29321,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29423,28 +29399,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29473,21 +29449,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29516,56 +29492,56 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29594,28 +29570,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29644,21 +29620,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29693,7 +29669,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29722,7 +29698,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29751,21 +29727,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29794,7 +29770,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29823,7 +29799,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29852,14 +29828,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29888,28 +29864,28 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29938,7 +29914,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -29967,21 +29943,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30010,7 +29986,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30039,7 +30015,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30068,14 +30044,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30104,21 +30080,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30147,21 +30123,21 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30190,7 +30166,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30219,7 +30195,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30248,14 +30224,14 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30284,7 +30260,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30313,7 +30289,7 @@ func compareDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30342,14 +30318,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsNewStyle(d, a
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FieldTransformations, actual.FieldTransformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FieldTransformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FieldTransformations, actual.FieldTransformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FieldTransformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RecordSuppressions, actual.RecordSuppressions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RecordSuppressions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RecordSuppressions, actual.RecordSuppressions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RecordSuppressions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30378,28 +30354,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Fields, actual.Fields, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsFieldsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsFields, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Fields")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fields, actual.Fields, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsFieldsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsFields, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Fields")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsCondition, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsCondition, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypeTransformations, actual.InfoTypeTransformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypeTransformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypeTransformations, actual.InfoTypeTransformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypeTransformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30428,7 +30404,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30457,7 +30433,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Expressions, actual.Expressions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Expressions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Expressions, actual.Expressions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Expressions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30486,14 +30462,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LogicalOperator, actual.LogicalOperator, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LogicalOperator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogicalOperator, actual.LogicalOperator, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LogicalOperator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30522,7 +30498,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30551,21 +30527,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsFieldNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsField, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsFieldNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsField, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Operator, actual.Operator, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Operator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Operator, actual.Operator, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Operator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30594,7 +30570,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30623,56 +30599,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30701,28 +30677,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30751,21 +30727,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30794,77 +30770,77 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30893,7 +30869,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -30922,56 +30898,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31000,28 +30976,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31050,21 +31026,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31099,28 +31075,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31149,14 +31125,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31185,42 +31161,42 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31249,21 +31225,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31292,7 +31268,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31321,7 +31297,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31350,14 +31326,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31386,7 +31362,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31415,7 +31391,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31444,21 +31420,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31487,56 +31463,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31565,28 +31541,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31615,21 +31591,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31658,56 +31634,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31736,28 +31712,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31786,21 +31762,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31829,7 +31805,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31858,21 +31834,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31901,56 +31877,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -31979,28 +31955,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32029,21 +32005,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32072,56 +32048,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32150,28 +32126,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32200,21 +32176,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32243,56 +32219,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32321,28 +32297,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32371,21 +32347,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32420,7 +32396,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32449,7 +32425,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32478,21 +32454,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32521,7 +32497,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32550,7 +32526,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32579,14 +32555,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32615,28 +32591,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32665,7 +32641,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32694,21 +32670,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32737,7 +32713,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32766,7 +32742,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32795,14 +32771,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32831,21 +32807,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32874,21 +32850,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32917,7 +32893,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32946,7 +32922,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -32975,14 +32951,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33011,7 +32987,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33040,7 +33016,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33069,7 +33045,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transformations, actual.Transformations, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transformations")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transformations, actual.Transformations, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformations, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transformations")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33098,14 +33074,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsInfoTypesNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsInfoTypes, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfoTypes, actual.InfoTypes, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsInfoTypesNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsInfoTypes, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("InfoTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrimitiveTransformation, actual.PrimitiveTransformation, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformation, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PrimitiveTransformation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33134,7 +33110,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33163,77 +33139,77 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceConfig, actual.ReplaceConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RedactConfig, actual.RedactConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("RedactConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharacterMaskConfig, actual.CharacterMaskConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharacterMaskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoReplaceFfxFpeConfig, actual.CryptoReplaceFfxFpeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoReplaceFfxFpeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedSizeBucketingConfig, actual.FixedSizeBucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FixedSizeBucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketingConfig, actual.BucketingConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplaceWithInfoTypeConfig, actual.ReplaceWithInfoTypeConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplaceWithInfoTypeConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimePartConfig, actual.TimePartConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimePartConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoHashConfig, actual.CryptoHashConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoHashConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateShiftConfig, actual.DateShiftConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateShiftConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoDeterministicConfig, actual.CryptoDeterministicConfig, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoDeterministicConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33262,7 +33238,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NewValue, actual.NewValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NewValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33291,56 +33267,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33369,28 +33345,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33419,21 +33395,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33468,28 +33444,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaskingCharacter, actual.MaskingCharacter, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("MaskingCharacter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumberToMask, actual.NumberToMask, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("NumberToMask")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReverseOrder, actual.ReverseOrder, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReverseOrder")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToIgnore, actual.CharactersToIgnore, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnoreNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33518,14 +33494,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CharactersToSkip, actual.CharactersToSkip, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CharactersToSkip")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonCharactersToIgnore, actual.CommonCharactersToIgnore, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonCharactersToIgnore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33554,42 +33530,42 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommonAlphabet, actual.CommonAlphabet, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CommonAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomAlphabet, actual.CustomAlphabet, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CustomAlphabet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Radix, actual.Radix, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Radix")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33618,21 +33594,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33661,7 +33637,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33690,7 +33666,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33719,14 +33695,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33755,7 +33731,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33784,7 +33760,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33813,21 +33789,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBound, actual.LowerBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBound, actual.UpperBound, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBound")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BucketSize, actual.BucketSize, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BucketSize")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33856,56 +33832,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33934,28 +33910,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -33984,21 +33960,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34027,56 +34003,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34105,28 +34081,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34155,21 +34131,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34198,7 +34174,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Buckets, actual.Buckets, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Buckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34227,21 +34203,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Min, actual.Min, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Min")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Max, actual.Max, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Max")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReplacementValue, actual.ReplacementValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ReplacementValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34270,56 +34246,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34348,28 +34324,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34398,21 +34374,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34441,56 +34417,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34519,28 +34495,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34569,21 +34545,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34612,56 +34588,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34690,28 +34666,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34740,21 +34716,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34789,7 +34765,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PartToExtract, actual.PartToExtract, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("PartToExtract")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34818,7 +34794,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34847,21 +34823,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34890,7 +34866,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34919,7 +34895,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34948,14 +34924,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -34984,28 +34960,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpperBoundDays, actual.UpperBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("UpperBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LowerBoundDays, actual.LowerBoundDays, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LowerBoundDays")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35034,7 +35010,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35063,21 +35039,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35106,7 +35082,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35135,7 +35111,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35164,14 +35140,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35200,21 +35176,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKey, actual.CryptoKey, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SurrogateInfoType, actual.SurrogateInfoType, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("SurrogateInfoType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Context, actual.Context, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Context")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35243,21 +35219,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Transient, actual.Transient, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Transient")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unwrapped, actual.Unwrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Unwrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KmsWrapped, actual.KmsWrapped, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("KmsWrapped")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35286,7 +35262,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35315,7 +35291,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Key, actual.Key, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Key")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35344,14 +35320,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WrappedKey, actual.WrappedKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("WrappedKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CryptoKeyName, actual.CryptoKeyName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("CryptoKeyName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35380,7 +35356,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35409,7 +35385,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35438,7 +35414,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsCondition, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Condition, actual.Condition, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsCondition, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Condition")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35467,7 +35443,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Expressions, actual.Expressions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Expressions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Expressions, actual.Expressions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Expressions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35496,14 +35472,14 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LogicalOperator, actual.LogicalOperator, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LogicalOperator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LogicalOperator, actual.LogicalOperator, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LogicalOperator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35532,7 +35508,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Conditions, actual.Conditions, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditions, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Conditions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35561,21 +35537,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsFieldNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsField, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsFieldNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsField, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Operator, actual.Operator, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Operator")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Operator, actual.Operator, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Operator")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35604,7 +35580,7 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35633,56 +35609,56 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegerValue, actual.IntegerValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("IntegerValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FloatValue, actual.FloatValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("FloatValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StringValue, actual.StringValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("StringValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BooleanValue, actual.BooleanValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("BooleanValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimestampValue, actual.TimestampValue, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimestampValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeValue, actual.TimeValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("TimeValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DateValue, actual.DateValue, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValueNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValue, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DateValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DayOfWeekValue, actual.DayOfWeekValue, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("DayOfWeekValue")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35711,28 +35687,28 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hours, actual.Hours, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Hours")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Minutes, actual.Minutes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Minutes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Seconds, actual.Seconds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Seconds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Nanos, actual.Nanos, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Nanos")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35761,21 +35737,21 @@ func compareDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Year, actual.Year, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Year")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Month, actual.Month, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Month")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.Info{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Day, actual.Day, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("Day")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -35804,14 +35780,14 @@ func compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingNewStyl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ThrowError, actual.ThrowError, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowErrorNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowError, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ThrowError")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ThrowError, actual.ThrowError, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowErrorNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowError, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("ThrowError")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LeaveUntransformed, actual.LeaveUntransformed, dcl.Info{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformed, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LeaveUntransformed")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LeaveUntransformed, actual.LeaveUntransformed, dcl.DiffInfo{ObjectFunction: compareDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformedNewStyle, EmptyObject: EmptyDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformed, OperationSelector: dcl.TriggersOperation("updateDeidentifyTemplateUpdateDeidentifyTemplateOperation")}, fn.AddNest("LeaveUntransformed")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

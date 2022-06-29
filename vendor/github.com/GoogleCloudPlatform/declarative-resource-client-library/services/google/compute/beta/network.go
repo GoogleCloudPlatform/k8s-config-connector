@@ -227,8 +227,9 @@ func (c *Client) GetNetwork(ctx context.Context, r *Network) (*Network, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 	if dcl.IsZeroValue(result.AutoCreateSubnetworks) {
 		result.AutoCreateSubnetworks = dcl.Bool(true)
 	}
@@ -382,7 +383,7 @@ func applyNetworkHelper(c *Client, ctx context.Context, rawDesired *Network, opt
 func applyNetworkDiff(c *Client, ctx context.Context, desired *Network, rawDesired *Network, ops []networkApiOperation, opts ...dcl.ApplyOption) (*Network, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetNetwork(ctx, desired.urlNormalized())
+	rawNew, err := c.GetNetwork(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

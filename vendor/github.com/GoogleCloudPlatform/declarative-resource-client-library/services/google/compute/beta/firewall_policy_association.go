@@ -142,8 +142,9 @@ func (c *Client) GetFirewallPolicyAssociation(ctx context.Context, r *FirewallPo
 	if err != nil {
 		return nil, err
 	}
-	result.FirewallPolicy = r.FirewallPolicy
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.FirewallPolicy = nr.FirewallPolicy
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -294,7 +295,7 @@ func applyFirewallPolicyAssociationHelper(c *Client, ctx context.Context, rawDes
 func applyFirewallPolicyAssociationDiff(c *Client, ctx context.Context, desired *FirewallPolicyAssociation, rawDesired *FirewallPolicyAssociation, ops []firewallPolicyAssociationApiOperation, opts ...dcl.ApplyOption) (*FirewallPolicyAssociation, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetFirewallPolicyAssociation(ctx, desired.urlNormalized())
+	rawNew, err := c.GetFirewallPolicyAssociation(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

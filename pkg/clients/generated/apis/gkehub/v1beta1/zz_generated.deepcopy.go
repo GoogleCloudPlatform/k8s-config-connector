@@ -128,6 +128,11 @@ func (in *FeaturemembershipConfigSync) DeepCopyInto(out *FeaturemembershipConfig
 		*out = new(FeaturemembershipGit)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.PreventDrift != nil {
+		in, out := &in.PreventDrift, &out.PreventDrift
+		*out = new(bool)
+		**out = **in
+	}
 	if in.SourceFormat != nil {
 		in, out := &in.SourceFormat, &out.SourceFormat
 		*out = new(string)

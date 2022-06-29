@@ -144,8 +144,9 @@ func (c *Client) GetBrand(ctx context.Context, r *Brand) (*Brand, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Project = r.Project
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Project = nr.Project
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -259,7 +260,7 @@ func applyBrandHelper(c *Client, ctx context.Context, rawDesired *Brand, opts ..
 func applyBrandDiff(c *Client, ctx context.Context, desired *Brand, rawDesired *Brand, ops []brandApiOperation, opts ...dcl.ApplyOption) (*Brand, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetBrand(ctx, desired.urlNormalized())
+	rawNew, err := c.GetBrand(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

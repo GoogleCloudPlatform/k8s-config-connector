@@ -804,70 +804,70 @@ func diffCapacityCommitment(c *Client, desired, actual *CapacityCommitment, opts
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SlotCount, actual.SlotCount, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SlotCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SlotCount, actual.SlotCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SlotCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Plan, actual.Plan, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCapacityCommitmentUpdateCapacityCommitmentOperation")}, fn.AddNest("Plan")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Plan, actual.Plan, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCapacityCommitmentUpdateCapacityCommitmentOperation")}, fn.AddNest("Plan")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.State, actual.State, dcl.Info{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommitmentStartTime, actual.CommitmentStartTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommitmentStartTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommitmentStartTime, actual.CommitmentStartTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommitmentStartTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CommitmentEndTime, actual.CommitmentEndTime, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommitmentEndTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CommitmentEndTime, actual.CommitmentEndTime, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CommitmentEndTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FailureStatus, actual.FailureStatus, dcl.Info{OutputOnly: true, ObjectFunction: compareCapacityCommitmentFailureStatusNewStyle, EmptyObject: EmptyCapacityCommitmentFailureStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FailureStatus")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FailureStatus, actual.FailureStatus, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareCapacityCommitmentFailureStatusNewStyle, EmptyObject: EmptyCapacityCommitmentFailureStatus, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FailureStatus")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RenewalPlan, actual.RenewalPlan, dcl.Info{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCapacityCommitmentUpdateCapacityCommitmentOperation")}, fn.AddNest("RenewalPlan")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RenewalPlan, actual.RenewalPlan, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateCapacityCommitmentUpdateCapacityCommitmentOperation")}, fn.AddNest("RenewalPlan")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Location")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -896,21 +896,21 @@ func compareCapacityCommitmentFailureStatusNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Code, actual.Code, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Code")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Message, actual.Message, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Message")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Details, actual.Details, dcl.Info{ObjectFunction: compareCapacityCommitmentFailureStatusDetailsNewStyle, EmptyObject: EmptyCapacityCommitmentFailureStatusDetails, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Details")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Details, actual.Details, dcl.DiffInfo{ObjectFunction: compareCapacityCommitmentFailureStatusDetailsNewStyle, EmptyObject: EmptyCapacityCommitmentFailureStatusDetails, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Details")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -939,14 +939,14 @@ func compareCapacityCommitmentFailureStatusDetailsNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.TypeUrl, actual.TypeUrl, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TypeUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TypeUrl, actual.TypeUrl, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TypeUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Value, actual.Value, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Value")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

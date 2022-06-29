@@ -64,6 +64,7 @@ components:
       x-dcl-id: '{{parent}}/storedInfoTypes/{{name}}'
       x-dcl-locations:
       - region
+      x-dcl-has-create: true
       x-dcl-has-iam: false
       type: object
       required:

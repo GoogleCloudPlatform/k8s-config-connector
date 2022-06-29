@@ -172,7 +172,8 @@ func (c *Client) GetProject(ctx context.Context, r *Project) (*Project, error) {
 	if err != nil {
 		return nil, err
 	}
-	result.Name = r.Name
+	nr := r.urlNormalized()
+	result.Name = nr.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -323,7 +324,7 @@ func applyProjectHelper(c *Client, ctx context.Context, rawDesired *Project, opt
 func applyProjectDiff(c *Client, ctx context.Context, desired *Project, rawDesired *Project, ops []projectApiOperation, opts ...dcl.ApplyOption) (*Project, error) {
 	// 3.1, 3.2a Retrieval of raw new state & canonicalization with desired state
 	c.Config.Logger.InfoWithContext(ctx, "Retrieving raw new state...")
-	rawNew, err := c.GetProject(ctx, desired.urlNormalized())
+	rawNew, err := c.GetProject(ctx, desired)
 	if err != nil {
 		return nil, err
 	}

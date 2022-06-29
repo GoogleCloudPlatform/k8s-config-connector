@@ -701,91 +701,91 @@ func diffRole(c *Client, desired, actual *Role, opts ...dcl.ApplyOption) ([]*dcl
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Title, actual.Title, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Title")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalizedValues, actual.LocalizedValues, dcl.Info{ObjectFunction: compareRoleLocalizedValuesNewStyle, EmptyObject: EmptyRoleLocalizedValues, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedValues")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalizedValues, actual.LocalizedValues, dcl.DiffInfo{ObjectFunction: compareRoleLocalizedValuesNewStyle, EmptyObject: EmptyRoleLocalizedValues, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedValues")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LifecyclePhase, actual.LifecyclePhase, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LifecyclePhase")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LifecyclePhase, actual.LifecyclePhase, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LifecyclePhase")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupName, actual.GroupName, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupName, actual.GroupName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupTitle, actual.GroupTitle, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupTitle")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupTitle, actual.GroupTitle, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupTitle")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IncludedPermissions, actual.IncludedPermissions, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IncludedPermissions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IncludedPermissions, actual.IncludedPermissions, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IncludedPermissions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Stage, actual.Stage, dcl.Info{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Stage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Stage, actual.Stage, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Stage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Etag, actual.Etag, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Etag")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Deleted, actual.Deleted, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Deleted")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Deleted, actual.Deleted, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Deleted")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IncludedRoles, actual.IncludedRoles, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IncludedRoles")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IncludedRoles, actual.IncludedRoles, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IncludedRoles")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parent, actual.Parent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Parent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -814,14 +814,14 @@ func compareRoleLocalizedValuesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LocalizedTitle, actual.LocalizedTitle, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedTitle")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalizedTitle, actual.LocalizedTitle, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedTitle")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalizedDescription, actual.LocalizedDescription, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedDescription")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalizedDescription, actual.LocalizedDescription, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalizedDescription")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -67,6 +67,7 @@ components:
       x-dcl-uses-state-hint: true
       x-dcl-parent-container: project
       x-dcl-labels: labels
+      x-dcl-has-create: true
       x-dcl-has-iam: true
       type: object
       required:

@@ -1393,35 +1393,35 @@ func diffKey(c *Client, desired, actual *Key, opts ...dcl.ApplyOption) ([]*dcl.F
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.Info{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.KeyString, actual.KeyString, dcl.Info{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyString")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.KeyString, actual.KeyString, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KeyString")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Restrictions, actual.Restrictions, dcl.Info{ObjectFunction: compareKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Restrictions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Restrictions, actual.Restrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Restrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.Info{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1450,35 +1450,35 @@ func compareKeyRestrictionsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BrowserKeyRestrictions, actual.BrowserKeyRestrictions, dcl.Info{ObjectFunction: compareKeyRestrictionsBrowserKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsBrowserKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("BrowserKeyRestrictions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BrowserKeyRestrictions, actual.BrowserKeyRestrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsBrowserKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsBrowserKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("BrowserKeyRestrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServerKeyRestrictions, actual.ServerKeyRestrictions, dcl.Info{ObjectFunction: compareKeyRestrictionsServerKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsServerKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ServerKeyRestrictions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerKeyRestrictions, actual.ServerKeyRestrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsServerKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsServerKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ServerKeyRestrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AndroidKeyRestrictions, actual.AndroidKeyRestrictions, dcl.Info{ObjectFunction: compareKeyRestrictionsAndroidKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsAndroidKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AndroidKeyRestrictions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AndroidKeyRestrictions, actual.AndroidKeyRestrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsAndroidKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsAndroidKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AndroidKeyRestrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IosKeyRestrictions, actual.IosKeyRestrictions, dcl.Info{ObjectFunction: compareKeyRestrictionsIosKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsIosKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("IosKeyRestrictions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IosKeyRestrictions, actual.IosKeyRestrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsIosKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictionsIosKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("IosKeyRestrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ApiTargets, actual.ApiTargets, dcl.Info{ObjectFunction: compareKeyRestrictionsApiTargetsNewStyle, EmptyObject: EmptyKeyRestrictionsApiTargets, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ApiTargets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ApiTargets, actual.ApiTargets, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsApiTargetsNewStyle, EmptyObject: EmptyKeyRestrictionsApiTargets, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ApiTargets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1507,7 +1507,7 @@ func compareKeyRestrictionsBrowserKeyRestrictionsNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedReferrers, actual.AllowedReferrers, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedReferrers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedReferrers, actual.AllowedReferrers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedReferrers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1536,7 +1536,7 @@ func compareKeyRestrictionsServerKeyRestrictionsNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedIps, actual.AllowedIps, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedIps")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedIps, actual.AllowedIps, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedIps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1565,7 +1565,7 @@ func compareKeyRestrictionsAndroidKeyRestrictionsNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedApplications, actual.AllowedApplications, dcl.Info{ObjectFunction: compareKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsNewStyle, EmptyObject: EmptyKeyRestrictionsAndroidKeyRestrictionsAllowedApplications, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedApplications")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedApplications, actual.AllowedApplications, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsNewStyle, EmptyObject: EmptyKeyRestrictionsAndroidKeyRestrictionsAllowedApplications, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedApplications")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1594,14 +1594,14 @@ func compareKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsNewStyle(d, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Sha1Fingerprint, actual.Sha1Fingerprint, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Sha1Fingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Sha1Fingerprint, actual.Sha1Fingerprint, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Sha1Fingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PackageName, actual.PackageName, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("PackageName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PackageName, actual.PackageName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("PackageName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1630,7 +1630,7 @@ func compareKeyRestrictionsIosKeyRestrictionsNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedBundleIds, actual.AllowedBundleIds, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedBundleIds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedBundleIds, actual.AllowedBundleIds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("AllowedBundleIds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1659,14 +1659,14 @@ func compareKeyRestrictionsApiTargetsNewStyle(d, a interface{}, fn dcl.FieldName
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Service, actual.Service, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Service")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Service, actual.Service, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Service")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Methods, actual.Methods, dcl.Info{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Methods")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Methods, actual.Methods, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Methods")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
