@@ -114,7 +114,9 @@ spec:
                             type: string
                           secretType:
                             description: Type of secret configured for access to the
-                              Git repo.
+                              Git repo. Must be one of ssh, cookiefile, gcenode, token,
+                              gcpserviceaccount or none. The validation of this is
+                              case-sensitive.
                             type: string
                           syncBranch:
                             description: 'The branch of the repository to sync from.

@@ -23,18 +23,21 @@ paths:
     - name: CaPool
       required: true
       description: A full instance of a CaPool
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a CaPool
     parameters:
     - name: CaPool
       required: true
       description: A full instance of a CaPool
+    timeoutSecs: 0
   delete:
     description: The function used to delete a CaPool
     parameters:
     - name: CaPool
       required: true
       description: A full instance of a CaPool
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all CaPool
     parameters:
@@ -46,6 +49,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many CaPool
     parameters:
@@ -57,6 +61,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     CaPool:

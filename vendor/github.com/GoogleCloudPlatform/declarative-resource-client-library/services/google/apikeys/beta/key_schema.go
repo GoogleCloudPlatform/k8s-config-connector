@@ -293,6 +293,13 @@ func DCLKeySchema() *dcl.Schema {
 									},
 								},
 							},
+							"uid": &dcl.Property{
+								Type:        "string",
+								GoName:      "Uid",
+								ReadOnly:    true,
+								Description: "Output only. Unique id in UUID4 format.",
+								Immutable:   true,
+							},
 						},
 					},
 				},

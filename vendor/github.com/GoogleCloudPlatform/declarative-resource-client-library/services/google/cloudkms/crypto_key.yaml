@@ -23,12 +23,14 @@ paths:
     - name: CryptoKey
       required: true
       description: A full instance of a CryptoKey
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a CryptoKey
     parameters:
     - name: CryptoKey
       required: true
       description: A full instance of a CryptoKey
+    timeoutSecs: 0
   list:
     description: The function used to list information about many CryptoKey
     parameters:
@@ -44,6 +46,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     CryptoKey:

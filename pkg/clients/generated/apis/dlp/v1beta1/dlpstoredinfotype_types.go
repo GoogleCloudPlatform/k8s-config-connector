@@ -36,102 +36,102 @@ import (
 )
 
 type StoredinfotypeBigQueryField struct {
-	/* Immutable. Designated field in the BigQuery table. */
+	/* Designated field in the BigQuery table. */
 	// +optional
 	Field *StoredinfotypeField `json:"field,omitempty"`
 
-	/* Immutable. Source table of the field. */
+	/* Source table of the field. */
 	// +optional
 	Table *StoredinfotypeTable `json:"table,omitempty"`
 }
 
 type StoredinfotypeCloudStorageFileSet struct {
-	/* Immutable. The url, in the format `gs:///`. Trailing wildcard in the path is allowed. */
+	/* The url, in the format `gs:///`. Trailing wildcard in the path is allowed. */
 	Url string `json:"url"`
 }
 
 type StoredinfotypeCloudStoragePath struct {
-	/* Immutable. A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
+	/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
 	Path string `json:"path"`
 }
 
 type StoredinfotypeDictionary struct {
-	/* Immutable. Newline-delimited file of words in Cloud Storage. Only a single file is accepted. */
+	/* Newline-delimited file of words in Cloud Storage. Only a single file is accepted. */
 	// +optional
 	CloudStoragePath *StoredinfotypeCloudStoragePath `json:"cloudStoragePath,omitempty"`
 
-	/* Immutable. List of words or phrases to search for. */
+	/* List of words or phrases to search for. */
 	// +optional
 	WordList *StoredinfotypeWordList `json:"wordList,omitempty"`
 }
 
 type StoredinfotypeField struct {
-	/* Immutable. Name describing the field. */
+	/* Name describing the field. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 }
 
 type StoredinfotypeLargeCustomDictionary struct {
-	/* Immutable. Field in a BigQuery table where each cell represents a dictionary phrase. */
+	/* Field in a BigQuery table where each cell represents a dictionary phrase. */
 	// +optional
 	BigQueryField *StoredinfotypeBigQueryField `json:"bigQueryField,omitempty"`
 
-	/* Immutable. Set of files containing newline-delimited lists of dictionary phrases. */
+	/* Set of files containing newline-delimited lists of dictionary phrases. */
 	// +optional
 	CloudStorageFileSet *StoredinfotypeCloudStorageFileSet `json:"cloudStorageFileSet,omitempty"`
 
-	/* Immutable. Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used. */
+	/* Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used. */
 	// +optional
 	OutputPath *StoredinfotypeOutputPath `json:"outputPath,omitempty"`
 }
 
 type StoredinfotypeOutputPath struct {
-	/* Immutable. A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
+	/* A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt */
 	Path string `json:"path"`
 }
 
 type StoredinfotypeRegex struct {
-	/* Immutable. The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
+	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
 	GroupIndexes []int `json:"groupIndexes,omitempty"`
 
-	/* Immutable. Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
+	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	Pattern string `json:"pattern"`
 }
 
 type StoredinfotypeTable struct {
-	/* Immutable. */
+	/*  */
 	// +optional
 	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
-	/* Immutable. */
+	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. */
+	/*  */
 	// +optional
 	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type StoredinfotypeWordList struct {
-	/* Immutable. Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required] */
+	/* Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required] */
 	Words []string `json:"words"`
 }
 
 type DLPStoredInfoTypeSpec struct {
-	/* Immutable. Description of the StoredInfoType (max 256 characters). */
+	/* Description of the StoredInfoType (max 256 characters). */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Store dictionary-based CustomInfoType. */
+	/* Store dictionary-based CustomInfoType. */
 	// +optional
 	Dictionary *StoredinfotypeDictionary `json:"dictionary,omitempty"`
 
-	/* Immutable. Display name of the StoredInfoType (max 256 characters). */
+	/* Display name of the StoredInfoType (max 256 characters). */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. StoredInfoType where findings are defined by a dictionary of phrases. */
+	/* StoredInfoType where findings are defined by a dictionary of phrases. */
 	// +optional
 	LargeCustomDictionary *StoredinfotypeLargeCustomDictionary `json:"largeCustomDictionary,omitempty"`
 
@@ -147,7 +147,7 @@ type DLPStoredInfoTypeSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Store regular expression-based StoredInfoType. */
+	/* Store regular expression-based StoredInfoType. */
 	// +optional
 	Regex *StoredinfotypeRegex `json:"regex,omitempty"`
 

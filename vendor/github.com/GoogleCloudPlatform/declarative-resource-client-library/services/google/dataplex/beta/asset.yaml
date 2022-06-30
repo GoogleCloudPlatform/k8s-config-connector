@@ -23,18 +23,21 @@ paths:
     - name: Asset
       required: true
       description: A full instance of a Asset
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Asset
     parameters:
     - name: Asset
       required: true
       description: A full instance of a Asset
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Asset
     parameters:
     - name: Asset
       required: true
       description: A full instance of a Asset
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Asset
     parameters:
@@ -54,6 +57,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Asset
     parameters:
@@ -73,6 +77,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Asset:

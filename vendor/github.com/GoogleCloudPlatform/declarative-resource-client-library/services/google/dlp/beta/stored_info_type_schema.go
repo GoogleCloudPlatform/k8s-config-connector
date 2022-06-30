@@ -113,14 +113,12 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "Description",
 								Description: "Description of the StoredInfoType (max 256 characters).",
-								Immutable:   true,
 							},
 							"dictionary": &dcl.Property{
 								Type:        "object",
 								GoName:      "Dictionary",
 								GoType:      "StoredInfoTypeDictionary",
 								Description: "Store dictionary-based CustomInfoType.",
-								Immutable:   true,
 								Conflicts: []string{
 									"largeCustomDictionary",
 									"regex",
@@ -131,7 +129,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										GoName:      "CloudStoragePath",
 										GoType:      "StoredInfoTypeDictionaryCloudStoragePath",
 										Description: "Newline-delimited file of words in Cloud Storage. Only a single file is accepted.",
-										Immutable:   true,
 										Conflicts: []string{
 											"wordList",
 										},
@@ -143,7 +140,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												Type:        "string",
 												GoName:      "Path",
 												Description: "A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt",
-												Immutable:   true,
 											},
 										},
 									},
@@ -152,7 +148,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										GoName:      "WordList",
 										GoType:      "StoredInfoTypeDictionaryWordList",
 										Description: "List of words or phrases to search for.",
-										Immutable:   true,
 										Conflicts: []string{
 											"cloudStoragePath",
 										},
@@ -164,7 +159,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												Type:        "array",
 												GoName:      "Words",
 												Description: "Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required]",
-												Immutable:   true,
 												SendEmpty:   true,
 												ListType:    "list",
 												Items: &dcl.Property{
@@ -180,14 +174,12 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "DisplayName",
 								Description: "Display name of the StoredInfoType (max 256 characters).",
-								Immutable:   true,
 							},
 							"largeCustomDictionary": &dcl.Property{
 								Type:        "object",
 								GoName:      "LargeCustomDictionary",
 								GoType:      "StoredInfoTypeLargeCustomDictionary",
 								Description: "StoredInfoType where findings are defined by a dictionary of phrases.",
-								Immutable:   true,
 								Conflicts: []string{
 									"dictionary",
 									"regex",
@@ -198,7 +190,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										GoName:      "BigQueryField",
 										GoType:      "StoredInfoTypeLargeCustomDictionaryBigQueryField",
 										Description: "Field in a BigQuery table where each cell represents a dictionary phrase.",
-										Immutable:   true,
 										Conflicts: []string{
 											"cloudStorageFileSet",
 										},
@@ -208,13 +199,11 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												GoName:      "Field",
 												GoType:      "StoredInfoTypeLargeCustomDictionaryBigQueryFieldField",
 												Description: "Designated field in the BigQuery table.",
-												Immutable:   true,
 												Properties: map[string]*dcl.Property{
 													"name": &dcl.Property{
 														Type:        "string",
 														GoName:      "Name",
 														Description: "Name describing the field.",
-														Immutable:   true,
 													},
 												},
 											},
@@ -223,13 +212,11 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												GoName:      "Table",
 												GoType:      "StoredInfoTypeLargeCustomDictionaryBigQueryFieldTable",
 												Description: "Source table of the field.",
-												Immutable:   true,
 												Properties: map[string]*dcl.Property{
 													"datasetId": &dcl.Property{
 														Type:        "string",
 														GoName:      "DatasetId",
 														Description: "Dataset ID of the table.",
-														Immutable:   true,
 														ResourceReferences: []*dcl.PropertyResourceReference{
 															&dcl.PropertyResourceReference{
 																Resource: "Bigquery/Dataset",
@@ -241,7 +228,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 														Type:        "string",
 														GoName:      "ProjectId",
 														Description: "The Google Cloud Platform project ID of the project containing the table. If omitted, project ID is inferred from the API call.",
-														Immutable:   true,
 														ResourceReferences: []*dcl.PropertyResourceReference{
 															&dcl.PropertyResourceReference{
 																Resource: "Cloudresourcemanager/Project",
@@ -253,7 +239,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 														Type:        "string",
 														GoName:      "TableId",
 														Description: "Name of the table.",
-														Immutable:   true,
 														ResourceReferences: []*dcl.PropertyResourceReference{
 															&dcl.PropertyResourceReference{
 																Resource: "Bigquery/Table",
@@ -270,7 +255,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										GoName:      "CloudStorageFileSet",
 										GoType:      "StoredInfoTypeLargeCustomDictionaryCloudStorageFileSet",
 										Description: "Set of files containing newline-delimited lists of dictionary phrases.",
-										Immutable:   true,
 										Conflicts: []string{
 											"bigQueryField",
 										},
@@ -282,7 +266,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												Type:        "string",
 												GoName:      "Url",
 												Description: "The url, in the format `gs:///`. Trailing wildcard in the path is allowed.",
-												Immutable:   true,
 											},
 										},
 									},
@@ -291,7 +274,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										GoName:      "OutputPath",
 										GoType:      "StoredInfoTypeLargeCustomDictionaryOutputPath",
 										Description: "Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used.",
-										Immutable:   true,
 										Required: []string{
 											"path",
 										},
@@ -300,7 +282,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 												Type:        "string",
 												GoName:      "Path",
 												Description: "A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt",
-												Immutable:   true,
 											},
 										},
 									},
@@ -343,7 +324,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 								GoName:      "Regex",
 								GoType:      "StoredInfoTypeRegex",
 								Description: "Store regular expression-based StoredInfoType.",
-								Immutable:   true,
 								Conflicts: []string{
 									"largeCustomDictionary",
 									"dictionary",
@@ -356,7 +336,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										Type:        "array",
 										GoName:      "GroupIndexes",
 										Description: "The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included.",
-										Immutable:   true,
 										SendEmpty:   true,
 										ListType:    "list",
 										Items: &dcl.Property{
@@ -369,7 +348,6 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "Pattern",
 										Description: "Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub.",
-										Immutable:   true,
 									},
 								},
 							},

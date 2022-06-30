@@ -181,7 +181,7 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 													"secretType": &dcl.Property{
 														Type:        "string",
 														GoName:      "SecretType",
-														Description: "Type of secret configured for access to the Git repo.",
+														Description: "Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive.",
 													},
 													"syncBranch": &dcl.Property{
 														Type:        "string",

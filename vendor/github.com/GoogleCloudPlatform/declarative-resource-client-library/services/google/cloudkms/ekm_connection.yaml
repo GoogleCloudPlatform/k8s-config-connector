@@ -23,12 +23,14 @@ paths:
     - name: EkmConnection
       required: true
       description: A full instance of a EkmConnection
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a EkmConnection
     parameters:
     - name: EkmConnection
       required: true
       description: A full instance of a EkmConnection
+    timeoutSecs: 0
   list:
     description: The function used to list information about many EkmConnection
     parameters:
@@ -40,6 +42,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     EkmConnection:

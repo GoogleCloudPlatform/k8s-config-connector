@@ -64,31 +64,30 @@ spec:
               - projectRef
             properties:
               description:
-                description: Immutable. Description of the StoredInfoType (max 256
-                  characters).
+                description: Description of the StoredInfoType (max 256 characters).
                 type: string
               dictionary:
-                description: Immutable. Store dictionary-based CustomInfoType.
+                description: Store dictionary-based CustomInfoType.
                 properties:
                   cloudStoragePath:
-                    description: Immutable. Newline-delimited file of words in Cloud
-                      Storage. Only a single file is accepted.
+                    description: Newline-delimited file of words in Cloud Storage.
+                      Only a single file is accepted.
                     properties:
                       path:
-                        description: 'Immutable. A url representing a file or path
-                          (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
+                        description: 'A url representing a file or path (no wildcards)
+                          in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
                         type: string
                     required:
                     - path
                     type: object
                   wordList:
-                    description: Immutable. List of words or phrases to search for.
+                    description: List of words or phrases to search for.
                     properties:
                       words:
-                        description: Immutable. Words or phrases defining the dictionary.
-                          The dictionary must contain at least one phrase and every
-                          phrase must contain at least 2 characters that are letters
-                          or digits. [required]
+                        description: Words or phrases defining the dictionary. The
+                          dictionary must contain at least one phrase and every phrase
+                          must contain at least 2 characters that are letters or digits.
+                          [required]
                         items:
                           type: string
                         type: array
@@ -97,29 +96,27 @@ spec:
                     type: object
                 type: object
               displayName:
-                description: Immutable. Display name of the StoredInfoType (max 256
-                  characters).
+                description: Display name of the StoredInfoType (max 256 characters).
                 type: string
               largeCustomDictionary:
-                description: Immutable. StoredInfoType where findings are defined
-                  by a dictionary of phrases.
+                description: StoredInfoType where findings are defined by a dictionary
+                  of phrases.
                 properties:
                   bigQueryField:
-                    description: Immutable. Field in a BigQuery table where each cell
-                      represents a dictionary phrase.
+                    description: Field in a BigQuery table where each cell represents
+                      a dictionary phrase.
                     properties:
                       field:
-                        description: Immutable. Designated field in the BigQuery table.
+                        description: Designated field in the BigQuery table.
                         properties:
                           name:
-                            description: Immutable. Name describing the field.
+                            description: Name describing the field.
                             type: string
                         type: object
                       table:
-                        description: Immutable. Source table of the field.
+                        description: Source table of the field.
                         properties:
                           datasetRef:
-                            description: Immutable.
                             oneOf:
                             - not:
                                 required:
@@ -150,7 +147,6 @@ spec:
                                 type: string
                             type: object
                           projectRef:
-                            description: Immutable.
                             oneOf:
                             - not:
                                 required:
@@ -181,7 +177,6 @@ spec:
                                 type: string
                             type: object
                           tableRef:
-                            description: Immutable.
                             oneOf:
                             - not:
                                 required:
@@ -214,26 +209,25 @@ spec:
                         type: object
                     type: object
                   cloudStorageFileSet:
-                    description: Immutable. Set of files containing newline-delimited
-                      lists of dictionary phrases.
+                    description: Set of files containing newline-delimited lists of
+                      dictionary phrases.
                     properties:
                       url:
-                        description: Immutable. The url, in the format `gs:///`. Trailing
-                          wildcard in the path is allowed.
+                        description: The url, in the format `gs:///`. Trailing wildcard
+                          in the path is allowed.
                         type: string
                     required:
                     - url
                     type: object
                   outputPath:
-                    description: Immutable. Location to store dictionary artifacts
-                      in Google Cloud Storage. These files will only be accessible
-                      by project owners and the DLP API. If any of these artifacts
-                      are modified, the dictionary is considered invalid and can no
-                      longer be used.
+                    description: Location to store dictionary artifacts in Google
+                      Cloud Storage. These files will only be accessible by project
+                      owners and the DLP API. If any of these artifacts are modified,
+                      the dictionary is considered invalid and can no longer be used.
                     properties:
                       path:
-                        description: 'Immutable. A url representing a file or path
-                          (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
+                        description: 'A url representing a file or path (no wildcards)
+                          in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
                         type: string
                     required:
                     - path
@@ -303,20 +297,20 @@ spec:
                     type: string
                 type: object
               regex:
-                description: Immutable. Store regular expression-based StoredInfoType.
+                description: Store regular expression-based StoredInfoType.
                 properties:
                   groupIndexes:
-                    description: Immutable. The index of the submatch to extract as
-                      findings. When not specified, the entire match is returned.
-                      No more than 3 may be included.
+                    description: The index of the submatch to extract as findings.
+                      When not specified, the entire match is returned. No more than
+                      3 may be included.
                     items:
                       format: int64
                       type: integer
                     type: array
                   pattern:
-                    description: Immutable. Pattern defining the regular expression.
-                      Its syntax (https://github.com/google/re2/wiki/Syntax) can be
-                      found under the google/re2 repository on GitHub.
+                    description: Pattern defining the regular expression. Its syntax
+                      (https://github.com/google/re2/wiki/Syntax) can be found under
+                      the google/re2 repository on GitHub.
                     type: string
                 required:
                 - pattern

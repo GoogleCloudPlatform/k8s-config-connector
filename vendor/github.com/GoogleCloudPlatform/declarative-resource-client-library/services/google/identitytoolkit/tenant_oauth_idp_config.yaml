@@ -23,18 +23,21 @@ paths:
     - name: TenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a TenantOAuthIdpConfig
     parameters:
     - name: TenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
+    timeoutSecs: 0
   delete:
     description: The function used to delete a TenantOAuthIdpConfig
     parameters:
     - name: TenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all TenantOAuthIdpConfig
     parameters:
@@ -46,6 +49,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many TenantOAuthIdpConfig
     parameters:
@@ -57,6 +61,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     TenantOAuthIdpConfig:

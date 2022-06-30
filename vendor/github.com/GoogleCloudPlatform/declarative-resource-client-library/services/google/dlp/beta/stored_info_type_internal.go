@@ -210,6 +210,27 @@ func newUpdateStoredInfoTypeUpdateStoredInfoTypeRequest(ctx context.Context, f *
 	res := f
 	_ = res
 
+	if v := f.DisplayName; !dcl.IsEmptyValueIndirect(v) {
+		req["displayName"] = v
+	}
+	if v := f.Description; !dcl.IsEmptyValueIndirect(v) {
+		req["description"] = v
+	}
+	if v, err := expandStoredInfoTypeLargeCustomDictionary(c, f.LargeCustomDictionary, res); err != nil {
+		return nil, fmt.Errorf("error expanding LargeCustomDictionary into largeCustomDictionary: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["largeCustomDictionary"] = v
+	}
+	if v, err := expandStoredInfoTypeDictionary(c, f.Dictionary, res); err != nil {
+		return nil, fmt.Errorf("error expanding Dictionary into dictionary: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["dictionary"] = v
+	}
+	if v, err := expandStoredInfoTypeRegex(c, f.Regex, res); err != nil {
+		return nil, fmt.Errorf("error expanding Regex into regex: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["regex"] = v
+	}
 	return req, nil
 }
 
@@ -1851,35 +1872,35 @@ func diffStoredInfoType(c *Client, desired, actual *StoredInfoType, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LargeCustomDictionary, actual.LargeCustomDictionary, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionary, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LargeCustomDictionary")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LargeCustomDictionary, actual.LargeCustomDictionary, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionary, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("LargeCustomDictionary")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryNewStyle, EmptyObject: EmptyStoredInfoTypeDictionary, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Dictionary, actual.Dictionary, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryNewStyle, EmptyObject: EmptyStoredInfoTypeDictionary, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Dictionary")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeRegexNewStyle, EmptyObject: EmptyStoredInfoTypeRegex, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Regex, actual.Regex, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeRegexNewStyle, EmptyObject: EmptyStoredInfoTypeRegex, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Regex")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1922,21 +1943,21 @@ func compareStoredInfoTypeLargeCustomDictionaryNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.OutputPath, actual.OutputPath, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryOutputPathNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryOutputPath, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OutputPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OutputPath, actual.OutputPath, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryOutputPathNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryOutputPath, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("OutputPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CloudStorageFileSet, actual.CloudStorageFileSet, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryCloudStorageFileSetNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryCloudStorageFileSet, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudStorageFileSet")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudStorageFileSet, actual.CloudStorageFileSet, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryCloudStorageFileSetNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryCloudStorageFileSet, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("CloudStorageFileSet")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BigQueryField, actual.BigQueryField, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryField, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BigQueryField")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BigQueryField, actual.BigQueryField, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryField, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("BigQueryField")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1965,7 +1986,7 @@ func compareStoredInfoTypeLargeCustomDictionaryOutputPathNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1994,7 +2015,7 @@ func compareStoredInfoTypeLargeCustomDictionaryCloudStorageFileSetNewStyle(d, a 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2023,14 +2044,14 @@ func compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldNewStyle(d, a interf
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Table, actual.Table, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldTableNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryFieldTable, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Table")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Table, actual.Table, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldTableNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryFieldTable, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Table")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldFieldNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryFieldField, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Field, actual.Field, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldFieldNewStyle, EmptyObject: EmptyStoredInfoTypeLargeCustomDictionaryBigQueryFieldField, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Field")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2059,21 +2080,21 @@ func compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldTableNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ProjectId, actual.ProjectId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProjectId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProjectId, actual.ProjectId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("ProjectId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DatasetId, actual.DatasetId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DatasetId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DatasetId, actual.DatasetId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("DatasetId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TableId, actual.TableId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TableId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TableId, actual.TableId, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("TableId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2102,7 +2123,7 @@ func compareStoredInfoTypeLargeCustomDictionaryBigQueryFieldFieldNewStyle(d, a i
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2131,14 +2152,14 @@ func compareStoredInfoTypeDictionaryNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryWordListNewStyle, EmptyObject: EmptyStoredInfoTypeDictionaryWordList, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WordList, actual.WordList, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryWordListNewStyle, EmptyObject: EmptyStoredInfoTypeDictionaryWordList, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("WordList")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyStoredInfoTypeDictionaryCloudStoragePath, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CloudStoragePath, actual.CloudStoragePath, dcl.DiffInfo{ObjectFunction: compareStoredInfoTypeDictionaryCloudStoragePathNewStyle, EmptyObject: EmptyStoredInfoTypeDictionaryCloudStoragePath, OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("CloudStoragePath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2167,7 +2188,7 @@ func compareStoredInfoTypeDictionaryWordListNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Words, actual.Words, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Words")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2196,7 +2217,7 @@ func compareStoredInfoTypeDictionaryCloudStoragePathNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Path, actual.Path, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Path")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2225,14 +2246,14 @@ func compareStoredInfoTypeRegexNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Pattern, actual.Pattern, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("Pattern")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupIndexes, actual.GroupIndexes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateStoredInfoTypeUpdateStoredInfoTypeOperation")}, fn.AddNest("GroupIndexes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

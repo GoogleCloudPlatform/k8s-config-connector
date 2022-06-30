@@ -23,18 +23,21 @@ paths:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a TagKey
     parameters:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
+    timeoutSecs: 0
   delete:
     description: The function used to delete a TagKey
     parameters:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
+    timeoutSecs: 0
 components:
   schemas:
     TagKey:

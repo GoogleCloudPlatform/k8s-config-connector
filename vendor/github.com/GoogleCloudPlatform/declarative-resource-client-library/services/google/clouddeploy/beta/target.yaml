@@ -26,18 +26,21 @@ paths:
     - name: Target
       required: true
       description: A full instance of a Target
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Target
     parameters:
     - name: Target
       required: true
       description: A full instance of a Target
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Target
     parameters:
     - name: Target
       required: true
       description: A full instance of a Target
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Target
     parameters:
@@ -49,6 +52,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Target
     parameters:
@@ -60,6 +64,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Target:

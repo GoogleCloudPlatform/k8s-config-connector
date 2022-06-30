@@ -234,7 +234,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of secret configured for access to the Git repo.{% endverbatim %}</p>
+            <p>{% verbatim %}Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

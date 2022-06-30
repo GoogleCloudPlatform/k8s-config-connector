@@ -23,18 +23,21 @@ paths:
     - name: StoredInfoType
       required: true
       description: A full instance of a StoredInfoType
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a StoredInfoType
     parameters:
     - name: StoredInfoType
       required: true
       description: A full instance of a StoredInfoType
+    timeoutSecs: 0
   delete:
     description: The function used to delete a StoredInfoType
     parameters:
     - name: StoredInfoType
       required: true
       description: A full instance of a StoredInfoType
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all StoredInfoType
     parameters:
@@ -46,6 +49,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many StoredInfoType
     parameters:
@@ -57,6 +61,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     StoredInfoType:
@@ -74,13 +79,11 @@ components:
           type: string
           x-dcl-go-name: Description
           description: Description of the StoredInfoType (max 256 characters).
-          x-kubernetes-immutable: true
         dictionary:
           type: object
           x-dcl-go-name: Dictionary
           x-dcl-go-type: StoredInfoTypeDictionary
           description: Store dictionary-based CustomInfoType.
-          x-kubernetes-immutable: true
           x-dcl-conflicts:
           - largeCustomDictionary
           - regex
@@ -91,7 +94,6 @@ components:
               x-dcl-go-type: StoredInfoTypeDictionaryCloudStoragePath
               description: Newline-delimited file of words in Cloud Storage. Only
                 a single file is accepted.
-              x-kubernetes-immutable: true
               x-dcl-conflicts:
               - wordList
               required:
@@ -102,13 +104,11 @@ components:
                   x-dcl-go-name: Path
                   description: 'A url representing a file or path (no wildcards) in
                     Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
-                  x-kubernetes-immutable: true
             wordList:
               type: object
               x-dcl-go-name: WordList
               x-dcl-go-type: StoredInfoTypeDictionaryWordList
               description: List of words or phrases to search for.
-              x-kubernetes-immutable: true
               x-dcl-conflicts:
               - cloudStoragePath
               required:
@@ -120,7 +120,6 @@ components:
                   description: Words or phrases defining the dictionary. The dictionary
                     must contain at least one phrase and every phrase must contain
                     at least 2 characters that are letters or digits. [required]
-                  x-kubernetes-immutable: true
                   x-dcl-send-empty: true
                   x-dcl-list-type: list
                   items:
@@ -130,14 +129,12 @@ components:
           type: string
           x-dcl-go-name: DisplayName
           description: Display name of the StoredInfoType (max 256 characters).
-          x-kubernetes-immutable: true
         largeCustomDictionary:
           type: object
           x-dcl-go-name: LargeCustomDictionary
           x-dcl-go-type: StoredInfoTypeLargeCustomDictionary
           description: StoredInfoType where findings are defined by a dictionary of
             phrases.
-          x-kubernetes-immutable: true
           x-dcl-conflicts:
           - dictionary
           - regex
@@ -148,7 +145,6 @@ components:
               x-dcl-go-type: StoredInfoTypeLargeCustomDictionaryBigQueryField
               description: Field in a BigQuery table where each cell represents a
                 dictionary phrase.
-              x-kubernetes-immutable: true
               x-dcl-conflicts:
               - cloudStorageFileSet
               properties:
@@ -157,25 +153,21 @@ components:
                   x-dcl-go-name: Field
                   x-dcl-go-type: StoredInfoTypeLargeCustomDictionaryBigQueryFieldField
                   description: Designated field in the BigQuery table.
-                  x-kubernetes-immutable: true
                   properties:
                     name:
                       type: string
                       x-dcl-go-name: Name
                       description: Name describing the field.
-                      x-kubernetes-immutable: true
                 table:
                   type: object
                   x-dcl-go-name: Table
                   x-dcl-go-type: StoredInfoTypeLargeCustomDictionaryBigQueryFieldTable
                   description: Source table of the field.
-                  x-kubernetes-immutable: true
                   properties:
                     datasetId:
                       type: string
                       x-dcl-go-name: DatasetId
                       description: Dataset ID of the table.
-                      x-kubernetes-immutable: true
                       x-dcl-references:
                       - resource: Bigquery/Dataset
                         field: name
@@ -185,7 +177,6 @@ components:
                       description: The Google Cloud Platform project ID of the project
                         containing the table. If omitted, project ID is inferred from
                         the API call.
-                      x-kubernetes-immutable: true
                       x-dcl-references:
                       - resource: Cloudresourcemanager/Project
                         field: name
@@ -193,7 +184,6 @@ components:
                       type: string
                       x-dcl-go-name: TableId
                       description: Name of the table.
-                      x-kubernetes-immutable: true
                       x-dcl-references:
                       - resource: Bigquery/Table
                         field: name
@@ -203,7 +193,6 @@ components:
               x-dcl-go-type: StoredInfoTypeLargeCustomDictionaryCloudStorageFileSet
               description: Set of files containing newline-delimited lists of dictionary
                 phrases.
-              x-kubernetes-immutable: true
               x-dcl-conflicts:
               - bigQueryField
               required:
@@ -214,7 +203,6 @@ components:
                   x-dcl-go-name: Url
                   description: The url, in the format `gs:///`. Trailing wildcard
                     in the path is allowed.
-                  x-kubernetes-immutable: true
             outputPath:
               type: object
               x-dcl-go-name: OutputPath
@@ -223,7 +211,6 @@ components:
                 Storage. These files will only be accessible by project owners and
                 the DLP API. If any of these artifacts are modified, the dictionary
                 is considered invalid and can no longer be used.
-              x-kubernetes-immutable: true
               required:
               - path
               properties:
@@ -232,7 +219,6 @@ components:
                   x-dcl-go-name: Path
                   description: 'A url representing a file or path (no wildcards) in
                     Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt'
-                  x-kubernetes-immutable: true
         location:
           type: string
           x-dcl-go-name: Location
@@ -262,7 +248,6 @@ components:
           x-dcl-go-name: Regex
           x-dcl-go-type: StoredInfoTypeRegex
           description: Store regular expression-based StoredInfoType.
-          x-kubernetes-immutable: true
           x-dcl-conflicts:
           - largeCustomDictionary
           - dictionary
@@ -275,7 +260,6 @@ components:
               description: The index of the submatch to extract as findings. When
                 not specified, the entire match is returned. No more than 3 may be
                 included.
-              x-kubernetes-immutable: true
               x-dcl-send-empty: true
               x-dcl-list-type: list
               items:
@@ -287,4 +271,3 @@ components:
               x-dcl-go-name: Pattern
               description: Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax)
                 can be found under the google/re2 repository on GitHub.
-              x-kubernetes-immutable: true

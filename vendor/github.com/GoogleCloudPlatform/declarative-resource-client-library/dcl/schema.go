@@ -109,6 +109,7 @@ type Paths struct {
 type Path struct {
 	Description string           `yaml:"description"`
 	Parameters  []PathParameters `yaml:"parameters"`
+	TimeoutSecs int              `yaml:"timeoutSecs"`
 }
 
 // PathParameters is the Parameters for a given Path.

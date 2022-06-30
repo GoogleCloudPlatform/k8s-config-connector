@@ -29,18 +29,21 @@ paths:
     - name: Release
       required: true
       description: A full instance of a Release
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Release
     parameters:
     - name: Release
       required: true
       description: A full instance of a Release
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Release
     parameters:
     - name: Release
       required: true
       description: A full instance of a Release
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Release
     parameters:
@@ -48,6 +51,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Release
     parameters:
@@ -55,6 +59,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Release:

@@ -118,7 +118,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Description of the StoredInfoType (max 256 characters).{% endverbatim %}</p>
+            <p>{% verbatim %}Description of the StoredInfoType (max 256 characters).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Store dictionary-based CustomInfoType.{% endverbatim %}</p>
+            <p>{% verbatim %}Store dictionary-based CustomInfoType.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Newline-delimited file of words in Cloud Storage. Only a single file is accepted.{% endverbatim %}</p>
+            <p>{% verbatim %}Newline-delimited file of words in Cloud Storage. Only a single file is accepted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt{% endverbatim %}</p>
+            <p>{% verbatim %}A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. List of words or phrases to search for.{% endverbatim %}</p>
+            <p>{% verbatim %}List of words or phrases to search for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -168,7 +168,7 @@
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required]{% endverbatim %}</p>
+            <p>{% verbatim %}Words or phrases defining the dictionary. The dictionary must contain at least one phrase and every phrase must contain at least 2 characters that are letters or digits. [required]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +188,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Display name of the StoredInfoType (max 256 characters).{% endverbatim %}</p>
+            <p>{% verbatim %}Display name of the StoredInfoType (max 256 characters).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +198,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. StoredInfoType where findings are defined by a dictionary of phrases.{% endverbatim %}</p>
+            <p>{% verbatim %}StoredInfoType where findings are defined by a dictionary of phrases.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -208,7 +208,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Field in a BigQuery table where each cell represents a dictionary phrase.{% endverbatim %}</p>
+            <p>{% verbatim %}Field in a BigQuery table where each cell represents a dictionary phrase.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +218,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Designated field in the BigQuery table.{% endverbatim %}</p>
+            <p>{% verbatim %}Designated field in the BigQuery table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +228,7 @@
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Name describing the field.{% endverbatim %}</p>
+            <p>{% verbatim %}Name describing the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -238,7 +238,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Source table of the field.{% endverbatim %}</p>
+            <p>{% verbatim %}Source table of the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -290,7 +290,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryDataset` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,7 +332,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -374,7 +374,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryTable` resource (for
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Set of files containing newline-delimited lists of dictionary phrases.{% endverbatim %}</p>
+            <p>{% verbatim %}Set of files containing newline-delimited lists of dictionary phrases.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -384,7 +384,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryTable` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The url, in the format `gs:///`. Trailing wildcard in the path is allowed.{% endverbatim %}</p>
+            <p>{% verbatim %}The url, in the format `gs:///`. Trailing wildcard in the path is allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -394,7 +394,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryTable` resource (for
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Location to store dictionary artifacts in Google Cloud Storage. These files will only be accessible by project owners and the DLP API. If any of these artifacts are modified, the dictionary is considered invalid and can no longer be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -404,7 +404,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryTable` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt{% endverbatim %}</p>
+            <p>{% verbatim %}A url representing a file or path (no wildcards) in Cloud Storage. Example: gs://[BUCKET_NAME]/dictionary.txt{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,7 +505,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Store regular expression-based StoredInfoType.{% endverbatim %}</p>
+            <p>{% verbatim %}Store regular expression-based StoredInfoType.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +515,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>{% verbatim %}Immutable. The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included.{% endverbatim %}</p>
+            <p>{% verbatim %}The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -535,7 +535,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub.{% endverbatim %}</p>
+            <p>{% verbatim %}Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

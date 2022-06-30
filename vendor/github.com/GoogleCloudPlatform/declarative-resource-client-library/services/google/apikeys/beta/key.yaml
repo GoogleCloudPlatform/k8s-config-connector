@@ -23,18 +23,21 @@ paths:
     - name: Key
       required: true
       description: A full instance of a Key
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Key
     parameters:
     - name: Key
       required: true
       description: A full instance of a Key
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Key
     parameters:
     - name: Key
       required: true
       description: A full instance of a Key
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Key
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Key
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Key:
@@ -240,3 +245,9 @@ components:
                   items:
                     type: string
                     x-dcl-go-type: string
+        uid:
+          type: string
+          x-dcl-go-name: Uid
+          readOnly: true
+          description: Output only. Unique id in UUID4 format.
+          x-kubernetes-immutable: true

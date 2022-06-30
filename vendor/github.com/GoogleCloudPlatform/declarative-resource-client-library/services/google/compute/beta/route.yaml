@@ -23,18 +23,21 @@ paths:
     - name: Route
       required: true
       description: A full instance of a Route
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Route
     parameters:
     - name: Route
       required: true
       description: A full instance of a Route
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Route
     parameters:
     - name: Route
       required: true
       description: A full instance of a Route
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Route
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Route
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Route:

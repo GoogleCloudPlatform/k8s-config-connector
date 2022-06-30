@@ -23,18 +23,21 @@ paths:
     - name: ManagedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a ManagedSslCertificate
     parameters:
     - name: ManagedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
+    timeoutSecs: 0
   delete:
     description: The function used to delete a ManagedSslCertificate
     parameters:
     - name: ManagedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all ManagedSslCertificate
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many ManagedSslCertificate
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     ManagedSslCertificate:

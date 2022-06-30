@@ -26,18 +26,21 @@ paths:
     - name: OSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a OSPolicyAssignment
     parameters:
     - name: OSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
+    timeoutSecs: 0
   delete:
     description: The function used to delete a OSPolicyAssignment
     parameters:
     - name: OSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all OSPolicyAssignment
     parameters:
@@ -49,6 +52,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many OSPolicyAssignment
     parameters:
@@ -60,6 +64,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     OSPolicyAssignment:

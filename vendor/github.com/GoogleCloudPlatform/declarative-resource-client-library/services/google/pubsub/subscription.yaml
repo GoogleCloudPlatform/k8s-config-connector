@@ -23,18 +23,21 @@ paths:
     - name: Subscription
       required: true
       description: A full instance of a Subscription
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Subscription
     parameters:
     - name: Subscription
       required: true
       description: A full instance of a Subscription
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Subscription
     parameters:
     - name: Subscription
       required: true
       description: A full instance of a Subscription
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Subscription
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Subscription
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Subscription:

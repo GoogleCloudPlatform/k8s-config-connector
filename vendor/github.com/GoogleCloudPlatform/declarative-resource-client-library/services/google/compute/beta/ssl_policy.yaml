@@ -23,18 +23,21 @@ paths:
     - name: SslPolicy
       required: true
       description: A full instance of a SslPolicy
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a SslPolicy
     parameters:
     - name: SslPolicy
       required: true
       description: A full instance of a SslPolicy
+    timeoutSecs: 0
   delete:
     description: The function used to delete a SslPolicy
     parameters:
     - name: SslPolicy
       required: true
       description: A full instance of a SslPolicy
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all SslPolicy
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many SslPolicy
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     SslPolicy:

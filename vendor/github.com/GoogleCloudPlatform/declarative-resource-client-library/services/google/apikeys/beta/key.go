@@ -27,6 +27,7 @@ type Key struct {
 	Name         *string          `json:"name"`
 	DisplayName  *string          `json:"displayName"`
 	KeyString    *string          `json:"keyString"`
+	Uid          *string          `json:"uid"`
 	Restrictions *KeyRestrictions `json:"restrictions"`
 	Project      *string          `json:"project"`
 }
@@ -394,6 +395,7 @@ func (r *Key) ID() (string, error) {
 		"name":         dcl.ValueOrEmptyString(nr.Name),
 		"displayName":  dcl.ValueOrEmptyString(nr.DisplayName),
 		"keyString":    dcl.ValueOrEmptyString(nr.KeyString),
+		"uid":          dcl.ValueOrEmptyString(nr.Uid),
 		"restrictions": dcl.ValueOrEmptyString(nr.Restrictions),
 		"project":      dcl.ValueOrEmptyString(nr.Project),
 	}

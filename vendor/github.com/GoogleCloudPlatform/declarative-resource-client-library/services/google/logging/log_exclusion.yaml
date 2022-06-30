@@ -23,18 +23,21 @@ paths:
     - name: LogExclusion
       required: true
       description: A full instance of a LogExclusion
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a LogExclusion
     parameters:
     - name: LogExclusion
       required: true
       description: A full instance of a LogExclusion
+    timeoutSecs: 0
   delete:
     description: The function used to delete a LogExclusion
     parameters:
     - name: LogExclusion
       required: true
       description: A full instance of a LogExclusion
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all LogExclusion
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many LogExclusion
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     LogExclusion:

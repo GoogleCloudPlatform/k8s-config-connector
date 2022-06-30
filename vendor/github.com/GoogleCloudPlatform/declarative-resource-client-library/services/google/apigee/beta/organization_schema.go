@@ -44,6 +44,7 @@ func DCLOrganizationSchema() *dcl.Schema {
 						Description: "A full instance of a Organization",
 					},
 				},
+				TimeoutSecs: 4800,
 			},
 			Delete: &dcl.Path{
 				Description: "The function used to delete a Organization",
@@ -54,9 +55,11 @@ func DCLOrganizationSchema() *dcl.Schema {
 						Description: "A full instance of a Organization",
 					},
 				},
+				TimeoutSecs: 4800,
 			},
 			DeleteAll: &dcl.Path{
 				Description: "The function used to delete all Organization",
+				TimeoutSecs: 4800,
 			},
 			List: &dcl.Path{
 				Description: "The function used to list information about many Organization",

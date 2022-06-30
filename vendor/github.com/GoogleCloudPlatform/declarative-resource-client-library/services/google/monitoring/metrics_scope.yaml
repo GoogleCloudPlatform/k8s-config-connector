@@ -23,12 +23,14 @@ paths:
     - name: MetricsScope
       required: true
       description: A full instance of a MetricsScope
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a MetricsScope
     parameters:
     - name: MetricsScope
       required: true
       description: A full instance of a MetricsScope
+    timeoutSecs: 0
 components:
   schemas:
     MetricsScope:

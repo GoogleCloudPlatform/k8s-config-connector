@@ -507,6 +507,14 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 		}
 	}
 
+	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+		rawNew.Uid = rawDesired.Uid
+	} else {
+		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
+			rawNew.Uid = rawDesired.Uid
+		}
+	}
+
 	if dcl.IsNotReturnedByServer(rawNew.Restrictions) && dcl.IsNotReturnedByServer(rawDesired.Restrictions) {
 		rawNew.Restrictions = rawDesired.Restrictions
 	} else {
@@ -1414,6 +1422,13 @@ func diffKey(c *Client, desired, actual *Key, opts ...dcl.ApplyOption) ([]*dcl.F
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.Uid, actual.Uid, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uid")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.Restrictions, actual.Restrictions, dcl.DiffInfo{ObjectFunction: compareKeyRestrictionsNewStyle, EmptyObject: EmptyKeyRestrictions, OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("Restrictions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1683,6 +1698,7 @@ func (r *Key) urlNormalized() *Key {
 	normalized.Name = dcl.SelfLinkToName(r.Name)
 	normalized.DisplayName = dcl.SelfLinkToName(r.DisplayName)
 	normalized.KeyString = dcl.SelfLinkToName(r.KeyString)
+	normalized.Uid = dcl.SelfLinkToName(r.Uid)
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	return &normalized
 }
@@ -1773,6 +1789,7 @@ func flattenKey(c *Client, i interface{}, res *Key) *Key {
 	resultRes.Name = dcl.FlattenString(m["name"])
 	resultRes.DisplayName = dcl.FlattenString(m["displayName"])
 	resultRes.KeyString = dcl.FlattenString(m["keyString"])
+	resultRes.Uid = dcl.FlattenString(m["uid"])
 	resultRes.Restrictions = flattenKeyRestrictions(c, m["restrictions"], res)
 	resultRes.Project = dcl.FlattenString(m["project"])
 

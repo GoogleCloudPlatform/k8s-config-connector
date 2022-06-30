@@ -35,18 +35,21 @@ paths:
     - name: Client
       required: true
       description: A full instance of a Client
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Client
     parameters:
     - name: Client
       required: true
       description: A full instance of a Client
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Client
     parameters:
     - name: Client
       required: true
       description: A full instance of a Client
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Client
     parameters:
@@ -58,6 +61,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Client
     parameters:
@@ -69,6 +73,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Client:

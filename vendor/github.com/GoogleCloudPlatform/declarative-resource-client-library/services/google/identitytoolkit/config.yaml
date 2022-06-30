@@ -23,12 +23,14 @@ paths:
     - name: Config
       required: true
       description: A full instance of a Config
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Config
     parameters:
     - name: Config
       required: true
       description: A full instance of a Config
+    timeoutSecs: 0
 components:
   schemas:
     Config:

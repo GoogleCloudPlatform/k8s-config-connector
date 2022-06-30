@@ -24,18 +24,21 @@ paths:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a FeatureMembership
     parameters:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
+    timeoutSecs: 0
   delete:
     description: The function used to delete a FeatureMembership
     parameters:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all FeatureMembership
     parameters:
@@ -51,6 +54,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many FeatureMembership
     parameters:
@@ -66,6 +70,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     FeatureMembership:
@@ -133,7 +138,8 @@ components:
                       type: string
                       x-dcl-go-name: SecretType
                       description: Type of secret configured for access to the Git
-                        repo.
+                        repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount
+                        or none. The validation of this is case-sensitive.
                     syncBranch:
                       type: string
                       x-dcl-go-name: SyncBranch

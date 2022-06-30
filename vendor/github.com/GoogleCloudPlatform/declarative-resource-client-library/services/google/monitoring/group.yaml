@@ -23,18 +23,21 @@ paths:
     - name: Group
       required: true
       description: A full instance of a Group
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Group
     parameters:
     - name: Group
       required: true
       description: A full instance of a Group
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Group
     parameters:
     - name: Group
       required: true
       description: A full instance of a Group
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Group
     parameters:
@@ -42,6 +45,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Group
     parameters:
@@ -49,6 +53,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Group:

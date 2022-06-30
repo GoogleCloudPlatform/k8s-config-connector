@@ -29,18 +29,21 @@ paths:
     - name: ServiceAttachment
       required: true
       description: A full instance of a ServiceAttachment
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a ServiceAttachment
     parameters:
     - name: ServiceAttachment
       required: true
       description: A full instance of a ServiceAttachment
+    timeoutSecs: 0
   delete:
     description: The function used to delete a ServiceAttachment
     parameters:
     - name: ServiceAttachment
       required: true
       description: A full instance of a ServiceAttachment
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all ServiceAttachment
     parameters:
@@ -52,6 +55,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many ServiceAttachment
     parameters:
@@ -63,6 +67,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     ServiceAttachment:

@@ -23,18 +23,21 @@ paths:
     - name: Address
       required: true
       description: A full instance of a Address
+    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Address
     parameters:
     - name: Address
       required: true
       description: A full instance of a Address
+    timeoutSecs: 0
   delete:
     description: The function used to delete a Address
     parameters:
     - name: Address
       required: true
       description: A full instance of a Address
+    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Address
     parameters:
@@ -46,6 +49,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
   list:
     description: The function used to list information about many Address
     parameters:
@@ -57,6 +61,7 @@ paths:
       required: true
       schema:
         type: string
+    timeoutSecs: 0
 components:
   schemas:
     Address:

@@ -90,7 +90,7 @@ type FeaturemembershipGit struct {
 	// +optional
 	PolicyDir *string `json:"policyDir,omitempty"`
 
-	/* Type of secret configured for access to the Git repo. */
+	/* Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive. */
 	// +optional
 	SecretType *string `json:"secretType,omitempty"`
 
