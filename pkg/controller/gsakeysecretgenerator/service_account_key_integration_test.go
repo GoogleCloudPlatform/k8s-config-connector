@@ -162,7 +162,14 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	}
 	crd := dynamic.UnmarshalFileToCRD(t, crdPath)
 	smLoader := testservicemappingloader.New(t)
-	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader)
+	// Disable reconciler's ability to create asynchronous
+	// watches on unready dependencies by passing nil in for
+	// 'immediateReconcileRequests'. This feature of the
+	// reconciler is unnecessary for our integration tests
+	// since we reconcile each dependency first before the
+	// resource under test is reconciled. Overall, the feature
+	// adds risk of complications due to it's multi-threaded nature.
+	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, nil)
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
 	}

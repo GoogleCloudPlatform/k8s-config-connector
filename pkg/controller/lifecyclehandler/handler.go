@@ -31,6 +31,8 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -115,6 +117,22 @@ func removeSystemLabels(u *unstructured.Unstructured) {
 	}
 	// GetLabels(...) returns a new copy of the labels map so we must overwrite that value with our local value
 	u.SetLabels(labels)
+}
+
+func CausedByUnresolvableResourceRefs(err error) (refGVK schema.GroupVersionKind, refNN types.NamespacedName, ok bool) {
+	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
+		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
+	}
+	if unwrappedErr, ok := k8s.AsReferenceNotFoundError(err); ok {
+		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
+	}
+	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotFoundError(err); ok {
+		return unwrappedErr.ResourceGVK, unwrappedErr.Resource, true
+	}
+	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotReadyError(err); ok {
+		return unwrappedErr.ResourceGVK, unwrappedErr.Resource, true
+	}
+	return schema.GroupVersionKind{}, types.NamespacedName{}, false
 }
 
 func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) {

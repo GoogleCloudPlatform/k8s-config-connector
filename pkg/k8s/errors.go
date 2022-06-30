@@ -118,12 +118,12 @@ func AsKeyInSecretNotFoundError(err error) (unwrappedErr *KeyInSecretNotFoundErr
 }
 
 type TransitiveDependencyNotFoundError struct {
-	resourceGVK schema.GroupVersionKind
-	resource    types.NamespacedName
+	ResourceGVK schema.GroupVersionKind
+	Resource    types.NamespacedName
 }
 
 func (e *TransitiveDependencyNotFoundError) Error() string {
-	return fmt.Sprintf("transitive dependency %v %v is not found", e.resourceGVK.Kind, e.resource)
+	return fmt.Sprintf("transitive dependency %v %v is not found", e.ResourceGVK.Kind, e.Resource)
 }
 
 func NewTransitiveDependencyNotFoundError(resourceGVK schema.GroupVersionKind, resource types.NamespacedName) *TransitiveDependencyNotFoundError {
@@ -136,12 +136,12 @@ func AsTransitiveDependencyNotFoundError(err error) (unwrappedErr *TransitiveDep
 }
 
 type TransitiveDependencyNotReadyError struct {
-	resourceGVK schema.GroupVersionKind
-	resource    types.NamespacedName
+	ResourceGVK schema.GroupVersionKind
+	Resource    types.NamespacedName
 }
 
 func (e *TransitiveDependencyNotReadyError) Error() string {
-	return fmt.Sprintf("transitive dependency %v %v is not ready", e.resourceGVK.Kind, e.resource)
+	return fmt.Sprintf("transitive dependency %v %v is not ready", e.ResourceGVK.Kind, e.Resource)
 }
 
 func NewTransitiveDependencyNotReadyError(resourceGVK schema.GroupVersionKind, resource types.NamespacedName) *TransitiveDependencyNotReadyError {

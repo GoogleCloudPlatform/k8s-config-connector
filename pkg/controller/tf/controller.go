@@ -21,6 +21,7 @@ import (
 	"time"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dependencywatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -34,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
+
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -42,11 +44,15 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 var logger = klog.Log
@@ -54,21 +60,23 @@ var logger = klog.Log
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser *leaser.ResourceLeaser
-	mgr            manager.Manager
-	crd            *apiextensions.CustomResourceDefinition
-	jsonSchema     *apiextensions.JSONSchemaProps
-	gvk            schema.GroupVersionKind
-	provider       *tfschema.Provider
-	smLoader       *servicemappingloader.ServiceMappingLoader
-	logger         logr.Logger
+	resourceLeaser             *leaser.ResourceLeaser
+	mgr                        manager.Manager
+	crd                        *apiextensions.CustomResourceDefinition
+	jsonSchema                 *apiextensions.JSONSchemaProps
+	gvk                        schema.GroupVersionKind
+	provider                   *tfschema.Provider
+	smLoader                   *servicemappingloader.ServiceMappingLoader
+	immediateReconcileRequests chan event.GenericEvent
+	logger                     logr.Logger
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) error {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
-	r, err := NewReconciler(mgr, crd, provider, smLoader)
+	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
+	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests)
 	if err != nil {
 		return err
 	}
@@ -82,8 +90,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		For(obj, builder.OnlyMetadata).
-		WithEventFilter(predicate.UnderlyingResourceOutOfSyncPredicate{}).
+		Watches(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		For(obj, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %v", err)
@@ -92,7 +100,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.LifecycleHandler{
@@ -111,9 +119,10 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		provider: p,
-		smLoader: smLoader,
-		logger:   logger.WithName(controllerName),
+		provider:                   p,
+		smLoader:                   smLoader,
+		logger:                     logger.WithName(controllerName),
+		immediateReconcileRequests: immediateReconcileRequests,
 	}, nil
 }
 
@@ -143,6 +152,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
+
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %v", req.NamespacedName.String(), err)
 	}
@@ -165,7 +175,61 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
+// TODO(b/238913094): remove function after 100% of TF resources have been approved for immediate reconcilation
+func supportsImmediateReconciliation(resourceKind string) bool {
+	switch resourceKind {
+	case "ComputeTargetPool",
+		"ComputeNetworkEndpointGroup":
+		return true
+	}
+	return false
+}
+
+func (r *Reconciler) supportsImmediateReconciliations() bool {
+	return r.immediateReconcileRequests != nil
+}
+
+func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
+	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
+		// Requeue resource for immediate reconciliation
+		// with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
+	}
+	depWatcher, err := dependencywatcher.CreateWatchForResource(resource, r.mgr.GetConfig())
+	if err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
+	}
+	if err := depWatcher.WatchReferenceUntilReady(ctx, refNN, refGVK, func() {
+		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
+	}); err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error requesting dependencyWatcher to watch reference %v %v until ready: %v", refGVK.Kind, refNN, err))
+	}
+	r.logger.Info("dependencyWatcher successfully created watch requested by resource on reference",
+		"resource", resource.GetNamespacedName(),
+		"resourceGVK", resource.GroupVersionKind(),
+		"reference", refNN,
+		"referenceGVK", refGVK)
+	// Do not requeue resource for immediate reconciliation. Wait for either
+	// the next periodic reconciliation or for the referenced resource to be ready (which
+	// triggers a reconciliation), whichever comes first.
+	return false, r.HandleUnresolvableDeps(ctx, resource, originErr)
+}
+
+// enqueueForImmediateReconciliation enqueues the given resource for immediate
+// reconciliation. Note that this function only takes in the name and namespace
+// of the resource and not its GVK since the controller instance that this
+// reconcile instance belongs to can only reconcile resources of one GVK.
+func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.NamespacedName) {
+	genEvent := event.GenericEvent{}
+	genEvent.Object = &unstructured.Unstructured{}
+	genEvent.Object.SetNamespace(resourceNN.Namespace)
+	genEvent.Object.SetName(resourceNN.Name)
+	r.immediateReconcileRequests <- genEvent
+}
+
 func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
+
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 	if !krmResource.GetDeletionTimestamp().IsZero() {
@@ -198,8 +262,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		if parent != nil && !k8s.IsResourceReady(parent) {
 			// If this resource has a parent and is not orphaned, ensure its parent
 			// is ready before attempting deletion.
-			return true, r.HandleUnresolvableDeps(
-				ctx, &krmResource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
+			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
 		}
 		liveState, err := krmtotf.FetchLiveState(ctx, krmResource, r.provider, r, r.smLoader)
 		if err != nil {
@@ -222,7 +285,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
-			return true, r.HandleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
+			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %v", err))
 	}
@@ -247,7 +310,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
-			return true, r.HandleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
+			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error expanding resource configuration for kind %s: %v", krmResource.Kind, err))
 	}

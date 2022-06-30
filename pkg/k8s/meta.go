@@ -22,6 +22,7 @@ import (
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/nasa9084/go-openapi"
@@ -76,6 +77,17 @@ func SortGVKsByKind(gvks []schema.GroupVersionKind) []schema.GroupVersionKind {
 		return gvksCopy[i].Kind < gvksCopy[j].Kind
 	})
 	return gvksCopy
+}
+
+// ToGVR returns the equivalent GVR for a given GVK. Note that while GVKs and
+// GVRs do not necessarily have a 1:1 mapping, GVKs and GVRs of CRDs do.
+// (see https://book.kubebuilder.io/cronjob-tutorial/gvks.html#kinds-and-resources)
+func ToGVR(gvk schema.GroupVersionKind) schema.GroupVersionResource {
+	return schema.GroupVersionResource{
+		Group:    gvk.Group,
+		Version:  gvk.Version,
+		Resource: text.Pluralize(strings.ToLower(gvk.Kind)),
+	}
 }
 
 func GetProjectIDForNamespace(c client.Client, ctx context.Context, namespaceName string) (string, error) {

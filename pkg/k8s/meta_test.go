@@ -27,7 +27,9 @@ import (
 	"github.com/nasa9084/go-openapi"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	runtimeschema "k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
@@ -56,6 +58,47 @@ func TestIsDeleted(t *testing.T) {
 				t.Errorf("result mismatch: got '%v', want '%v'", result, tc.ExpectedResult)
 			}
 		})
+	}
+}
+
+func TestGVKToGVR(t *testing.T) {
+	tests := []struct {
+		gvk         runtimeschema.GroupVersionKind
+		expectedGVR runtimeschema.GroupVersionResource
+	}{
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "ComputeVPNGateway"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "computevpngateways"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "KMSCryptoKey"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "kmscryptokeys"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "IAMPolicy"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "iampolicies"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "ComputeAddress"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "computeaddresses"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "FirestoreIndex"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "firestoreindexes"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "NetworkServicesMesh"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "networkservicesmeshes"},
+		},
+		{
+			gvk:         runtimeschema.GroupVersionKind{Kind: "PubSubTopic"},
+			expectedGVR: runtimeschema.GroupVersionResource{Resource: "pubsubtopics"},
+		},
+	}
+	for _, tc := range tests {
+		if got, want := k8s.ToGVR(tc.gvk), tc.expectedGVR; got != want {
+			t.Errorf("result mismatch: got '%v', want '%v'", got, want)
+		}
 	}
 }
 

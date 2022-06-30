@@ -187,7 +187,14 @@ func (r *TestReconciler) newReconcilerForKind(kind string) reconcile.Reconciler 
 func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader)
+			// Disable reconciler's ability to create asynchronous
+			// watches on unready dependencies by passing nil in for
+			// 'immediateReconcileRequests'. This feature of the
+			// reconciler is unnecessary for our integration tests
+			// since we reconcile each dependency first before the
+			// resource under test is reconciled. Overall, the feature
+			// adds risk of complications due to it's multi-threaded nature.
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, nil)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader)
