@@ -52,19 +52,28 @@ func CanonicalizeReferencedResourceName(name string, nameValueTemplate string, r
 			}
 			return val
 		}
-		// Only look for top level spec fields for now
 		val, exists, err := unstructured.NestedString(refResource.Spec, field)
 		if err != nil {
-			resolutionError = fmt.Errorf("error getting value for DCL field %v in referenced resource %v with GroupVersionKind %v: %w",
+			resolutionError = fmt.Errorf("error getting value for DCL field %v in spec of referenced resource %v with GroupVersionKind %v: %w",
 				field, k8s.GetNamespacedName(refResource), refResource.GroupVersionKind(), err)
 			return ""
 		}
-		if !exists {
-			resolutionError = fmt.Errorf("no value found for DCL field %v in referenced resource %v with GroupVersionKind %v",
-				field, k8s.GetNamespacedName(refResource), refResource.GroupVersionKind())
+		if exists {
+			return val
+		}
+		// Value not found in spec, so check status.
+		val, exists, err = unstructured.NestedString(refResource.Status, field)
+		if err != nil {
+			resolutionError = fmt.Errorf("error getting value for DCL field %v in status of referenced resource %v with GroupVersionKind %v: %w",
+				field, k8s.GetNamespacedName(refResource), refResource.GroupVersionKind(), err)
 			return ""
 		}
-		return val
+		if exists {
+			return val
+		}
+		resolutionError = fmt.Errorf("no value found for DCL field %v in referenced resource %v with GroupVersionKind %v",
+			field, k8s.GetNamespacedName(refResource), refResource.GroupVersionKind())
+		return ""
 	}
 	return fieldRegex.ReplaceAllStringFunc(ret, resolveFunc), resolutionError
 }

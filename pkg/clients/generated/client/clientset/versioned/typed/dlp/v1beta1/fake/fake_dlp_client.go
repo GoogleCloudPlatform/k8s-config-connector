@@ -31,6 +31,10 @@ type FakeDlpV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDlpV1beta1) DLPDeidentifyTemplates(namespace string) v1beta1.DLPDeidentifyTemplateInterface {
+	return &FakeDLPDeidentifyTemplates{c, namespace}
+}
+
 func (c *FakeDlpV1beta1) DLPStoredInfoTypes(namespace string) v1beta1.DLPStoredInfoTypeInterface {
 	return &FakeDLPStoredInfoTypes{c, namespace}
 }

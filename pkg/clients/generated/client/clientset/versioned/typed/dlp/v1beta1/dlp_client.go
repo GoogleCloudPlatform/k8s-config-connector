@@ -31,12 +31,17 @@ import (
 
 type DlpV1beta1Interface interface {
 	RESTClient() rest.Interface
+	DLPDeidentifyTemplatesGetter
 	DLPStoredInfoTypesGetter
 }
 
 // DlpV1beta1Client is used to interact with features provided by the dlp.cnrm.cloud.google.com group.
 type DlpV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DlpV1beta1Client) DLPDeidentifyTemplates(namespace string) DLPDeidentifyTemplateInterface {
+	return newDLPDeidentifyTemplates(c, namespace)
 }
 
 func (c *DlpV1beta1Client) DLPStoredInfoTypes(namespace string) DLPStoredInfoTypeInterface {

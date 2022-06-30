@@ -276,6 +276,11 @@ var serviceList = []ServiceMetadata{
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
+				Kind:                           "DLPDeidentifyTemplate",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
+			},
+			{
 				Kind:                           "DLPStoredInfoType",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

@@ -314,7 +314,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. Required when (#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
 
-Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (format: `projects/{{project}}/locations/{{location}}/keyRings/{{key_ring}}/cryptoKeys/{{name}}`).{% endverbatim %}</p>
+Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (format: `{{selfLink}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
