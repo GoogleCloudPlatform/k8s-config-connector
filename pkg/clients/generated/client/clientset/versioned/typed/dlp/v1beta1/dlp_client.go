@@ -32,6 +32,7 @@ import (
 type DlpV1beta1Interface interface {
 	RESTClient() rest.Interface
 	DLPDeidentifyTemplatesGetter
+	DLPInspectTemplatesGetter
 	DLPStoredInfoTypesGetter
 }
 
@@ -42,6 +43,10 @@ type DlpV1beta1Client struct {
 
 func (c *DlpV1beta1Client) DLPDeidentifyTemplates(namespace string) DLPDeidentifyTemplateInterface {
 	return newDLPDeidentifyTemplates(c, namespace)
+}
+
+func (c *DlpV1beta1Client) DLPInspectTemplates(namespace string) DLPInspectTemplateInterface {
+	return newDLPInspectTemplates(c, namespace)
 }
 
 func (c *DlpV1beta1Client) DLPStoredInfoTypes(namespace string) DLPStoredInfoTypeInterface {

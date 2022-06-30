@@ -23,4 +23,6 @@ package v1beta1
 
 type DLPDeidentifyTemplateExpansion interface{}
 
+type DLPInspectTemplateExpansion interface{}
+
 type DLPStoredInfoTypeExpansion interface{}

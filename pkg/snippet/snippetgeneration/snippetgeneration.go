@@ -67,6 +67,7 @@ var preferredSampleForResource = map[string]string{
 	"dataflowflextemplatejob":           "streaming-dataflow-flex-template-job",
 	"dlpstoredinfotype":                 "big-query-field-stored-info-type",
 	"dlpdeidentifytemplate":             "info-type-deidentify-template",
+	"dlpinspecttemplate":                "custom-inspect-template",
 	"dnsrecordset":                      "dns-a-record-set",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",

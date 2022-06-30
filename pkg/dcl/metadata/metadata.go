@@ -281,6 +281,11 @@ var serviceList = []ServiceMetadata{
 				SupportsHierarchicalReferences: true,
 			},
 			{
+				Kind:                           "DLPInspectTemplate",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
+			},
+			{
 				Kind:                           "DLPStoredInfoType",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

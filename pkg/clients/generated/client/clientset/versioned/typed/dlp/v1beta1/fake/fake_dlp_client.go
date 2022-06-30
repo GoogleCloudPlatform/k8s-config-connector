@@ -35,6 +35,10 @@ func (c *FakeDlpV1beta1) DLPDeidentifyTemplates(namespace string) v1beta1.DLPDei
 	return &FakeDLPDeidentifyTemplates{c, namespace}
 }
 
+func (c *FakeDlpV1beta1) DLPInspectTemplates(namespace string) v1beta1.DLPInspectTemplateInterface {
+	return &FakeDLPInspectTemplates{c, namespace}
+}
+
 func (c *FakeDlpV1beta1) DLPStoredInfoTypes(namespace string) v1beta1.DLPStoredInfoTypeInterface {
 	return &FakeDLPStoredInfoTypes{c, namespace}
 }

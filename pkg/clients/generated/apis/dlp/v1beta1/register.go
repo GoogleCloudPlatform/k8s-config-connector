@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(DLPDeidentifyTemplate{}).Name(),
 	}
 
+	DLPInspectTemplateGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DLPInspectTemplate{}).Name(),
+	}
+
 	DLPStoredInfoTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
