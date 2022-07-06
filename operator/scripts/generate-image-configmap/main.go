@@ -102,7 +102,7 @@ func main() {
 
 	for _, obj := range objects {
 		// controller image
-		if obj.Kind == "StatefulSet" && strings.Contains(obj.Name, "cnrm-controller-manager") {
+		if obj.Kind == "StatefulSet" && strings.Contains(obj.GetName(), "cnrm-controller-manager") {
 			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "manager")
 			if err != nil {
 				log.Fatalf("error resolving manager image: %v", err)
@@ -110,7 +110,7 @@ func main() {
 			cm.Data["cnrm.controller"] = image
 		}
 		// deletion defender image
-		if obj.Kind == "StatefulSet" && obj.Name == "cnrm-deletiondefender" {
+		if obj.Kind == "StatefulSet" && obj.GetName() == "cnrm-deletiondefender" {
 			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "deletiondefender")
 			if err != nil {
 				log.Fatalf("error resolving manager image: %v", err)
@@ -118,7 +118,7 @@ func main() {
 			cm.Data["cnrm.deletiondefender"] = image
 		}
 		// webhook image
-		if obj.Kind == "Deployment" && obj.Name == "cnrm-webhook-manager" {
+		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-webhook-manager" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "webhook")
 			if err != nil {
 				log.Fatalf("error resolving webhook image: %v", err)
@@ -126,7 +126,7 @@ func main() {
 			cm.Data["cnrm.webhook"] = image
 		}
 		// recorder image
-		if obj.Kind == "Deployment" && obj.Name == "cnrm-resource-stats-recorder" {
+		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-resource-stats-recorder" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "recorder")
 			if err != nil {
 				log.Fatalf("error resolving recorder image: %v", err)
@@ -134,7 +134,7 @@ func main() {
 			cm.Data["cnrm.recorder"] = image
 		}
 		// prom-to-sd sidecar image
-		if obj.Kind == "Deployment" && obj.Name == "cnrm-resource-stats-recorder" {
+		if obj.Kind == "Deployment" && obj.GetName() == "cnrm-resource-stats-recorder" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "prom-to-sd")
 			if err != nil {
 				log.Fatalf("error resolving prom-to-sd sidecar image: %v", err)
