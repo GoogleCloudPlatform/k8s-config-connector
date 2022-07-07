@@ -31,11 +31,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
-	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 var logger = klog.Log
@@ -69,7 +67,6 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
-		Watches(&source.Kind{Type: obj}, &handler.EnqueueRequestForObject{}, builder.OnlyMetadata).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
