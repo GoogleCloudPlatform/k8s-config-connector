@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
@@ -25,7 +26,7 @@ import (
 )
 
 type ByteStream interface {
-	Next() ([]byte, *unstructured.Unstructured, error)
+	Next(ctx context.Context) ([]byte, *unstructured.Unstructured, error)
 }
 
 func NewByteStream(resourceFormat outputsink.ResourceFormat, uStream UnstructuredStream, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) (ByteStream, error) {

@@ -15,15 +15,18 @@
 package stream
 
 import (
+	"context"
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func TestRecoverableByteStream(t *testing.T) {
+	ctx := context.TODO()
+
 	s := &panicStream{}
 	recoverableStream := NewRecoverableByteStream(s)
-	_, _, err := recoverableStream.Next()
+	_, _, err := recoverableStream.Next(ctx)
 	if err == nil {
 		t.Fatalf("got nil, but expect to have an error")
 	}
@@ -31,6 +34,6 @@ func TestRecoverableByteStream(t *testing.T) {
 
 type panicStream struct{}
 
-func (s *panicStream) Next() (bytes []byte, u *unstructured.Unstructured, err error) {
+func (s *panicStream) Next(ctx context.Context) (bytes []byte, u *unstructured.Unstructured, err error) {
 	panic("intentionally panic")
 }

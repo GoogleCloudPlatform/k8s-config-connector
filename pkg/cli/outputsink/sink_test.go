@@ -16,6 +16,7 @@ package outputsink_test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -35,10 +36,12 @@ import (
 )
 
 func TestDirectorySinkShouldIgnoreTransmissionTerminator(t *testing.T) {
+	ctx := context.TODO()
+
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
 	dirSink := outputsink.NewKRMYAMLDirectory(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), tmpDir)
-	if err := dirSink.Receive([]byte("..."), nil); err != nil {
+	if err := dirSink.Receive(ctx, []byte("..."), nil); err != nil {
 		t.Fatalf("unexpected error: got '%v', want 'nil", err)
 	}
 }
@@ -122,10 +125,12 @@ func findNewFiles(t *testing.T, dirName string, prevFiles []string) []string {
 }
 
 func testDirectorySink(t *testing.T, dirSink outputsink.OutputSink, outputDir, testCaseFile, unstructuredFile, expectedFilePath string) {
+	ctx := context.TODO()
+
 	unstructured := unstructuredFromYamlFile(t, unstructuredFile)
 	initialFiles := findFilesRecursive(t, outputDir)
 	expectedBytes := testFileToBytes(t, testCaseFile)
-	if err := dirSink.Receive(expectedBytes, unstructured); err != nil {
+	if err := dirSink.Receive(ctx, expectedBytes, unstructured); err != nil {
 		t.Fatalf("error receiving bytes; %v", err)
 	}
 	newFiles := findNewFiles(t, outputDir, initialFiles)
@@ -167,6 +172,8 @@ func findFilesRecursive(t *testing.T, dirName string) []string {
 }
 
 func TestFileSink(t *testing.T) {
+	ctx := context.TODO()
+
 	f, cleanup := newTmpFile(t)
 	defer cleanup()
 	fileSink, err := outputsink.NewFile(f.Name())
@@ -179,14 +186,14 @@ func TestFileSink(t *testing.T) {
 	bytes := testFileToBytes(t, pubSubFile)
 	str := test.TrimLicenseHeaderFromYaml(string(bytes))
 	unstructured := unstructuredFromYamlFile(t, pubSubFile)
-	if err := fileSink.Receive([]byte(str), unstructured); err != nil {
+	if err := fileSink.Receive(ctx, []byte(str), unstructured); err != nil {
 		t.Fatalf("error receiving bytes: %v", err)
 	}
 	storageBucketFile := "storagebucket.yaml"
 	bytes = testFileToBytes(t, storageBucketFile)
 	str = test.TrimLicenseHeaderFromYaml(string(bytes))
 	unstructured = unstructuredFromYamlFile(t, storageBucketFile)
-	if err := fileSink.Receive([]byte(str), unstructured); err != nil {
+	if err := fileSink.Receive(ctx, []byte(str), unstructured); err != nil {
 		t.Fatalf("error receiving bytes: %v", err)
 	}
 	if err := fileSink.Close(); err != nil {

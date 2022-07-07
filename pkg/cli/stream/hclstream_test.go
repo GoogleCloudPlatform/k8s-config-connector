@@ -15,6 +15,7 @@
 package stream_test
 
 import (
+	"context"
 	"io"
 	"io/ioutil"
 	"reflect"
@@ -39,8 +40,10 @@ func TestHCLStream(t *testing.T) {
 }
 
 func hclStreamToBytes(t *testing.T, stream *stream.HCLStream) []byte {
+	ctx := context.TODO()
+
 	results := make([]byte, 0)
-	for bytes, _, err := stream.Next(); err != io.EOF; bytes, _, err = stream.Next() {
+	for bytes, _, err := stream.Next(ctx); err != io.EOF; bytes, _, err = stream.Next(ctx) {
 		if err != nil {
 			t.Fatalf("error reading next terraform file: %v", err)
 		}

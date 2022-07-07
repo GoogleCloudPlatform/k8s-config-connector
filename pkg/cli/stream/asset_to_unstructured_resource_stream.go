@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -60,7 +61,7 @@ func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfPro
 	return &stream, nil
 }
 
-func (s *AssetToUnstructuredResourceStream) Next() (*unstructured.Unstructured, error) {
+func (s *AssetToUnstructuredResourceStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
 	asset, err := s.assetStream.Next()
 	if err != nil {
 		if err != io.EOF {
@@ -72,7 +73,7 @@ func (s *AssetToUnstructuredResourceStream) Next() (*unstructured.Unstructured, 
 	if err != nil {
 		return nil, fmt.Errorf("error converting asset '%v' with kind '%v' to skeleton: %v", asset.Name, asset.AssetType, err)
 	}
-	u, err := s.gcpClient.Get(skel)
+	u, err := s.gcpClient.Get(ctx, skel)
 	if err != nil {
 		return nil, fmt.Errorf("error getting '%v': %v", asset.Name, err)
 	}

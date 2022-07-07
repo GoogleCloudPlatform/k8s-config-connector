@@ -16,6 +16,7 @@ package outputsink
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -46,7 +47,7 @@ const (
 
 type OutputSink interface {
 	io.Closer
-	Receive(bytes []byte, unstructured *unstructured.Unstructured) error
+	Receive(ctx context.Context, bytes []byte, unstructured *unstructured.Unstructured) error
 }
 
 type WriterSink struct {
@@ -62,7 +63,7 @@ func NewWriter(w io.Writer) *WriterSink {
 	return &sink
 }
 
-func (ws *WriterSink) Receive(bytes []byte, _ *unstructured.Unstructured) error {
+func (ws *WriterSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.Unstructured) error {
 	if _, err := ws.w.Write(bytes); err != nil {
 		return fmt.Errorf("error writing bytes: %v", err)
 	}
@@ -91,7 +92,7 @@ func NewFile(filePath string) (*FileSink, error) {
 	return &sink, nil
 }
 
-func (fs *FileSink) Receive(bytes []byte, _ *unstructured.Unstructured) error {
+func (fs *FileSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.Unstructured) error {
 	// bufio.Writer either writes all the bytes or returns an error so we can ignore the first 'nn' return value
 	_, err := fs.writer.Write(bytes)
 	if err != nil {
@@ -126,10 +127,10 @@ func (ds *DirectorySink) Close() error {
 	return nil
 }
 
-func (ds *DirectorySink) receive(bytes []byte, unstructured *unstructured.Unstructured, suffix string) error {
+func (ds *DirectorySink) receive(ctx context.Context, bytes []byte, unstructured *unstructured.Unstructured, suffix string) error {
 	// TODO: need to pass in smloader to the constructor
 	smLoader, _ := servicemappingloader.New()
-	fileName, err := filename.Get(unstructured, smLoader, ds.tfProvider)
+	fileName, err := filename.Get(ctx, unstructured, smLoader, ds.tfProvider)
 	if err != nil {
 		return fmt.Errorf("error choosing a filename: %w", err)
 	}
@@ -168,8 +169,8 @@ func NewHCLDirectory(tfProvider *schema.Provider, filepath string) OutputSink {
 	return &sink
 }
 
-func (ds *HCLDirectorySink) Receive(bytes []byte, unstructured *unstructured.Unstructured) error {
-	return ds.receive(bytes, unstructured, "tf")
+func (ds *HCLDirectorySink) Receive(ctx context.Context, bytes []byte, unstructured *unstructured.Unstructured) error {
+	return ds.receive(ctx, bytes, unstructured, "tf")
 }
 
 type KRMYAMLDirectorySink struct {
@@ -193,11 +194,11 @@ func (ds *KRMYAMLDirectorySink) Close() error {
 	return ds.DirectorySink.Close()
 }
 
-func (ds *KRMYAMLDirectorySink) Receive(bytes []byte, unstructured *unstructured.Unstructured) error {
+func (ds *KRMYAMLDirectorySink) Receive(ctx context.Context, bytes []byte, unstructured *unstructured.Unstructured) error {
 	if isYAMLTerminator(bytes) {
 		return nil
 	}
-	return ds.DirectorySink.receive(bytes, unstructured, "yaml")
+	return ds.DirectorySink.receive(ctx, bytes, unstructured, "yaml")
 }
 
 func isYAMLTerminator(bytes []byte) bool {

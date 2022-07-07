@@ -470,6 +470,14 @@ var DefaultClientScopes = []string{
 	"https://www.googleapis.com/auth/userinfo.email",
 }
 
+// DefaultHTTPClientTransformer can be set to allow changing the http.Client used for non-OAuth2 requests.
+// This is very handy in tests, for example.
+var DefaultHTTPClientTransformer func(ctx context.Context, inner *http.Client) *http.Client = nil
+
+// OAuth2HTTPClientTransformer can be set to allow changing the http.Client used for OAuth2 requests
+// This is very handy in tests, for example.
+var OAuth2HTTPClientTransformer func(ctx context.Context, inner *http.Client) *http.Client = nil
+
 func (c *Config) LoadAndValidate(ctx context.Context) error {
 	if len(c.Scopes) == 0 {
 		c.Scopes = DefaultClientScopes
@@ -484,12 +492,19 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
 
 	c.tokenSource = tokenSource
 
-	cleanCtx := context.WithValue(ctx, oauth2.HTTPClient, cleanhttp.DefaultClient())
+	oauth2Client := cleanhttp.DefaultClient()
+	if OAuth2HTTPClientTransformer != nil {
+		oauth2Client = OAuth2HTTPClientTransformer(ctx, oauth2Client)
+	}
+	cleanCtx := context.WithValue(ctx, oauth2.HTTPClient, oauth2Client)
 
 	// 1. MTLS TRANSPORT/CLIENT - sets up proper auth headers
 	client, _, err := transport.NewHTTPClient(cleanCtx, option.WithTokenSource(tokenSource))
 	if err != nil {
 		return err
+	}
+	if DefaultHTTPClientTransformer != nil {
+		client = DefaultHTTPClientTransformer(ctx, client)
 	}
 
 	// Userinfo is fetched before request logging is enabled to reduce additional noise.

@@ -52,13 +52,15 @@ var (
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
+
 			fillRootFlagsOnExportParams(&exportParams)
 			exportParams.URI = args[0]
 			if err := parameters.Validate(&exportParams); err != nil {
 				return err
 			}
 			rootCmd.SilenceUsage = true
-			return export.Execute(&exportParams)
+			return export.Execute(ctx, &exportParams)
 		},
 	}
 )

@@ -18,6 +18,7 @@
 package gcpclient_test
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"testing"
@@ -38,6 +39,8 @@ import (
 // This test demonstrates how to use the gcp client, it does an Apply, Get, and then Delete for a ComputeDisk resource,
 // note this file has a build rule of 'integration'
 func TestQuickStart(t *testing.T) {
+	ctx := context.TODO()
+
 	client, smLoader, tfProvider, serviceClient, err := newDependencies(t)
 	if err != nil {
 		t.Fatalf("error creating dependencies: %v", err)
@@ -68,7 +71,7 @@ func TestQuickStart(t *testing.T) {
 		Name:      selfLink,
 		AssetType: "compute.googleapis.com/Disk",
 	}
-	disk, err = getForAsset(client, smLoader, tfProvider, serviceClient, diskAsset)
+	disk, err = getForAsset(ctx, client, smLoader, tfProvider, serviceClient, diskAsset)
 	if err != nil {
 		t.Fatalf("error getting yaml from asset '%v': %v", diskAsset, err)
 	}
@@ -80,12 +83,12 @@ func TestQuickStart(t *testing.T) {
 	}
 }
 
-func getForAsset(client gcpclient.Client, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient, a asset.Asset) (*unstructured.Unstructured, error) {
+func getForAsset(ctx context.Context, client gcpclient.Client, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient, a asset.Asset) (*unstructured.Unstructured, error) {
 	skeleton, err := resourceskeleton.NewFromAsset(&a, smLoader, tfProvider, serviceClient)
 	if err != nil {
 		return nil, fmt.Errorf("error converting asset to skeleton: %v", err)
 	}
-	return client.Get(skeleton)
+	return client.Get(ctx, skeleton)
 }
 
 func newDependencies(t *testing.T) (gcpclient.Client, *servicemappingloader.ServiceMappingLoader, *schema.Provider, serviceclient.ServiceClient, error) {

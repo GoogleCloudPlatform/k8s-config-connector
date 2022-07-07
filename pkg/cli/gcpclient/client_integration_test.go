@@ -18,6 +18,7 @@
 package gcpclient_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -39,6 +40,8 @@ import (
 )
 
 func TestGetNotFound(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceUsageSM, err := smLoader.GetServiceMapping("serviceusage.cnrm.cloud.google.com")
 	if err != nil {
@@ -57,7 +60,7 @@ func TestGetNotFound(t *testing.T) {
 	applyProjectRefOrAnnotation(t, smLoader, serviceResource, projectId)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
-	result, err := client.Get(serviceResource)
+	result, err := client.Get(ctx, serviceResource)
 	if err != gcpclient.NotFoundError {
 		t.Fatalf("unexpected error value: got '%v', want '%v", err, gcpclient.NotFoundError)
 	}
@@ -67,6 +70,8 @@ func TestGetNotFound(t *testing.T) {
 }
 
 func TestCRUD(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
@@ -87,7 +92,7 @@ func TestCRUD(t *testing.T) {
 		resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, createUnstruct)
 		defer buildDeleteFunc(t, client, createUnstruct)()
 		clientApply(t, client, createUnstruct)
-		clientGet(t, client, createUnstruct)
+		clientGet(t, ctx, client, createUnstruct)
 		if testContext.UpdateUnstruct != nil {
 			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, testContext.UpdateUnstruct)
 			applyProjectRefOrAnnotation(t, smLoader, testContext.UpdateUnstruct, projectId)
@@ -106,9 +111,9 @@ func TestCRUD(t *testing.T) {
 	testrunner.RunSpecific(t, supportedFixtures, testFunc)
 }
 
-func clientGet(t *testing.T, client gcpclient.Client, u *unstructured.Unstructured) *unstructured.Unstructured {
+func clientGet(t *testing.T, ctx context.Context, client gcpclient.Client, u *unstructured.Unstructured) *unstructured.Unstructured {
 	t.Helper()
-	u, err := client.Get(u)
+	u, err := client.Get(ctx, u)
 	if err != nil {
 		t.Fatalf("error getting unstructured %s object %s: %v", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u), err)
 	}

@@ -15,6 +15,8 @@
 package stream
 
 import (
+	"context"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -31,8 +33,8 @@ func NewRecoverableByteStream(inputStream ByteStream) *RecoverableByteStream {
 	return &r
 }
 
-func (s *RecoverableByteStream) Next() (bytes []byte, unstructured *unstructured.Unstructured, err error) {
+func (s *RecoverableByteStream) Next(ctx context.Context) (bytes []byte, unstructured *unstructured.Unstructured, err error) {
 	defer execution.RecoverWithGenericError(&err)
-	bytes, unstructured, err = s.byteStream.Next()
+	bytes, unstructured, err = s.byteStream.Next(ctx)
 	return bytes, unstructured, err
 }

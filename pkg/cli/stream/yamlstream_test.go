@@ -15,6 +15,7 @@
 package stream_test
 
 import (
+	"context"
 	"io"
 	"io/ioutil"
 	"reflect"
@@ -93,6 +94,8 @@ func TestErrorInAssetStream(t *testing.T) {
 }
 
 func TestStatusIsRemoved(t *testing.T) {
+	ctx := context.TODO()
+
 	results := []NextUnstructuredResult{
 		{
 			Unstructured: &unstructured.Unstructured{
@@ -105,7 +108,7 @@ func TestStatusIsRemoved(t *testing.T) {
 		},
 	}
 	yamlStream := stream.NewYAMLStream(newMockUnstructuredStream(results))
-	bytes, _, err := yamlStream.Next()
+	bytes, _, err := yamlStream.Next(ctx)
 	if err != nil {
 		t.Fatalf("unexpected error: got '%v', want 'nil'", err)
 	}
@@ -131,7 +134,7 @@ func newMockUnstructuredStream(results []NextUnstructuredResult) stream.Unstruct
 	}
 }
 
-func (m *MockUnstructuredStream) Next() (*unstructured.Unstructured, error) {
+func (m *MockUnstructuredStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
 	if m.idx == len(m.results) {
 		return nil, io.EOF
 	}
@@ -170,8 +173,10 @@ func (m *MockAssetStream) Close() error {
 }
 
 func yamlStreamToBytes(t *testing.T, stream *stream.YAMLStream) []byte {
+	ctx := context.TODO()
+
 	results := make([]byte, 0)
-	for bytes, _, err := stream.Next(); err != io.EOF; bytes, _, err = stream.Next() {
+	for bytes, _, err := stream.Next(ctx); err != io.EOF; bytes, _, err = stream.Next(ctx) {
 		if err != nil {
 			t.Fatalf("error reading next yaml: %v", err)
 		}
@@ -181,8 +186,10 @@ func yamlStreamToBytes(t *testing.T, stream *stream.YAMLStream) []byte {
 }
 
 func yamlStreamToBytesIgnoreErrors(t *testing.T, stream *stream.YAMLStream) []byte {
+	ctx := context.TODO()
+
 	results := make([]byte, 0)
-	for bytes, _, err := stream.Next(); err != io.EOF; bytes, _, err = stream.Next() {
+	for bytes, _, err := stream.Next(ctx); err != io.EOF; bytes, _, err = stream.Next(ctx) {
 		if err != nil {
 			continue
 		}

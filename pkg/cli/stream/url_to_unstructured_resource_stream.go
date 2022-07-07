@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -44,7 +45,7 @@ func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider,
 	return &stream
 }
 
-func (s *URLToUnstructuredResourceStream) Next() (*unstructured.Unstructured, error) {
+func (s *URLToUnstructuredResourceStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
 	if s.done {
 		return nil, io.EOF
 	}
@@ -52,7 +53,7 @@ func (s *URLToUnstructuredResourceStream) Next() (*unstructured.Unstructured, er
 	if err != nil {
 		return nil, fmt.Errorf("error converting url '%v' to skeleton: %v", s.url, err)
 	}
-	u, err := s.gcpClient.Get(skel)
+	u, err := s.gcpClient.Get(ctx, skel)
 	if err != nil {
 		return nil, fmt.Errorf("error getting '%v': %v", s.url, err)
 	}

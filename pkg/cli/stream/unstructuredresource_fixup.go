@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -39,8 +40,8 @@ func NewUnstructuredResourceFixupStream(unstructuredStream UnstructuredStream) *
 	}
 }
 
-func (s *UnstructuredResourceFixupStream) Next() (*unstructured.Unstructured, error) {
-	u, err := s.unstructStream.Next()
+func (s *UnstructuredResourceFixupStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
+	u, err := s.unstructStream.Next(ctx)
 	if err != nil {
 		return nil, err
 	}

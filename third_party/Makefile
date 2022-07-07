@@ -266,3 +266,6 @@ apply-patches:
 	# can only be specified for a global address.`
 	# See b/238334650 for context
 	git apply ../hack/terraform-overrides/compute_global_address_ip_version_description.patch
+	# Allow specifying custom HTTP clients to support mock testing
+	# See b/238356047 for context
+	git apply ../hack/terraform-overrides/mock-http-clients.patch

@@ -63,13 +63,13 @@ func NewUnstructuredResourceAndIAMPolicyStream(unstructuredStream UnstructuredSt
 // This function returns the next unstructured as follows:
 // 1. If there at least one value in the iam resources slice, reduce the size of the slice by one and return the value at the head of the slice
 // 2. Else, get the next resource, if it supports iam policy fetch the iam policy, if the policy is non-empty save it into the iam resources slice, then return the resource
-func (s *UnstructuredResourceAndIAMPolicyStream) Next() (*unstructured.Unstructured, error) {
+func (s *UnstructuredResourceAndIAMPolicyStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
 	if len(s.nextIAMResources) > 0 {
 		result := s.nextIAMResources[0]
 		s.nextIAMResources = s.nextIAMResources[1:]
 		return result, nil
 	}
-	resourceUnstruct, err := s.unstructStream.Next()
+	resourceUnstruct, err := s.unstructStream.Next(ctx)
 	if err != nil {
 		if err != io.EOF {
 			err = fmt.Errorf("error getting next unstruct: %v", err)

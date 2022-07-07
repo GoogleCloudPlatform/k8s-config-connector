@@ -15,6 +15,7 @@
 package filename
 
 import (
+	"context"
 	"fmt"
 	"path"
 	"strings"
@@ -34,9 +35,9 @@ import (
 
 var refFields = []string{"projectRef", "folderRef", "organizationRef"}
 
-func Get(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (string, error) {
+func Get(ctx context.Context, u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (string, error) {
 	if iamapi.IsHandwrittenIAM(u.GroupVersionKind()) {
-		return getIAM(u, smLoader, tfProvider)
+		return getIAM(ctx, u, smLoader, tfProvider)
 	}
 	parentPrefix, err := getParentPrefix(u, smLoader)
 	if err != nil {
@@ -49,7 +50,7 @@ func Get(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMap
 	return path.Join(parentPrefix, u.GetKind(), location, u.GetName()), nil
 }
 
-func getIAM(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (string, error) {
+func getIAM(ctx context.Context, u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (string, error) {
 	resourceRefField := "resourceRef"
 	resourceRef, found, err := getFieldAsIAMResourceRef(u, resourceRefField)
 	if err != nil {
@@ -76,13 +77,13 @@ func getIAM(u *unstructured.Unstructured, smLoader *servicemappingloader.Service
 		// we do not have enough information in the external id to properly reconstruct a hierarchal resource so we need to fetch it again
 		// this fetch could be avoided if we calculated the for a resource and its associated IAMPolicy at the same time,
 		// but that will require more refactoring and the benefit would be low (it would mean less GCP api requests)
-		parent, err := getResource(parentSkel, smLoader, tfProvider)
+		parent, err := getResource(ctx, parentSkel, smLoader, tfProvider)
 		if err != nil {
 			return "", fmt.Errorf("error getting parent resource for ref '%v': %w", *resourceRef, err)
 		}
 		parentSkel = parent
 	}
-	parentPath, err := Get(parentSkel, smLoader, tfProvider)
+	parentPath, err := Get(ctx, parentSkel, smLoader, tfProvider)
 	if err != nil {
 		return "", fmt.Errorf("error getting parent path for resource ref '%v': %w", *resourceRef, err)
 	}
@@ -98,9 +99,9 @@ func isHierarchalKind(kind string) bool {
 	return kind == "Folder" || kind == "Project" || kind == "Organization"
 }
 
-func getResource(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (*unstructured.Unstructured, error) {
+func getResource(ctx context.Context, u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (*unstructured.Unstructured, error) {
 	client := gcpclient.New(tfProvider, smLoader)
-	return client.Get(u)
+	return client.Get(ctx, u)
 }
 
 func getParentPrefix(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader) (string, error) {

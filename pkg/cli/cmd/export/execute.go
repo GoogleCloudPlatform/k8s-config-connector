@@ -15,6 +15,7 @@
 package export
 
 import (
+	"context"
 	"io"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/outputstream"
@@ -24,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
 )
 
-func Execute(params *parameters.Parameters) error {
+func Execute(ctx context.Context, params *parameters.Parameters) error {
 	byteStream, err := outputstream.NewResourceByteStream(params)
 	if err != nil {
 		return err
@@ -39,11 +40,11 @@ func Execute(params *parameters.Parameters) error {
 		return err
 	}
 	defer outputSink.Close()
-	for bytes, unstructured, err := recoverableStream.Next(); err != io.EOF; bytes, unstructured, err = recoverableStream.Next() {
+	for bytes, unstructured, err := recoverableStream.Next(ctx); err != io.EOF; bytes, unstructured, err = recoverableStream.Next(ctx) {
 		if err != nil {
 			return err
 		}
-		if err := outputSink.Receive(bytes, unstructured); err != nil {
+		if err := outputSink.Receive(ctx, bytes, unstructured); err != nil {
 			return err
 		}
 	}

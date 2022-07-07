@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -29,7 +30,7 @@ var (
 )
 
 type UnstructuredStream interface {
-	Next() (*unstructured.Unstructured, error)
+	Next(ctx context.Context) (*unstructured.Unstructured, error)
 }
 
 type YAMLStream struct {
@@ -50,12 +51,12 @@ func NewYAMLStream(unstructuredStream UnstructuredStream) *YAMLStream {
 	return &yamlStream
 }
 
-func (y *YAMLStream) Next() ([]byte, *unstructured.Unstructured, error) {
+func (y *YAMLStream) Next(ctx context.Context) ([]byte, *unstructured.Unstructured, error) {
 	if y.nextErr == nil && y.nextBytes == nil {
 		// this occurs on the first call to Next() or AFTER an error, while putting a fillNext(...) in the
 		// NewYAMLStream(...) would result in cleaner code it would mean that NewYAMLStream(...) could take a "long time"
 		// while contacting GCP to get the first unstructured which could result in some undesireable user experiences
-		y.fillNext()
+		y.fillNext(ctx)
 	}
 	// if this is EOF and we have not YET returned the terminator AND we wrote at least one result, return "...", otherwise, return EOF
 	bytes, unstructured, err := y.nextBytes, y.nextUnstructured, y.nextErr
@@ -75,17 +76,17 @@ func (y *YAMLStream) Next() ([]byte, *unstructured.Unstructured, error) {
 		return nil, nil, err
 	}
 	bytes = append(yamlSeperator, bytes...)
-	y.fillNext()
+	y.fillNext(ctx)
 	y.returnedAtLeastOneNonErrorResult = true
 	return bytes, unstructured, nil
 }
 
-func (y *YAMLStream) fillNext() {
-	y.nextBytes, y.nextUnstructured, y.nextErr = y.getNext()
+func (y *YAMLStream) fillNext(ctx context.Context) {
+	y.nextBytes, y.nextUnstructured, y.nextErr = y.getNext(ctx)
 }
 
-func (y *YAMLStream) getNext() ([]byte, *unstructured.Unstructured, error) {
-	unstructured, err := y.unstructuredStream.Next()
+func (y *YAMLStream) getNext(ctx context.Context) ([]byte, *unstructured.Unstructured, error) {
+	unstructured, err := y.unstructuredStream.Next(ctx)
 	if err != nil {
 		if err != io.EOF {
 			err = fmt.Errorf("error getting unstructured: %v", err)

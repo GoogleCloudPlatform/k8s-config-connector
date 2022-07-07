@@ -15,6 +15,7 @@
 package stream_test
 
 import (
+	"context"
 	"io"
 	"testing"
 
@@ -51,8 +52,10 @@ func newTestUnstructuredResourceStreamFromAsset(t *testing.T, assetStream stream
 }
 
 func unstructuredStreamToSlice(t *testing.T, stream stream.UnstructuredStream) []*unstructured.Unstructured {
+	ctx := context.TODO()
+
 	results := make([]*unstructured.Unstructured, 0)
-	for u, err := stream.Next(); err != io.EOF; u, err = stream.Next() {
+	for u, err := stream.Next(ctx); err != io.EOF; u, err = stream.Next(ctx) {
 		if err != nil {
 			t.Fatalf("error reading asset: %v", err)
 		}
@@ -71,7 +74,7 @@ func newMockGCPClient(t *testing.T) gcpclient.Client {
 	}
 }
 
-func (m *mockGCPClient) Get(u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
+func (m *mockGCPClient) Get(ctx context.Context, u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
 	newUnstruct := unstructured.Unstructured{
 		Object: deepcopy.DeepCopy(u.Object).(map[string]interface{}),
 	}

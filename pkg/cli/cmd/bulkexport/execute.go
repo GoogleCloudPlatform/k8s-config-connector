@@ -15,6 +15,7 @@
 package bulkexport
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -31,7 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func Execute(params *parameters.Parameters) error {
+func Execute(ctx context.Context, params *parameters.Parameters) error {
 	errorHandler, err := errorhandler.NewErrorHandler(params)
 	if err != nil {
 		return err
@@ -55,14 +56,14 @@ func Execute(params *parameters.Parameters) error {
 		return err
 	}
 	defer outputSink.Close()
-	for bytes, unstructured, err := recoverableStream.Next(); err != io.EOF; bytes, unstructured, err = recoverableStream.Next() {
+	for bytes, unstructured, err := recoverableStream.Next(ctx); err != io.EOF; bytes, unstructured, err = recoverableStream.Next(ctx) {
 		if err != nil {
 			if err := errorHandler.Handle(fmt.Errorf("error getting next YAML: %v", err)); err != nil {
 				return err
 			}
 			continue
 		}
-		if err := outputSink.Receive(bytes, unstructured); err != nil {
+		if err := outputSink.Receive(ctx, bytes, unstructured); err != nil {
 			if err := errorHandler.Handle(err); err != nil {
 				return err
 			}

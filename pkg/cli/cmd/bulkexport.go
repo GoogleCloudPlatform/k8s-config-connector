@@ -37,12 +37,14 @@ var (
 		Short: "Perform a bulk export of GCP resources to Config Connector YAML using asset inventory",
 		Long:  `Perform a bulk export of GCP resources to Config Connector YAML using asset inventory`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
+
 			fillRootFlagsOnBulkExportParams(&bulkExportParams)
 			if err := parameters.Validate(&bulkExportParams, os.Stdin); err != nil {
 				return err
 			}
 			rootCmd.SilenceUsage = true
-			return bulkexport.Execute(&bulkExportParams)
+			return bulkexport.Execute(ctx, &bulkExportParams)
 		},
 		Args: cobra.NoArgs,
 	}

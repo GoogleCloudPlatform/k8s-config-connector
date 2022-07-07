@@ -35,7 +35,7 @@ var (
 )
 
 type Client interface {
-	Get(u *unstructured.Unstructured) (*unstructured.Unstructured, error)
+	Get(ctx context.Context, u *unstructured.Unstructured) (*unstructured.Unstructured, error)
 	Apply(u *unstructured.Unstructured) (*unstructured.Unstructured, error)
 	Delete(u *unstructured.Unstructured) error
 	IsSupported(kind string) bool
@@ -63,8 +63,7 @@ func (c *gcpClient) IsSupported(kind string) bool {
 	return ok
 }
 
-func (c *gcpClient) Get(u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
-	ctx := context.Background()
+func (c *gcpClient) Get(ctx context.Context, u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
 	sm, err := c.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
 		return nil, err

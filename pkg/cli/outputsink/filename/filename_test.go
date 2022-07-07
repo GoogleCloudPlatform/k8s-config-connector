@@ -15,6 +15,7 @@
 package filename_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -55,11 +56,13 @@ func TestIAMPolicySpannerDatabase(t *testing.T) {
 }
 
 func testResource(t *testing.T, testResourceFile, expectedPath, expectedErrMsg string) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.NewConfig())
 	var u unstructured.Unstructured
 	testyaml.UnmarshalFile(t, fmt.Sprintf("testdata/%v", testResourceFile), &u)
-	path, err := filename.Get(&u, smLoader, tfProvider)
+	path, err := filename.Get(ctx, &u, smLoader, tfProvider)
 	errMsg := ""
 	if err != nil {
 		errMsg = err.Error()
