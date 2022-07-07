@@ -21,6 +21,7 @@ import (
 	"time"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dependencywatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -51,11 +52,15 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 var logger = log.Log
@@ -69,12 +74,13 @@ var LifecycleParams = []mmdcl.ApplyOption{
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser *leaser.ResourceLeaser
-	mgr            manager.Manager
-	crd            *apiextensions.CustomResourceDefinition
-	jsonSchema     *apiextensions.JSONSchemaProps
-	gvk            schema.GroupVersionKind
-	logger         logr.Logger
+	resourceLeaser             *leaser.ResourceLeaser
+	mgr                        manager.Manager
+	crd                        *apiextensions.CustomResourceDefinition
+	jsonSchema                 *apiextensions.JSONSchemaProps
+	gvk                        schema.GroupVersionKind
+	logger                     logr.Logger
+	immediateReconcileRequests chan event.GenericEvent
 	// DCL related fields
 	schema    *openapi.Schema
 	dclConfig *mmdcl.Config
@@ -88,7 +94,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
-	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader)
+	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
+	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests)
 	if err != nil {
 		return err
 	}
@@ -102,8 +109,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		For(obj, builder.OnlyMetadata).
-		WithEventFilter(predicate.UnderlyingResourceOutOfSyncPredicate{}).
+		Watches(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %v", err)
@@ -112,7 +119,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
@@ -132,16 +139,17 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		mgr:                  mgr,
-		crd:                  crd,
-		jsonSchema:           k8s.GetOpenAPIV3SchemaFromCRD(crd),
-		gvk:                  gvk,
-		resourceLeaser:       leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
-		schema:               dclSchema,
-		logger:               logger.WithName(controllerName),
-		dclConfig:            dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
-		converter:            converter,
-		serviceMappingLoader: serviceMappingLoader,
+		mgr:                        mgr,
+		crd:                        crd,
+		jsonSchema:                 k8s.GetOpenAPIV3SchemaFromCRD(crd),
+		gvk:                        gvk,
+		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
+		schema:                     dclSchema,
+		logger:                     logger.WithName(controllerName),
+		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
+		converter:                  converter,
+		serviceMappingLoader:       serviceMappingLoader,
+		immediateReconcileRequests: immediateReconcileRequests,
 	}, nil
 }
 
@@ -190,32 +198,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resource *dcl.Resource, liveLabels map[string]string) error {
-	conflictPolicy, err := k8s.GetManagementConflictPreventionAnnotationValue(resource)
-	if err != nil {
-		return err
-	}
-	if conflictPolicy != k8s.ManagementConflictPreventionPolicyResource {
-		return nil
-	}
-	ok, err := leasable.DCLSchemaSupportsLeasing(resource.Schema)
-	if err != nil {
-		return err
-	}
-	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v of '%v'", resource.GroupVersionKind(),
-			k8s.ManagementConflictPreventionPolicyAnnotation, conflictPolicy)
-	}
-	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
-	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
-	// The labels are written to GCP by the main sync(...) function because the changes to the labels show up in the diff.
-	if err := r.resourceLeaser.SoftObtain(ctx, &resource.Resource, liveLabels); err != nil {
-		return r.HandleObtainLeaseFailed(ctx, &resource.Resource, fmt.Errorf("error obtaining lease on '%v': %w",
-			resource.GetNamespacedName(), err))
-	}
-	return nil
-}
-
 func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
@@ -229,7 +211,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
-			return true, r.HandleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
+			return r.handleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error fetching live state: %w", err))
 	}
@@ -267,7 +249,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
-			return true, r.HandleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
+			return r.handleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error converting the desired state to a KCC lite resource: %w", err))
 	}
@@ -315,6 +297,85 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, err)
 	}
 	return r.updateSpecAndStatusWithLiveState(ctx, newLite, resource, secretVersions)
+}
+
+// TODO(b/239067853): remove function after 100% of DCL resources have been approved for immediate reconcilation
+func supportsImmediateReconciliation(resourceKind string) bool {
+	switch resourceKind {
+	case "NetworkServicesGRPCRoute",
+		"NetworkServicesTLSRoute":
+		return true
+	}
+	return false
+}
+
+func (r *Reconciler) supportsImmediateReconciliations() bool {
+	return r.immediateReconcileRequests != nil
+}
+
+func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
+	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
+		// Requeue resource immediately for reconciliation
+		// with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
+	}
+	depWatcher, err := dependencywatcher.CreateWatchForResource(resource, r.mgr.GetConfig())
+	if err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
+	}
+	if err := depWatcher.WatchReferenceUntilReady(ctx, refNN, refGVK, func() {
+		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
+	}); err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error requesting dependencyWatcher watch reference %v %v until ready: %v", refGVK.Kind, refNN, err))
+	}
+	r.logger.Info("dependencyWatcher successfully created watch requested by resource on reference",
+		"resource", resource.GetNamespacedName(),
+		"resourceGVK", resource.GroupVersionKind(),
+		"reference", refNN,
+		"referenceGVK", refGVK)
+	// Do not requeue resource immediately for reconciliation. Wait for either
+	// the next periodic reconciliation or for the referenced resource to be ready (which
+	// triggers a reconciliation), whichever comes first.
+	return false, r.HandleUnresolvableDeps(ctx, resource, originErr)
+}
+
+// enqueueForImmediateReconciliation enqueues the given resource for immediate
+// reconciliation. Note that this function only takes in the name and namespace
+// of the resource and not its GVK since the controller instance that this
+// reconcile instance belongs to can only reconcile resources of one GVK.
+func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.NamespacedName) {
+	genEvent := event.GenericEvent{}
+	genEvent.Object = &unstructured.Unstructured{}
+	genEvent.Object.SetNamespace(resourceNN.Namespace)
+	genEvent.Object.SetName(resourceNN.Name)
+	r.immediateReconcileRequests <- genEvent
+}
+
+func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resource *dcl.Resource, liveLabels map[string]string) error {
+	conflictPolicy, err := k8s.GetManagementConflictPreventionAnnotationValue(resource)
+	if err != nil {
+		return err
+	}
+	if conflictPolicy != k8s.ManagementConflictPreventionPolicyResource {
+		return nil
+	}
+	ok, err := leasable.DCLSchemaSupportsLeasing(resource.Schema)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return fmt.Errorf("kind '%v' does not support usage of %v of '%v'", resource.GroupVersionKind(),
+			k8s.ManagementConflictPreventionPolicyAnnotation, conflictPolicy)
+	}
+	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
+	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
+	// The labels are written to GCP by the main sync(...) function because the changes to the labels show up in the diff.
+	if err := r.resourceLeaser.SoftObtain(ctx, &resource.Resource, liveLabels); err != nil {
+		return r.HandleObtainLeaseFailed(ctx, &resource.Resource, fmt.Errorf("error obtaining lease on '%v': %w",
+			resource.GetNamespacedName(), err))
+	}
+	return nil
 }
 
 func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, resource *dcl.Resource) error {
@@ -444,7 +505,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 	if parent != nil && !k8s.IsResourceReady(parent) {
 		// If this resource has a parent and is not orphaned, ensure its parent
 		// is ready before attempting deletion.
-		return true, r.HandleUnresolvableDeps(
+		return r.handleUnresolvableDeps(
 			ctx, &resource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
 	}
 

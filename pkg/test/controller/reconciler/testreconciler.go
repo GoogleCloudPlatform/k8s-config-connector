@@ -43,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -186,18 +187,20 @@ func (r *TestReconciler) newReconcilerForKind(kind string) reconcile.Reconciler 
 
 func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
+		// Set 'immediateReconcileRequests' to nil to disable
+		// reconciler's ability to create asynchronous watches
+		// on unready dependencies. This feature of the reconciler
+		// is unnecessary for our integration tests since we reconcile
+		// each dependency first before the resource under test is
+		// reconciled. Overall, the feature adds risk of complications
+		// due to it's multi-threaded nature.
+		var immediateReconcileRequests chan event.GenericEvent = nil
+
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			// Disable reconciler's ability to create asynchronous
-			// watches on unready dependencies by passing nil in for
-			// 'immediateReconcileRequests'. This feature of the
-			// reconciler is unnecessary for our integration tests
-			// since we reconcile each dependency first before the
-			// resource under test is reconciled. Overall, the feature
-			// adds risk of complications due to it's multi-threaded nature.
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, nil)
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader)
+			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
