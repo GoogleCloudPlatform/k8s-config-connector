@@ -74,6 +74,20 @@ spec:
                   Immutable. An optional description of this resource. The resource must be
                   recreated to modify this field.
                 type: string
+              enableUlaInternalIpv6:
+                description: "Immutable. Enable ULA internal ipv6 on this network.
+                  Enabling this feature will assign \na /48 from google defined ULA
+                  prefix fd20::/20."
+                type: boolean
+              internalIpv6Range:
+                description: "Immutable. When enabling ula internal ipv6, caller optionally
+                  can specify the /48 range \nthey want from the google defined ULA
+                  prefix fd20::/20. The input must be a \nvalid /48 ULA IPv6 address
+                  and must be within the fd20::/20. Operation will \nfail if the speficied
+                  /48 is already in used by another resource. \nIf the field is not
+                  speficied, then a /48 range will be randomly allocated from fd20::/20
+                  and returned via this field."
+                type: string
               mtu:
                 description: |-
                   Immutable. Maximum Transmission Unit in bytes. The minimum value for this field is 1460

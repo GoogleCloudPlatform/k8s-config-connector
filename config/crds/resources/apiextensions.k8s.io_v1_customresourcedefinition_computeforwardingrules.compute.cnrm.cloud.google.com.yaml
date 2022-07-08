@@ -625,6 +625,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              pscConnectionId:
+                description: The PSC connection id of the PSC Forwarding Rule.
+                type: string
+              pscConnectionStatus:
+                description: 'The PSC connection status of the PSC Forwarding Rule.
+                  Possible values: STATUS_UNSPECIFIED, PENDING, ACCEPTED, REJECTED,
+                  CLOSED.'
+                type: string
               selfLink:
                 description: '[Output Only] Server-defined URL for the resource.'
                 type: string

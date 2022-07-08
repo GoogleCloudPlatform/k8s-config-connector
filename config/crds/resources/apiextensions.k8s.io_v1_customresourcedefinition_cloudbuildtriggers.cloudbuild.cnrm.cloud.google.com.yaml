@@ -784,6 +784,12 @@ spec:
                 items:
                   type: string
                 type: array
+              includeBuildLogs:
+                description: |-
+                  Build logs will be sent back to GitHub as part of the checkrun
+                  result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
+                  INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"].
+                type: string
               includedFiles:
                 description: |-
                   ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match

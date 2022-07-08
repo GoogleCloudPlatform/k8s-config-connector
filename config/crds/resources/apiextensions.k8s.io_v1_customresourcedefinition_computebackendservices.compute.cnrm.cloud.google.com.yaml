@@ -251,6 +251,11 @@ spec:
                         description: If true requests to different hosts will be cached
                           separately.
                         type: boolean
+                      includeNamedCookies:
+                        description: Names of cookies to include in cache keys.
+                        items:
+                          type: string
+                        type: array
                       includeProtocol:
                         description: If true, http and https requests will be cached
                           separately.

@@ -78,6 +78,8 @@
           user: string
         identityType: string
       egressTo:
+        externalResources:
+        - string
         operations:
         - methodSelectors:
           - method: string
@@ -143,6 +145,8 @@
           user: string
         identityType: string
       egressTo:
+        externalResources:
+        - string
         operations:
         - methodSelectors:
           - method: string
@@ -486,6 +490,28 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
 cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.egressPolicies[].egressTo.externalResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}A list of external resources that are allowed to be accessed. A request
+matches if it contains an external resource in this list (Example:
+s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.egressPolicies[].egressTo.externalResources[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1333,6 +1359,28 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
 cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>egressPolicies[].egressTo.externalResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}A list of external resources that are allowed to be accessed. A request
+matches if it contains an external resource in this list (Example:
+s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>egressPolicies[].egressTo.externalResources[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

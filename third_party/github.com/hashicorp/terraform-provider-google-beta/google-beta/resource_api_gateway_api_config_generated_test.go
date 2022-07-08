@@ -42,7 +42,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigBasicExample(t *testing.T) {
 				ResourceName:            "google_api_gateway_api_config.api_cfg",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"gateway_config", "api", "api_config_id"},
+				ImportStateVerifyIgnore: []string{"gateway_config", "grpc_services", "api", "api_config_id"},
 			},
 		},
 	})
@@ -92,7 +92,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigFullExample(t *testing.T) {
 				ResourceName:            "google_api_gateway_api_config.api_cfg",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"gateway_config", "api", "api_config_id"},
+				ImportStateVerifyIgnore: []string{"gateway_config", "grpc_services", "api", "api_config_id"},
 			},
 		},
 	})
@@ -119,6 +119,154 @@ resource "google_api_gateway_api_config" "api_cfg" {
       path = "spec.yaml"
       contents = filebase64("test-fixtures/apigateway/openapi.yaml")
     }
+  }
+}
+`, context)
+}
+
+func TestAccApiGatewayApiConfig_apigatewayApiConfigGrpcExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckApiGatewayApiConfigDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccApiGatewayApiConfig_apigatewayApiConfigGrpcExample(context),
+			},
+			{
+				ResourceName:            "google_api_gateway_api_config.api_cfg",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"gateway_config", "grpc_services", "api", "api_config_id", "grpc_services.0.file_descriptor_set"},
+			},
+		},
+	})
+}
+
+func testAccApiGatewayApiConfig_apigatewayApiConfigGrpcExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_api_gateway_api" "api_cfg" {
+  provider = google-beta
+  api_id = "tf-test-api-cfg%{random_suffix}"
+}
+
+resource "google_api_gateway_api_config" "api_cfg" {
+  provider = google-beta
+  api = google_api_gateway_api.api_cfg.api_id
+  api_config_id = "cfg%{random_suffix}"
+
+  grpc_services {
+    file_descriptor_set {
+      path = "api_descriptor.pb"
+      contents = filebase64("test-fixtures/apigateway/api_descriptor.pb")
+    }
+  }
+  managed_service_configs {
+    path = "api_config.yaml"
+    contents = base64encode(<<-EOF
+      type: google.api.Service
+      config_version: 3
+      name: ${google_api_gateway_api.api_cfg.managed_service}
+      title: gRPC API example
+      apis:
+        - name: endpoints.examples.bookstore.Bookstore
+      usage:
+        rules:
+        - selector: endpoints.examples.bookstore.Bookstore.ListShelves
+          allow_unregistered_calls: true
+      backend:
+        rules:
+          - selector: "*"
+            address: grpcs://example.com
+            disable_auth: true
+
+    EOF
+    )
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+`, context)
+}
+
+func TestAccApiGatewayApiConfig_apigatewayApiConfigGrpcFullExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckApiGatewayApiConfigDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccApiGatewayApiConfig_apigatewayApiConfigGrpcFullExample(context),
+			},
+			{
+				ResourceName:            "google_api_gateway_api_config.api_cfg",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"gateway_config", "grpc_services", "api", "api_config_id"},
+			},
+		},
+	})
+}
+
+func testAccApiGatewayApiConfig_apigatewayApiConfigGrpcFullExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_api_gateway_api" "api_cfg" {
+  provider = google-beta
+  api_id = "tf-test-api-cfg%{random_suffix}"
+}
+
+resource "google_api_gateway_api_config" "api_cfg" {
+  provider = google-beta
+  api = google_api_gateway_api.api_cfg.api_id
+  api_config_id = "cfg%{random_suffix}"
+
+  grpc_services {
+    file_descriptor_set {
+      path = "api_descriptor.pb"
+      contents = filebase64("test-fixtures/apigateway/api_descriptor.pb")
+    }
+    source {
+      path = "bookstore.proto"
+      contents = filebase64("test-fixtures/apigateway/bookstore.proto")
+    }
+  }
+  managed_service_configs {
+    path = "api_config.yaml"
+    contents = base64encode(<<-EOF
+      type: google.api.Service
+      config_version: 3
+      name: ${google_api_gateway_api.api_cfg.managed_service}
+      title: gRPC API example
+      apis:
+        - name: endpoints.examples.bookstore.Bookstore
+      usage:
+        rules:
+        - selector: endpoints.examples.bookstore.Bookstore.ListShelves
+          allow_unregistered_calls: true
+      backend:
+        rules:
+          - selector: "*"
+            address: grpcs://example.com
+            disable_auth: true
+
+    EOF
+    )
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 `, context)

@@ -67,8 +67,10 @@ type ComputeRouterNATSpec struct {
 	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
 	/* Enable Dynamic Port Allocation.
-	If minPorts is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
+	If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
 	If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config.
+	If maxPortsPerVm is set, maxPortsPerVm must be set to a power of two greater than minPortsPerVm.
+	If maxPortsPerVm is not set, a maximum of 65536 ports will be allocated to a VM from this NAT config.
 
 	Mutually exclusive with enableEndpointIndependentMapping. */
 	// +optional
@@ -86,6 +88,11 @@ type ComputeRouterNATSpec struct {
 	/* Configuration for logging on NAT. */
 	// +optional
 	LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
+
+	/* Maximum number of ports allocated to a VM from this NAT.
+	This field can only be set when enableDynamicPortAllocation is enabled. */
+	// +optional
+	MaxPortsPerVm *int `json:"maxPortsPerVm,omitempty"`
 
 	/* Minimum number of ports allocated to a VM from this NAT. */
 	// +optional

@@ -77,6 +77,9 @@
     layer7DdosDefenseConfig:
       enable: boolean
       ruleVisibility: string
+  advancedOptionsConfig:
+    jsonParsing: string
+    logLevel: string
   description: string
   resourceID: string
   rule:
@@ -157,6 +160,36 @@
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Rule visibility. Supported values include: "STANDARD", "PREMIUM".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Advanced Options Config of this security policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.jsonParsing</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}JSON body parsing. Supported values include: "DISABLED", "STANDARD".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.logLevel</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Logging level. Supported values include: "NORMAL", "VERBOSE".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -157,6 +157,10 @@ type BackendserviceCacheKeyPolicy struct {
 	// +optional
 	IncludeHost *bool `json:"includeHost,omitempty"`
 
+	/* Names of cookies to include in cache keys. */
+	// +optional
+	IncludeNamedCookies []string `json:"includeNamedCookies,omitempty"`
+
 	/* If true, http and https requests will be cached separately. */
 	// +optional
 	IncludeProtocol *bool `json:"includeProtocol,omitempty"`

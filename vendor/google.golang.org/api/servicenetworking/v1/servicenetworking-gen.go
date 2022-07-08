@@ -472,6 +472,19 @@ type AddSubnetworkRequest struct {
 	// 'servicenetworking.services.use' permission or not.
 	CheckServiceNetworkingUsePermission bool `json:"checkServiceNetworkingUsePermission,omitempty"`
 
+	// ComputeIdempotencyWindow: Optional. Specifies a custom time bucket
+	// for Arcus subnetwork request idempotency. If two equivalent
+	// concurrent requests are made, Arcus will know to ignore the request
+	// if it has already been completed or is in progress. Only requests
+	// with matching compute_idempotency_window have guaranteed idempotency.
+	// Changing this time window between requests results in undefined
+	// behavior. Zero (or empty) value with
+	// custom_compute_idempotency_window=true specifies no idempotency (i.e.
+	// no request ID is provided to Arcus). Maximum value of 14 days
+	// (enforced by Arcus limit). For more information on how to use, see:
+	// go/revisit-sn-idempotency-window
+	ComputeIdempotencyWindow string `json:"computeIdempotencyWindow,omitempty"`
+
 	// Consumer: Required. A resource that represents the service consumer,
 	// such as `projects/123456`. The project number can be different from
 	// the value in the consumer network parameter. For example, the network
@@ -549,8 +562,17 @@ type AddSubnetworkRequest struct {
 	Subnetwork string `json:"subnetwork,omitempty"`
 
 	// SubnetworkUsers: A list of members that are granted the
-	// `compute.networkUser` role on the subnet.
+	// `roles/servicenetworking.subnetworkAdmin` role on the subnet.
 	SubnetworkUsers []string `json:"subnetworkUsers,omitempty"`
+
+	// UseCustomComputeIdempotencyWindow: Optional. Specifies if Service
+	// Networking should use a custom time bucket for Arcus idempotency. If
+	// false, Service Networking uses a 300 second (5 minute) Arcus
+	// idempotency window. If true, Service Networking uses a custom
+	// idempotency window provided by the user in field
+	// compute_idempotency_window. For more information on how to use, see:
+	// go/revisit-sn-idempotency-window
+	UseCustomComputeIdempotencyWindow bool `json:"useCustomComputeIdempotencyWindow,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g.
 	// "CheckServiceNetworkingUsePermission") to unconditionally include in
@@ -3101,6 +3123,14 @@ func (s *MetricDescriptorMetadata) MarshalJSON() ([]byte, error) {
 // causes that metric's configured quota behaviors to apply to the
 // method call.
 type MetricRule struct {
+	// DynamicMetricCosts: Metrics to update when the selected methods are
+	// called. The key of the map is the metric name, the value is the
+	// DynamicCostType to specify how to calculate the cost from the
+	// request. The cost amount will be increased for the metric against
+	// which the quota limits are defined. It is only implemented in
+	// CloudESF(go/cloudesf)
+	DynamicMetricCosts map[string]string `json:"dynamicMetricCosts,omitempty"`
+
 	// MetricCosts: Metrics to update when the selected methods are called,
 	// and the associated cost applied to each metric. The key of the map is
 	// the metric name, and the values are the amount increased for the
@@ -3112,20 +3142,21 @@ type MetricRule struct {
 	// selector for syntax details.
 	Selector string `json:"selector,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "MetricCosts") to
-	// unconditionally include in API requests. By default, fields with
+	// ForceSendFields is a list of field names (e.g. "DynamicMetricCosts")
+	// to unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
 	// sent to the server regardless of whether the field is empty or not.
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "MetricCosts") to include
-	// in API requests with the JSON null value. By default, fields with
-	// empty values are omitted from API requests. However, any field with
-	// an empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "DynamicMetricCosts") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 

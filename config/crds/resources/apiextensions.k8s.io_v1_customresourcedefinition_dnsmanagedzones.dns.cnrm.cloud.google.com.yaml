@@ -297,6 +297,14 @@ spec:
                       type: string
                   type: object
                 type: array
+              creationTime:
+                description: |-
+                  The time that this resource was created on the server.
+                  This is in RFC3339 text format.
+                type: string
+              managedZoneId:
+                description: Unique identifier for the resource; defined by the server.
+                type: integer
               nameServers:
                 description: |-
                   Delegate your managed_zone to these virtual name servers;

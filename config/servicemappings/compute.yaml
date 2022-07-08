@@ -1477,6 +1477,18 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: sslPolicyRef
+          tfField: ssl_policy
+          description: |-
+            A reference to the ComputeSSLPolicy resource that will be
+            associated with the ComputeTargetHTTPSProxy resource. If not set,
+            the ComputeTargetHTTPSProxy resource will not have any SSL policy
+            configured.
+          gvk:
+            kind: ComputeSSLPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

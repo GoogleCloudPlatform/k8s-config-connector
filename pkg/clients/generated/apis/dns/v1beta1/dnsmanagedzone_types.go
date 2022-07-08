@@ -184,6 +184,11 @@ type DNSManagedZoneStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSManagedZone's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The time that this resource was created on the server.
+	This is in RFC3339 text format. */
+	CreationTime string `json:"creationTime,omitempty"`
+	/* Unique identifier for the resource; defined by the server. */
+	ManagedZoneId int `json:"managedZoneId,omitempty"`
 	/* Delegate your managed_zone to these virtual name servers;
 	defined by the server. */
 	NameServers []string `json:"nameServers,omitempty"`

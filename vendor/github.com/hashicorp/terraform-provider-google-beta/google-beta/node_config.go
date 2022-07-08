@@ -524,6 +524,8 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 
 	// Preemptible Is Optional+Default, so it always has a value
 	nc.Preemptible = nodeConfig["preemptible"].(bool)
+
+	// Spot Is Optional+Default, so it always has a value
 	nc.Spot = nodeConfig["spot"].(bool)
 
 	if v, ok := nodeConfig["min_cpu_platform"]; ok {

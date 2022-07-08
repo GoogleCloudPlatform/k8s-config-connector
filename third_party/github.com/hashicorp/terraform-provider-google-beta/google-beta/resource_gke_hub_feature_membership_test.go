@@ -341,6 +341,17 @@ func TestAccGkeHubFeatureMembership_gkehubFeatureAcmAllFields(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				Config: testAccGkeHubFeatureMembership_gkehubFeatureWithPreventDriftField(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "configmanagement", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -396,6 +407,73 @@ resource "google_gke_hub_feature_membership" "feature_member" {
         sync_rev = "v3.60.0"
         sync_wait_secs = "30"
       }
+    }
+    policy_controller {
+      enabled = true
+      audit_interval_seconds = "100"
+      exemptable_namespaces = ["onetwothree", "fourfive"]
+      template_library_installed = true
+      referential_rules_enabled = true
+      log_denies_enabled = true
+    }
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGkeHubFeatureMembership_gkehubFeatureWithPreventDriftField(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_container_cluster" "primary" {
+  project = google_project.project.project_id
+  name               = "tf-test-cl%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  project = google_project.project.project_id
+  membership_id = "tf-test1%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "configmanagement"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.mci, google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership.membership_id
+  configmanagement {
+    version = "1.10.1"
+    config_sync {
+      git {
+        sync_repo = "https://github.com/hashicorp/terraform"
+        https_proxy = "https://example.com"
+        policy_dir = "google/"
+        sync_branch = "some-branch"
+        sync_rev = "v3.60.0"
+        sync_wait_secs = "30"
+      }
+      prevent_drift = true
     }
     policy_controller {
       enabled = true

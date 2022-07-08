@@ -45,6 +45,16 @@ type UserPassword struct {
 	ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
 }
 
+type UserSqlServerUserDetails struct {
+	/* If the user has been disabled. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
+	/* The server roles for this user in the database. */
+	// +optional
+	ServerRoles []string `json:"serverRoles,omitempty"`
+}
+
 type UserValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
@@ -67,6 +77,10 @@ type SQLUserSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/*  */
+	// +optional
+	SqlServerUserDetails *UserSqlServerUserDetails `json:"sqlServerUserDetails,omitempty"`
 
 	/* Immutable. The user type. It determines the method to authenticate the user during login.
 	   The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT". */

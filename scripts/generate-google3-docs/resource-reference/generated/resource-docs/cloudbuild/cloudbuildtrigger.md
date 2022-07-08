@@ -191,6 +191,7 @@
       tag: string
   ignoredFiles:
   - string
+  includeBuildLogs: string
   includedFiles:
   - string
   pubsubConfig:
@@ -1612,6 +1613,18 @@ of the ignoredFiles globs, then we do not trigger a build.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>includeBuildLogs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Build logs will be sent back to GitHub as part of the checkrun
+result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
+INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -76,6 +76,8 @@
   autoCreateSubnetworks: boolean
   deleteDefaultRoutesOnCreate: boolean
   description: string
+  enableUlaInternalIpv6: boolean
+  internalIpv6Range: string
   mtu: integer
   resourceID: string
   routingMode: string
@@ -122,6 +124,31 @@ the user can explicitly connect subnetwork resources.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. An optional description of this resource. The resource must be
 recreated to modify this field.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableUlaInternalIpv6</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign 
+a /48 from google defined ULA prefix fd20::/20.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>internalIpv6Range</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range 
+they want from the google defined ULA prefix fd20::/20. The input must be a 
+valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will 
+fail if the speficied /48 is already in used by another resource. 
+If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

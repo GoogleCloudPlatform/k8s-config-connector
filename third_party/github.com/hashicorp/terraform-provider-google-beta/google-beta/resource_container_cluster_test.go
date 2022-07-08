@@ -199,8 +199,8 @@ func TestAccContainerCluster_withNotificationConfig(t *testing.T) {
 	t.Parallel()
 
 	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	topic := "test-topic"
-	newTopic := "test-topic-2"
+	topic := fmt.Sprintf("tf-test-topic-%s", randString(t, 10))
+	newTopic := fmt.Sprintf("tf-test-topic-%s", randString(t, 10))
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -1997,6 +1997,76 @@ func TestAccContainerCluster_withLoggingConfig(t *testing.T) {
 	})
 }
 
+func TestAccContainerCluster_withMonitoringConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_basic(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withMonitoringConfigEnabled(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withMonitoringConfigUpdated(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withMonitoringConfigPrometheusUpdated(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// Back to basic settings to test setting Prometheus on its own
+			{
+				Config: testAccContainerCluster_basic(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withMonitoringConfigPrometheusOnly(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_basic(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerCluster_withSoleTenantGroup(t *testing.T) {
 	t.Parallel()
 
@@ -2452,6 +2522,30 @@ func TestAccContainerCluster_withDNSConfig(t *testing.T) {
 				ResourceName:      "google_container_cluster.with_dns_config",
 				ImportState:       true,
 				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withTPUConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	containerNetName := fmt.Sprintf("tf-test-container-net-%s", randString(t, 10))
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withTPUConfig(containerNetName, clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_tpu_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// TODO: remove when tpu_config can be read from the API
+				ImportStateVerifyIgnore: []string{"tpu_config"},
 			},
 		},
 	})
@@ -5114,6 +5208,63 @@ resource "google_container_cluster" "primary" {
 `, name)
 }
 
+func testAccContainerCluster_withMonitoringConfigEnabled(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  monitoring_config {
+      enable_components = [ "SYSTEM_COMPONENTS" ]
+  }
+}
+`, name)
+}
+
+func testAccContainerCluster_withMonitoringConfigUpdated(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  monitoring_config {
+         enable_components = [ "SYSTEM_COMPONENTS", "WORKLOADS" ]
+  }
+}
+`, name)
+}
+
+func testAccContainerCluster_withMonitoringConfigPrometheusUpdated(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  monitoring_config {
+         enable_components = [ "SYSTEM_COMPONENTS", "WORKLOADS" ]
+         managed_prometheus {
+                 enabled = true
+         }
+  }
+}
+`, name)
+}
+
+func testAccContainerCluster_withMonitoringConfigPrometheusOnly(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  monitoring_config {
+         managed_prometheus {
+                 enabled = true
+         }
+  }
+}
+`, name)
+}
+
 func testAccContainerCluster_withSoleTenantGroup(name string) string {
 	return fmt.Sprintf(`
 resource "google_compute_node_template" "soletenant-tmpl" {
@@ -5143,4 +5294,60 @@ resource "google_container_cluster" "primary" {
   }
 }
 `, name, name, name)
+}
+
+func testAccContainerCluster_withTPUConfig(network, cluster string) string {
+	return fmt.Sprintf(`
+resource "google_compute_network" "container_network" {
+	name                    = "%s"
+	auto_create_subnetworks = false
+}
+	  
+resource "google_compute_subnetwork" "container_subnetwork" {
+	name                     = google_compute_network.container_network.name
+	network                  = google_compute_network.container_network.name
+	ip_cidr_range            = "10.0.36.0/24"
+	region                   = "us-central1"
+	private_ip_google_access = true
+
+	secondary_ip_range {
+		range_name    = "pod"
+		ip_cidr_range = "10.0.0.0/19"
+	}
+
+	secondary_ip_range {
+		range_name    = "svc"
+		ip_cidr_range = "10.0.32.0/22"
+	}
+}
+	
+resource "google_container_cluster" "with_tpu_config" {
+	name               = "%s"
+	location           = "us-central1-a"
+	initial_node_count = 1
+	
+	
+	tpu_config {
+		enabled                = true
+		use_service_networking = true
+	}
+	
+	network         = google_compute_network.container_network.name
+	subnetwork      = google_compute_subnetwork.container_subnetwork.name
+	networking_mode = "VPC_NATIVE"
+	
+	private_cluster_config {
+		enable_private_endpoint = true
+		enable_private_nodes    = true
+		master_ipv4_cidr_block  = "10.42.0.0/28"
+	}
+	master_authorized_networks_config {
+	}
+	
+	ip_allocation_policy {
+		cluster_secondary_range_name  = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
+		services_secondary_range_name = google_compute_subnetwork.container_subnetwork.secondary_ip_range[1].range_name
+	}
+}
+`, network, cluster)
 }

@@ -83,6 +83,7 @@
   logConfig:
     enable: boolean
     filter: string
+  maxPortsPerVm: integer
   minPortsPerVm: integer
   natIpAllocateOption: string
   natIps:
@@ -176,8 +177,10 @@ static external IPs that have been assigned to the NAT.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Enable Dynamic Port Allocation.
-If minPorts is set, minPortsPerVm must be set to a power of two greater than or equal to 32. 
+If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
 If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config.
+If maxPortsPerVm is set, maxPortsPerVm must be set to a power of two greater than minPortsPerVm.
+If maxPortsPerVm is not set, a maximum of 65536 ports will be allocated to a VM from this NAT config.
 
 Mutually exclusive with enableEndpointIndependentMapping.{% endverbatim %}</p>
         </td>
@@ -231,6 +234,17 @@ see the [official documentation](https://cloud.google.com/nat/docs/overview#spec
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maxPortsPerVm</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Maximum number of ports allocated to a VM from this NAT.
+This field can only be set when enableDynamicPortAllocation is enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

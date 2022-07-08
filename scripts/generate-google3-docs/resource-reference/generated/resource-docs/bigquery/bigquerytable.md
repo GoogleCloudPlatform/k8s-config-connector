@@ -108,6 +108,7 @@
   externalDataConfiguration:
     autodetect: boolean
     compression: string
+    connectionId: string
     csvOptions:
       allowJaggedRows: boolean
       allowQuotedNewlines: boolean
@@ -326,6 +327,16 @@
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The compression type of the data source. Valid values are "NONE" or "GZIP".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.connectionId</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

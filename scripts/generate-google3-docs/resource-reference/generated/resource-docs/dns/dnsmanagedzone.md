@@ -518,6 +518,8 @@ while private zones are visible only to Virtual Private Cloud resources. Default
     reason: string
     status: string
     type: string
+  creationTime: string
+  managedZoneId: integer
   nameServers:
   - string
   observedGeneration: integer
@@ -577,6 +579,21 @@ while private zones are visible only to Virtual Private Cloud resources. Default
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>creationTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The time that this resource was created on the server.
+This is in RFC3339 text format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>managedZoneId</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Unique identifier for the resource; defined by the server.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

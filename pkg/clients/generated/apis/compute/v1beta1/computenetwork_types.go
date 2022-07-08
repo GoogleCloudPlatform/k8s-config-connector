@@ -54,6 +54,19 @@ type ComputeNetworkSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
+	a /48 from google defined ULA prefix fd20::/20. */
+	// +optional
+	EnableUlaInternalIpv6 *bool `json:"enableUlaInternalIpv6,omitempty"`
+
+	/* Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
+	they want from the google defined ULA prefix fd20::/20. The input must be a
+	valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will
+	fail if the speficied /48 is already in used by another resource.
+	If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field. */
+	// +optional
+	InternalIpv6Range *string `json:"internalIpv6Range,omitempty"`
+
 	/* Immutable. Maximum Transmission Unit in bytes. The minimum value for this field is 1460
 	and the maximum value is 1500 bytes. */
 	// +optional

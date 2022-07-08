@@ -132,6 +132,8 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
       target_id = "example-target-three"
     }
   }
+
+  suspended = true
 }
 
 
@@ -160,6 +162,7 @@ func testAccCheckClouddeployDeliveryPipelineDestroyProducer(t *testing.T) func(s
 				Name:        dcl.String(rs.Primary.Attributes["name"]),
 				Description: dcl.String(rs.Primary.Attributes["description"]),
 				Project:     dcl.StringOrNil(rs.Primary.Attributes["project"]),
+				Suspended:   dcl.Bool(rs.Primary.Attributes["suspended"] == "true"),
 				CreateTime:  dcl.StringOrNil(rs.Primary.Attributes["create_time"]),
 				Etag:        dcl.StringOrNil(rs.Primary.Attributes["etag"]),
 				Uid:         dcl.StringOrNil(rs.Primary.Attributes["uid"]),

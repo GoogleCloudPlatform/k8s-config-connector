@@ -107,6 +107,8 @@ the `spec.location` field. To manage a regional ComputeBackendService, use a reg
   cdnPolicy:
     cacheKeyPolicy:
       includeHost: boolean
+      includeNamedCookies:
+      - string
       includeProtocol: boolean
       includeQueryString: boolean
       queryStringBlacklist:
@@ -550,6 +552,26 @@ CPU utilization target for the group. Valid range is [0.0, 1.0].{% endverbatim %
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}If true requests to different hosts will be cached separately.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeNamedCookies</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Names of cookies to include in cache keys.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeNamedCookies[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

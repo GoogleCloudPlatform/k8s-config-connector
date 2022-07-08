@@ -153,6 +153,12 @@ spec:
                     description: The compression type of the data source. Valid values
                       are "NONE" or "GZIP".
                     type: string
+                  connectionId:
+                    description: The connection specifying the credentials to be used
+                      to read external storage, such as Azure Blob, Cloud Storage,
+                      or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}"
+                      or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".
+                    type: string
                   csvOptions:
                     description: Additional properties to set if source_format is
                       set to "CSV".

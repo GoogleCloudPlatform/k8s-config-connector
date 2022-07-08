@@ -27,8 +27,10 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
-		"random_suffix": randString(t, 10),
+		"zip_path":            "./test-fixtures/cloudfunctions2/function-source.zip",
+		"primary_resource_id": "terraform-test2",
+		"location":            "us-central1",
+		"random_suffix":       randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -95,8 +97,10 @@ func TestAccCloudfunctions2function_cloudfunctions2FullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
-		"random_suffix": randString(t, 10),
+		"zip_path":            "./test-fixtures/cloudfunctions2/function-source.zip",
+		"primary_resource_id": "terraform-test",
+		"location":            "us-central1",
+		"random_suffix":       randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -119,6 +123,12 @@ func TestAccCloudfunctions2function_cloudfunctions2FullExample(t *testing.T) {
 
 func testAccCloudfunctions2function_cloudfunctions2FullExample(context map[string]interface{}) string {
 	return Nprintf(`
+resource "google_service_account" "account" {
+  provider = google-beta
+  account_id = "test-service-account"
+  display_name = "Test Service Account"
+}
+
 resource "google_pubsub_topic" "sub" {
   provider = google-beta
   name = "pubsub"
@@ -168,6 +178,7 @@ resource "google_cloudfunctions2_function" "terraform-test" {
     }
     ingress_settings = "ALLOW_INTERNAL_ONLY"
     all_traffic_on_latest_revision = true
+    service_account_email = google_service_account.account.email
   }
 
   event_trigger {
@@ -175,6 +186,7 @@ resource "google_cloudfunctions2_function" "terraform-test" {
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic = google_pubsub_topic.sub.id
     retry_policy = "RETRY_POLICY_RETRY"
+    service_account_email = google_service_account.account.email
   }
 }
 `, context)

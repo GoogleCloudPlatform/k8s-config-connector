@@ -1060,6 +1060,39 @@ func TestAccSqlDatabaseInstance_encryptionKey(t *testing.T) {
 	})
 }
 
+func TestAccSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"key_name":      "tf-test-key-" + randString(t, 10),
+		"instance_name": "tf-test-sql-" + randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: Nprintf(
+					testGoogleSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion, context),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.replica",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+			{
+				ResourceName:            "google_sql_database_instance.master",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+		},
+	})
+}
+
 func TestAccSqlDatabaseInstance_ActiveDirectory(t *testing.T) {
 	t.Parallel()
 	databaseName := "tf-test-" + randString(t, 10)
@@ -1817,6 +1850,96 @@ resource "google_sql_database_instance" "replica" {
   database_version     = "MYSQL_5_7"
   region               = "us-central1"
   master_instance_name = google_sql_database_instance.master.name
+  deletion_protection  = false
+
+  settings {
+    tier = "db-n1-standard-1"
+  }
+
+  depends_on = [google_sql_database_instance.master]
+}
+`
+
+var testGoogleSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion = `
+resource "google_project_service_identity" "gcp_sa_cloud_sql" {
+  provider = google-beta
+  service  = "sqladmin.googleapis.com"
+}
+
+resource "google_kms_key_ring" "keyring" {
+  provider = google-beta
+
+  name     = "%{key_name}"
+  location = "us-central1"
+}
+
+resource "google_kms_crypto_key" "key" {
+  provider = google-beta
+
+  name     = "%{key_name}"
+  key_ring = google_kms_key_ring.keyring.id
+}
+
+resource "google_kms_crypto_key_iam_binding" "crypto_key" {
+  provider      = google-beta
+  crypto_key_id = google_kms_crypto_key.key.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
+  ]
+}
+
+resource "google_sql_database_instance" "master" {
+  provider            = google-beta
+  name                = "%{instance_name}-master"
+  database_version    = "MYSQL_5_7"
+  region              = "us-central1"
+  deletion_protection = false
+  encryption_key_name = google_kms_crypto_key.key.id
+
+  settings {
+    tier = "db-n1-standard-1"
+
+    backup_configuration {
+      enabled            = true
+      start_time         = "00:00"
+      binary_log_enabled = true
+    }
+  }
+}
+
+resource "google_kms_key_ring" "keyring-rep" {
+  provider = google-beta
+
+  name     = "%{key_name}-rep"
+  location = "us-east1"
+}
+
+resource "google_kms_crypto_key" "key-rep" {
+  provider = google-beta
+
+  name     = "%{key_name}-rep"
+  key_ring = google_kms_key_ring.keyring-rep.id
+}
+
+resource "google_kms_crypto_key_iam_binding" "crypto_key_rep" {
+  provider      = google-beta
+  crypto_key_id = google_kms_crypto_key.key-rep.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
+  ]
+}
+
+resource "google_sql_database_instance" "replica" {
+  provider             = google-beta
+  name                 = "%{instance_name}-replica"
+  database_version     = "MYSQL_5_7"
+  region               = "us-east1"
+  master_instance_name = google_sql_database_instance.master.name
+  encryption_key_name = google_kms_crypto_key.key-rep.id
   deletion_protection  = false
 
   settings {

@@ -41,6 +41,16 @@ type SecuritypolicyAdaptiveProtectionConfig struct {
 	Layer7DdosDefenseConfig *SecuritypolicyLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
 }
 
+type SecuritypolicyAdvancedOptionsConfig struct {
+	/* JSON body parsing. Supported values include: "DISABLED", "STANDARD". */
+	// +optional
+	JsonParsing *string `json:"jsonParsing,omitempty"`
+
+	/* Logging level. Supported values include: "NORMAL", "VERBOSE". */
+	// +optional
+	LogLevel *string `json:"logLevel,omitempty"`
+}
+
 type SecuritypolicyBanThreshold struct {
 	/* Number of HTTP(S) requests for calculating the threshold. */
 	Count int `json:"count"`
@@ -171,6 +181,10 @@ type ComputeSecurityPolicySpec struct {
 	/* Adaptive Protection Config of this security policy. */
 	// +optional
 	AdaptiveProtectionConfig *SecuritypolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
+
+	/* Advanced Options Config of this security policy. */
+	// +optional
+	AdvancedOptionsConfig *SecuritypolicyAdvancedOptionsConfig `json:"advancedOptionsConfig,omitempty"`
 
 	/* An optional description of this security policy. Max size is 2048. */
 	// +optional

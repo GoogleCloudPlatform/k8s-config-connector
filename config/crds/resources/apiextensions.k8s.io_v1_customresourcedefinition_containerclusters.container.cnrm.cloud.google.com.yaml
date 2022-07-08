@@ -650,8 +650,16 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - enableComponents
+                  managedPrometheus:
+                    description: Configuration for Google Cloud Managed Services for
+                      Prometheus.
+                    properties:
+                      enabled:
+                        description: Whether or not the managed collection is enabled.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                 type: object
               monitoringService:
                 description: The monitoring service that the cluster should write
@@ -1184,6 +1192,23 @@ spec:
                   namespace:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
+                type: object
+              tpuConfig:
+                description: TPU configuration for the cluster.
+                properties:
+                  enabled:
+                    description: Immutable. Whether Cloud TPU integration is enabled
+                      or not.
+                    type: boolean
+                  ipv4CidrBlock:
+                    description: IPv4 CIDR block reserved for Cloud TPU in the VPC.
+                    type: string
+                  useServiceNetworking:
+                    description: Immutable. Whether to use service networking for
+                      Cloud TPU or not.
+                    type: boolean
+                required:
+                - enabled
                 type: object
               verticalPodAutoscaling:
                 description: Vertical Pod Autoscaling automatically adjusts the resources

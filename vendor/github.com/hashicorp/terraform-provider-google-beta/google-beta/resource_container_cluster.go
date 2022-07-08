@@ -521,11 +521,43 @@ func resourceContainerCluster() *schema.Resource {
 			},
 
 			"enable_tpu": {
-				Type:        schema.TypeBool,
+				Type:          schema.TypeBool,
+				Optional:      true,
+				ForceNew:      true,
+				Description:   `Whether to enable Cloud TPU resources in this cluster.`,
+				ConflictsWith: []string{"tpu_config"},
+				Computed:      true,
+				// TODO: deprecate when tpu_config is correctly returned by the API
+				// Deprecated: "Deprecated in favor of tpu_config",
+			},
+
+			"tpu_config": {
+				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
-				Description: `Whether to enable Cloud TPU resources in this cluster.`,
-				Default:     false,
+				Computed:    true,
+				MaxItems:    1,
+				Description: `TPU configuration for the cluster.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							ForceNew:    true,
+							Description: `Whether Cloud TPU integration is enabled or not`,
+						},
+						"ipv4_cidr_block": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `IPv4 CIDR block reserved for Cloud TPU in the VPC.`,
+						},
+						"use_service_networking": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							ForceNew:    true,
+							Description: `Whether to use service networking for Cloud TPU or not`,
+						},
+					},
+				},
 			},
 
 			"enable_legacy_abac": {
@@ -721,11 +753,28 @@ func resourceContainerCluster() *schema.Resource {
 					Schema: map[string]*schema.Schema{
 						"enable_components": {
 							Type:        schema.TypeList,
-							Required:    true,
+							Optional:    true,
+							Computed:    true,
 							Description: `GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS and WORKLOADS.`,
 							Elem: &schema.Schema{
 								Type:         schema.TypeString,
 								ValidateFunc: validation.StringInSlice([]string{"SYSTEM_COMPONENTS", "WORKLOADS"}, false),
+							},
+						},
+						"managed_prometheus": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Computed:    true,
+							MaxItems:    1,
+							Description: `Configuration for Google Cloud Managed Services for Prometheus.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: `Whether or not the managed collection is enabled.`,
+									},
+								},
 							},
 						},
 					},
@@ -1607,6 +1656,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("identity_service_config"); ok {
 		cluster.IdentityServiceConfig = expandIdentityServiceConfig(v)
+	}
+
+	if v, ok := d.GetOk("tpu_config"); ok {
+		cluster.TpuConfig = expandContainerClusterTpuConfig(v)
 	}
 
 	if v, ok := d.GetOk("resource_usage_export_config"); ok {
@@ -3660,12 +3713,34 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 	if len(l) == 0 || l[0] == nil {
 		return nil
 	}
+	mc := &container.MonitoringConfig{}
+	config := l[0].(map[string]interface{})
+
+	if v, ok := config["enable_components"]; ok && len(v.([]interface{})) > 0 {
+		enable_components := v.([]interface{})
+		mc.ComponentConfig = &container.MonitoringComponentConfig{
+			EnableComponents: convertStringArr(enable_components),
+		}
+	}
+	if v, ok := config["managed_prometheus"]; ok && len(v.([]interface{})) > 0 {
+		managed_prometheus := v.([]interface{})[0].(map[string]interface{})
+		mc.ManagedPrometheusConfig = &container.ManagedPrometheusConfig{
+			Enabled: managed_prometheus["enabled"].(bool),
+		}
+	}
+	return mc
+}
+
+func expandContainerClusterTpuConfig(configured interface{}) *container.TpuConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
 
 	config := l[0].(map[string]interface{})
-	return &container.MonitoringConfig{
-		ComponentConfig: &container.MonitoringComponentConfig{
-			EnableComponents: convertStringArr(config["enable_components"].([]interface{})),
-		},
+	return &container.TpuConfig{
+		Enabled:              config["enabled"].(bool),
+		UseServiceNetworking: config["use_service_networking"].(bool),
 	}
 }
 
@@ -4176,9 +4251,20 @@ func flattenMonitoringConfig(c *container.MonitoringConfig) []map[string]interfa
 		return nil
 	}
 
+	result := make(map[string]interface{})
+	if c.ComponentConfig != nil {
+		result["enable_components"] = c.ComponentConfig.EnableComponents
+	}
+	if c.ManagedPrometheusConfig != nil {
+		result["managed_prometheus"] = flattenManagedPrometheusConfig(c.ManagedPrometheusConfig)
+	}
+	return []map[string]interface{}{result}
+}
+
+func flattenManagedPrometheusConfig(c *container.ManagedPrometheusConfig) []map[string]interface{} {
 	return []map[string]interface{}{
 		{
-			"enable_components": c.ComponentConfig.EnableComponents,
+			"enabled": c != nil && c.Enabled,
 		},
 	}
 }

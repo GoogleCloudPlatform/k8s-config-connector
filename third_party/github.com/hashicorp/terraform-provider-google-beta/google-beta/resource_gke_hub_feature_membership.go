@@ -156,6 +156,13 @@ func GkeHubFeatureMembershipConfigmanagementConfigSyncSchema() *schema.Resource 
 				Elem:        GkeHubFeatureMembershipConfigmanagementConfigSyncGitSchema(),
 			},
 
+			"prevent_drift": {
+				Type:        schema.TypeBool,
+				Computed:    true,
+				Optional:    true,
+				Description: "Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts.",
+			},
+
 			"source_format": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -592,6 +599,7 @@ func expandGkeHubFeatureMembershipConfigmanagementConfigSync(o interface{}) *gke
 	obj := objArr[0].(map[string]interface{})
 	return &gkehub.FeatureMembershipConfigmanagementConfigSync{
 		Git:          expandGkeHubFeatureMembershipConfigmanagementConfigSyncGit(obj["git"]),
+		PreventDrift: dcl.Bool(obj["prevent_drift"].(bool)),
 		SourceFormat: dcl.String(obj["source_format"].(string)),
 	}
 }
@@ -602,6 +610,7 @@ func flattenGkeHubFeatureMembershipConfigmanagementConfigSync(obj *gkehub.Featur
 	}
 	transformed := map[string]interface{}{
 		"git":           flattenGkeHubFeatureMembershipConfigmanagementConfigSyncGit(obj.Git),
+		"prevent_drift": obj.PreventDrift,
 		"source_format": obj.SourceFormat,
 	}
 

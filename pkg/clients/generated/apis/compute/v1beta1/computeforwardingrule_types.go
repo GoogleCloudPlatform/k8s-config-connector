@@ -260,6 +260,10 @@ type ComputeForwardingRuleStatus struct {
 	LabelFingerprint string `json:"labelFingerprint,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	/* The PSC connection id of the PSC Forwarding Rule. */
+	PscConnectionId string `json:"pscConnectionId,omitempty"`
+	/* The PSC connection status of the PSC Forwarding Rule. Possible values: STATUS_UNSPECIFIED, PENDING, ACCEPTED, REJECTED, CLOSED. */
+	PscConnectionStatus string `json:"pscConnectionStatus,omitempty"`
 	/* [Output Only] Server-defined URL for the resource. */
 	SelfLink string `json:"selfLink,omitempty"`
 	/* [Output Only] The internal fully qualified service name for this Forwarding Rule. This field is only used for internal load balancing. */

@@ -218,6 +218,12 @@ as the transport topic for the event delivery.`,
 							Description: `Describes the retry policy in case of function's execution failure.
 Retried execution is charged as any other execution. Possible values: ["RETRY_POLICY_UNSPECIFIED", "RETRY_POLICY_DO_NOT_RETRY", "RETRY_POLICY_RETRY"]`,
 						},
+						"service_account_email": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Optional:    true,
+							Description: `The email of the service account for this function.`,
+						},
 						"trigger_region": {
 							Type:     schema.TypeString,
 							Optional: true,
@@ -225,11 +231,6 @@ Retried execution is charged as any other execution. Possible values: ["RETRY_PO
 events originating in this region. It can be the same
 region as the function, a different region or multi-region, or the global
 region. If not provided, defaults to the same region as the function.`,
-						},
-						"service_account_email": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: `The email of the service account for this function.`,
 						},
 						"trigger": {
 							Type:        schema.TypeString,
@@ -302,6 +303,12 @@ given time.`,
 							Optional:    true,
 							Description: `Name of the service associated with a Function.`,
 						},
+						"service_account_email": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Optional:    true,
+							Description: `The email of the service account for this function.`,
+						},
 						"timeout_seconds": {
 							Type:     schema.TypeInt,
 							Optional: true,
@@ -324,11 +331,6 @@ timeout period. Defaults to 60 seconds.`,
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: `URIs of the Service deployed`,
-						},
-						"service_account_email": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: `The email of the service account for this function.`,
 						},
 						"uri": {
 							Type:        schema.TypeString,

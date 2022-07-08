@@ -1172,6 +1172,11 @@ func (in *TableExternalDataConfiguration) DeepCopyInto(out *TableExternalDataCon
 		*out = new(string)
 		**out = **in
 	}
+	if in.ConnectionId != nil {
+		in, out := &in.ConnectionId, &out.ConnectionId
+		*out = new(string)
+		**out = **in
+	}
 	if in.CsvOptions != nil {
 		in, out := &in.CsvOptions, &out.CsvOptions
 		*out = new(TableCsvOptions)

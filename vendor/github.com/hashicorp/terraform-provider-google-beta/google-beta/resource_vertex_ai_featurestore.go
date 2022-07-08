@@ -337,7 +337,7 @@ func resourceVertexAIFeaturestoreDelete(d *schema.ResourceData, meta interface{}
 	var obj map[string]interface{}
 
 	if v, ok := d.GetOk("force_destroy"); ok {
-		url, err = addQueryParams(url, map[string]string{"force": v.(string)})
+		url, err = addQueryParams(url, map[string]string{"force": fmt.Sprintf("%v", v)})
 		if err != nil {
 			return err
 		}

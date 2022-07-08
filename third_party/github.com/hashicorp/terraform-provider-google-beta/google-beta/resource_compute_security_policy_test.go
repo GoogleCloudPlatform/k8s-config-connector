@@ -120,6 +120,44 @@ func TestAccComputeSecurityPolicy_update(t *testing.T) {
 	})
 }
 
+func TestAccComputeSecurityPolicy_withAdvancedOptionsConfig(t *testing.T) {
+	t.Parallel()
+
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_basic(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withAdvancedOptionsConfig(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_basic(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeSecurityPolicy_withAdaptiveProtection(t *testing.T) {
 	t.Parallel()
 
@@ -212,7 +250,7 @@ func testAccComputeSecurityPolicy_basic(spName string) string {
 resource "google_compute_security_policy" "policy" {
   name        = "%s"
   description = "basic security policy"
-  type        = "CLOUD_ARMOR_EDGE"
+  type        = "CLOUD_ARMOR"
 }
 `, spName)
 }
@@ -373,6 +411,20 @@ resource "google_compute_security_policy" "policy" {
 		}
 		preview = true
 	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withAdvancedOptionsConfig(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name        = "%s"
+  description = "updated description"
+
+  advanced_options_config {
+    json_parsing = "STANDARD"
+    log_level    = "VERBOSE"
+  }
 }
 `, spName)
 }

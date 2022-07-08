@@ -373,7 +373,7 @@ resource "google_container_aws_node_pool" "primary" {
     }
 
     iam_instance_profile = "%{byo_prefix}-1p-dev-nodepool"
-    instance_type        = "t3.medium"
+    instance_type        = "t3.large"
 
     labels = {
       label-one = "value-one"
@@ -692,7 +692,7 @@ resource "google_container_aws_node_pool" "primary" {
     }
 
     iam_instance_profile = "%{byo_prefix}-1p-dev-nodepool"
-    instance_type        = "t3.medium"
+    instance_type        = "t3.large"
 
     labels = {
       label-one = "value-one"

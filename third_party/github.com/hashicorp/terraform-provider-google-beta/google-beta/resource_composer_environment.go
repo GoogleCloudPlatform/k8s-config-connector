@@ -248,6 +248,7 @@ func resourceComposerEnvironment() *schema.Resource {
 										ForceNew:    true,
 										Description: `Deploys 'ip-masq-agent' daemon set in the GKE cluster and defines nonMasqueradeCIDRs equals to pod IP range so IP masquerading is used for all destination addresses, except between pods traffic. See: https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent`,
 									},
+
 									"tags": {
 										Type:     schema.TypeSet,
 										Optional: true,
@@ -1689,7 +1690,6 @@ func expandComposerEnvironmentConfigNodeConfig(v interface{}, d *schema.Resource
 	if transformedMaxPodsPerNode, ok := original["max_pods_per_node"]; ok {
 		transformed.MaxPodsPerNode = int64(transformedMaxPodsPerNode.(int))
 	}
-
 	if transformedEnableIpMasqAgent, ok := original["enable_ip_masq_agent"]; ok {
 		transformed.EnableIpMasqAgent = transformedEnableIpMasqAgent.(bool)
 	}

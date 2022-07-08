@@ -136,6 +136,17 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              sqlServerUserDetails:
+                properties:
+                  disabled:
+                    description: If the user has been disabled.
+                    type: boolean
+                  serverRoles:
+                    description: The server roles for this user in the database.
+                    items:
+                      type: string
+                    type: array
+                type: object
               type:
                 description: |-
                   Immutable. The user type. It determines the method to authenticate the user during login.

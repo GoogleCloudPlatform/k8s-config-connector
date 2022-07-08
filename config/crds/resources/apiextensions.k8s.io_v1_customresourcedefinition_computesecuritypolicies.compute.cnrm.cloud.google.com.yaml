@@ -73,6 +73,18 @@ spec:
                         type: string
                     type: object
                 type: object
+              advancedOptionsConfig:
+                description: Advanced Options Config of this security policy.
+                properties:
+                  jsonParsing:
+                    description: 'JSON body parsing. Supported values include: "DISABLED",
+                      "STANDARD".'
+                    type: string
+                  logLevel:
+                    description: 'Logging level. Supported values include: "NORMAL",
+                      "VERBOSE".'
+                    type: string
+                type: object
               description:
                 description: An optional description of this security policy. Max
                   size is 2048.

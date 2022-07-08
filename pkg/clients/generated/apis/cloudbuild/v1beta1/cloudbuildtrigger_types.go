@@ -633,6 +633,12 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	IgnoredFiles []string `json:"ignoredFiles,omitempty"`
 
+	/* Build logs will be sent back to GitHub as part of the checkrun
+	result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
+	INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"]. */
+	// +optional
+	IncludeBuildLogs *string `json:"includeBuildLogs,omitempty"`
+
 	/* ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
 	extended with support for '**'.
 

@@ -138,6 +138,11 @@ func (in *CloudBuildTriggerSpec) DeepCopyInto(out *CloudBuildTriggerSpec) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.IncludeBuildLogs != nil {
+		in, out := &in.IncludeBuildLogs, &out.IncludeBuildLogs
+		*out = new(string)
+		**out = **in
+	}
 	if in.IncludedFiles != nil {
 		in, out := &in.IncludedFiles, &out.IncludedFiles
 		*out = make([]string, len(*in))

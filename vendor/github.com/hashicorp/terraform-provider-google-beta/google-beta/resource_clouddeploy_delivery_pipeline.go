@@ -96,6 +96,12 @@ func resourceClouddeployDeliveryPipeline() *schema.Resource {
 				Elem:        ClouddeployDeliveryPipelineSerialPipelineSchema(),
 			},
 
+			"suspended": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "When suspended, no new releases or rollouts can be created, but in-progress ones will complete.",
+			},
+
 			"condition": {
 				Type:        schema.TypeList,
 				Computed:    true,
@@ -240,6 +246,7 @@ func resourceClouddeployDeliveryPipelineCreate(d *schema.ResourceData, meta inte
 		Labels:         checkStringMap(d.Get("labels")),
 		Project:        dcl.String(project),
 		SerialPipeline: expandClouddeployDeliveryPipelineSerialPipeline(d.Get("serial_pipeline")),
+		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 
 	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/deliveryPipelines/{{name}}")
@@ -294,6 +301,7 @@ func resourceClouddeployDeliveryPipelineRead(d *schema.ResourceData, meta interf
 		Labels:         checkStringMap(d.Get("labels")),
 		Project:        dcl.String(project),
 		SerialPipeline: expandClouddeployDeliveryPipelineSerialPipeline(d.Get("serial_pipeline")),
+		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 
 	userAgent, err := generateUserAgentString(d, config.userAgent)
@@ -339,6 +347,9 @@ func resourceClouddeployDeliveryPipelineRead(d *schema.ResourceData, meta interf
 	if err = d.Set("serial_pipeline", flattenClouddeployDeliveryPipelineSerialPipeline(res.SerialPipeline)); err != nil {
 		return fmt.Errorf("error setting serial_pipeline in state: %s", err)
 	}
+	if err = d.Set("suspended", res.Suspended); err != nil {
+		return fmt.Errorf("error setting suspended in state: %s", err)
+	}
 	if err = d.Set("condition", flattenClouddeployDeliveryPipelineCondition(res.Condition)); err != nil {
 		return fmt.Errorf("error setting condition in state: %s", err)
 	}
@@ -372,6 +383,7 @@ func resourceClouddeployDeliveryPipelineUpdate(d *schema.ResourceData, meta inte
 		Labels:         checkStringMap(d.Get("labels")),
 		Project:        dcl.String(project),
 		SerialPipeline: expandClouddeployDeliveryPipelineSerialPipeline(d.Get("serial_pipeline")),
+		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 	directive := UpdateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
@@ -421,6 +433,7 @@ func resourceClouddeployDeliveryPipelineDelete(d *schema.ResourceData, meta inte
 		Labels:         checkStringMap(d.Get("labels")),
 		Project:        dcl.String(project),
 		SerialPipeline: expandClouddeployDeliveryPipelineSerialPipeline(d.Get("serial_pipeline")),
+		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 
 	log.Printf("[DEBUG] Deleting DeliveryPipeline %q", d.Id())

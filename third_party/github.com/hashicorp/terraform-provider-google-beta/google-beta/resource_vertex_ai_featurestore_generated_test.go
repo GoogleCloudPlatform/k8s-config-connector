@@ -42,7 +42,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreExample(t *testing.T) {
 				ResourceName:            "google_vertex_ai_featurestore.featurestore",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"name", "etag", "region"},
+				ImportStateVerifyIgnore: []string{"name", "etag", "region", "force_destroy"},
 			},
 		},
 	})
@@ -60,6 +60,7 @@ resource "google_vertex_ai_featurestore" "featurestore" {
   online_serving_config {
     fixed_node_count = 2
   }
+  force_destroy = true
 }
 `, context)
 }

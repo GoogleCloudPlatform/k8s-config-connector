@@ -1559,12 +1559,12 @@ data "google_project" "project" {}
 
 resource "google_composer_environment" "test" {
 	name   = "%s"
-	region = "us-east1"  # later should be changed to us-central1, when ip_masq_agent feature is accessible globally
+	region = "us-central1"
 	config {
 		node_config {
 			network    = google_compute_network.test.self_link
 			subnetwork = google_compute_subnetwork.test.self_link
-			zone       = "us-east1-b"   # later should be changed to us-central1-a, when ip_masq_agent feature is accessible globally
+			zone       = "us-central1-a"
 
 			service_account = google_service_account.test.name
 			max_pods_per_node = 33
@@ -1586,7 +1586,7 @@ resource "google_compute_network" "test" {
 resource "google_compute_subnetwork" "test" {
 	name          = "%s"
 	ip_cidr_range = "10.2.0.0/16"
-	region        = "us-east1"  # later should be changed to us-central1, when ip_masq_agent feature is accessible globally
+	region        = "us-central1"
 	network       = google_compute_network.test.self_link
 }
 

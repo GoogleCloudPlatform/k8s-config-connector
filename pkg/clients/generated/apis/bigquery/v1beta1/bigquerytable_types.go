@@ -77,6 +77,10 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	Compression *string `json:"compression,omitempty"`
 
+	/* The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}". */
+	// +optional
+	ConnectionId *string `json:"connectionId,omitempty"`
+
 	/* Additional properties to set if source_format is set to "CSV". */
 	// +optional
 	CsvOptions *TableCsvOptions `json:"csvOptions,omitempty"`

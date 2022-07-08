@@ -927,6 +927,8 @@ are valid.{% endverbatim %}</p>
   creationTimestamp: string
   labelFingerprint: string
   observedGeneration: integer
+  pscConnectionId: string
+  pscConnectionStatus: string
   selfLink: string
   serviceName: string
   ```
@@ -1006,6 +1008,20 @@ are valid.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>pscConnectionId</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The PSC connection id of the PSC Forwarding Rule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>pscConnectionStatus</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The PSC connection status of the PSC Forwarding Rule. Possible values: STATUS_UNSPECIFIED, PENDING, ACCEPTED, REJECTED, CLOSED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
