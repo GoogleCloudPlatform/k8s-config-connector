@@ -314,7 +314,7 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 }
 
 func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
-	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(originErr)
 	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
 		// Requeue resource immediately for reconciliation
 		// with exponential backoff applied

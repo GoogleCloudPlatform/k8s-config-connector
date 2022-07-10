@@ -121,6 +121,11 @@ func isResourceReady(event watch.Event) (ok bool, reason string, err error) {
 	if err != nil {
 		return false, "", fmt.Errorf("error converting unstructured to resource: %w", err)
 	}
+	// Secrets don't have a 'ready' condition. As long as they can be
+	// found on the API server, we consider them ready as resources.
+	if resource.Kind == "Secret" {
+		return true, "", nil
+	}
 	if !k8s.IsResourceReady(resource) {
 		return false, "resource not ready", nil
 	}

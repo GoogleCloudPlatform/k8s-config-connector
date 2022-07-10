@@ -300,7 +300,8 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 func supportsImmediateReconciliation(resourceKind string) bool {
 	switch resourceKind {
 	case "ComputeTargetPool",
-		"ComputeNetworkEndpointGroup":
+		"ComputeNetworkEndpointGroup",
+		"ComputeDisk":
 		return true
 	}
 	return false
@@ -311,7 +312,7 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 }
 
 func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
-	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(originErr)
 	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
 		// Requeue resource for immediate reconciliation
 		// with exponential backoff applied

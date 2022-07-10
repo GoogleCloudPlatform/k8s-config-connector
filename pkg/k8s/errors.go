@@ -83,11 +83,11 @@ func AsReferenceNotFoundError(err error) (unwrappedErr *ReferenceNotFoundError, 
 }
 
 type SecretNotFoundError struct {
-	secret types.NamespacedName
+	Secret types.NamespacedName
 }
 
 func (e *SecretNotFoundError) Error() string {
-	return fmt.Sprintf("Secret %v was not found", e.secret)
+	return fmt.Sprintf("Secret %v was not found", e.Secret)
 }
 
 func NewSecretNotFoundError(secret types.NamespacedName) *SecretNotFoundError {
