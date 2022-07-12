@@ -24,8 +24,8 @@ import (
 )
 
 var (
-	nonReferenceFieldPath = []string{"iap", "oauth2ClientId"}
-	referenceFieldPath    = []string{"iap", "oauth2ClientIdRef"}
+	oauth2ClientIdPath    = []string{"iap", "oauth2ClientId"}
+	oauth2ClientIdRefPath = []string{"iap", "oauth2ClientIdRef"}
 )
 
 func GetComputeBackendServiceResourceOverrides() ResourceOverrides {
@@ -41,23 +41,23 @@ func GetComputeBackendServiceResourceOverrides() ResourceOverrides {
 func keepOauth2ClientIdField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		if err := PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, referenceFieldPath[1], nonReferenceFieldPath[1]); err != nil {
+		if err := PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, oauth2ClientIdRefPath[1], oauth2ClientIdPath[1]); err != nil {
 			return err
 		}
 		return nil
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
-		if err := FavorAuthoritativeFieldOverLegacyField(r, nonReferenceFieldPath, referenceFieldPath); err != nil {
-			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(nonReferenceFieldPath, "."), strings.Join(referenceFieldPath, "."), err)
+		if err := FavorAuthoritativeFieldOverLegacyField(r, oauth2ClientIdPath, oauth2ClientIdRefPath); err != nil {
+			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(oauth2ClientIdPath, "."), strings.Join(oauth2ClientIdRefPath, "."), err)
 		}
 		return nil
 	}
 	o.PostActuationTransform = func(original, reconciled *k8s.Resource) error {
-		if err := PreserveUserSpecifiedLegacyField(original, reconciled, nonReferenceFieldPath...); err != nil {
-			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(nonReferenceFieldPath, "."), err)
+		if err := PreserveUserSpecifiedLegacyField(original, reconciled, oauth2ClientIdPath...); err != nil {
+			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIdPath, "."), err)
 		}
-		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified(original, reconciled, nonReferenceFieldPath, referenceFieldPath); err != nil {
-			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(referenceFieldPath, "."), err)
+		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified(original, reconciled, oauth2ClientIdPath, oauth2ClientIdRefPath); err != nil {
+			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIdRefPath, "."), err)
 		}
 		return nil
 	}
