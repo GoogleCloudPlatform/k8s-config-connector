@@ -324,16 +324,23 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
 	}
-	if err := depWatcher.WatchReferenceUntilReady(ctx, refNN, refGVK, func() {
+	go func() {
+		logger := r.logger.WithValues(
+			"resource", resource.GetNamespacedName(),
+			"resourceGVK", resource.GroupVersionKind(),
+			"reference", refNN,
+			"referenceGVK", refGVK)
+		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
+		defer cancel()
+		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
+		if err := depWatcher.WaitForReferenceToBeReady(ctx, refNN, refGVK); err != nil {
+			logger.Error(err, "error while waiting for resource's reference to be ready")
+			return
+		}
+		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
 		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
-	}); err != nil {
-		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error requesting dependencyWatcher watch reference %v %v until ready: %v", refGVK.Kind, refNN, err))
-	}
-	r.logger.Info("dependencyWatcher successfully created watch requested by resource on reference",
-		"resource", resource.GetNamespacedName(),
-		"resourceGVK", resource.GroupVersionKind(),
-		"reference", refNN,
-		"referenceGVK", refGVK)
+	}()
 	// Do not requeue resource immediately for reconciliation. Wait for either
 	// the next periodic reconciliation or for the referenced resource to be ready (which
 	// triggers a reconciliation), whichever comes first.

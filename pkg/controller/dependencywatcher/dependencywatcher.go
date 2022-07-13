@@ -19,10 +19,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/go-logr/logr"
 
+	"github.com/go-logr/logr"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/fields"
@@ -80,41 +79,39 @@ func isReferenceReady(event watch.Event) (ok bool, reason string, err error) {
 	return true, "", nil
 }
 
-// WatchReferenceUntilReady creates a Watch on a resource identified by the given GVK
-// and NamespacedName to monitor any changes on the resource until the resource is
-// ready or the Watch expires, whichever come first. If the resource becomes ready,
-// the readyHandler will be called and the Watch will be terminated.
-func (d *DependencyWatcher) WatchReferenceUntilReady(ctx context.Context, refNN types.NamespacedName, refGVK schema.GroupVersionKind, readyHandler func()) error {
+// WaitForReferenceToBeReady waits for the resource identified by the given GVK
+// and NamespacedName. It blocks until the resource is ready, an error occurs, or a context
+// cancellation occurs. Note that a nil return value signifies that the resource is ready and
+// no errors have occurred.
+func (d *DependencyWatcher) WaitForReferenceToBeReady(ctx context.Context, refNN types.NamespacedName, refGVK schema.GroupVersionKind) error {
 	logger := d.logger.WithValues("reference", refNN).WithValues("referenceGVK", refGVK)
 
 	client := d.dynamicClient.Resource(k8s.ToGVR(refGVK)).Namespace(refNN.Namespace)
 	nameSelector := fields.OneTermEqualSelector("metadata.name", refNN.Name).String()
-	timeout := int64(jitter.GenerateJitteredReenqueuePeriod().Seconds())
-	watch, err := client.Watch(ctx, metav1.ListOptions{FieldSelector: nameSelector, TimeoutSeconds: &timeout})
+	watch, err := client.Watch(ctx, metav1.ListOptions{FieldSelector: nameSelector})
 	if err != nil {
-		return fmt.Errorf("error creating watch on resource: %v", err)
+		return fmt.Errorf("error creating watch on reference: %v", err)
 	}
-	go func() {
-		defer watch.Stop()
-		for {
-			event, ok := <-watch.ResultChan()
+	defer watch.Stop()
+	logger.Info("successfully created watch on reference")
+	for {
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("context was cancelled: %v", ctx.Err())
+		case event, ok := <-watch.ResultChan():
 			if !ok {
-				logger.Info("the watch created by resource on referenced resource was terminated prematurely either due to timeout or error")
-				return
+				return fmt.Errorf("watch channel was closed")
 			}
 			ok, reason, err := isReferenceReady(event)
 			if err != nil {
-				logger.Error(err, "error checking if reference is ready")
-				return
+				return fmt.Errorf("error checking if reference is ready: %v", err)
 			}
 			if !ok {
-				logger.Info("resource not ready, handler not invoked", "reason", reason)
+				logger.Info("reference not ready", "reason", reason)
 				continue
 			}
-			logger.Info("resource is ready; handler invoked")
-			readyHandler()
-			return
+			logger.Info("reference is ready")
+			return nil
 		}
-	}()
-	return nil
+	}
 }
