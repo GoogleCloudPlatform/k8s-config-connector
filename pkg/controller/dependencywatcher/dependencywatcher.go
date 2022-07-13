@@ -23,11 +23,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/go-logr/logr"
 
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
@@ -58,17 +59,16 @@ func CreateWatchForResourceWithClient(resource *k8s.Resource, dynamicClient dyna
 	}
 }
 
-// IsReferenceReady returns whether or not a resource identified by the given GVK
+// isReferenceReady returns whether or not a resource identified by the given GVK
 // and NamespacedName is ready. Note that a 'reason' for failure is returned only
 // when the resource is not ready and no fatal error has occurred.
-func (d *DependencyWatcher) IsReferenceReady(ctx context.Context, refNN types.NamespacedName, refGVK schema.GroupVersionKind) (ok bool, reason string, err error) {
-	client := d.dynamicClient.Resource(k8s.ToGVR(refGVK)).Namespace(refNN.Namespace)
-	u, err := client.Get(ctx, refNN.Name, metav1.GetOptions{})
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			return false, "referenced resource does not exist", nil
-		}
-		return false, "", fmt.Errorf("error getting resource: %v", err)
+func isReferenceReady(event watch.Event) (ok bool, reason string, err error) {
+	if event.Type != watch.Modified && event.Type != watch.Added {
+		return false, fmt.Sprintf("got watch event of type '%v', want event type '%v' or '%v'", event.Type, watch.Modified, watch.Added), nil
+	}
+	u, ok := event.Object.(*unstructured.Unstructured)
+	if !ok {
+		return false, "", fmt.Errorf("error casting event object '%v' of kind '%v' to unstructured", event.Object, event.Object.GetObjectKind())
 	}
 	refResource, err := k8s.NewResource(u)
 	if err != nil {
@@ -97,12 +97,12 @@ func (d *DependencyWatcher) WatchReferenceUntilReady(ctx context.Context, refNN 
 	go func() {
 		defer watch.Stop()
 		for {
-			_, ok := <-watch.ResultChan()
+			event, ok := <-watch.ResultChan()
 			if !ok {
 				logger.Info("the watch created by resource on referenced resource was terminated prematurely either due to timeout or error")
 				return
 			}
-			ok, reason, err := d.IsReferenceReady(ctx, refNN, refGVK)
+			ok, reason, err := isReferenceReady(event)
 			if err != nil {
 				logger.Error(err, "error checking if reference is ready")
 				return
