@@ -267,7 +267,7 @@ toc:
   - title: "ComputeProjectMetadata"
     path: /config-connector/docs/reference/resource-docs/compute/computeprojectmetadata.md
   - title: "ComputeRegionNetworkEndpointGroup"
-    path: /config-connector/docs/reference/resource-docs/compute/computeneregiontworkendpointgroup.md
+    path: /config-connector/docs/reference/resource-docs/compute/computeregionnetworkendpointgroup.md
   - title: "ComputeReservation"
     path: /config-connector/docs/reference/resource-docs/compute/computereservation.md
   - title: "ComputeResourcePolicy"
