@@ -22,7 +22,6 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -43,64 +42,40 @@ import (
 	"k8s.io/kubectl/pkg/util"
 	"k8s.io/kubectl/pkg/util/i18n"
 	"k8s.io/kubectl/pkg/util/openapi"
-	"k8s.io/kubectl/pkg/util/prune"
 	"k8s.io/kubectl/pkg/util/templates"
 	"k8s.io/kubectl/pkg/validation"
 )
 
-// ApplyFlags directly reflect the information that CLI is gathering via flags.  They will be converted to Options, which
-// reflect the runtime requirements for the command.  This structure reduces the transformation to wiring and makes
-// the logic itself easy to unit test
-type ApplyFlags struct {
-	Factory cmdutil.Factory
-
-	RecordFlags *genericclioptions.RecordFlags
-	PrintFlags  *genericclioptions.PrintFlags
-
-	DeleteFlags *delete.DeleteFlags
-
-	FieldManager   string
-	Selector       string
-	Prune          bool
-	PruneResources []prune.Resource
-	All            bool
-	Overwrite      bool
-	OpenAPIPatch   bool
-	PruneWhitelist []string
-
-	genericclioptions.IOStreams
-}
-
 // ApplyOptions defines flags and other configuration parameters for the `apply` command
 type ApplyOptions struct {
-	Recorder genericclioptions.Recorder
+	RecordFlags *genericclioptions.RecordFlags
+	Recorder    genericclioptions.Recorder
 
 	PrintFlags *genericclioptions.PrintFlags
 	ToPrinter  func(string) (printers.ResourcePrinter, error)
 
+	DeleteFlags   *delete.DeleteFlags
 	DeleteOptions *delete.DeleteOptions
 
-	ServerSideApply         bool
-	ForceConflicts          bool
-	FieldManager            string
-	Selector                string
-	DryRunStrategy          cmdutil.DryRunStrategy
-	DryRunVerifier          *resource.QueryParamVerifier
-	FieldValidationVerifier *resource.QueryParamVerifier
-	Prune                   bool
-	PruneResources          []prune.Resource
-	cmdBaseName             string
-	All                     bool
-	Overwrite               bool
-	OpenAPIPatch            bool
-	PruneWhitelist          []string
+	ServerSideApply bool
+	ForceConflicts  bool
+	FieldManager    string
+	Selector        string
+	DryRunStrategy  cmdutil.DryRunStrategy
+	DryRunVerifier  *resource.DryRunVerifier
+	Prune           bool
+	PruneResources  []pruneResource
+	cmdBaseName     string
+	All             bool
+	Overwrite       bool
+	OpenAPIPatch    bool
+	PruneWhitelist  []string
 
-	ValidationDirective string
-	Validator           validation.Schema
-	Builder             *resource.Builder
-	Mapper              meta.RESTMapper
-	DynamicClient       dynamic.Interface
-	OpenAPISchema       openapi.Resources
+	Validator     validation.Schema
+	Builder       *resource.Builder
+	Mapper        meta.RESTMapper
+	DynamicClient dynamic.Interface
+	OpenAPISchema openapi.Resources
 
 	Namespace        string
 	EnforceNamespace bool
@@ -151,9 +126,6 @@ var (
 		# Apply the JSON passed into stdin to a pod
 		cat pod.json | kubectl apply -f -
 
-		# Apply the configuration from all files that end with '.json' - i.e. expand wildcard characters in file names
-		kubectl apply -f '*.json'
-
 		# Note: --prune is still in Alpha
 		# Apply the configuration in manifest.yaml that matches label app=nginx and delete all other resources that are not in the file and match label app=nginx
 		kubectl apply --prune -f manifest.yaml -l app=nginx
@@ -165,10 +137,9 @@ var (
 	warningChangesOnDeletingResource     = "Warning: Detected changes to resource %[1]s which is currently being deleted.\n"
 )
 
-// NewApplyFlags returns a default ApplyFlags
-func NewApplyFlags(f cmdutil.Factory, streams genericclioptions.IOStreams) *ApplyFlags {
-	return &ApplyFlags{
-		Factory:     f,
+// NewApplyOptions creates new ApplyOptions for the `apply` command
+func NewApplyOptions(ioStreams genericclioptions.IOStreams) *ApplyOptions {
+	return &ApplyOptions{
 		RecordFlags: genericclioptions.NewRecordFlags(),
 		DeleteFlags: delete.NewDeleteFlags("that contains the configuration to apply"),
 		PrintFlags:  genericclioptions.NewPrintFlags("created").WithTypeSetter(scheme.Scheme),
@@ -176,13 +147,25 @@ func NewApplyFlags(f cmdutil.Factory, streams genericclioptions.IOStreams) *Appl
 		Overwrite:    true,
 		OpenAPIPatch: true,
 
-		IOStreams: streams,
+		Recorder: genericclioptions.NoopRecorder{},
+
+		IOStreams: ioStreams,
+
+		objects:       []*resource.Info{},
+		objectsCached: false,
+
+		VisitedUids:       sets.NewString(),
+		VisitedNamespaces: sets.NewString(),
 	}
 }
 
 // NewCmdApply creates the `apply` command
 func NewCmdApply(baseName string, f cmdutil.Factory, ioStreams genericclioptions.IOStreams) *cobra.Command {
-	flags := NewApplyFlags(f, ioStreams)
+	o := NewApplyOptions(ioStreams)
+
+	// Store baseName for use in printing warnings / messages involving the base command name.
+	// This is useful for downstream command that wrap this one.
+	o.cmdBaseName = baseName
 
 	cmd := &cobra.Command{
 		Use:                   "apply (-f FILENAME | -k DIRECTORY)",
@@ -191,163 +174,52 @@ func NewCmdApply(baseName string, f cmdutil.Factory, ioStreams genericclioptions
 		Long:                  applyLong,
 		Example:               applyExample,
 		Run: func(cmd *cobra.Command, args []string) {
-			o, err := flags.ToOptions(cmd, baseName, args)
-			cmdutil.CheckErr(err)
-			cmdutil.CheckErr(o.Validate(cmd, args))
+			cmdutil.CheckErr(o.Complete(f, cmd))
+			cmdutil.CheckErr(validateArgs(cmd, args))
+			cmdutil.CheckErr(validatePruneAll(o.Prune, o.All, o.Selector))
 			cmdutil.CheckErr(o.Run())
 		},
 	}
 
-	flags.AddFlags(cmd)
+	// bind flag structs
+	o.DeleteFlags.AddFlags(cmd)
+	o.RecordFlags.AddFlags(cmd)
+	o.PrintFlags.AddFlags(cmd)
+
+	cmd.Flags().BoolVar(&o.Overwrite, "overwrite", o.Overwrite, "Automatically resolve conflicts between the modified and live configuration by using values from the modified configuration")
+	cmd.Flags().BoolVar(&o.Prune, "prune", o.Prune, "Automatically delete resource objects, including the uninitialized ones, that do not appear in the configs and are created by either apply or create --save-config. Should be used with either -l or --all.")
+	cmdutil.AddValidateFlags(cmd)
+	cmd.Flags().StringVarP(&o.Selector, "selector", "l", o.Selector, "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2)")
+	cmd.Flags().BoolVar(&o.All, "all", o.All, "Select all resources in the namespace of the specified resource types.")
+	cmd.Flags().StringArrayVar(&o.PruneWhitelist, "prune-whitelist", o.PruneWhitelist, "Overwrite the default whitelist with <group/version/kind> for --prune")
+	cmd.Flags().BoolVar(&o.OpenAPIPatch, "openapi-patch", o.OpenAPIPatch, "If true, use openapi to calculate diff when the openapi presents and the resource can be found in the openapi spec. Otherwise, fall back to use baked-in types.")
+	cmdutil.AddDryRunFlag(cmd)
+	cmdutil.AddServerSideApplyFlags(cmd)
+	cmdutil.AddFieldManagerFlagVar(cmd, &o.FieldManager, FieldManagerClientSideApply)
 
 	// apply subcommands
-	cmd.AddCommand(NewCmdApplyViewLastApplied(flags.Factory, flags.IOStreams))
-	cmd.AddCommand(NewCmdApplySetLastApplied(flags.Factory, flags.IOStreams))
-	cmd.AddCommand(NewCmdApplyEditLastApplied(flags.Factory, flags.IOStreams))
+	cmd.AddCommand(NewCmdApplyViewLastApplied(f, ioStreams))
+	cmd.AddCommand(NewCmdApplySetLastApplied(f, ioStreams))
+	cmd.AddCommand(NewCmdApplyEditLastApplied(f, ioStreams))
 
 	return cmd
 }
 
-// AddFlags registers flags for a cli
-func (flags *ApplyFlags) AddFlags(cmd *cobra.Command) {
-	// bind flag structs
-	flags.DeleteFlags.AddFlags(cmd)
-	flags.RecordFlags.AddFlags(cmd)
-	flags.PrintFlags.AddFlags(cmd)
-
-	cmdutil.AddValidateFlags(cmd)
-	cmdutil.AddDryRunFlag(cmd)
-	cmdutil.AddServerSideApplyFlags(cmd)
-	cmdutil.AddFieldManagerFlagVar(cmd, &flags.FieldManager, FieldManagerClientSideApply)
-	cmdutil.AddLabelSelectorFlagVar(cmd, &flags.Selector)
-
-	cmd.Flags().BoolVar(&flags.Overwrite, "overwrite", flags.Overwrite, "Automatically resolve conflicts between the modified and live configuration by using values from the modified configuration")
-	cmd.Flags().BoolVar(&flags.Prune, "prune", flags.Prune, "Automatically delete resource objects, that do not appear in the configs and are created by either apply or create --save-config. Should be used with either -l or --all.")
-	cmd.Flags().BoolVar(&flags.All, "all", flags.All, "Select all resources in the namespace of the specified resource types.")
-	cmd.Flags().StringArrayVar(&flags.PruneWhitelist, "prune-whitelist", flags.PruneWhitelist, "Overwrite the default whitelist with <group/version/kind> for --prune")
-	cmd.Flags().BoolVar(&flags.OpenAPIPatch, "openapi-patch", flags.OpenAPIPatch, "If true, use openapi to calculate diff when the openapi presents and the resource can be found in the openapi spec. Otherwise, fall back to use baked-in types.")
-}
-
-// ToOptions converts from CLI inputs to runtime inputs
-func (flags *ApplyFlags) ToOptions(cmd *cobra.Command, baseName string, args []string) (*ApplyOptions, error) {
-	serverSideApply := cmdutil.GetServerSideApplyFlag(cmd)
-	forceConflicts := cmdutil.GetForceConflictsFlag(cmd)
-	dryRunStrategy, err := cmdutil.GetDryRunStrategy(cmd)
+// Complete verifies if ApplyOptions are valid and without conflicts.
+func (o *ApplyOptions) Complete(f cmdutil.Factory, cmd *cobra.Command) error {
+	var err error
+	o.ServerSideApply = cmdutil.GetServerSideApplyFlag(cmd)
+	o.ForceConflicts = cmdutil.GetForceConflictsFlag(cmd)
+	o.DryRunStrategy, err = cmdutil.GetDryRunStrategy(cmd)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	dynamicClient, err := flags.Factory.DynamicClient()
+	o.DynamicClient, err = f.DynamicClient()
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	dryRunVerifier := resource.NewQueryParamVerifier(dynamicClient, flags.Factory.OpenAPIGetter(), resource.QueryParamDryRun)
-	fieldValidationVerifier := resource.NewQueryParamVerifier(dynamicClient, flags.Factory.OpenAPIGetter(), resource.QueryParamFieldValidation)
-	fieldManager := GetApplyFieldManagerFlag(cmd, serverSideApply)
-
-	// allow for a success message operation to be specified at print time
-	toPrinter := func(operation string) (printers.ResourcePrinter, error) {
-		flags.PrintFlags.NamePrintFlags.Operation = operation
-		cmdutil.PrintFlagsWithDryRunStrategy(flags.PrintFlags, dryRunStrategy)
-		return flags.PrintFlags.ToPrinter()
-	}
-
-	flags.RecordFlags.Complete(cmd)
-	recorder, err := flags.RecordFlags.ToRecorder()
-	if err != nil {
-		return nil, err
-	}
-
-	deleteOptions, err := flags.DeleteFlags.ToOptions(dynamicClient, flags.IOStreams)
-	if err != nil {
-		return nil, err
-	}
-
-	err = deleteOptions.FilenameOptions.RequireFilenameOrKustomize()
-	if err != nil {
-		return nil, err
-	}
-
-	openAPISchema, _ := flags.Factory.OpenAPISchema()
-
-	validationDirective, err := cmdutil.GetValidationDirective(cmd)
-	if err != nil {
-		return nil, err
-	}
-	validator, err := flags.Factory.Validator(validationDirective, fieldValidationVerifier)
-	if err != nil {
-		return nil, err
-	}
-	builder := flags.Factory.NewBuilder()
-	mapper, err := flags.Factory.ToRESTMapper()
-	if err != nil {
-		return nil, err
-	}
-
-	namespace, enforceNamespace, err := flags.Factory.ToRawKubeConfigLoader().Namespace()
-	if err != nil {
-		return nil, err
-	}
-
-	if flags.Prune {
-		flags.PruneResources, err = prune.ParseResources(mapper, flags.PruneWhitelist)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	o := &ApplyOptions{
-		// 	Store baseName for use in printing warnings / messages involving the base command name.
-		// 	This is useful for downstream command that wrap this one.
-		cmdBaseName: baseName,
-
-		PrintFlags: flags.PrintFlags,
-
-		DeleteOptions:   deleteOptions,
-		ToPrinter:       toPrinter,
-		ServerSideApply: serverSideApply,
-		ForceConflicts:  forceConflicts,
-		FieldManager:    fieldManager,
-		Selector:        flags.Selector,
-		DryRunStrategy:  dryRunStrategy,
-		DryRunVerifier:  dryRunVerifier,
-		Prune:           flags.Prune,
-		PruneResources:  flags.PruneResources,
-		All:             flags.All,
-		Overwrite:       flags.Overwrite,
-		OpenAPIPatch:    flags.OpenAPIPatch,
-		PruneWhitelist:  flags.PruneWhitelist,
-
-		Recorder:            recorder,
-		Namespace:           namespace,
-		EnforceNamespace:    enforceNamespace,
-		Validator:           validator,
-		ValidationDirective: validationDirective,
-		Builder:             builder,
-		Mapper:              mapper,
-		DynamicClient:       dynamicClient,
-		OpenAPISchema:       openAPISchema,
-
-		IOStreams: flags.IOStreams,
-
-		objects:       []*resource.Info{},
-		objectsCached: false,
-
-		VisitedUids:       sets.NewString(),
-		VisitedNamespaces: sets.NewString(),
-	}
-
-	o.PostProcessorFn = o.PrintAndPrunePostProcessor()
-
-	return o, nil
-}
-
-// Validate verifies if ApplyOptions are valid and without conflicts.
-func (o *ApplyOptions) Validate(cmd *cobra.Command, args []string) error {
-	if len(args) != 0 {
-		return cmdutil.UsageErrorf(cmd, "Unexpected args: %v", args)
-	}
+	o.DryRunVerifier = resource.NewDryRunVerifier(o.DynamicClient, f.OpenAPIGetter())
+	o.FieldManager = GetApplyFieldManagerFlag(cmd, o.ServerSideApply)
 
 	if o.ForceConflicts && !o.ServerSideApply {
 		return fmt.Errorf("--force-conflicts only works with --server-side")
@@ -355,6 +227,29 @@ func (o *ApplyOptions) Validate(cmd *cobra.Command, args []string) error {
 
 	if o.DryRunStrategy == cmdutil.DryRunClient && o.ServerSideApply {
 		return fmt.Errorf("--dry-run=client doesn't work with --server-side (did you mean --dry-run=server instead?)")
+	}
+
+	// allow for a success message operation to be specified at print time
+	o.ToPrinter = func(operation string) (printers.ResourcePrinter, error) {
+		o.PrintFlags.NamePrintFlags.Operation = operation
+		cmdutil.PrintFlagsWithDryRunStrategy(o.PrintFlags, o.DryRunStrategy)
+		return o.PrintFlags.ToPrinter()
+	}
+
+	o.RecordFlags.Complete(cmd)
+	o.Recorder, err = o.RecordFlags.ToRecorder()
+	if err != nil {
+		return err
+	}
+
+	o.DeleteOptions, err = o.DeleteFlags.ToOptions(o.DynamicClient, o.IOStreams)
+	if err != nil {
+		return err
+	}
+
+	err = o.DeleteOptions.FilenameOptions.RequireFilenameOrKustomize()
+	if err != nil {
+		return err
 	}
 
 	if o.ServerSideApply && o.DeleteOptions.ForceDeletion {
@@ -365,14 +260,48 @@ func (o *ApplyOptions) Validate(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("--dry-run=server cannot be used with --force")
 	}
 
-	if o.All && len(o.Selector) > 0 {
+	o.OpenAPISchema, _ = f.OpenAPISchema()
+	o.Validator, err = f.Validator(cmdutil.GetFlagBool(cmd, "validate"))
+	if err != nil {
+		return err
+	}
+	o.Builder = f.NewBuilder()
+	o.Mapper, err = f.ToRESTMapper()
+	if err != nil {
+		return err
+	}
+
+	o.Namespace, o.EnforceNamespace, err = f.ToRawKubeConfigLoader().Namespace()
+	if err != nil {
+		return err
+	}
+
+	if o.Prune {
+		o.PruneResources, err = parsePruneResources(o.Mapper, o.PruneWhitelist)
+		if err != nil {
+			return err
+		}
+	}
+
+	o.PostProcessorFn = o.PrintAndPrunePostProcessor()
+
+	return nil
+}
+
+func validateArgs(cmd *cobra.Command, args []string) error {
+	if len(args) != 0 {
+		return cmdutil.UsageErrorf(cmd, "Unexpected args: %v", args)
+	}
+	return nil
+}
+
+func validatePruneAll(prune, all bool, selector string) error {
+	if all && len(selector) > 0 {
 		return fmt.Errorf("cannot set --all and --selector at the same time")
 	}
-
-	if o.Prune && !o.All && o.Selector == "" {
+	if prune && !all && selector == "" {
 		return fmt.Errorf("all resources selected for prune without explicitly passing --all. To prune all resources, pass the --all flag. If you did not mean to prune all resources, specify a label selector")
 	}
-
 	return nil
 }
 
@@ -395,6 +324,8 @@ func isIncompatibleServerError(err error) bool {
 func (o *ApplyOptions) GetObjects() ([]*resource.Info, error) {
 	var err error = nil
 	if !o.objectsCached {
+		// include the uninitialized objects by default if --prune is true
+		// unless explicitly set --include-uninitialized=false
 		r := o.Builder.
 			Unstructured().
 			Schema(o.Validator).
@@ -419,6 +350,7 @@ func (o *ApplyOptions) SetObjects(infos []*resource.Info) {
 
 // Run executes the `apply` command.
 func (o *ApplyOptions) Run() error {
+
 	if o.PreProcessorFn != nil {
 		klog.V(4).Infof("Running apply pre-processor function")
 		if err := o.PreProcessorFn(); err != nil {
@@ -483,8 +415,7 @@ func (o *ApplyOptions) applyOneObject(info *resource.Info) error {
 
 	helper := resource.NewHelper(info.Client, info.Mapping).
 		DryRun(o.DryRunStrategy == cmdutil.DryRunServer).
-		WithFieldManager(o.FieldManager).
-		WithFieldValidation(o.ValidationDirective)
+		WithFieldManager(o.FieldManager)
 
 	if o.DryRunStrategy == cmdutil.DryRunServer {
 		// Ensure the APIServer supports server-side dry-run for the resource,

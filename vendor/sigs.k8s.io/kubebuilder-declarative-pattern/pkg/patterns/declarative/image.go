@@ -22,27 +22,17 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
 // ImageRegistryTransform modifies all Pods to use registry for the image source and adds the imagePullSecret
 func ImageRegistryTransform(registry, imagePullSecret string) ObjectTransform {
 	return func(c context.Context, o DeclarativeObject, m *manifest.Objects) error {
-		return applyImageRegistry(c, o, m, registry, imagePullSecret, applyPrivateRegistryToImage)
+		return applyImageRegistry(c, o, m, registry, imagePullSecret)
 	}
 }
 
-type ImageFunc func(registry, image string) string
-
-// PrivateRegistryTransform modifies all Pods to use registry for the image source and adds the imagePullSecret
-func PrivateRegistryTransform(registry, imagePullSecret string, imageFunc ImageFunc) ObjectTransform {
-	return func(c context.Context, o DeclarativeObject, m *manifest.Objects) error {
-		return applyImageRegistry(c, o, m, registry, imagePullSecret, imageFunc)
-	}
-}
-
-func applyImageRegistry(ctx context.Context, operatorObject DeclarativeObject, manifest *manifest.Objects, registry, secret string, imageFunc ImageFunc) error {
+func applyImageRegistry(ctx context.Context, operatorObject DeclarativeObject, manifest *manifest.Objects, registry, secret string) error {
 	log := log.Log
 	if registry == "" && secret == "" {
 		return nil
@@ -53,7 +43,7 @@ func applyImageRegistry(ctx context.Context, operatorObject DeclarativeObject, m
 			manifestItem.Kind == "CronJob" {
 			if registry != "" {
 				log.WithValues("manifest", manifestItem).WithValues("registry", registry).V(1).Info("applying image registory to manifest")
-				if err := manifestItem.MutateContainers(applyPrivateRegistryToContainer(registry, imageFunc)); err != nil {
+				if err := manifestItem.MutateContainers(applyPrivateRegistryToContainer(registry)); err != nil {
 					return fmt.Errorf("error applying private registry: %v", err)
 				}
 			}
@@ -78,19 +68,13 @@ func applyImagePullSecret(secret string) func(map[string]interface{}) error {
 	}
 }
 
-func applyPrivateRegistryToContainer(registry string, imageFunc ImageFunc) func(map[string]interface{}) error {
+func applyPrivateRegistryToContainer(registry string) func(map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		image, _, err := unstructured.NestedString(container, "image")
 		if err != nil {
 			return fmt.Errorf("error reading container image: %v", err)
 		}
-
-		// imageFunc can not be nil
-		if imageFunc == nil {
-			imageFunc = applyPrivateRegistryToImage
-		}
-
-		container["image"] = imageFunc(registry, image)
+		container["image"] = applyPrivateRegistryToImage(registry, image)
 		return nil
 	}
 }

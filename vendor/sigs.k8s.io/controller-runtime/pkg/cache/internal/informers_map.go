@@ -54,9 +54,7 @@ func newSpecificInformersMap(config *rest.Config,
 	namespace string,
 	selectors SelectorsByGVK,
 	disableDeepCopy DisableDeepCopyByGVK,
-	transformers TransformFuncByObject,
-	createListWatcher createListWatcherFunc,
-) *specificInformersMap {
+	createListWatcher createListWatcherFunc) *specificInformersMap {
 	ip := &specificInformersMap{
 		config:            config,
 		Scheme:            scheme,
@@ -70,7 +68,6 @@ func newSpecificInformersMap(config *rest.Config,
 		namespace:         namespace,
 		selectors:         selectors.forGVK,
 		disableDeepCopy:   disableDeepCopy,
-		transformers:      transformers,
 	}
 	return ip
 }
@@ -138,9 +135,6 @@ type specificInformersMap struct {
 
 	// disableDeepCopy indicates not to deep copy objects during get or list objects.
 	disableDeepCopy DisableDeepCopyByGVK
-
-	// transform funcs are applied to objects before they are committed to the cache
-	transformers TransformFuncByObject
 }
 
 // Start calls Run on each of the informers and sets started to true.  Blocks on the context.
@@ -233,12 +227,6 @@ func (ip *specificInformersMap) addInformerToMap(gvk schema.GroupVersionKind, ob
 	ni := cache.NewSharedIndexInformer(lw, obj, resyncPeriod(ip.resync)(), cache.Indexers{
 		cache.NamespaceIndex: cache.MetaNamespaceIndexFunc,
 	})
-
-	// Check to see if there is a transformer for this gvk
-	if err := ni.SetTransform(ip.transformers.Get(gvk)); err != nil {
-		return nil, false, err
-	}
-
 	rm, err := ip.mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
 	if err != nil {
 		return nil, false, err

@@ -19,6 +19,7 @@ package controlplane
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -384,10 +385,10 @@ func (s *APIServer) populateAPIServerCerts() error {
 		return err
 	}
 
-	if err := os.WriteFile(filepath.Join(s.CertDir, "apiserver.crt"), certData, 0640); err != nil { //nolint:gosec
+	if err := ioutil.WriteFile(filepath.Join(s.CertDir, "apiserver.crt"), certData, 0640); err != nil { //nolint:gosec
 		return err
 	}
-	if err := os.WriteFile(filepath.Join(s.CertDir, "apiserver.key"), keyData, 0640); err != nil { //nolint:gosec
+	if err := ioutil.WriteFile(filepath.Join(s.CertDir, "apiserver.key"), keyData, 0640); err != nil { //nolint:gosec
 		return err
 	}
 
@@ -404,10 +405,10 @@ func (s *APIServer) populateAPIServerCerts() error {
 		return err
 	}
 
-	if err := os.WriteFile(filepath.Join(s.CertDir, saCertFile), saCert, 0640); err != nil { //nolint:gosec
+	if err := ioutil.WriteFile(filepath.Join(s.CertDir, saCertFile), saCert, 0640); err != nil { //nolint:gosec
 		return err
 	}
-	return os.WriteFile(filepath.Join(s.CertDir, saKeyFile), saKey, 0640) //nolint:gosec
+	return ioutil.WriteFile(filepath.Join(s.CertDir, saKeyFile), saKey, 0640) //nolint:gosec
 }
 
 // Stop stops this process gracefully, waits for its termination, and cleans up

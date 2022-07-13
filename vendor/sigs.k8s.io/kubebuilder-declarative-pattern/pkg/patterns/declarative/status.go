@@ -33,7 +33,7 @@ type Reconciled interface {
 	// Reconciled is triggered when Reconciliation has occured.
 	// The caller is encouraged to determine and surface the health of the reconcilation
 	// on the DeclarativeObject.
-	Reconciled(context.Context, DeclarativeObject, *manifest.Objects, error) error
+	Reconciled(context.Context, DeclarativeObject, *manifest.Objects) error
 }
 
 type Preflight interface {
@@ -57,9 +57,9 @@ type StatusBuilder struct {
 	VersionCheckImpl VersionCheck
 }
 
-func (s *StatusBuilder) Reconciled(ctx context.Context, src DeclarativeObject, objs *manifest.Objects, err error) error {
+func (s *StatusBuilder) Reconciled(ctx context.Context, src DeclarativeObject, objs *manifest.Objects) error {
 	if s.ReconciledImpl != nil {
-		return s.ReconciledImpl.Reconciled(ctx, src, objs, err)
+		return s.ReconciledImpl.Reconciled(ctx, src, objs)
 	}
 	return nil
 }
