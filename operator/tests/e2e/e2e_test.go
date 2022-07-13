@@ -121,7 +121,9 @@ type cleanupFunc func() error
 
 func TestMain(m *testing.M) {
 	flag.StringVar(&f.projectID, "project-id", "", "Project ID that will be used for the project created for E2E tests.")
-	flag.BoolVar(&f.cleanup, "cleanup", true, "If true, project and clusters created for testing will be deleted before exiting the test suite. "+
+	// TODO(b/238914386): Change default value back to 'true' at end of
+	// time-boxed investigation (whether or not issue has been identified).
+	flag.BoolVar(&f.cleanup, "cleanup", false, "If true, project and clusters created for testing will be deleted before exiting the test suite. "+
 		"Set to false if you want to keep clusters for debugging when running the test locally.")
 	flag.StringVar(&f.version, "version", "latest", "Version of the KCC Operator to use for E2E tests. "+
 		"The version of the KCC Operator is defined by SHORT_SHA in release.sh. Use the corresponding SHORT_SHA value to run the e2e test against a particular commit. "+
