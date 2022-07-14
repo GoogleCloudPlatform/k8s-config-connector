@@ -166,8 +166,8 @@ func (w *watchAll) Notify(ctx context.Context, dest DeclarativeObject, objs *man
 		key := fmt.Sprintf("gvk=%s:%s:%s;labels=%s", gvk.Group, gvk.Version, gvk.Kind, filter.LabelSelector)
 
 		filterNamespace := ""
-		if w.options.ScopeWatchesToNamespace && obj.Namespace != "" {
-			filterNamespace = obj.Namespace
+		if w.options.ScopeWatchesToNamespace && obj.GetNamespace() != "" {
+			filterNamespace = obj.GetNamespace()
 			key += ";namespace=" + filterNamespace
 		}
 
