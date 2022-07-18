@@ -39,6 +39,7 @@ type IamV1beta1Interface interface {
 	IAMServiceAccountsGetter
 	IAMServiceAccountKeysGetter
 	IAMWorkforcePoolsGetter
+	IAMWorkforcePoolProvidersGetter
 	IAMWorkloadIdentityPoolsGetter
 	IAMWorkloadIdentityPoolProvidersGetter
 }
@@ -78,6 +79,10 @@ func (c *IamV1beta1Client) IAMServiceAccountKeys(namespace string) IAMServiceAcc
 
 func (c *IamV1beta1Client) IAMWorkforcePools(namespace string) IAMWorkforcePoolInterface {
 	return newIAMWorkforcePools(c, namespace)
+}
+
+func (c *IamV1beta1Client) IAMWorkforcePoolProviders(namespace string) IAMWorkforcePoolProviderInterface {
+	return newIAMWorkforcePoolProviders(c, namespace)
 }
 
 func (c *IamV1beta1Client) IAMWorkloadIdentityPools(namespace string) IAMWorkloadIdentityPoolInterface {

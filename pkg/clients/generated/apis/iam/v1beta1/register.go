@@ -101,6 +101,12 @@ var (
 		Kind:    reflect.TypeOf(IAMWorkforcePool{}).Name(),
 	}
 
+	IAMWorkforcePoolProviderGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMWorkforcePoolProvider{}).Name(),
+	}
+
 	IAMWorkloadIdentityPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

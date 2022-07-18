@@ -73,6 +73,7 @@ var preferredSampleForResource = map[string]string{
 	"iampolicy":                         "external-project-level-policy",
 	"iampartialpolicy":                  "project-level-policy",
 	"iampolicymember":                   "external-project-level-policy-member",
+	"iamworkforcepoolprovider":          "oidc-workforce-pool-provider",
 	"iamworkloadidentitypoolprovider":   "oidc-workload-identity-pool-provider",
 	"logginglogbucket":                  "project-log-bucket",
 	"logginglogexclusion":               "project-exclusion",
