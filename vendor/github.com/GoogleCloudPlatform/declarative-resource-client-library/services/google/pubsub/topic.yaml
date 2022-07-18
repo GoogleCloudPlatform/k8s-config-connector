@@ -23,21 +23,18 @@ paths:
     - name: Topic
       required: true
       description: A full instance of a Topic
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Topic
     parameters:
     - name: Topic
       required: true
       description: A full instance of a Topic
-    timeoutSecs: 0
   delete:
     description: The function used to delete a Topic
     parameters:
     - name: Topic
       required: true
       description: A full instance of a Topic
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Topic
     parameters:
@@ -45,7 +42,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many Topic
     parameters:
@@ -53,7 +49,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     Topic:
@@ -63,6 +58,9 @@ components:
       x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

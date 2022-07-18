@@ -49,10 +49,10 @@ func (r *FirewallPolicyAssociation) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"attachmentTarget": dcl.ValueOrEmptyString(nr.AttachmentTarget),
-		"firewallPolicy":   dcl.ValueOrEmptyString(nr.FirewallPolicy),
-		"shortName":        dcl.ValueOrEmptyString(nr.ShortName),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"attachment_target": dcl.ValueOrEmptyString(nr.AttachmentTarget),
+		"firewall_policy":   dcl.ValueOrEmptyString(nr.FirewallPolicy),
+		"short_name":        dcl.ValueOrEmptyString(nr.ShortName),
 	}
 	return dcl.Nprintf("locations/global/firewallPolicies/{{firewall_policy}}/associations/{{name}}", params), nil
 }

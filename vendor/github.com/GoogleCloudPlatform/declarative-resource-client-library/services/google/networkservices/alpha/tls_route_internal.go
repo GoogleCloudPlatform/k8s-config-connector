@@ -540,7 +540,7 @@ func canonicalizeTlsRouteDesiredState(rawDesired, rawInitial *TlsRoute, opts ...
 
 func canonicalizeTlsRouteNewState(c *Client, rawNew, rawDesired *TlsRoute) (*TlsRoute, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -548,7 +548,7 @@ func canonicalizeTlsRouteNewState(c *Client, rawNew, rawDesired *TlsRoute) (*Tls
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -556,17 +556,17 @@ func canonicalizeTlsRouteNewState(c *Client, rawNew, rawDesired *TlsRoute) (*Tls
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -574,13 +574,13 @@ func canonicalizeTlsRouteNewState(c *Client, rawNew, rawDesired *TlsRoute) (*Tls
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rules) && dcl.IsNotReturnedByServer(rawDesired.Rules) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rules) && dcl.IsEmptyValueIndirect(rawDesired.Rules) {
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewTlsRouteRulesSlice(c, rawDesired.Rules, rawNew.Rules)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Meshes) && dcl.IsNotReturnedByServer(rawDesired.Meshes) {
+	if dcl.IsEmptyValueIndirect(rawNew.Meshes) && dcl.IsEmptyValueIndirect(rawDesired.Meshes) {
 		rawNew.Meshes = rawDesired.Meshes
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawNew.Meshes) {
@@ -588,7 +588,7 @@ func canonicalizeTlsRouteNewState(c *Client, rawNew, rawDesired *TlsRoute) (*Tls
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Gateways) && dcl.IsNotReturnedByServer(rawDesired.Gateways) {
+	if dcl.IsEmptyValueIndirect(rawNew.Gateways) && dcl.IsEmptyValueIndirect(rawDesired.Gateways) {
 		rawNew.Gateways = rawDesired.Gateways
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawNew.Gateways) {
@@ -658,7 +658,7 @@ func canonicalizeNewTlsRouteRules(c *Client, des, nw *TlsRouteRules) *TlsRouteRu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TlsRouteRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -777,7 +777,7 @@ func canonicalizeNewTlsRouteRulesMatches(c *Client, des, nw *TlsRouteRulesMatche
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TlsRouteRulesMatches while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -891,7 +891,7 @@ func canonicalizeNewTlsRouteRulesAction(c *Client, des, nw *TlsRouteRulesAction)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TlsRouteRulesAction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1011,7 +1011,7 @@ func canonicalizeNewTlsRouteRulesActionDestinations(c *Client, des, nw *TlsRoute
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TlsRouteRulesActionDestinations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1990,7 +1990,7 @@ func extractTlsRouteRulesFields(r *TlsRoute, o *TlsRouteRules) error {
 	if err := extractTlsRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -2017,7 +2017,7 @@ func postReadExtractTlsRouteRulesFields(r *TlsRoute, o *TlsRouteRules) error {
 	if err := extractTlsRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil

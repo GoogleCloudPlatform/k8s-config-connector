@@ -10742,15 +10742,15 @@ func (r *DeidentifyTemplate) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"displayName":      dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":      dcl.ValueOrEmptyString(nr.Description),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"deidentifyConfig": dcl.ValueOrEmptyString(nr.DeidentifyConfig),
-		"locationId":       dcl.ValueOrEmptyString(nr.LocationId),
-		"parent":           dcl.ValueOrEmptyString(nr.Parent),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"display_name":      dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":       dcl.ValueOrEmptyString(nr.Description),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"deidentify_config": dcl.ValueOrEmptyString(nr.DeidentifyConfig),
+		"location_id":       dcl.ValueOrEmptyString(nr.LocationId),
+		"parent":            dcl.ValueOrEmptyString(nr.Parent),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("{{parent}}/deidentifyTemplates/{{name}}", params), nil
 }

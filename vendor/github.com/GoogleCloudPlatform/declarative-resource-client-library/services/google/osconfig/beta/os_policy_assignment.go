@@ -2588,21 +2588,21 @@ func (r *OSPolicyAssignment) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"oSPolicies":         dcl.ValueOrEmptyString(nr.OSPolicies),
-		"instanceFilter":     dcl.ValueOrEmptyString(nr.InstanceFilter),
-		"rollout":            dcl.ValueOrEmptyString(nr.Rollout),
-		"revisionId":         dcl.ValueOrEmptyString(nr.RevisionId),
-		"revisionCreateTime": dcl.ValueOrEmptyString(nr.RevisionCreateTime),
-		"etag":               dcl.ValueOrEmptyString(nr.Etag),
-		"rolloutState":       dcl.ValueOrEmptyString(nr.RolloutState),
-		"baseline":           dcl.ValueOrEmptyString(nr.Baseline),
-		"deleted":            dcl.ValueOrEmptyString(nr.Deleted),
-		"reconciling":        dcl.ValueOrEmptyString(nr.Reconciling),
-		"uid":                dcl.ValueOrEmptyString(nr.Uid),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
-		"location":           dcl.ValueOrEmptyString(nr.Location),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"os_policies":          dcl.ValueOrEmptyString(nr.OSPolicies),
+		"instance_filter":      dcl.ValueOrEmptyString(nr.InstanceFilter),
+		"rollout":              dcl.ValueOrEmptyString(nr.Rollout),
+		"revision_id":          dcl.ValueOrEmptyString(nr.RevisionId),
+		"revision_create_time": dcl.ValueOrEmptyString(nr.RevisionCreateTime),
+		"etag":                 dcl.ValueOrEmptyString(nr.Etag),
+		"rollout_state":        dcl.ValueOrEmptyString(nr.RolloutState),
+		"baseline":             dcl.ValueOrEmptyString(nr.Baseline),
+		"deleted":              dcl.ValueOrEmptyString(nr.Deleted),
+		"reconciling":          dcl.ValueOrEmptyString(nr.Reconciling),
+		"uid":                  dcl.ValueOrEmptyString(nr.Uid),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/osPolicyAssignments/{{name}}", params), nil
 }

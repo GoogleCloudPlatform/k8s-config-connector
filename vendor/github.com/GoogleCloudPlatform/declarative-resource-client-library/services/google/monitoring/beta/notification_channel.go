@@ -81,15 +81,15 @@ func (r *NotificationChannel) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"displayName":        dcl.ValueOrEmptyString(nr.DisplayName),
-		"enabled":            dcl.ValueOrEmptyString(nr.Enabled),
-		"labels":             dcl.ValueOrEmptyString(nr.Labels),
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"type":               dcl.ValueOrEmptyString(nr.Type),
-		"userLabels":         dcl.ValueOrEmptyString(nr.UserLabels),
-		"verificationStatus": dcl.ValueOrEmptyString(nr.VerificationStatus),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
+		"description":         dcl.ValueOrEmptyString(nr.Description),
+		"display_name":        dcl.ValueOrEmptyString(nr.DisplayName),
+		"enabled":             dcl.ValueOrEmptyString(nr.Enabled),
+		"labels":              dcl.ValueOrEmptyString(nr.Labels),
+		"name":                dcl.ValueOrEmptyString(nr.Name),
+		"type":                dcl.ValueOrEmptyString(nr.Type),
+		"user_labels":         dcl.ValueOrEmptyString(nr.UserLabels),
+		"verification_status": dcl.ValueOrEmptyString(nr.VerificationStatus),
+		"project":             dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/notificationChannels/{{name}}", params), nil
 }

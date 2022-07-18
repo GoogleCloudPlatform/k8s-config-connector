@@ -23,21 +23,18 @@ paths:
     - name: WorkforcePool
       required: true
       description: A full instance of a WorkforcePool
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a WorkforcePool
     parameters:
     - name: WorkforcePool
       required: true
       description: A full instance of a WorkforcePool
-    timeoutSecs: 0
   delete:
     description: The function used to delete a WorkforcePool
     parameters:
     - name: WorkforcePool
       required: true
       description: A full instance of a WorkforcePool
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all WorkforcePool
     parameters:
@@ -49,7 +46,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many WorkforcePool
     parameters:
@@ -61,7 +57,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     WorkforcePool:
@@ -69,6 +64,9 @@ components:
       x-dcl-id: locations/{{location}}/workforcePools/{{name}}
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name
@@ -117,6 +115,7 @@ components:
         selfLink:
           type: string
           x-dcl-go-name: SelfLink
+          readOnly: true
           description: 'Output only. The resource name of the pool. Format: `locations/{location}/workforcePools/{workforce_pool_id}`'
           x-kubernetes-immutable: true
         sessionDuration:

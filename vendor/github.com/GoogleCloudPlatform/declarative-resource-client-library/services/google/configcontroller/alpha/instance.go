@@ -286,15 +286,15 @@ func (r *Instance) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"labels":             dcl.ValueOrEmptyString(nr.Labels),
-		"bundlesConfig":      dcl.ValueOrEmptyString(nr.BundlesConfig),
-		"usePrivateEndpoint": dcl.ValueOrEmptyString(nr.UsePrivateEndpoint),
-		"gkeResourceLink":    dcl.ValueOrEmptyString(nr.GkeResourceLink),
-		"state":              dcl.ValueOrEmptyString(nr.State),
-		"managementConfig":   dcl.ValueOrEmptyString(nr.ManagementConfig),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
-		"location":           dcl.ValueOrEmptyString(nr.Location),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"labels":               dcl.ValueOrEmptyString(nr.Labels),
+		"bundles_config":       dcl.ValueOrEmptyString(nr.BundlesConfig),
+		"use_private_endpoint": dcl.ValueOrEmptyString(nr.UsePrivateEndpoint),
+		"gke_resource_link":    dcl.ValueOrEmptyString(nr.GkeResourceLink),
+		"state":                dcl.ValueOrEmptyString(nr.State),
+		"management_config":    dcl.ValueOrEmptyString(nr.ManagementConfig),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/krmApiHosts/{{name}}", params), nil
 }

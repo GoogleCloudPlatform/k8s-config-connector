@@ -362,18 +362,18 @@ func (r *Instance) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"description":   dcl.ValueOrEmptyString(nr.Description),
-		"state":         dcl.ValueOrEmptyString(nr.State),
-		"statusMessage": dcl.ValueOrEmptyString(nr.StatusMessage),
-		"createTime":    dcl.ValueOrEmptyString(nr.CreateTime),
-		"tier":          dcl.ValueOrEmptyString(nr.Tier),
-		"labels":        dcl.ValueOrEmptyString(nr.Labels),
-		"fileShares":    dcl.ValueOrEmptyString(nr.FileShares),
-		"networks":      dcl.ValueOrEmptyString(nr.Networks),
-		"etag":          dcl.ValueOrEmptyString(nr.Etag),
-		"project":       dcl.ValueOrEmptyString(nr.Project),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":           dcl.ValueOrEmptyString(nr.Name),
+		"description":    dcl.ValueOrEmptyString(nr.Description),
+		"state":          dcl.ValueOrEmptyString(nr.State),
+		"status_message": dcl.ValueOrEmptyString(nr.StatusMessage),
+		"create_time":    dcl.ValueOrEmptyString(nr.CreateTime),
+		"tier":           dcl.ValueOrEmptyString(nr.Tier),
+		"labels":         dcl.ValueOrEmptyString(nr.Labels),
+		"file_shares":    dcl.ValueOrEmptyString(nr.FileShares),
+		"networks":       dcl.ValueOrEmptyString(nr.Networks),
+		"etag":           dcl.ValueOrEmptyString(nr.Etag),
+		"project":        dcl.ValueOrEmptyString(nr.Project),
+		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/instances/{{name}}", params), nil
 }

@@ -3215,17 +3215,17 @@ func (r *WorkflowTemplate) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":       dcl.ValueOrEmptyString(nr.Name),
-		"version":    dcl.ValueOrEmptyString(nr.Version),
-		"createTime": dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime": dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":     dcl.ValueOrEmptyString(nr.Labels),
-		"placement":  dcl.ValueOrEmptyString(nr.Placement),
-		"jobs":       dcl.ValueOrEmptyString(nr.Jobs),
-		"parameters": dcl.ValueOrEmptyString(nr.Parameters),
-		"dagTimeout": dcl.ValueOrEmptyString(nr.DagTimeout),
-		"project":    dcl.ValueOrEmptyString(nr.Project),
-		"location":   dcl.ValueOrEmptyString(nr.Location),
+		"name":        dcl.ValueOrEmptyString(nr.Name),
+		"version":     dcl.ValueOrEmptyString(nr.Version),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":      dcl.ValueOrEmptyString(nr.Labels),
+		"placement":   dcl.ValueOrEmptyString(nr.Placement),
+		"jobs":        dcl.ValueOrEmptyString(nr.Jobs),
+		"parameters":  dcl.ValueOrEmptyString(nr.Parameters),
+		"dag_timeout": dcl.ValueOrEmptyString(nr.DagTimeout),
+		"project":     dcl.ValueOrEmptyString(nr.Project),
+		"location":    dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/workflowTemplates/{{name}}", params), nil
 }

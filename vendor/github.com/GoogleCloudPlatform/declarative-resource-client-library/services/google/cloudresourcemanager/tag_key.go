@@ -83,16 +83,16 @@ func (r *TagKey) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"parent":         dcl.ValueOrEmptyString(nr.Parent),
-		"shortName":      dcl.ValueOrEmptyString(nr.ShortName),
-		"namespacedName": dcl.ValueOrEmptyString(nr.NamespacedName),
-		"description":    dcl.ValueOrEmptyString(nr.Description),
-		"createTime":     dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":     dcl.ValueOrEmptyString(nr.UpdateTime),
-		"etag":           dcl.ValueOrEmptyString(nr.Etag),
-		"purpose":        dcl.ValueOrEmptyString(nr.Purpose),
-		"purposeData":    dcl.ValueOrEmptyString(nr.PurposeData),
+		"name":            dcl.ValueOrEmptyString(nr.Name),
+		"parent":          dcl.ValueOrEmptyString(nr.Parent),
+		"short_name":      dcl.ValueOrEmptyString(nr.ShortName),
+		"namespaced_name": dcl.ValueOrEmptyString(nr.NamespacedName),
+		"description":     dcl.ValueOrEmptyString(nr.Description),
+		"create_time":     dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":     dcl.ValueOrEmptyString(nr.UpdateTime),
+		"etag":            dcl.ValueOrEmptyString(nr.Etag),
+		"purpose":         dcl.ValueOrEmptyString(nr.Purpose),
+		"purpose_data":    dcl.ValueOrEmptyString(nr.PurposeData),
 	}
 	return dcl.Nprintf("tagKeys/{{name}}", params), nil
 }

@@ -51,12 +51,12 @@ func (r *Group) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"filter":      dcl.ValueOrEmptyString(nr.Filter),
-		"isCluster":   dcl.ValueOrEmptyString(nr.IsCluster),
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"parentName":  dcl.ValueOrEmptyString(nr.ParentName),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"filter":       dcl.ValueOrEmptyString(nr.Filter),
+		"is_cluster":   dcl.ValueOrEmptyString(nr.IsCluster),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"parent_name":  dcl.ValueOrEmptyString(nr.ParentName),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/groups/{{name}}", params), nil
 }

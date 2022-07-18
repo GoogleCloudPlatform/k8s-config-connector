@@ -475,7 +475,7 @@ func canonicalizeTopicNewState(c *Client, rawNew, rawDesired *Topic) (*Topic, er
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.KmsKeyName) && dcl.IsNotReturnedByServer(rawDesired.KmsKeyName) {
+	if dcl.IsEmptyValueIndirect(rawNew.KmsKeyName) && dcl.IsEmptyValueIndirect(rawDesired.KmsKeyName) {
 		rawNew.KmsKeyName = rawDesired.KmsKeyName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.KmsKeyName, rawNew.KmsKeyName) {
@@ -483,12 +483,12 @@ func canonicalizeTopicNewState(c *Client, rawNew, rawDesired *Topic) (*Topic, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MessageStoragePolicy) && dcl.IsNotReturnedByServer(rawDesired.MessageStoragePolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.MessageStoragePolicy) && dcl.IsEmptyValueIndirect(rawDesired.MessageStoragePolicy) {
 		rawNew.MessageStoragePolicy = rawDesired.MessageStoragePolicy
 	} else {
 		rawNew.MessageStoragePolicy = canonicalizeNewTopicMessageStoragePolicy(c, rawDesired.MessageStoragePolicy, rawNew.MessageStoragePolicy)
@@ -557,7 +557,7 @@ func canonicalizeNewTopicMessageStoragePolicy(c *Client, des, nw *TopicMessageSt
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TopicMessageStoragePolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1010,7 +1010,7 @@ func extractTopicFields(r *Topic) error {
 	if err := extractTopicMessageStoragePolicyFields(r, vMessageStoragePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMessageStoragePolicy) {
+	if !dcl.IsEmptyValueIndirect(vMessageStoragePolicy) {
 		r.MessageStoragePolicy = vMessageStoragePolicy
 	}
 	return nil
@@ -1028,7 +1028,7 @@ func postReadExtractTopicFields(r *Topic) error {
 	if err := postReadExtractTopicMessageStoragePolicyFields(r, vMessageStoragePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMessageStoragePolicy) {
+	if !dcl.IsEmptyValueIndirect(vMessageStoragePolicy) {
 		r.MessageStoragePolicy = vMessageStoragePolicy
 	}
 	return nil

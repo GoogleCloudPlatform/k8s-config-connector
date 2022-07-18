@@ -1857,7 +1857,7 @@ func canonicalizeDashboardNewState(c *Client, rawNew, rawDesired *Dashboard) (*D
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -1865,25 +1865,25 @@ func canonicalizeDashboardNewState(c *Client, rawNew, rawDesired *Dashboard) (*D
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GridLayout) && dcl.IsNotReturnedByServer(rawDesired.GridLayout) {
+	if dcl.IsEmptyValueIndirect(rawNew.GridLayout) && dcl.IsEmptyValueIndirect(rawDesired.GridLayout) {
 		rawNew.GridLayout = rawDesired.GridLayout
 	} else {
 		rawNew.GridLayout = canonicalizeNewDashboardGridLayout(c, rawDesired.GridLayout, rawNew.GridLayout)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MosaicLayout) && dcl.IsNotReturnedByServer(rawDesired.MosaicLayout) {
+	if dcl.IsEmptyValueIndirect(rawNew.MosaicLayout) && dcl.IsEmptyValueIndirect(rawDesired.MosaicLayout) {
 		rawNew.MosaicLayout = rawDesired.MosaicLayout
 	} else {
 		rawNew.MosaicLayout = canonicalizeNewDashboardMosaicLayout(c, rawDesired.MosaicLayout, rawNew.MosaicLayout)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RowLayout) && dcl.IsNotReturnedByServer(rawDesired.RowLayout) {
+	if dcl.IsEmptyValueIndirect(rawNew.RowLayout) && dcl.IsEmptyValueIndirect(rawDesired.RowLayout) {
 		rawNew.RowLayout = rawDesired.RowLayout
 	} else {
 		rawNew.RowLayout = canonicalizeNewDashboardRowLayout(c, rawDesired.RowLayout, rawNew.RowLayout)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ColumnLayout) && dcl.IsNotReturnedByServer(rawDesired.ColumnLayout) {
+	if dcl.IsEmptyValueIndirect(rawNew.ColumnLayout) && dcl.IsEmptyValueIndirect(rawDesired.ColumnLayout) {
 		rawNew.ColumnLayout = rawDesired.ColumnLayout
 	} else {
 		rawNew.ColumnLayout = canonicalizeNewDashboardColumnLayout(c, rawDesired.ColumnLayout, rawNew.ColumnLayout)
@@ -1891,7 +1891,7 @@ func canonicalizeDashboardNewState(c *Client, rawNew, rawDesired *Dashboard) (*D
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -1962,7 +1962,7 @@ func canonicalizeNewDashboardGridLayout(c *Client, des, nw *DashboardGridLayout)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2130,7 +2130,7 @@ func canonicalizeNewDashboardGridLayoutWidgets(c *Client, des, nw *DashboardGrid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2255,7 +2255,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChart(c *Client, des, nw *Dashbo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChart while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2387,7 +2387,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSets(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2513,7 +2513,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQuery(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2636,7 +2636,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2771,7 +2771,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2906,7 +2906,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3037,7 +3037,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3147,7 +3147,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3264,7 +3264,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3397,7 +3397,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3516,7 +3516,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3649,7 +3649,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3784,7 +3784,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3915,7 +3915,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4044,7 +4044,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartThresholds(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4165,7 +4165,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartXAxis(c *Client, des, nw *D
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartXAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4286,7 +4286,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartYAxis(c *Client, des, nw *D
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartYAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4402,7 +4402,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsXyChartChartOptions(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsXyChartChartOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4512,7 +4512,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecard(c *Client, des, nw *Dash
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecard while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4635,7 +4635,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQuery(c *Client
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4758,7 +4758,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4893,7 +4893,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5028,7 +5028,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5159,7 +5159,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5269,7 +5269,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5386,7 +5386,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5519,7 +5519,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5638,7 +5638,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5771,7 +5771,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5906,7 +5906,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6037,7 +6037,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6155,7 +6155,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardGaugeView(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardGaugeView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6272,7 +6272,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardSparkChartView(c *Client,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardSparkChartView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6405,7 +6405,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsScorecardThresholds(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsScorecardThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6526,7 +6526,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsText(c *Client, des, nw *Dashboard
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsText while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6634,7 +6634,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsBlank(c *Client, des, nw *Dashboar
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsBlank while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6750,7 +6750,7 @@ func canonicalizeNewDashboardGridLayoutWidgetsLogsPanel(c *Client, des, nw *Dash
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardGridLayoutWidgetsLogsPanel while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6870,7 +6870,7 @@ func canonicalizeNewDashboardMosaicLayout(c *Client, des, nw *DashboardMosaicLay
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7003,7 +7003,7 @@ func canonicalizeNewDashboardMosaicLayoutTiles(c *Client, des, nw *DashboardMosa
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTiles while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7171,7 +7171,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidget(c *Client, des, nw *Dashboa
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7296,7 +7296,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChart(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChart while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7428,7 +7428,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSets(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7554,7 +7554,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7677,7 +7677,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7812,7 +7812,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7947,7 +7947,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8078,7 +8078,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8188,7 +8188,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8305,7 +8305,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8438,7 +8438,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8557,7 +8557,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8690,7 +8690,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8825,7 +8825,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8956,7 +8956,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9085,7 +9085,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartThresholds(c *Client,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9206,7 +9206,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartXAxis(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartXAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9327,7 +9327,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartYAxis(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartYAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9443,7 +9443,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetXyChartChartOptions(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetXyChartChartOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9553,7 +9553,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecard(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecard while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9676,7 +9676,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQuery(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9799,7 +9799,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9934,7 +9934,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10069,7 +10069,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10200,7 +10200,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10310,7 +10310,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10427,7 +10427,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10560,7 +10560,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10679,7 +10679,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10812,7 +10812,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10947,7 +10947,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11078,7 +11078,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11196,7 +11196,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardGaugeView(c *Client
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardGaugeView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11313,7 +11313,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardSparkChartView(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardSparkChartView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11446,7 +11446,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetScorecardThresholds(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetScorecardThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11567,7 +11567,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetText(c *Client, des, nw *Das
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetText while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11675,7 +11675,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetBlank(c *Client, des, nw *Da
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetBlank while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11791,7 +11791,7 @@ func canonicalizeNewDashboardMosaicLayoutTilesWidgetLogsPanel(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardMosaicLayoutTilesWidgetLogsPanel while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11905,7 +11905,7 @@ func canonicalizeNewDashboardRowLayout(c *Client, des, nw *DashboardRowLayout) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12020,7 +12020,7 @@ func canonicalizeNewDashboardRowLayoutRows(c *Client, des, nw *DashboardRowLayou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRows while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12188,7 +12188,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgets(c *Client, des, nw *DashboardR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12313,7 +12313,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChart(c *Client, des, nw *Das
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChart while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12445,7 +12445,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSets(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12571,7 +12571,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQuery(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12694,7 +12694,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12829,7 +12829,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12964,7 +12964,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13095,7 +13095,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13205,7 +13205,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13322,7 +13322,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13455,7 +13455,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13574,7 +13574,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13707,7 +13707,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13842,7 +13842,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13973,7 +13973,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14102,7 +14102,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartThresholds(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14223,7 +14223,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartXAxis(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartXAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14344,7 +14344,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartYAxis(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartYAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14460,7 +14460,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsXyChartChartOptions(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsXyChartChartOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14570,7 +14570,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecard(c *Client, des, nw *D
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecard while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14693,7 +14693,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQuery(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14816,7 +14816,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14951,7 +14951,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15086,7 +15086,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15217,7 +15217,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15327,7 +15327,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15444,7 +15444,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15577,7 +15577,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15696,7 +15696,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15829,7 +15829,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15964,7 +15964,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16095,7 +16095,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16213,7 +16213,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardGaugeView(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardGaugeView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16330,7 +16330,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardSparkChartView(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardSparkChartView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16463,7 +16463,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsScorecardThresholds(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsScorecardThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16584,7 +16584,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsText(c *Client, des, nw *Dashbo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsText while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16692,7 +16692,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsBlank(c *Client, des, nw *Dashb
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsBlank while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16808,7 +16808,7 @@ func canonicalizeNewDashboardRowLayoutRowsWidgetsLogsPanel(c *Client, des, nw *D
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardRowLayoutRowsWidgetsLogsPanel while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16922,7 +16922,7 @@ func canonicalizeNewDashboardColumnLayout(c *Client, des, nw *DashboardColumnLay
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17037,7 +17037,7 @@ func canonicalizeNewDashboardColumnLayoutColumns(c *Client, des, nw *DashboardCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumns while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17205,7 +17205,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgets(c *Client, des, nw *Dash
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17330,7 +17330,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChart(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChart while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17462,7 +17462,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSets(c *Client
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17588,7 +17588,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17711,7 +17711,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17846,7 +17846,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17981,7 +17981,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18112,7 +18112,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18222,7 +18222,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18339,7 +18339,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18472,7 +18472,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18591,7 +18591,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18724,7 +18724,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18859,7 +18859,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18990,7 +18990,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19119,7 +19119,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartThresholds(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19240,7 +19240,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartXAxis(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartXAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19361,7 +19361,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartYAxis(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartYAxis while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19477,7 +19477,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsXyChartChartOptions(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsXyChartChartOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19587,7 +19587,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecard(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecard while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19710,7 +19710,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQuery(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQuery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19833,7 +19833,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19968,7 +19968,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20103,7 +20103,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20234,7 +20234,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20344,7 +20344,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20461,7 +20461,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumerator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20594,7 +20594,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20713,7 +20713,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20846,7 +20846,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20981,7 +20981,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21112,7 +21112,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21230,7 +21230,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardGaugeView(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardGaugeView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21347,7 +21347,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardSparkChartView(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardSparkChartView while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21480,7 +21480,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsScorecardThresholds(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsScorecardThresholds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21601,7 +21601,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsText(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsText while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21709,7 +21709,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsBlank(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsBlank while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21825,7 +21825,7 @@ func canonicalizeNewDashboardColumnLayoutColumnsWidgetsLogsPanel(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DashboardColumnLayoutColumnsWidgetsLogsPanel while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -56826,7 +56826,7 @@ func extractDashboardFields(r *Dashboard) error {
 	if err := extractDashboardGridLayoutFields(r, vGridLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGridLayout) {
+	if !dcl.IsEmptyValueIndirect(vGridLayout) {
 		r.GridLayout = vGridLayout
 	}
 	vMosaicLayout := r.MosaicLayout
@@ -56837,7 +56837,7 @@ func extractDashboardFields(r *Dashboard) error {
 	if err := extractDashboardMosaicLayoutFields(r, vMosaicLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMosaicLayout) {
+	if !dcl.IsEmptyValueIndirect(vMosaicLayout) {
 		r.MosaicLayout = vMosaicLayout
 	}
 	vRowLayout := r.RowLayout
@@ -56848,7 +56848,7 @@ func extractDashboardFields(r *Dashboard) error {
 	if err := extractDashboardRowLayoutFields(r, vRowLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRowLayout) {
+	if !dcl.IsEmptyValueIndirect(vRowLayout) {
 		r.RowLayout = vRowLayout
 	}
 	vColumnLayout := r.ColumnLayout
@@ -56859,7 +56859,7 @@ func extractDashboardFields(r *Dashboard) error {
 	if err := extractDashboardColumnLayoutFields(r, vColumnLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vColumnLayout) {
+	if !dcl.IsEmptyValueIndirect(vColumnLayout) {
 		r.ColumnLayout = vColumnLayout
 	}
 	return nil
@@ -56876,7 +56876,7 @@ func extractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardGridLayou
 	if err := extractDashboardGridLayoutWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -56887,7 +56887,7 @@ func extractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardGridLayou
 	if err := extractDashboardGridLayoutWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -56898,7 +56898,7 @@ func extractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardGridLayou
 	if err := extractDashboardGridLayoutWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -56909,7 +56909,7 @@ func extractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardGridLayou
 	if err := extractDashboardGridLayoutWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -56920,7 +56920,7 @@ func extractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardGridLayou
 	if err := extractDashboardGridLayoutWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -56934,7 +56934,7 @@ func extractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *DashboardGr
 	if err := extractDashboardGridLayoutWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -56945,7 +56945,7 @@ func extractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *DashboardGr
 	if err := extractDashboardGridLayoutWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -56956,7 +56956,7 @@ func extractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *DashboardGr
 	if err := extractDashboardGridLayoutWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -56970,7 +56970,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsFields(r *Dashboard, o *Das
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -56984,7 +56984,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFields(r *Da
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -56995,7 +56995,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFields(r *Da
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -57009,7 +57009,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57020,7 +57020,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57031,7 +57031,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57054,7 +57054,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -57065,7 +57065,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57076,7 +57076,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57087,7 +57087,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57101,7 +57101,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57118,7 +57118,7 @@ func extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57153,7 +57153,7 @@ func extractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -57164,7 +57164,7 @@ func extractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardGridLayoutWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -57175,7 +57175,7 @@ func extractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardGridLayoutWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -57189,7 +57189,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r *Dashboar
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -57200,7 +57200,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r *Dashboar
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -57214,7 +57214,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFi
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57225,7 +57225,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFi
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57236,7 +57236,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFi
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57259,7 +57259,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -57270,7 +57270,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57281,7 +57281,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57292,7 +57292,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57306,7 +57306,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57323,7 +57323,7 @@ func extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRa
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57367,7 +57367,7 @@ func extractDashboardMosaicLayoutTilesFields(r *Dashboard, o *DashboardMosaicLay
 	if err := extractDashboardMosaicLayoutTilesWidgetFields(r, vWidget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWidget) {
+	if !dcl.IsEmptyValueIndirect(vWidget) {
 		o.Widget = vWidget
 	}
 	return nil
@@ -57381,7 +57381,7 @@ func extractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *DashboardMos
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -57392,7 +57392,7 @@ func extractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *DashboardMos
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -57403,7 +57403,7 @@ func extractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *DashboardMos
 	if err := extractDashboardMosaicLayoutTilesWidgetTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -57414,7 +57414,7 @@ func extractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *DashboardMos
 	if err := extractDashboardMosaicLayoutTilesWidgetBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -57425,7 +57425,7 @@ func extractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *DashboardMos
 	if err := extractDashboardMosaicLayoutTilesWidgetLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -57439,7 +57439,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, o *Dashb
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -57450,7 +57450,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, o *Dashb
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -57461,7 +57461,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, o *Dashb
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -57475,7 +57475,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsFields(r *Dashboard, 
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -57489,7 +57489,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryFields
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -57500,7 +57500,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryFields
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -57514,7 +57514,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57525,7 +57525,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57536,7 +57536,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57559,7 +57559,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -57570,7 +57570,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57581,7 +57581,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57592,7 +57592,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57606,7 +57606,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57623,7 +57623,7 @@ func extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSe
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57658,7 +57658,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard, o *Das
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -57669,7 +57669,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard, o *Das
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -57680,7 +57680,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard, o *Das
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -57694,7 +57694,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFields(r *Da
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -57705,7 +57705,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFields(r *Da
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -57719,7 +57719,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57730,7 +57730,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57741,7 +57741,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57764,7 +57764,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -57775,7 +57775,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -57786,7 +57786,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -57797,7 +57797,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -57811,7 +57811,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57828,7 +57828,7 @@ func extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFi
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -57875,7 +57875,7 @@ func extractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *DashboardRowLay
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -57886,7 +57886,7 @@ func extractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *DashboardRowLay
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -57897,7 +57897,7 @@ func extractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *DashboardRowLay
 	if err := extractDashboardRowLayoutRowsWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -57908,7 +57908,7 @@ func extractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *DashboardRowLay
 	if err := extractDashboardRowLayoutRowsWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -57919,7 +57919,7 @@ func extractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *DashboardRowLay
 	if err := extractDashboardRowLayoutRowsWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -57933,7 +57933,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *Dashboar
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -57944,7 +57944,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *Dashboar
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -57955,7 +57955,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *Dashboar
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -57969,7 +57969,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsFields(r *Dashboard, o *
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -57983,7 +57983,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryFields(r 
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -57994,7 +57994,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryFields(r 
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -58008,7 +58008,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58019,7 +58019,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58030,7 +58030,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58053,7 +58053,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -58064,7 +58064,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58075,7 +58075,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58086,7 +58086,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58100,7 +58100,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58117,7 +58117,7 @@ func extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSerie
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58152,7 +58152,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o *Dashbo
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -58163,7 +58163,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o *Dashbo
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -58174,7 +58174,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o *Dashbo
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -58188,7 +58188,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(r *Dashb
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -58199,7 +58199,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(r *Dashb
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -58213,7 +58213,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58224,7 +58224,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58235,7 +58235,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58258,7 +58258,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -58269,7 +58269,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58280,7 +58280,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58291,7 +58291,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58305,7 +58305,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58322,7 +58322,7 @@ func extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilte
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58369,7 +58369,7 @@ func extractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -58380,7 +58380,7 @@ func extractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -58391,7 +58391,7 @@ func extractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardColumnLayoutColumnsWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -58402,7 +58402,7 @@ func extractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardColumnLayoutColumnsWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -58413,7 +58413,7 @@ func extractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *Dashboard
 	if err := extractDashboardColumnLayoutColumnsWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -58427,7 +58427,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboard, o *Da
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -58438,7 +58438,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboard, o *Da
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -58449,7 +58449,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboard, o *Da
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -58463,7 +58463,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsFields(r *Dashboar
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -58477,7 +58477,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryFie
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -58488,7 +58488,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryFie
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -58502,7 +58502,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58513,7 +58513,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58524,7 +58524,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58547,7 +58547,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -58558,7 +58558,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58569,7 +58569,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58580,7 +58580,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58594,7 +58594,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58611,7 +58611,7 @@ func extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTim
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58646,7 +58646,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashboard, o *
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -58657,7 +58657,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashboard, o *
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -58668,7 +58668,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashboard, o *
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -58682,7 +58682,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryFields(r 
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -58693,7 +58693,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryFields(r 
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -58707,7 +58707,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58718,7 +58718,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58729,7 +58729,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58752,7 +58752,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -58763,7 +58763,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -58774,7 +58774,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -58785,7 +58785,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -58799,7 +58799,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58816,7 +58816,7 @@ func extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSerie
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -58858,7 +58858,7 @@ func postReadExtractDashboardFields(r *Dashboard) error {
 	if err := postReadExtractDashboardGridLayoutFields(r, vGridLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGridLayout) {
+	if !dcl.IsEmptyValueIndirect(vGridLayout) {
 		r.GridLayout = vGridLayout
 	}
 	vMosaicLayout := r.MosaicLayout
@@ -58869,7 +58869,7 @@ func postReadExtractDashboardFields(r *Dashboard) error {
 	if err := postReadExtractDashboardMosaicLayoutFields(r, vMosaicLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMosaicLayout) {
+	if !dcl.IsEmptyValueIndirect(vMosaicLayout) {
 		r.MosaicLayout = vMosaicLayout
 	}
 	vRowLayout := r.RowLayout
@@ -58880,7 +58880,7 @@ func postReadExtractDashboardFields(r *Dashboard) error {
 	if err := postReadExtractDashboardRowLayoutFields(r, vRowLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRowLayout) {
+	if !dcl.IsEmptyValueIndirect(vRowLayout) {
 		r.RowLayout = vRowLayout
 	}
 	vColumnLayout := r.ColumnLayout
@@ -58891,7 +58891,7 @@ func postReadExtractDashboardFields(r *Dashboard) error {
 	if err := postReadExtractDashboardColumnLayoutFields(r, vColumnLayout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vColumnLayout) {
+	if !dcl.IsEmptyValueIndirect(vColumnLayout) {
 		r.ColumnLayout = vColumnLayout
 	}
 	return nil
@@ -58908,7 +58908,7 @@ func postReadExtractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardG
 	if err := extractDashboardGridLayoutWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -58919,7 +58919,7 @@ func postReadExtractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardG
 	if err := extractDashboardGridLayoutWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -58930,7 +58930,7 @@ func postReadExtractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardG
 	if err := extractDashboardGridLayoutWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -58941,7 +58941,7 @@ func postReadExtractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardG
 	if err := extractDashboardGridLayoutWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -58952,7 +58952,7 @@ func postReadExtractDashboardGridLayoutWidgetsFields(r *Dashboard, o *DashboardG
 	if err := extractDashboardGridLayoutWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -58966,7 +58966,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *Das
 	if err := extractDashboardGridLayoutWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -58977,7 +58977,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *Das
 	if err := extractDashboardGridLayoutWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -58988,7 +58988,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartFields(r *Dashboard, o *Das
 	if err := extractDashboardGridLayoutWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -59002,7 +59002,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsFields(r *Dashboard
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -59016,7 +59016,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFiel
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -59027,7 +59027,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryFiel
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -59041,7 +59041,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59052,7 +59052,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59063,7 +59063,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59086,7 +59086,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -59097,7 +59097,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59108,7 +59108,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59119,7 +59119,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59133,7 +59133,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59150,7 +59150,7 @@ func postReadExtractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTime
 	if err := extractDashboardGridLayoutWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59185,7 +59185,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *D
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -59196,7 +59196,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *D
 	if err := extractDashboardGridLayoutWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -59207,7 +59207,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardFields(r *Dashboard, o *D
 	if err := extractDashboardGridLayoutWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -59221,7 +59221,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r *
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -59232,7 +59232,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryFields(r *
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -59246,7 +59246,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59257,7 +59257,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59268,7 +59268,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59291,7 +59291,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -59302,7 +59302,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59313,7 +59313,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59324,7 +59324,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59338,7 +59338,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59355,7 +59355,7 @@ func postReadExtractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeries
 	if err := extractDashboardGridLayoutWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59399,7 +59399,7 @@ func postReadExtractDashboardMosaicLayoutTilesFields(r *Dashboard, o *DashboardM
 	if err := extractDashboardMosaicLayoutTilesWidgetFields(r, vWidget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWidget) {
+	if !dcl.IsEmptyValueIndirect(vWidget) {
 		o.Widget = vWidget
 	}
 	return nil
@@ -59413,7 +59413,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *Dash
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -59424,7 +59424,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *Dash
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -59435,7 +59435,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *Dash
 	if err := extractDashboardMosaicLayoutTilesWidgetTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -59446,7 +59446,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *Dash
 	if err := extractDashboardMosaicLayoutTilesWidgetBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -59457,7 +59457,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetFields(r *Dashboard, o *Dash
 	if err := extractDashboardMosaicLayoutTilesWidgetLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -59471,7 +59471,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, 
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -59482,7 +59482,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, 
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -59493,7 +59493,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartFields(r *Dashboard, 
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -59507,7 +59507,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsFields(r *Das
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -59521,7 +59521,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -59532,7 +59532,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -59546,7 +59546,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59557,7 +59557,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59568,7 +59568,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59591,7 +59591,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -59602,7 +59602,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59613,7 +59613,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59624,7 +59624,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59638,7 +59638,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59655,7 +59655,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQue
 	if err := extractDashboardMosaicLayoutTilesWidgetXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59690,7 +59690,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -59701,7 +59701,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -59712,7 +59712,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardFields(r *Dashboard
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -59726,7 +59726,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFiel
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -59737,7 +59737,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryFiel
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -59751,7 +59751,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59762,7 +59762,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59773,7 +59773,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59796,7 +59796,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -59807,7 +59807,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -59818,7 +59818,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -59829,7 +59829,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -59843,7 +59843,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59860,7 +59860,7 @@ func postReadExtractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTime
 	if err := extractDashboardMosaicLayoutTilesWidgetScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -59907,7 +59907,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *Dashboa
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -59918,7 +59918,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *Dashboa
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -59929,7 +59929,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *Dashboa
 	if err := extractDashboardRowLayoutRowsWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -59940,7 +59940,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *Dashboa
 	if err := extractDashboardRowLayoutRowsWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -59951,7 +59951,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsFields(r *Dashboard, o *Dashboa
 	if err := extractDashboardRowLayoutRowsWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -59965,7 +59965,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -59976,7 +59976,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -59987,7 +59987,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartFields(r *Dashboard, o *
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -60001,7 +60001,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsFields(r *Dashbo
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -60015,7 +60015,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryF
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -60026,7 +60026,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryF
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -60040,7 +60040,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60051,7 +60051,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60062,7 +60062,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60085,7 +60085,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -60096,7 +60096,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60107,7 +60107,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60118,7 +60118,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60132,7 +60132,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60149,7 +60149,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryT
 	if err := extractDashboardRowLayoutRowsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60184,7 +60184,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -60195,7 +60195,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -60206,7 +60206,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardFields(r *Dashboard, o
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -60220,7 +60220,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -60231,7 +60231,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryFields(
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -60245,7 +60245,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60256,7 +60256,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60267,7 +60267,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60290,7 +60290,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -60301,7 +60301,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60312,7 +60312,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60323,7 +60323,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60337,7 +60337,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60354,7 +60354,7 @@ func postReadExtractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSer
 	if err := extractDashboardRowLayoutRowsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60401,7 +60401,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *D
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartFields(r, vXyChart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXyChart) {
+	if !dcl.IsEmptyValueIndirect(vXyChart) {
 		o.XyChart = vXyChart
 	}
 	vScorecard := o.Scorecard
@@ -60412,7 +60412,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *D
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardFields(r, vScorecard); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScorecard) {
+	if !dcl.IsEmptyValueIndirect(vScorecard) {
 		o.Scorecard = vScorecard
 	}
 	vText := o.Text
@@ -60423,7 +60423,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *D
 	if err := extractDashboardColumnLayoutColumnsWidgetsTextFields(r, vText); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vText) {
+	if !dcl.IsEmptyValueIndirect(vText) {
 		o.Text = vText
 	}
 	vBlank := o.Blank
@@ -60434,7 +60434,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *D
 	if err := extractDashboardColumnLayoutColumnsWidgetsBlankFields(r, vBlank); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlank) {
+	if !dcl.IsEmptyValueIndirect(vBlank) {
 		o.Blank = vBlank
 	}
 	vLogsPanel := o.LogsPanel
@@ -60445,7 +60445,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsFields(r *Dashboard, o *D
 	if err := extractDashboardColumnLayoutColumnsWidgetsLogsPanelFields(r, vLogsPanel); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogsPanel) {
+	if !dcl.IsEmptyValueIndirect(vLogsPanel) {
 		o.LogsPanel = vLogsPanel
 	}
 	return nil
@@ -60459,7 +60459,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboar
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartXAxisFields(r, vXAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vXAxis) {
+	if !dcl.IsEmptyValueIndirect(vXAxis) {
 		o.XAxis = vXAxis
 	}
 	vYAxis := o.YAxis
@@ -60470,7 +60470,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboar
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartYAxisFields(r, vYAxis); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYAxis) {
+	if !dcl.IsEmptyValueIndirect(vYAxis) {
 		o.YAxis = vYAxis
 	}
 	vChartOptions := o.ChartOptions
@@ -60481,7 +60481,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartFields(r *Dashboar
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartChartOptionsFields(r, vChartOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChartOptions) {
+	if !dcl.IsEmptyValueIndirect(vChartOptions) {
 		o.ChartOptions = vChartOptions
 	}
 	return nil
@@ -60495,7 +60495,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsFields(r *
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	return nil
@@ -60509,7 +60509,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -60520,7 +60520,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -60534,7 +60534,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60545,7 +60545,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60556,7 +60556,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60579,7 +60579,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -60590,7 +60590,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60601,7 +60601,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60612,7 +60612,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60626,7 +60626,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60643,7 +60643,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeries
 	if err := extractDashboardColumnLayoutColumnsWidgetsXyChartDataSetsTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60678,7 +60678,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashbo
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryFields(r, vTimeSeriesQuery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesQuery) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesQuery) {
 		o.TimeSeriesQuery = vTimeSeriesQuery
 	}
 	vGaugeView := o.GaugeView
@@ -60689,7 +60689,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashbo
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardGaugeViewFields(r, vGaugeView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGaugeView) {
+	if !dcl.IsEmptyValueIndirect(vGaugeView) {
 		o.GaugeView = vGaugeView
 	}
 	vSparkChartView := o.SparkChartView
@@ -60700,7 +60700,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardFields(r *Dashbo
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardSparkChartViewFields(r, vSparkChartView); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkChartView) {
+	if !dcl.IsEmptyValueIndirect(vSparkChartView) {
 		o.SparkChartView = vSparkChartView
 	}
 	return nil
@@ -60714,7 +60714,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryF
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterFields(r, vTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilter) {
 		o.TimeSeriesFilter = vTimeSeriesFilter
 	}
 	vTimeSeriesFilterRatio := o.TimeSeriesFilterRatio
@@ -60725,7 +60725,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryF
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioFields(r, vTimeSeriesFilterRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeSeriesFilterRatio) {
+	if !dcl.IsEmptyValueIndirect(vTimeSeriesFilterRatio) {
 		o.TimeSeriesFilterRatio = vTimeSeriesFilterRatio
 	}
 	return nil
@@ -60739,7 +60739,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60750,7 +60750,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60761,7 +60761,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60784,7 +60784,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorFields(r, vNumerator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNumerator) {
+	if !dcl.IsEmptyValueIndirect(vNumerator) {
 		o.Numerator = vNumerator
 	}
 	vDenominator := o.Denominator
@@ -60795,7 +60795,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorFields(r, vDenominator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDenominator) {
+	if !dcl.IsEmptyValueIndirect(vDenominator) {
 		o.Denominator = vDenominator
 	}
 	vSecondaryAggregation := o.SecondaryAggregation
@@ -60806,7 +60806,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioSecondaryAggregationFields(r, vSecondaryAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryAggregation) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryAggregation) {
 		o.SecondaryAggregation = vSecondaryAggregation
 	}
 	vPickTimeSeriesFilter := o.PickTimeSeriesFilter
@@ -60817,7 +60817,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioPickTimeSeriesFilterFields(r, vPickTimeSeriesFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPickTimeSeriesFilter) {
+	if !dcl.IsEmptyValueIndirect(vPickTimeSeriesFilter) {
 		o.PickTimeSeriesFilter = vPickTimeSeriesFilter
 	}
 	return nil
@@ -60831,7 +60831,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioNumeratorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil
@@ -60848,7 +60848,7 @@ func postReadExtractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryT
 	if err := extractDashboardColumnLayoutColumnsWidgetsScorecardTimeSeriesQueryTimeSeriesFilterRatioDenominatorAggregationFields(r, vAggregation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAggregation) {
+	if !dcl.IsEmptyValueIndirect(vAggregation) {
 		o.Aggregation = vAggregation
 	}
 	return nil

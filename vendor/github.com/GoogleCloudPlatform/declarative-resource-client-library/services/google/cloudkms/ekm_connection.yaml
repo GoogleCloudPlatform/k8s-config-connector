@@ -23,14 +23,12 @@ paths:
     - name: EkmConnection
       required: true
       description: A full instance of a EkmConnection
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a EkmConnection
     parameters:
     - name: EkmConnection
       required: true
       description: A full instance of a EkmConnection
-    timeoutSecs: 0
   list:
     description: The function used to list information about many EkmConnection
     parameters:
@@ -42,7 +40,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     EkmConnection:
@@ -51,6 +48,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name
@@ -197,3 +197,6 @@ components:
                 x-dcl-go-name: ServiceDirectoryService
                 description: Required. The resource name of the Service Directory
                   service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.
+                x-dcl-references:
+                - resource: Servicedirectory/Service
+                  field: selfLink

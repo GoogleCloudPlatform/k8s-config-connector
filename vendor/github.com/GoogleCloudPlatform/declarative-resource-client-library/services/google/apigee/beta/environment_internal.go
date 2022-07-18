@@ -419,7 +419,7 @@ func canonicalizeEnvironmentDesiredState(rawDesired, rawInitial *Environment, op
 
 func canonicalizeEnvironmentNewState(c *Client, rawNew, rawDesired *Environment) (*Environment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -427,7 +427,7 @@ func canonicalizeEnvironmentNewState(c *Client, rawNew, rawDesired *Environment)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -435,22 +435,22 @@ func canonicalizeEnvironmentNewState(c *Client, rawNew, rawDesired *Environment)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreatedAt) && dcl.IsNotReturnedByServer(rawDesired.CreatedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreatedAt) && dcl.IsEmptyValueIndirect(rawDesired.CreatedAt) {
 		rawNew.CreatedAt = rawDesired.CreatedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastModifiedAt) && dcl.IsNotReturnedByServer(rawDesired.LastModifiedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastModifiedAt) && dcl.IsEmptyValueIndirect(rawDesired.LastModifiedAt) {
 		rawNew.LastModifiedAt = rawDesired.LastModifiedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Properties) && dcl.IsNotReturnedByServer(rawDesired.Properties) {
+	if dcl.IsEmptyValueIndirect(rawNew.Properties) && dcl.IsEmptyValueIndirect(rawDesired.Properties) {
 		rawNew.Properties = rawDesired.Properties
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -458,7 +458,7 @@ func canonicalizeEnvironmentNewState(c *Client, rawNew, rawDesired *Environment)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}

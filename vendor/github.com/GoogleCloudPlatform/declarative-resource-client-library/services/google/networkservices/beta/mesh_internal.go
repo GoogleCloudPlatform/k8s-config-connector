@@ -504,7 +504,7 @@ func canonicalizeMeshDesiredState(rawDesired, rawInitial *Mesh, opts ...dcl.Appl
 
 func canonicalizeMeshNewState(c *Client, rawNew, rawDesired *Mesh) (*Mesh, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -512,22 +512,22 @@ func canonicalizeMeshNewState(c *Client, rawNew, rawDesired *Mesh) (*Mesh, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -535,7 +535,7 @@ func canonicalizeMeshNewState(c *Client, rawNew, rawDesired *Mesh) (*Mesh, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InterceptionPort) && dcl.IsNotReturnedByServer(rawDesired.InterceptionPort) {
+	if dcl.IsEmptyValueIndirect(rawNew.InterceptionPort) && dcl.IsEmptyValueIndirect(rawDesired.InterceptionPort) {
 		rawNew.InterceptionPort = rawDesired.InterceptionPort
 	} else {
 	}
@@ -544,7 +544,7 @@ func canonicalizeMeshNewState(c *Client, rawNew, rawDesired *Mesh) (*Mesh, error
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {

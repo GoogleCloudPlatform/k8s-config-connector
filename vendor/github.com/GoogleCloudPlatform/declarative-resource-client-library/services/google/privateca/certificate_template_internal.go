@@ -599,7 +599,7 @@ func canonicalizeCertificateTemplateDesiredState(rawDesired, rawInitial *Certifi
 
 func canonicalizeCertificateTemplateNewState(c *Client, rawNew, rawDesired *CertificateTemplate) (*CertificateTemplate, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -607,25 +607,25 @@ func canonicalizeCertificateTemplateNewState(c *Client, rawNew, rawDesired *Cert
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PredefinedValues) && dcl.IsNotReturnedByServer(rawDesired.PredefinedValues) {
+	if dcl.IsEmptyValueIndirect(rawNew.PredefinedValues) && dcl.IsEmptyValueIndirect(rawDesired.PredefinedValues) {
 		rawNew.PredefinedValues = rawDesired.PredefinedValues
 	} else {
 		rawNew.PredefinedValues = canonicalizeNewCertificateTemplatePredefinedValues(c, rawDesired.PredefinedValues, rawNew.PredefinedValues)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IdentityConstraints) && dcl.IsNotReturnedByServer(rawDesired.IdentityConstraints) {
+	if dcl.IsEmptyValueIndirect(rawNew.IdentityConstraints) && dcl.IsEmptyValueIndirect(rawDesired.IdentityConstraints) {
 		rawNew.IdentityConstraints = rawDesired.IdentityConstraints
 	} else {
 		rawNew.IdentityConstraints = canonicalizeNewCertificateTemplateIdentityConstraints(c, rawDesired.IdentityConstraints, rawNew.IdentityConstraints)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PassthroughExtensions) && dcl.IsNotReturnedByServer(rawDesired.PassthroughExtensions) {
+	if dcl.IsEmptyValueIndirect(rawNew.PassthroughExtensions) && dcl.IsEmptyValueIndirect(rawDesired.PassthroughExtensions) {
 		rawNew.PassthroughExtensions = rawDesired.PassthroughExtensions
 	} else {
 		rawNew.PassthroughExtensions = canonicalizeNewCertificateTemplatePassthroughExtensions(c, rawDesired.PassthroughExtensions, rawNew.PassthroughExtensions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -633,17 +633,17 @@ func canonicalizeCertificateTemplateNewState(c *Client, rawNew, rawDesired *Cert
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
@@ -717,7 +717,7 @@ func canonicalizeNewCertificateTemplatePredefinedValues(c *Client, des, nw *Cert
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValues while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -834,7 +834,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesKeyUsage(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -989,7 +989,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1153,7 +1153,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1284,7 +1284,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesKeyUsageUnknownExtendedKe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesKeyUsageUnknownExtendedKeyUsages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1401,7 +1401,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesCaOptions(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesCaOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1517,7 +1517,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesPolicyIds(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesPolicyIds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1634,7 +1634,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesAdditionalExtensions(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1754,7 +1754,7 @@ func canonicalizeNewCertificateTemplatePredefinedValuesAdditionalExtensionsObjec
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePredefinedValuesAdditionalExtensionsObjectId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1871,7 +1871,7 @@ func canonicalizeNewCertificateTemplateIdentityConstraints(c *Client, des, nw *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplateIdentityConstraints while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2005,7 +2005,7 @@ func canonicalizeNewCertificateTemplateIdentityConstraintsCelExpression(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplateIdentityConstraintsCelExpression while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2131,7 +2131,7 @@ func canonicalizeNewCertificateTemplatePassthroughExtensions(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePassthroughExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2245,7 +2245,7 @@ func canonicalizeNewCertificateTemplatePassthroughExtensionsAdditionalExtensions
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateTemplatePassthroughExtensionsAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3348,8 +3348,8 @@ func flattenCertificateTemplatePredefinedValuesKeyUsage(c *Client, i interface{}
 	if dcl.IsEmptyValueIndirect(i) {
 		return EmptyCertificateTemplatePredefinedValuesKeyUsage
 	}
-	r.BaseKeyUsage = flattenCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage(c, m["baseKeyUsage"], res)
-	r.ExtendedKeyUsage = flattenCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage(c, m["extendedKeyUsage"], res)
+	r.BaseKeyUsage = flattenCertificateTemplateBaseKeyUsage(c, m["baseKeyUsage"], res)
+	r.ExtendedKeyUsage = flattenCertificateTemplateExtendedKeyUsage(c, m["extendedKeyUsage"], res)
 	r.UnknownExtendedKeyUsages = flattenCertificateTemplatePredefinedValuesKeyUsageUnknownExtendedKeyUsagesSlice(c, m["unknownExtendedKeyUsages"], res)
 
 	return r
@@ -4854,7 +4854,7 @@ func extractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := extractCertificateTemplatePredefinedValuesFields(r, vPredefinedValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPredefinedValues) {
+	if !dcl.IsEmptyValueIndirect(vPredefinedValues) {
 		r.PredefinedValues = vPredefinedValues
 	}
 	vIdentityConstraints := r.IdentityConstraints
@@ -4865,7 +4865,7 @@ func extractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := extractCertificateTemplateIdentityConstraintsFields(r, vIdentityConstraints); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIdentityConstraints) {
+	if !dcl.IsEmptyValueIndirect(vIdentityConstraints) {
 		r.IdentityConstraints = vIdentityConstraints
 	}
 	vPassthroughExtensions := r.PassthroughExtensions
@@ -4876,7 +4876,7 @@ func extractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := extractCertificateTemplatePassthroughExtensionsFields(r, vPassthroughExtensions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPassthroughExtensions) {
+	if !dcl.IsEmptyValueIndirect(vPassthroughExtensions) {
 		r.PassthroughExtensions = vPassthroughExtensions
 	}
 	return nil
@@ -4890,7 +4890,7 @@ func extractCertificateTemplatePredefinedValuesFields(r *CertificateTemplate, o 
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -4901,7 +4901,7 @@ func extractCertificateTemplatePredefinedValuesFields(r *CertificateTemplate, o 
 	if err := extractCertificateTemplatePredefinedValuesCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -4915,7 +4915,7 @@ func extractCertificateTemplatePredefinedValuesKeyUsageFields(r *CertificateTemp
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -4926,7 +4926,7 @@ func extractCertificateTemplatePredefinedValuesKeyUsageFields(r *CertificateTemp
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -4955,7 +4955,7 @@ func extractCertificateTemplatePredefinedValuesAdditionalExtensionsFields(r *Cer
 	if err := extractCertificateTemplatePredefinedValuesAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -4972,7 +4972,7 @@ func extractCertificateTemplateIdentityConstraintsFields(r *CertificateTemplate,
 	if err := extractCertificateTemplateIdentityConstraintsCelExpressionFields(r, vCelExpression); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCelExpression) {
+	if !dcl.IsEmptyValueIndirect(vCelExpression) {
 		o.CelExpression = vCelExpression
 	}
 	return nil
@@ -4996,7 +4996,7 @@ func postReadExtractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := postReadExtractCertificateTemplatePredefinedValuesFields(r, vPredefinedValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPredefinedValues) {
+	if !dcl.IsEmptyValueIndirect(vPredefinedValues) {
 		r.PredefinedValues = vPredefinedValues
 	}
 	vIdentityConstraints := r.IdentityConstraints
@@ -5007,7 +5007,7 @@ func postReadExtractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := postReadExtractCertificateTemplateIdentityConstraintsFields(r, vIdentityConstraints); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIdentityConstraints) {
+	if !dcl.IsEmptyValueIndirect(vIdentityConstraints) {
 		r.IdentityConstraints = vIdentityConstraints
 	}
 	vPassthroughExtensions := r.PassthroughExtensions
@@ -5018,7 +5018,7 @@ func postReadExtractCertificateTemplateFields(r *CertificateTemplate) error {
 	if err := postReadExtractCertificateTemplatePassthroughExtensionsFields(r, vPassthroughExtensions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPassthroughExtensions) {
+	if !dcl.IsEmptyValueIndirect(vPassthroughExtensions) {
 		r.PassthroughExtensions = vPassthroughExtensions
 	}
 	return nil
@@ -5032,7 +5032,7 @@ func postReadExtractCertificateTemplatePredefinedValuesFields(r *CertificateTemp
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -5043,7 +5043,7 @@ func postReadExtractCertificateTemplatePredefinedValuesFields(r *CertificateTemp
 	if err := extractCertificateTemplatePredefinedValuesCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -5057,7 +5057,7 @@ func postReadExtractCertificateTemplatePredefinedValuesKeyUsageFields(r *Certifi
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -5068,7 +5068,7 @@ func postReadExtractCertificateTemplatePredefinedValuesKeyUsageFields(r *Certifi
 	if err := extractCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -5097,7 +5097,7 @@ func postReadExtractCertificateTemplatePredefinedValuesAdditionalExtensionsField
 	if err := extractCertificateTemplatePredefinedValuesAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -5114,7 +5114,7 @@ func postReadExtractCertificateTemplateIdentityConstraintsFields(r *CertificateT
 	if err := extractCertificateTemplateIdentityConstraintsCelExpressionFields(r, vCelExpression); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCelExpression) {
+	if !dcl.IsEmptyValueIndirect(vCelExpression) {
 		o.CelExpression = vCelExpression
 	}
 	return nil

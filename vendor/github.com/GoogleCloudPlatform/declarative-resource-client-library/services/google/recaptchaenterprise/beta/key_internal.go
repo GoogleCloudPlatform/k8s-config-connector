@@ -540,12 +540,12 @@ func canonicalizeKeyDesiredState(rawDesired, rawInitial *Key, opts ...dcl.ApplyO
 
 func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -553,35 +553,35 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.WebSettings) && dcl.IsNotReturnedByServer(rawDesired.WebSettings) {
+	if dcl.IsEmptyValueIndirect(rawNew.WebSettings) && dcl.IsEmptyValueIndirect(rawDesired.WebSettings) {
 		rawNew.WebSettings = rawDesired.WebSettings
 	} else {
 		rawNew.WebSettings = canonicalizeNewKeyWebSettings(c, rawDesired.WebSettings, rawNew.WebSettings)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AndroidSettings) && dcl.IsNotReturnedByServer(rawDesired.AndroidSettings) {
+	if dcl.IsEmptyValueIndirect(rawNew.AndroidSettings) && dcl.IsEmptyValueIndirect(rawDesired.AndroidSettings) {
 		rawNew.AndroidSettings = rawDesired.AndroidSettings
 	} else {
 		rawNew.AndroidSettings = canonicalizeNewKeyAndroidSettings(c, rawDesired.AndroidSettings, rawNew.AndroidSettings)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IosSettings) && dcl.IsNotReturnedByServer(rawDesired.IosSettings) {
+	if dcl.IsEmptyValueIndirect(rawNew.IosSettings) && dcl.IsEmptyValueIndirect(rawDesired.IosSettings) {
 		rawNew.IosSettings = rawDesired.IosSettings
 	} else {
 		rawNew.IosSettings = canonicalizeNewKeyIosSettings(c, rawDesired.IosSettings, rawNew.IosSettings)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TestingOptions) && dcl.IsNotReturnedByServer(rawDesired.TestingOptions) {
+	if dcl.IsEmptyValueIndirect(rawNew.TestingOptions) && dcl.IsEmptyValueIndirect(rawDesired.TestingOptions) {
 		rawNew.TestingOptions = rawDesired.TestingOptions
 	} else {
 		rawNew.TestingOptions = canonicalizeNewKeyTestingOptions(c, rawDesired.TestingOptions, rawNew.TestingOptions)
@@ -672,7 +672,7 @@ func canonicalizeNewKeyWebSettings(c *Client, des, nw *KeyWebSettings) *KeyWebSe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyWebSettings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -798,7 +798,7 @@ func canonicalizeNewKeyAndroidSettings(c *Client, des, nw *KeyAndroidSettings) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyAndroidSettings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -921,7 +921,7 @@ func canonicalizeNewKeyIosSettings(c *Client, des, nw *KeyIosSettings) *KeyIosSe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyIosSettings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1046,7 +1046,7 @@ func canonicalizeNewKeyTestingOptions(c *Client, des, nw *KeyTestingOptions) *Ke
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyTestingOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2201,7 +2201,7 @@ func extractKeyFields(r *Key) error {
 	if err := extractKeyWebSettingsFields(r, vWebSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWebSettings) {
+	if !dcl.IsEmptyValueIndirect(vWebSettings) {
 		r.WebSettings = vWebSettings
 	}
 	vAndroidSettings := r.AndroidSettings
@@ -2212,7 +2212,7 @@ func extractKeyFields(r *Key) error {
 	if err := extractKeyAndroidSettingsFields(r, vAndroidSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAndroidSettings) {
+	if !dcl.IsEmptyValueIndirect(vAndroidSettings) {
 		r.AndroidSettings = vAndroidSettings
 	}
 	vIosSettings := r.IosSettings
@@ -2223,7 +2223,7 @@ func extractKeyFields(r *Key) error {
 	if err := extractKeyIosSettingsFields(r, vIosSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIosSettings) {
+	if !dcl.IsEmptyValueIndirect(vIosSettings) {
 		r.IosSettings = vIosSettings
 	}
 	vTestingOptions := r.TestingOptions
@@ -2234,7 +2234,7 @@ func extractKeyFields(r *Key) error {
 	if err := extractKeyTestingOptionsFields(r, vTestingOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTestingOptions) {
+	if !dcl.IsEmptyValueIndirect(vTestingOptions) {
 		r.TestingOptions = vTestingOptions
 	}
 	return nil
@@ -2261,7 +2261,7 @@ func postReadExtractKeyFields(r *Key) error {
 	if err := postReadExtractKeyWebSettingsFields(r, vWebSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWebSettings) {
+	if !dcl.IsEmptyValueIndirect(vWebSettings) {
 		r.WebSettings = vWebSettings
 	}
 	vAndroidSettings := r.AndroidSettings
@@ -2272,7 +2272,7 @@ func postReadExtractKeyFields(r *Key) error {
 	if err := postReadExtractKeyAndroidSettingsFields(r, vAndroidSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAndroidSettings) {
+	if !dcl.IsEmptyValueIndirect(vAndroidSettings) {
 		r.AndroidSettings = vAndroidSettings
 	}
 	vIosSettings := r.IosSettings
@@ -2283,7 +2283,7 @@ func postReadExtractKeyFields(r *Key) error {
 	if err := postReadExtractKeyIosSettingsFields(r, vIosSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIosSettings) {
+	if !dcl.IsEmptyValueIndirect(vIosSettings) {
 		r.IosSettings = vIosSettings
 	}
 	vTestingOptions := r.TestingOptions
@@ -2294,7 +2294,7 @@ func postReadExtractKeyFields(r *Key) error {
 	if err := postReadExtractKeyTestingOptionsFields(r, vTestingOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTestingOptions) {
+	if !dcl.IsEmptyValueIndirect(vTestingOptions) {
 		r.TestingOptions = vTestingOptions
 	}
 	return nil

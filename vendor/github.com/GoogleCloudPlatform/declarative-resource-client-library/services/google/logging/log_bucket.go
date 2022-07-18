@@ -81,15 +81,15 @@ func (r *LogBucket) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"description":    dcl.ValueOrEmptyString(nr.Description),
-		"createTime":     dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":     dcl.ValueOrEmptyString(nr.UpdateTime),
-		"retentionDays":  dcl.ValueOrEmptyString(nr.RetentionDays),
-		"locked":         dcl.ValueOrEmptyString(nr.Locked),
-		"lifecycleState": dcl.ValueOrEmptyString(nr.LifecycleState),
-		"parent":         dcl.ValueOrEmptyString(nr.Parent),
-		"location":       dcl.ValueOrEmptyString(nr.Location),
+		"name":            dcl.ValueOrEmptyString(nr.Name),
+		"description":     dcl.ValueOrEmptyString(nr.Description),
+		"create_time":     dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":     dcl.ValueOrEmptyString(nr.UpdateTime),
+		"retention_days":  dcl.ValueOrEmptyString(nr.RetentionDays),
+		"locked":          dcl.ValueOrEmptyString(nr.Locked),
+		"lifecycle_state": dcl.ValueOrEmptyString(nr.LifecycleState),
+		"parent":          dcl.ValueOrEmptyString(nr.Parent),
+		"location":        dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("{{parent}}/locations/{{location}}/buckets/{{name}}", params), nil
 }

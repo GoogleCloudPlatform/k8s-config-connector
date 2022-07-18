@@ -1446,18 +1446,18 @@ func (r *ServiceLevelObjective) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                   dcl.ValueOrEmptyString(nr.Name),
-		"displayName":            dcl.ValueOrEmptyString(nr.DisplayName),
-		"serviceLevelIndicator":  dcl.ValueOrEmptyString(nr.ServiceLevelIndicator),
-		"goal":                   dcl.ValueOrEmptyString(nr.Goal),
-		"rollingPeriod":          dcl.ValueOrEmptyString(nr.RollingPeriod),
-		"calendarPeriod":         dcl.ValueOrEmptyString(nr.CalendarPeriod),
-		"createTime":             dcl.ValueOrEmptyString(nr.CreateTime),
-		"deleteTime":             dcl.ValueOrEmptyString(nr.DeleteTime),
-		"serviceManagementOwned": dcl.ValueOrEmptyString(nr.ServiceManagementOwned),
-		"userLabels":             dcl.ValueOrEmptyString(nr.UserLabels),
-		"project":                dcl.ValueOrEmptyString(nr.Project),
-		"service":                dcl.ValueOrEmptyString(nr.Service),
+		"name":                     dcl.ValueOrEmptyString(nr.Name),
+		"display_name":             dcl.ValueOrEmptyString(nr.DisplayName),
+		"service_level_indicator":  dcl.ValueOrEmptyString(nr.ServiceLevelIndicator),
+		"goal":                     dcl.ValueOrEmptyString(nr.Goal),
+		"rolling_period":           dcl.ValueOrEmptyString(nr.RollingPeriod),
+		"calendar_period":          dcl.ValueOrEmptyString(nr.CalendarPeriod),
+		"create_time":              dcl.ValueOrEmptyString(nr.CreateTime),
+		"delete_time":              dcl.ValueOrEmptyString(nr.DeleteTime),
+		"service_management_owned": dcl.ValueOrEmptyString(nr.ServiceManagementOwned),
+		"user_labels":              dcl.ValueOrEmptyString(nr.UserLabels),
+		"project":                  dcl.ValueOrEmptyString(nr.Project),
+		"service":                  dcl.ValueOrEmptyString(nr.Service),
 	}
 	return dcl.Nprintf("projects/{{project}}/services/{{service}}/serviceLevelObjectives/{{name}}", params), nil
 }

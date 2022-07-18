@@ -956,12 +956,12 @@ func canonicalizeJobTriggerDesiredState(rawDesired, rawInitial *JobTrigger, opts
 
 func canonicalizeJobTriggerNewState(c *Client, rawNew, rawDesired *JobTrigger) (*JobTrigger, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -969,7 +969,7 @@ func canonicalizeJobTriggerNewState(c *Client, rawNew, rawDesired *JobTrigger) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -977,45 +977,45 @@ func canonicalizeJobTriggerNewState(c *Client, rawNew, rawDesired *JobTrigger) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InspectJob) && dcl.IsNotReturnedByServer(rawDesired.InspectJob) {
+	if dcl.IsEmptyValueIndirect(rawNew.InspectJob) && dcl.IsEmptyValueIndirect(rawDesired.InspectJob) {
 		rawNew.InspectJob = rawDesired.InspectJob
 	} else {
 		rawNew.InspectJob = canonicalizeNewJobTriggerInspectJob(c, rawDesired.InspectJob, rawNew.InspectJob)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Triggers) && dcl.IsNotReturnedByServer(rawDesired.Triggers) {
+	if dcl.IsEmptyValueIndirect(rawNew.Triggers) && dcl.IsEmptyValueIndirect(rawDesired.Triggers) {
 		rawNew.Triggers = rawDesired.Triggers
 	} else {
 		rawNew.Triggers = canonicalizeNewJobTriggerTriggersSlice(c, rawDesired.Triggers, rawNew.Triggers)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Errors) && dcl.IsNotReturnedByServer(rawDesired.Errors) {
+	if dcl.IsEmptyValueIndirect(rawNew.Errors) && dcl.IsEmptyValueIndirect(rawDesired.Errors) {
 		rawNew.Errors = rawDesired.Errors
 	} else {
 		rawNew.Errors = canonicalizeNewJobTriggerErrorsSlice(c, rawDesired.Errors, rawNew.Errors)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastRunTime) && dcl.IsNotReturnedByServer(rawDesired.LastRunTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastRunTime) && dcl.IsEmptyValueIndirect(rawDesired.LastRunTime) {
 		rawNew.LastRunTime = rawDesired.LastRunTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LocationId) && dcl.IsNotReturnedByServer(rawDesired.LocationId) {
+	if dcl.IsEmptyValueIndirect(rawNew.LocationId) && dcl.IsEmptyValueIndirect(rawDesired.LocationId) {
 		rawNew.LocationId = rawDesired.LocationId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LocationId, rawNew.LocationId) {
@@ -1091,7 +1091,7 @@ func canonicalizeNewJobTriggerInspectJob(c *Client, des, nw *JobTriggerInspectJo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1289,7 +1289,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfig(c *Client, des, nw *JobTri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1403,7 +1403,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptions(c *Client,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigDatastoreOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1523,7 +1523,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1638,7 +1638,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsKind(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigDatastoreOptionsKind while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1799,7 +1799,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptions(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigCloudStorageOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1933,7 +1933,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2060,7 +2060,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2235,7 +2235,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptions(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigBigQueryOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2364,7 +2364,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferen
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigBigQueryOptionsTableReference while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2475,7 +2475,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingF
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2590,7 +2590,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFiel
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2705,7 +2705,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFiel
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2832,7 +2832,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptions(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigHybridOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2947,7 +2947,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptions(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigHybridOptionsTableOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3060,7 +3060,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsId
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3188,7 +3188,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfig(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigTimespanConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3304,7 +3304,7 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigTimestampFiel
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobStorageConfigTimespanConfigTimestampField while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3434,7 +3434,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfig(c *Client, des, nw *JobTri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3556,7 +3556,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigInfoTypes(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3679,7 +3679,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimits(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigLimits while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3794,7 +3794,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTyp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3912,7 +3912,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTyp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4083,7 +4083,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypes(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4206,7 +4206,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesInfoType(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4341,7 +4341,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionary(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4455,7 +4455,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4570,7 +4570,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4691,7 +4691,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesRegex(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4799,7 +4799,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTyp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4911,7 +4911,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesStoredType(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesStoredType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5028,7 +5028,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5139,7 +5139,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5260,7 +5260,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5382,7 +5382,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5520,7 +5520,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5628,7 +5628,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSet(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5747,7 +5747,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetInfoTypes(c *Client,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5882,7 +5882,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRules(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5994,7 +5994,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6115,7 +6115,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6237,7 +6237,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProx
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6375,7 +6375,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLike
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6520,7 +6520,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6652,7 +6652,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6766,7 +6766,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6881,7 +6881,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7002,7 +7002,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7113,7 +7113,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleEx
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7231,7 +7231,7 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleEx
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7410,7 +7410,7 @@ func canonicalizeNewJobTriggerInspectJobActions(c *Client, des, nw *JobTriggerIn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7524,7 +7524,7 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindings(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsSaveFindings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7660,7 +7660,7 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfig(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsSaveFindingsOutputConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7787,7 +7787,7 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigTable(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsSaveFindingsOutputConfigTable while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7891,7 +7891,7 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorag
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8003,7 +8003,7 @@ func canonicalizeNewJobTriggerInspectJobActionsPubSub(c *Client, des, nw *JobTri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsPubSub while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8107,7 +8107,7 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishSummaryToCscc(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsPublishSummaryToCscc while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8211,7 +8211,7 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8315,7 +8315,7 @@ func canonicalizeNewJobTriggerInspectJobActionsJobNotificationEmails(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsJobNotificationEmails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8419,7 +8419,7 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishToStackdriver(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerInspectJobActionsPublishToStackdriver while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8547,7 +8547,7 @@ func canonicalizeNewJobTriggerTriggers(c *Client, des, nw *JobTriggerTriggers) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerTriggers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8661,7 +8661,7 @@ func canonicalizeNewJobTriggerTriggersSchedule(c *Client, des, nw *JobTriggerTri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerTriggersSchedule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8769,7 +8769,7 @@ func canonicalizeNewJobTriggerTriggersManual(c *Client, des, nw *JobTriggerTrigg
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerTriggersManual while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8882,7 +8882,7 @@ func canonicalizeNewJobTriggerErrors(c *Client, des, nw *JobTriggerErrors) *JobT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerErrors while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9002,7 +9002,7 @@ func canonicalizeNewJobTriggerErrorsDetails(c *Client, des, nw *JobTriggerErrors
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerErrorsDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9123,7 +9123,7 @@ func canonicalizeNewJobTriggerErrorsDetailsDetails(c *Client, des, nw *JobTrigge
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTriggerErrorsDetailsDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20406,7 +20406,7 @@ func extractJobTriggerFields(r *JobTrigger) error {
 	if err := extractJobTriggerInspectJobFields(r, vInspectJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectJob) {
+	if !dcl.IsEmptyValueIndirect(vInspectJob) {
 		r.InspectJob = vInspectJob
 	}
 	return nil
@@ -20420,7 +20420,7 @@ func extractJobTriggerInspectJobFields(r *JobTrigger, o *JobTriggerInspectJob) e
 	if err := extractJobTriggerInspectJobStorageConfigFields(r, vStorageConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStorageConfig) {
+	if !dcl.IsEmptyValueIndirect(vStorageConfig) {
 		o.StorageConfig = vStorageConfig
 	}
 	vInspectConfig := o.InspectConfig
@@ -20431,7 +20431,7 @@ func extractJobTriggerInspectJobFields(r *JobTrigger, o *JobTriggerInspectJob) e
 	if err := extractJobTriggerInspectJobInspectConfigFields(r, vInspectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectConfig) {
+	if !dcl.IsEmptyValueIndirect(vInspectConfig) {
 		o.InspectConfig = vInspectConfig
 	}
 	return nil
@@ -20445,7 +20445,7 @@ func extractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r, vDatastoreOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDatastoreOptions) {
+	if !dcl.IsEmptyValueIndirect(vDatastoreOptions) {
 		o.DatastoreOptions = vDatastoreOptions
 	}
 	vCloudStorageOptions := o.CloudStorageOptions
@@ -20456,7 +20456,7 @@ func extractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFields(r, vCloudStorageOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStorageOptions) {
+	if !dcl.IsEmptyValueIndirect(vCloudStorageOptions) {
 		o.CloudStorageOptions = vCloudStorageOptions
 	}
 	vBigQueryOptions := o.BigQueryOptions
@@ -20467,7 +20467,7 @@ func extractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigBigQueryOptionsFields(r, vBigQueryOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBigQueryOptions) {
+	if !dcl.IsEmptyValueIndirect(vBigQueryOptions) {
 		o.BigQueryOptions = vBigQueryOptions
 	}
 	vHybridOptions := o.HybridOptions
@@ -20478,7 +20478,7 @@ func extractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigHybridOptionsFields(r, vHybridOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHybridOptions) {
+	if !dcl.IsEmptyValueIndirect(vHybridOptions) {
 		o.HybridOptions = vHybridOptions
 	}
 	vTimespanConfig := o.TimespanConfig
@@ -20489,7 +20489,7 @@ func extractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigTimespanConfigFields(r, vTimespanConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimespanConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimespanConfig) {
 		o.TimespanConfig = vTimespanConfig
 	}
 	return nil
@@ -20503,7 +20503,7 @@ func extractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r *JobTrigge
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionIdFields(r, vPartitionId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPartitionId) {
+	if !dcl.IsEmptyValueIndirect(vPartitionId) {
 		o.PartitionId = vPartitionId
 	}
 	vKind := o.Kind
@@ -20514,7 +20514,7 @@ func extractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r *JobTrigge
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsKindFields(r, vKind); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKind) {
+	if !dcl.IsEmptyValueIndirect(vKind) {
 		o.Kind = vKind
 	}
 	return nil
@@ -20534,7 +20534,7 @@ func extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFields(r *JobTri
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetFields(r, vFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileSet) {
+	if !dcl.IsEmptyValueIndirect(vFileSet) {
 		o.FileSet = vFileSet
 	}
 	return nil
@@ -20548,7 +20548,7 @@ func extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetFields(r 
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSetFields(r, vRegexFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegexFileSet) {
+	if !dcl.IsEmptyValueIndirect(vRegexFileSet) {
 		o.RegexFileSet = vRegexFileSet
 	}
 	return nil
@@ -20565,7 +20565,7 @@ func extractJobTriggerInspectJobStorageConfigBigQueryOptionsFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferenceFields(r, vTableReference); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTableReference) {
+	if !dcl.IsEmptyValueIndirect(vTableReference) {
 		o.TableReference = vTableReference
 	}
 	return nil
@@ -20591,7 +20591,7 @@ func extractJobTriggerInspectJobStorageConfigHybridOptionsFields(r *JobTrigger, 
 	if err := extractJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsFields(r, vTableOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTableOptions) {
+	if !dcl.IsEmptyValueIndirect(vTableOptions) {
 		o.TableOptions = vTableOptions
 	}
 	return nil
@@ -20611,7 +20611,7 @@ func extractJobTriggerInspectJobStorageConfigTimespanConfigFields(r *JobTrigger,
 	if err := extractJobTriggerInspectJobStorageConfigTimespanConfigTimestampFieldFields(r, vTimestampField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimestampField) {
+	if !dcl.IsEmptyValueIndirect(vTimestampField) {
 		o.TimestampField = vTimestampField
 	}
 	return nil
@@ -20628,7 +20628,7 @@ func extractJobTriggerInspectJobInspectConfigFields(r *JobTrigger, o *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigLimitsFields(r, vLimits); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLimits) {
+	if !dcl.IsEmptyValueIndirect(vLimits) {
 		o.Limits = vLimits
 	}
 	return nil
@@ -20648,7 +20648,7 @@ func extractJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeFields(
 	if err := extractJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	return nil
@@ -20665,7 +20665,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	vDictionary := o.Dictionary
@@ -20676,7 +20676,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -20687,7 +20687,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vSurrogateType := o.SurrogateType
@@ -20698,7 +20698,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTypeFields(r, vSurrogateType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateType) {
 		o.SurrogateType = vSurrogateType
 	}
 	vStoredType := o.StoredType
@@ -20709,7 +20709,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *JobTrigger
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesStoredTypeFields(r, vStoredType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStoredType) {
+	if !dcl.IsEmptyValueIndirect(vStoredType) {
 		o.StoredType = vStoredType
 	}
 	return nil
@@ -20726,7 +20726,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFields(r *
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -20737,7 +20737,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFields(r *
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -20766,7 +20766,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesFields
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	return nil
@@ -20780,7 +20780,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwor
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -20791,7 +20791,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwor
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -20802,7 +20802,7 @@ func extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwor
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -20831,7 +20831,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesFields(r *JobTrigger, o
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	vExclusionRule := o.ExclusionRule
@@ -20842,7 +20842,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesFields(r *JobTrigger, o
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFields(r, vExclusionRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExclusionRule) {
+	if !dcl.IsEmptyValueIndirect(vExclusionRule) {
 		o.ExclusionRule = vExclusionRule
 	}
 	return nil
@@ -20856,7 +20856,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -20867,7 +20867,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -20878,7 +20878,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -20901,7 +20901,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFields(r *
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -20912,7 +20912,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFields(r *
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vExcludeInfoTypes := o.ExcludeInfoTypes
@@ -20923,7 +20923,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFields(r *
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesFields(r, vExcludeInfoTypes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExcludeInfoTypes) {
+	if !dcl.IsEmptyValueIndirect(vExcludeInfoTypes) {
 		o.ExcludeInfoTypes = vExcludeInfoTypes
 	}
 	return nil
@@ -20937,7 +20937,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -20948,7 +20948,7 @@ func extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -20977,7 +20977,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsSaveFindingsFields(r, vSaveFindings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSaveFindings) {
+	if !dcl.IsEmptyValueIndirect(vSaveFindings) {
 		o.SaveFindings = vSaveFindings
 	}
 	vPubSub := o.PubSub
@@ -20988,7 +20988,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsPubSubFields(r, vPubSub); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubSub) {
+	if !dcl.IsEmptyValueIndirect(vPubSub) {
 		o.PubSub = vPubSub
 	}
 	vPublishSummaryToCscc := o.PublishSummaryToCscc
@@ -20999,7 +20999,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsPublishSummaryToCsccFields(r, vPublishSummaryToCscc); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishSummaryToCscc) {
+	if !dcl.IsEmptyValueIndirect(vPublishSummaryToCscc) {
 		o.PublishSummaryToCscc = vPublishSummaryToCscc
 	}
 	vPublishFindingsToCloudDataCatalog := o.PublishFindingsToCloudDataCatalog
@@ -21010,7 +21010,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalogFields(r, vPublishFindingsToCloudDataCatalog); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishFindingsToCloudDataCatalog) {
+	if !dcl.IsEmptyValueIndirect(vPublishFindingsToCloudDataCatalog) {
 		o.PublishFindingsToCloudDataCatalog = vPublishFindingsToCloudDataCatalog
 	}
 	vJobNotificationEmails := o.JobNotificationEmails
@@ -21021,7 +21021,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsJobNotificationEmailsFields(r, vJobNotificationEmails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vJobNotificationEmails) {
+	if !dcl.IsEmptyValueIndirect(vJobNotificationEmails) {
 		o.JobNotificationEmails = vJobNotificationEmails
 	}
 	vPublishToStackdriver := o.PublishToStackdriver
@@ -21032,7 +21032,7 @@ func extractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTriggerInspec
 	if err := extractJobTriggerInspectJobActionsPublishToStackdriverFields(r, vPublishToStackdriver); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishToStackdriver) {
+	if !dcl.IsEmptyValueIndirect(vPublishToStackdriver) {
 		o.PublishToStackdriver = vPublishToStackdriver
 	}
 	return nil
@@ -21046,7 +21046,7 @@ func extractJobTriggerInspectJobActionsSaveFindingsFields(r *JobTrigger, o *JobT
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r, vOutputConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOutputConfig) {
+	if !dcl.IsEmptyValueIndirect(vOutputConfig) {
 		o.OutputConfig = vOutputConfig
 	}
 	return nil
@@ -21060,7 +21060,7 @@ func extractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r *JobTrig
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigTableFields(r, vTable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTable) {
+	if !dcl.IsEmptyValueIndirect(vTable) {
 		o.Table = vTable
 	}
 	vDlpStorage := o.DlpStorage
@@ -21071,7 +21071,7 @@ func extractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r *JobTrig
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorageFields(r, vDlpStorage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDlpStorage) {
+	if !dcl.IsEmptyValueIndirect(vDlpStorage) {
 		o.DlpStorage = vDlpStorage
 	}
 	return nil
@@ -21106,7 +21106,7 @@ func extractJobTriggerTriggersFields(r *JobTrigger, o *JobTriggerTriggers) error
 	if err := extractJobTriggerTriggersScheduleFields(r, vSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSchedule) {
+	if !dcl.IsEmptyValueIndirect(vSchedule) {
 		o.Schedule = vSchedule
 	}
 	vManual := o.Manual
@@ -21117,7 +21117,7 @@ func extractJobTriggerTriggersFields(r *JobTrigger, o *JobTriggerTriggers) error
 	if err := extractJobTriggerTriggersManualFields(r, vManual); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManual) {
+	if !dcl.IsEmptyValueIndirect(vManual) {
 		o.Manual = vManual
 	}
 	return nil
@@ -21137,7 +21137,7 @@ func extractJobTriggerErrorsFields(r *JobTrigger, o *JobTriggerErrors) error {
 	if err := extractJobTriggerErrorsDetailsFields(r, vDetails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDetails) {
+	if !dcl.IsEmptyValueIndirect(vDetails) {
 		o.Details = vDetails
 	}
 	return nil
@@ -21158,7 +21158,7 @@ func postReadExtractJobTriggerFields(r *JobTrigger) error {
 	if err := postReadExtractJobTriggerInspectJobFields(r, vInspectJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectJob) {
+	if !dcl.IsEmptyValueIndirect(vInspectJob) {
 		r.InspectJob = vInspectJob
 	}
 	return nil
@@ -21172,7 +21172,7 @@ func postReadExtractJobTriggerInspectJobFields(r *JobTrigger, o *JobTriggerInspe
 	if err := extractJobTriggerInspectJobStorageConfigFields(r, vStorageConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStorageConfig) {
+	if !dcl.IsEmptyValueIndirect(vStorageConfig) {
 		o.StorageConfig = vStorageConfig
 	}
 	vInspectConfig := o.InspectConfig
@@ -21183,7 +21183,7 @@ func postReadExtractJobTriggerInspectJobFields(r *JobTrigger, o *JobTriggerInspe
 	if err := extractJobTriggerInspectJobInspectConfigFields(r, vInspectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectConfig) {
+	if !dcl.IsEmptyValueIndirect(vInspectConfig) {
 		o.InspectConfig = vInspectConfig
 	}
 	return nil
@@ -21197,7 +21197,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r, vDatastoreOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDatastoreOptions) {
+	if !dcl.IsEmptyValueIndirect(vDatastoreOptions) {
 		o.DatastoreOptions = vDatastoreOptions
 	}
 	vCloudStorageOptions := o.CloudStorageOptions
@@ -21208,7 +21208,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFields(r, vCloudStorageOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStorageOptions) {
+	if !dcl.IsEmptyValueIndirect(vCloudStorageOptions) {
 		o.CloudStorageOptions = vCloudStorageOptions
 	}
 	vBigQueryOptions := o.BigQueryOptions
@@ -21219,7 +21219,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobStorageConfigBigQueryOptionsFields(r, vBigQueryOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBigQueryOptions) {
+	if !dcl.IsEmptyValueIndirect(vBigQueryOptions) {
 		o.BigQueryOptions = vBigQueryOptions
 	}
 	vHybridOptions := o.HybridOptions
@@ -21230,7 +21230,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobStorageConfigHybridOptionsFields(r, vHybridOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHybridOptions) {
+	if !dcl.IsEmptyValueIndirect(vHybridOptions) {
 		o.HybridOptions = vHybridOptions
 	}
 	vTimespanConfig := o.TimespanConfig
@@ -21241,7 +21241,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobStorageConfigTimespanConfigFields(r, vTimespanConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimespanConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimespanConfig) {
 		o.TimespanConfig = vTimespanConfig
 	}
 	return nil
@@ -21255,7 +21255,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r *J
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionIdFields(r, vPartitionId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPartitionId) {
+	if !dcl.IsEmptyValueIndirect(vPartitionId) {
 		o.PartitionId = vPartitionId
 	}
 	vKind := o.Kind
@@ -21266,7 +21266,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigDatastoreOptionsFields(r *J
 	if err := extractJobTriggerInspectJobStorageConfigDatastoreOptionsKindFields(r, vKind); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKind) {
+	if !dcl.IsEmptyValueIndirect(vKind) {
 		o.Kind = vKind
 	}
 	return nil
@@ -21286,7 +21286,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigCloudStorageOptionsFields(r
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetFields(r, vFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileSet) {
+	if !dcl.IsEmptyValueIndirect(vFileSet) {
 		o.FileSet = vFileSet
 	}
 	return nil
@@ -21300,7 +21300,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetF
 	if err := extractJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSetFields(r, vRegexFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegexFileSet) {
+	if !dcl.IsEmptyValueIndirect(vRegexFileSet) {
 		o.RegexFileSet = vRegexFileSet
 	}
 	return nil
@@ -21317,7 +21317,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigBigQueryOptionsFields(r *Jo
 	if err := extractJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferenceFields(r, vTableReference); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTableReference) {
+	if !dcl.IsEmptyValueIndirect(vTableReference) {
 		o.TableReference = vTableReference
 	}
 	return nil
@@ -21343,7 +21343,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigHybridOptionsFields(r *JobT
 	if err := extractJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsFields(r, vTableOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTableOptions) {
+	if !dcl.IsEmptyValueIndirect(vTableOptions) {
 		o.TableOptions = vTableOptions
 	}
 	return nil
@@ -21363,7 +21363,7 @@ func postReadExtractJobTriggerInspectJobStorageConfigTimespanConfigFields(r *Job
 	if err := extractJobTriggerInspectJobStorageConfigTimespanConfigTimestampFieldFields(r, vTimestampField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimestampField) {
+	if !dcl.IsEmptyValueIndirect(vTimestampField) {
 		o.TimestampField = vTimestampField
 	}
 	return nil
@@ -21380,7 +21380,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigFields(r *JobTrigger, o *Jo
 	if err := extractJobTriggerInspectJobInspectConfigLimitsFields(r, vLimits); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLimits) {
+	if !dcl.IsEmptyValueIndirect(vLimits) {
 		o.Limits = vLimits
 	}
 	return nil
@@ -21400,7 +21400,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTyp
 	if err := extractJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	return nil
@@ -21417,7 +21417,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	vDictionary := o.Dictionary
@@ -21428,7 +21428,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -21439,7 +21439,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vSurrogateType := o.SurrogateType
@@ -21450,7 +21450,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTypeFields(r, vSurrogateType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateType) {
 		o.SurrogateType = vSurrogateType
 	}
 	vStoredType := o.StoredType
@@ -21461,7 +21461,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesFields(r *Jo
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesStoredTypeFields(r, vStoredType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStoredType) {
+	if !dcl.IsEmptyValueIndirect(vStoredType) {
 		o.StoredType = vStoredType
 	}
 	return nil
@@ -21478,7 +21478,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFi
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -21489,7 +21489,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryFi
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -21518,7 +21518,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	return nil
@@ -21532,7 +21532,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -21543,7 +21543,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -21554,7 +21554,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if err := extractJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -21583,7 +21583,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesFields(r *JobTr
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	vExclusionRule := o.ExclusionRule
@@ -21594,7 +21594,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesFields(r *JobTr
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFields(r, vExclusionRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExclusionRule) {
+	if !dcl.IsEmptyValueIndirect(vExclusionRule) {
 		o.ExclusionRule = vExclusionRule
 	}
 	return nil
@@ -21608,7 +21608,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFiel
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -21619,7 +21619,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFiel
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -21630,7 +21630,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleFiel
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -21653,7 +21653,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFi
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -21664,7 +21664,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFi
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vExcludeInfoTypes := o.ExcludeInfoTypes
@@ -21675,7 +21675,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleFi
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesFields(r, vExcludeInfoTypes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExcludeInfoTypes) {
+	if !dcl.IsEmptyValueIndirect(vExcludeInfoTypes) {
 		o.ExcludeInfoTypes = vExcludeInfoTypes
 	}
 	return nil
@@ -21689,7 +21689,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -21700,7 +21700,7 @@ func postReadExtractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	if err := extractJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -21729,7 +21729,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsSaveFindingsFields(r, vSaveFindings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSaveFindings) {
+	if !dcl.IsEmptyValueIndirect(vSaveFindings) {
 		o.SaveFindings = vSaveFindings
 	}
 	vPubSub := o.PubSub
@@ -21740,7 +21740,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsPubSubFields(r, vPubSub); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubSub) {
+	if !dcl.IsEmptyValueIndirect(vPubSub) {
 		o.PubSub = vPubSub
 	}
 	vPublishSummaryToCscc := o.PublishSummaryToCscc
@@ -21751,7 +21751,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsPublishSummaryToCsccFields(r, vPublishSummaryToCscc); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishSummaryToCscc) {
+	if !dcl.IsEmptyValueIndirect(vPublishSummaryToCscc) {
 		o.PublishSummaryToCscc = vPublishSummaryToCscc
 	}
 	vPublishFindingsToCloudDataCatalog := o.PublishFindingsToCloudDataCatalog
@@ -21762,7 +21762,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalogFields(r, vPublishFindingsToCloudDataCatalog); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishFindingsToCloudDataCatalog) {
+	if !dcl.IsEmptyValueIndirect(vPublishFindingsToCloudDataCatalog) {
 		o.PublishFindingsToCloudDataCatalog = vPublishFindingsToCloudDataCatalog
 	}
 	vJobNotificationEmails := o.JobNotificationEmails
@@ -21773,7 +21773,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsJobNotificationEmailsFields(r, vJobNotificationEmails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vJobNotificationEmails) {
+	if !dcl.IsEmptyValueIndirect(vJobNotificationEmails) {
 		o.JobNotificationEmails = vJobNotificationEmails
 	}
 	vPublishToStackdriver := o.PublishToStackdriver
@@ -21784,7 +21784,7 @@ func postReadExtractJobTriggerInspectJobActionsFields(r *JobTrigger, o *JobTrigg
 	if err := extractJobTriggerInspectJobActionsPublishToStackdriverFields(r, vPublishToStackdriver); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishToStackdriver) {
+	if !dcl.IsEmptyValueIndirect(vPublishToStackdriver) {
 		o.PublishToStackdriver = vPublishToStackdriver
 	}
 	return nil
@@ -21798,7 +21798,7 @@ func postReadExtractJobTriggerInspectJobActionsSaveFindingsFields(r *JobTrigger,
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r, vOutputConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOutputConfig) {
+	if !dcl.IsEmptyValueIndirect(vOutputConfig) {
 		o.OutputConfig = vOutputConfig
 	}
 	return nil
@@ -21812,7 +21812,7 @@ func postReadExtractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r 
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigTableFields(r, vTable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTable) {
+	if !dcl.IsEmptyValueIndirect(vTable) {
 		o.Table = vTable
 	}
 	vDlpStorage := o.DlpStorage
@@ -21823,7 +21823,7 @@ func postReadExtractJobTriggerInspectJobActionsSaveFindingsOutputConfigFields(r 
 	if err := extractJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorageFields(r, vDlpStorage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDlpStorage) {
+	if !dcl.IsEmptyValueIndirect(vDlpStorage) {
 		o.DlpStorage = vDlpStorage
 	}
 	return nil
@@ -21858,7 +21858,7 @@ func postReadExtractJobTriggerTriggersFields(r *JobTrigger, o *JobTriggerTrigger
 	if err := extractJobTriggerTriggersScheduleFields(r, vSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSchedule) {
+	if !dcl.IsEmptyValueIndirect(vSchedule) {
 		o.Schedule = vSchedule
 	}
 	vManual := o.Manual
@@ -21869,7 +21869,7 @@ func postReadExtractJobTriggerTriggersFields(r *JobTrigger, o *JobTriggerTrigger
 	if err := extractJobTriggerTriggersManualFields(r, vManual); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManual) {
+	if !dcl.IsEmptyValueIndirect(vManual) {
 		o.Manual = vManual
 	}
 	return nil
@@ -21889,7 +21889,7 @@ func postReadExtractJobTriggerErrorsFields(r *JobTrigger, o *JobTriggerErrors) e
 	if err := extractJobTriggerErrorsDetailsFields(r, vDetails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDetails) {
+	if !dcl.IsEmptyValueIndirect(vDetails) {
 		o.Details = vDetails
 	}
 	return nil

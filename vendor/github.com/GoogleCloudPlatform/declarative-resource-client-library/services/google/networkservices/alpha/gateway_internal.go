@@ -545,7 +545,7 @@ func canonicalizeGatewayDesiredState(rawDesired, rawInitial *Gateway, opts ...dc
 
 func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gateway, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -553,22 +553,22 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -576,12 +576,12 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Addresses) && dcl.IsNotReturnedByServer(rawDesired.Addresses) {
+	if dcl.IsEmptyValueIndirect(rawNew.Addresses) && dcl.IsEmptyValueIndirect(rawDesired.Addresses) {
 		rawNew.Addresses = rawDesired.Addresses
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Addresses, rawNew.Addresses) {
@@ -589,12 +589,12 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Ports) && dcl.IsNotReturnedByServer(rawDesired.Ports) {
+	if dcl.IsEmptyValueIndirect(rawNew.Ports) && dcl.IsEmptyValueIndirect(rawDesired.Ports) {
 		rawNew.Ports = rawDesired.Ports
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Scope) && dcl.IsNotReturnedByServer(rawDesired.Scope) {
+	if dcl.IsEmptyValueIndirect(rawNew.Scope) && dcl.IsEmptyValueIndirect(rawDesired.Scope) {
 		rawNew.Scope = rawDesired.Scope
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Scope, rawNew.Scope) {
@@ -602,7 +602,7 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServerTlsPolicy) && dcl.IsNotReturnedByServer(rawDesired.ServerTlsPolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServerTlsPolicy) && dcl.IsEmptyValueIndirect(rawDesired.ServerTlsPolicy) {
 		rawNew.ServerTlsPolicy = rawDesired.ServerTlsPolicy
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ServerTlsPolicy, rawNew.ServerTlsPolicy) {
@@ -610,7 +610,7 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AuthorizationPolicy) && dcl.IsNotReturnedByServer(rawDesired.AuthorizationPolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.AuthorizationPolicy) && dcl.IsEmptyValueIndirect(rawDesired.AuthorizationPolicy) {
 		rawNew.AuthorizationPolicy = rawDesired.AuthorizationPolicy
 	} else {
 		if dcl.StringCanonicalize(rawDesired.AuthorizationPolicy, rawNew.AuthorizationPolicy) {
@@ -622,7 +622,7 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {

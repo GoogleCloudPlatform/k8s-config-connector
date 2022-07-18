@@ -1276,7 +1276,7 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 
 func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Instance, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.CanIPForward) && dcl.IsNotReturnedByServer(rawDesired.CanIPForward) {
+	if dcl.IsEmptyValueIndirect(rawNew.CanIPForward) && dcl.IsEmptyValueIndirect(rawDesired.CanIPForward) {
 		rawNew.CanIPForward = rawDesired.CanIPForward
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.CanIPForward, rawNew.CanIPForward) {
@@ -1284,7 +1284,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CpuPlatform) && dcl.IsNotReturnedByServer(rawDesired.CpuPlatform) {
+	if dcl.IsEmptyValueIndirect(rawNew.CpuPlatform) && dcl.IsEmptyValueIndirect(rawDesired.CpuPlatform) {
 		rawNew.CpuPlatform = rawDesired.CpuPlatform
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CpuPlatform, rawNew.CpuPlatform) {
@@ -1292,7 +1292,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreationTimestamp) && dcl.IsNotReturnedByServer(rawDesired.CreationTimestamp) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreationTimestamp) && dcl.IsEmptyValueIndirect(rawDesired.CreationTimestamp) {
 		rawNew.CreationTimestamp = rawDesired.CreationTimestamp
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CreationTimestamp, rawNew.CreationTimestamp) {
@@ -1300,7 +1300,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeletionProtection) && dcl.IsNotReturnedByServer(rawDesired.DeletionProtection) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeletionProtection) && dcl.IsEmptyValueIndirect(rawDesired.DeletionProtection) {
 		rawNew.DeletionProtection = rawDesired.DeletionProtection
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.DeletionProtection, rawNew.DeletionProtection) {
@@ -1308,7 +1308,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -1318,13 +1318,13 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 
 	rawNew.Disks = rawDesired.Disks
 
-	if dcl.IsNotReturnedByServer(rawNew.GuestAccelerators) && dcl.IsNotReturnedByServer(rawDesired.GuestAccelerators) {
+	if dcl.IsEmptyValueIndirect(rawNew.GuestAccelerators) && dcl.IsEmptyValueIndirect(rawDesired.GuestAccelerators) {
 		rawNew.GuestAccelerators = rawDesired.GuestAccelerators
 	} else {
 		rawNew.GuestAccelerators = canonicalizeNewInstanceGuestAcceleratorsSlice(c, rawDesired.GuestAccelerators, rawNew.GuestAccelerators)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Hostname) && dcl.IsNotReturnedByServer(rawDesired.Hostname) {
+	if dcl.IsEmptyValueIndirect(rawNew.Hostname) && dcl.IsEmptyValueIndirect(rawDesired.Hostname) {
 		rawNew.Hostname = rawDesired.Hostname
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Hostname, rawNew.Hostname) {
@@ -1332,7 +1332,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Id, rawNew.Id) {
@@ -1340,22 +1340,22 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Metadata) && dcl.IsNotReturnedByServer(rawDesired.Metadata) {
+	if dcl.IsEmptyValueIndirect(rawNew.Metadata) && dcl.IsEmptyValueIndirect(rawDesired.Metadata) {
 		rawNew.Metadata = rawDesired.Metadata
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MachineType) && dcl.IsNotReturnedByServer(rawDesired.MachineType) {
+	if dcl.IsEmptyValueIndirect(rawNew.MachineType) && dcl.IsEmptyValueIndirect(rawDesired.MachineType) {
 		rawNew.MachineType = rawDesired.MachineType
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MinCpuPlatform) && dcl.IsNotReturnedByServer(rawDesired.MinCpuPlatform) {
+	if dcl.IsEmptyValueIndirect(rawNew.MinCpuPlatform) && dcl.IsEmptyValueIndirect(rawDesired.MinCpuPlatform) {
 		rawNew.MinCpuPlatform = rawDesired.MinCpuPlatform
 	} else {
 		if dcl.StringCanonicalize(rawDesired.MinCpuPlatform, rawNew.MinCpuPlatform) {
@@ -1363,7 +1363,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -1371,36 +1371,36 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NetworkInterfaces) && dcl.IsNotReturnedByServer(rawDesired.NetworkInterfaces) {
+	if dcl.IsEmptyValueIndirect(rawNew.NetworkInterfaces) && dcl.IsEmptyValueIndirect(rawDesired.NetworkInterfaces) {
 		rawNew.NetworkInterfaces = rawDesired.NetworkInterfaces
 	} else {
 		rawNew.NetworkInterfaces = canonicalizeNewInstanceNetworkInterfacesSlice(c, rawDesired.NetworkInterfaces, rawNew.NetworkInterfaces)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Scheduling) && dcl.IsNotReturnedByServer(rawDesired.Scheduling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Scheduling) && dcl.IsEmptyValueIndirect(rawDesired.Scheduling) {
 		rawNew.Scheduling = rawDesired.Scheduling
 	} else {
 		rawNew.Scheduling = canonicalizeNewInstanceScheduling(c, rawDesired.Scheduling, rawNew.Scheduling)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceAccounts) && dcl.IsNotReturnedByServer(rawDesired.ServiceAccounts) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceAccounts) && dcl.IsEmptyValueIndirect(rawDesired.ServiceAccounts) {
 		rawNew.ServiceAccounts = rawDesired.ServiceAccounts
 	} else {
 		rawNew.ServiceAccounts = canonicalizeNewInstanceServiceAccountsSlice(c, rawDesired.ServiceAccounts, rawNew.ServiceAccounts)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ShieldedInstanceConfig) && dcl.IsNotReturnedByServer(rawDesired.ShieldedInstanceConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.ShieldedInstanceConfig) && dcl.IsEmptyValueIndirect(rawDesired.ShieldedInstanceConfig) {
 		rawNew.ShieldedInstanceConfig = rawDesired.ShieldedInstanceConfig
 	} else {
 		rawNew.ShieldedInstanceConfig = canonicalizeNewInstanceShieldedInstanceConfig(c, rawDesired.ShieldedInstanceConfig, rawNew.ShieldedInstanceConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StatusMessage) && dcl.IsNotReturnedByServer(rawDesired.StatusMessage) {
+	if dcl.IsEmptyValueIndirect(rawNew.StatusMessage) && dcl.IsEmptyValueIndirect(rawDesired.StatusMessage) {
 		rawNew.StatusMessage = rawDesired.StatusMessage
 	} else {
 		if dcl.StringCanonicalize(rawDesired.StatusMessage, rawNew.StatusMessage) {
@@ -1408,7 +1408,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Tags) && dcl.IsNotReturnedByServer(rawDesired.Tags) {
+	if dcl.IsEmptyValueIndirect(rawNew.Tags) && dcl.IsEmptyValueIndirect(rawDesired.Tags) {
 		rawNew.Tags = rawDesired.Tags
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Tags, rawNew.Tags) {
@@ -1416,14 +1416,14 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Zone) && dcl.IsNotReturnedByServer(rawDesired.Zone) {
+	if dcl.IsEmptyValueIndirect(rawNew.Zone) && dcl.IsEmptyValueIndirect(rawDesired.Zone) {
 		rawNew.Zone = rawDesired.Zone
 	} else {
 	}
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -1534,7 +1534,7 @@ func canonicalizeNewInstanceDisks(c *Client, des, nw *InstanceDisks) *InstanceDi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceDisks while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1662,7 +1662,7 @@ func canonicalizeNewInstanceDisksDiskEncryptionKey(c *Client, des, nw *InstanceD
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceDisksDiskEncryptionKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1801,7 +1801,7 @@ func canonicalizeNewInstanceDisksInitializeParams(c *Client, des, nw *InstanceDi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceDisksInitializeParams while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1920,7 +1920,7 @@ func canonicalizeNewInstanceDisksInitializeParamsSourceImageEncryptionKey(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceDisksInitializeParamsSourceImageEncryptionKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2044,7 +2044,7 @@ func canonicalizeNewInstanceGuestAccelerators(c *Client, des, nw *InstanceGuestA
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGuestAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2174,7 +2174,7 @@ func canonicalizeNewInstanceNetworkInterfaces(c *Client, des, nw *InstanceNetwor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworkInterfaces while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2323,7 +2323,7 @@ func canonicalizeNewInstanceNetworkInterfacesAccessConfigs(c *Client, des, nw *I
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworkInterfacesAccessConfigs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2478,7 +2478,7 @@ func canonicalizeNewInstanceNetworkInterfacesIPv6AccessConfigs(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworkInterfacesIPv6AccessConfigs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2610,7 +2610,7 @@ func canonicalizeNewInstanceNetworkInterfacesAliasIPRanges(c *Client, des, nw *I
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworkInterfacesAliasIPRanges while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2738,7 +2738,7 @@ func canonicalizeNewInstanceScheduling(c *Client, des, nw *InstanceScheduling) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceScheduling while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2864,7 +2864,7 @@ func canonicalizeNewInstanceServiceAccounts(c *Client, des, nw *InstanceServiceA
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceServiceAccounts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2992,7 +2992,7 @@ func canonicalizeNewInstanceShieldedInstanceConfig(c *Client, des, nw *InstanceS
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceShieldedInstanceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6231,7 +6231,7 @@ func extractInstanceFields(r *Instance) error {
 	if err := extractInstanceSchedulingFields(r, vScheduling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScheduling) {
+	if !dcl.IsEmptyValueIndirect(vScheduling) {
 		r.Scheduling = vScheduling
 	}
 	vShieldedInstanceConfig := r.ShieldedInstanceConfig
@@ -6242,7 +6242,7 @@ func extractInstanceFields(r *Instance) error {
 	if err := extractInstanceShieldedInstanceConfigFields(r, vShieldedInstanceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vShieldedInstanceConfig) {
+	if !dcl.IsEmptyValueIndirect(vShieldedInstanceConfig) {
 		r.ShieldedInstanceConfig = vShieldedInstanceConfig
 	}
 	return nil
@@ -6256,7 +6256,7 @@ func extractInstanceDisksFields(r *Instance, o *InstanceDisks) error {
 	if err := extractInstanceDisksDiskEncryptionKeyFields(r, vDiskEncryptionKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskEncryptionKey) {
+	if !dcl.IsEmptyValueIndirect(vDiskEncryptionKey) {
 		o.DiskEncryptionKey = vDiskEncryptionKey
 	}
 	vInitializeParams := o.InitializeParams
@@ -6267,7 +6267,7 @@ func extractInstanceDisksFields(r *Instance, o *InstanceDisks) error {
 	if err := extractInstanceDisksInitializeParamsFields(r, vInitializeParams); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInitializeParams) {
+	if !dcl.IsEmptyValueIndirect(vInitializeParams) {
 		o.InitializeParams = vInitializeParams
 	}
 	return nil
@@ -6284,7 +6284,7 @@ func extractInstanceDisksInitializeParamsFields(r *Instance, o *InstanceDisksIni
 	if err := extractInstanceDisksInitializeParamsSourceImageEncryptionKeyFields(r, vSourceImageEncryptionKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSourceImageEncryptionKey) {
+	if !dcl.IsEmptyValueIndirect(vSourceImageEncryptionKey) {
 		o.SourceImageEncryptionKey = vSourceImageEncryptionKey
 	}
 	return nil
@@ -6326,7 +6326,7 @@ func postReadExtractInstanceFields(r *Instance) error {
 	if err := postReadExtractInstanceSchedulingFields(r, vScheduling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScheduling) {
+	if !dcl.IsEmptyValueIndirect(vScheduling) {
 		r.Scheduling = vScheduling
 	}
 	vShieldedInstanceConfig := r.ShieldedInstanceConfig
@@ -6337,7 +6337,7 @@ func postReadExtractInstanceFields(r *Instance) error {
 	if err := postReadExtractInstanceShieldedInstanceConfigFields(r, vShieldedInstanceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vShieldedInstanceConfig) {
+	if !dcl.IsEmptyValueIndirect(vShieldedInstanceConfig) {
 		r.ShieldedInstanceConfig = vShieldedInstanceConfig
 	}
 	return nil
@@ -6351,7 +6351,7 @@ func postReadExtractInstanceDisksFields(r *Instance, o *InstanceDisks) error {
 	if err := extractInstanceDisksDiskEncryptionKeyFields(r, vDiskEncryptionKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskEncryptionKey) {
+	if !dcl.IsEmptyValueIndirect(vDiskEncryptionKey) {
 		o.DiskEncryptionKey = vDiskEncryptionKey
 	}
 	vInitializeParams := o.InitializeParams
@@ -6362,7 +6362,7 @@ func postReadExtractInstanceDisksFields(r *Instance, o *InstanceDisks) error {
 	if err := extractInstanceDisksInitializeParamsFields(r, vInitializeParams); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInitializeParams) {
+	if !dcl.IsEmptyValueIndirect(vInitializeParams) {
 		o.InitializeParams = vInitializeParams
 	}
 	return nil
@@ -6379,7 +6379,7 @@ func postReadExtractInstanceDisksInitializeParamsFields(r *Instance, o *Instance
 	if err := extractInstanceDisksInitializeParamsSourceImageEncryptionKeyFields(r, vSourceImageEncryptionKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSourceImageEncryptionKey) {
+	if !dcl.IsEmptyValueIndirect(vSourceImageEncryptionKey) {
 		o.SourceImageEncryptionKey = vSourceImageEncryptionKey
 	}
 	return nil

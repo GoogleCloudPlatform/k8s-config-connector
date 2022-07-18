@@ -743,12 +743,12 @@ func canonicalizeForwardingRuleDesiredState(rawDesired, rawInitial *ForwardingRu
 
 func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *ForwardingRule) (*ForwardingRule, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AllPorts) && dcl.IsNotReturnedByServer(rawDesired.AllPorts) {
+	if dcl.IsEmptyValueIndirect(rawNew.AllPorts) && dcl.IsEmptyValueIndirect(rawDesired.AllPorts) {
 		rawNew.AllPorts = rawDesired.AllPorts
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AllPorts, rawNew.AllPorts) {
@@ -756,7 +756,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AllowGlobalAccess) && dcl.IsNotReturnedByServer(rawDesired.AllowGlobalAccess) {
+	if dcl.IsEmptyValueIndirect(rawNew.AllowGlobalAccess) && dcl.IsEmptyValueIndirect(rawDesired.AllowGlobalAccess) {
 		rawNew.AllowGlobalAccess = rawDesired.AllowGlobalAccess
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AllowGlobalAccess, rawNew.AllowGlobalAccess) {
@@ -764,7 +764,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LabelFingerprint) && dcl.IsNotReturnedByServer(rawDesired.LabelFingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.LabelFingerprint) && dcl.IsEmptyValueIndirect(rawDesired.LabelFingerprint) {
 		rawNew.LabelFingerprint = rawDesired.LabelFingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LabelFingerprint, rawNew.LabelFingerprint) {
@@ -772,7 +772,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BackendService) && dcl.IsNotReturnedByServer(rawDesired.BackendService) {
+	if dcl.IsEmptyValueIndirect(rawNew.BackendService) && dcl.IsEmptyValueIndirect(rawDesired.BackendService) {
 		rawNew.BackendService = rawDesired.BackendService
 	} else {
 		if dcl.StringCanonicalize(rawDesired.BackendService, rawNew.BackendService) {
@@ -780,7 +780,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreationTimestamp) && dcl.IsNotReturnedByServer(rawDesired.CreationTimestamp) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreationTimestamp) && dcl.IsEmptyValueIndirect(rawDesired.CreationTimestamp) {
 		rawNew.CreationTimestamp = rawDesired.CreationTimestamp
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CreationTimestamp, rawNew.CreationTimestamp) {
@@ -788,7 +788,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -796,7 +796,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IPAddress) && dcl.IsNotReturnedByServer(rawDesired.IPAddress) {
+	if dcl.IsEmptyValueIndirect(rawNew.IPAddress) && dcl.IsEmptyValueIndirect(rawDesired.IPAddress) {
 		rawNew.IPAddress = rawDesired.IPAddress
 	} else {
 		if canonicalizeIPAddressToReference(rawDesired.IPAddress, rawNew.IPAddress) {
@@ -804,17 +804,17 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IPProtocol) && dcl.IsNotReturnedByServer(rawDesired.IPProtocol) {
+	if dcl.IsEmptyValueIndirect(rawNew.IPProtocol) && dcl.IsEmptyValueIndirect(rawDesired.IPProtocol) {
 		rawNew.IPProtocol = rawDesired.IPProtocol
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IPVersion) && dcl.IsNotReturnedByServer(rawDesired.IPVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.IPVersion) && dcl.IsEmptyValueIndirect(rawDesired.IPVersion) {
 		rawNew.IPVersion = rawDesired.IPVersion
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IsMirroringCollector) && dcl.IsNotReturnedByServer(rawDesired.IsMirroringCollector) {
+	if dcl.IsEmptyValueIndirect(rawNew.IsMirroringCollector) && dcl.IsEmptyValueIndirect(rawDesired.IsMirroringCollector) {
 		rawNew.IsMirroringCollector = rawDesired.IsMirroringCollector
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.IsMirroringCollector, rawNew.IsMirroringCollector) {
@@ -822,18 +822,18 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LoadBalancingScheme) && dcl.IsNotReturnedByServer(rawDesired.LoadBalancingScheme) {
+	if dcl.IsEmptyValueIndirect(rawNew.LoadBalancingScheme) && dcl.IsEmptyValueIndirect(rawDesired.LoadBalancingScheme) {
 		rawNew.LoadBalancingScheme = rawDesired.LoadBalancingScheme
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MetadataFilter) && dcl.IsNotReturnedByServer(rawDesired.MetadataFilter) {
+	if dcl.IsEmptyValueIndirect(rawNew.MetadataFilter) && dcl.IsEmptyValueIndirect(rawDesired.MetadataFilter) {
 		rawNew.MetadataFilter = rawDesired.MetadataFilter
 	} else {
 		rawNew.MetadataFilter = canonicalizeNewForwardingRuleMetadataFilterSlice(c, rawDesired.MetadataFilter, rawNew.MetadataFilter)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -841,7 +841,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Network) && dcl.IsNotReturnedByServer(rawDesired.Network) {
+	if dcl.IsEmptyValueIndirect(rawNew.Network) && dcl.IsEmptyValueIndirect(rawDesired.Network) {
 		rawNew.Network = rawDesired.Network
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Network, rawNew.Network) {
@@ -849,12 +849,12 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NetworkTier) && dcl.IsNotReturnedByServer(rawDesired.NetworkTier) {
+	if dcl.IsEmptyValueIndirect(rawNew.NetworkTier) && dcl.IsEmptyValueIndirect(rawDesired.NetworkTier) {
 		rawNew.NetworkTier = rawDesired.NetworkTier
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PortRange) && dcl.IsNotReturnedByServer(rawDesired.PortRange) {
+	if dcl.IsEmptyValueIndirect(rawNew.PortRange) && dcl.IsEmptyValueIndirect(rawDesired.PortRange) {
 		rawNew.PortRange = rawDesired.PortRange
 	} else {
 		if canonicalizePortRange(rawDesired.PortRange, rawNew.PortRange) {
@@ -862,7 +862,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Ports) && dcl.IsNotReturnedByServer(rawDesired.Ports) {
+	if dcl.IsEmptyValueIndirect(rawNew.Ports) && dcl.IsEmptyValueIndirect(rawDesired.Ports) {
 		rawNew.Ports = rawDesired.Ports
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Ports, rawNew.Ports) {
@@ -870,7 +870,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Region) && dcl.IsNotReturnedByServer(rawDesired.Region) {
+	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
 		rawNew.Region = rawDesired.Region
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
@@ -878,7 +878,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -886,7 +886,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceLabel) && dcl.IsNotReturnedByServer(rawDesired.ServiceLabel) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceLabel) && dcl.IsEmptyValueIndirect(rawDesired.ServiceLabel) {
 		rawNew.ServiceLabel = rawDesired.ServiceLabel
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ServiceLabel, rawNew.ServiceLabel) {
@@ -894,7 +894,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceName) && dcl.IsNotReturnedByServer(rawDesired.ServiceName) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceName) && dcl.IsEmptyValueIndirect(rawDesired.ServiceName) {
 		rawNew.ServiceName = rawDesired.ServiceName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ServiceName, rawNew.ServiceName) {
@@ -902,7 +902,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Subnetwork) && dcl.IsNotReturnedByServer(rawDesired.Subnetwork) {
+	if dcl.IsEmptyValueIndirect(rawNew.Subnetwork) && dcl.IsEmptyValueIndirect(rawDesired.Subnetwork) {
 		rawNew.Subnetwork = rawDesired.Subnetwork
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Subnetwork, rawNew.Subnetwork) {
@@ -910,7 +910,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Target) && dcl.IsNotReturnedByServer(rawDesired.Target) {
+	if dcl.IsEmptyValueIndirect(rawNew.Target) && dcl.IsEmptyValueIndirect(rawDesired.Target) {
 		rawNew.Target = rawDesired.Target
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Target, rawNew.Target) {
@@ -918,20 +918,20 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Project) && dcl.IsNotReturnedByServer(rawDesired.Project) {
+	if dcl.IsEmptyValueIndirect(rawNew.Project) && dcl.IsEmptyValueIndirect(rawDesired.Project) {
 		rawNew.Project = rawDesired.Project
 	} else {
 	}
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceDirectoryRegistrations) && dcl.IsNotReturnedByServer(rawDesired.ServiceDirectoryRegistrations) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceDirectoryRegistrations) && dcl.IsEmptyValueIndirect(rawDesired.ServiceDirectoryRegistrations) {
 		rawNew.ServiceDirectoryRegistrations = rawDesired.ServiceDirectoryRegistrations
 	} else {
 		rawNew.ServiceDirectoryRegistrations = canonicalizeNewForwardingRuleServiceDirectoryRegistrationsSlice(c, rawDesired.ServiceDirectoryRegistrations, rawNew.ServiceDirectoryRegistrations)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PscConnectionId) && dcl.IsNotReturnedByServer(rawDesired.PscConnectionId) {
+	if dcl.IsEmptyValueIndirect(rawNew.PscConnectionId) && dcl.IsEmptyValueIndirect(rawDesired.PscConnectionId) {
 		rawNew.PscConnectionId = rawDesired.PscConnectionId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PscConnectionId, rawNew.PscConnectionId) {
@@ -939,7 +939,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PscConnectionStatus) && dcl.IsNotReturnedByServer(rawDesired.PscConnectionStatus) {
+	if dcl.IsEmptyValueIndirect(rawNew.PscConnectionStatus) && dcl.IsEmptyValueIndirect(rawDesired.PscConnectionStatus) {
 		rawNew.PscConnectionStatus = rawDesired.PscConnectionStatus
 	} else {
 	}
@@ -1007,7 +1007,7 @@ func canonicalizeNewForwardingRuleMetadataFilter(c *Client, des, nw *ForwardingR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ForwardingRuleMetadataFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1125,7 +1125,7 @@ func canonicalizeNewForwardingRuleMetadataFilterFilterLabel(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ForwardingRuleMetadataFilterFilterLabel while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1248,7 +1248,7 @@ func canonicalizeNewForwardingRuleServiceDirectoryRegistrations(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ForwardingRuleServiceDirectoryRegistrations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}

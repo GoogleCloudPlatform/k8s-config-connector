@@ -538,7 +538,7 @@ func canonicalizeBucketNewState(c *Client, rawNew, rawDesired *Bucket) (*Bucket,
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.Location) && dcl.IsNotReturnedByServer(rawDesired.Location) {
+	if dcl.IsEmptyValueIndirect(rawNew.Location) && dcl.IsEmptyValueIndirect(rawDesired.Location) {
 		rawNew.Location = rawDesired.Location
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Location, rawNew.Location) {
@@ -546,7 +546,7 @@ func canonicalizeBucketNewState(c *Client, rawNew, rawDesired *Bucket) (*Bucket,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -554,36 +554,36 @@ func canonicalizeBucketNewState(c *Client, rawNew, rawDesired *Bucket) (*Bucket,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Cors) && dcl.IsNotReturnedByServer(rawDesired.Cors) {
+	if dcl.IsEmptyValueIndirect(rawNew.Cors) && dcl.IsEmptyValueIndirect(rawDesired.Cors) {
 		rawNew.Cors = rawDesired.Cors
 	} else {
 		rawNew.Cors = canonicalizeNewBucketCorsSlice(c, rawDesired.Cors, rawNew.Cors)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Lifecycle) && dcl.IsNotReturnedByServer(rawDesired.Lifecycle) {
+	if dcl.IsEmptyValueIndirect(rawNew.Lifecycle) && dcl.IsEmptyValueIndirect(rawDesired.Lifecycle) {
 		rawNew.Lifecycle = rawDesired.Lifecycle
 	} else {
 		rawNew.Lifecycle = canonicalizeNewBucketLifecycle(c, rawDesired.Lifecycle, rawNew.Lifecycle)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Logging) && dcl.IsNotReturnedByServer(rawDesired.Logging) {
+	if dcl.IsEmptyValueIndirect(rawNew.Logging) && dcl.IsEmptyValueIndirect(rawDesired.Logging) {
 		rawNew.Logging = rawDesired.Logging
 	} else {
 		rawNew.Logging = canonicalizeNewBucketLogging(c, rawDesired.Logging, rawNew.Logging)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StorageClass) && dcl.IsNotReturnedByServer(rawDesired.StorageClass) {
+	if dcl.IsEmptyValueIndirect(rawNew.StorageClass) && dcl.IsEmptyValueIndirect(rawDesired.StorageClass) {
 		rawNew.StorageClass = rawDesired.StorageClass
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Versioning) && dcl.IsNotReturnedByServer(rawDesired.Versioning) {
+	if dcl.IsEmptyValueIndirect(rawNew.Versioning) && dcl.IsEmptyValueIndirect(rawDesired.Versioning) {
 		rawNew.Versioning = rawDesired.Versioning
 	} else {
 		rawNew.Versioning = canonicalizeNewBucketVersioning(c, rawDesired.Versioning, rawNew.Versioning)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Website) && dcl.IsNotReturnedByServer(rawDesired.Website) {
+	if dcl.IsEmptyValueIndirect(rawNew.Website) && dcl.IsEmptyValueIndirect(rawDesired.Website) {
 		rawNew.Website = rawDesired.Website
 	} else {
 		rawNew.Website = canonicalizeNewBucketWebsite(c, rawDesired.Website, rawNew.Website)
@@ -666,7 +666,7 @@ func canonicalizeNewBucketCors(c *Client, des, nw *BucketCors) *BucketCors {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketCors while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -783,7 +783,7 @@ func canonicalizeNewBucketLifecycle(c *Client, des, nw *BucketLifecycle) *Bucket
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketLifecycle while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -893,7 +893,7 @@ func canonicalizeNewBucketLifecycleRule(c *Client, des, nw *BucketLifecycleRule)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketLifecycleRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1013,7 +1013,7 @@ func canonicalizeNewBucketLifecycleRuleAction(c *Client, des, nw *BucketLifecycl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketLifecycleRuleAction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1152,7 +1152,7 @@ func canonicalizeNewBucketLifecycleRuleCondition(c *Client, des, nw *BucketLifec
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketLifecycleRuleCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1272,7 +1272,7 @@ func canonicalizeNewBucketLogging(c *Client, des, nw *BucketLogging) *BucketLogg
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketLogging while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1390,7 +1390,7 @@ func canonicalizeNewBucketVersioning(c *Client, des, nw *BucketVersioning) *Buck
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketVersioning while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1510,7 +1510,7 @@ func canonicalizeNewBucketWebsite(c *Client, des, nw *BucketWebsite) *BucketWebs
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BucketWebsite while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3298,7 +3298,7 @@ func extractBucketFields(r *Bucket) error {
 	if err := extractBucketLifecycleFields(r, vLifecycle); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycle) {
+	if !dcl.IsEmptyValueIndirect(vLifecycle) {
 		r.Lifecycle = vLifecycle
 	}
 	vLogging := r.Logging
@@ -3309,7 +3309,7 @@ func extractBucketFields(r *Bucket) error {
 	if err := extractBucketLoggingFields(r, vLogging); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogging) {
+	if !dcl.IsEmptyValueIndirect(vLogging) {
 		r.Logging = vLogging
 	}
 	vVersioning := r.Versioning
@@ -3320,7 +3320,7 @@ func extractBucketFields(r *Bucket) error {
 	if err := extractBucketVersioningFields(r, vVersioning); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersioning) {
+	if !dcl.IsEmptyValueIndirect(vVersioning) {
 		r.Versioning = vVersioning
 	}
 	vWebsite := r.Website
@@ -3331,7 +3331,7 @@ func extractBucketFields(r *Bucket) error {
 	if err := extractBucketWebsiteFields(r, vWebsite); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWebsite) {
+	if !dcl.IsEmptyValueIndirect(vWebsite) {
 		r.Website = vWebsite
 	}
 	return nil
@@ -3351,7 +3351,7 @@ func extractBucketLifecycleRuleFields(r *Bucket, o *BucketLifecycleRule) error {
 	if err := extractBucketLifecycleRuleActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	vCondition := o.Condition
@@ -3362,7 +3362,7 @@ func extractBucketLifecycleRuleFields(r *Bucket, o *BucketLifecycleRule) error {
 	if err := extractBucketLifecycleRuleConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil
@@ -3392,7 +3392,7 @@ func postReadExtractBucketFields(r *Bucket) error {
 	if err := postReadExtractBucketLifecycleFields(r, vLifecycle); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycle) {
+	if !dcl.IsEmptyValueIndirect(vLifecycle) {
 		r.Lifecycle = vLifecycle
 	}
 	vLogging := r.Logging
@@ -3403,7 +3403,7 @@ func postReadExtractBucketFields(r *Bucket) error {
 	if err := postReadExtractBucketLoggingFields(r, vLogging); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogging) {
+	if !dcl.IsEmptyValueIndirect(vLogging) {
 		r.Logging = vLogging
 	}
 	vVersioning := r.Versioning
@@ -3414,7 +3414,7 @@ func postReadExtractBucketFields(r *Bucket) error {
 	if err := postReadExtractBucketVersioningFields(r, vVersioning); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersioning) {
+	if !dcl.IsEmptyValueIndirect(vVersioning) {
 		r.Versioning = vVersioning
 	}
 	vWebsite := r.Website
@@ -3425,7 +3425,7 @@ func postReadExtractBucketFields(r *Bucket) error {
 	if err := postReadExtractBucketWebsiteFields(r, vWebsite); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWebsite) {
+	if !dcl.IsEmptyValueIndirect(vWebsite) {
 		r.Website = vWebsite
 	}
 	return nil
@@ -3445,7 +3445,7 @@ func postReadExtractBucketLifecycleRuleFields(r *Bucket, o *BucketLifecycleRule)
 	if err := extractBucketLifecycleRuleActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	vCondition := o.Condition
@@ -3456,7 +3456,7 @@ func postReadExtractBucketLifecycleRuleFields(r *Bucket, o *BucketLifecycleRule)
 	if err := extractBucketLifecycleRuleConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil

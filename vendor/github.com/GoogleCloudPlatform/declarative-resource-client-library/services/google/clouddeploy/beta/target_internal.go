@@ -604,7 +604,7 @@ func canonicalizeTargetDesiredState(rawDesired, rawInitial *Target, opts ...dcl.
 
 func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -612,7 +612,7 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TargetId) && dcl.IsNotReturnedByServer(rawDesired.TargetId) {
+	if dcl.IsEmptyValueIndirect(rawNew.TargetId) && dcl.IsEmptyValueIndirect(rawDesired.TargetId) {
 		rawNew.TargetId = rawDesired.TargetId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.TargetId, rawNew.TargetId) {
@@ -620,7 +620,7 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -628,7 +628,7 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -636,17 +636,17 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RequireApproval) && dcl.IsNotReturnedByServer(rawDesired.RequireApproval) {
+	if dcl.IsEmptyValueIndirect(rawNew.RequireApproval) && dcl.IsEmptyValueIndirect(rawDesired.RequireApproval) {
 		rawNew.RequireApproval = rawDesired.RequireApproval
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.RequireApproval, rawNew.RequireApproval) {
@@ -654,29 +654,29 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Gke) && dcl.IsNotReturnedByServer(rawDesired.Gke) {
+	if dcl.IsEmptyValueIndirect(rawNew.Gke) && dcl.IsEmptyValueIndirect(rawDesired.Gke) {
 		rawNew.Gke = rawDesired.Gke
 	} else {
 		rawNew.Gke = canonicalizeNewTargetGke(c, rawDesired.Gke, rawNew.Gke)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AnthosCluster) && dcl.IsNotReturnedByServer(rawDesired.AnthosCluster) {
+	if dcl.IsEmptyValueIndirect(rawNew.AnthosCluster) && dcl.IsEmptyValueIndirect(rawDesired.AnthosCluster) {
 		rawNew.AnthosCluster = rawDesired.AnthosCluster
 	} else {
 		rawNew.AnthosCluster = canonicalizeNewTargetAnthosCluster(c, rawDesired.AnthosCluster, rawNew.AnthosCluster)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -684,7 +684,7 @@ func canonicalizeTargetNewState(c *Client, rawNew, rawDesired *Target) (*Target,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExecutionConfigs) && dcl.IsNotReturnedByServer(rawDesired.ExecutionConfigs) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExecutionConfigs) && dcl.IsEmptyValueIndirect(rawDesired.ExecutionConfigs) {
 		rawNew.ExecutionConfigs = rawDesired.ExecutionConfigs
 	} else {
 		rawNew.ExecutionConfigs = canonicalizeNewTargetExecutionConfigsSlice(c, rawDesired.ExecutionConfigs, rawNew.ExecutionConfigs)
@@ -761,7 +761,7 @@ func canonicalizeNewTargetGke(c *Client, des, nw *TargetGke) *TargetGke {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TargetGke while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -877,7 +877,7 @@ func canonicalizeNewTargetAnthosCluster(c *Client, des, nw *TargetAnthosCluster)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TargetAnthosCluster while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1005,7 +1005,7 @@ func canonicalizeNewTargetExecutionConfigs(c *Client, des, nw *TargetExecutionCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TargetExecutionConfigs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1956,7 +1956,7 @@ func extractTargetFields(r *Target) error {
 	if err := extractTargetGkeFields(r, vGke); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGke) {
+	if !dcl.IsEmptyValueIndirect(vGke) {
 		r.Gke = vGke
 	}
 	vAnthosCluster := r.AnthosCluster
@@ -1967,7 +1967,7 @@ func extractTargetFields(r *Target) error {
 	if err := extractTargetAnthosClusterFields(r, vAnthosCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAnthosCluster) {
+	if !dcl.IsEmptyValueIndirect(vAnthosCluster) {
 		r.AnthosCluster = vAnthosCluster
 	}
 	return nil
@@ -1991,7 +1991,7 @@ func postReadExtractTargetFields(r *Target) error {
 	if err := postReadExtractTargetGkeFields(r, vGke); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGke) {
+	if !dcl.IsEmptyValueIndirect(vGke) {
 		r.Gke = vGke
 	}
 	vAnthosCluster := r.AnthosCluster
@@ -2002,7 +2002,7 @@ func postReadExtractTargetFields(r *Target) error {
 	if err := postReadExtractTargetAnthosClusterFields(r, vAnthosCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAnthosCluster) {
+	if !dcl.IsEmptyValueIndirect(vAnthosCluster) {
 		r.AnthosCluster = vAnthosCluster
 	}
 	return nil

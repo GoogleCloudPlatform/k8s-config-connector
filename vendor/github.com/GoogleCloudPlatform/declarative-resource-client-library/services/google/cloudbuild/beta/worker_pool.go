@@ -360,20 +360,20 @@ func (r *WorkerPool) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"displayName":         dcl.ValueOrEmptyString(nr.DisplayName),
-		"uid":                 dcl.ValueOrEmptyString(nr.Uid),
-		"annotations":         dcl.ValueOrEmptyString(nr.Annotations),
-		"createTime":          dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":          dcl.ValueOrEmptyString(nr.UpdateTime),
-		"deleteTime":          dcl.ValueOrEmptyString(nr.DeleteTime),
-		"state":               dcl.ValueOrEmptyString(nr.State),
-		"privatePoolV1Config": dcl.ValueOrEmptyString(nr.PrivatePoolV1Config),
-		"etag":                dcl.ValueOrEmptyString(nr.Etag),
-		"workerConfig":        dcl.ValueOrEmptyString(nr.WorkerConfig),
-		"networkConfig":       dcl.ValueOrEmptyString(nr.NetworkConfig),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
-		"location":            dcl.ValueOrEmptyString(nr.Location),
+		"name":                   dcl.ValueOrEmptyString(nr.Name),
+		"display_name":           dcl.ValueOrEmptyString(nr.DisplayName),
+		"uid":                    dcl.ValueOrEmptyString(nr.Uid),
+		"annotations":            dcl.ValueOrEmptyString(nr.Annotations),
+		"create_time":            dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":            dcl.ValueOrEmptyString(nr.UpdateTime),
+		"delete_time":            dcl.ValueOrEmptyString(nr.DeleteTime),
+		"state":                  dcl.ValueOrEmptyString(nr.State),
+		"private_pool_v1_config": dcl.ValueOrEmptyString(nr.PrivatePoolV1Config),
+		"etag":                   dcl.ValueOrEmptyString(nr.Etag),
+		"worker_config":          dcl.ValueOrEmptyString(nr.WorkerConfig),
+		"network_config":         dcl.ValueOrEmptyString(nr.NetworkConfig),
+		"project":                dcl.ValueOrEmptyString(nr.Project),
+		"location":               dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/workerPools/{{name}}", params), nil
 }

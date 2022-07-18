@@ -2245,12 +2245,12 @@ func canonicalizeDeidentifyTemplateDesiredState(rawDesired, rawInitial *Deidenti
 
 func canonicalizeDeidentifyTemplateNewState(c *Client, rawNew, rawDesired *DeidentifyTemplate) (*DeidentifyTemplate, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -2258,7 +2258,7 @@ func canonicalizeDeidentifyTemplateNewState(c *Client, rawNew, rawDesired *Deide
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -2266,23 +2266,23 @@ func canonicalizeDeidentifyTemplateNewState(c *Client, rawNew, rawDesired *Deide
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeidentifyConfig) && dcl.IsNotReturnedByServer(rawDesired.DeidentifyConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeidentifyConfig) && dcl.IsEmptyValueIndirect(rawDesired.DeidentifyConfig) {
 		rawNew.DeidentifyConfig = rawDesired.DeidentifyConfig
 	} else {
 		rawNew.DeidentifyConfig = canonicalizeNewDeidentifyTemplateDeidentifyConfig(c, rawDesired.DeidentifyConfig, rawNew.DeidentifyConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LocationId) && dcl.IsNotReturnedByServer(rawDesired.LocationId) {
+	if dcl.IsEmptyValueIndirect(rawNew.LocationId) && dcl.IsEmptyValueIndirect(rawDesired.LocationId) {
 		rawNew.LocationId = rawDesired.LocationId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LocationId, rawNew.LocationId) {
@@ -2373,7 +2373,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfig(c *Client, des, nw *Deide
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2484,7 +2484,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformations(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2594,7 +2594,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2708,7 +2708,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2939,7 +2939,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3058,7 +3058,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3282,7 +3282,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3421,7 +3421,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3545,7 +3545,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3649,7 +3649,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3772,7 +3772,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3917,7 +3917,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4077,7 +4077,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4223,7 +4223,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4338,7 +4338,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4453,7 +4453,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4574,7 +4574,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4689,7 +4689,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4804,7 +4804,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4922,7 +4922,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5147,7 +5147,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5286,7 +5286,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5410,7 +5410,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5632,7 +5632,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5771,7 +5771,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5895,7 +5895,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6002,7 +6002,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6113,7 +6113,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6339,7 +6339,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6478,7 +6478,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6602,7 +6602,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6824,7 +6824,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6963,7 +6963,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7087,7 +7087,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7309,7 +7309,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7448,7 +7448,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7572,7 +7572,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7676,7 +7676,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7788,7 +7788,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7895,7 +7895,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8036,7 +8036,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8151,7 +8151,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8266,7 +8266,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8387,7 +8387,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8521,7 +8521,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8635,7 +8635,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8778,7 +8778,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8893,7 +8893,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9008,7 +9008,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9129,7 +9129,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9242,7 +9242,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9385,7 +9385,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9500,7 +9500,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9615,7 +9615,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9736,7 +9736,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9851,7 +9851,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9966,7 +9966,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10078,7 +10078,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformations(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10211,7 +10211,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10327,7 +10327,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsFields while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10438,7 +10438,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10563,7 +10563,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10672,7 +10672,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10788,7 +10788,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10902,7 +10902,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsField while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11128,7 +11128,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11267,7 +11267,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11391,7 +11391,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11618,7 +11618,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11737,7 +11737,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11961,7 +11961,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12100,7 +12100,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12224,7 +12224,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12328,7 +12328,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12451,7 +12451,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12596,7 +12596,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12756,7 +12756,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -12902,7 +12902,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13017,7 +13017,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13132,7 +13132,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13253,7 +13253,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13368,7 +13368,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13483,7 +13483,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13601,7 +13601,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13826,7 +13826,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -13965,7 +13965,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14089,7 +14089,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14311,7 +14311,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14450,7 +14450,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14574,7 +14574,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14681,7 +14681,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -14792,7 +14792,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15018,7 +15018,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMin while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15157,7 +15157,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15281,7 +15281,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15503,7 +15503,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMax while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15642,7 +15642,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15766,7 +15766,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15988,7 +15988,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16127,7 +16127,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16251,7 +16251,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16355,7 +16355,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16467,7 +16467,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16574,7 +16574,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16715,7 +16715,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16830,7 +16830,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -16945,7 +16945,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17066,7 +17066,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17200,7 +17200,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17314,7 +17314,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17457,7 +17457,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17572,7 +17572,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17687,7 +17687,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17808,7 +17808,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17921,7 +17921,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18064,7 +18064,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18179,7 +18179,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18294,7 +18294,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18415,7 +18415,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18530,7 +18530,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18645,7 +18645,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18756,7 +18756,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18866,7 +18866,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -18980,7 +18980,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19211,7 +19211,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19330,7 +19330,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19554,7 +19554,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19693,7 +19693,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19817,7 +19817,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -19921,7 +19921,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20044,7 +20044,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20189,7 +20189,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigCharactersToIgnore while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20349,7 +20349,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20495,7 +20495,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20610,7 +20610,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20725,7 +20725,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20846,7 +20846,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -20961,7 +20961,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21076,7 +21076,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21194,7 +21194,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21419,7 +21419,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21558,7 +21558,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21682,7 +21682,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -21904,7 +21904,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBound while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22043,7 +22043,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22167,7 +22167,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22274,7 +22274,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22385,7 +22385,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22611,7 +22611,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMin while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22750,7 +22750,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -22874,7 +22874,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23096,7 +23096,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMax while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23235,7 +23235,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23359,7 +23359,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23581,7 +23581,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23720,7 +23720,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23844,7 +23844,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -23948,7 +23948,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24060,7 +24060,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24167,7 +24167,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24308,7 +24308,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24423,7 +24423,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24538,7 +24538,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24659,7 +24659,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24793,7 +24793,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -24907,7 +24907,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25050,7 +25050,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25165,7 +25165,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25280,7 +25280,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25401,7 +25401,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25514,7 +25514,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25657,7 +25657,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25772,7 +25772,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -25887,7 +25887,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26008,7 +26008,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrapped while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26123,7 +26123,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26238,7 +26238,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContext while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26349,7 +26349,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26458,7 +26458,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26583,7 +26583,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26692,7 +26692,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26808,7 +26808,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -26922,7 +26922,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsField while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27148,7 +27148,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27287,7 +27287,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27411,7 +27411,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValue while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27539,7 +27539,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigTransformationErrorHandlin
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigTransformationErrorHandling while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27646,7 +27646,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigTransformationErrorHandlin
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowError while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -27750,7 +27750,7 @@ func canonicalizeNewDeidentifyTemplateDeidentifyConfigTransformationErrorHandlin
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformed while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -61103,7 +61103,7 @@ func extractDeidentifyTemplateFields(r *DeidentifyTemplate) error {
 	if err := extractDeidentifyTemplateDeidentifyConfigFields(r, vDeidentifyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeidentifyConfig) {
+	if !dcl.IsEmptyValueIndirect(vDeidentifyConfig) {
 		r.DeidentifyConfig = vDeidentifyConfig
 	}
 	return nil
@@ -61117,7 +61117,7 @@ func extractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTemplate, o *D
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsFields(r, vInfoTypeTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoTypeTransformations) {
+	if !dcl.IsEmptyValueIndirect(vInfoTypeTransformations) {
 		o.InfoTypeTransformations = vInfoTypeTransformations
 	}
 	vRecordTransformations := o.RecordTransformations
@@ -61128,7 +61128,7 @@ func extractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTemplate, o *D
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFields(r, vRecordTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRecordTransformations) {
+	if !dcl.IsEmptyValueIndirect(vRecordTransformations) {
 		o.RecordTransformations = vRecordTransformations
 	}
 	vTransformationErrorHandling := o.TransformationErrorHandling
@@ -61139,7 +61139,7 @@ func extractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTemplate, o *D
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingFields(r, vTransformationErrorHandling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransformationErrorHandling) {
+	if !dcl.IsEmptyValueIndirect(vTransformationErrorHandling) {
 		o.TransformationErrorHandling = vTransformationErrorHandling
 	}
 	return nil
@@ -61156,7 +61156,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	return nil
@@ -61173,7 +61173,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -61184,7 +61184,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -61195,7 +61195,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -61206,7 +61206,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -61217,7 +61217,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -61228,7 +61228,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -61239,7 +61239,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -61250,7 +61250,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -61261,7 +61261,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -61272,7 +61272,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -61283,7 +61283,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -61297,7 +61297,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -61311,7 +61311,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61322,7 +61322,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61351,7 +61351,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -61362,7 +61362,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -61373,7 +61373,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -61387,7 +61387,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -61398,7 +61398,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -61409,7 +61409,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -61438,7 +61438,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -61449,7 +61449,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -61463,7 +61463,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61474,7 +61474,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61494,7 +61494,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61505,7 +61505,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61528,7 +61528,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -61539,7 +61539,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -61550,7 +61550,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -61564,7 +61564,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61575,7 +61575,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61595,7 +61595,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61606,7 +61606,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61626,7 +61626,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61637,7 +61637,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -61663,7 +61663,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -61677,7 +61677,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -61688,7 +61688,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -61699,7 +61699,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -61722,7 +61722,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -61733,7 +61733,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -61750,7 +61750,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -61761,7 +61761,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -61772,7 +61772,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -61795,7 +61795,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -61806,7 +61806,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -61817,7 +61817,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -61831,7 +61831,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -61842,7 +61842,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -61853,7 +61853,7 @@ func extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformat
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -61885,7 +61885,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	vPrimitiveTransformation := o.PrimitiveTransformation
@@ -61896,7 +61896,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	vInfoTypeTransformations := o.InfoTypeTransformations
@@ -61907,7 +61907,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsFields(r, vInfoTypeTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoTypeTransformations) {
+	if !dcl.IsEmptyValueIndirect(vInfoTypeTransformations) {
 		o.InfoTypeTransformations = vInfoTypeTransformations
 	}
 	return nil
@@ -61924,7 +61924,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsFields(r, vExpressions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpressions) {
+	if !dcl.IsEmptyValueIndirect(vExpressions) {
 		o.Expressions = vExpressions
 	}
 	return nil
@@ -61938,7 +61938,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsFields(r, vConditions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConditions) {
+	if !dcl.IsEmptyValueIndirect(vConditions) {
 		o.Conditions = vConditions
 	}
 	return nil
@@ -61955,7 +61955,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	vValue := o.Value
@@ -61966,7 +61966,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueFields(r, vValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValue) {
+	if !dcl.IsEmptyValueIndirect(vValue) {
 		o.Value = vValue
 	}
 	return nil
@@ -61983,7 +61983,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -61994,7 +61994,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62014,7 +62014,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -62025,7 +62025,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -62036,7 +62036,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -62047,7 +62047,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -62058,7 +62058,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -62069,7 +62069,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -62080,7 +62080,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -62091,7 +62091,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -62102,7 +62102,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -62113,7 +62113,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -62124,7 +62124,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -62138,7 +62138,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -62152,7 +62152,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62163,7 +62163,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62192,7 +62192,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -62203,7 +62203,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -62214,7 +62214,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -62228,7 +62228,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -62239,7 +62239,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -62250,7 +62250,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -62279,7 +62279,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -62290,7 +62290,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -62304,7 +62304,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62315,7 +62315,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62335,7 +62335,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62346,7 +62346,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62369,7 +62369,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -62380,7 +62380,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -62391,7 +62391,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -62405,7 +62405,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62416,7 +62416,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62436,7 +62436,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62447,7 +62447,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62467,7 +62467,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62478,7 +62478,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62504,7 +62504,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -62518,7 +62518,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -62529,7 +62529,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -62540,7 +62540,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -62563,7 +62563,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -62574,7 +62574,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -62591,7 +62591,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -62602,7 +62602,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -62613,7 +62613,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -62636,7 +62636,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -62647,7 +62647,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -62658,7 +62658,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -62672,7 +62672,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -62683,7 +62683,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -62694,7 +62694,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -62726,7 +62726,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	return nil
@@ -62743,7 +62743,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -62754,7 +62754,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -62765,7 +62765,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -62776,7 +62776,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -62787,7 +62787,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -62798,7 +62798,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -62809,7 +62809,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -62820,7 +62820,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -62831,7 +62831,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -62842,7 +62842,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -62853,7 +62853,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -62867,7 +62867,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -62881,7 +62881,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -62892,7 +62892,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -62921,7 +62921,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -62932,7 +62932,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -62943,7 +62943,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -62957,7 +62957,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -62968,7 +62968,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -62979,7 +62979,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -63008,7 +63008,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -63019,7 +63019,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -63033,7 +63033,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63044,7 +63044,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63064,7 +63064,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63075,7 +63075,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63098,7 +63098,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -63109,7 +63109,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -63120,7 +63120,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -63134,7 +63134,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63145,7 +63145,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63165,7 +63165,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63176,7 +63176,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63196,7 +63196,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63207,7 +63207,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63233,7 +63233,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -63247,7 +63247,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -63258,7 +63258,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -63269,7 +63269,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -63292,7 +63292,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -63303,7 +63303,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -63320,7 +63320,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -63331,7 +63331,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -63342,7 +63342,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -63365,7 +63365,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -63376,7 +63376,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -63387,7 +63387,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -63401,7 +63401,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -63412,7 +63412,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -63423,7 +63423,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransfor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -63452,7 +63452,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil
@@ -63466,7 +63466,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsFields(r, vExpressions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpressions) {
+	if !dcl.IsEmptyValueIndirect(vExpressions) {
 		o.Expressions = vExpressions
 	}
 	return nil
@@ -63480,7 +63480,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsFields(r, vConditions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConditions) {
+	if !dcl.IsEmptyValueIndirect(vConditions) {
 		o.Conditions = vConditions
 	}
 	return nil
@@ -63497,7 +63497,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	vValue := o.Value
@@ -63508,7 +63508,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueFields(r, vValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValue) {
+	if !dcl.IsEmptyValueIndirect(vValue) {
 		o.Value = vValue
 	}
 	return nil
@@ -63525,7 +63525,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63536,7 +63536,7 @@ func extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppres
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63556,7 +63556,7 @@ func extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingFields(
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowErrorFields(r, vThrowError); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vThrowError) {
+	if !dcl.IsEmptyValueIndirect(vThrowError) {
 		o.ThrowError = vThrowError
 	}
 	vLeaveUntransformed := o.LeaveUntransformed
@@ -63567,7 +63567,7 @@ func extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingFields(
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformedFields(r, vLeaveUntransformed); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLeaveUntransformed) {
+	if !dcl.IsEmptyValueIndirect(vLeaveUntransformed) {
 		o.LeaveUntransformed = vLeaveUntransformed
 	}
 	return nil
@@ -63588,7 +63588,7 @@ func postReadExtractDeidentifyTemplateFields(r *DeidentifyTemplate) error {
 	if err := postReadExtractDeidentifyTemplateDeidentifyConfigFields(r, vDeidentifyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeidentifyConfig) {
+	if !dcl.IsEmptyValueIndirect(vDeidentifyConfig) {
 		r.DeidentifyConfig = vDeidentifyConfig
 	}
 	return nil
@@ -63602,7 +63602,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTempla
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsFields(r, vInfoTypeTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoTypeTransformations) {
+	if !dcl.IsEmptyValueIndirect(vInfoTypeTransformations) {
 		o.InfoTypeTransformations = vInfoTypeTransformations
 	}
 	vRecordTransformations := o.RecordTransformations
@@ -63613,7 +63613,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTempla
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFields(r, vRecordTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRecordTransformations) {
+	if !dcl.IsEmptyValueIndirect(vRecordTransformations) {
 		o.RecordTransformations = vRecordTransformations
 	}
 	vTransformationErrorHandling := o.TransformationErrorHandling
@@ -63624,7 +63624,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigFields(r *DeidentifyTempla
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingFields(r, vTransformationErrorHandling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransformationErrorHandling) {
+	if !dcl.IsEmptyValueIndirect(vTransformationErrorHandling) {
 		o.TransformationErrorHandling = vTransformationErrorHandling
 	}
 	return nil
@@ -63641,7 +63641,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	return nil
@@ -63658,7 +63658,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -63669,7 +63669,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -63680,7 +63680,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -63691,7 +63691,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -63702,7 +63702,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -63713,7 +63713,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -63724,7 +63724,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -63735,7 +63735,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -63746,7 +63746,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -63757,7 +63757,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -63768,7 +63768,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -63782,7 +63782,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -63796,7 +63796,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63807,7 +63807,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63836,7 +63836,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -63847,7 +63847,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -63858,7 +63858,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -63872,7 +63872,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -63883,7 +63883,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -63894,7 +63894,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -63923,7 +63923,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -63934,7 +63934,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -63948,7 +63948,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63959,7 +63959,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -63979,7 +63979,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -63990,7 +63990,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64013,7 +64013,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -64024,7 +64024,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -64035,7 +64035,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -64049,7 +64049,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64060,7 +64060,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64080,7 +64080,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64091,7 +64091,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64111,7 +64111,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64122,7 +64122,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64148,7 +64148,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -64162,7 +64162,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -64173,7 +64173,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -64184,7 +64184,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -64207,7 +64207,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -64218,7 +64218,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -64235,7 +64235,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -64246,7 +64246,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -64257,7 +64257,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -64280,7 +64280,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -64291,7 +64291,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -64302,7 +64302,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -64316,7 +64316,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -64327,7 +64327,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -64338,7 +64338,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTra
 	if err := extractDeidentifyTemplateDeidentifyConfigInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -64370,7 +64370,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	vPrimitiveTransformation := o.PrimitiveTransformation
@@ -64381,7 +64381,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	vInfoTypeTransformations := o.InfoTypeTransformations
@@ -64392,7 +64392,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsFields(r, vInfoTypeTransformations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoTypeTransformations) {
+	if !dcl.IsEmptyValueIndirect(vInfoTypeTransformations) {
 		o.InfoTypeTransformations = vInfoTypeTransformations
 	}
 	return nil
@@ -64409,7 +64409,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsFields(r, vExpressions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpressions) {
+	if !dcl.IsEmptyValueIndirect(vExpressions) {
 		o.Expressions = vExpressions
 	}
 	return nil
@@ -64423,7 +64423,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsFields(r, vConditions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConditions) {
+	if !dcl.IsEmptyValueIndirect(vConditions) {
 		o.Conditions = vConditions
 	}
 	return nil
@@ -64440,7 +64440,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	vValue := o.Value
@@ -64451,7 +64451,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueFields(r, vValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValue) {
+	if !dcl.IsEmptyValueIndirect(vValue) {
 		o.Value = vValue
 	}
 	return nil
@@ -64468,7 +64468,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64479,7 +64479,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsConditionExpressionsConditionsConditionsValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64499,7 +64499,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -64510,7 +64510,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -64521,7 +64521,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -64532,7 +64532,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -64543,7 +64543,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -64554,7 +64554,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -64565,7 +64565,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -64576,7 +64576,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -64587,7 +64587,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -64598,7 +64598,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -64609,7 +64609,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -64623,7 +64623,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -64637,7 +64637,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64648,7 +64648,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64677,7 +64677,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -64688,7 +64688,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -64699,7 +64699,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -64713,7 +64713,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -64724,7 +64724,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -64735,7 +64735,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -64764,7 +64764,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -64775,7 +64775,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -64789,7 +64789,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64800,7 +64800,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64820,7 +64820,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64831,7 +64831,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64854,7 +64854,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -64865,7 +64865,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -64876,7 +64876,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -64890,7 +64890,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64901,7 +64901,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64921,7 +64921,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64932,7 +64932,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64952,7 +64952,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -64963,7 +64963,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -64989,7 +64989,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -65003,7 +65003,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65014,7 +65014,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65025,7 +65025,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65048,7 +65048,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -65059,7 +65059,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -65076,7 +65076,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65087,7 +65087,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65098,7 +65098,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65121,7 +65121,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -65132,7 +65132,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -65143,7 +65143,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -65157,7 +65157,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65168,7 +65168,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65179,7 +65179,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65211,7 +65211,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFields(r, vPrimitiveTransformation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimitiveTransformation) {
+	if !dcl.IsEmptyValueIndirect(vPrimitiveTransformation) {
 		o.PrimitiveTransformation = vPrimitiveTransformation
 	}
 	return nil
@@ -65228,7 +65228,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigFields(r, vReplaceConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceConfig) {
 		o.ReplaceConfig = vReplaceConfig
 	}
 	vRedactConfig := o.RedactConfig
@@ -65239,7 +65239,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationRedactConfigFields(r, vRedactConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedactConfig) {
+	if !dcl.IsEmptyValueIndirect(vRedactConfig) {
 		o.RedactConfig = vRedactConfig
 	}
 	vCharacterMaskConfig := o.CharacterMaskConfig
@@ -65250,7 +65250,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCharacterMaskConfigFields(r, vCharacterMaskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCharacterMaskConfig) {
+	if !dcl.IsEmptyValueIndirect(vCharacterMaskConfig) {
 		o.CharacterMaskConfig = vCharacterMaskConfig
 	}
 	vCryptoReplaceFfxFpeConfig := o.CryptoReplaceFfxFpeConfig
@@ -65261,7 +65261,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigFields(r, vCryptoReplaceFfxFpeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoReplaceFfxFpeConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoReplaceFfxFpeConfig) {
 		o.CryptoReplaceFfxFpeConfig = vCryptoReplaceFfxFpeConfig
 	}
 	vFixedSizeBucketingConfig := o.FixedSizeBucketingConfig
@@ -65272,7 +65272,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigFields(r, vFixedSizeBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedSizeBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vFixedSizeBucketingConfig) {
 		o.FixedSizeBucketingConfig = vFixedSizeBucketingConfig
 	}
 	vBucketingConfig := o.BucketingConfig
@@ -65283,7 +65283,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigFields(r, vBucketingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketingConfig) {
+	if !dcl.IsEmptyValueIndirect(vBucketingConfig) {
 		o.BucketingConfig = vBucketingConfig
 	}
 	vReplaceWithInfoTypeConfig := o.ReplaceWithInfoTypeConfig
@@ -65294,7 +65294,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceWithInfoTypeConfigFields(r, vReplaceWithInfoTypeConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplaceWithInfoTypeConfig) {
+	if !dcl.IsEmptyValueIndirect(vReplaceWithInfoTypeConfig) {
 		o.ReplaceWithInfoTypeConfig = vReplaceWithInfoTypeConfig
 	}
 	vTimePartConfig := o.TimePartConfig
@@ -65305,7 +65305,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationTimePartConfigFields(r, vTimePartConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimePartConfig) {
+	if !dcl.IsEmptyValueIndirect(vTimePartConfig) {
 		o.TimePartConfig = vTimePartConfig
 	}
 	vCryptoHashConfig := o.CryptoHashConfig
@@ -65316,7 +65316,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigFields(r, vCryptoHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoHashConfig) {
 		o.CryptoHashConfig = vCryptoHashConfig
 	}
 	vDateShiftConfig := o.DateShiftConfig
@@ -65327,7 +65327,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigFields(r, vDateShiftConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateShiftConfig) {
+	if !dcl.IsEmptyValueIndirect(vDateShiftConfig) {
 		o.DateShiftConfig = vDateShiftConfig
 	}
 	vCryptoDeterministicConfig := o.CryptoDeterministicConfig
@@ -65338,7 +65338,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigFields(r, vCryptoDeterministicConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoDeterministicConfig) {
+	if !dcl.IsEmptyValueIndirect(vCryptoDeterministicConfig) {
 		o.CryptoDeterministicConfig = vCryptoDeterministicConfig
 	}
 	return nil
@@ -65352,7 +65352,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueFields(r, vNewValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNewValue) {
+	if !dcl.IsEmptyValueIndirect(vNewValue) {
 		o.NewValue = vNewValue
 	}
 	return nil
@@ -65366,7 +65366,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65377,7 +65377,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationReplaceConfigNewValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65406,7 +65406,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vContext := o.Context
@@ -65417,7 +65417,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -65428,7 +65428,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	return nil
@@ -65442,7 +65442,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65453,7 +65453,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65464,7 +65464,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoReplaceFfxFpeConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65493,7 +65493,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundFields(r, vLowerBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLowerBound) {
+	if !dcl.IsEmptyValueIndirect(vLowerBound) {
 		o.LowerBound = vLowerBound
 	}
 	vUpperBound := o.UpperBound
@@ -65504,7 +65504,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundFields(r, vUpperBound); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpperBound) {
+	if !dcl.IsEmptyValueIndirect(vUpperBound) {
 		o.UpperBound = vUpperBound
 	}
 	return nil
@@ -65518,7 +65518,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65529,7 +65529,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigLowerBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65549,7 +65549,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65560,7 +65560,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationFixedSizeBucketingConfigUpperBoundDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65583,7 +65583,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinFields(r, vMin); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMin) {
+	if !dcl.IsEmptyValueIndirect(vMin) {
 		o.Min = vMin
 	}
 	vMax := o.Max
@@ -65594,7 +65594,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxFields(r, vMax); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMax) {
+	if !dcl.IsEmptyValueIndirect(vMax) {
 		o.Max = vMax
 	}
 	vReplacementValue := o.ReplacementValue
@@ -65605,7 +65605,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueFields(r, vReplacementValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReplacementValue) {
+	if !dcl.IsEmptyValueIndirect(vReplacementValue) {
 		o.ReplacementValue = vReplacementValue
 	}
 	return nil
@@ -65619,7 +65619,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65630,7 +65630,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMinDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65650,7 +65650,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65661,7 +65661,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsMaxDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65681,7 +65681,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -65692,7 +65692,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationBucketingConfigBucketsReplacementValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -65718,7 +65718,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -65732,7 +65732,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65743,7 +65743,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65754,7 +65754,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoHashConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65777,7 +65777,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	vCryptoKey := o.CryptoKey
@@ -65788,7 +65788,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	return nil
@@ -65805,7 +65805,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65816,7 +65816,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65827,7 +65827,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationDateShiftConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65850,7 +65850,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyFields(r, vCryptoKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCryptoKey) {
+	if !dcl.IsEmptyValueIndirect(vCryptoKey) {
 		o.CryptoKey = vCryptoKey
 	}
 	vSurrogateInfoType := o.SurrogateInfoType
@@ -65861,7 +65861,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigSurrogateInfoTypeFields(r, vSurrogateInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateInfoType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateInfoType) {
 		o.SurrogateInfoType = vSurrogateInfoType
 	}
 	vContext := o.Context
@@ -65872,7 +65872,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigContextFields(r, vContext); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vContext) {
+	if !dcl.IsEmptyValueIndirect(vContext) {
 		o.Context = vContext
 	}
 	return nil
@@ -65886,7 +65886,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyTransientFields(r, vTransient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransient) {
+	if !dcl.IsEmptyValueIndirect(vTransient) {
 		o.Transient = vTransient
 	}
 	vUnwrapped := o.Unwrapped
@@ -65897,7 +65897,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyUnwrappedFields(r, vUnwrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUnwrapped) {
+	if !dcl.IsEmptyValueIndirect(vUnwrapped) {
 		o.Unwrapped = vUnwrapped
 	}
 	vKmsWrapped := o.KmsWrapped
@@ -65908,7 +65908,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsField
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsFieldTransformationsInfoTypeTransformationsTransformationsPrimitiveTransformationCryptoDeterministicConfigCryptoKeyKmsWrappedFields(r, vKmsWrapped); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsWrapped) {
+	if !dcl.IsEmptyValueIndirect(vKmsWrapped) {
 		o.KmsWrapped = vKmsWrapped
 	}
 	return nil
@@ -65937,7 +65937,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil
@@ -65951,7 +65951,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsFields(r, vExpressions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpressions) {
+	if !dcl.IsEmptyValueIndirect(vExpressions) {
 		o.Expressions = vExpressions
 	}
 	return nil
@@ -65965,7 +65965,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsFields(r, vConditions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConditions) {
+	if !dcl.IsEmptyValueIndirect(vConditions) {
 		o.Conditions = vConditions
 	}
 	return nil
@@ -65982,7 +65982,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	vValue := o.Value
@@ -65993,7 +65993,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueFields(r, vValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValue) {
+	if !dcl.IsEmptyValueIndirect(vValue) {
 		o.Value = vValue
 	}
 	return nil
@@ -66010,7 +66010,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueTimeValueFields(r, vTimeValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeValue) {
+	if !dcl.IsEmptyValueIndirect(vTimeValue) {
 		o.TimeValue = vTimeValue
 	}
 	vDateValue := o.DateValue
@@ -66021,7 +66021,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecor
 	if err := extractDeidentifyTemplateDeidentifyConfigRecordTransformationsRecordSuppressionsConditionExpressionsConditionsConditionsValueDateValueFields(r, vDateValue); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDateValue) {
+	if !dcl.IsEmptyValueIndirect(vDateValue) {
 		o.DateValue = vDateValue
 	}
 	return nil
@@ -66041,7 +66041,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlin
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingThrowErrorFields(r, vThrowError); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vThrowError) {
+	if !dcl.IsEmptyValueIndirect(vThrowError) {
 		o.ThrowError = vThrowError
 	}
 	vLeaveUntransformed := o.LeaveUntransformed
@@ -66052,7 +66052,7 @@ func postReadExtractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlin
 	if err := extractDeidentifyTemplateDeidentifyConfigTransformationErrorHandlingLeaveUntransformedFields(r, vLeaveUntransformed); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLeaveUntransformed) {
+	if !dcl.IsEmptyValueIndirect(vLeaveUntransformed) {
 		o.LeaveUntransformed = vLeaveUntransformed
 	}
 	return nil

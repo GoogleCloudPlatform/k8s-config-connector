@@ -12541,14 +12541,14 @@ func (r *Dashboard) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":         dcl.ValueOrEmptyString(nr.Name),
-		"displayName":  dcl.ValueOrEmptyString(nr.DisplayName),
-		"gridLayout":   dcl.ValueOrEmptyString(nr.GridLayout),
-		"mosaicLayout": dcl.ValueOrEmptyString(nr.MosaicLayout),
-		"rowLayout":    dcl.ValueOrEmptyString(nr.RowLayout),
-		"columnLayout": dcl.ValueOrEmptyString(nr.ColumnLayout),
-		"project":      dcl.ValueOrEmptyString(nr.Project),
-		"etag":         dcl.ValueOrEmptyString(nr.Etag),
+		"name":          dcl.ValueOrEmptyString(nr.Name),
+		"display_name":  dcl.ValueOrEmptyString(nr.DisplayName),
+		"grid_layout":   dcl.ValueOrEmptyString(nr.GridLayout),
+		"mosaic_layout": dcl.ValueOrEmptyString(nr.MosaicLayout),
+		"row_layout":    dcl.ValueOrEmptyString(nr.RowLayout),
+		"column_layout": dcl.ValueOrEmptyString(nr.ColumnLayout),
+		"project":       dcl.ValueOrEmptyString(nr.Project),
+		"etag":          dcl.ValueOrEmptyString(nr.Etag),
 	}
 	return dcl.Nprintf("projects/{{project}}/dashboards/{{name}}", params), nil
 }

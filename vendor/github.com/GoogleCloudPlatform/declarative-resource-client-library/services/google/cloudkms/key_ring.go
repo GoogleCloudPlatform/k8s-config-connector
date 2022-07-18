@@ -49,10 +49,10 @@ func (r *KeyRing) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":       dcl.ValueOrEmptyString(nr.Name),
-		"createTime": dcl.ValueOrEmptyString(nr.CreateTime),
-		"project":    dcl.ValueOrEmptyString(nr.Project),
-		"location":   dcl.ValueOrEmptyString(nr.Location),
+		"name":        dcl.ValueOrEmptyString(nr.Name),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"project":     dcl.ValueOrEmptyString(nr.Project),
+		"location":    dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/keyRings/{{name}}", params), nil
 }

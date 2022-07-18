@@ -87,20 +87,20 @@ func (r *Gateway) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"createTime":          dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":          dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":              dcl.ValueOrEmptyString(nr.Labels),
-		"description":         dcl.ValueOrEmptyString(nr.Description),
-		"type":                dcl.ValueOrEmptyString(nr.Type),
-		"addresses":           dcl.ValueOrEmptyString(nr.Addresses),
-		"ports":               dcl.ValueOrEmptyString(nr.Ports),
-		"scope":               dcl.ValueOrEmptyString(nr.Scope),
-		"serverTlsPolicy":     dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
-		"authorizationPolicy": dcl.ValueOrEmptyString(nr.AuthorizationPolicy),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
-		"location":            dcl.ValueOrEmptyString(nr.Location),
-		"selfLink":            dcl.ValueOrEmptyString(nr.SelfLink),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":               dcl.ValueOrEmptyString(nr.Labels),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"type":                 dcl.ValueOrEmptyString(nr.Type),
+		"addresses":            dcl.ValueOrEmptyString(nr.Addresses),
+		"ports":                dcl.ValueOrEmptyString(nr.Ports),
+		"scope":                dcl.ValueOrEmptyString(nr.Scope),
+		"server_tls_policy":    dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
+		"authorization_policy": dcl.ValueOrEmptyString(nr.AuthorizationPolicy),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
+		"self_link":            dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/gateways/{{name}}", params), nil
 }

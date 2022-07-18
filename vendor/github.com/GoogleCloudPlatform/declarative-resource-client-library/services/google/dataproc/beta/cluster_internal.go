@@ -716,12 +716,12 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 
 func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Cluster, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Project) && dcl.IsNotReturnedByServer(rawDesired.Project) {
+	if dcl.IsEmptyValueIndirect(rawNew.Project) && dcl.IsEmptyValueIndirect(rawDesired.Project) {
 		rawNew.Project = rawDesired.Project
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -729,30 +729,30 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Config) && dcl.IsNotReturnedByServer(rawDesired.Config) {
+	if dcl.IsEmptyValueIndirect(rawNew.Config) && dcl.IsEmptyValueIndirect(rawDesired.Config) {
 		rawNew.Config = rawDesired.Config
 	} else {
 		rawNew.Config = canonicalizeNewClusterConfig(c, rawDesired.Config, rawNew.Config)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 		rawNew.Status = canonicalizeNewClusterStatus(c, rawDesired.Status, rawNew.Status)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StatusHistory) && dcl.IsNotReturnedByServer(rawDesired.StatusHistory) {
+	if dcl.IsEmptyValueIndirect(rawNew.StatusHistory) && dcl.IsEmptyValueIndirect(rawDesired.StatusHistory) {
 		rawNew.StatusHistory = rawDesired.StatusHistory
 	} else {
 		rawNew.StatusHistory = canonicalizeNewClusterStatusHistorySlice(c, rawDesired.StatusHistory, rawNew.StatusHistory)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ClusterUuid) && dcl.IsNotReturnedByServer(rawDesired.ClusterUuid) {
+	if dcl.IsEmptyValueIndirect(rawNew.ClusterUuid) && dcl.IsEmptyValueIndirect(rawDesired.ClusterUuid) {
 		rawNew.ClusterUuid = rawDesired.ClusterUuid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ClusterUuid, rawNew.ClusterUuid) {
@@ -760,7 +760,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Metrics) && dcl.IsNotReturnedByServer(rawDesired.Metrics) {
+	if dcl.IsEmptyValueIndirect(rawNew.Metrics) && dcl.IsEmptyValueIndirect(rawDesired.Metrics) {
 		rawNew.Metrics = rawDesired.Metrics
 	} else {
 		rawNew.Metrics = canonicalizeNewClusterMetrics(c, rawDesired.Metrics, rawNew.Metrics)
@@ -849,7 +849,7 @@ func canonicalizeNewClusterConfig(c *Client, des, nw *ClusterConfig) *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1021,7 +1021,7 @@ func canonicalizeNewClusterConfigGceClusterConfig(c *Client, des, nw *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGceClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1158,7 +1158,7 @@ func canonicalizeNewClusterConfigGceClusterConfigReservationAffinity(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGceClusterConfigReservationAffinity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1277,7 +1277,7 @@ func canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinity(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGceClusterConfigNodeGroupAffinity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1413,7 +1413,7 @@ func canonicalizeNewClusterConfigMasterConfig(c *Client, des, nw *ClusterConfigM
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMasterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1552,7 +1552,7 @@ func canonicalizeNewClusterConfigMasterConfigDiskConfig(c *Client, des, nw *Clus
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMasterConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1661,7 +1661,7 @@ func canonicalizeNewClusterConfigMasterConfigManagedGroupConfig(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMasterConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1785,7 +1785,7 @@ func canonicalizeNewClusterConfigMasterConfigAccelerators(c *Client, des, nw *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMasterConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1925,7 +1925,7 @@ func canonicalizeNewClusterConfigWorkerConfig(c *Client, des, nw *ClusterConfigW
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2064,7 +2064,7 @@ func canonicalizeNewClusterConfigWorkerConfigDiskConfig(c *Client, des, nw *Clus
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigWorkerConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2173,7 +2173,7 @@ func canonicalizeNewClusterConfigWorkerConfigManagedGroupConfig(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigWorkerConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2297,7 +2297,7 @@ func canonicalizeNewClusterConfigWorkerConfigAccelerators(c *Client, des, nw *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigWorkerConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2437,7 +2437,7 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfig(c *Client, des, nw *Clust
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecondaryWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2576,7 +2576,7 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigDiskConfig(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecondaryWorkerConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2685,7 +2685,7 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigManagedGroupConfig(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecondaryWorkerConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2809,7 +2809,7 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigAccelerators(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecondaryWorkerConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2936,7 +2936,7 @@ func canonicalizeNewClusterConfigSoftwareConfig(c *Client, des, nw *ClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSoftwareConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3056,7 +3056,7 @@ func canonicalizeNewClusterConfigInitializationActions(c *Client, des, nw *Clust
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigInitializationActions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3175,7 +3175,7 @@ func canonicalizeNewClusterConfigEncryptionConfig(c *Client, des, nw *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigEncryptionConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3287,7 +3287,7 @@ func canonicalizeNewClusterConfigAutoscalingConfig(c *Client, des, nw *ClusterCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigAutoscalingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3394,7 +3394,7 @@ func canonicalizeNewClusterConfigSecurityConfig(c *Client, des, nw *ClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecurityConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3579,7 +3579,7 @@ func canonicalizeNewClusterConfigSecurityConfigKerberosConfig(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecurityConfigKerberosConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3741,7 +3741,7 @@ func canonicalizeNewClusterConfigLifecycleConfig(c *Client, des, nw *ClusterConf
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigLifecycleConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3859,7 +3859,7 @@ func canonicalizeNewClusterConfigEndpointConfig(c *Client, des, nw *ClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigEndpointConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3970,7 +3970,7 @@ func canonicalizeNewClusterConfigGkeClusterConfig(c *Client, des, nw *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGkeClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4089,7 +4089,7 @@ func canonicalizeNewClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4205,7 +4205,7 @@ func canonicalizeNewClusterConfigMetastoreConfig(c *Client, des, nw *ClusterConf
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMetastoreConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4310,7 +4310,7 @@ func canonicalizeNewClusterStatus(c *Client, des, nw *ClusterStatus) *ClusterSta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterStatus while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4419,7 +4419,7 @@ func canonicalizeNewClusterStatusHistory(c *Client, des, nw *ClusterStatusHistor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterStatusHistory while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4541,7 +4541,7 @@ func canonicalizeNewClusterMetrics(c *Client, des, nw *ClusterMetrics) *ClusterM
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterMetrics while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10694,7 +10694,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vStatus := r.Status
@@ -10705,7 +10705,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vMetrics := r.Metrics
@@ -10716,7 +10716,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterMetricsFields(r, vMetrics); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetrics) {
+	if !dcl.IsEmptyValueIndirect(vMetrics) {
 		r.Metrics = vMetrics
 	}
 	return nil
@@ -10730,7 +10730,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigGceClusterConfigFields(r, vGceClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGceClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGceClusterConfig) {
 		o.GceClusterConfig = vGceClusterConfig
 	}
 	vMasterConfig := o.MasterConfig
@@ -10741,7 +10741,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigMasterConfigFields(r, vMasterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMasterConfig) {
+	if !dcl.IsEmptyValueIndirect(vMasterConfig) {
 		o.MasterConfig = vMasterConfig
 	}
 	vWorkerConfig := o.WorkerConfig
@@ -10752,7 +10752,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := o.SecondaryWorkerConfig
@@ -10763,7 +10763,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		o.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	vSoftwareConfig := o.SoftwareConfig
@@ -10774,7 +10774,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSoftwareConfigFields(r, vSoftwareConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSoftwareConfig) {
+	if !dcl.IsEmptyValueIndirect(vSoftwareConfig) {
 		o.SoftwareConfig = vSoftwareConfig
 	}
 	vEncryptionConfig := o.EncryptionConfig
@@ -10785,7 +10785,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigEncryptionConfigFields(r, vEncryptionConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEncryptionConfig) {
+	if !dcl.IsEmptyValueIndirect(vEncryptionConfig) {
 		o.EncryptionConfig = vEncryptionConfig
 	}
 	vAutoscalingConfig := o.AutoscalingConfig
@@ -10796,7 +10796,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigAutoscalingConfigFields(r, vAutoscalingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscalingConfig) {
+	if !dcl.IsEmptyValueIndirect(vAutoscalingConfig) {
 		o.AutoscalingConfig = vAutoscalingConfig
 	}
 	vSecurityConfig := o.SecurityConfig
@@ -10807,7 +10807,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSecurityConfigFields(r, vSecurityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecurityConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecurityConfig) {
 		o.SecurityConfig = vSecurityConfig
 	}
 	vLifecycleConfig := o.LifecycleConfig
@@ -10818,7 +10818,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigLifecycleConfigFields(r, vLifecycleConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycleConfig) {
+	if !dcl.IsEmptyValueIndirect(vLifecycleConfig) {
 		o.LifecycleConfig = vLifecycleConfig
 	}
 	vEndpointConfig := o.EndpointConfig
@@ -10829,7 +10829,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigEndpointConfigFields(r, vEndpointConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpointConfig) {
+	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
 	vGkeClusterConfig := o.GkeClusterConfig
@@ -10840,7 +10840,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigGkeClusterConfigFields(r, vGkeClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGkeClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGkeClusterConfig) {
 		o.GkeClusterConfig = vGkeClusterConfig
 	}
 	vMetastoreConfig := o.MetastoreConfig
@@ -10851,7 +10851,7 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetastoreConfig) {
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
 		o.MetastoreConfig = vMetastoreConfig
 	}
 	return nil
@@ -10865,7 +10865,7 @@ func extractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterConfigGceC
 	if err := extractClusterConfigGceClusterConfigReservationAffinityFields(r, vReservationAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReservationAffinity) {
+	if !dcl.IsEmptyValueIndirect(vReservationAffinity) {
 		o.ReservationAffinity = vReservationAffinity
 	}
 	vNodeGroupAffinity := o.NodeGroupAffinity
@@ -10876,7 +10876,7 @@ func extractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterConfigGceC
 	if err := extractClusterConfigGceClusterConfigNodeGroupAffinityFields(r, vNodeGroupAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNodeGroupAffinity) {
+	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
 	return nil
@@ -10896,7 +10896,7 @@ func extractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfigMasterCo
 	if err := extractClusterConfigMasterConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -10907,7 +10907,7 @@ func extractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfigMasterCo
 	if err := extractClusterConfigMasterConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -10930,7 +10930,7 @@ func extractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfigWorkerCo
 	if err := extractClusterConfigWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -10941,7 +10941,7 @@ func extractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfigWorkerCo
 	if err := extractClusterConfigWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -10964,7 +10964,7 @@ func extractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *ClusterConfi
 	if err := extractClusterConfigSecondaryWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -10975,7 +10975,7 @@ func extractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *ClusterConfi
 	if err := extractClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -11010,7 +11010,7 @@ func extractClusterConfigSecurityConfigFields(r *Cluster, o *ClusterConfigSecuri
 	if err := extractClusterConfigSecurityConfigKerberosConfigFields(r, vKerberosConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKerberosConfig) {
+	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
 	return nil
@@ -11033,7 +11033,7 @@ func extractClusterConfigGkeClusterConfigFields(r *Cluster, o *ClusterConfigGkeC
 	if err := extractClusterConfigGkeClusterConfigNamespacedGkeDeploymentTargetFields(r, vNamespacedGkeDeploymentTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNamespacedGkeDeploymentTarget) {
+	if !dcl.IsEmptyValueIndirect(vNamespacedGkeDeploymentTarget) {
 		o.NamespacedGkeDeploymentTarget = vNamespacedGkeDeploymentTarget
 	}
 	return nil
@@ -11063,7 +11063,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vStatus := r.Status
@@ -11074,7 +11074,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vMetrics := r.Metrics
@@ -11085,7 +11085,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterMetricsFields(r, vMetrics); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetrics) {
+	if !dcl.IsEmptyValueIndirect(vMetrics) {
 		r.Metrics = vMetrics
 	}
 	return nil
@@ -11099,7 +11099,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigGceClusterConfigFields(r, vGceClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGceClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGceClusterConfig) {
 		o.GceClusterConfig = vGceClusterConfig
 	}
 	vMasterConfig := o.MasterConfig
@@ -11110,7 +11110,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigMasterConfigFields(r, vMasterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMasterConfig) {
+	if !dcl.IsEmptyValueIndirect(vMasterConfig) {
 		o.MasterConfig = vMasterConfig
 	}
 	vWorkerConfig := o.WorkerConfig
@@ -11121,7 +11121,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := o.SecondaryWorkerConfig
@@ -11132,7 +11132,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		o.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	vSoftwareConfig := o.SoftwareConfig
@@ -11143,7 +11143,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSoftwareConfigFields(r, vSoftwareConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSoftwareConfig) {
+	if !dcl.IsEmptyValueIndirect(vSoftwareConfig) {
 		o.SoftwareConfig = vSoftwareConfig
 	}
 	vEncryptionConfig := o.EncryptionConfig
@@ -11154,7 +11154,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigEncryptionConfigFields(r, vEncryptionConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEncryptionConfig) {
+	if !dcl.IsEmptyValueIndirect(vEncryptionConfig) {
 		o.EncryptionConfig = vEncryptionConfig
 	}
 	vAutoscalingConfig := o.AutoscalingConfig
@@ -11165,7 +11165,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigAutoscalingConfigFields(r, vAutoscalingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscalingConfig) {
+	if !dcl.IsEmptyValueIndirect(vAutoscalingConfig) {
 		o.AutoscalingConfig = vAutoscalingConfig
 	}
 	vSecurityConfig := o.SecurityConfig
@@ -11176,7 +11176,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigSecurityConfigFields(r, vSecurityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecurityConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecurityConfig) {
 		o.SecurityConfig = vSecurityConfig
 	}
 	vLifecycleConfig := o.LifecycleConfig
@@ -11187,7 +11187,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigLifecycleConfigFields(r, vLifecycleConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycleConfig) {
+	if !dcl.IsEmptyValueIndirect(vLifecycleConfig) {
 		o.LifecycleConfig = vLifecycleConfig
 	}
 	vEndpointConfig := o.EndpointConfig
@@ -11198,7 +11198,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigEndpointConfigFields(r, vEndpointConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpointConfig) {
+	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
 	vGkeClusterConfig := o.GkeClusterConfig
@@ -11209,7 +11209,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigGkeClusterConfigFields(r, vGkeClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGkeClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGkeClusterConfig) {
 		o.GkeClusterConfig = vGkeClusterConfig
 	}
 	vMetastoreConfig := o.MetastoreConfig
@@ -11220,7 +11220,7 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if err := extractClusterConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetastoreConfig) {
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
 		o.MetastoreConfig = vMetastoreConfig
 	}
 	return nil
@@ -11234,7 +11234,7 @@ func postReadExtractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterCo
 	if err := extractClusterConfigGceClusterConfigReservationAffinityFields(r, vReservationAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReservationAffinity) {
+	if !dcl.IsEmptyValueIndirect(vReservationAffinity) {
 		o.ReservationAffinity = vReservationAffinity
 	}
 	vNodeGroupAffinity := o.NodeGroupAffinity
@@ -11245,7 +11245,7 @@ func postReadExtractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterCo
 	if err := extractClusterConfigGceClusterConfigNodeGroupAffinityFields(r, vNodeGroupAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNodeGroupAffinity) {
+	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
 	return nil
@@ -11265,7 +11265,7 @@ func postReadExtractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfig
 	if err := extractClusterConfigMasterConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -11276,7 +11276,7 @@ func postReadExtractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfig
 	if err := extractClusterConfigMasterConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -11299,7 +11299,7 @@ func postReadExtractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfig
 	if err := extractClusterConfigWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -11310,7 +11310,7 @@ func postReadExtractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfig
 	if err := extractClusterConfigWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -11333,7 +11333,7 @@ func postReadExtractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *Clus
 	if err := extractClusterConfigSecondaryWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -11344,7 +11344,7 @@ func postReadExtractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *Clus
 	if err := extractClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -11379,7 +11379,7 @@ func postReadExtractClusterConfigSecurityConfigFields(r *Cluster, o *ClusterConf
 	if err := extractClusterConfigSecurityConfigKerberosConfigFields(r, vKerberosConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKerberosConfig) {
+	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
 	return nil
@@ -11402,7 +11402,7 @@ func postReadExtractClusterConfigGkeClusterConfigFields(r *Cluster, o *ClusterCo
 	if err := extractClusterConfigGkeClusterConfigNamespacedGkeDeploymentTargetFields(r, vNamespacedGkeDeploymentTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNamespacedGkeDeploymentTarget) {
+	if !dcl.IsEmptyValueIndirect(vNamespacedGkeDeploymentTarget) {
 		o.NamespacedGkeDeploymentTarget = vNamespacedGkeDeploymentTarget
 	}
 	return nil

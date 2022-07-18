@@ -129,15 +129,15 @@ func (r *Network) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"description":           dcl.ValueOrEmptyString(nr.Description),
-		"gatewayIPv4":           dcl.ValueOrEmptyString(nr.GatewayIPv4),
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"autoCreateSubnetworks": dcl.ValueOrEmptyString(nr.AutoCreateSubnetworks),
-		"routingConfig":         dcl.ValueOrEmptyString(nr.RoutingConfig),
-		"mtu":                   dcl.ValueOrEmptyString(nr.Mtu),
-		"project":               dcl.ValueOrEmptyString(nr.Project),
-		"selfLink":              dcl.ValueOrEmptyString(nr.SelfLink),
-		"selfLinkWithId":        dcl.ValueOrEmptyString(nr.SelfLinkWithId),
+		"description":             dcl.ValueOrEmptyString(nr.Description),
+		"gateway_ipv4":            dcl.ValueOrEmptyString(nr.GatewayIPv4),
+		"name":                    dcl.ValueOrEmptyString(nr.Name),
+		"auto_create_subnetworks": dcl.ValueOrEmptyString(nr.AutoCreateSubnetworks),
+		"routing_config":          dcl.ValueOrEmptyString(nr.RoutingConfig),
+		"mtu":                     dcl.ValueOrEmptyString(nr.Mtu),
+		"project":                 dcl.ValueOrEmptyString(nr.Project),
+		"self_link":               dcl.ValueOrEmptyString(nr.SelfLink),
+		"self_link_with_id":       dcl.ValueOrEmptyString(nr.SelfLinkWithId),
 	}
 	return dcl.Nprintf("projects/{{project}}/global/networks/{{name}}", params), nil
 }

@@ -129,15 +129,15 @@ func (r *Hub) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":      dcl.ValueOrEmptyString(nr.Labels),
-		"description": dcl.ValueOrEmptyString(nr.Description),
-		"uniqueId":    dcl.ValueOrEmptyString(nr.UniqueId),
-		"state":       dcl.ValueOrEmptyString(nr.State),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
-		"routingVpcs": dcl.ValueOrEmptyString(nr.RoutingVpcs),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"create_time":  dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":       dcl.ValueOrEmptyString(nr.Labels),
+		"description":  dcl.ValueOrEmptyString(nr.Description),
+		"unique_id":    dcl.ValueOrEmptyString(nr.UniqueId),
+		"state":        dcl.ValueOrEmptyString(nr.State),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"routing_vpcs": dcl.ValueOrEmptyString(nr.RoutingVpcs),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/global/hubs/{{name}}", params), nil
 }

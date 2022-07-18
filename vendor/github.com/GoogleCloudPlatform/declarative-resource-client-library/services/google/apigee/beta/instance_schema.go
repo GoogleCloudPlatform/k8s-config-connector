@@ -44,7 +44,6 @@ func DCLInstanceSchema() *dcl.Schema {
 						Description: "A full instance of a Instance",
 					},
 				},
-				TimeoutSecs: 4800,
 			},
 			Delete: &dcl.Path{
 				Description: "The function used to delete a Instance",
@@ -55,7 +54,6 @@ func DCLInstanceSchema() *dcl.Schema {
 						Description: "A full instance of a Instance",
 					},
 				},
-				TimeoutSecs: 4800,
 			},
 			DeleteAll: &dcl.Path{
 				Description: "The function used to delete all Instance",
@@ -68,7 +66,6 @@ func DCLInstanceSchema() *dcl.Schema {
 						},
 					},
 				},
-				TimeoutSecs: 4800,
 			},
 			List: &dcl.Path{
 				Description: "The function used to list information about many Instance",
@@ -86,9 +83,11 @@ func DCLInstanceSchema() *dcl.Schema {
 		Components: &dcl.Components{
 			Schemas: map[string]*dcl.Component{
 				"Instance": &dcl.Component{
-					Title:     "Instance",
-					ID:        "organizations/{{apigee_organization}}/instances/{{name}}",
-					HasCreate: true,
+					Title:         "Instance",
+					ID:            "organizations/{{apigee_organization}}/instances/{{name}}",
+					HasCreate:     true,
+					ApplyTimeout:  4800,
+					DeleteTimeout: 4800,
 					SchemaProperty: dcl.Property{
 						Type: "object",
 						Required: []string{

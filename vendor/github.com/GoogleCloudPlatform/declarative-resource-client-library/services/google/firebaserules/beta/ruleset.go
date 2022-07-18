@@ -226,11 +226,11 @@ func (r *Ruleset) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":       dcl.ValueOrEmptyString(nr.Name),
-		"source":     dcl.ValueOrEmptyString(nr.Source),
-		"createTime": dcl.ValueOrEmptyString(nr.CreateTime),
-		"metadata":   dcl.ValueOrEmptyString(nr.Metadata),
-		"project":    dcl.ValueOrEmptyString(nr.Project),
+		"name":        dcl.ValueOrEmptyString(nr.Name),
+		"source":      dcl.ValueOrEmptyString(nr.Source),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"metadata":    dcl.ValueOrEmptyString(nr.Metadata),
+		"project":     dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/rulesets/{{name}}", params), nil
 }

@@ -468,7 +468,7 @@ func canonicalizeOAuthIdpConfigDesiredState(rawDesired, rawInitial *OAuthIdpConf
 
 func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpConfig) (*OAuthIdpConfig, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -476,7 +476,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ClientId) && dcl.IsNotReturnedByServer(rawDesired.ClientId) {
+	if dcl.IsEmptyValueIndirect(rawNew.ClientId) && dcl.IsEmptyValueIndirect(rawDesired.ClientId) {
 		rawNew.ClientId = rawDesired.ClientId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ClientId, rawNew.ClientId) {
@@ -484,7 +484,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Issuer) && dcl.IsNotReturnedByServer(rawDesired.Issuer) {
+	if dcl.IsEmptyValueIndirect(rawNew.Issuer) && dcl.IsEmptyValueIndirect(rawDesired.Issuer) {
 		rawNew.Issuer = rawDesired.Issuer
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Issuer, rawNew.Issuer) {
@@ -492,7 +492,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -500,7 +500,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Enabled) && dcl.IsNotReturnedByServer(rawDesired.Enabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Enabled) && dcl.IsEmptyValueIndirect(rawDesired.Enabled) {
 		rawNew.Enabled = rawDesired.Enabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Enabled, rawNew.Enabled) {
@@ -508,7 +508,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ClientSecret) && dcl.IsNotReturnedByServer(rawDesired.ClientSecret) {
+	if dcl.IsEmptyValueIndirect(rawNew.ClientSecret) && dcl.IsEmptyValueIndirect(rawDesired.ClientSecret) {
 		rawNew.ClientSecret = rawDesired.ClientSecret
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ClientSecret, rawNew.ClientSecret) {
@@ -516,7 +516,7 @@ func canonicalizeOAuthIdpConfigNewState(c *Client, rawNew, rawDesired *OAuthIdpC
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ResponseType) && dcl.IsNotReturnedByServer(rawDesired.ResponseType) {
+	if dcl.IsEmptyValueIndirect(rawNew.ResponseType) && dcl.IsEmptyValueIndirect(rawDesired.ResponseType) {
 		rawNew.ResponseType = rawDesired.ResponseType
 	} else {
 		rawNew.ResponseType = canonicalizeNewOAuthIdpConfigResponseType(c, rawDesired.ResponseType, rawNew.ResponseType)
@@ -595,7 +595,7 @@ func canonicalizeNewOAuthIdpConfigResponseType(c *Client, des, nw *OAuthIdpConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OAuthIdpConfigResponseType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1115,7 +1115,7 @@ func extractOAuthIdpConfigFields(r *OAuthIdpConfig) error {
 	if err := extractOAuthIdpConfigResponseTypeFields(r, vResponseType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResponseType) {
+	if !dcl.IsEmptyValueIndirect(vResponseType) {
 		r.ResponseType = vResponseType
 	}
 	return nil
@@ -1133,7 +1133,7 @@ func postReadExtractOAuthIdpConfigFields(r *OAuthIdpConfig) error {
 	if err := postReadExtractOAuthIdpConfigResponseTypeFields(r, vResponseType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResponseType) {
+	if !dcl.IsEmptyValueIndirect(vResponseType) {
 		r.ResponseType = vResponseType
 	}
 	return nil

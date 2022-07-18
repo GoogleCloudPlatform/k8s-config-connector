@@ -371,18 +371,18 @@ func (r *Trigger) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"uid":              dcl.ValueOrEmptyString(nr.Uid),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"matchingCriteria": dcl.ValueOrEmptyString(nr.MatchingCriteria),
-		"serviceAccount":   dcl.ValueOrEmptyString(nr.ServiceAccount),
-		"destination":      dcl.ValueOrEmptyString(nr.Destination),
-		"transport":        dcl.ValueOrEmptyString(nr.Transport),
-		"labels":           dcl.ValueOrEmptyString(nr.Labels),
-		"etag":             dcl.ValueOrEmptyString(nr.Etag),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"uid":               dcl.ValueOrEmptyString(nr.Uid),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"matching_criteria": dcl.ValueOrEmptyString(nr.MatchingCriteria),
+		"service_account":   dcl.ValueOrEmptyString(nr.ServiceAccount),
+		"destination":       dcl.ValueOrEmptyString(nr.Destination),
+		"transport":         dcl.ValueOrEmptyString(nr.Transport),
+		"labels":            dcl.ValueOrEmptyString(nr.Labels),
+		"etag":              dcl.ValueOrEmptyString(nr.Etag),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/triggers/{{name}}", params), nil
 }

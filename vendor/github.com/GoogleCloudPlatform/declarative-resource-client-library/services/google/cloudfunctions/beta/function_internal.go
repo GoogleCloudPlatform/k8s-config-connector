@@ -691,7 +691,7 @@ func canonicalizeFunctionDesiredState(rawDesired, rawInitial *Function, opts ...
 
 func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Function, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -699,7 +699,7 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -707,7 +707,7 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SourceArchiveUrl) && dcl.IsNotReturnedByServer(rawDesired.SourceArchiveUrl) {
+	if dcl.IsEmptyValueIndirect(rawNew.SourceArchiveUrl) && dcl.IsEmptyValueIndirect(rawDesired.SourceArchiveUrl) {
 		rawNew.SourceArchiveUrl = rawDesired.SourceArchiveUrl
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SourceArchiveUrl, rawNew.SourceArchiveUrl) {
@@ -715,30 +715,30 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SourceRepository) && dcl.IsNotReturnedByServer(rawDesired.SourceRepository) {
+	if dcl.IsEmptyValueIndirect(rawNew.SourceRepository) && dcl.IsEmptyValueIndirect(rawDesired.SourceRepository) {
 		rawNew.SourceRepository = rawDesired.SourceRepository
 	} else {
 		rawNew.SourceRepository = canonicalizeNewFunctionSourceRepository(c, rawDesired.SourceRepository, rawNew.SourceRepository)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.HttpsTrigger) && dcl.IsNotReturnedByServer(rawDesired.HttpsTrigger) {
+	if dcl.IsEmptyValueIndirect(rawNew.HttpsTrigger) && dcl.IsEmptyValueIndirect(rawDesired.HttpsTrigger) {
 		rawNew.HttpsTrigger = rawDesired.HttpsTrigger
 	} else {
 		rawNew.HttpsTrigger = canonicalizeNewFunctionHttpsTrigger(c, rawDesired.HttpsTrigger, rawNew.HttpsTrigger)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EventTrigger) && dcl.IsNotReturnedByServer(rawDesired.EventTrigger) {
+	if dcl.IsEmptyValueIndirect(rawNew.EventTrigger) && dcl.IsEmptyValueIndirect(rawDesired.EventTrigger) {
 		rawNew.EventTrigger = rawDesired.EventTrigger
 	} else {
 		rawNew.EventTrigger = canonicalizeNewFunctionEventTrigger(c, rawDesired.EventTrigger, rawNew.EventTrigger)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EntryPoint) && dcl.IsNotReturnedByServer(rawDesired.EntryPoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.EntryPoint) && dcl.IsEmptyValueIndirect(rawDesired.EntryPoint) {
 		rawNew.EntryPoint = rawDesired.EntryPoint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.EntryPoint, rawNew.EntryPoint) {
@@ -746,7 +746,7 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Runtime) && dcl.IsNotReturnedByServer(rawDesired.Runtime) {
+	if dcl.IsEmptyValueIndirect(rawNew.Runtime) && dcl.IsEmptyValueIndirect(rawDesired.Runtime) {
 		rawNew.Runtime = rawDesired.Runtime
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Runtime, rawNew.Runtime) {
@@ -754,7 +754,7 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Timeout) && dcl.IsNotReturnedByServer(rawDesired.Timeout) {
+	if dcl.IsEmptyValueIndirect(rawNew.Timeout) && dcl.IsEmptyValueIndirect(rawDesired.Timeout) {
 		rawNew.Timeout = rawDesired.Timeout
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Timeout, rawNew.Timeout) {
@@ -762,17 +762,17 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AvailableMemoryMb) && dcl.IsNotReturnedByServer(rawDesired.AvailableMemoryMb) {
+	if dcl.IsEmptyValueIndirect(rawNew.AvailableMemoryMb) && dcl.IsEmptyValueIndirect(rawDesired.AvailableMemoryMb) {
 		rawNew.AvailableMemoryMb = rawDesired.AvailableMemoryMb
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceAccountEmail) && dcl.IsNotReturnedByServer(rawDesired.ServiceAccountEmail) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceAccountEmail) && dcl.IsEmptyValueIndirect(rawDesired.ServiceAccountEmail) {
 		rawNew.ServiceAccountEmail = rawDesired.ServiceAccountEmail
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 		if dcl.StringCanonicalize(rawDesired.UpdateTime, rawNew.UpdateTime) {
@@ -780,37 +780,37 @@ func canonicalizeFunctionNewState(c *Client, rawNew, rawDesired *Function) (*Fun
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VersionId) && dcl.IsNotReturnedByServer(rawDesired.VersionId) {
+	if dcl.IsEmptyValueIndirect(rawNew.VersionId) && dcl.IsEmptyValueIndirect(rawDesired.VersionId) {
 		rawNew.VersionId = rawDesired.VersionId
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnvironmentVariables) && dcl.IsNotReturnedByServer(rawDesired.EnvironmentVariables) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnvironmentVariables) && dcl.IsEmptyValueIndirect(rawDesired.EnvironmentVariables) {
 		rawNew.EnvironmentVariables = rawDesired.EnvironmentVariables
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MaxInstances) && dcl.IsNotReturnedByServer(rawDesired.MaxInstances) {
+	if dcl.IsEmptyValueIndirect(rawNew.MaxInstances) && dcl.IsEmptyValueIndirect(rawDesired.MaxInstances) {
 		rawNew.MaxInstances = rawDesired.MaxInstances
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VPCConnector) && dcl.IsNotReturnedByServer(rawDesired.VPCConnector) {
+	if dcl.IsEmptyValueIndirect(rawNew.VPCConnector) && dcl.IsEmptyValueIndirect(rawDesired.VPCConnector) {
 		rawNew.VPCConnector = rawDesired.VPCConnector
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VPCConnectorEgressSettings) && dcl.IsNotReturnedByServer(rawDesired.VPCConnectorEgressSettings) {
+	if dcl.IsEmptyValueIndirect(rawNew.VPCConnectorEgressSettings) && dcl.IsEmptyValueIndirect(rawDesired.VPCConnectorEgressSettings) {
 		rawNew.VPCConnectorEgressSettings = rawDesired.VPCConnectorEgressSettings
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IngressSettings) && dcl.IsNotReturnedByServer(rawDesired.IngressSettings) {
+	if dcl.IsEmptyValueIndirect(rawNew.IngressSettings) && dcl.IsEmptyValueIndirect(rawDesired.IngressSettings) {
 		rawNew.IngressSettings = rawDesired.IngressSettings
 	} else {
 	}
@@ -880,7 +880,7 @@ func canonicalizeNewFunctionSourceRepository(c *Client, des, nw *FunctionSourceR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FunctionSourceRepository while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -999,7 +999,7 @@ func canonicalizeNewFunctionHttpsTrigger(c *Client, des, nw *FunctionHttpsTrigge
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FunctionHttpsTrigger while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1130,7 +1130,7 @@ func canonicalizeNewFunctionEventTrigger(c *Client, des, nw *FunctionEventTrigge
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FunctionEventTrigger while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2333,7 +2333,7 @@ func extractFunctionFields(r *Function) error {
 	if err := extractFunctionSourceRepositoryFields(r, vSourceRepository); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSourceRepository) {
+	if !dcl.IsEmptyValueIndirect(vSourceRepository) {
 		r.SourceRepository = vSourceRepository
 	}
 	vHttpsTrigger := r.HttpsTrigger
@@ -2344,7 +2344,7 @@ func extractFunctionFields(r *Function) error {
 	if err := extractFunctionHttpsTriggerFields(r, vHttpsTrigger); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpsTrigger) {
+	if !dcl.IsEmptyValueIndirect(vHttpsTrigger) {
 		r.HttpsTrigger = vHttpsTrigger
 	}
 	vEventTrigger := r.EventTrigger
@@ -2355,7 +2355,7 @@ func extractFunctionFields(r *Function) error {
 	if err := extractFunctionEventTriggerFields(r, vEventTrigger); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEventTrigger) {
+	if !dcl.IsEmptyValueIndirect(vEventTrigger) {
 		r.EventTrigger = vEventTrigger
 	}
 	return nil
@@ -2379,7 +2379,7 @@ func postReadExtractFunctionFields(r *Function) error {
 	if err := postReadExtractFunctionSourceRepositoryFields(r, vSourceRepository); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSourceRepository) {
+	if !dcl.IsEmptyValueIndirect(vSourceRepository) {
 		r.SourceRepository = vSourceRepository
 	}
 	vHttpsTrigger := r.HttpsTrigger
@@ -2390,7 +2390,7 @@ func postReadExtractFunctionFields(r *Function) error {
 	if err := postReadExtractFunctionHttpsTriggerFields(r, vHttpsTrigger); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpsTrigger) {
+	if !dcl.IsEmptyValueIndirect(vHttpsTrigger) {
 		r.HttpsTrigger = vHttpsTrigger
 	}
 	vEventTrigger := r.EventTrigger
@@ -2401,7 +2401,7 @@ func postReadExtractFunctionFields(r *Function) error {
 	if err := postReadExtractFunctionEventTriggerFields(r, vEventTrigger); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEventTrigger) {
+	if !dcl.IsEmptyValueIndirect(vEventTrigger) {
 		r.EventTrigger = vEventTrigger
 	}
 	return nil

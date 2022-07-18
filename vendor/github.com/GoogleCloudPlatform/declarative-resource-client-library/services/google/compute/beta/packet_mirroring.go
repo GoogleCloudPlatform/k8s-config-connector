@@ -414,19 +414,19 @@ func (r *PacketMirroring) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"id":                dcl.ValueOrEmptyString(nr.Id),
-		"selfLink":          dcl.ValueOrEmptyString(nr.SelfLink),
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"description":       dcl.ValueOrEmptyString(nr.Description),
-		"region":            dcl.ValueOrEmptyString(nr.Region),
-		"network":           dcl.ValueOrEmptyString(nr.Network),
-		"priority":          dcl.ValueOrEmptyString(nr.Priority),
-		"collectorIlb":      dcl.ValueOrEmptyString(nr.CollectorIlb),
-		"mirroredResources": dcl.ValueOrEmptyString(nr.MirroredResources),
-		"filter":            dcl.ValueOrEmptyString(nr.Filter),
-		"enable":            dcl.ValueOrEmptyString(nr.Enable),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
-		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"id":                 dcl.ValueOrEmptyString(nr.Id),
+		"self_link":          dcl.ValueOrEmptyString(nr.SelfLink),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"description":        dcl.ValueOrEmptyString(nr.Description),
+		"region":             dcl.ValueOrEmptyString(nr.Region),
+		"network":            dcl.ValueOrEmptyString(nr.Network),
+		"priority":           dcl.ValueOrEmptyString(nr.Priority),
+		"collector_ilb":      dcl.ValueOrEmptyString(nr.CollectorIlb),
+		"mirrored_resources": dcl.ValueOrEmptyString(nr.MirroredResources),
+		"filter":             dcl.ValueOrEmptyString(nr.Filter),
+		"enable":             dcl.ValueOrEmptyString(nr.Enable),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
+		"location":           dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/regions/{{location}}/packetMirrorings/{{name}}", params), nil
 }

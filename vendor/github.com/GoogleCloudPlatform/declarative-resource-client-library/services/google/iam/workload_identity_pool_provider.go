@@ -184,18 +184,18 @@ func (r *WorkloadIdentityPoolProvider) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                 dcl.ValueOrEmptyString(nr.Name),
-		"displayName":          dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":          dcl.ValueOrEmptyString(nr.Description),
-		"state":                dcl.ValueOrEmptyString(nr.State),
-		"disabled":             dcl.ValueOrEmptyString(nr.Disabled),
-		"attributeMapping":     dcl.ValueOrEmptyString(nr.AttributeMapping),
-		"attributeCondition":   dcl.ValueOrEmptyString(nr.AttributeCondition),
-		"aws":                  dcl.ValueOrEmptyString(nr.Aws),
-		"oidc":                 dcl.ValueOrEmptyString(nr.Oidc),
-		"project":              dcl.ValueOrEmptyString(nr.Project),
-		"location":             dcl.ValueOrEmptyString(nr.Location),
-		"workloadIdentityPool": dcl.ValueOrEmptyString(nr.WorkloadIdentityPool),
+		"name":                   dcl.ValueOrEmptyString(nr.Name),
+		"display_name":           dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":            dcl.ValueOrEmptyString(nr.Description),
+		"state":                  dcl.ValueOrEmptyString(nr.State),
+		"disabled":               dcl.ValueOrEmptyString(nr.Disabled),
+		"attribute_mapping":      dcl.ValueOrEmptyString(nr.AttributeMapping),
+		"attribute_condition":    dcl.ValueOrEmptyString(nr.AttributeCondition),
+		"aws":                    dcl.ValueOrEmptyString(nr.Aws),
+		"oidc":                   dcl.ValueOrEmptyString(nr.Oidc),
+		"project":                dcl.ValueOrEmptyString(nr.Project),
+		"location":               dcl.ValueOrEmptyString(nr.Location),
+		"workload_identity_pool": dcl.ValueOrEmptyString(nr.WorkloadIdentityPool),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/workloadIdentityPools/{{workload_identity_pool}}/providers/{{name}}", params), nil
 }

@@ -81,6 +81,14 @@ func (r *FeatureMembershipConfigmanagementConfigSyncGit) validate() error {
 	return nil
 }
 func (r *FeatureMembershipConfigmanagementPolicyController) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.Monitoring) {
+		if err := r.Monitoring.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *FeatureMembershipConfigmanagementPolicyControllerMonitoring) validate() error {
 	return nil
 }
 func (r *FeatureMembershipConfigmanagementBinauthz) validate() error {
@@ -311,7 +319,7 @@ func canonicalizeFeatureMembershipDesiredState(rawDesired, rawInitial *FeatureMe
 
 func canonicalizeFeatureMembershipNewState(c *Client, rawNew, rawDesired *FeatureMembership) (*FeatureMembership, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Configmanagement) && dcl.IsNotReturnedByServer(rawDesired.Configmanagement) {
+	if dcl.IsEmptyValueIndirect(rawNew.Configmanagement) && dcl.IsEmptyValueIndirect(rawDesired.Configmanagement) {
 		rawNew.Configmanagement = rawDesired.Configmanagement
 	} else {
 		rawNew.Configmanagement = canonicalizeNewFeatureMembershipConfigmanagement(c, rawDesired.Configmanagement, rawNew.Configmanagement)
@@ -390,7 +398,7 @@ func canonicalizeNewFeatureMembershipConfigmanagement(c *Client, des, nw *Featur
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagement while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -515,7 +523,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSync(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementConfigSync while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -670,7 +678,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGit(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementConfigSyncGit while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -779,6 +787,12 @@ func canonicalizeFeatureMembershipConfigmanagementPolicyController(des, initial 
 	} else {
 		cDes.LogDeniesEnabled = des.LogDeniesEnabled
 	}
+	if dcl.BoolCanonicalize(des.MutationEnabled, initial.MutationEnabled) || dcl.IsZeroValue(des.MutationEnabled) {
+		cDes.MutationEnabled = initial.MutationEnabled
+	} else {
+		cDes.MutationEnabled = des.MutationEnabled
+	}
+	cDes.Monitoring = canonicalizeFeatureMembershipConfigmanagementPolicyControllerMonitoring(des.Monitoring, initial.Monitoring, opts...)
 	if dcl.BoolCanonicalize(des.TemplateLibraryInstalled, initial.TemplateLibraryInstalled) || dcl.IsZeroValue(des.TemplateLibraryInstalled) {
 		cDes.TemplateLibraryInstalled = initial.TemplateLibraryInstalled
 	} else {
@@ -828,7 +842,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementPolicyController(c *Client,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementPolicyController while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -847,6 +861,10 @@ func canonicalizeNewFeatureMembershipConfigmanagementPolicyController(c *Client,
 	if dcl.BoolCanonicalize(des.LogDeniesEnabled, nw.LogDeniesEnabled) {
 		nw.LogDeniesEnabled = des.LogDeniesEnabled
 	}
+	if dcl.BoolCanonicalize(des.MutationEnabled, nw.MutationEnabled) {
+		nw.MutationEnabled = des.MutationEnabled
+	}
+	nw.Monitoring = canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, des.Monitoring, nw.Monitoring)
 	if dcl.BoolCanonicalize(des.TemplateLibraryInstalled, nw.TemplateLibraryInstalled) {
 		nw.TemplateLibraryInstalled = des.TemplateLibraryInstalled
 	}
@@ -895,6 +913,118 @@ func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerSlice(c *Cl
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementPolicyController(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureMembershipConfigmanagementPolicyControllerMonitoring(des, initial *FeatureMembershipConfigmanagementPolicyControllerMonitoring, opts ...dcl.ApplyOption) *FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+
+	if dcl.IsZeroValue(des.Backends) || (dcl.IsEmptyValueIndirect(des.Backends) && dcl.IsEmptyValueIndirect(initial.Backends)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Backends = initial.Backends
+	} else {
+		cDes.Backends = des.Backends
+	}
+
+	return cDes
+}
+
+func canonicalizeFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice(des, initial []FeatureMembershipConfigmanagementPolicyControllerMonitoring, opts ...dcl.ApplyOption) []FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureMembershipConfigmanagementPolicyControllerMonitoring, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureMembershipConfigmanagementPolicyControllerMonitoring(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureMembershipConfigmanagementPolicyControllerMonitoring, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureMembershipConfigmanagementPolicyControllerMonitoring(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoring(c *Client, des, nw *FeatureMembershipConfigmanagementPolicyControllerMonitoring) *FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementPolicyControllerMonitoring while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoringSet(c *Client, des, nw []FeatureMembershipConfigmanagementPolicyControllerMonitoring) []FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []FeatureMembershipConfigmanagementPolicyControllerMonitoring
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice(c *Client, des, nw []FeatureMembershipConfigmanagementPolicyControllerMonitoring) []FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureMembershipConfigmanagementPolicyControllerMonitoring
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, &d, &n))
 	}
 
 	return items
@@ -958,7 +1088,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementBinauthz(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementBinauthz while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1083,7 +1213,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementHierarchyController(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementHierarchyController while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1427,6 +1557,20 @@ func compareFeatureMembershipConfigmanagementPolicyControllerNewStyle(d, a inter
 		diffs = append(diffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.MutationEnabled, actual.MutationEnabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MutationEnabled")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.TemplateLibraryInstalled, actual.TemplateLibraryInstalled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TemplateLibraryInstalled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1435,6 +1579,35 @@ func compareFeatureMembershipConfigmanagementPolicyControllerNewStyle(d, a inter
 	}
 
 	if ds, err := dcl.Diff(desired.AuditIntervalSeconds, actual.AuditIntervalSeconds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AuditIntervalSeconds")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureMembershipConfigmanagementPolicyControllerMonitoring)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureMembershipConfigmanagementPolicyControllerMonitoring)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipConfigmanagementPolicyControllerMonitoring or *FeatureMembershipConfigmanagementPolicyControllerMonitoring", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureMembershipConfigmanagementPolicyControllerMonitoring)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureMembershipConfigmanagementPolicyControllerMonitoring)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipConfigmanagementPolicyControllerMonitoring", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Backends, actual.Backends, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Backends")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2132,6 +2305,14 @@ func expandFeatureMembershipConfigmanagementPolicyController(c *Client, f *Featu
 	if v := f.LogDeniesEnabled; !dcl.IsEmptyValueIndirect(v) {
 		m["logDeniesEnabled"] = v
 	}
+	if v := f.MutationEnabled; !dcl.IsEmptyValueIndirect(v) {
+		m["mutationEnabled"] = v
+	}
+	if v, err := expandFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, f.Monitoring, res); err != nil {
+		return nil, fmt.Errorf("error expanding Monitoring into monitoring: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["monitoring"] = v
+	}
 	if v := f.TemplateLibraryInstalled; !dcl.IsEmptyValueIndirect(v) {
 		m["templateLibraryInstalled"] = v
 	}
@@ -2159,8 +2340,124 @@ func flattenFeatureMembershipConfigmanagementPolicyController(c *Client, i inter
 	r.ExemptableNamespaces = dcl.FlattenStringSlice(m["exemptableNamespaces"])
 	r.ReferentialRulesEnabled = dcl.FlattenBool(m["referentialRulesEnabled"])
 	r.LogDeniesEnabled = dcl.FlattenBool(m["logDeniesEnabled"])
+	r.MutationEnabled = dcl.FlattenBool(m["mutationEnabled"])
+	r.Monitoring = flattenFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, m["monitoring"], res)
 	r.TemplateLibraryInstalled = dcl.FlattenBool(m["templateLibraryInstalled"])
 	r.AuditIntervalSeconds = dcl.FlattenString(m["auditIntervalSeconds"])
+
+	return r
+}
+
+// expandFeatureMembershipConfigmanagementPolicyControllerMonitoringMap expands the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoring into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementPolicyControllerMonitoringMap(c *Client, f map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoring, res *FeatureMembership) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice expands the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoring into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice(c *Client, f []FeatureMembershipConfigmanagementPolicyControllerMonitoring, res *FeatureMembership) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringMap flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoring from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+
+	items := make(map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoring)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoring from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+
+	items := make([]FeatureMembershipConfigmanagementPolicyControllerMonitoring, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureMembershipConfigmanagementPolicyControllerMonitoring expands an instance of FeatureMembershipConfigmanagementPolicyControllerMonitoring into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementPolicyControllerMonitoring(c *Client, f *FeatureMembershipConfigmanagementPolicyControllerMonitoring, res *FeatureMembership) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Backends; v != nil {
+		m["backends"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoring flattens an instance of FeatureMembershipConfigmanagementPolicyControllerMonitoring from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoring(c *Client, i interface{}, res *FeatureMembership) *FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring
+	}
+	r.Backends = flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumSlice(c, m["backends"], res)
 
 	return r
 }
@@ -2401,6 +2698,57 @@ func flattenFeatureMembershipConfigmanagementHierarchyController(c *Client, i in
 	return r
 }
 
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum{}
+	}
+
+	items := make(map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumSlice flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum{}
+	}
+
+	items := make([]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum asserts that an interface is a string, and returns a
+// pointer to a *FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum with the same value as that string.
+func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum(i interface{}) *FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumRef(s)
+}
+
 // This function returns a matcher that checks whether a serialized resource matches this resource
 // in its parameters (as defined by the fields in a Get, which definitionally define resource
 // identity).  This is useful in extracting the element from a List call.
@@ -2501,7 +2849,7 @@ func extractFeatureMembershipFields(r *FeatureMembership) error {
 	if err := extractFeatureMembershipConfigmanagementFields(r, vConfigmanagement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigmanagement) {
+	if !dcl.IsEmptyValueIndirect(vConfigmanagement) {
 		r.Configmanagement = vConfigmanagement
 	}
 	return nil
@@ -2515,7 +2863,7 @@ func extractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *Fea
 	if err := extractFeatureMembershipConfigmanagementConfigSyncFields(r, vConfigSync); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigSync) {
+	if !dcl.IsEmptyValueIndirect(vConfigSync) {
 		o.ConfigSync = vConfigSync
 	}
 	vPolicyController := o.PolicyController
@@ -2526,7 +2874,7 @@ func extractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *Fea
 	if err := extractFeatureMembershipConfigmanagementPolicyControllerFields(r, vPolicyController); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPolicyController) {
+	if !dcl.IsEmptyValueIndirect(vPolicyController) {
 		o.PolicyController = vPolicyController
 	}
 	vBinauthz := o.Binauthz
@@ -2537,7 +2885,7 @@ func extractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *Fea
 	if err := extractFeatureMembershipConfigmanagementBinauthzFields(r, vBinauthz); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinauthz) {
+	if !dcl.IsEmptyValueIndirect(vBinauthz) {
 		o.Binauthz = vBinauthz
 	}
 	vHierarchyController := o.HierarchyController
@@ -2548,7 +2896,7 @@ func extractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *Fea
 	if err := extractFeatureMembershipConfigmanagementHierarchyControllerFields(r, vHierarchyController); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHierarchyController) {
+	if !dcl.IsEmptyValueIndirect(vHierarchyController) {
 		o.HierarchyController = vHierarchyController
 	}
 	return nil
@@ -2562,7 +2910,7 @@ func extractFeatureMembershipConfigmanagementConfigSyncFields(r *FeatureMembersh
 	if err := extractFeatureMembershipConfigmanagementConfigSyncGitFields(r, vGit); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGit) {
+	if !dcl.IsEmptyValueIndirect(vGit) {
 		o.Git = vGit
 	}
 	return nil
@@ -2571,6 +2919,20 @@ func extractFeatureMembershipConfigmanagementConfigSyncGitFields(r *FeatureMembe
 	return nil
 }
 func extractFeatureMembershipConfigmanagementPolicyControllerFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyController) error {
+	vMonitoring := o.Monitoring
+	if vMonitoring == nil {
+		// note: explicitly not the empty object.
+		vMonitoring = &FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+	if err := extractFeatureMembershipConfigmanagementPolicyControllerMonitoringFields(r, vMonitoring); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMonitoring) {
+		o.Monitoring = vMonitoring
+	}
+	return nil
+}
+func extractFeatureMembershipConfigmanagementPolicyControllerMonitoringFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyControllerMonitoring) error {
 	return nil
 }
 func extractFeatureMembershipConfigmanagementBinauthzFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementBinauthz) error {
@@ -2589,7 +2951,7 @@ func postReadExtractFeatureMembershipFields(r *FeatureMembership) error {
 	if err := postReadExtractFeatureMembershipConfigmanagementFields(r, vConfigmanagement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigmanagement) {
+	if !dcl.IsEmptyValueIndirect(vConfigmanagement) {
 		r.Configmanagement = vConfigmanagement
 	}
 	return nil
@@ -2603,7 +2965,7 @@ func postReadExtractFeatureMembershipConfigmanagementFields(r *FeatureMembership
 	if err := extractFeatureMembershipConfigmanagementConfigSyncFields(r, vConfigSync); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigSync) {
+	if !dcl.IsEmptyValueIndirect(vConfigSync) {
 		o.ConfigSync = vConfigSync
 	}
 	vPolicyController := o.PolicyController
@@ -2614,7 +2976,7 @@ func postReadExtractFeatureMembershipConfigmanagementFields(r *FeatureMembership
 	if err := extractFeatureMembershipConfigmanagementPolicyControllerFields(r, vPolicyController); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPolicyController) {
+	if !dcl.IsEmptyValueIndirect(vPolicyController) {
 		o.PolicyController = vPolicyController
 	}
 	vBinauthz := o.Binauthz
@@ -2625,7 +2987,7 @@ func postReadExtractFeatureMembershipConfigmanagementFields(r *FeatureMembership
 	if err := extractFeatureMembershipConfigmanagementBinauthzFields(r, vBinauthz); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinauthz) {
+	if !dcl.IsEmptyValueIndirect(vBinauthz) {
 		o.Binauthz = vBinauthz
 	}
 	vHierarchyController := o.HierarchyController
@@ -2636,7 +2998,7 @@ func postReadExtractFeatureMembershipConfigmanagementFields(r *FeatureMembership
 	if err := extractFeatureMembershipConfigmanagementHierarchyControllerFields(r, vHierarchyController); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHierarchyController) {
+	if !dcl.IsEmptyValueIndirect(vHierarchyController) {
 		o.HierarchyController = vHierarchyController
 	}
 	return nil
@@ -2650,7 +3012,7 @@ func postReadExtractFeatureMembershipConfigmanagementConfigSyncFields(r *Feature
 	if err := extractFeatureMembershipConfigmanagementConfigSyncGitFields(r, vGit); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGit) {
+	if !dcl.IsEmptyValueIndirect(vGit) {
 		o.Git = vGit
 	}
 	return nil
@@ -2659,6 +3021,20 @@ func postReadExtractFeatureMembershipConfigmanagementConfigSyncGitFields(r *Feat
 	return nil
 }
 func postReadExtractFeatureMembershipConfigmanagementPolicyControllerFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyController) error {
+	vMonitoring := o.Monitoring
+	if vMonitoring == nil {
+		// note: explicitly not the empty object.
+		vMonitoring = &FeatureMembershipConfigmanagementPolicyControllerMonitoring{}
+	}
+	if err := extractFeatureMembershipConfigmanagementPolicyControllerMonitoringFields(r, vMonitoring); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMonitoring) {
+		o.Monitoring = vMonitoring
+	}
+	return nil
+}
+func postReadExtractFeatureMembershipConfigmanagementPolicyControllerMonitoringFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyControllerMonitoring) error {
 	return nil
 }
 func postReadExtractFeatureMembershipConfigmanagementBinauthzFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementBinauthz) error {

@@ -340,16 +340,16 @@ func (r *ClientTlsPolicy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"createTime":         dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":         dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":             dcl.ValueOrEmptyString(nr.Labels),
-		"sni":                dcl.ValueOrEmptyString(nr.Sni),
-		"clientCertificate":  dcl.ValueOrEmptyString(nr.ClientCertificate),
-		"serverValidationCa": dcl.ValueOrEmptyString(nr.ServerValidationCa),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
-		"location":           dcl.ValueOrEmptyString(nr.Location),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":               dcl.ValueOrEmptyString(nr.Labels),
+		"sni":                  dcl.ValueOrEmptyString(nr.Sni),
+		"client_certificate":   dcl.ValueOrEmptyString(nr.ClientCertificate),
+		"server_validation_ca": dcl.ValueOrEmptyString(nr.ServerValidationCa),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{name}}", params), nil
 }

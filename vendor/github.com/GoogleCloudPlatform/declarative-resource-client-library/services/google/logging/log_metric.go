@@ -545,17 +545,17 @@ func (r *LogMetric) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"description":      dcl.ValueOrEmptyString(nr.Description),
-		"filter":           dcl.ValueOrEmptyString(nr.Filter),
-		"disabled":         dcl.ValueOrEmptyString(nr.Disabled),
-		"metricDescriptor": dcl.ValueOrEmptyString(nr.MetricDescriptor),
-		"valueExtractor":   dcl.ValueOrEmptyString(nr.ValueExtractor),
-		"labelExtractors":  dcl.ValueOrEmptyString(nr.LabelExtractors),
-		"bucketOptions":    dcl.ValueOrEmptyString(nr.BucketOptions),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"description":       dcl.ValueOrEmptyString(nr.Description),
+		"filter":            dcl.ValueOrEmptyString(nr.Filter),
+		"disabled":          dcl.ValueOrEmptyString(nr.Disabled),
+		"metric_descriptor": dcl.ValueOrEmptyString(nr.MetricDescriptor),
+		"value_extractor":   dcl.ValueOrEmptyString(nr.ValueExtractor),
+		"label_extractors":  dcl.ValueOrEmptyString(nr.LabelExtractors),
+		"bucket_options":    dcl.ValueOrEmptyString(nr.BucketOptions),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/metrics/{{name}}", params), nil
 }

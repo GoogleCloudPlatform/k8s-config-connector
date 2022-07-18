@@ -283,19 +283,19 @@ func (r *Spoke) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                           dcl.ValueOrEmptyString(nr.Name),
-		"createTime":                     dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":                     dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":                         dcl.ValueOrEmptyString(nr.Labels),
-		"description":                    dcl.ValueOrEmptyString(nr.Description),
-		"hub":                            dcl.ValueOrEmptyString(nr.Hub),
-		"linkedVpnTunnels":               dcl.ValueOrEmptyString(nr.LinkedVpnTunnels),
-		"linkedInterconnectAttachments":  dcl.ValueOrEmptyString(nr.LinkedInterconnectAttachments),
-		"linkedRouterApplianceInstances": dcl.ValueOrEmptyString(nr.LinkedRouterApplianceInstances),
-		"uniqueId":                       dcl.ValueOrEmptyString(nr.UniqueId),
-		"state":                          dcl.ValueOrEmptyString(nr.State),
-		"project":                        dcl.ValueOrEmptyString(nr.Project),
-		"location":                       dcl.ValueOrEmptyString(nr.Location),
+		"name":                              dcl.ValueOrEmptyString(nr.Name),
+		"create_time":                       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":                       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":                            dcl.ValueOrEmptyString(nr.Labels),
+		"description":                       dcl.ValueOrEmptyString(nr.Description),
+		"hub":                               dcl.ValueOrEmptyString(nr.Hub),
+		"linked_vpn_tunnels":                dcl.ValueOrEmptyString(nr.LinkedVpnTunnels),
+		"linked_interconnect_attachments":   dcl.ValueOrEmptyString(nr.LinkedInterconnectAttachments),
+		"linked_router_appliance_instances": dcl.ValueOrEmptyString(nr.LinkedRouterApplianceInstances),
+		"unique_id":                         dcl.ValueOrEmptyString(nr.UniqueId),
+		"state":                             dcl.ValueOrEmptyString(nr.State),
+		"project":                           dcl.ValueOrEmptyString(nr.Project),
+		"location":                          dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/spokes/{{name}}", params), nil
 }

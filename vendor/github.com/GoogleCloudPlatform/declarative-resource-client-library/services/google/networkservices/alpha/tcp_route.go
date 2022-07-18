@@ -257,8 +257,8 @@ func (r *TcpRoute) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
 		"routers":     dcl.ValueOrEmptyString(nr.Routers),
@@ -267,7 +267,7 @@ func (r *TcpRoute) ID() (string, error) {
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
 		"project":     dcl.ValueOrEmptyString(nr.Project),
 		"location":    dcl.ValueOrEmptyString(nr.Location),
-		"selfLink":    dcl.ValueOrEmptyString(nr.SelfLink),
+		"self_link":   dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/tcpRoutes/{{name}}", params), nil
 }

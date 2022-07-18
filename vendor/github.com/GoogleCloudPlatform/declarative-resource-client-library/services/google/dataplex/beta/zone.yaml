@@ -23,21 +23,18 @@ paths:
     - name: Zone
       required: true
       description: A full instance of a Zone
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Zone
     parameters:
     - name: Zone
       required: true
       description: A full instance of a Zone
-    timeoutSecs: 0
   delete:
     description: The function used to delete a Zone
     parameters:
     - name: Zone
       required: true
       description: A full instance of a Zone
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Zone
     parameters:
@@ -53,7 +50,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many Zone
     parameters:
@@ -69,7 +65,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     Zone:
@@ -78,10 +73,14 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name
       - type
+      - discoverySpec
       - resourceSpec
       - project
       - location
@@ -126,7 +125,7 @@ components:
           type: object
           x-dcl-go-name: DiscoverySpec
           x-dcl-go-type: ZoneDiscoverySpec
-          description: Optional. Specification of the discovery feature applied to
+          description: Required. Specification of the discovery feature applied to
             data in this zone.
           required:
           - enabled
@@ -258,8 +257,9 @@ components:
           type: object
           x-dcl-go-name: ResourceSpec
           x-dcl-go-type: ZoneResourceSpec
-          description: Required. Specification of the resources that are referenced
-            by the assets within this zone.
+          description: Required. Immutable. Specification of the resources that are
+            referenced by the assets within this zone.
+          x-kubernetes-immutable: true
           required:
           - locationType
           properties:
@@ -270,6 +270,7 @@ components:
               description: 'Required. Immutable. The location type of the resources
                 that are allowed to be attached to the assets within this zone. Possible
                 values: LOCATION_TYPE_UNSPECIFIED, SINGLE_REGION, MULTI_REGION'
+              x-kubernetes-immutable: true
               enum:
               - LOCATION_TYPE_UNSPECIFIED
               - SINGLE_REGION

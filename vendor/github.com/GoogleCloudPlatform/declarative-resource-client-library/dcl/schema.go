@@ -109,7 +109,6 @@ type Paths struct {
 type Path struct {
 	Description string           `yaml:"description"`
 	Parameters  []PathParameters `yaml:"parameters"`
-	TimeoutSecs int              `yaml:"timeoutSecs"`
 }
 
 // PathParameters is the Parameters for a given Path.
@@ -140,6 +139,9 @@ type Component struct {
 	LabelsField     string   `yaml:"x-dcl-labels,omitempty"`
 	HasCreate       bool     `yaml:"x-dcl-has-create"`
 	HasIAM          bool     `yaml:"x-dcl-has-iam"`
+	ReadTimeout     int      `yaml:"x-dcl-read-timeout"`
+	ApplyTimeout    int      `yaml:"x-dcl-apply-timeout"`
+	DeleteTimeout   int      `yaml:"x-dcl-delete-timeout"`
 
 	// TODO: It appears that reused types are not fully conforming to the same spec as the rest of the components.
 	// Reused Types seem to follow the property spec, but not the component spec.

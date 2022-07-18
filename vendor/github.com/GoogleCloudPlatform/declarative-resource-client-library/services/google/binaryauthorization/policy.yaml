@@ -23,14 +23,12 @@ paths:
     - name: Policy
       required: true
       description: A full instance of a Policy
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Policy
     parameters:
     - name: Policy
       required: true
       description: A full instance of a Policy
-    timeoutSecs: 0
 components:
   schemas:
     Policy:
@@ -39,6 +37,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: false
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - defaultAdmissionRule

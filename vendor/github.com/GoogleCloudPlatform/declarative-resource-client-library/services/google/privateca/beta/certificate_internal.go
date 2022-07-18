@@ -762,7 +762,7 @@ func canonicalizeCertificateDesiredState(rawDesired, rawInitial *Certificate, op
 
 func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate) (*Certificate, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -770,7 +770,7 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PemCsr) && dcl.IsNotReturnedByServer(rawDesired.PemCsr) {
+	if dcl.IsEmptyValueIndirect(rawNew.PemCsr) && dcl.IsEmptyValueIndirect(rawDesired.PemCsr) {
 		rawNew.PemCsr = rawDesired.PemCsr
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PemCsr, rawNew.PemCsr) {
@@ -778,18 +778,18 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Config) && dcl.IsNotReturnedByServer(rawDesired.Config) {
+	if dcl.IsEmptyValueIndirect(rawNew.Config) && dcl.IsEmptyValueIndirect(rawDesired.Config) {
 		rawNew.Config = rawDesired.Config
 	} else {
 		rawNew.Config = canonicalizeNewCertificateConfig(c, rawDesired.Config, rawNew.Config)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IssuerCertificateAuthority) && dcl.IsNotReturnedByServer(rawDesired.IssuerCertificateAuthority) {
+	if dcl.IsEmptyValueIndirect(rawNew.IssuerCertificateAuthority) && dcl.IsEmptyValueIndirect(rawDesired.IssuerCertificateAuthority) {
 		rawNew.IssuerCertificateAuthority = rawDesired.IssuerCertificateAuthority
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Lifetime) && dcl.IsNotReturnedByServer(rawDesired.Lifetime) {
+	if dcl.IsEmptyValueIndirect(rawNew.Lifetime) && dcl.IsEmptyValueIndirect(rawDesired.Lifetime) {
 		rawNew.Lifetime = rawDesired.Lifetime
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Lifetime, rawNew.Lifetime) {
@@ -797,7 +797,7 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CertificateTemplate) && dcl.IsNotReturnedByServer(rawDesired.CertificateTemplate) {
+	if dcl.IsEmptyValueIndirect(rawNew.CertificateTemplate) && dcl.IsEmptyValueIndirect(rawDesired.CertificateTemplate) {
 		rawNew.CertificateTemplate = rawDesired.CertificateTemplate
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.CertificateTemplate, rawNew.CertificateTemplate) {
@@ -805,18 +805,18 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SubjectMode) && dcl.IsNotReturnedByServer(rawDesired.SubjectMode) {
+	if dcl.IsEmptyValueIndirect(rawNew.SubjectMode) && dcl.IsEmptyValueIndirect(rawDesired.SubjectMode) {
 		rawNew.SubjectMode = rawDesired.SubjectMode
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RevocationDetails) && dcl.IsNotReturnedByServer(rawDesired.RevocationDetails) {
+	if dcl.IsEmptyValueIndirect(rawNew.RevocationDetails) && dcl.IsEmptyValueIndirect(rawDesired.RevocationDetails) {
 		rawNew.RevocationDetails = rawDesired.RevocationDetails
 	} else {
 		rawNew.RevocationDetails = canonicalizeNewCertificateRevocationDetails(c, rawDesired.RevocationDetails, rawNew.RevocationDetails)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PemCertificate) && dcl.IsNotReturnedByServer(rawDesired.PemCertificate) {
+	if dcl.IsEmptyValueIndirect(rawNew.PemCertificate) && dcl.IsEmptyValueIndirect(rawDesired.PemCertificate) {
 		rawNew.PemCertificate = rawDesired.PemCertificate
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PemCertificate, rawNew.PemCertificate) {
@@ -824,13 +824,13 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CertificateDescription) && dcl.IsNotReturnedByServer(rawDesired.CertificateDescription) {
+	if dcl.IsEmptyValueIndirect(rawNew.CertificateDescription) && dcl.IsEmptyValueIndirect(rawDesired.CertificateDescription) {
 		rawNew.CertificateDescription = rawDesired.CertificateDescription
 	} else {
 		rawNew.CertificateDescription = canonicalizeNewCertificateCertificateDescription(c, rawDesired.CertificateDescription, rawNew.CertificateDescription)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PemCertificateChain) && dcl.IsNotReturnedByServer(rawDesired.PemCertificateChain) {
+	if dcl.IsEmptyValueIndirect(rawNew.PemCertificateChain) && dcl.IsEmptyValueIndirect(rawDesired.PemCertificateChain) {
 		rawNew.PemCertificateChain = rawDesired.PemCertificateChain
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.PemCertificateChain, rawNew.PemCertificateChain) {
@@ -838,17 +838,17 @@ func canonicalizeCertificateNewState(c *Client, rawNew, rawDesired *Certificate)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
@@ -920,7 +920,7 @@ func canonicalizeNewCertificateConfig(c *Client, des, nw *CertificateConfig) *Ce
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1032,7 +1032,7 @@ func canonicalizeNewCertificateConfigSubjectConfig(c *Client, des, nw *Certifica
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigSubjectConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1181,7 +1181,7 @@ func canonicalizeNewCertificateConfigSubjectConfigSubject(c *Client, des, nw *Ce
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigSubjectConfigSubject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1332,7 +1332,7 @@ func canonicalizeNewCertificateConfigSubjectConfigSubjectAltName(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigSubjectConfigSubjectAltName while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1460,7 +1460,7 @@ func canonicalizeNewCertificateConfigX509Config(c *Client, des, nw *CertificateC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509Config while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1577,7 +1577,7 @@ func canonicalizeNewCertificateConfigX509ConfigKeyUsage(c *Client, des, nw *Cert
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1732,7 +1732,7 @@ func canonicalizeNewCertificateConfigX509ConfigKeyUsageBaseKeyUsage(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigKeyUsageBaseKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1896,7 +1896,7 @@ func canonicalizeNewCertificateConfigX509ConfigKeyUsageExtendedKeyUsage(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigKeyUsageExtendedKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2027,7 +2027,7 @@ func canonicalizeNewCertificateConfigX509ConfigKeyUsageUnknownExtendedKeyUsages(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigKeyUsageUnknownExtendedKeyUsages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2154,7 +2154,7 @@ func canonicalizeNewCertificateConfigX509ConfigCaOptions(c *Client, des, nw *Cer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigCaOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2276,7 +2276,7 @@ func canonicalizeNewCertificateConfigX509ConfigPolicyIds(c *Client, des, nw *Cer
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigPolicyIds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2393,7 +2393,7 @@ func canonicalizeNewCertificateConfigX509ConfigAdditionalExtensions(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2513,7 +2513,7 @@ func canonicalizeNewCertificateConfigX509ConfigAdditionalExtensionsObjectId(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigX509ConfigAdditionalExtensionsObjectId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2630,7 +2630,7 @@ func canonicalizeNewCertificateConfigPublicKey(c *Client, des, nw *CertificateCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateConfigPublicKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2752,7 +2752,7 @@ func canonicalizeNewCertificateRevocationDetails(c *Client, des, nw *Certificate
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateRevocationDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2874,7 +2874,7 @@ func canonicalizeNewCertificateCertificateDescription(c *Client, des, nw *Certif
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescription while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3017,7 +3017,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectDescription(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectDescription while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3172,7 +3172,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectDescriptionSubject(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectDescriptionSubject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3324,7 +3324,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectDescriptionSubjectAl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectDescriptionSubjectAltName while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3455,7 +3455,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectDescriptionSubjectAl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSans while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3575,7 +3575,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectDescriptionSubjectAl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSansObjectId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3690,7 +3690,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509Description(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509Description while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3807,7 +3807,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionKeyUsage(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3962,7 +3962,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionKeyUsageBase
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionKeyUsageBaseKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4126,7 +4126,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionKeyUsageExte
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionKeyUsageExtendedKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4257,7 +4257,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionKeyUsageUnkn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionKeyUsageUnknownExtendedKeyUsages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4394,7 +4394,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionCaOptions(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionCaOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4510,7 +4510,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionPolicyIds(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionPolicyIds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4627,7 +4627,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionAdditionalEx
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4747,7 +4747,7 @@ func canonicalizeNewCertificateCertificateDescriptionX509DescriptionAdditionalEx
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionX509DescriptionAdditionalExtensionsObjectId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4864,7 +4864,7 @@ func canonicalizeNewCertificateCertificateDescriptionPublicKey(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionPublicKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4979,7 +4979,7 @@ func canonicalizeNewCertificateCertificateDescriptionSubjectKeyId(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionSubjectKeyId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5094,7 +5094,7 @@ func canonicalizeNewCertificateCertificateDescriptionAuthorityKeyId(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionAuthorityKeyId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5209,7 +5209,7 @@ func canonicalizeNewCertificateCertificateDescriptionCertFingerprint(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CertificateCertificateDescriptionCertFingerprint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -11759,7 +11759,7 @@ func extractCertificateFields(r *Certificate) error {
 	if err := extractCertificateConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vRevocationDetails := r.RevocationDetails
@@ -11770,7 +11770,7 @@ func extractCertificateFields(r *Certificate) error {
 	if err := extractCertificateRevocationDetailsFields(r, vRevocationDetails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRevocationDetails) {
+	if !dcl.IsEmptyValueIndirect(vRevocationDetails) {
 		r.RevocationDetails = vRevocationDetails
 	}
 	vCertificateDescription := r.CertificateDescription
@@ -11781,7 +11781,7 @@ func extractCertificateFields(r *Certificate) error {
 	if err := extractCertificateCertificateDescriptionFields(r, vCertificateDescription); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateDescription) {
+	if !dcl.IsEmptyValueIndirect(vCertificateDescription) {
 		r.CertificateDescription = vCertificateDescription
 	}
 	return nil
@@ -11795,7 +11795,7 @@ func extractCertificateConfigFields(r *Certificate, o *CertificateConfig) error 
 	if err := extractCertificateConfigSubjectConfigFields(r, vSubjectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectConfig) {
+	if !dcl.IsEmptyValueIndirect(vSubjectConfig) {
 		o.SubjectConfig = vSubjectConfig
 	}
 	vX509Config := o.X509Config
@@ -11806,7 +11806,7 @@ func extractCertificateConfigFields(r *Certificate, o *CertificateConfig) error 
 	if err := extractCertificateConfigX509ConfigFields(r, vX509Config); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vX509Config) {
+	if !dcl.IsEmptyValueIndirect(vX509Config) {
 		o.X509Config = vX509Config
 	}
 	vPublicKey := o.PublicKey
@@ -11817,7 +11817,7 @@ func extractCertificateConfigFields(r *Certificate, o *CertificateConfig) error 
 	if err := extractCertificateConfigPublicKeyFields(r, vPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPublicKey) {
 		o.PublicKey = vPublicKey
 	}
 	return nil
@@ -11831,7 +11831,7 @@ func extractCertificateConfigSubjectConfigFields(r *Certificate, o *CertificateC
 	if err := extractCertificateConfigSubjectConfigSubjectFields(r, vSubject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubject) {
+	if !dcl.IsEmptyValueIndirect(vSubject) {
 		o.Subject = vSubject
 	}
 	vSubjectAltName := o.SubjectAltName
@@ -11842,7 +11842,7 @@ func extractCertificateConfigSubjectConfigFields(r *Certificate, o *CertificateC
 	if err := extractCertificateConfigSubjectConfigSubjectAltNameFields(r, vSubjectAltName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectAltName) {
+	if !dcl.IsEmptyValueIndirect(vSubjectAltName) {
 		o.SubjectAltName = vSubjectAltName
 	}
 	return nil
@@ -11862,7 +11862,7 @@ func extractCertificateConfigX509ConfigFields(r *Certificate, o *CertificateConf
 	if err := extractCertificateConfigX509ConfigKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -11873,7 +11873,7 @@ func extractCertificateConfigX509ConfigFields(r *Certificate, o *CertificateConf
 	if err := extractCertificateConfigX509ConfigCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -11887,7 +11887,7 @@ func extractCertificateConfigX509ConfigKeyUsageFields(r *Certificate, o *Certifi
 	if err := extractCertificateConfigX509ConfigKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -11898,7 +11898,7 @@ func extractCertificateConfigX509ConfigKeyUsageFields(r *Certificate, o *Certifi
 	if err := extractCertificateConfigX509ConfigKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -11927,7 +11927,7 @@ func extractCertificateConfigX509ConfigAdditionalExtensionsFields(r *Certificate
 	if err := extractCertificateConfigX509ConfigAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -11950,7 +11950,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionFields(r, vSubjectDescription); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectDescription) {
+	if !dcl.IsEmptyValueIndirect(vSubjectDescription) {
 		o.SubjectDescription = vSubjectDescription
 	}
 	vX509Description := o.X509Description
@@ -11961,7 +11961,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionX509DescriptionFields(r, vX509Description); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vX509Description) {
+	if !dcl.IsEmptyValueIndirect(vX509Description) {
 		o.X509Description = vX509Description
 	}
 	vPublicKey := o.PublicKey
@@ -11972,7 +11972,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionPublicKeyFields(r, vPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPublicKey) {
 		o.PublicKey = vPublicKey
 	}
 	vSubjectKeyId := o.SubjectKeyId
@@ -11983,7 +11983,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionSubjectKeyIdFields(r, vSubjectKeyId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectKeyId) {
+	if !dcl.IsEmptyValueIndirect(vSubjectKeyId) {
 		o.SubjectKeyId = vSubjectKeyId
 	}
 	vAuthorityKeyId := o.AuthorityKeyId
@@ -11994,7 +11994,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionAuthorityKeyIdFields(r, vAuthorityKeyId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthorityKeyId) {
+	if !dcl.IsEmptyValueIndirect(vAuthorityKeyId) {
 		o.AuthorityKeyId = vAuthorityKeyId
 	}
 	vCertFingerprint := o.CertFingerprint
@@ -12005,7 +12005,7 @@ func extractCertificateCertificateDescriptionFields(r *Certificate, o *Certifica
 	if err := extractCertificateCertificateDescriptionCertFingerprintFields(r, vCertFingerprint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertFingerprint) {
+	if !dcl.IsEmptyValueIndirect(vCertFingerprint) {
 		o.CertFingerprint = vCertFingerprint
 	}
 	return nil
@@ -12019,7 +12019,7 @@ func extractCertificateCertificateDescriptionSubjectDescriptionFields(r *Certifi
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectFields(r, vSubject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubject) {
+	if !dcl.IsEmptyValueIndirect(vSubject) {
 		o.Subject = vSubject
 	}
 	vSubjectAltName := o.SubjectAltName
@@ -12030,7 +12030,7 @@ func extractCertificateCertificateDescriptionSubjectDescriptionFields(r *Certifi
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameFields(r, vSubjectAltName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectAltName) {
+	if !dcl.IsEmptyValueIndirect(vSubjectAltName) {
 		o.SubjectAltName = vSubjectAltName
 	}
 	return nil
@@ -12050,7 +12050,7 @@ func extractCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCus
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSansObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -12067,7 +12067,7 @@ func extractCertificateCertificateDescriptionX509DescriptionFields(r *Certificat
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -12078,7 +12078,7 @@ func extractCertificateCertificateDescriptionX509DescriptionFields(r *Certificat
 	if err := extractCertificateCertificateDescriptionX509DescriptionCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -12092,7 +12092,7 @@ func extractCertificateCertificateDescriptionX509DescriptionKeyUsageFields(r *Ce
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -12103,7 +12103,7 @@ func extractCertificateCertificateDescriptionX509DescriptionKeyUsageFields(r *Ce
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -12132,7 +12132,7 @@ func extractCertificateCertificateDescriptionX509DescriptionAdditionalExtensions
 	if err := extractCertificateCertificateDescriptionX509DescriptionAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -12162,7 +12162,7 @@ func postReadExtractCertificateFields(r *Certificate) error {
 	if err := postReadExtractCertificateConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vRevocationDetails := r.RevocationDetails
@@ -12173,7 +12173,7 @@ func postReadExtractCertificateFields(r *Certificate) error {
 	if err := postReadExtractCertificateRevocationDetailsFields(r, vRevocationDetails); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRevocationDetails) {
+	if !dcl.IsEmptyValueIndirect(vRevocationDetails) {
 		r.RevocationDetails = vRevocationDetails
 	}
 	vCertificateDescription := r.CertificateDescription
@@ -12184,7 +12184,7 @@ func postReadExtractCertificateFields(r *Certificate) error {
 	if err := postReadExtractCertificateCertificateDescriptionFields(r, vCertificateDescription); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateDescription) {
+	if !dcl.IsEmptyValueIndirect(vCertificateDescription) {
 		r.CertificateDescription = vCertificateDescription
 	}
 	return nil
@@ -12198,7 +12198,7 @@ func postReadExtractCertificateConfigFields(r *Certificate, o *CertificateConfig
 	if err := extractCertificateConfigSubjectConfigFields(r, vSubjectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectConfig) {
+	if !dcl.IsEmptyValueIndirect(vSubjectConfig) {
 		o.SubjectConfig = vSubjectConfig
 	}
 	vX509Config := o.X509Config
@@ -12209,7 +12209,7 @@ func postReadExtractCertificateConfigFields(r *Certificate, o *CertificateConfig
 	if err := extractCertificateConfigX509ConfigFields(r, vX509Config); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vX509Config) {
+	if !dcl.IsEmptyValueIndirect(vX509Config) {
 		o.X509Config = vX509Config
 	}
 	vPublicKey := o.PublicKey
@@ -12220,7 +12220,7 @@ func postReadExtractCertificateConfigFields(r *Certificate, o *CertificateConfig
 	if err := extractCertificateConfigPublicKeyFields(r, vPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPublicKey) {
 		o.PublicKey = vPublicKey
 	}
 	return nil
@@ -12234,7 +12234,7 @@ func postReadExtractCertificateConfigSubjectConfigFields(r *Certificate, o *Cert
 	if err := extractCertificateConfigSubjectConfigSubjectFields(r, vSubject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubject) {
+	if !dcl.IsEmptyValueIndirect(vSubject) {
 		o.Subject = vSubject
 	}
 	vSubjectAltName := o.SubjectAltName
@@ -12245,7 +12245,7 @@ func postReadExtractCertificateConfigSubjectConfigFields(r *Certificate, o *Cert
 	if err := extractCertificateConfigSubjectConfigSubjectAltNameFields(r, vSubjectAltName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectAltName) {
+	if !dcl.IsEmptyValueIndirect(vSubjectAltName) {
 		o.SubjectAltName = vSubjectAltName
 	}
 	return nil
@@ -12265,7 +12265,7 @@ func postReadExtractCertificateConfigX509ConfigFields(r *Certificate, o *Certifi
 	if err := extractCertificateConfigX509ConfigKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -12276,7 +12276,7 @@ func postReadExtractCertificateConfigX509ConfigFields(r *Certificate, o *Certifi
 	if err := extractCertificateConfigX509ConfigCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -12290,7 +12290,7 @@ func postReadExtractCertificateConfigX509ConfigKeyUsageFields(r *Certificate, o 
 	if err := extractCertificateConfigX509ConfigKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -12301,7 +12301,7 @@ func postReadExtractCertificateConfigX509ConfigKeyUsageFields(r *Certificate, o 
 	if err := extractCertificateConfigX509ConfigKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -12330,7 +12330,7 @@ func postReadExtractCertificateConfigX509ConfigAdditionalExtensionsFields(r *Cer
 	if err := extractCertificateConfigX509ConfigAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -12353,7 +12353,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionFields(r, vSubjectDescription); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectDescription) {
+	if !dcl.IsEmptyValueIndirect(vSubjectDescription) {
 		o.SubjectDescription = vSubjectDescription
 	}
 	vX509Description := o.X509Description
@@ -12364,7 +12364,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionX509DescriptionFields(r, vX509Description); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vX509Description) {
+	if !dcl.IsEmptyValueIndirect(vX509Description) {
 		o.X509Description = vX509Description
 	}
 	vPublicKey := o.PublicKey
@@ -12375,7 +12375,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionPublicKeyFields(r, vPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPublicKey) {
 		o.PublicKey = vPublicKey
 	}
 	vSubjectKeyId := o.SubjectKeyId
@@ -12386,7 +12386,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionSubjectKeyIdFields(r, vSubjectKeyId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectKeyId) {
+	if !dcl.IsEmptyValueIndirect(vSubjectKeyId) {
 		o.SubjectKeyId = vSubjectKeyId
 	}
 	vAuthorityKeyId := o.AuthorityKeyId
@@ -12397,7 +12397,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionAuthorityKeyIdFields(r, vAuthorityKeyId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthorityKeyId) {
+	if !dcl.IsEmptyValueIndirect(vAuthorityKeyId) {
 		o.AuthorityKeyId = vAuthorityKeyId
 	}
 	vCertFingerprint := o.CertFingerprint
@@ -12408,7 +12408,7 @@ func postReadExtractCertificateCertificateDescriptionFields(r *Certificate, o *C
 	if err := extractCertificateCertificateDescriptionCertFingerprintFields(r, vCertFingerprint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertFingerprint) {
+	if !dcl.IsEmptyValueIndirect(vCertFingerprint) {
 		o.CertFingerprint = vCertFingerprint
 	}
 	return nil
@@ -12422,7 +12422,7 @@ func postReadExtractCertificateCertificateDescriptionSubjectDescriptionFields(r 
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectFields(r, vSubject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubject) {
+	if !dcl.IsEmptyValueIndirect(vSubject) {
 		o.Subject = vSubject
 	}
 	vSubjectAltName := o.SubjectAltName
@@ -12433,7 +12433,7 @@ func postReadExtractCertificateCertificateDescriptionSubjectDescriptionFields(r 
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameFields(r, vSubjectAltName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubjectAltName) {
+	if !dcl.IsEmptyValueIndirect(vSubjectAltName) {
 		o.SubjectAltName = vSubjectAltName
 	}
 	return nil
@@ -12453,7 +12453,7 @@ func postReadExtractCertificateCertificateDescriptionSubjectDescriptionSubjectAl
 	if err := extractCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSansObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -12470,7 +12470,7 @@ func postReadExtractCertificateCertificateDescriptionX509DescriptionFields(r *Ce
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -12481,7 +12481,7 @@ func postReadExtractCertificateCertificateDescriptionX509DescriptionFields(r *Ce
 	if err := extractCertificateCertificateDescriptionX509DescriptionCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -12495,7 +12495,7 @@ func postReadExtractCertificateCertificateDescriptionX509DescriptionKeyUsageFiel
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -12506,7 +12506,7 @@ func postReadExtractCertificateCertificateDescriptionX509DescriptionKeyUsageFiel
 	if err := extractCertificateCertificateDescriptionX509DescriptionKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -12535,7 +12535,7 @@ func postReadExtractCertificateCertificateDescriptionX509DescriptionAdditionalEx
 	if err := extractCertificateCertificateDescriptionX509DescriptionAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil

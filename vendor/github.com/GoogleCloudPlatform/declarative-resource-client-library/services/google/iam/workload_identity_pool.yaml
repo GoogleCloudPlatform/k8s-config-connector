@@ -23,21 +23,18 @@ paths:
     - name: WorkloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a WorkloadIdentityPool
     parameters:
     - name: WorkloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
-    timeoutSecs: 0
   delete:
     description: The function used to delete a WorkloadIdentityPool
     parameters:
     - name: WorkloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all WorkloadIdentityPool
     parameters:
@@ -49,7 +46,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many WorkloadIdentityPool
     parameters:
@@ -61,7 +57,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     WorkloadIdentityPool:
@@ -70,6 +65,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

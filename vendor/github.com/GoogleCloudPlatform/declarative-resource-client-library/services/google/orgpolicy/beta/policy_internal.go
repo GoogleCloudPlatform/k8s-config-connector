@@ -429,7 +429,7 @@ func canonicalizePolicyDesiredState(rawDesired, rawInitial *Policy, opts ...dcl.
 
 func canonicalizePolicyNewState(c *Client, rawNew, rawDesired *Policy) (*Policy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if canonicalizePolicyName(rawDesired.Name, rawNew.Name) {
@@ -437,7 +437,7 @@ func canonicalizePolicyNewState(c *Client, rawNew, rawDesired *Policy) (*Policy,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Spec) && dcl.IsNotReturnedByServer(rawDesired.Spec) {
+	if dcl.IsEmptyValueIndirect(rawNew.Spec) && dcl.IsEmptyValueIndirect(rawDesired.Spec) {
 		rawNew.Spec = rawDesired.Spec
 	} else {
 		rawNew.Spec = canonicalizeNewPolicySpec(c, rawDesired.Spec, rawNew.Spec)
@@ -512,7 +512,7 @@ func canonicalizeNewPolicySpec(c *Client, des, nw *PolicySpec) *PolicySpec {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PolicySpec while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -686,7 +686,7 @@ func canonicalizeNewPolicySpecRules(c *Client, des, nw *PolicySpecRules) *Policy
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PolicySpecRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -814,7 +814,7 @@ func canonicalizeNewPolicySpecRulesValues(c *Client, des, nw *PolicySpecRulesVal
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PolicySpecRulesValues while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -947,7 +947,7 @@ func canonicalizeNewPolicySpecRulesCondition(c *Client, des, nw *PolicySpecRules
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PolicySpecRulesCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1947,7 +1947,7 @@ func extractPolicyFields(r *Policy) error {
 	if err := extractPolicySpecFields(r, vSpec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSpec) {
+	if !dcl.IsEmptyValueIndirect(vSpec) {
 		r.Spec = vSpec
 	}
 	return nil
@@ -1964,7 +1964,7 @@ func extractPolicySpecRulesFields(r *Policy, o *PolicySpecRules) error {
 	if err := extractPolicySpecRulesValuesFields(r, vValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValues) {
+	if !dcl.IsEmptyValueIndirect(vValues) {
 		o.Values = vValues
 	}
 	vCondition := o.Condition
@@ -1975,7 +1975,7 @@ func extractPolicySpecRulesFields(r *Policy, o *PolicySpecRules) error {
 	if err := extractPolicySpecRulesConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil
@@ -1996,7 +1996,7 @@ func postReadExtractPolicyFields(r *Policy) error {
 	if err := postReadExtractPolicySpecFields(r, vSpec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSpec) {
+	if !dcl.IsEmptyValueIndirect(vSpec) {
 		r.Spec = vSpec
 	}
 	return nil
@@ -2013,7 +2013,7 @@ func postReadExtractPolicySpecRulesFields(r *Policy, o *PolicySpecRules) error {
 	if err := extractPolicySpecRulesValuesFields(r, vValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValues) {
+	if !dcl.IsEmptyValueIndirect(vValues) {
 		o.Values = vValues
 	}
 	vCondition := o.Condition
@@ -2024,7 +2024,7 @@ func postReadExtractPolicySpecRulesFields(r *Policy, o *PolicySpecRules) error {
 	if err := extractPolicySpecRulesConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		o.Condition = vCondition
 	}
 	return nil

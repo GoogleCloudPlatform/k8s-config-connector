@@ -506,7 +506,7 @@ func canonicalizeCryptoKeyDesiredState(rawDesired, rawInitial *CryptoKey, opts .
 
 func canonicalizeCryptoKeyNewState(c *Client, rawNew, rawDesired *CryptoKey) (*CryptoKey, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -514,28 +514,28 @@ func canonicalizeCryptoKeyNewState(c *Client, rawNew, rawDesired *CryptoKey) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Primary) && dcl.IsNotReturnedByServer(rawDesired.Primary) {
+	if dcl.IsEmptyValueIndirect(rawNew.Primary) && dcl.IsEmptyValueIndirect(rawDesired.Primary) {
 		rawNew.Primary = rawDesired.Primary
 	} else {
 		rawNew.Primary = canonicalizeNewCryptoKeyPrimary(c, rawDesired.Primary, rawNew.Primary)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Purpose) && dcl.IsNotReturnedByServer(rawDesired.Purpose) {
+	if dcl.IsEmptyValueIndirect(rawNew.Purpose) && dcl.IsEmptyValueIndirect(rawDesired.Purpose) {
 		rawNew.Purpose = rawDesired.Purpose
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NextRotationTime) && dcl.IsNotReturnedByServer(rawDesired.NextRotationTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.NextRotationTime) && dcl.IsEmptyValueIndirect(rawDesired.NextRotationTime) {
 		rawNew.NextRotationTime = rawDesired.NextRotationTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RotationPeriod) && dcl.IsNotReturnedByServer(rawDesired.RotationPeriod) {
+	if dcl.IsEmptyValueIndirect(rawNew.RotationPeriod) && dcl.IsEmptyValueIndirect(rawDesired.RotationPeriod) {
 		rawNew.RotationPeriod = rawDesired.RotationPeriod
 	} else {
 		if dcl.StringCanonicalize(rawDesired.RotationPeriod, rawNew.RotationPeriod) {
@@ -543,18 +543,18 @@ func canonicalizeCryptoKeyNewState(c *Client, rawNew, rawDesired *CryptoKey) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VersionTemplate) && dcl.IsNotReturnedByServer(rawDesired.VersionTemplate) {
+	if dcl.IsEmptyValueIndirect(rawNew.VersionTemplate) && dcl.IsEmptyValueIndirect(rawDesired.VersionTemplate) {
 		rawNew.VersionTemplate = rawDesired.VersionTemplate
 	} else {
 		rawNew.VersionTemplate = canonicalizeNewCryptoKeyVersionTemplate(c, rawDesired.VersionTemplate, rawNew.VersionTemplate)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ImportOnly) && dcl.IsNotReturnedByServer(rawDesired.ImportOnly) {
+	if dcl.IsEmptyValueIndirect(rawNew.ImportOnly) && dcl.IsEmptyValueIndirect(rawDesired.ImportOnly) {
 		rawNew.ImportOnly = rawDesired.ImportOnly
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.ImportOnly, rawNew.ImportOnly) {
@@ -562,7 +562,7 @@ func canonicalizeCryptoKeyNewState(c *Client, rawNew, rawDesired *CryptoKey) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DestroyScheduledDuration) && dcl.IsNotReturnedByServer(rawDesired.DestroyScheduledDuration) {
+	if dcl.IsEmptyValueIndirect(rawNew.DestroyScheduledDuration) && dcl.IsEmptyValueIndirect(rawDesired.DestroyScheduledDuration) {
 		rawNew.DestroyScheduledDuration = rawDesired.DestroyScheduledDuration
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DestroyScheduledDuration, rawNew.DestroyScheduledDuration) {
@@ -645,7 +645,7 @@ func canonicalizeNewCryptoKeyPrimary(c *Client, des, nw *CryptoKeyPrimary) *Cryp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CryptoKeyPrimary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -762,7 +762,7 @@ func canonicalizeNewCryptoKeyPrimaryAttestation(c *Client, des, nw *CryptoKeyPri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CryptoKeyPrimaryAttestation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -888,7 +888,7 @@ func canonicalizeNewCryptoKeyPrimaryAttestationCertChains(c *Client, des, nw *Cr
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CryptoKeyPrimaryAttestationCertChains while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1009,7 +1009,7 @@ func canonicalizeNewCryptoKeyPrimaryExternalProtectionLevelOptions(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CryptoKeyPrimaryExternalProtectionLevelOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1131,7 +1131,7 @@ func canonicalizeNewCryptoKeyVersionTemplate(c *Client, des, nw *CryptoKeyVersio
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CryptoKeyVersionTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2779,7 +2779,7 @@ func extractCryptoKeyFields(r *CryptoKey) error {
 	if err := extractCryptoKeyPrimaryFields(r, vPrimary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimary) {
+	if !dcl.IsEmptyValueIndirect(vPrimary) {
 		r.Primary = vPrimary
 	}
 	vVersionTemplate := r.VersionTemplate
@@ -2790,7 +2790,7 @@ func extractCryptoKeyFields(r *CryptoKey) error {
 	if err := extractCryptoKeyVersionTemplateFields(r, vVersionTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersionTemplate) {
+	if !dcl.IsEmptyValueIndirect(vVersionTemplate) {
 		r.VersionTemplate = vVersionTemplate
 	}
 	return nil
@@ -2804,7 +2804,7 @@ func extractCryptoKeyPrimaryFields(r *CryptoKey, o *CryptoKeyPrimary) error {
 	if err := extractCryptoKeyPrimaryAttestationFields(r, vAttestation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAttestation) {
+	if !dcl.IsEmptyValueIndirect(vAttestation) {
 		o.Attestation = vAttestation
 	}
 	vExternalProtectionLevelOptions := o.ExternalProtectionLevelOptions
@@ -2815,7 +2815,7 @@ func extractCryptoKeyPrimaryFields(r *CryptoKey, o *CryptoKeyPrimary) error {
 	if err := extractCryptoKeyPrimaryExternalProtectionLevelOptionsFields(r, vExternalProtectionLevelOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExternalProtectionLevelOptions) {
+	if !dcl.IsEmptyValueIndirect(vExternalProtectionLevelOptions) {
 		o.ExternalProtectionLevelOptions = vExternalProtectionLevelOptions
 	}
 	return nil
@@ -2829,7 +2829,7 @@ func extractCryptoKeyPrimaryAttestationFields(r *CryptoKey, o *CryptoKeyPrimaryA
 	if err := extractCryptoKeyPrimaryAttestationCertChainsFields(r, vCertChains); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertChains) {
+	if !dcl.IsEmptyValueIndirect(vCertChains) {
 		o.CertChains = vCertChains
 	}
 	return nil
@@ -2853,7 +2853,7 @@ func postReadExtractCryptoKeyFields(r *CryptoKey) error {
 	if err := postReadExtractCryptoKeyPrimaryFields(r, vPrimary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrimary) {
+	if !dcl.IsEmptyValueIndirect(vPrimary) {
 		r.Primary = vPrimary
 	}
 	vVersionTemplate := r.VersionTemplate
@@ -2864,7 +2864,7 @@ func postReadExtractCryptoKeyFields(r *CryptoKey) error {
 	if err := postReadExtractCryptoKeyVersionTemplateFields(r, vVersionTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersionTemplate) {
+	if !dcl.IsEmptyValueIndirect(vVersionTemplate) {
 		r.VersionTemplate = vVersionTemplate
 	}
 	return nil
@@ -2878,7 +2878,7 @@ func postReadExtractCryptoKeyPrimaryFields(r *CryptoKey, o *CryptoKeyPrimary) er
 	if err := extractCryptoKeyPrimaryAttestationFields(r, vAttestation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAttestation) {
+	if !dcl.IsEmptyValueIndirect(vAttestation) {
 		o.Attestation = vAttestation
 	}
 	vExternalProtectionLevelOptions := o.ExternalProtectionLevelOptions
@@ -2889,7 +2889,7 @@ func postReadExtractCryptoKeyPrimaryFields(r *CryptoKey, o *CryptoKeyPrimary) er
 	if err := extractCryptoKeyPrimaryExternalProtectionLevelOptionsFields(r, vExternalProtectionLevelOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExternalProtectionLevelOptions) {
+	if !dcl.IsEmptyValueIndirect(vExternalProtectionLevelOptions) {
 		o.ExternalProtectionLevelOptions = vExternalProtectionLevelOptions
 	}
 	return nil
@@ -2903,7 +2903,7 @@ func postReadExtractCryptoKeyPrimaryAttestationFields(r *CryptoKey, o *CryptoKey
 	if err := extractCryptoKeyPrimaryAttestationCertChainsFields(r, vCertChains); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertChains) {
+	if !dcl.IsEmptyValueIndirect(vCertChains) {
 		o.CertChains = vCertChains
 	}
 	return nil

@@ -382,23 +382,23 @@ func canonicalizeRulesetDesiredState(rawDesired, rawInitial *Ruleset, opts ...dc
 
 func canonicalizeRulesetNewState(c *Client, rawNew, rawDesired *Ruleset) (*Ruleset, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Source) && dcl.IsNotReturnedByServer(rawDesired.Source) {
+	if dcl.IsEmptyValueIndirect(rawNew.Source) && dcl.IsEmptyValueIndirect(rawDesired.Source) {
 		rawNew.Source = rawDesired.Source
 	} else {
 		rawNew.Source = canonicalizeNewRulesetSource(c, rawDesired.Source, rawNew.Source)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Metadata) && dcl.IsNotReturnedByServer(rawDesired.Metadata) {
+	if dcl.IsEmptyValueIndirect(rawNew.Metadata) && dcl.IsEmptyValueIndirect(rawDesired.Metadata) {
 		rawNew.Metadata = rawDesired.Metadata
 	} else {
 		rawNew.Metadata = canonicalizeNewRulesetMetadata(c, rawDesired.Metadata, rawNew.Metadata)
@@ -469,7 +469,7 @@ func canonicalizeNewRulesetSource(c *Client, des, nw *RulesetSource) *RulesetSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for RulesetSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -592,7 +592,7 @@ func canonicalizeNewRulesetSourceFiles(c *Client, des, nw *RulesetSourceFiles) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for RulesetSourceFiles while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -713,7 +713,7 @@ func canonicalizeNewRulesetMetadata(c *Client, des, nw *RulesetMetadata) *Rulese
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for RulesetMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1518,7 +1518,7 @@ func extractRulesetFields(r *Ruleset) error {
 	if err := extractRulesetSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		r.Source = vSource
 	}
 	vMetadata := r.Metadata
@@ -1529,7 +1529,7 @@ func extractRulesetFields(r *Ruleset) error {
 	if err := extractRulesetMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		r.Metadata = vMetadata
 	}
 	return nil
@@ -1553,7 +1553,7 @@ func postReadExtractRulesetFields(r *Ruleset) error {
 	if err := postReadExtractRulesetSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		r.Source = vSource
 	}
 	vMetadata := r.Metadata
@@ -1564,7 +1564,7 @@ func postReadExtractRulesetFields(r *Ruleset) error {
 	if err := postReadExtractRulesetMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		r.Metadata = vMetadata
 	}
 	return nil

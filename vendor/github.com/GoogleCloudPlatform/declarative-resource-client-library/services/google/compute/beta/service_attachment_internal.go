@@ -543,12 +543,12 @@ func canonicalizeServiceAttachmentDesiredState(rawDesired, rawInitial *ServiceAt
 
 func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *ServiceAttachment) (*ServiceAttachment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -556,7 +556,7 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -564,7 +564,7 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -572,7 +572,7 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Region) && dcl.IsNotReturnedByServer(rawDesired.Region) {
+	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
 		rawNew.Region = rawDesired.Region
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
@@ -580,23 +580,23 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TargetService) && dcl.IsNotReturnedByServer(rawDesired.TargetService) {
+	if dcl.IsEmptyValueIndirect(rawNew.TargetService) && dcl.IsEmptyValueIndirect(rawDesired.TargetService) {
 		rawNew.TargetService = rawDesired.TargetService
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConnectionPreference) && dcl.IsNotReturnedByServer(rawDesired.ConnectionPreference) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConnectionPreference) && dcl.IsEmptyValueIndirect(rawDesired.ConnectionPreference) {
 		rawNew.ConnectionPreference = rawDesired.ConnectionPreference
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConnectedEndpoints) && dcl.IsNotReturnedByServer(rawDesired.ConnectedEndpoints) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConnectedEndpoints) && dcl.IsEmptyValueIndirect(rawDesired.ConnectedEndpoints) {
 		rawNew.ConnectedEndpoints = rawDesired.ConnectedEndpoints
 	} else {
 		rawNew.ConnectedEndpoints = canonicalizeNewServiceAttachmentConnectedEndpointsSlice(c, rawDesired.ConnectedEndpoints, rawNew.ConnectedEndpoints)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NatSubnets) && dcl.IsNotReturnedByServer(rawDesired.NatSubnets) {
+	if dcl.IsEmptyValueIndirect(rawNew.NatSubnets) && dcl.IsEmptyValueIndirect(rawDesired.NatSubnets) {
 		rawNew.NatSubnets = rawDesired.NatSubnets
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.NatSubnets, rawNew.NatSubnets) {
@@ -604,7 +604,7 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableProxyProtocol) && dcl.IsNotReturnedByServer(rawDesired.EnableProxyProtocol) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableProxyProtocol) && dcl.IsEmptyValueIndirect(rawDesired.EnableProxyProtocol) {
 		rawNew.EnableProxyProtocol = rawDesired.EnableProxyProtocol
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableProxyProtocol, rawNew.EnableProxyProtocol) {
@@ -612,7 +612,7 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConsumerRejectLists) && dcl.IsNotReturnedByServer(rawDesired.ConsumerRejectLists) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConsumerRejectLists) && dcl.IsEmptyValueIndirect(rawDesired.ConsumerRejectLists) {
 		rawNew.ConsumerRejectLists = rawDesired.ConsumerRejectLists
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.ConsumerRejectLists, rawNew.ConsumerRejectLists) {
@@ -620,19 +620,19 @@ func canonicalizeServiceAttachmentNewState(c *Client, rawNew, rawDesired *Servic
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConsumerAcceptLists) && dcl.IsNotReturnedByServer(rawDesired.ConsumerAcceptLists) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConsumerAcceptLists) && dcl.IsEmptyValueIndirect(rawDesired.ConsumerAcceptLists) {
 		rawNew.ConsumerAcceptLists = rawDesired.ConsumerAcceptLists
 	} else {
 		rawNew.ConsumerAcceptLists = canonicalizeNewServiceAttachmentConsumerAcceptListsSlice(c, rawDesired.ConsumerAcceptLists, rawNew.ConsumerAcceptLists)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PscServiceAttachmentId) && dcl.IsNotReturnedByServer(rawDesired.PscServiceAttachmentId) {
+	if dcl.IsEmptyValueIndirect(rawNew.PscServiceAttachmentId) && dcl.IsEmptyValueIndirect(rawDesired.PscServiceAttachmentId) {
 		rawNew.PscServiceAttachmentId = rawDesired.PscServiceAttachmentId
 	} else {
 		rawNew.PscServiceAttachmentId = canonicalizeNewServiceAttachmentPscServiceAttachmentId(c, rawDesired.PscServiceAttachmentId, rawNew.PscServiceAttachmentId)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Fingerprint) && dcl.IsNotReturnedByServer(rawDesired.Fingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Fingerprint) && dcl.IsEmptyValueIndirect(rawDesired.Fingerprint) {
 		rawNew.Fingerprint = rawDesired.Fingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Fingerprint, rawNew.Fingerprint) {
@@ -717,7 +717,7 @@ func canonicalizeNewServiceAttachmentConnectedEndpoints(c *Client, des, nw *Serv
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceAttachmentConnectedEndpoints while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -839,7 +839,7 @@ func canonicalizeNewServiceAttachmentConsumerAcceptLists(c *Client, des, nw *Ser
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceAttachmentConsumerAcceptLists while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -944,7 +944,7 @@ func canonicalizeNewServiceAttachmentPscServiceAttachmentId(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceAttachmentPscServiceAttachmentId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1940,7 +1940,7 @@ func extractServiceAttachmentFields(r *ServiceAttachment) error {
 	if err := extractServiceAttachmentPscServiceAttachmentIdFields(r, vPscServiceAttachmentId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPscServiceAttachmentId) {
+	if !dcl.IsEmptyValueIndirect(vPscServiceAttachmentId) {
 		r.PscServiceAttachmentId = vPscServiceAttachmentId
 	}
 	return nil
@@ -1964,7 +1964,7 @@ func postReadExtractServiceAttachmentFields(r *ServiceAttachment) error {
 	if err := postReadExtractServiceAttachmentPscServiceAttachmentIdFields(r, vPscServiceAttachmentId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPscServiceAttachmentId) {
+	if !dcl.IsEmptyValueIndirect(vPscServiceAttachmentId) {
 		r.PscServiceAttachmentId = vPscServiceAttachmentId
 	}
 	return nil

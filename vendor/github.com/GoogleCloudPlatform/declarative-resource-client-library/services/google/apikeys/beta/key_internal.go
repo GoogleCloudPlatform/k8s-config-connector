@@ -491,7 +491,7 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -499,7 +499,7 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.KeyString) && dcl.IsNotReturnedByServer(rawDesired.KeyString) {
+	if dcl.IsEmptyValueIndirect(rawNew.KeyString) && dcl.IsEmptyValueIndirect(rawDesired.KeyString) {
 		rawNew.KeyString = rawDesired.KeyString
 	} else {
 		if dcl.StringCanonicalize(rawDesired.KeyString, rawNew.KeyString) {
@@ -507,7 +507,7 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -515,7 +515,7 @@ func canonicalizeKeyNewState(c *Client, rawNew, rawDesired *Key) (*Key, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Restrictions) && dcl.IsNotReturnedByServer(rawDesired.Restrictions) {
+	if dcl.IsEmptyValueIndirect(rawNew.Restrictions) && dcl.IsEmptyValueIndirect(rawDesired.Restrictions) {
 		rawNew.Restrictions = rawDesired.Restrictions
 	} else {
 		rawNew.Restrictions = canonicalizeNewKeyRestrictions(c, rawDesired.Restrictions, rawNew.Restrictions)
@@ -624,7 +624,7 @@ func canonicalizeNewKeyRestrictions(c *Client, des, nw *KeyRestrictions) *KeyRes
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -741,7 +741,7 @@ func canonicalizeNewKeyRestrictionsBrowserKeyRestrictions(c *Client, des, nw *Ke
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsBrowserKeyRestrictions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -856,7 +856,7 @@ func canonicalizeNewKeyRestrictionsServerKeyRestrictions(c *Client, des, nw *Key
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsServerKeyRestrictions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -967,7 +967,7 @@ func canonicalizeNewKeyRestrictionsAndroidKeyRestrictions(c *Client, des, nw *Ke
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsAndroidKeyRestrictions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1085,7 +1085,7 @@ func canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsAllowedApplications(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsAndroidKeyRestrictionsAllowedApplications while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1203,7 +1203,7 @@ func canonicalizeNewKeyRestrictionsIosKeyRestrictions(c *Client, des, nw *KeyRes
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsIosKeyRestrictions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1323,7 +1323,7 @@ func canonicalizeNewKeyRestrictionsApiTargets(c *Client, des, nw *KeyRestriction
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for KeyRestrictionsApiTargets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2722,7 +2722,7 @@ func extractKeyFields(r *Key) error {
 	if err := extractKeyRestrictionsFields(r, vRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vRestrictions) {
 		r.Restrictions = vRestrictions
 	}
 	return nil
@@ -2736,7 +2736,7 @@ func extractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsBrowserKeyRestrictionsFields(r, vBrowserKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBrowserKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vBrowserKeyRestrictions) {
 		o.BrowserKeyRestrictions = vBrowserKeyRestrictions
 	}
 	vServerKeyRestrictions := o.ServerKeyRestrictions
@@ -2747,7 +2747,7 @@ func extractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsServerKeyRestrictionsFields(r, vServerKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServerKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vServerKeyRestrictions) {
 		o.ServerKeyRestrictions = vServerKeyRestrictions
 	}
 	vAndroidKeyRestrictions := o.AndroidKeyRestrictions
@@ -2758,7 +2758,7 @@ func extractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsAndroidKeyRestrictionsFields(r, vAndroidKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAndroidKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vAndroidKeyRestrictions) {
 		o.AndroidKeyRestrictions = vAndroidKeyRestrictions
 	}
 	vIosKeyRestrictions := o.IosKeyRestrictions
@@ -2769,7 +2769,7 @@ func extractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsIosKeyRestrictionsFields(r, vIosKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIosKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vIosKeyRestrictions) {
 		o.IosKeyRestrictions = vIosKeyRestrictions
 	}
 	return nil
@@ -2802,7 +2802,7 @@ func postReadExtractKeyFields(r *Key) error {
 	if err := postReadExtractKeyRestrictionsFields(r, vRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vRestrictions) {
 		r.Restrictions = vRestrictions
 	}
 	return nil
@@ -2816,7 +2816,7 @@ func postReadExtractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsBrowserKeyRestrictionsFields(r, vBrowserKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBrowserKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vBrowserKeyRestrictions) {
 		o.BrowserKeyRestrictions = vBrowserKeyRestrictions
 	}
 	vServerKeyRestrictions := o.ServerKeyRestrictions
@@ -2827,7 +2827,7 @@ func postReadExtractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsServerKeyRestrictionsFields(r, vServerKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServerKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vServerKeyRestrictions) {
 		o.ServerKeyRestrictions = vServerKeyRestrictions
 	}
 	vAndroidKeyRestrictions := o.AndroidKeyRestrictions
@@ -2838,7 +2838,7 @@ func postReadExtractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsAndroidKeyRestrictionsFields(r, vAndroidKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAndroidKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vAndroidKeyRestrictions) {
 		o.AndroidKeyRestrictions = vAndroidKeyRestrictions
 	}
 	vIosKeyRestrictions := o.IosKeyRestrictions
@@ -2849,7 +2849,7 @@ func postReadExtractKeyRestrictionsFields(r *Key, o *KeyRestrictions) error {
 	if err := extractKeyRestrictionsIosKeyRestrictionsFields(r, vIosKeyRestrictions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIosKeyRestrictions) {
+	if !dcl.IsEmptyValueIndirect(vIosKeyRestrictions) {
 		o.IosKeyRestrictions = vIosKeyRestrictions
 	}
 	return nil

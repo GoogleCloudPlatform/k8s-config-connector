@@ -445,7 +445,7 @@ func canonicalizeAttestorDesiredState(rawDesired, rawInitial *Attestor, opts ...
 
 func canonicalizeAttestorNewState(c *Client, rawNew, rawDesired *Attestor) (*Attestor, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -453,7 +453,7 @@ func canonicalizeAttestorNewState(c *Client, rawNew, rawDesired *Attestor) (*Att
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -461,13 +461,13 @@ func canonicalizeAttestorNewState(c *Client, rawNew, rawDesired *Attestor) (*Att
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UserOwnedDrydockNote) && dcl.IsNotReturnedByServer(rawDesired.UserOwnedDrydockNote) {
+	if dcl.IsEmptyValueIndirect(rawNew.UserOwnedDrydockNote) && dcl.IsEmptyValueIndirect(rawDesired.UserOwnedDrydockNote) {
 		rawNew.UserOwnedDrydockNote = rawDesired.UserOwnedDrydockNote
 	} else {
 		rawNew.UserOwnedDrydockNote = canonicalizeNewAttestorUserOwnedDrydockNote(c, rawDesired.UserOwnedDrydockNote, rawNew.UserOwnedDrydockNote)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
@@ -537,7 +537,7 @@ func canonicalizeNewAttestorUserOwnedDrydockNote(c *Client, des, nw *AttestorUse
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AttestorUserOwnedDrydockNote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -664,7 +664,7 @@ func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeys(c *Client, des, nw *A
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AttestorUserOwnedDrydockNotePublicKeys while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -792,7 +792,7 @@ func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AttestorUserOwnedDrydockNotePublicKeysPkixPublicKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1646,7 +1646,7 @@ func extractAttestorFields(r *Attestor) error {
 	if err := extractAttestorUserOwnedDrydockNoteFields(r, vUserOwnedDrydockNote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUserOwnedDrydockNote) {
+	if !dcl.IsEmptyValueIndirect(vUserOwnedDrydockNote) {
 		r.UserOwnedDrydockNote = vUserOwnedDrydockNote
 	}
 	return nil
@@ -1663,7 +1663,7 @@ func extractAttestorUserOwnedDrydockNotePublicKeysFields(r *Attestor, o *Attesto
 	if err := extractAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyFields(r, vPkixPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPkixPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPkixPublicKey) {
 		o.PkixPublicKey = vPkixPublicKey
 	}
 	return nil
@@ -1681,7 +1681,7 @@ func postReadExtractAttestorFields(r *Attestor) error {
 	if err := postReadExtractAttestorUserOwnedDrydockNoteFields(r, vUserOwnedDrydockNote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUserOwnedDrydockNote) {
+	if !dcl.IsEmptyValueIndirect(vUserOwnedDrydockNote) {
 		r.UserOwnedDrydockNote = vUserOwnedDrydockNote
 	}
 	return nil
@@ -1698,7 +1698,7 @@ func postReadExtractAttestorUserOwnedDrydockNotePublicKeysFields(r *Attestor, o 
 	if err := extractAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyFields(r, vPkixPublicKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPkixPublicKey) {
+	if !dcl.IsEmptyValueIndirect(vPkixPublicKey) {
 		o.PkixPublicKey = vPkixPublicKey
 	}
 	return nil

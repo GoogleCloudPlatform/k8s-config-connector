@@ -432,7 +432,7 @@ func canonicalizeWorkloadIdentityPoolDesiredState(rawDesired, rawInitial *Worklo
 
 func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *WorkloadIdentityPool) (*WorkloadIdentityPool, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -440,7 +440,7 @@ func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *Wor
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -448,7 +448,7 @@ func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *Wor
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -456,12 +456,12 @@ func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *Wor
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {

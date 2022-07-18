@@ -142,12 +142,12 @@ func (r *Service) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"custom":      dcl.ValueOrEmptyString(nr.Custom),
-		"telemetry":   dcl.ValueOrEmptyString(nr.Telemetry),
-		"userLabels":  dcl.ValueOrEmptyString(nr.UserLabels),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"custom":       dcl.ValueOrEmptyString(nr.Custom),
+		"telemetry":    dcl.ValueOrEmptyString(nr.Telemetry),
+		"user_labels":  dcl.ValueOrEmptyString(nr.UserLabels),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/services/{{name}}", params), nil
 }

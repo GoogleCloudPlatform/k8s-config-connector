@@ -55,15 +55,15 @@ func (r *Mesh) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":           dcl.ValueOrEmptyString(nr.Labels),
-		"description":      dcl.ValueOrEmptyString(nr.Description),
-		"interceptionPort": dcl.ValueOrEmptyString(nr.InterceptionPort),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
-		"selfLink":         dcl.ValueOrEmptyString(nr.SelfLink),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":            dcl.ValueOrEmptyString(nr.Labels),
+		"description":       dcl.ValueOrEmptyString(nr.Description),
+		"interception_port": dcl.ValueOrEmptyString(nr.InterceptionPort),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"self_link":         dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/meshes/{{name}}", params), nil
 }

@@ -387,17 +387,17 @@ func canonicalizeEnvironmentGroupAttachmentDesiredState(rawDesired, rawInitial *
 
 func canonicalizeEnvironmentGroupAttachmentNewState(c *Client, rawNew, rawDesired *EnvironmentGroupAttachment) (*EnvironmentGroupAttachment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Environment) && dcl.IsNotReturnedByServer(rawDesired.Environment) {
+	if dcl.IsEmptyValueIndirect(rawNew.Environment) && dcl.IsEmptyValueIndirect(rawDesired.Environment) {
 		rawNew.Environment = rawDesired.Environment
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreatedAt) && dcl.IsNotReturnedByServer(rawDesired.CreatedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreatedAt) && dcl.IsEmptyValueIndirect(rawDesired.CreatedAt) {
 		rawNew.CreatedAt = rawDesired.CreatedAt
 	} else {
 	}

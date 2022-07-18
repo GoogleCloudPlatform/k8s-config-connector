@@ -24,21 +24,18 @@ paths:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a FeatureMembership
     parameters:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
-    timeoutSecs: 0
   delete:
     description: The function used to delete a FeatureMembership
     parameters:
     - name: FeatureMembership
       required: true
       description: A full instance of a FeatureMembership
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all FeatureMembership
     parameters:
@@ -54,7 +51,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many FeatureMembership
     parameters:
@@ -70,7 +66,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     FeatureMembership:
@@ -79,6 +74,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - configmanagement
@@ -223,6 +221,38 @@ components:
                   type: boolean
                   x-dcl-go-name: LogDeniesEnabled
                   description: Logs all denies and dry run failures.
+                monitoring:
+                  type: object
+                  x-dcl-go-name: Monitoring
+                  x-dcl-go-type: FeatureMembershipConfigmanagementPolicyControllerMonitoring
+                  description: 'Specifies the backends Policy Controller should export
+                    metrics to. For example, to specify metrics should be exported
+                    to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring",
+                    "prometheus"]. Default: ["cloudmonitoring", "prometheus"]'
+                  x-dcl-server-default: true
+                  properties:
+                    backends:
+                      type: array
+                      x-dcl-go-name: Backends
+                      description: ' Specifies the list of backends Policy Controller
+                        will export to. Specifying an empty value `[]` disables metrics
+                        export.'
+                      x-dcl-server-default: true
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum
+                        enum:
+                        - MONITORING_BACKEND_UNSPECIFIED
+                        - PROMETHEUS
+                        - CLOUD_MONITORING
+                mutationEnabled:
+                  type: boolean
+                  x-dcl-go-name: MutationEnabled
+                  description: Enable or disable mutation in policy controller. If
+                    true, mutation CRDs, webhook and controller deployment will be
+                    deployed to the cluster.
                 referentialRulesEnabled:
                   type: boolean
                   x-dcl-go-name: ReferentialRulesEnabled

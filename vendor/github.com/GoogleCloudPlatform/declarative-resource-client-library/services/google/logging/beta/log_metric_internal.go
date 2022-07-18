@@ -519,7 +519,7 @@ func canonicalizeLogMetricDesiredState(rawDesired, rawInitial *LogMetric, opts .
 
 func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*LogMetric, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -527,7 +527,7 @@ func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*L
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -535,7 +535,7 @@ func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*L
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Filter) && dcl.IsNotReturnedByServer(rawDesired.Filter) {
+	if dcl.IsEmptyValueIndirect(rawNew.Filter) && dcl.IsEmptyValueIndirect(rawDesired.Filter) {
 		rawNew.Filter = rawDesired.Filter
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Filter, rawNew.Filter) {
@@ -543,7 +543,7 @@ func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*L
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {
@@ -551,13 +551,13 @@ func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*L
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MetricDescriptor) && dcl.IsNotReturnedByServer(rawDesired.MetricDescriptor) {
+	if dcl.IsEmptyValueIndirect(rawNew.MetricDescriptor) && dcl.IsEmptyValueIndirect(rawDesired.MetricDescriptor) {
 		rawNew.MetricDescriptor = rawDesired.MetricDescriptor
 	} else {
 		rawNew.MetricDescriptor = canonicalizeNewLogMetricMetricDescriptor(c, rawDesired.MetricDescriptor, rawNew.MetricDescriptor)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ValueExtractor) && dcl.IsNotReturnedByServer(rawDesired.ValueExtractor) {
+	if dcl.IsEmptyValueIndirect(rawNew.ValueExtractor) && dcl.IsEmptyValueIndirect(rawDesired.ValueExtractor) {
 		rawNew.ValueExtractor = rawDesired.ValueExtractor
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ValueExtractor, rawNew.ValueExtractor) {
@@ -565,23 +565,23 @@ func canonicalizeLogMetricNewState(c *Client, rawNew, rawDesired *LogMetric) (*L
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LabelExtractors) && dcl.IsNotReturnedByServer(rawDesired.LabelExtractors) {
+	if dcl.IsEmptyValueIndirect(rawNew.LabelExtractors) && dcl.IsEmptyValueIndirect(rawDesired.LabelExtractors) {
 		rawNew.LabelExtractors = rawDesired.LabelExtractors
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BucketOptions) && dcl.IsNotReturnedByServer(rawDesired.BucketOptions) {
+	if dcl.IsEmptyValueIndirect(rawNew.BucketOptions) && dcl.IsEmptyValueIndirect(rawDesired.BucketOptions) {
 		rawNew.BucketOptions = rawDesired.BucketOptions
 	} else {
 		rawNew.BucketOptions = canonicalizeNewLogMetricBucketOptions(c, rawDesired.BucketOptions, rawNew.BucketOptions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
@@ -673,7 +673,7 @@ func canonicalizeNewLogMetricMetricDescriptor(c *Client, des, nw *LogMetricMetri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricMetricDescriptor while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -819,7 +819,7 @@ func canonicalizeNewLogMetricMetricDescriptorLabels(c *Client, des, nw *LogMetri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricMetricDescriptorLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -945,7 +945,7 @@ func canonicalizeNewLogMetricMetricDescriptorMetadata(c *Client, des, nw *LogMet
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricMetricDescriptorMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1091,7 +1091,7 @@ func canonicalizeNewLogMetricBucketOptions(c *Client, des, nw *LogMetricBucketOp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricBucketOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1219,7 +1219,7 @@ func canonicalizeNewLogMetricBucketOptionsLinearBuckets(c *Client, des, nw *LogM
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricBucketOptionsLinearBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1343,7 +1343,7 @@ func canonicalizeNewLogMetricBucketOptionsExponentialBuckets(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricBucketOptionsExponentialBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1455,7 +1455,7 @@ func canonicalizeNewLogMetricBucketOptionsExplicitBuckets(c *Client, des, nw *Lo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for LogMetricBucketOptionsExplicitBuckets while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3235,7 +3235,7 @@ func extractLogMetricFields(r *LogMetric) error {
 	if err := extractLogMetricMetricDescriptorFields(r, vMetricDescriptor); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricDescriptor) {
+	if !dcl.IsEmptyValueIndirect(vMetricDescriptor) {
 		r.MetricDescriptor = vMetricDescriptor
 	}
 	vBucketOptions := r.BucketOptions
@@ -3246,7 +3246,7 @@ func extractLogMetricFields(r *LogMetric) error {
 	if err := extractLogMetricBucketOptionsFields(r, vBucketOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketOptions) {
+	if !dcl.IsEmptyValueIndirect(vBucketOptions) {
 		r.BucketOptions = vBucketOptions
 	}
 	return nil
@@ -3260,7 +3260,7 @@ func extractLogMetricMetricDescriptorFields(r *LogMetric, o *LogMetricMetricDesc
 	if err := extractLogMetricMetricDescriptorMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		o.Metadata = vMetadata
 	}
 	return nil
@@ -3280,7 +3280,7 @@ func extractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucketOptions
 	if err := extractLogMetricBucketOptionsLinearBucketsFields(r, vLinearBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinearBuckets) {
+	if !dcl.IsEmptyValueIndirect(vLinearBuckets) {
 		o.LinearBuckets = vLinearBuckets
 	}
 	vExponentialBuckets := o.ExponentialBuckets
@@ -3291,7 +3291,7 @@ func extractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucketOptions
 	if err := extractLogMetricBucketOptionsExponentialBucketsFields(r, vExponentialBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExponentialBuckets) {
+	if !dcl.IsEmptyValueIndirect(vExponentialBuckets) {
 		o.ExponentialBuckets = vExponentialBuckets
 	}
 	vExplicitBuckets := o.ExplicitBuckets
@@ -3302,7 +3302,7 @@ func extractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucketOptions
 	if err := extractLogMetricBucketOptionsExplicitBucketsFields(r, vExplicitBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExplicitBuckets) {
+	if !dcl.IsEmptyValueIndirect(vExplicitBuckets) {
 		o.ExplicitBuckets = vExplicitBuckets
 	}
 	return nil
@@ -3326,7 +3326,7 @@ func postReadExtractLogMetricFields(r *LogMetric) error {
 	if err := postReadExtractLogMetricMetricDescriptorFields(r, vMetricDescriptor); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricDescriptor) {
+	if !dcl.IsEmptyValueIndirect(vMetricDescriptor) {
 		r.MetricDescriptor = vMetricDescriptor
 	}
 	vBucketOptions := r.BucketOptions
@@ -3337,7 +3337,7 @@ func postReadExtractLogMetricFields(r *LogMetric) error {
 	if err := postReadExtractLogMetricBucketOptionsFields(r, vBucketOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBucketOptions) {
+	if !dcl.IsEmptyValueIndirect(vBucketOptions) {
 		r.BucketOptions = vBucketOptions
 	}
 	return nil
@@ -3351,7 +3351,7 @@ func postReadExtractLogMetricMetricDescriptorFields(r *LogMetric, o *LogMetricMe
 	if err := extractLogMetricMetricDescriptorMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		o.Metadata = vMetadata
 	}
 	return nil
@@ -3371,7 +3371,7 @@ func postReadExtractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucke
 	if err := extractLogMetricBucketOptionsLinearBucketsFields(r, vLinearBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinearBuckets) {
+	if !dcl.IsEmptyValueIndirect(vLinearBuckets) {
 		o.LinearBuckets = vLinearBuckets
 	}
 	vExponentialBuckets := o.ExponentialBuckets
@@ -3382,7 +3382,7 @@ func postReadExtractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucke
 	if err := extractLogMetricBucketOptionsExponentialBucketsFields(r, vExponentialBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExponentialBuckets) {
+	if !dcl.IsEmptyValueIndirect(vExponentialBuckets) {
 		o.ExponentialBuckets = vExponentialBuckets
 	}
 	vExplicitBuckets := o.ExplicitBuckets
@@ -3393,7 +3393,7 @@ func postReadExtractLogMetricBucketOptionsFields(r *LogMetric, o *LogMetricBucke
 	if err := extractLogMetricBucketOptionsExplicitBucketsFields(r, vExplicitBuckets); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExplicitBuckets) {
+	if !dcl.IsEmptyValueIndirect(vExplicitBuckets) {
 		o.ExplicitBuckets = vExplicitBuckets
 	}
 	return nil

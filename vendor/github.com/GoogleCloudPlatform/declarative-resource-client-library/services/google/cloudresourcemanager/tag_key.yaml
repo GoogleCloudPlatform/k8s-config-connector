@@ -23,21 +23,18 @@ paths:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a TagKey
     parameters:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
-    timeoutSecs: 0
   delete:
     description: The function used to delete a TagKey
     parameters:
     - name: TagKey
       required: true
       description: A full instance of a TagKey
-    timeoutSecs: 0
 components:
   schemas:
     TagKey:
@@ -45,6 +42,9 @@ components:
       x-dcl-id: tagKeys/{{name}}
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - parent

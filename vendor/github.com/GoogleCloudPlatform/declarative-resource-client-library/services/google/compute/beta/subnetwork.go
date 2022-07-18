@@ -272,22 +272,22 @@ func (r *Subnetwork) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"creationTimestamp":     dcl.ValueOrEmptyString(nr.CreationTimestamp),
-		"description":           dcl.ValueOrEmptyString(nr.Description),
-		"gatewayAddress":        dcl.ValueOrEmptyString(nr.GatewayAddress),
-		"iPCidrRange":           dcl.ValueOrEmptyString(nr.IPCidrRange),
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"network":               dcl.ValueOrEmptyString(nr.Network),
-		"fingerprint":           dcl.ValueOrEmptyString(nr.Fingerprint),
-		"purpose":               dcl.ValueOrEmptyString(nr.Purpose),
-		"role":                  dcl.ValueOrEmptyString(nr.Role),
-		"secondaryIPRanges":     dcl.ValueOrEmptyString(nr.SecondaryIPRanges),
-		"privateIPGoogleAccess": dcl.ValueOrEmptyString(nr.PrivateIPGoogleAccess),
-		"region":                dcl.ValueOrEmptyString(nr.Region),
-		"logConfig":             dcl.ValueOrEmptyString(nr.LogConfig),
-		"project":               dcl.ValueOrEmptyString(nr.Project),
-		"selfLink":              dcl.ValueOrEmptyString(nr.SelfLink),
-		"enableFlowLogs":        dcl.ValueOrEmptyString(nr.EnableFlowLogs),
+		"creation_timestamp":       dcl.ValueOrEmptyString(nr.CreationTimestamp),
+		"description":              dcl.ValueOrEmptyString(nr.Description),
+		"gateway_address":          dcl.ValueOrEmptyString(nr.GatewayAddress),
+		"ip_cidr_range":            dcl.ValueOrEmptyString(nr.IPCidrRange),
+		"name":                     dcl.ValueOrEmptyString(nr.Name),
+		"network":                  dcl.ValueOrEmptyString(nr.Network),
+		"fingerprint":              dcl.ValueOrEmptyString(nr.Fingerprint),
+		"purpose":                  dcl.ValueOrEmptyString(nr.Purpose),
+		"role":                     dcl.ValueOrEmptyString(nr.Role),
+		"secondary_ip_ranges":      dcl.ValueOrEmptyString(nr.SecondaryIPRanges),
+		"private_ip_google_access": dcl.ValueOrEmptyString(nr.PrivateIPGoogleAccess),
+		"region":                   dcl.ValueOrEmptyString(nr.Region),
+		"log_config":               dcl.ValueOrEmptyString(nr.LogConfig),
+		"project":                  dcl.ValueOrEmptyString(nr.Project),
+		"self_link":                dcl.ValueOrEmptyString(nr.SelfLink),
+		"enable_flow_logs":         dcl.ValueOrEmptyString(nr.EnableFlowLogs),
 	}
 	return dcl.Nprintf("projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", params), nil
 }

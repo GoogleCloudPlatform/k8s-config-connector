@@ -766,16 +766,16 @@ func (r *CertificateTemplate) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"predefinedValues":      dcl.ValueOrEmptyString(nr.PredefinedValues),
-		"identityConstraints":   dcl.ValueOrEmptyString(nr.IdentityConstraints),
-		"passthroughExtensions": dcl.ValueOrEmptyString(nr.PassthroughExtensions),
-		"description":           dcl.ValueOrEmptyString(nr.Description),
-		"createTime":            dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":            dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":                dcl.ValueOrEmptyString(nr.Labels),
-		"project":               dcl.ValueOrEmptyString(nr.Project),
-		"location":              dcl.ValueOrEmptyString(nr.Location),
+		"name":                   dcl.ValueOrEmptyString(nr.Name),
+		"predefined_values":      dcl.ValueOrEmptyString(nr.PredefinedValues),
+		"identity_constraints":   dcl.ValueOrEmptyString(nr.IdentityConstraints),
+		"passthrough_extensions": dcl.ValueOrEmptyString(nr.PassthroughExtensions),
+		"description":            dcl.ValueOrEmptyString(nr.Description),
+		"create_time":            dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":            dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":                 dcl.ValueOrEmptyString(nr.Labels),
+		"project":                dcl.ValueOrEmptyString(nr.Project),
+		"location":               dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/certificateTemplates/{{name}}", params), nil
 }

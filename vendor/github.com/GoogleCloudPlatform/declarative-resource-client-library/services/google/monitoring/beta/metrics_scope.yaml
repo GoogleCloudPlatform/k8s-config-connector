@@ -23,14 +23,12 @@ paths:
     - name: MetricsScope
       required: true
       description: A full instance of a MetricsScope
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a MetricsScope
     parameters:
     - name: MetricsScope
       required: true
       description: A full instance of a MetricsScope
-    timeoutSecs: 0
 components:
   schemas:
     MetricsScope:
@@ -40,6 +38,9 @@ components:
       - global
       x-dcl-has-create: false
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

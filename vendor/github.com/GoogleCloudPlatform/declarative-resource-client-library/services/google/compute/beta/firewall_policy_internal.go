@@ -343,12 +343,12 @@ func canonicalizeFirewallPolicyDesiredState(rawDesired, rawInitial *FirewallPoli
 
 func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallPolicy) (*FirewallPolicy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Id, rawNew.Id) {
@@ -356,7 +356,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreationTimestamp) && dcl.IsNotReturnedByServer(rawDesired.CreationTimestamp) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreationTimestamp) && dcl.IsEmptyValueIndirect(rawDesired.CreationTimestamp) {
 		rawNew.CreationTimestamp = rawDesired.CreationTimestamp
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CreationTimestamp, rawNew.CreationTimestamp) {
@@ -364,7 +364,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -372,7 +372,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Fingerprint) && dcl.IsNotReturnedByServer(rawDesired.Fingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Fingerprint) && dcl.IsEmptyValueIndirect(rawDesired.Fingerprint) {
 		rawNew.Fingerprint = rawDesired.Fingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Fingerprint, rawNew.Fingerprint) {
@@ -380,7 +380,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -388,7 +388,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLinkWithId) && dcl.IsNotReturnedByServer(rawDesired.SelfLinkWithId) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLinkWithId) && dcl.IsEmptyValueIndirect(rawDesired.SelfLinkWithId) {
 		rawNew.SelfLinkWithId = rawDesired.SelfLinkWithId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLinkWithId, rawNew.SelfLinkWithId) {
@@ -396,12 +396,12 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RuleTupleCount) && dcl.IsNotReturnedByServer(rawDesired.RuleTupleCount) {
+	if dcl.IsEmptyValueIndirect(rawNew.RuleTupleCount) && dcl.IsEmptyValueIndirect(rawDesired.RuleTupleCount) {
 		rawNew.RuleTupleCount = rawDesired.RuleTupleCount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ShortName) && dcl.IsNotReturnedByServer(rawDesired.ShortName) {
+	if dcl.IsEmptyValueIndirect(rawNew.ShortName) && dcl.IsEmptyValueIndirect(rawDesired.ShortName) {
 		rawNew.ShortName = rawDesired.ShortName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ShortName, rawNew.ShortName) {
@@ -409,7 +409,7 @@ func canonicalizeFirewallPolicyNewState(c *Client, rawNew, rawDesired *FirewallP
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Parent) && dcl.IsNotReturnedByServer(rawDesired.Parent) {
+	if dcl.IsEmptyValueIndirect(rawNew.Parent) && dcl.IsEmptyValueIndirect(rawDesired.Parent) {
 		rawNew.Parent = rawDesired.Parent
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Parent, rawNew.Parent) {

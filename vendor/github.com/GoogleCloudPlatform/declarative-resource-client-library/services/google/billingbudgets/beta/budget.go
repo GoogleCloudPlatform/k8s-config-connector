@@ -650,14 +650,14 @@ func (r *Budget) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"displayName":    dcl.ValueOrEmptyString(nr.DisplayName),
-		"budgetFilter":   dcl.ValueOrEmptyString(nr.BudgetFilter),
-		"amount":         dcl.ValueOrEmptyString(nr.Amount),
-		"thresholdRules": dcl.ValueOrEmptyString(nr.ThresholdRules),
-		"etag":           dcl.ValueOrEmptyString(nr.Etag),
-		"allUpdatesRule": dcl.ValueOrEmptyString(nr.AllUpdatesRule),
-		"billingAccount": dcl.ValueOrEmptyString(nr.BillingAccount),
+		"name":             dcl.ValueOrEmptyString(nr.Name),
+		"display_name":     dcl.ValueOrEmptyString(nr.DisplayName),
+		"budget_filter":    dcl.ValueOrEmptyString(nr.BudgetFilter),
+		"amount":           dcl.ValueOrEmptyString(nr.Amount),
+		"threshold_rules":  dcl.ValueOrEmptyString(nr.ThresholdRules),
+		"etag":             dcl.ValueOrEmptyString(nr.Etag),
+		"all_updates_rule": dcl.ValueOrEmptyString(nr.AllUpdatesRule),
+		"billing_account":  dcl.ValueOrEmptyString(nr.BillingAccount),
 	}
 	return dcl.Nprintf("billingAccounts/{{billing_account}}/budgets/{{name}}", params), nil
 }

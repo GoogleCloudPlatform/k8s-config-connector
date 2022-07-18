@@ -1550,15 +1550,15 @@ func (r *InspectTemplate) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"displayName":   dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":   dcl.ValueOrEmptyString(nr.Description),
-		"createTime":    dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":    dcl.ValueOrEmptyString(nr.UpdateTime),
-		"inspectConfig": dcl.ValueOrEmptyString(nr.InspectConfig),
-		"locationId":    dcl.ValueOrEmptyString(nr.LocationId),
-		"parent":        dcl.ValueOrEmptyString(nr.Parent),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":           dcl.ValueOrEmptyString(nr.Name),
+		"display_name":   dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":    dcl.ValueOrEmptyString(nr.Description),
+		"create_time":    dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":    dcl.ValueOrEmptyString(nr.UpdateTime),
+		"inspect_config": dcl.ValueOrEmptyString(nr.InspectConfig),
+		"location_id":    dcl.ValueOrEmptyString(nr.LocationId),
+		"parent":         dcl.ValueOrEmptyString(nr.Parent),
+		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("{{parent}}/inspectTemplates/{{name}}", params), nil
 }

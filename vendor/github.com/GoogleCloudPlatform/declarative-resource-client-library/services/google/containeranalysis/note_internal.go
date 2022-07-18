@@ -790,7 +790,7 @@ func canonicalizeNoteDesiredState(rawDesired, rawInitial *Note, opts ...dcl.Appl
 
 func canonicalizeNoteNewState(c *Client, rawNew, rawDesired *Note) (*Note, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -798,7 +798,7 @@ func canonicalizeNoteNewState(c *Client, rawNew, rawDesired *Note) (*Note, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ShortDescription) && dcl.IsNotReturnedByServer(rawDesired.ShortDescription) {
+	if dcl.IsEmptyValueIndirect(rawNew.ShortDescription) && dcl.IsEmptyValueIndirect(rawDesired.ShortDescription) {
 		rawNew.ShortDescription = rawDesired.ShortDescription
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ShortDescription, rawNew.ShortDescription) {
@@ -806,7 +806,7 @@ func canonicalizeNoteNewState(c *Client, rawNew, rawDesired *Note) (*Note, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LongDescription) && dcl.IsNotReturnedByServer(rawDesired.LongDescription) {
+	if dcl.IsEmptyValueIndirect(rawNew.LongDescription) && dcl.IsEmptyValueIndirect(rawDesired.LongDescription) {
 		rawNew.LongDescription = rawDesired.LongDescription
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LongDescription, rawNew.LongDescription) {
@@ -814,28 +814,28 @@ func canonicalizeNoteNewState(c *Client, rawNew, rawDesired *Note) (*Note, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RelatedUrl) && dcl.IsNotReturnedByServer(rawDesired.RelatedUrl) {
+	if dcl.IsEmptyValueIndirect(rawNew.RelatedUrl) && dcl.IsEmptyValueIndirect(rawDesired.RelatedUrl) {
 		rawNew.RelatedUrl = rawDesired.RelatedUrl
 	} else {
 		rawNew.RelatedUrl = canonicalizeNewNoteRelatedUrlSlice(c, rawDesired.RelatedUrl, rawNew.RelatedUrl)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExpirationTime) && dcl.IsNotReturnedByServer(rawDesired.ExpirationTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExpirationTime) && dcl.IsEmptyValueIndirect(rawDesired.ExpirationTime) {
 		rawNew.ExpirationTime = rawDesired.ExpirationTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RelatedNoteNames) && dcl.IsNotReturnedByServer(rawDesired.RelatedNoteNames) {
+	if dcl.IsEmptyValueIndirect(rawNew.RelatedNoteNames) && dcl.IsEmptyValueIndirect(rawDesired.RelatedNoteNames) {
 		rawNew.RelatedNoteNames = rawDesired.RelatedNoteNames
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.RelatedNoteNames, rawNew.RelatedNoteNames) {
@@ -843,43 +843,43 @@ func canonicalizeNoteNewState(c *Client, rawNew, rawDesired *Note) (*Note, error
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Vulnerability) && dcl.IsNotReturnedByServer(rawDesired.Vulnerability) {
+	if dcl.IsEmptyValueIndirect(rawNew.Vulnerability) && dcl.IsEmptyValueIndirect(rawDesired.Vulnerability) {
 		rawNew.Vulnerability = rawDesired.Vulnerability
 	} else {
 		rawNew.Vulnerability = canonicalizeNewNoteVulnerability(c, rawDesired.Vulnerability, rawNew.Vulnerability)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Build) && dcl.IsNotReturnedByServer(rawDesired.Build) {
+	if dcl.IsEmptyValueIndirect(rawNew.Build) && dcl.IsEmptyValueIndirect(rawDesired.Build) {
 		rawNew.Build = rawDesired.Build
 	} else {
 		rawNew.Build = canonicalizeNewNoteBuild(c, rawDesired.Build, rawNew.Build)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Image) && dcl.IsNotReturnedByServer(rawDesired.Image) {
+	if dcl.IsEmptyValueIndirect(rawNew.Image) && dcl.IsEmptyValueIndirect(rawDesired.Image) {
 		rawNew.Image = rawDesired.Image
 	} else {
 		rawNew.Image = canonicalizeNewNoteImage(c, rawDesired.Image, rawNew.Image)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Package) && dcl.IsNotReturnedByServer(rawDesired.Package) {
+	if dcl.IsEmptyValueIndirect(rawNew.Package) && dcl.IsEmptyValueIndirect(rawDesired.Package) {
 		rawNew.Package = rawDesired.Package
 	} else {
 		rawNew.Package = canonicalizeNewNotePackage(c, rawDesired.Package, rawNew.Package)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Discovery) && dcl.IsNotReturnedByServer(rawDesired.Discovery) {
+	if dcl.IsEmptyValueIndirect(rawNew.Discovery) && dcl.IsEmptyValueIndirect(rawDesired.Discovery) {
 		rawNew.Discovery = rawDesired.Discovery
 	} else {
 		rawNew.Discovery = canonicalizeNewNoteDiscovery(c, rawDesired.Discovery, rawNew.Discovery)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Deployment) && dcl.IsNotReturnedByServer(rawDesired.Deployment) {
+	if dcl.IsEmptyValueIndirect(rawNew.Deployment) && dcl.IsEmptyValueIndirect(rawDesired.Deployment) {
 		rawNew.Deployment = rawDesired.Deployment
 	} else {
 		rawNew.Deployment = canonicalizeNewNoteDeployment(c, rawDesired.Deployment, rawNew.Deployment)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Attestation) && dcl.IsNotReturnedByServer(rawDesired.Attestation) {
+	if dcl.IsEmptyValueIndirect(rawNew.Attestation) && dcl.IsEmptyValueIndirect(rawDesired.Attestation) {
 		rawNew.Attestation = rawDesired.Attestation
 	} else {
 		rawNew.Attestation = canonicalizeNewNoteAttestation(c, rawDesired.Attestation, rawNew.Attestation)
@@ -953,7 +953,7 @@ func canonicalizeNewNoteRelatedUrl(c *Client, des, nw *NoteRelatedUrl) *NoteRela
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteRelatedUrl while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1087,7 +1087,7 @@ func canonicalizeNewNoteVulnerability(c *Client, des, nw *NoteVulnerability) *No
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerability while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1246,7 +1246,7 @@ func canonicalizeNewNoteVulnerabilityDetails(c *Client, des, nw *NoteVulnerabili
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1407,7 +1407,7 @@ func canonicalizeNewNoteVulnerabilityDetailsAffectedVersionStart(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityDetailsAffectedVersionStart while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1550,7 +1550,7 @@ func canonicalizeNewNoteVulnerabilityDetailsAffectedVersionEnd(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityDetailsAffectedVersionEnd while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1693,7 +1693,7 @@ func canonicalizeNewNoteVulnerabilityDetailsFixedVersion(c *Client, des, nw *Not
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityDetailsFixedVersion while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1875,7 +1875,7 @@ func canonicalizeNewNoteVulnerabilityCvssV3(c *Client, des, nw *NoteVulnerabilit
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityCvssV3 while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1997,7 +1997,7 @@ func canonicalizeNewNoteVulnerabilityWindowsDetails(c *Client, des, nw *NoteVuln
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityWindowsDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2124,7 +2124,7 @@ func canonicalizeNewNoteVulnerabilityWindowsDetailsFixingKbs(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteVulnerabilityWindowsDetailsFixingKbs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2242,7 +2242,7 @@ func canonicalizeNewNoteBuild(c *Client, des, nw *NoteBuild) *NoteBuild {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteBuild while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2358,7 +2358,7 @@ func canonicalizeNewNoteImage(c *Client, des, nw *NoteImage) *NoteImage {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteImage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2479,7 +2479,7 @@ func canonicalizeNewNoteImageFingerprint(c *Client, des, nw *NoteImageFingerprin
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteImageFingerprint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2601,7 +2601,7 @@ func canonicalizeNewNotePackage(c *Client, des, nw *NotePackage) *NotePackage {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NotePackage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2739,7 +2739,7 @@ func canonicalizeNewNotePackageDistribution(c *Client, des, nw *NotePackageDistr
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NotePackageDistribution while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2886,7 +2886,7 @@ func canonicalizeNewNotePackageDistributionLatestVersion(c *Client, des, nw *Not
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NotePackageDistributionLatestVersion while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3008,7 +3008,7 @@ func canonicalizeNewNoteDiscovery(c *Client, des, nw *NoteDiscovery) *NoteDiscov
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteDiscovery while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3119,7 +3119,7 @@ func canonicalizeNewNoteDeployment(c *Client, des, nw *NoteDeployment) *NoteDepl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteDeployment while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3230,7 +3230,7 @@ func canonicalizeNewNoteAttestation(c *Client, des, nw *NoteAttestation) *NoteAt
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteAttestation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3343,7 +3343,7 @@ func canonicalizeNewNoteAttestationHint(c *Client, des, nw *NoteAttestationHint)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NoteAttestationHint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7901,7 +7901,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteVulnerabilityFields(r, vVulnerability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVulnerability) {
+	if !dcl.IsEmptyValueIndirect(vVulnerability) {
 		r.Vulnerability = vVulnerability
 	}
 	vBuild := r.Build
@@ -7912,7 +7912,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteBuildFields(r, vBuild); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBuild) {
+	if !dcl.IsEmptyValueIndirect(vBuild) {
 		r.Build = vBuild
 	}
 	vImage := r.Image
@@ -7923,7 +7923,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteImageFields(r, vImage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vImage) {
+	if !dcl.IsEmptyValueIndirect(vImage) {
 		r.Image = vImage
 	}
 	vPackage := r.Package
@@ -7934,7 +7934,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNotePackageFields(r, vPackage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPackage) {
+	if !dcl.IsEmptyValueIndirect(vPackage) {
 		r.Package = vPackage
 	}
 	vDiscovery := r.Discovery
@@ -7945,7 +7945,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteDiscoveryFields(r, vDiscovery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiscovery) {
+	if !dcl.IsEmptyValueIndirect(vDiscovery) {
 		r.Discovery = vDiscovery
 	}
 	vDeployment := r.Deployment
@@ -7956,7 +7956,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteDeploymentFields(r, vDeployment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeployment) {
+	if !dcl.IsEmptyValueIndirect(vDeployment) {
 		r.Deployment = vDeployment
 	}
 	vAttestation := r.Attestation
@@ -7967,7 +7967,7 @@ func extractNoteFields(r *Note) error {
 	if err := extractNoteAttestationFields(r, vAttestation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAttestation) {
+	if !dcl.IsEmptyValueIndirect(vAttestation) {
 		r.Attestation = vAttestation
 	}
 	return nil
@@ -7984,7 +7984,7 @@ func extractNoteVulnerabilityFields(r *Note, o *NoteVulnerability) error {
 	if err := extractNoteVulnerabilityCvssV3Fields(r, vCvssV3); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCvssV3) {
+	if !dcl.IsEmptyValueIndirect(vCvssV3) {
 		o.CvssV3 = vCvssV3
 	}
 	return nil
@@ -7998,7 +7998,7 @@ func extractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerabilityDetails)
 	if err := extractNoteVulnerabilityDetailsAffectedVersionStartFields(r, vAffectedVersionStart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAffectedVersionStart) {
+	if !dcl.IsEmptyValueIndirect(vAffectedVersionStart) {
 		o.AffectedVersionStart = vAffectedVersionStart
 	}
 	vAffectedVersionEnd := o.AffectedVersionEnd
@@ -8009,7 +8009,7 @@ func extractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerabilityDetails)
 	if err := extractNoteVulnerabilityDetailsAffectedVersionEndFields(r, vAffectedVersionEnd); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAffectedVersionEnd) {
+	if !dcl.IsEmptyValueIndirect(vAffectedVersionEnd) {
 		o.AffectedVersionEnd = vAffectedVersionEnd
 	}
 	vFixedVersion := o.FixedVersion
@@ -8020,7 +8020,7 @@ func extractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerabilityDetails)
 	if err := extractNoteVulnerabilityDetailsFixedVersionFields(r, vFixedVersion); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedVersion) {
+	if !dcl.IsEmptyValueIndirect(vFixedVersion) {
 		o.FixedVersion = vFixedVersion
 	}
 	return nil
@@ -8055,7 +8055,7 @@ func extractNoteImageFields(r *Note, o *NoteImage) error {
 	if err := extractNoteImageFingerprintFields(r, vFingerprint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFingerprint) {
+	if !dcl.IsEmptyValueIndirect(vFingerprint) {
 		o.Fingerprint = vFingerprint
 	}
 	return nil
@@ -8075,7 +8075,7 @@ func extractNotePackageDistributionFields(r *Note, o *NotePackageDistribution) e
 	if err := extractNotePackageDistributionLatestVersionFields(r, vLatestVersion); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestVersion) {
+	if !dcl.IsEmptyValueIndirect(vLatestVersion) {
 		o.LatestVersion = vLatestVersion
 	}
 	return nil
@@ -8098,7 +8098,7 @@ func extractNoteAttestationFields(r *Note, o *NoteAttestation) error {
 	if err := extractNoteAttestationHintFields(r, vHint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHint) {
+	if !dcl.IsEmptyValueIndirect(vHint) {
 		o.Hint = vHint
 	}
 	return nil
@@ -8116,7 +8116,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteVulnerabilityFields(r, vVulnerability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVulnerability) {
+	if !dcl.IsEmptyValueIndirect(vVulnerability) {
 		r.Vulnerability = vVulnerability
 	}
 	vBuild := r.Build
@@ -8127,7 +8127,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteBuildFields(r, vBuild); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBuild) {
+	if !dcl.IsEmptyValueIndirect(vBuild) {
 		r.Build = vBuild
 	}
 	vImage := r.Image
@@ -8138,7 +8138,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteImageFields(r, vImage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vImage) {
+	if !dcl.IsEmptyValueIndirect(vImage) {
 		r.Image = vImage
 	}
 	vPackage := r.Package
@@ -8149,7 +8149,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNotePackageFields(r, vPackage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPackage) {
+	if !dcl.IsEmptyValueIndirect(vPackage) {
 		r.Package = vPackage
 	}
 	vDiscovery := r.Discovery
@@ -8160,7 +8160,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteDiscoveryFields(r, vDiscovery); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiscovery) {
+	if !dcl.IsEmptyValueIndirect(vDiscovery) {
 		r.Discovery = vDiscovery
 	}
 	vDeployment := r.Deployment
@@ -8171,7 +8171,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteDeploymentFields(r, vDeployment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeployment) {
+	if !dcl.IsEmptyValueIndirect(vDeployment) {
 		r.Deployment = vDeployment
 	}
 	vAttestation := r.Attestation
@@ -8182,7 +8182,7 @@ func postReadExtractNoteFields(r *Note) error {
 	if err := postReadExtractNoteAttestationFields(r, vAttestation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAttestation) {
+	if !dcl.IsEmptyValueIndirect(vAttestation) {
 		r.Attestation = vAttestation
 	}
 	return nil
@@ -8199,7 +8199,7 @@ func postReadExtractNoteVulnerabilityFields(r *Note, o *NoteVulnerability) error
 	if err := extractNoteVulnerabilityCvssV3Fields(r, vCvssV3); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCvssV3) {
+	if !dcl.IsEmptyValueIndirect(vCvssV3) {
 		o.CvssV3 = vCvssV3
 	}
 	return nil
@@ -8213,7 +8213,7 @@ func postReadExtractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerability
 	if err := extractNoteVulnerabilityDetailsAffectedVersionStartFields(r, vAffectedVersionStart); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAffectedVersionStart) {
+	if !dcl.IsEmptyValueIndirect(vAffectedVersionStart) {
 		o.AffectedVersionStart = vAffectedVersionStart
 	}
 	vAffectedVersionEnd := o.AffectedVersionEnd
@@ -8224,7 +8224,7 @@ func postReadExtractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerability
 	if err := extractNoteVulnerabilityDetailsAffectedVersionEndFields(r, vAffectedVersionEnd); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAffectedVersionEnd) {
+	if !dcl.IsEmptyValueIndirect(vAffectedVersionEnd) {
 		o.AffectedVersionEnd = vAffectedVersionEnd
 	}
 	vFixedVersion := o.FixedVersion
@@ -8235,7 +8235,7 @@ func postReadExtractNoteVulnerabilityDetailsFields(r *Note, o *NoteVulnerability
 	if err := extractNoteVulnerabilityDetailsFixedVersionFields(r, vFixedVersion); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFixedVersion) {
+	if !dcl.IsEmptyValueIndirect(vFixedVersion) {
 		o.FixedVersion = vFixedVersion
 	}
 	return nil
@@ -8270,7 +8270,7 @@ func postReadExtractNoteImageFields(r *Note, o *NoteImage) error {
 	if err := extractNoteImageFingerprintFields(r, vFingerprint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFingerprint) {
+	if !dcl.IsEmptyValueIndirect(vFingerprint) {
 		o.Fingerprint = vFingerprint
 	}
 	return nil
@@ -8290,7 +8290,7 @@ func postReadExtractNotePackageDistributionFields(r *Note, o *NotePackageDistrib
 	if err := extractNotePackageDistributionLatestVersionFields(r, vLatestVersion); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestVersion) {
+	if !dcl.IsEmptyValueIndirect(vLatestVersion) {
 		o.LatestVersion = vLatestVersion
 	}
 	return nil
@@ -8313,7 +8313,7 @@ func postReadExtractNoteAttestationFields(r *Note, o *NoteAttestation) error {
 	if err := extractNoteAttestationHintFields(r, vHint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHint) {
+	if !dcl.IsEmptyValueIndirect(vHint) {
 		o.Hint = vHint
 	}
 	return nil

@@ -81,14 +81,14 @@ func (r *Folder) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"parent":      dcl.ValueOrEmptyString(nr.Parent),
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"state":       dcl.ValueOrEmptyString(nr.State),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
-		"deleteTime":  dcl.ValueOrEmptyString(nr.DeleteTime),
-		"etag":        dcl.ValueOrEmptyString(nr.Etag),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"parent":       dcl.ValueOrEmptyString(nr.Parent),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"state":        dcl.ValueOrEmptyString(nr.State),
+		"create_time":  dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"delete_time":  dcl.ValueOrEmptyString(nr.DeleteTime),
+		"etag":         dcl.ValueOrEmptyString(nr.Etag),
 	}
 	return dcl.Nprintf("folders/{{name}}", params), nil
 }

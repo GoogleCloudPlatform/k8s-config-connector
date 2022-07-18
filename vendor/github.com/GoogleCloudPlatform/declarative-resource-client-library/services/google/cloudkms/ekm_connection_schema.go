@@ -227,6 +227,12 @@ func DCLEkmConnectionSchema() *dcl.Schema {
 											Type:        "string",
 											GoName:      "ServiceDirectoryService",
 											Description: "Required. The resource name of the Service Directory service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.",
+											ResourceReferences: []*dcl.PropertyResourceReference{
+												&dcl.PropertyResourceReference{
+													Resource: "Servicedirectory/Service",
+													Field:    "selfLink",
+												},
+											},
 										},
 									},
 								},

@@ -23,14 +23,12 @@ paths:
     - name: KeyRing
       required: true
       description: A full instance of a KeyRing
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a KeyRing
     parameters:
     - name: KeyRing
       required: true
       description: A full instance of a KeyRing
-    timeoutSecs: 0
   list:
     description: The function used to list information about many KeyRing
     parameters:
@@ -42,7 +40,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     KeyRing:
@@ -51,6 +48,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

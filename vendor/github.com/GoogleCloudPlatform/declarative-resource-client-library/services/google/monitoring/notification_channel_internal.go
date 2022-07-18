@@ -483,7 +483,7 @@ func canonicalizeNotificationChannelDesiredState(rawDesired, rawInitial *Notific
 
 func canonicalizeNotificationChannelNewState(c *Client, rawNew, rawDesired *NotificationChannel) (*NotificationChannel, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -491,7 +491,7 @@ func canonicalizeNotificationChannelNewState(c *Client, rawNew, rawDesired *Noti
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -499,7 +499,7 @@ func canonicalizeNotificationChannelNewState(c *Client, rawNew, rawDesired *Noti
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Enabled) && dcl.IsNotReturnedByServer(rawDesired.Enabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Enabled) && dcl.IsEmptyValueIndirect(rawDesired.Enabled) {
 		rawNew.Enabled = rawDesired.Enabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Enabled, rawNew.Enabled) {
@@ -507,17 +507,17 @@ func canonicalizeNotificationChannelNewState(c *Client, rawNew, rawDesired *Noti
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Type, rawNew.Type) {
@@ -525,12 +525,12 @@ func canonicalizeNotificationChannelNewState(c *Client, rawNew, rawDesired *Noti
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UserLabels) && dcl.IsNotReturnedByServer(rawDesired.UserLabels) {
+	if dcl.IsEmptyValueIndirect(rawNew.UserLabels) && dcl.IsEmptyValueIndirect(rawDesired.UserLabels) {
 		rawNew.UserLabels = rawDesired.UserLabels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VerificationStatus) && dcl.IsNotReturnedByServer(rawDesired.VerificationStatus) {
+	if dcl.IsEmptyValueIndirect(rawNew.VerificationStatus) && dcl.IsEmptyValueIndirect(rawDesired.VerificationStatus) {
 		rawNew.VerificationStatus = rawDesired.VerificationStatus
 	} else {
 	}

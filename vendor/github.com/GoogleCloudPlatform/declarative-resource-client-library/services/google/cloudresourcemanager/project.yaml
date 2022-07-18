@@ -23,29 +23,24 @@ paths:
     - name: Project
       required: true
       description: A full instance of a Project
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Project
     parameters:
     - name: Project
       required: true
       description: A full instance of a Project
-    timeoutSecs: 0
   delete:
     description: The function used to delete a Project
     parameters:
     - name: Project
       required: true
       description: A full instance of a Project
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Project
     parameters: []
-    timeoutSecs: 0
   list:
     description: The function used to list information about many Project
     parameters: []
-    timeoutSecs: 0
 components:
   schemas:
     Project:
@@ -54,6 +49,9 @@ components:
       x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       properties:
         displayname:

@@ -23,14 +23,12 @@ paths:
     - name: CryptoKey
       required: true
       description: A full instance of a CryptoKey
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a CryptoKey
     parameters:
     - name: CryptoKey
       required: true
       description: A full instance of a CryptoKey
-    timeoutSecs: 0
   list:
     description: The function used to list information about many CryptoKey
     parameters:
@@ -46,7 +44,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     CryptoKey:
@@ -56,6 +53,9 @@ components:
       x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

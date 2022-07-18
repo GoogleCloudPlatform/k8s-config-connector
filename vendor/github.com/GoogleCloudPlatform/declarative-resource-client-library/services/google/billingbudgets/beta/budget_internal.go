@@ -489,12 +489,12 @@ func canonicalizeBudgetDesiredState(rawDesired, rawInitial *Budget, opts ...dcl.
 
 func canonicalizeBudgetNewState(c *Client, rawNew, rawDesired *Budget) (*Budget, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -502,25 +502,25 @@ func canonicalizeBudgetNewState(c *Client, rawNew, rawDesired *Budget) (*Budget,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BudgetFilter) && dcl.IsNotReturnedByServer(rawDesired.BudgetFilter) {
+	if dcl.IsEmptyValueIndirect(rawNew.BudgetFilter) && dcl.IsEmptyValueIndirect(rawDesired.BudgetFilter) {
 		rawNew.BudgetFilter = rawDesired.BudgetFilter
 	} else {
 		rawNew.BudgetFilter = canonicalizeNewBudgetBudgetFilter(c, rawDesired.BudgetFilter, rawNew.BudgetFilter)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Amount) && dcl.IsNotReturnedByServer(rawDesired.Amount) {
+	if dcl.IsEmptyValueIndirect(rawNew.Amount) && dcl.IsEmptyValueIndirect(rawDesired.Amount) {
 		rawNew.Amount = rawDesired.Amount
 	} else {
 		rawNew.Amount = canonicalizeNewBudgetAmount(c, rawDesired.Amount, rawNew.Amount)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ThresholdRules) && dcl.IsNotReturnedByServer(rawDesired.ThresholdRules) {
+	if dcl.IsEmptyValueIndirect(rawNew.ThresholdRules) && dcl.IsEmptyValueIndirect(rawDesired.ThresholdRules) {
 		rawNew.ThresholdRules = rawDesired.ThresholdRules
 	} else {
 		rawNew.ThresholdRules = canonicalizeNewBudgetThresholdRulesSlice(c, rawDesired.ThresholdRules, rawNew.ThresholdRules)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -528,7 +528,7 @@ func canonicalizeBudgetNewState(c *Client, rawNew, rawDesired *Budget) (*Budget,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AllUpdatesRule) && dcl.IsNotReturnedByServer(rawDesired.AllUpdatesRule) {
+	if dcl.IsEmptyValueIndirect(rawNew.AllUpdatesRule) && dcl.IsEmptyValueIndirect(rawDesired.AllUpdatesRule) {
 		rawNew.AllUpdatesRule = rawDesired.AllUpdatesRule
 	} else {
 		rawNew.AllUpdatesRule = canonicalizeNewBudgetAllUpdatesRule(c, rawDesired.AllUpdatesRule, rawNew.AllUpdatesRule)
@@ -651,7 +651,7 @@ func canonicalizeNewBudgetBudgetFilter(c *Client, des, nw *BudgetBudgetFilter) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetBudgetFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -776,7 +776,7 @@ func canonicalizeNewBudgetBudgetFilterLabels(c *Client, des, nw *BudgetBudgetFil
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetBudgetFilterLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -888,7 +888,7 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriod(c *Client, des, nw *BudgetBud
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetBudgetFilterCustomPeriod while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1015,7 +1015,7 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriodStartDate(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetBudgetFilterCustomPeriodStartDate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1139,7 +1139,7 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriodEndDate(c *Client, des, nw *Bu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetBudgetFilterCustomPeriodEndDate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1267,7 +1267,7 @@ func canonicalizeNewBudgetAmount(c *Client, des, nw *BudgetAmount) *BudgetAmount
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetAmount while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1393,7 +1393,7 @@ func canonicalizeNewBudgetAmountSpecifiedAmount(c *Client, des, nw *BudgetAmount
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetAmountSpecifiedAmount while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1501,7 +1501,7 @@ func canonicalizeNewBudgetAmountLastPeriodAmount(c *Client, des, nw *BudgetAmoun
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetAmountLastPeriodAmount while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1619,7 +1619,7 @@ func canonicalizeNewBudgetThresholdRules(c *Client, des, nw *BudgetThresholdRule
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetThresholdRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1746,7 +1746,7 @@ func canonicalizeNewBudgetAllUpdatesRule(c *Client, des, nw *BudgetAllUpdatesRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for BudgetAllUpdatesRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3876,7 +3876,7 @@ func extractBudgetFields(r *Budget) error {
 	if err := extractBudgetBudgetFilterFields(r, vBudgetFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBudgetFilter) {
+	if !dcl.IsEmptyValueIndirect(vBudgetFilter) {
 		r.BudgetFilter = vBudgetFilter
 	}
 	vAmount := r.Amount
@@ -3887,7 +3887,7 @@ func extractBudgetFields(r *Budget) error {
 	if err := extractBudgetAmountFields(r, vAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAmount) {
+	if !dcl.IsEmptyValueIndirect(vAmount) {
 		r.Amount = vAmount
 	}
 	vAllUpdatesRule := r.AllUpdatesRule
@@ -3898,7 +3898,7 @@ func extractBudgetFields(r *Budget) error {
 	if err := extractBudgetAllUpdatesRuleFields(r, vAllUpdatesRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAllUpdatesRule) {
+	if !dcl.IsEmptyValueIndirect(vAllUpdatesRule) {
 		r.AllUpdatesRule = vAllUpdatesRule
 	}
 	return nil
@@ -3912,7 +3912,7 @@ func extractBudgetBudgetFilterFields(r *Budget, o *BudgetBudgetFilter) error {
 	if err := extractBudgetBudgetFilterCustomPeriodFields(r, vCustomPeriod); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCustomPeriod) {
+	if !dcl.IsEmptyValueIndirect(vCustomPeriod) {
 		o.CustomPeriod = vCustomPeriod
 	}
 	return nil
@@ -3929,7 +3929,7 @@ func extractBudgetBudgetFilterCustomPeriodFields(r *Budget, o *BudgetBudgetFilte
 	if err := extractBudgetBudgetFilterCustomPeriodStartDateFields(r, vStartDate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStartDate) {
+	if !dcl.IsEmptyValueIndirect(vStartDate) {
 		o.StartDate = vStartDate
 	}
 	vEndDate := o.EndDate
@@ -3940,7 +3940,7 @@ func extractBudgetBudgetFilterCustomPeriodFields(r *Budget, o *BudgetBudgetFilte
 	if err := extractBudgetBudgetFilterCustomPeriodEndDateFields(r, vEndDate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndDate) {
+	if !dcl.IsEmptyValueIndirect(vEndDate) {
 		o.EndDate = vEndDate
 	}
 	return nil
@@ -3960,7 +3960,7 @@ func extractBudgetAmountFields(r *Budget, o *BudgetAmount) error {
 	if err := extractBudgetAmountSpecifiedAmountFields(r, vSpecifiedAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSpecifiedAmount) {
+	if !dcl.IsEmptyValueIndirect(vSpecifiedAmount) {
 		o.SpecifiedAmount = vSpecifiedAmount
 	}
 	vLastPeriodAmount := o.LastPeriodAmount
@@ -3971,7 +3971,7 @@ func extractBudgetAmountFields(r *Budget, o *BudgetAmount) error {
 	if err := extractBudgetAmountLastPeriodAmountFields(r, vLastPeriodAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLastPeriodAmount) {
+	if !dcl.IsEmptyValueIndirect(vLastPeriodAmount) {
 		o.LastPeriodAmount = vLastPeriodAmount
 	}
 	return nil
@@ -3998,7 +3998,7 @@ func postReadExtractBudgetFields(r *Budget) error {
 	if err := postReadExtractBudgetBudgetFilterFields(r, vBudgetFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBudgetFilter) {
+	if !dcl.IsEmptyValueIndirect(vBudgetFilter) {
 		r.BudgetFilter = vBudgetFilter
 	}
 	vAmount := r.Amount
@@ -4009,7 +4009,7 @@ func postReadExtractBudgetFields(r *Budget) error {
 	if err := postReadExtractBudgetAmountFields(r, vAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAmount) {
+	if !dcl.IsEmptyValueIndirect(vAmount) {
 		r.Amount = vAmount
 	}
 	vAllUpdatesRule := r.AllUpdatesRule
@@ -4020,7 +4020,7 @@ func postReadExtractBudgetFields(r *Budget) error {
 	if err := postReadExtractBudgetAllUpdatesRuleFields(r, vAllUpdatesRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAllUpdatesRule) {
+	if !dcl.IsEmptyValueIndirect(vAllUpdatesRule) {
 		r.AllUpdatesRule = vAllUpdatesRule
 	}
 	return nil
@@ -4034,7 +4034,7 @@ func postReadExtractBudgetBudgetFilterFields(r *Budget, o *BudgetBudgetFilter) e
 	if err := extractBudgetBudgetFilterCustomPeriodFields(r, vCustomPeriod); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCustomPeriod) {
+	if !dcl.IsEmptyValueIndirect(vCustomPeriod) {
 		o.CustomPeriod = vCustomPeriod
 	}
 	return nil
@@ -4051,7 +4051,7 @@ func postReadExtractBudgetBudgetFilterCustomPeriodFields(r *Budget, o *BudgetBud
 	if err := extractBudgetBudgetFilterCustomPeriodStartDateFields(r, vStartDate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStartDate) {
+	if !dcl.IsEmptyValueIndirect(vStartDate) {
 		o.StartDate = vStartDate
 	}
 	vEndDate := o.EndDate
@@ -4062,7 +4062,7 @@ func postReadExtractBudgetBudgetFilterCustomPeriodFields(r *Budget, o *BudgetBud
 	if err := extractBudgetBudgetFilterCustomPeriodEndDateFields(r, vEndDate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndDate) {
+	if !dcl.IsEmptyValueIndirect(vEndDate) {
 		o.EndDate = vEndDate
 	}
 	return nil
@@ -4082,7 +4082,7 @@ func postReadExtractBudgetAmountFields(r *Budget, o *BudgetAmount) error {
 	if err := extractBudgetAmountSpecifiedAmountFields(r, vSpecifiedAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSpecifiedAmount) {
+	if !dcl.IsEmptyValueIndirect(vSpecifiedAmount) {
 		o.SpecifiedAmount = vSpecifiedAmount
 	}
 	vLastPeriodAmount := o.LastPeriodAmount
@@ -4093,7 +4093,7 @@ func postReadExtractBudgetAmountFields(r *Budget, o *BudgetAmount) error {
 	if err := extractBudgetAmountLastPeriodAmountFields(r, vLastPeriodAmount); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLastPeriodAmount) {
+	if !dcl.IsEmptyValueIndirect(vLastPeriodAmount) {
 		o.LastPeriodAmount = vLastPeriodAmount
 	}
 	return nil

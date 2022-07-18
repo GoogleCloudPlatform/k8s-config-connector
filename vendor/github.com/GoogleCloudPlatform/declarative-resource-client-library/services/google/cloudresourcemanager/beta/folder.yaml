@@ -23,21 +23,18 @@ paths:
     - name: Folder
       required: true
       description: A full instance of a Folder
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Folder
     parameters:
     - name: Folder
       required: true
       description: A full instance of a Folder
-    timeoutSecs: 0
   delete:
     description: The function used to delete a Folder
     parameters:
     - name: Folder
       required: true
       description: A full instance of a Folder
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Folder
     parameters:
@@ -45,7 +42,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many Folder
     parameters:
@@ -53,7 +49,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     Folder:
@@ -61,6 +56,9 @@ components:
       x-dcl-id: folders/{{name}}
       x-dcl-has-create: true
       x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - parent

@@ -543,7 +543,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -551,12 +551,12 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableStackdriverLogging) && dcl.IsNotReturnedByServer(rawDesired.EnableStackdriverLogging) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableStackdriverLogging) && dcl.IsEmptyValueIndirect(rawDesired.EnableStackdriverLogging) {
 		rawNew.EnableStackdriverLogging = rawDesired.EnableStackdriverLogging
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableStackdriverLogging, rawNew.EnableStackdriverLogging) {
@@ -564,7 +564,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableStackdriverMonitoring) && dcl.IsNotReturnedByServer(rawDesired.EnableStackdriverMonitoring) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableStackdriverMonitoring) && dcl.IsEmptyValueIndirect(rawDesired.EnableStackdriverMonitoring) {
 		rawNew.EnableStackdriverMonitoring = rawDesired.EnableStackdriverMonitoring
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableStackdriverMonitoring, rawNew.EnableStackdriverMonitoring) {
@@ -572,7 +572,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PrivateInstance) && dcl.IsNotReturnedByServer(rawDesired.PrivateInstance) {
+	if dcl.IsEmptyValueIndirect(rawNew.PrivateInstance) && dcl.IsEmptyValueIndirect(rawDesired.PrivateInstance) {
 		rawNew.PrivateInstance = rawDesired.PrivateInstance
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.PrivateInstance, rawNew.PrivateInstance) {
@@ -580,38 +580,38 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NetworkConfig) && dcl.IsNotReturnedByServer(rawDesired.NetworkConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.NetworkConfig) && dcl.IsEmptyValueIndirect(rawDesired.NetworkConfig) {
 		rawNew.NetworkConfig = rawDesired.NetworkConfig
 	} else {
 		rawNew.NetworkConfig = canonicalizeNewInstanceNetworkConfig(c, rawDesired.NetworkConfig, rawNew.NetworkConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Options) && dcl.IsNotReturnedByServer(rawDesired.Options) {
+	if dcl.IsEmptyValueIndirect(rawNew.Options) && dcl.IsEmptyValueIndirect(rawDesired.Options) {
 		rawNew.Options = rawDesired.Options
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StateMessage) && dcl.IsNotReturnedByServer(rawDesired.StateMessage) {
+	if dcl.IsEmptyValueIndirect(rawNew.StateMessage) && dcl.IsEmptyValueIndirect(rawDesired.StateMessage) {
 		rawNew.StateMessage = rawDesired.StateMessage
 	} else {
 		if dcl.StringCanonicalize(rawDesired.StateMessage, rawNew.StateMessage) {
@@ -619,7 +619,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceEndpoint) && dcl.IsNotReturnedByServer(rawDesired.ServiceEndpoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceEndpoint) && dcl.IsEmptyValueIndirect(rawDesired.ServiceEndpoint) {
 		rawNew.ServiceEndpoint = rawDesired.ServiceEndpoint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ServiceEndpoint, rawNew.ServiceEndpoint) {
@@ -627,7 +627,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Zone) && dcl.IsNotReturnedByServer(rawDesired.Zone) {
+	if dcl.IsEmptyValueIndirect(rawNew.Zone) && dcl.IsEmptyValueIndirect(rawDesired.Zone) {
 		rawNew.Zone = rawDesired.Zone
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Zone, rawNew.Zone) {
@@ -635,7 +635,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Version) && dcl.IsNotReturnedByServer(rawDesired.Version) {
+	if dcl.IsEmptyValueIndirect(rawNew.Version) && dcl.IsEmptyValueIndirect(rawDesired.Version) {
 		rawNew.Version = rawDesired.Version
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Version, rawNew.Version) {
@@ -643,7 +643,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -651,13 +651,13 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AvailableVersion) && dcl.IsNotReturnedByServer(rawDesired.AvailableVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.AvailableVersion) && dcl.IsEmptyValueIndirect(rawDesired.AvailableVersion) {
 		rawNew.AvailableVersion = rawDesired.AvailableVersion
 	} else {
 		rawNew.AvailableVersion = canonicalizeNewInstanceAvailableVersionSlice(c, rawDesired.AvailableVersion, rawNew.AvailableVersion)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ApiEndpoint) && dcl.IsNotReturnedByServer(rawDesired.ApiEndpoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.ApiEndpoint) && dcl.IsEmptyValueIndirect(rawDesired.ApiEndpoint) {
 		rawNew.ApiEndpoint = rawDesired.ApiEndpoint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ApiEndpoint, rawNew.ApiEndpoint) {
@@ -665,7 +665,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GcsBucket) && dcl.IsNotReturnedByServer(rawDesired.GcsBucket) {
+	if dcl.IsEmptyValueIndirect(rawNew.GcsBucket) && dcl.IsEmptyValueIndirect(rawDesired.GcsBucket) {
 		rawNew.GcsBucket = rawDesired.GcsBucket
 	} else {
 		if dcl.StringCanonicalize(rawDesired.GcsBucket, rawNew.GcsBucket) {
@@ -673,7 +673,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.P4ServiceAccount) && dcl.IsNotReturnedByServer(rawDesired.P4ServiceAccount) {
+	if dcl.IsEmptyValueIndirect(rawNew.P4ServiceAccount) && dcl.IsEmptyValueIndirect(rawDesired.P4ServiceAccount) {
 		rawNew.P4ServiceAccount = rawDesired.P4ServiceAccount
 	} else {
 		if dcl.StringCanonicalize(rawDesired.P4ServiceAccount, rawNew.P4ServiceAccount) {
@@ -681,12 +681,12 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TenantProjectId) && dcl.IsNotReturnedByServer(rawDesired.TenantProjectId) {
+	if dcl.IsEmptyValueIndirect(rawNew.TenantProjectId) && dcl.IsEmptyValueIndirect(rawDesired.TenantProjectId) {
 		rawNew.TenantProjectId = rawDesired.TenantProjectId
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DataprocServiceAccount) && dcl.IsNotReturnedByServer(rawDesired.DataprocServiceAccount) {
+	if dcl.IsEmptyValueIndirect(rawNew.DataprocServiceAccount) && dcl.IsEmptyValueIndirect(rawDesired.DataprocServiceAccount) {
 		rawNew.DataprocServiceAccount = rawDesired.DataprocServiceAccount
 	} else {
 	}
@@ -762,7 +762,7 @@ func canonicalizeNewInstanceNetworkConfig(c *Client, des, nw *InstanceNetworkCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworkConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -871,7 +871,7 @@ func canonicalizeNewInstanceAvailableVersion(c *Client, des, nw *InstanceAvailab
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceAvailableVersion while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1811,7 +1811,7 @@ func extractInstanceFields(r *Instance) error {
 	if err := extractInstanceNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		r.NetworkConfig = vNetworkConfig
 	}
 	return nil
@@ -1832,7 +1832,7 @@ func postReadExtractInstanceFields(r *Instance) error {
 	if err := postReadExtractInstanceNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		r.NetworkConfig = vNetworkConfig
 	}
 	return nil

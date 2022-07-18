@@ -662,17 +662,17 @@ func (r *Policy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"admissionWhitelistPatterns":             dcl.ValueOrEmptyString(nr.AdmissionWhitelistPatterns),
-		"clusterAdmissionRules":                  dcl.ValueOrEmptyString(nr.ClusterAdmissionRules),
-		"kubernetesNamespaceAdmissionRules":      dcl.ValueOrEmptyString(nr.KubernetesNamespaceAdmissionRules),
-		"kubernetesServiceAccountAdmissionRules": dcl.ValueOrEmptyString(nr.KubernetesServiceAccountAdmissionRules),
-		"istioServiceIdentityAdmissionRules":     dcl.ValueOrEmptyString(nr.IstioServiceIdentityAdmissionRules),
-		"defaultAdmissionRule":                   dcl.ValueOrEmptyString(nr.DefaultAdmissionRule),
-		"description":                            dcl.ValueOrEmptyString(nr.Description),
-		"globalPolicyEvaluationMode":             dcl.ValueOrEmptyString(nr.GlobalPolicyEvaluationMode),
-		"selfLink":                               dcl.ValueOrEmptyString(nr.SelfLink),
-		"project":                                dcl.ValueOrEmptyString(nr.Project),
-		"updateTime":                             dcl.ValueOrEmptyString(nr.UpdateTime),
+		"admission_whitelist_patterns":               dcl.ValueOrEmptyString(nr.AdmissionWhitelistPatterns),
+		"cluster_admission_rules":                    dcl.ValueOrEmptyString(nr.ClusterAdmissionRules),
+		"kubernetes_namespace_admission_rules":       dcl.ValueOrEmptyString(nr.KubernetesNamespaceAdmissionRules),
+		"kubernetes_service_account_admission_rules": dcl.ValueOrEmptyString(nr.KubernetesServiceAccountAdmissionRules),
+		"istio_service_identity_admission_rules":     dcl.ValueOrEmptyString(nr.IstioServiceIdentityAdmissionRules),
+		"default_admission_rule":                     dcl.ValueOrEmptyString(nr.DefaultAdmissionRule),
+		"description":                                dcl.ValueOrEmptyString(nr.Description),
+		"global_policy_evaluation_mode":              dcl.ValueOrEmptyString(nr.GlobalPolicyEvaluationMode),
+		"self_link":                                  dcl.ValueOrEmptyString(nr.SelfLink),
+		"project":                                    dcl.ValueOrEmptyString(nr.Project),
+		"update_time":                                dcl.ValueOrEmptyString(nr.UpdateTime),
 	}
 	return dcl.Nprintf("projects/{{project}}/policy", params), nil
 }

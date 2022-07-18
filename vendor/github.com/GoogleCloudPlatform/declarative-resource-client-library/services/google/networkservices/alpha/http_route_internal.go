@@ -667,7 +667,7 @@ func canonicalizeHttpRouteDesiredState(rawDesired, rawInitial *HttpRoute, opts .
 
 func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*HttpRoute, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -675,7 +675,7 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -683,17 +683,17 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Hostnames) && dcl.IsNotReturnedByServer(rawDesired.Hostnames) {
+	if dcl.IsEmptyValueIndirect(rawNew.Hostnames) && dcl.IsEmptyValueIndirect(rawDesired.Hostnames) {
 		rawNew.Hostnames = rawDesired.Hostnames
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Hostnames, rawNew.Hostnames) {
@@ -701,7 +701,7 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Routers) && dcl.IsNotReturnedByServer(rawDesired.Routers) {
+	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
 		rawNew.Routers = rawDesired.Routers
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
@@ -709,7 +709,7 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Meshes) && dcl.IsNotReturnedByServer(rawDesired.Meshes) {
+	if dcl.IsEmptyValueIndirect(rawNew.Meshes) && dcl.IsEmptyValueIndirect(rawDesired.Meshes) {
 		rawNew.Meshes = rawDesired.Meshes
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawNew.Meshes) {
@@ -717,7 +717,7 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Gateways) && dcl.IsNotReturnedByServer(rawDesired.Gateways) {
+	if dcl.IsEmptyValueIndirect(rawNew.Gateways) && dcl.IsEmptyValueIndirect(rawDesired.Gateways) {
 		rawNew.Gateways = rawDesired.Gateways
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawNew.Gateways) {
@@ -725,12 +725,12 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rules) && dcl.IsNotReturnedByServer(rawDesired.Rules) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rules) && dcl.IsEmptyValueIndirect(rawDesired.Rules) {
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewHttpRouteRulesSlice(c, rawDesired.Rules, rawNew.Rules)
@@ -740,7 +740,7 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -806,7 +806,7 @@ func canonicalizeNewHttpRouteRules(c *Client, des, nw *HttpRouteRules) *HttpRout
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -967,7 +967,7 @@ func canonicalizeNewHttpRouteRulesMatches(c *Client, des, nw *HttpRouteRulesMatc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesMatches while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1184,7 +1184,7 @@ func canonicalizeNewHttpRouteRulesMatchesHeaders(c *Client, des, nw *HttpRouteRu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesMatchesHeaders while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1325,7 +1325,7 @@ func canonicalizeNewHttpRouteRulesMatchesHeadersRangeMatch(c *Client, des, nw *H
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesMatchesHeadersRangeMatch while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1481,7 +1481,7 @@ func canonicalizeNewHttpRouteRulesMatchesQueryParameters(c *Client, des, nw *Htt
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesMatchesQueryParameters while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1619,7 +1619,7 @@ func canonicalizeNewHttpRouteRulesAction(c *Client, des, nw *HttpRouteRulesActio
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesAction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1753,7 +1753,7 @@ func canonicalizeNewHttpRouteRulesActionDestinations(c *Client, des, nw *HttpRou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionDestinations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1896,7 +1896,7 @@ func canonicalizeNewHttpRouteRulesActionRedirect(c *Client, des, nw *HttpRouteRu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionRedirect while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2020,7 +2020,7 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicy(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionFaultInjectionPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2140,7 +2140,7 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyDelay(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionFaultInjectionPolicyDelay while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2262,7 +2262,7 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyAbort(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionFaultInjectionPolicyAbort while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2385,7 +2385,7 @@ func canonicalizeNewHttpRouteRulesActionRequestHeaderModifier(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionRequestHeaderModifier while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2512,7 +2512,7 @@ func canonicalizeNewHttpRouteRulesActionResponseHeaderModifier(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionResponseHeaderModifier while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2632,7 +2632,7 @@ func canonicalizeNewHttpRouteRulesActionUrlRewrite(c *Client, des, nw *HttpRoute
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionUrlRewrite while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2761,7 +2761,7 @@ func canonicalizeNewHttpRouteRulesActionRetryPolicy(c *Client, des, nw *HttpRout
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionRetryPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2875,7 +2875,7 @@ func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicy(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionRequestMirrorPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2995,7 +2995,7 @@ func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicyDestination(c *Client
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionRequestMirrorPolicyDestination while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3141,7 +3141,7 @@ func canonicalizeNewHttpRouteRulesActionCorsPolicy(c *Client, des, nw *HttpRoute
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HttpRouteRulesActionCorsPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6798,7 +6798,7 @@ func extractHttpRouteRulesFields(r *HttpRoute, o *HttpRouteRules) error {
 	if err := extractHttpRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -6815,7 +6815,7 @@ func extractHttpRouteRulesMatchesHeadersFields(r *HttpRoute, o *HttpRouteRulesMa
 	if err := extractHttpRouteRulesMatchesHeadersRangeMatchFields(r, vRangeMatch); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRangeMatch) {
+	if !dcl.IsEmptyValueIndirect(vRangeMatch) {
 		o.RangeMatch = vRangeMatch
 	}
 	return nil
@@ -6835,7 +6835,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionRedirectFields(r, vRedirect); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedirect) {
+	if !dcl.IsEmptyValueIndirect(vRedirect) {
 		o.Redirect = vRedirect
 	}
 	vFaultInjectionPolicy := o.FaultInjectionPolicy
@@ -6846,7 +6846,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyFields(r, vFaultInjectionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFaultInjectionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vFaultInjectionPolicy) {
 		o.FaultInjectionPolicy = vFaultInjectionPolicy
 	}
 	vRequestHeaderModifier := o.RequestHeaderModifier
@@ -6857,7 +6857,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionRequestHeaderModifierFields(r, vRequestHeaderModifier); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestHeaderModifier) {
+	if !dcl.IsEmptyValueIndirect(vRequestHeaderModifier) {
 		o.RequestHeaderModifier = vRequestHeaderModifier
 	}
 	vResponseHeaderModifier := o.ResponseHeaderModifier
@@ -6868,7 +6868,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionResponseHeaderModifierFields(r, vResponseHeaderModifier); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResponseHeaderModifier) {
+	if !dcl.IsEmptyValueIndirect(vResponseHeaderModifier) {
 		o.ResponseHeaderModifier = vResponseHeaderModifier
 	}
 	vUrlRewrite := o.UrlRewrite
@@ -6879,7 +6879,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionUrlRewriteFields(r, vUrlRewrite); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUrlRewrite) {
+	if !dcl.IsEmptyValueIndirect(vUrlRewrite) {
 		o.UrlRewrite = vUrlRewrite
 	}
 	vRetryPolicy := o.RetryPolicy
@@ -6890,7 +6890,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionRetryPolicyFields(r, vRetryPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRetryPolicy) {
 		o.RetryPolicy = vRetryPolicy
 	}
 	vRequestMirrorPolicy := o.RequestMirrorPolicy
@@ -6901,7 +6901,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionRequestMirrorPolicyFields(r, vRequestMirrorPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestMirrorPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRequestMirrorPolicy) {
 		o.RequestMirrorPolicy = vRequestMirrorPolicy
 	}
 	vCorsPolicy := o.CorsPolicy
@@ -6912,7 +6912,7 @@ func extractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAction) er
 	if err := extractHttpRouteRulesActionCorsPolicyFields(r, vCorsPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCorsPolicy) {
+	if !dcl.IsEmptyValueIndirect(vCorsPolicy) {
 		o.CorsPolicy = vCorsPolicy
 	}
 	return nil
@@ -6932,7 +6932,7 @@ func extractHttpRouteRulesActionFaultInjectionPolicyFields(r *HttpRoute, o *Http
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyDelayFields(r, vDelay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDelay) {
+	if !dcl.IsEmptyValueIndirect(vDelay) {
 		o.Delay = vDelay
 	}
 	vAbort := o.Abort
@@ -6943,7 +6943,7 @@ func extractHttpRouteRulesActionFaultInjectionPolicyFields(r *HttpRoute, o *Http
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyAbortFields(r, vAbort); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAbort) {
+	if !dcl.IsEmptyValueIndirect(vAbort) {
 		o.Abort = vAbort
 	}
 	return nil
@@ -6975,7 +6975,7 @@ func extractHttpRouteRulesActionRequestMirrorPolicyFields(r *HttpRoute, o *HttpR
 	if err := extractHttpRouteRulesActionRequestMirrorPolicyDestinationFields(r, vDestination); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDestination) {
+	if !dcl.IsEmptyValueIndirect(vDestination) {
 		o.Destination = vDestination
 	}
 	return nil
@@ -6999,7 +6999,7 @@ func postReadExtractHttpRouteRulesFields(r *HttpRoute, o *HttpRouteRules) error 
 	if err := extractHttpRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -7016,7 +7016,7 @@ func postReadExtractHttpRouteRulesMatchesHeadersFields(r *HttpRoute, o *HttpRout
 	if err := extractHttpRouteRulesMatchesHeadersRangeMatchFields(r, vRangeMatch); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRangeMatch) {
+	if !dcl.IsEmptyValueIndirect(vRangeMatch) {
 		o.RangeMatch = vRangeMatch
 	}
 	return nil
@@ -7036,7 +7036,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionRedirectFields(r, vRedirect); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRedirect) {
+	if !dcl.IsEmptyValueIndirect(vRedirect) {
 		o.Redirect = vRedirect
 	}
 	vFaultInjectionPolicy := o.FaultInjectionPolicy
@@ -7047,7 +7047,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyFields(r, vFaultInjectionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFaultInjectionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vFaultInjectionPolicy) {
 		o.FaultInjectionPolicy = vFaultInjectionPolicy
 	}
 	vRequestHeaderModifier := o.RequestHeaderModifier
@@ -7058,7 +7058,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionRequestHeaderModifierFields(r, vRequestHeaderModifier); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestHeaderModifier) {
+	if !dcl.IsEmptyValueIndirect(vRequestHeaderModifier) {
 		o.RequestHeaderModifier = vRequestHeaderModifier
 	}
 	vResponseHeaderModifier := o.ResponseHeaderModifier
@@ -7069,7 +7069,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionResponseHeaderModifierFields(r, vResponseHeaderModifier); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResponseHeaderModifier) {
+	if !dcl.IsEmptyValueIndirect(vResponseHeaderModifier) {
 		o.ResponseHeaderModifier = vResponseHeaderModifier
 	}
 	vUrlRewrite := o.UrlRewrite
@@ -7080,7 +7080,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionUrlRewriteFields(r, vUrlRewrite); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUrlRewrite) {
+	if !dcl.IsEmptyValueIndirect(vUrlRewrite) {
 		o.UrlRewrite = vUrlRewrite
 	}
 	vRetryPolicy := o.RetryPolicy
@@ -7091,7 +7091,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionRetryPolicyFields(r, vRetryPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRetryPolicy) {
 		o.RetryPolicy = vRetryPolicy
 	}
 	vRequestMirrorPolicy := o.RequestMirrorPolicy
@@ -7102,7 +7102,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionRequestMirrorPolicyFields(r, vRequestMirrorPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestMirrorPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRequestMirrorPolicy) {
 		o.RequestMirrorPolicy = vRequestMirrorPolicy
 	}
 	vCorsPolicy := o.CorsPolicy
@@ -7113,7 +7113,7 @@ func postReadExtractHttpRouteRulesActionFields(r *HttpRoute, o *HttpRouteRulesAc
 	if err := extractHttpRouteRulesActionCorsPolicyFields(r, vCorsPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCorsPolicy) {
+	if !dcl.IsEmptyValueIndirect(vCorsPolicy) {
 		o.CorsPolicy = vCorsPolicy
 	}
 	return nil
@@ -7133,7 +7133,7 @@ func postReadExtractHttpRouteRulesActionFaultInjectionPolicyFields(r *HttpRoute,
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyDelayFields(r, vDelay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDelay) {
+	if !dcl.IsEmptyValueIndirect(vDelay) {
 		o.Delay = vDelay
 	}
 	vAbort := o.Abort
@@ -7144,7 +7144,7 @@ func postReadExtractHttpRouteRulesActionFaultInjectionPolicyFields(r *HttpRoute,
 	if err := extractHttpRouteRulesActionFaultInjectionPolicyAbortFields(r, vAbort); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAbort) {
+	if !dcl.IsEmptyValueIndirect(vAbort) {
 		o.Abort = vAbort
 	}
 	return nil
@@ -7176,7 +7176,7 @@ func postReadExtractHttpRouteRulesActionRequestMirrorPolicyFields(r *HttpRoute, 
 	if err := extractHttpRouteRulesActionRequestMirrorPolicyDestinationFields(r, vDestination); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDestination) {
+	if !dcl.IsEmptyValueIndirect(vDestination) {
 		o.Destination = vDestination
 	}
 	return nil

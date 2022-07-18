@@ -1023,7 +1023,7 @@ func canonicalizeOSPolicyAssignmentDesiredState(rawDesired, rawInitial *OSPolicy
 
 func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPolicyAssignment) (*OSPolicyAssignment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -1031,7 +1031,7 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -1039,25 +1039,25 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.OSPolicies) && dcl.IsNotReturnedByServer(rawDesired.OSPolicies) {
+	if dcl.IsEmptyValueIndirect(rawNew.OSPolicies) && dcl.IsEmptyValueIndirect(rawDesired.OSPolicies) {
 		rawNew.OSPolicies = rawDesired.OSPolicies
 	} else {
 		rawNew.OSPolicies = canonicalizeNewOSPolicyAssignmentOSPoliciesSlice(c, rawDesired.OSPolicies, rawNew.OSPolicies)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InstanceFilter) && dcl.IsNotReturnedByServer(rawDesired.InstanceFilter) {
+	if dcl.IsEmptyValueIndirect(rawNew.InstanceFilter) && dcl.IsEmptyValueIndirect(rawDesired.InstanceFilter) {
 		rawNew.InstanceFilter = rawDesired.InstanceFilter
 	} else {
 		rawNew.InstanceFilter = canonicalizeNewOSPolicyAssignmentInstanceFilter(c, rawDesired.InstanceFilter, rawNew.InstanceFilter)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rollout) && dcl.IsNotReturnedByServer(rawDesired.Rollout) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rollout) && dcl.IsEmptyValueIndirect(rawDesired.Rollout) {
 		rawNew.Rollout = rawDesired.Rollout
 	} else {
 		rawNew.Rollout = canonicalizeNewOSPolicyAssignmentRollout(c, rawDesired.Rollout, rawNew.Rollout)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RevisionId) && dcl.IsNotReturnedByServer(rawDesired.RevisionId) {
+	if dcl.IsEmptyValueIndirect(rawNew.RevisionId) && dcl.IsEmptyValueIndirect(rawDesired.RevisionId) {
 		rawNew.RevisionId = rawDesired.RevisionId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.RevisionId, rawNew.RevisionId) {
@@ -1065,12 +1065,12 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RevisionCreateTime) && dcl.IsNotReturnedByServer(rawDesired.RevisionCreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.RevisionCreateTime) && dcl.IsEmptyValueIndirect(rawDesired.RevisionCreateTime) {
 		rawNew.RevisionCreateTime = rawDesired.RevisionCreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -1078,12 +1078,12 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RolloutState) && dcl.IsNotReturnedByServer(rawDesired.RolloutState) {
+	if dcl.IsEmptyValueIndirect(rawNew.RolloutState) && dcl.IsEmptyValueIndirect(rawDesired.RolloutState) {
 		rawNew.RolloutState = rawDesired.RolloutState
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Baseline) && dcl.IsNotReturnedByServer(rawDesired.Baseline) {
+	if dcl.IsEmptyValueIndirect(rawNew.Baseline) && dcl.IsEmptyValueIndirect(rawDesired.Baseline) {
 		rawNew.Baseline = rawDesired.Baseline
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Baseline, rawNew.Baseline) {
@@ -1091,7 +1091,7 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Deleted) && dcl.IsNotReturnedByServer(rawDesired.Deleted) {
+	if dcl.IsEmptyValueIndirect(rawNew.Deleted) && dcl.IsEmptyValueIndirect(rawDesired.Deleted) {
 		rawNew.Deleted = rawDesired.Deleted
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Deleted, rawNew.Deleted) {
@@ -1099,7 +1099,7 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Reconciling) && dcl.IsNotReturnedByServer(rawDesired.Reconciling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Reconciling) && dcl.IsEmptyValueIndirect(rawDesired.Reconciling) {
 		rawNew.Reconciling = rawDesired.Reconciling
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Reconciling, rawNew.Reconciling) {
@@ -1107,7 +1107,7 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -1197,7 +1197,7 @@ func canonicalizeNewOSPolicyAssignmentOSPolicies(c *Client, des, nw *OSPolicyAss
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPolicies while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1316,7 +1316,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroups(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroups while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1435,7 +1435,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1597,7 +1597,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResources(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1794,7 +1794,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1913,7 +1913,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2029,7 +2029,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2182,7 +2182,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2307,7 +2307,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2436,7 +2436,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2554,7 +2554,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2669,7 +2669,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2785,7 +2785,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2938,7 +2938,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3063,7 +3063,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3192,7 +3192,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3310,7 +3310,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3426,7 +3426,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3579,7 +3579,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3704,7 +3704,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3833,7 +3833,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3990,7 +3990,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4127,7 +4127,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4266,7 +4266,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4405,7 +4405,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4534,7 +4534,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4649,7 +4649,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4800,7 +4800,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4959,7 +4959,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5084,7 +5084,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5213,7 +5213,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5368,7 +5368,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5527,7 +5527,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5652,7 +5652,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5781,7 +5781,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5931,7 +5931,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6090,7 +6090,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6215,7 +6215,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6344,7 +6344,7 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileG
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6465,7 +6465,7 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilter(c *Client, des, nw *OSPolic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentInstanceFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6584,7 +6584,7 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterInclusionLabels(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentInstanceFilterInclusionLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6696,7 +6696,7 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterExclusionLabels(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentInstanceFilterExclusionLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6812,7 +6812,7 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterInventories(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentInstanceFilterInventories while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6931,7 +6931,7 @@ func canonicalizeNewOSPolicyAssignmentRollout(c *Client, des, nw *OSPolicyAssign
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentRollout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7074,7 +7074,7 @@ func canonicalizeNewOSPolicyAssignmentRolloutDisruptionBudget(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OSPolicyAssignmentRolloutDisruptionBudget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -15337,7 +15337,7 @@ func extractOSPolicyAssignmentFields(r *OSPolicyAssignment) error {
 	if err := extractOSPolicyAssignmentInstanceFilterFields(r, vInstanceFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstanceFilter) {
+	if !dcl.IsEmptyValueIndirect(vInstanceFilter) {
 		r.InstanceFilter = vInstanceFilter
 	}
 	vRollout := r.Rollout
@@ -15348,7 +15348,7 @@ func extractOSPolicyAssignmentFields(r *OSPolicyAssignment) error {
 	if err := extractOSPolicyAssignmentRolloutFields(r, vRollout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRollout) {
+	if !dcl.IsEmptyValueIndirect(vRollout) {
 		r.Rollout = vRollout
 	}
 	return nil
@@ -15371,7 +15371,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r *OSPolic
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r, vPkg); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPkg) {
+	if !dcl.IsEmptyValueIndirect(vPkg) {
 		o.Pkg = vPkg
 	}
 	vRepository := o.Repository
@@ -15382,7 +15382,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r *OSPolic
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(r, vRepository); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRepository) {
+	if !dcl.IsEmptyValueIndirect(vRepository) {
 		o.Repository = vRepository
 	}
 	vExec := o.Exec
@@ -15393,7 +15393,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r *OSPolic
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecFields(r, vExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExec) {
+	if !dcl.IsEmptyValueIndirect(vExec) {
 		o.Exec = vExec
 	}
 	vFile := o.File
@@ -15404,7 +15404,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r *OSPolic
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -15418,7 +15418,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vDeb := o.Deb
@@ -15429,7 +15429,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebFields(r, vDeb); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeb) {
+	if !dcl.IsEmptyValueIndirect(vDeb) {
 		o.Deb = vDeb
 	}
 	vYum := o.Yum
@@ -15440,7 +15440,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -15451,7 +15451,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vRpm := o.Rpm
@@ -15462,7 +15462,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmFields(r, vRpm); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpm) {
+	if !dcl.IsEmptyValueIndirect(vRpm) {
 		o.Rpm = vRpm
 	}
 	vGooget := o.Googet
@@ -15473,7 +15473,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetFields(r, vGooget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGooget) {
+	if !dcl.IsEmptyValueIndirect(vGooget) {
 		o.Googet = vGooget
 	}
 	vMsi := o.Msi
@@ -15484,7 +15484,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r *OSPo
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiFields(r, vMsi); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsi) {
+	if !dcl.IsEmptyValueIndirect(vMsi) {
 		o.Msi = vMsi
 	}
 	return nil
@@ -15501,7 +15501,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebFields(r *O
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -15515,7 +15515,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15526,7 +15526,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15552,7 +15552,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmFields(r *O
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -15566,7 +15566,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15577,7 +15577,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15600,7 +15600,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiFields(r *O
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -15614,7 +15614,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15625,7 +15625,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15645,7 +15645,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -15656,7 +15656,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -15667,7 +15667,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vGoo := o.Goo
@@ -15678,7 +15678,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	return nil
@@ -15704,7 +15704,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecFields(r *OSP
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFields(r, vValidate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValidate) {
+	if !dcl.IsEmptyValueIndirect(vValidate) {
 		o.Validate = vValidate
 	}
 	vEnforce := o.Enforce
@@ -15715,7 +15715,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecFields(r *OSP
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFields(r, vEnforce); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEnforce) {
+	if !dcl.IsEmptyValueIndirect(vEnforce) {
 		o.Enforce = vEnforce
 	}
 	return nil
@@ -15729,7 +15729,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -15743,7 +15743,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileF
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15754,7 +15754,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileF
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15774,7 +15774,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -15788,7 +15788,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileFi
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15799,7 +15799,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileFi
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15819,7 +15819,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFields(r *OSP
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -15833,7 +15833,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -15844,7 +15844,7 @@ func extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -15876,7 +15876,7 @@ func extractOSPolicyAssignmentRolloutFields(r *OSPolicyAssignment, o *OSPolicyAs
 	if err := extractOSPolicyAssignmentRolloutDisruptionBudgetFields(r, vDisruptionBudget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisruptionBudget) {
+	if !dcl.IsEmptyValueIndirect(vDisruptionBudget) {
 		o.DisruptionBudget = vDisruptionBudget
 	}
 	return nil
@@ -15894,7 +15894,7 @@ func postReadExtractOSPolicyAssignmentFields(r *OSPolicyAssignment) error {
 	if err := postReadExtractOSPolicyAssignmentInstanceFilterFields(r, vInstanceFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstanceFilter) {
+	if !dcl.IsEmptyValueIndirect(vInstanceFilter) {
 		r.InstanceFilter = vInstanceFilter
 	}
 	vRollout := r.Rollout
@@ -15905,7 +15905,7 @@ func postReadExtractOSPolicyAssignmentFields(r *OSPolicyAssignment) error {
 	if err := postReadExtractOSPolicyAssignmentRolloutFields(r, vRollout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRollout) {
+	if !dcl.IsEmptyValueIndirect(vRollout) {
 		r.Rollout = vRollout
 	}
 	return nil
@@ -15928,7 +15928,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields(r, vPkg); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPkg) {
+	if !dcl.IsEmptyValueIndirect(vPkg) {
 		o.Pkg = vPkg
 	}
 	vRepository := o.Repository
@@ -15939,7 +15939,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryFields(r, vRepository); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRepository) {
+	if !dcl.IsEmptyValueIndirect(vRepository) {
 		o.Repository = vRepository
 	}
 	vExec := o.Exec
@@ -15950,7 +15950,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecFields(r, vExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExec) {
+	if !dcl.IsEmptyValueIndirect(vExec) {
 		o.Exec = vExec
 	}
 	vFile := o.File
@@ -15961,7 +15961,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFields(r 
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -15975,7 +15975,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vDeb := o.Deb
@@ -15986,7 +15986,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebFields(r, vDeb); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDeb) {
+	if !dcl.IsEmptyValueIndirect(vDeb) {
 		o.Deb = vDeb
 	}
 	vYum := o.Yum
@@ -15997,7 +15997,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -16008,7 +16008,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vRpm := o.Rpm
@@ -16019,7 +16019,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmFields(r, vRpm); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpm) {
+	if !dcl.IsEmptyValueIndirect(vRpm) {
 		o.Rpm = vRpm
 	}
 	vGooget := o.Googet
@@ -16030,7 +16030,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetFields(r, vGooget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGooget) {
+	if !dcl.IsEmptyValueIndirect(vGooget) {
 		o.Googet = vGooget
 	}
 	vMsi := o.Msi
@@ -16041,7 +16041,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgFields
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiFields(r, vMsi); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsi) {
+	if !dcl.IsEmptyValueIndirect(vMsi) {
 		o.Msi = vMsi
 	}
 	return nil
@@ -16058,7 +16058,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebFie
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -16072,7 +16072,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16083,7 +16083,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16109,7 +16109,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmFie
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -16123,7 +16123,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16134,7 +16134,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16157,7 +16157,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiFie
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceFields(r, vSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSource) {
+	if !dcl.IsEmptyValueIndirect(vSource) {
 		o.Source = vSource
 	}
 	return nil
@@ -16171,7 +16171,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16182,7 +16182,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16202,7 +16202,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -16213,7 +16213,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -16224,7 +16224,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vGoo := o.Goo
@@ -16235,7 +16235,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	return nil
@@ -16261,7 +16261,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFields(r, vValidate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValidate) {
+	if !dcl.IsEmptyValueIndirect(vValidate) {
 		o.Validate = vValidate
 	}
 	vEnforce := o.Enforce
@@ -16272,7 +16272,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFields(r, vEnforce); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEnforce) {
+	if !dcl.IsEmptyValueIndirect(vEnforce) {
 		o.Enforce = vEnforce
 	}
 	return nil
@@ -16286,7 +16286,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -16300,7 +16300,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16311,7 +16311,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16331,7 +16331,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -16345,7 +16345,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16356,7 +16356,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16376,7 +16376,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileField
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileFields(r, vFile); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFile) {
+	if !dcl.IsEmptyValueIndirect(vFile) {
 		o.File = vFile
 	}
 	return nil
@@ -16390,7 +16390,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileF
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -16401,7 +16401,7 @@ func postReadExtractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileF
 	if err := extractOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -16433,7 +16433,7 @@ func postReadExtractOSPolicyAssignmentRolloutFields(r *OSPolicyAssignment, o *OS
 	if err := extractOSPolicyAssignmentRolloutDisruptionBudgetFields(r, vDisruptionBudget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisruptionBudget) {
+	if !dcl.IsEmptyValueIndirect(vDisruptionBudget) {
 		o.DisruptionBudget = vDisruptionBudget
 	}
 	return nil

@@ -621,8 +621,8 @@ func (r *GrpcRoute) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"hostnames":   dcl.ValueOrEmptyString(nr.Hostnames),
@@ -632,7 +632,7 @@ func (r *GrpcRoute) ID() (string, error) {
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
 		"project":     dcl.ValueOrEmptyString(nr.Project),
 		"location":    dcl.ValueOrEmptyString(nr.Location),
-		"selfLink":    dcl.ValueOrEmptyString(nr.SelfLink),
+		"self_link":   dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/grpcRoutes/{{name}}", params), nil
 }

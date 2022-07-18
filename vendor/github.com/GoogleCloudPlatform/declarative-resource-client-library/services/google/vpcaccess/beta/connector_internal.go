@@ -429,12 +429,12 @@ func canonicalizeConnectorNewState(c *Client, rawNew, rawDesired *Connector) (*C
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.Network) && dcl.IsNotReturnedByServer(rawDesired.Network) {
+	if dcl.IsEmptyValueIndirect(rawNew.Network) && dcl.IsEmptyValueIndirect(rawDesired.Network) {
 		rawNew.Network = rawDesired.Network
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IPCidrRange) && dcl.IsNotReturnedByServer(rawDesired.IPCidrRange) {
+	if dcl.IsEmptyValueIndirect(rawNew.IPCidrRange) && dcl.IsEmptyValueIndirect(rawDesired.IPCidrRange) {
 		rawNew.IPCidrRange = rawDesired.IPCidrRange
 	} else {
 		if dcl.StringCanonicalize(rawDesired.IPCidrRange, rawNew.IPCidrRange) {
@@ -442,22 +442,22 @@ func canonicalizeConnectorNewState(c *Client, rawNew, rawDesired *Connector) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MinThroughput) && dcl.IsNotReturnedByServer(rawDesired.MinThroughput) {
+	if dcl.IsEmptyValueIndirect(rawNew.MinThroughput) && dcl.IsEmptyValueIndirect(rawDesired.MinThroughput) {
 		rawNew.MinThroughput = rawDesired.MinThroughput
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MaxThroughput) && dcl.IsNotReturnedByServer(rawDesired.MaxThroughput) {
+	if dcl.IsEmptyValueIndirect(rawNew.MaxThroughput) && dcl.IsEmptyValueIndirect(rawDesired.MaxThroughput) {
 		rawNew.MaxThroughput = rawDesired.MaxThroughput
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConnectedProjects) && dcl.IsNotReturnedByServer(rawDesired.ConnectedProjects) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConnectedProjects) && dcl.IsEmptyValueIndirect(rawDesired.ConnectedProjects) {
 		rawNew.ConnectedProjects = rawDesired.ConnectedProjects
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.ConnectedProjects, rawNew.ConnectedProjects) {
@@ -465,13 +465,13 @@ func canonicalizeConnectorNewState(c *Client, rawNew, rawDesired *Connector) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Subnet) && dcl.IsNotReturnedByServer(rawDesired.Subnet) {
+	if dcl.IsEmptyValueIndirect(rawNew.Subnet) && dcl.IsEmptyValueIndirect(rawDesired.Subnet) {
 		rawNew.Subnet = rawDesired.Subnet
 	} else {
 		rawNew.Subnet = canonicalizeNewConnectorSubnet(c, rawDesired.Subnet, rawNew.Subnet)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MachineType) && dcl.IsNotReturnedByServer(rawDesired.MachineType) {
+	if dcl.IsEmptyValueIndirect(rawNew.MachineType) && dcl.IsEmptyValueIndirect(rawDesired.MachineType) {
 		rawNew.MachineType = rawDesired.MachineType
 	} else {
 		if dcl.StringCanonicalize(rawDesired.MachineType, rawNew.MachineType) {
@@ -479,12 +479,12 @@ func canonicalizeConnectorNewState(c *Client, rawNew, rawDesired *Connector) (*C
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MinInstances) && dcl.IsNotReturnedByServer(rawDesired.MinInstances) {
+	if dcl.IsEmptyValueIndirect(rawNew.MinInstances) && dcl.IsEmptyValueIndirect(rawDesired.MinInstances) {
 		rawNew.MinInstances = rawDesired.MinInstances
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MaxInstances) && dcl.IsNotReturnedByServer(rawDesired.MaxInstances) {
+	if dcl.IsEmptyValueIndirect(rawNew.MaxInstances) && dcl.IsEmptyValueIndirect(rawDesired.MaxInstances) {
 		rawNew.MaxInstances = rawDesired.MaxInstances
 	} else {
 	}
@@ -561,7 +561,7 @@ func canonicalizeNewConnectorSubnet(c *Client, des, nw *ConnectorSubnet) *Connec
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConnectorSubnet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1160,7 +1160,7 @@ func extractConnectorFields(r *Connector) error {
 	if err := extractConnectorSubnetFields(r, vSubnet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubnet) {
+	if !dcl.IsEmptyValueIndirect(vSubnet) {
 		r.Subnet = vSubnet
 	}
 	return nil
@@ -1178,7 +1178,7 @@ func postReadExtractConnectorFields(r *Connector) error {
 	if err := postReadExtractConnectorSubnetFields(r, vSubnet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSubnet) {
+	if !dcl.IsEmptyValueIndirect(vSubnet) {
 		r.Subnet = vSubnet
 	}
 	return nil

@@ -304,19 +304,19 @@ func (r *EndpointPolicy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"createTime":          dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":          dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":              dcl.ValueOrEmptyString(nr.Labels),
-		"type":                dcl.ValueOrEmptyString(nr.Type),
-		"authorizationPolicy": dcl.ValueOrEmptyString(nr.AuthorizationPolicy),
-		"endpointMatcher":     dcl.ValueOrEmptyString(nr.EndpointMatcher),
-		"trafficPortSelector": dcl.ValueOrEmptyString(nr.TrafficPortSelector),
-		"description":         dcl.ValueOrEmptyString(nr.Description),
-		"serverTlsPolicy":     dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
-		"clientTlsPolicy":     dcl.ValueOrEmptyString(nr.ClientTlsPolicy),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
-		"location":            dcl.ValueOrEmptyString(nr.Location),
+		"name":                  dcl.ValueOrEmptyString(nr.Name),
+		"create_time":           dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":           dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":                dcl.ValueOrEmptyString(nr.Labels),
+		"type":                  dcl.ValueOrEmptyString(nr.Type),
+		"authorization_policy":  dcl.ValueOrEmptyString(nr.AuthorizationPolicy),
+		"endpoint_matcher":      dcl.ValueOrEmptyString(nr.EndpointMatcher),
+		"traffic_port_selector": dcl.ValueOrEmptyString(nr.TrafficPortSelector),
+		"description":           dcl.ValueOrEmptyString(nr.Description),
+		"server_tls_policy":     dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
+		"client_tls_policy":     dcl.ValueOrEmptyString(nr.ClientTlsPolicy),
+		"project":               dcl.ValueOrEmptyString(nr.Project),
+		"location":              dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/endpointPolicies/{{name}}", params), nil
 }

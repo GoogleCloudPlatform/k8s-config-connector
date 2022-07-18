@@ -606,12 +606,12 @@ func canonicalizeStoredInfoTypeDesiredState(rawDesired, rawInitial *StoredInfoTy
 
 func canonicalizeStoredInfoTypeNewState(c *Client, rawNew, rawDesired *StoredInfoType) (*StoredInfoType, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -619,7 +619,7 @@ func canonicalizeStoredInfoTypeNewState(c *Client, rawNew, rawDesired *StoredInf
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -627,19 +627,19 @@ func canonicalizeStoredInfoTypeNewState(c *Client, rawNew, rawDesired *StoredInf
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LargeCustomDictionary) && dcl.IsNotReturnedByServer(rawDesired.LargeCustomDictionary) {
+	if dcl.IsEmptyValueIndirect(rawNew.LargeCustomDictionary) && dcl.IsEmptyValueIndirect(rawDesired.LargeCustomDictionary) {
 		rawNew.LargeCustomDictionary = rawDesired.LargeCustomDictionary
 	} else {
 		rawNew.LargeCustomDictionary = canonicalizeNewStoredInfoTypeLargeCustomDictionary(c, rawDesired.LargeCustomDictionary, rawNew.LargeCustomDictionary)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Dictionary) && dcl.IsNotReturnedByServer(rawDesired.Dictionary) {
+	if dcl.IsEmptyValueIndirect(rawNew.Dictionary) && dcl.IsEmptyValueIndirect(rawDesired.Dictionary) {
 		rawNew.Dictionary = rawDesired.Dictionary
 	} else {
 		rawNew.Dictionary = canonicalizeNewStoredInfoTypeDictionary(c, rawDesired.Dictionary, rawNew.Dictionary)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Regex) && dcl.IsNotReturnedByServer(rawDesired.Regex) {
+	if dcl.IsEmptyValueIndirect(rawNew.Regex) && dcl.IsEmptyValueIndirect(rawDesired.Regex) {
 		rawNew.Regex = rawDesired.Regex
 	} else {
 		rawNew.Regex = canonicalizeNewStoredInfoTypeRegex(c, rawDesired.Regex, rawNew.Regex)
@@ -728,7 +728,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionary(c *Client, des, nw *Stor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -843,7 +843,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionaryOutputPath(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionaryOutputPath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -958,7 +958,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionaryCloudStorageFileSet(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionaryCloudStorageFileSet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1070,7 +1070,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionaryBigQueryField(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionaryBigQueryField while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1197,7 +1197,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionaryBigQueryFieldTable(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionaryBigQueryFieldTable while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1308,7 +1308,7 @@ func canonicalizeNewStoredInfoTypeLargeCustomDictionaryBigQueryFieldField(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeLargeCustomDictionaryBigQueryFieldField while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1440,7 +1440,7 @@ func canonicalizeNewStoredInfoTypeDictionary(c *Client, des, nw *StoredInfoTypeD
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1554,7 +1554,7 @@ func canonicalizeNewStoredInfoTypeDictionaryWordList(c *Client, des, nw *StoredI
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeDictionaryWordList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1669,7 +1669,7 @@ func canonicalizeNewStoredInfoTypeDictionaryCloudStoragePath(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeDictionaryCloudStoragePath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1790,7 +1790,7 @@ func canonicalizeNewStoredInfoTypeRegex(c *Client, des, nw *StoredInfoTypeRegex)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for StoredInfoTypeRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3680,7 +3680,7 @@ func extractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := extractStoredInfoTypeLargeCustomDictionaryFields(r, vLargeCustomDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLargeCustomDictionary) {
+	if !dcl.IsEmptyValueIndirect(vLargeCustomDictionary) {
 		r.LargeCustomDictionary = vLargeCustomDictionary
 	}
 	vDictionary := r.Dictionary
@@ -3691,7 +3691,7 @@ func extractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := extractStoredInfoTypeDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		r.Dictionary = vDictionary
 	}
 	vRegex := r.Regex
@@ -3702,7 +3702,7 @@ func extractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := extractStoredInfoTypeRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		r.Regex = vRegex
 	}
 	return nil
@@ -3716,7 +3716,7 @@ func extractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType, o *Stor
 	if err := extractStoredInfoTypeLargeCustomDictionaryOutputPathFields(r, vOutputPath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOutputPath) {
+	if !dcl.IsEmptyValueIndirect(vOutputPath) {
 		o.OutputPath = vOutputPath
 	}
 	vCloudStorageFileSet := o.CloudStorageFileSet
@@ -3727,7 +3727,7 @@ func extractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType, o *Stor
 	if err := extractStoredInfoTypeLargeCustomDictionaryCloudStorageFileSetFields(r, vCloudStorageFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStorageFileSet) {
+	if !dcl.IsEmptyValueIndirect(vCloudStorageFileSet) {
 		o.CloudStorageFileSet = vCloudStorageFileSet
 	}
 	vBigQueryField := o.BigQueryField
@@ -3738,7 +3738,7 @@ func extractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType, o *Stor
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r, vBigQueryField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBigQueryField) {
+	if !dcl.IsEmptyValueIndirect(vBigQueryField) {
 		o.BigQueryField = vBigQueryField
 	}
 	return nil
@@ -3758,7 +3758,7 @@ func extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r *StoredInfo
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldTableFields(r, vTable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTable) {
+	if !dcl.IsEmptyValueIndirect(vTable) {
 		o.Table = vTable
 	}
 	vField := o.Field
@@ -3769,7 +3769,7 @@ func extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r *StoredInfo
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	return nil
@@ -3789,7 +3789,7 @@ func extractStoredInfoTypeDictionaryFields(r *StoredInfoType, o *StoredInfoTypeD
 	if err := extractStoredInfoTypeDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -3800,7 +3800,7 @@ func extractStoredInfoTypeDictionaryFields(r *StoredInfoType, o *StoredInfoTypeD
 	if err := extractStoredInfoTypeDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -3824,7 +3824,7 @@ func postReadExtractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := postReadExtractStoredInfoTypeLargeCustomDictionaryFields(r, vLargeCustomDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLargeCustomDictionary) {
+	if !dcl.IsEmptyValueIndirect(vLargeCustomDictionary) {
 		r.LargeCustomDictionary = vLargeCustomDictionary
 	}
 	vDictionary := r.Dictionary
@@ -3835,7 +3835,7 @@ func postReadExtractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := postReadExtractStoredInfoTypeDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		r.Dictionary = vDictionary
 	}
 	vRegex := r.Regex
@@ -3846,7 +3846,7 @@ func postReadExtractStoredInfoTypeFields(r *StoredInfoType) error {
 	if err := postReadExtractStoredInfoTypeRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		r.Regex = vRegex
 	}
 	return nil
@@ -3860,7 +3860,7 @@ func postReadExtractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType,
 	if err := extractStoredInfoTypeLargeCustomDictionaryOutputPathFields(r, vOutputPath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOutputPath) {
+	if !dcl.IsEmptyValueIndirect(vOutputPath) {
 		o.OutputPath = vOutputPath
 	}
 	vCloudStorageFileSet := o.CloudStorageFileSet
@@ -3871,7 +3871,7 @@ func postReadExtractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType,
 	if err := extractStoredInfoTypeLargeCustomDictionaryCloudStorageFileSetFields(r, vCloudStorageFileSet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStorageFileSet) {
+	if !dcl.IsEmptyValueIndirect(vCloudStorageFileSet) {
 		o.CloudStorageFileSet = vCloudStorageFileSet
 	}
 	vBigQueryField := o.BigQueryField
@@ -3882,7 +3882,7 @@ func postReadExtractStoredInfoTypeLargeCustomDictionaryFields(r *StoredInfoType,
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r, vBigQueryField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBigQueryField) {
+	if !dcl.IsEmptyValueIndirect(vBigQueryField) {
 		o.BigQueryField = vBigQueryField
 	}
 	return nil
@@ -3902,7 +3902,7 @@ func postReadExtractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r *St
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldTableFields(r, vTable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTable) {
+	if !dcl.IsEmptyValueIndirect(vTable) {
 		o.Table = vTable
 	}
 	vField := o.Field
@@ -3913,7 +3913,7 @@ func postReadExtractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFields(r *St
 	if err := extractStoredInfoTypeLargeCustomDictionaryBigQueryFieldFieldFields(r, vField); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vField) {
+	if !dcl.IsEmptyValueIndirect(vField) {
 		o.Field = vField
 	}
 	return nil
@@ -3933,7 +3933,7 @@ func postReadExtractStoredInfoTypeDictionaryFields(r *StoredInfoType, o *StoredI
 	if err := extractStoredInfoTypeDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -3944,7 +3944,7 @@ func postReadExtractStoredInfoTypeDictionaryFields(r *StoredInfoType, o *StoredI
 	if err := extractStoredInfoTypeDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil

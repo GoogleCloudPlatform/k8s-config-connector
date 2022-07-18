@@ -136,19 +136,19 @@ func (r *Connector) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"network":           dcl.ValueOrEmptyString(nr.Network),
-		"iPCidrRange":       dcl.ValueOrEmptyString(nr.IPCidrRange),
-		"state":             dcl.ValueOrEmptyString(nr.State),
-		"minThroughput":     dcl.ValueOrEmptyString(nr.MinThroughput),
-		"maxThroughput":     dcl.ValueOrEmptyString(nr.MaxThroughput),
-		"connectedProjects": dcl.ValueOrEmptyString(nr.ConnectedProjects),
-		"subnet":            dcl.ValueOrEmptyString(nr.Subnet),
-		"machineType":       dcl.ValueOrEmptyString(nr.MachineType),
-		"minInstances":      dcl.ValueOrEmptyString(nr.MinInstances),
-		"maxInstances":      dcl.ValueOrEmptyString(nr.MaxInstances),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
-		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"network":            dcl.ValueOrEmptyString(nr.Network),
+		"ip_cidr_range":      dcl.ValueOrEmptyString(nr.IPCidrRange),
+		"state":              dcl.ValueOrEmptyString(nr.State),
+		"min_throughput":     dcl.ValueOrEmptyString(nr.MinThroughput),
+		"max_throughput":     dcl.ValueOrEmptyString(nr.MaxThroughput),
+		"connected_projects": dcl.ValueOrEmptyString(nr.ConnectedProjects),
+		"subnet":             dcl.ValueOrEmptyString(nr.Subnet),
+		"machine_type":       dcl.ValueOrEmptyString(nr.MachineType),
+		"min_instances":      dcl.ValueOrEmptyString(nr.MinInstances),
+		"max_instances":      dcl.ValueOrEmptyString(nr.MaxInstances),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
+		"location":           dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/connectors/{{name}}", params), nil
 }

@@ -79,12 +79,12 @@ func (r *Project) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"labels":         dcl.ValueOrEmptyString(nr.Labels),
-		"lifecycleState": dcl.ValueOrEmptyString(nr.LifecycleState),
-		"displayName":    dcl.ValueOrEmptyString(nr.DisplayName),
-		"parent":         dcl.ValueOrEmptyString(nr.Parent),
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"projectNumber":  dcl.ValueOrEmptyString(nr.ProjectNumber),
+		"labels":          dcl.ValueOrEmptyString(nr.Labels),
+		"lifecycle_state": dcl.ValueOrEmptyString(nr.LifecycleState),
+		"display_name":    dcl.ValueOrEmptyString(nr.DisplayName),
+		"parent":          dcl.ValueOrEmptyString(nr.Parent),
+		"name":            dcl.ValueOrEmptyString(nr.Name),
+		"project_number":  dcl.ValueOrEmptyString(nr.ProjectNumber),
 	}
 	return dcl.Nprintf("projects/{{name}}", params), nil
 }

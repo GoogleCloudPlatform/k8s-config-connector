@@ -235,11 +235,11 @@ func (r *Attestor) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                 dcl.ValueOrEmptyString(nr.Name),
-		"description":          dcl.ValueOrEmptyString(nr.Description),
-		"userOwnedDrydockNote": dcl.ValueOrEmptyString(nr.UserOwnedDrydockNote),
-		"updateTime":           dcl.ValueOrEmptyString(nr.UpdateTime),
-		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"name":                    dcl.ValueOrEmptyString(nr.Name),
+		"description":             dcl.ValueOrEmptyString(nr.Description),
+		"user_owned_drydock_note": dcl.ValueOrEmptyString(nr.UserOwnedDrydockNote),
+		"update_time":             dcl.ValueOrEmptyString(nr.UpdateTime),
+		"project":                 dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/attestors/{{name}}", params), nil
 }

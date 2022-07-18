@@ -720,7 +720,7 @@ func canonicalizeServiceLevelObjectiveDesiredState(rawDesired, rawInitial *Servi
 
 func canonicalizeServiceLevelObjectiveNewState(c *Client, rawNew, rawDesired *ServiceLevelObjective) (*ServiceLevelObjective, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -728,7 +728,7 @@ func canonicalizeServiceLevelObjectiveNewState(c *Client, rawNew, rawDesired *Se
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -736,18 +736,18 @@ func canonicalizeServiceLevelObjectiveNewState(c *Client, rawNew, rawDesired *Se
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceLevelIndicator) && dcl.IsNotReturnedByServer(rawDesired.ServiceLevelIndicator) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceLevelIndicator) && dcl.IsEmptyValueIndirect(rawDesired.ServiceLevelIndicator) {
 		rawNew.ServiceLevelIndicator = rawDesired.ServiceLevelIndicator
 	} else {
 		rawNew.ServiceLevelIndicator = canonicalizeNewServiceLevelObjectiveServiceLevelIndicator(c, rawDesired.ServiceLevelIndicator, rawNew.ServiceLevelIndicator)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Goal) && dcl.IsNotReturnedByServer(rawDesired.Goal) {
+	if dcl.IsEmptyValueIndirect(rawNew.Goal) && dcl.IsEmptyValueIndirect(rawDesired.Goal) {
 		rawNew.Goal = rawDesired.Goal
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RollingPeriod) && dcl.IsNotReturnedByServer(rawDesired.RollingPeriod) {
+	if dcl.IsEmptyValueIndirect(rawNew.RollingPeriod) && dcl.IsEmptyValueIndirect(rawDesired.RollingPeriod) {
 		rawNew.RollingPeriod = rawDesired.RollingPeriod
 	} else {
 		if dcl.StringCanonicalize(rawDesired.RollingPeriod, rawNew.RollingPeriod) {
@@ -755,22 +755,22 @@ func canonicalizeServiceLevelObjectiveNewState(c *Client, rawNew, rawDesired *Se
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CalendarPeriod) && dcl.IsNotReturnedByServer(rawDesired.CalendarPeriod) {
+	if dcl.IsEmptyValueIndirect(rawNew.CalendarPeriod) && dcl.IsEmptyValueIndirect(rawDesired.CalendarPeriod) {
 		rawNew.CalendarPeriod = rawDesired.CalendarPeriod
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeleteTime) && dcl.IsNotReturnedByServer(rawDesired.DeleteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeleteTime) && dcl.IsEmptyValueIndirect(rawDesired.DeleteTime) {
 		rawNew.DeleteTime = rawDesired.DeleteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceManagementOwned) && dcl.IsNotReturnedByServer(rawDesired.ServiceManagementOwned) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceManagementOwned) && dcl.IsEmptyValueIndirect(rawDesired.ServiceManagementOwned) {
 		rawNew.ServiceManagementOwned = rawDesired.ServiceManagementOwned
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.ServiceManagementOwned, rawNew.ServiceManagementOwned) {
@@ -778,7 +778,7 @@ func canonicalizeServiceLevelObjectiveNewState(c *Client, rawNew, rawDesired *Se
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UserLabels) && dcl.IsNotReturnedByServer(rawDesired.UserLabels) {
+	if dcl.IsEmptyValueIndirect(rawNew.UserLabels) && dcl.IsEmptyValueIndirect(rawDesired.UserLabels) {
 		rawNew.UserLabels = rawDesired.UserLabels
 	} else {
 	}
@@ -876,7 +876,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicator(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicator while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1045,7 +1045,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSli(c *Client
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorBasicSli while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1163,7 +1163,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabili
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1280,7 +1280,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1388,7 +1388,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationA
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1505,7 +1505,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationL
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1637,7 +1637,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBased(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorRequestBased while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1761,7 +1761,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1883,7 +1883,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2006,7 +2006,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistri
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2165,7 +2165,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBased(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBased while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2309,7 +2309,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2440,7 +2440,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2564,7 +2564,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2686,7 +2686,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2809,7 +2809,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2974,7 +2974,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3092,7 +3092,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3209,7 +3209,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3317,7 +3317,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3434,7 +3434,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3550,7 +3550,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3673,7 +3673,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3785,7 +3785,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3908,7 +3908,7 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8483,7 +8483,7 @@ func extractServiceLevelObjectiveFields(r *ServiceLevelObjective) error {
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorFields(r, vServiceLevelIndicator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServiceLevelIndicator) {
+	if !dcl.IsEmptyValueIndirect(vServiceLevelIndicator) {
 		r.ServiceLevelIndicator = vServiceLevelIndicator
 	}
 	return nil
@@ -8497,7 +8497,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceLevelObje
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r, vBasicSli); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicSli) {
+	if !dcl.IsEmptyValueIndirect(vBasicSli) {
 		o.BasicSli = vBasicSli
 	}
 	vRequestBased := o.RequestBased
@@ -8508,7 +8508,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceLevelObje
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields(r, vRequestBased); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestBased) {
+	if !dcl.IsEmptyValueIndirect(vRequestBased) {
 		o.RequestBased = vRequestBased
 	}
 	vWindowsBased := o.WindowsBased
@@ -8519,7 +8519,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceLevelObje
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields(r, vWindowsBased); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsBased) {
+	if !dcl.IsEmptyValueIndirect(vWindowsBased) {
 		o.WindowsBased = vWindowsBased
 	}
 	return nil
@@ -8533,7 +8533,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabilityFields(r, vAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAvailability) {
+	if !dcl.IsEmptyValueIndirect(vAvailability) {
 		o.Availability = vAvailability
 	}
 	vLatency := o.Latency
@@ -8544,7 +8544,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyFields(r, vLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatency) {
+	if !dcl.IsEmptyValueIndirect(vLatency) {
 		o.Latency = vLatency
 	}
 	vOperationAvailability := o.OperationAvailability
@@ -8555,7 +8555,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailabilityFields(r, vOperationAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationAvailability) {
+	if !dcl.IsEmptyValueIndirect(vOperationAvailability) {
 		o.OperationAvailability = vOperationAvailability
 	}
 	vOperationLatency := o.OperationLatency
@@ -8566,7 +8566,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyFields(r, vOperationLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationLatency) {
+	if !dcl.IsEmptyValueIndirect(vOperationLatency) {
 		o.OperationLatency = vOperationLatency
 	}
 	return nil
@@ -8592,7 +8592,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields(r *Serv
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatioFields(r, vGoodTotalRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatio) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatio) {
 		o.GoodTotalRatio = vGoodTotalRatio
 	}
 	vDistributionCut := o.DistributionCut
@@ -8603,7 +8603,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields(r *Serv
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutFields(r, vDistributionCut); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionCut) {
+	if !dcl.IsEmptyValueIndirect(vDistributionCut) {
 		o.DistributionCut = vDistributionCut
 	}
 	return nil
@@ -8620,7 +8620,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCu
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -8637,7 +8637,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields(r *Serv
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdFields(r, vGoodTotalRatioThreshold); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatioThreshold) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatioThreshold) {
 		o.GoodTotalRatioThreshold = vGoodTotalRatioThreshold
 	}
 	vMetricMeanInRange := o.MetricMeanInRange
@@ -8648,7 +8648,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields(r *Serv
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeFields(r, vMetricMeanInRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricMeanInRange) {
+	if !dcl.IsEmptyValueIndirect(vMetricMeanInRange) {
 		o.MetricMeanInRange = vMetricMeanInRange
 	}
 	vMetricSumInRange := o.MetricSumInRange
@@ -8659,7 +8659,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields(r *Serv
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeFields(r, vMetricSumInRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricSumInRange) {
+	if !dcl.IsEmptyValueIndirect(vMetricSumInRange) {
 		o.MetricSumInRange = vMetricSumInRange
 	}
 	return nil
@@ -8673,7 +8673,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceFields(r, vPerformance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPerformance) {
+	if !dcl.IsEmptyValueIndirect(vPerformance) {
 		o.Performance = vPerformance
 	}
 	vBasicSliPerformance := o.BasicSliPerformance
@@ -8684,7 +8684,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceFields(r, vBasicSliPerformance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicSliPerformance) {
+	if !dcl.IsEmptyValueIndirect(vBasicSliPerformance) {
 		o.BasicSliPerformance = vBasicSliPerformance
 	}
 	return nil
@@ -8698,7 +8698,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatioFields(r, vGoodTotalRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatio) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatio) {
 		o.GoodTotalRatio = vGoodTotalRatio
 	}
 	vDistributionCut := o.DistributionCut
@@ -8709,7 +8709,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutFields(r, vDistributionCut); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionCut) {
+	if !dcl.IsEmptyValueIndirect(vDistributionCut) {
 		o.DistributionCut = vDistributionCut
 	}
 	return nil
@@ -8726,7 +8726,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -8743,7 +8743,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailabilityFields(r, vAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAvailability) {
+	if !dcl.IsEmptyValueIndirect(vAvailability) {
 		o.Availability = vAvailability
 	}
 	vLatency := o.Latency
@@ -8754,7 +8754,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyFields(r, vLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatency) {
+	if !dcl.IsEmptyValueIndirect(vLatency) {
 		o.Latency = vLatency
 	}
 	vOperationAvailability := o.OperationAvailability
@@ -8765,7 +8765,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailabilityFields(r, vOperationAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationAvailability) {
+	if !dcl.IsEmptyValueIndirect(vOperationAvailability) {
 		o.OperationAvailability = vOperationAvailability
 	}
 	vOperationLatency := o.OperationLatency
@@ -8776,7 +8776,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatio
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyFields(r, vOperationLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationLatency) {
+	if !dcl.IsEmptyValueIndirect(vOperationLatency) {
 		o.OperationLatency = vOperationLatency
 	}
 	return nil
@@ -8802,7 +8802,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRa
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -8819,7 +8819,7 @@ func extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRan
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -8837,7 +8837,7 @@ func postReadExtractServiceLevelObjectiveFields(r *ServiceLevelObjective) error 
 	if err := postReadExtractServiceLevelObjectiveServiceLevelIndicatorFields(r, vServiceLevelIndicator); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServiceLevelIndicator) {
+	if !dcl.IsEmptyValueIndirect(vServiceLevelIndicator) {
 		r.ServiceLevelIndicator = vServiceLevelIndicator
 	}
 	return nil
@@ -8851,7 +8851,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r, vBasicSli); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicSli) {
+	if !dcl.IsEmptyValueIndirect(vBasicSli) {
 		o.BasicSli = vBasicSli
 	}
 	vRequestBased := o.RequestBased
@@ -8862,7 +8862,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields(r, vRequestBased); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestBased) {
+	if !dcl.IsEmptyValueIndirect(vRequestBased) {
 		o.RequestBased = vRequestBased
 	}
 	vWindowsBased := o.WindowsBased
@@ -8873,7 +8873,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorFields(r *ServiceL
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields(r, vWindowsBased); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsBased) {
+	if !dcl.IsEmptyValueIndirect(vWindowsBased) {
 		o.WindowsBased = vWindowsBased
 	}
 	return nil
@@ -8887,7 +8887,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabilityFields(r, vAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAvailability) {
+	if !dcl.IsEmptyValueIndirect(vAvailability) {
 		o.Availability = vAvailability
 	}
 	vLatency := o.Latency
@@ -8898,7 +8898,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyFields(r, vLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatency) {
+	if !dcl.IsEmptyValueIndirect(vLatency) {
 		o.Latency = vLatency
 	}
 	vOperationAvailability := o.OperationAvailability
@@ -8909,7 +8909,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailabilityFields(r, vOperationAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationAvailability) {
+	if !dcl.IsEmptyValueIndirect(vOperationAvailability) {
 		o.OperationAvailability = vOperationAvailability
 	}
 	vOperationLatency := o.OperationLatency
@@ -8920,7 +8920,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorBasicSliFields(r *
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyFields(r, vOperationLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationLatency) {
+	if !dcl.IsEmptyValueIndirect(vOperationLatency) {
 		o.OperationLatency = vOperationLatency
 	}
 	return nil
@@ -8946,7 +8946,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatioFields(r, vGoodTotalRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatio) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatio) {
 		o.GoodTotalRatio = vGoodTotalRatio
 	}
 	vDistributionCut := o.DistributionCut
@@ -8957,7 +8957,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorRequestBasedFields
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutFields(r, vDistributionCut); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionCut) {
+	if !dcl.IsEmptyValueIndirect(vDistributionCut) {
 		o.DistributionCut = vDistributionCut
 	}
 	return nil
@@ -8974,7 +8974,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistri
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -8991,7 +8991,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdFields(r, vGoodTotalRatioThreshold); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatioThreshold) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatioThreshold) {
 		o.GoodTotalRatioThreshold = vGoodTotalRatioThreshold
 	}
 	vMetricMeanInRange := o.MetricMeanInRange
@@ -9002,7 +9002,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeFields(r, vMetricMeanInRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricMeanInRange) {
+	if !dcl.IsEmptyValueIndirect(vMetricMeanInRange) {
 		o.MetricMeanInRange = vMetricMeanInRange
 	}
 	vMetricSumInRange := o.MetricSumInRange
@@ -9013,7 +9013,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedFields
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeFields(r, vMetricSumInRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetricSumInRange) {
+	if !dcl.IsEmptyValueIndirect(vMetricSumInRange) {
 		o.MetricSumInRange = vMetricSumInRange
 	}
 	return nil
@@ -9027,7 +9027,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceFields(r, vPerformance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPerformance) {
+	if !dcl.IsEmptyValueIndirect(vPerformance) {
 		o.Performance = vPerformance
 	}
 	vBasicSliPerformance := o.BasicSliPerformance
@@ -9038,7 +9038,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceFields(r, vBasicSliPerformance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicSliPerformance) {
+	if !dcl.IsEmptyValueIndirect(vBasicSliPerformance) {
 		o.BasicSliPerformance = vBasicSliPerformance
 	}
 	return nil
@@ -9052,7 +9052,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatioFields(r, vGoodTotalRatio); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoodTotalRatio) {
+	if !dcl.IsEmptyValueIndirect(vGoodTotalRatio) {
 		o.GoodTotalRatio = vGoodTotalRatio
 	}
 	vDistributionCut := o.DistributionCut
@@ -9063,7 +9063,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutFields(r, vDistributionCut); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionCut) {
+	if !dcl.IsEmptyValueIndirect(vDistributionCut) {
 		o.DistributionCut = vDistributionCut
 	}
 	return nil
@@ -9080,7 +9080,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -9097,7 +9097,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailabilityFields(r, vAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAvailability) {
+	if !dcl.IsEmptyValueIndirect(vAvailability) {
 		o.Availability = vAvailability
 	}
 	vLatency := o.Latency
@@ -9108,7 +9108,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyFields(r, vLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatency) {
+	if !dcl.IsEmptyValueIndirect(vLatency) {
 		o.Latency = vLatency
 	}
 	vOperationAvailability := o.OperationAvailability
@@ -9119,7 +9119,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailabilityFields(r, vOperationAvailability); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationAvailability) {
+	if !dcl.IsEmptyValueIndirect(vOperationAvailability) {
 		o.OperationAvailability = vOperationAvailability
 	}
 	vOperationLatency := o.OperationLatency
@@ -9130,7 +9130,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyFields(r, vOperationLatency); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOperationLatency) {
+	if !dcl.IsEmptyValueIndirect(vOperationLatency) {
 		o.OperationLatency = vOperationLatency
 	}
 	return nil
@@ -9156,7 +9156,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil
@@ -9173,7 +9173,7 @@ func postReadExtractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if err := extractServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRangeFields(r, vRange); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRange) {
+	if !dcl.IsEmptyValueIndirect(vRange) {
 		o.Range = vRange
 	}
 	return nil

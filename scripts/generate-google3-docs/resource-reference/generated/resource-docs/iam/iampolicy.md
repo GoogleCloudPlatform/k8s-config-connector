@@ -186,6 +186,11 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>IAMWorkforcePool</code></td>
+        <td>Y</td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>KMSCryptoKey</code></td>
         <td>Y</td>
         <td></td>
@@ -408,6 +413,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/serviceAccounts/{{account_id}}@{{project}}.iam.gserviceaccount.com{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>IAMWorkforcePool</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}locations/{{location}}/workforcePools/{{name}}{% endverbatim %}</code></p>
             
         </td>
     </tr>

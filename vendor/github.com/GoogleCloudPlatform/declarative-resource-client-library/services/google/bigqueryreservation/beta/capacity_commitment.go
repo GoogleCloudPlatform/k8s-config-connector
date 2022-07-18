@@ -239,16 +239,16 @@ func (r *CapacityCommitment) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"slotCount":           dcl.ValueOrEmptyString(nr.SlotCount),
-		"plan":                dcl.ValueOrEmptyString(nr.Plan),
-		"state":               dcl.ValueOrEmptyString(nr.State),
-		"commitmentStartTime": dcl.ValueOrEmptyString(nr.CommitmentStartTime),
-		"commitmentEndTime":   dcl.ValueOrEmptyString(nr.CommitmentEndTime),
-		"failureStatus":       dcl.ValueOrEmptyString(nr.FailureStatus),
-		"renewalPlan":         dcl.ValueOrEmptyString(nr.RenewalPlan),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
-		"location":            dcl.ValueOrEmptyString(nr.Location),
+		"name":                  dcl.ValueOrEmptyString(nr.Name),
+		"slot_count":            dcl.ValueOrEmptyString(nr.SlotCount),
+		"plan":                  dcl.ValueOrEmptyString(nr.Plan),
+		"state":                 dcl.ValueOrEmptyString(nr.State),
+		"commitment_start_time": dcl.ValueOrEmptyString(nr.CommitmentStartTime),
+		"commitment_end_time":   dcl.ValueOrEmptyString(nr.CommitmentEndTime),
+		"failure_status":        dcl.ValueOrEmptyString(nr.FailureStatus),
+		"renewal_plan":          dcl.ValueOrEmptyString(nr.RenewalPlan),
+		"project":               dcl.ValueOrEmptyString(nr.Project),
+		"location":              dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/capacityCommitments/{{name}}", params), nil
 }

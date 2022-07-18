@@ -639,7 +639,7 @@ func canonicalizeNodePoolDesiredState(rawDesired, rawInitial *NodePool, opts ...
 
 func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*NodePool, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -647,7 +647,7 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Version) && dcl.IsNotReturnedByServer(rawDesired.Version) {
+	if dcl.IsEmptyValueIndirect(rawNew.Version) && dcl.IsEmptyValueIndirect(rawDesired.Version) {
 		rawNew.Version = rawDesired.Version
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Version, rawNew.Version) {
@@ -655,19 +655,19 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Config) && dcl.IsNotReturnedByServer(rawDesired.Config) {
+	if dcl.IsEmptyValueIndirect(rawNew.Config) && dcl.IsEmptyValueIndirect(rawDesired.Config) {
 		rawNew.Config = rawDesired.Config
 	} else {
 		rawNew.Config = canonicalizeNewNodePoolConfig(c, rawDesired.Config, rawNew.Config)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Autoscaling) && dcl.IsNotReturnedByServer(rawDesired.Autoscaling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Autoscaling) && dcl.IsEmptyValueIndirect(rawDesired.Autoscaling) {
 		rawNew.Autoscaling = rawDesired.Autoscaling
 	} else {
 		rawNew.Autoscaling = canonicalizeNewNodePoolAutoscaling(c, rawDesired.Autoscaling, rawNew.Autoscaling)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SubnetId) && dcl.IsNotReturnedByServer(rawDesired.SubnetId) {
+	if dcl.IsEmptyValueIndirect(rawNew.SubnetId) && dcl.IsEmptyValueIndirect(rawDesired.SubnetId) {
 		rawNew.SubnetId = rawDesired.SubnetId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SubnetId, rawNew.SubnetId) {
@@ -675,12 +675,12 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -688,7 +688,7 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Reconciling) && dcl.IsNotReturnedByServer(rawDesired.Reconciling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Reconciling) && dcl.IsEmptyValueIndirect(rawDesired.Reconciling) {
 		rawNew.Reconciling = rawDesired.Reconciling
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Reconciling, rawNew.Reconciling) {
@@ -696,17 +696,17 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -714,12 +714,12 @@ func canonicalizeNodePoolNewState(c *Client, rawNew, rawDesired *NodePool) (*Nod
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MaxPodsConstraint) && dcl.IsNotReturnedByServer(rawDesired.MaxPodsConstraint) {
+	if dcl.IsEmptyValueIndirect(rawNew.MaxPodsConstraint) && dcl.IsEmptyValueIndirect(rawDesired.MaxPodsConstraint) {
 		rawNew.MaxPodsConstraint = rawDesired.MaxPodsConstraint
 	} else {
 		rawNew.MaxPodsConstraint = canonicalizeNewNodePoolMaxPodsConstraint(c, rawDesired.MaxPodsConstraint, rawNew.MaxPodsConstraint)
@@ -825,7 +825,7 @@ func canonicalizeNewNodePoolConfig(c *Client, des, nw *NodePoolConfig) *NodePool
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -973,7 +973,7 @@ func canonicalizeNewNodePoolConfigRootVolume(c *Client, des, nw *NodePoolConfigR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigRootVolume while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1099,7 +1099,7 @@ func canonicalizeNewNodePoolConfigTaints(c *Client, des, nw *NodePoolConfigTaint
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigTaints while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1217,7 +1217,7 @@ func canonicalizeNewNodePoolConfigConfigEncryption(c *Client, des, nw *NodePoolC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigConfigEncryption while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1332,7 +1332,7 @@ func canonicalizeNewNodePoolConfigSshConfig(c *Client, des, nw *NodePoolConfigSs
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigSshConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1452,7 +1452,7 @@ func canonicalizeNewNodePoolConfigProxyConfig(c *Client, des, nw *NodePoolConfig
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigProxyConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1571,7 +1571,7 @@ func canonicalizeNewNodePoolConfigInstancePlacement(c *Client, des, nw *NodePool
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigInstancePlacement while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1689,7 +1689,7 @@ func canonicalizeNewNodePoolAutoscaling(c *Client, des, nw *NodePoolAutoscaling)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolAutoscaling while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1801,7 +1801,7 @@ func canonicalizeNewNodePoolMaxPodsConstraint(c *Client, des, nw *NodePoolMaxPod
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NodePoolMaxPodsConstraint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3942,7 +3942,7 @@ func extractNodePoolFields(r *NodePool) error {
 	if err := extractNodePoolConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vAutoscaling := r.Autoscaling
@@ -3953,7 +3953,7 @@ func extractNodePoolFields(r *NodePool) error {
 	if err := extractNodePoolAutoscalingFields(r, vAutoscaling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscaling) {
+	if !dcl.IsEmptyValueIndirect(vAutoscaling) {
 		r.Autoscaling = vAutoscaling
 	}
 	vMaxPodsConstraint := r.MaxPodsConstraint
@@ -3964,7 +3964,7 @@ func extractNodePoolFields(r *NodePool) error {
 	if err := extractNodePoolMaxPodsConstraintFields(r, vMaxPodsConstraint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxPodsConstraint) {
+	if !dcl.IsEmptyValueIndirect(vMaxPodsConstraint) {
 		r.MaxPodsConstraint = vMaxPodsConstraint
 	}
 	return nil
@@ -3978,7 +3978,7 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigRootVolumeFields(r, vRootVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRootVolume) {
+	if !dcl.IsEmptyValueIndirect(vRootVolume) {
 		o.RootVolume = vRootVolume
 	}
 	vConfigEncryption := o.ConfigEncryption
@@ -3989,7 +3989,7 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigConfigEncryptionFields(r, vConfigEncryption); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigEncryption) {
+	if !dcl.IsEmptyValueIndirect(vConfigEncryption) {
 		o.ConfigEncryption = vConfigEncryption
 	}
 	vSshConfig := o.SshConfig
@@ -4000,7 +4000,7 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigSshConfigFields(r, vSshConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSshConfig) {
+	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
 	vProxyConfig := o.ProxyConfig
@@ -4011,7 +4011,7 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigProxyConfigFields(r, vProxyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProxyConfig) {
+	if !dcl.IsEmptyValueIndirect(vProxyConfig) {
 		o.ProxyConfig = vProxyConfig
 	}
 	vInstancePlacement := o.InstancePlacement
@@ -4022,7 +4022,7 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigInstancePlacementFields(r, vInstancePlacement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstancePlacement) {
+	if !dcl.IsEmptyValueIndirect(vInstancePlacement) {
 		o.InstancePlacement = vInstancePlacement
 	}
 	return nil
@@ -4061,7 +4061,7 @@ func postReadExtractNodePoolFields(r *NodePool) error {
 	if err := postReadExtractNodePoolConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		r.Config = vConfig
 	}
 	vAutoscaling := r.Autoscaling
@@ -4072,7 +4072,7 @@ func postReadExtractNodePoolFields(r *NodePool) error {
 	if err := postReadExtractNodePoolAutoscalingFields(r, vAutoscaling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscaling) {
+	if !dcl.IsEmptyValueIndirect(vAutoscaling) {
 		r.Autoscaling = vAutoscaling
 	}
 	vMaxPodsConstraint := r.MaxPodsConstraint
@@ -4083,7 +4083,7 @@ func postReadExtractNodePoolFields(r *NodePool) error {
 	if err := postReadExtractNodePoolMaxPodsConstraintFields(r, vMaxPodsConstraint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxPodsConstraint) {
+	if !dcl.IsEmptyValueIndirect(vMaxPodsConstraint) {
 		r.MaxPodsConstraint = vMaxPodsConstraint
 	}
 	return nil
@@ -4097,7 +4097,7 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigRootVolumeFields(r, vRootVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRootVolume) {
+	if !dcl.IsEmptyValueIndirect(vRootVolume) {
 		o.RootVolume = vRootVolume
 	}
 	vConfigEncryption := o.ConfigEncryption
@@ -4108,7 +4108,7 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigConfigEncryptionFields(r, vConfigEncryption); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigEncryption) {
+	if !dcl.IsEmptyValueIndirect(vConfigEncryption) {
 		o.ConfigEncryption = vConfigEncryption
 	}
 	vSshConfig := o.SshConfig
@@ -4119,7 +4119,7 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigSshConfigFields(r, vSshConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSshConfig) {
+	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
 	vProxyConfig := o.ProxyConfig
@@ -4130,7 +4130,7 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigProxyConfigFields(r, vProxyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProxyConfig) {
+	if !dcl.IsEmptyValueIndirect(vProxyConfig) {
 		o.ProxyConfig = vProxyConfig
 	}
 	vInstancePlacement := o.InstancePlacement
@@ -4141,7 +4141,7 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if err := extractNodePoolConfigInstancePlacementFields(r, vInstancePlacement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstancePlacement) {
+	if !dcl.IsEmptyValueIndirect(vInstancePlacement) {
 		o.InstancePlacement = vInstancePlacement
 	}
 	return nil

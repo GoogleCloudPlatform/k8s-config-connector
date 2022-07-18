@@ -393,8 +393,8 @@ func (r *Key) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"name":         dcl.ValueOrEmptyString(nr.Name),
-		"displayName":  dcl.ValueOrEmptyString(nr.DisplayName),
-		"keyString":    dcl.ValueOrEmptyString(nr.KeyString),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"key_string":   dcl.ValueOrEmptyString(nr.KeyString),
 		"uid":          dcl.ValueOrEmptyString(nr.Uid),
 		"restrictions": dcl.ValueOrEmptyString(nr.Restrictions),
 		"project":      dcl.ValueOrEmptyString(nr.Project),

@@ -288,8 +288,8 @@ func (r *AuthorizationPolicy) ID() (string, error) {
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
 		"description": dcl.ValueOrEmptyString(nr.Description),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
 		"action":      dcl.ValueOrEmptyString(nr.Action),
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),

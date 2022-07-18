@@ -689,7 +689,7 @@ func canonicalizeServiceDesiredState(rawDesired, rawInitial *Service, opts ...dc
 
 func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Service, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -697,7 +697,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -705,7 +705,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -713,42 +713,42 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Generation) && dcl.IsNotReturnedByServer(rawDesired.Generation) {
+	if dcl.IsEmptyValueIndirect(rawNew.Generation) && dcl.IsEmptyValueIndirect(rawDesired.Generation) {
 		rawNew.Generation = rawDesired.Generation
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeleteTime) && dcl.IsNotReturnedByServer(rawDesired.DeleteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeleteTime) && dcl.IsEmptyValueIndirect(rawDesired.DeleteTime) {
 		rawNew.DeleteTime = rawDesired.DeleteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExpireTime) && dcl.IsNotReturnedByServer(rawDesired.ExpireTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExpireTime) && dcl.IsEmptyValueIndirect(rawDesired.ExpireTime) {
 		rawNew.ExpireTime = rawDesired.ExpireTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Creator) && dcl.IsNotReturnedByServer(rawDesired.Creator) {
+	if dcl.IsEmptyValueIndirect(rawNew.Creator) && dcl.IsEmptyValueIndirect(rawDesired.Creator) {
 		rawNew.Creator = rawDesired.Creator
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Creator, rawNew.Creator) {
@@ -756,7 +756,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastModifier) && dcl.IsNotReturnedByServer(rawDesired.LastModifier) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastModifier) && dcl.IsEmptyValueIndirect(rawDesired.LastModifier) {
 		rawNew.LastModifier = rawDesired.LastModifier
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LastModifier, rawNew.LastModifier) {
@@ -764,7 +764,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Client) && dcl.IsNotReturnedByServer(rawDesired.Client) {
+	if dcl.IsEmptyValueIndirect(rawNew.Client) && dcl.IsEmptyValueIndirect(rawDesired.Client) {
 		rawNew.Client = rawDesired.Client
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Client, rawNew.Client) {
@@ -772,7 +772,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ClientVersion) && dcl.IsNotReturnedByServer(rawDesired.ClientVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.ClientVersion) && dcl.IsEmptyValueIndirect(rawDesired.ClientVersion) {
 		rawNew.ClientVersion = rawDesired.ClientVersion
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ClientVersion, rawNew.ClientVersion) {
@@ -780,41 +780,41 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Ingress) && dcl.IsNotReturnedByServer(rawDesired.Ingress) {
+	if dcl.IsEmptyValueIndirect(rawNew.Ingress) && dcl.IsEmptyValueIndirect(rawDesired.Ingress) {
 		rawNew.Ingress = rawDesired.Ingress
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LaunchStage) && dcl.IsNotReturnedByServer(rawDesired.LaunchStage) {
+	if dcl.IsEmptyValueIndirect(rawNew.LaunchStage) && dcl.IsEmptyValueIndirect(rawDesired.LaunchStage) {
 		rawNew.LaunchStage = rawDesired.LaunchStage
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BinaryAuthorization) && dcl.IsNotReturnedByServer(rawDesired.BinaryAuthorization) {
+	if dcl.IsEmptyValueIndirect(rawNew.BinaryAuthorization) && dcl.IsEmptyValueIndirect(rawDesired.BinaryAuthorization) {
 		rawNew.BinaryAuthorization = rawDesired.BinaryAuthorization
 	} else {
 		rawNew.BinaryAuthorization = canonicalizeNewServiceBinaryAuthorization(c, rawDesired.BinaryAuthorization, rawNew.BinaryAuthorization)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Template) && dcl.IsNotReturnedByServer(rawDesired.Template) {
+	if dcl.IsEmptyValueIndirect(rawNew.Template) && dcl.IsEmptyValueIndirect(rawDesired.Template) {
 		rawNew.Template = rawDesired.Template
 	} else {
 		rawNew.Template = canonicalizeNewServiceTemplate(c, rawDesired.Template, rawNew.Template)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Traffic) && dcl.IsNotReturnedByServer(rawDesired.Traffic) {
+	if dcl.IsEmptyValueIndirect(rawNew.Traffic) && dcl.IsEmptyValueIndirect(rawDesired.Traffic) {
 		rawNew.Traffic = rawDesired.Traffic
 	} else {
 		rawNew.Traffic = canonicalizeNewServiceTrafficSlice(c, rawDesired.Traffic, rawNew.Traffic)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TerminalCondition) && dcl.IsNotReturnedByServer(rawDesired.TerminalCondition) {
+	if dcl.IsEmptyValueIndirect(rawNew.TerminalCondition) && dcl.IsEmptyValueIndirect(rawDesired.TerminalCondition) {
 		rawNew.TerminalCondition = rawDesired.TerminalCondition
 	} else {
 		rawNew.TerminalCondition = canonicalizeNewServiceTerminalCondition(c, rawDesired.TerminalCondition, rawNew.TerminalCondition)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LatestReadyRevision) && dcl.IsNotReturnedByServer(rawDesired.LatestReadyRevision) {
+	if dcl.IsEmptyValueIndirect(rawNew.LatestReadyRevision) && dcl.IsEmptyValueIndirect(rawDesired.LatestReadyRevision) {
 		rawNew.LatestReadyRevision = rawDesired.LatestReadyRevision
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LatestReadyRevision, rawNew.LatestReadyRevision) {
@@ -822,7 +822,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LatestCreatedRevision) && dcl.IsNotReturnedByServer(rawDesired.LatestCreatedRevision) {
+	if dcl.IsEmptyValueIndirect(rawNew.LatestCreatedRevision) && dcl.IsEmptyValueIndirect(rawDesired.LatestCreatedRevision) {
 		rawNew.LatestCreatedRevision = rawDesired.LatestCreatedRevision
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LatestCreatedRevision, rawNew.LatestCreatedRevision) {
@@ -830,13 +830,13 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TrafficStatuses) && dcl.IsNotReturnedByServer(rawDesired.TrafficStatuses) {
+	if dcl.IsEmptyValueIndirect(rawNew.TrafficStatuses) && dcl.IsEmptyValueIndirect(rawDesired.TrafficStatuses) {
 		rawNew.TrafficStatuses = rawDesired.TrafficStatuses
 	} else {
 		rawNew.TrafficStatuses = canonicalizeNewServiceTrafficStatusesSlice(c, rawDesired.TrafficStatuses, rawNew.TrafficStatuses)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uri) && dcl.IsNotReturnedByServer(rawDesired.Uri) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uri) && dcl.IsEmptyValueIndirect(rawDesired.Uri) {
 		rawNew.Uri = rawDesired.Uri
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uri, rawNew.Uri) {
@@ -844,7 +844,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Reconciling) && dcl.IsNotReturnedByServer(rawDesired.Reconciling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Reconciling) && dcl.IsEmptyValueIndirect(rawDesired.Reconciling) {
 		rawNew.Reconciling = rawDesired.Reconciling
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Reconciling, rawNew.Reconciling) {
@@ -852,7 +852,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -930,7 +930,7 @@ func canonicalizeNewServiceBinaryAuthorization(c *Client, des, nw *ServiceBinary
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceBinaryAuthorization while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1087,7 +1087,7 @@ func canonicalizeNewServiceTemplate(c *Client, des, nw *ServiceTemplate) *Servic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1216,7 +1216,7 @@ func canonicalizeNewServiceTemplateScaling(c *Client, des, nw *ServiceTemplateSc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateScaling while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1334,7 +1334,7 @@ func canonicalizeNewServiceTemplateVPCAccess(c *Client, des, nw *ServiceTemplate
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateVPCAccess while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1464,7 +1464,7 @@ func canonicalizeNewServiceTemplateContainers(c *Client, des, nw *ServiceTemplat
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1618,7 +1618,7 @@ func canonicalizeNewServiceTemplateContainersEnv(c *Client, des, nw *ServiceTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersEnv while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1733,7 +1733,7 @@ func canonicalizeNewServiceTemplateContainersEnvValueSource(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersEnvValueSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1853,7 +1853,7 @@ func canonicalizeNewServiceTemplateContainersEnvValueSourceSecretKeyRef(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersEnvValueSourceSecretKeyRef while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1970,7 +1970,7 @@ func canonicalizeNewServiceTemplateContainersResources(c *Client, des, nw *Servi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2091,7 +2091,7 @@ func canonicalizeNewServiceTemplateContainersPorts(c *Client, des, nw *ServiceTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersPorts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2211,7 +2211,7 @@ func canonicalizeNewServiceTemplateContainersVolumeMounts(c *Client, des, nw *Se
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateContainersVolumeMounts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2351,7 +2351,7 @@ func canonicalizeNewServiceTemplateVolumes(c *Client, des, nw *ServiceTemplateVo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateVolumes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2476,7 +2476,7 @@ func canonicalizeNewServiceTemplateVolumesSecret(c *Client, des, nw *ServiceTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateVolumesSecret while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2601,7 +2601,7 @@ func canonicalizeNewServiceTemplateVolumesSecretItems(c *Client, des, nw *Servic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateVolumesSecretItems while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2716,7 +2716,7 @@ func canonicalizeNewServiceTemplateVolumesCloudSqlInstance(c *Client, des, nw *S
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTemplateVolumesCloudSqlInstance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2848,7 +2848,7 @@ func canonicalizeNewServiceTraffic(c *Client, des, nw *ServiceTraffic) *ServiceT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTraffic while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3037,7 +3037,7 @@ func canonicalizeNewServiceTerminalCondition(c *Client, des, nw *ServiceTerminal
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTerminalCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3177,7 +3177,7 @@ func canonicalizeNewServiceTrafficStatuses(c *Client, des, nw *ServiceTrafficSta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTrafficStatuses while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3547,7 +3547,7 @@ func compareServiceTemplateNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ContainerConcurrency, actual.ContainerConcurrency, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceUpdateServiceOperation")}, fn.AddNest("ContainerConcurrency")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ContainerConcurrency, actual.ContainerConcurrency, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateServiceUpdateServiceOperation")}, fn.AddNest("MaxInstanceRequestConcurrency")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4695,7 +4695,7 @@ func expandServiceTemplate(c *Client, f *ServiceTemplate, res *Service) (map[str
 		m["vpcAccess"] = v
 	}
 	if v := f.ContainerConcurrency; !dcl.IsEmptyValueIndirect(v) {
-		m["containerConcurrency"] = v
+		m["maxInstanceRequestConcurrency"] = v
 	}
 	if v := f.Timeout; !dcl.IsEmptyValueIndirect(v) {
 		m["timeout"] = v
@@ -4738,7 +4738,7 @@ func flattenServiceTemplate(c *Client, i interface{}, res *Service) *ServiceTemp
 	r.Annotations = dcl.FlattenKeyValuePairs(m["annotations"])
 	r.Scaling = flattenServiceTemplateScaling(c, m["scaling"], res)
 	r.VPCAccess = flattenServiceTemplateVPCAccess(c, m["vpcAccess"], res)
-	r.ContainerConcurrency = dcl.FlattenInteger(m["containerConcurrency"])
+	r.ContainerConcurrency = dcl.FlattenInteger(m["maxInstanceRequestConcurrency"])
 	r.Timeout = dcl.FlattenString(m["timeout"])
 	r.ServiceAccount = dcl.FlattenString(m["serviceAccount"])
 	r.Containers = flattenServiceTemplateContainersSlice(c, m["containers"], res)
@@ -7397,7 +7397,7 @@ func extractServiceFields(r *Service) error {
 	if err := extractServiceBinaryAuthorizationFields(r, vBinaryAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinaryAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vBinaryAuthorization) {
 		r.BinaryAuthorization = vBinaryAuthorization
 	}
 	vTemplate := r.Template
@@ -7408,7 +7408,7 @@ func extractServiceFields(r *Service) error {
 	if err := extractServiceTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		r.Template = vTemplate
 	}
 	vTerminalCondition := r.TerminalCondition
@@ -7419,7 +7419,7 @@ func extractServiceFields(r *Service) error {
 	if err := extractServiceTerminalConditionFields(r, vTerminalCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTerminalCondition) {
+	if !dcl.IsEmptyValueIndirect(vTerminalCondition) {
 		r.TerminalCondition = vTerminalCondition
 	}
 	return nil
@@ -7436,7 +7436,7 @@ func extractServiceTemplateFields(r *Service, o *ServiceTemplate) error {
 	if err := extractServiceTemplateScalingFields(r, vScaling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScaling) {
+	if !dcl.IsEmptyValueIndirect(vScaling) {
 		o.Scaling = vScaling
 	}
 	vVPCAccess := o.VPCAccess
@@ -7447,7 +7447,7 @@ func extractServiceTemplateFields(r *Service, o *ServiceTemplate) error {
 	if err := extractServiceTemplateVPCAccessFields(r, vVPCAccess); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVPCAccess) {
+	if !dcl.IsEmptyValueIndirect(vVPCAccess) {
 		o.VPCAccess = vVPCAccess
 	}
 	return nil
@@ -7467,7 +7467,7 @@ func extractServiceTemplateContainersFields(r *Service, o *ServiceTemplateContai
 	if err := extractServiceTemplateContainersResourcesFields(r, vResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResources) {
+	if !dcl.IsEmptyValueIndirect(vResources) {
 		o.Resources = vResources
 	}
 	return nil
@@ -7481,7 +7481,7 @@ func extractServiceTemplateContainersEnvFields(r *Service, o *ServiceTemplateCon
 	if err := extractServiceTemplateContainersEnvValueSourceFields(r, vValueSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValueSource) {
+	if !dcl.IsEmptyValueIndirect(vValueSource) {
 		o.ValueSource = vValueSource
 	}
 	return nil
@@ -7495,7 +7495,7 @@ func extractServiceTemplateContainersEnvValueSourceFields(r *Service, o *Service
 	if err := extractServiceTemplateContainersEnvValueSourceSecretKeyRefFields(r, vSecretKeyRef); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecretKeyRef) {
+	if !dcl.IsEmptyValueIndirect(vSecretKeyRef) {
 		o.SecretKeyRef = vSecretKeyRef
 	}
 	return nil
@@ -7521,7 +7521,7 @@ func extractServiceTemplateVolumesFields(r *Service, o *ServiceTemplateVolumes) 
 	if err := extractServiceTemplateVolumesSecretFields(r, vSecret); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecret) {
+	if !dcl.IsEmptyValueIndirect(vSecret) {
 		o.Secret = vSecret
 	}
 	vCloudSqlInstance := o.CloudSqlInstance
@@ -7532,7 +7532,7 @@ func extractServiceTemplateVolumesFields(r *Service, o *ServiceTemplateVolumes) 
 	if err := extractServiceTemplateVolumesCloudSqlInstanceFields(r, vCloudSqlInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudSqlInstance) {
+	if !dcl.IsEmptyValueIndirect(vCloudSqlInstance) {
 		o.CloudSqlInstance = vCloudSqlInstance
 	}
 	return nil
@@ -7565,7 +7565,7 @@ func postReadExtractServiceFields(r *Service) error {
 	if err := postReadExtractServiceBinaryAuthorizationFields(r, vBinaryAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinaryAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vBinaryAuthorization) {
 		r.BinaryAuthorization = vBinaryAuthorization
 	}
 	vTemplate := r.Template
@@ -7576,7 +7576,7 @@ func postReadExtractServiceFields(r *Service) error {
 	if err := postReadExtractServiceTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		r.Template = vTemplate
 	}
 	vTerminalCondition := r.TerminalCondition
@@ -7587,7 +7587,7 @@ func postReadExtractServiceFields(r *Service) error {
 	if err := postReadExtractServiceTerminalConditionFields(r, vTerminalCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTerminalCondition) {
+	if !dcl.IsEmptyValueIndirect(vTerminalCondition) {
 		r.TerminalCondition = vTerminalCondition
 	}
 	return nil
@@ -7604,7 +7604,7 @@ func postReadExtractServiceTemplateFields(r *Service, o *ServiceTemplate) error 
 	if err := extractServiceTemplateScalingFields(r, vScaling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScaling) {
+	if !dcl.IsEmptyValueIndirect(vScaling) {
 		o.Scaling = vScaling
 	}
 	vVPCAccess := o.VPCAccess
@@ -7615,7 +7615,7 @@ func postReadExtractServiceTemplateFields(r *Service, o *ServiceTemplate) error 
 	if err := extractServiceTemplateVPCAccessFields(r, vVPCAccess); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVPCAccess) {
+	if !dcl.IsEmptyValueIndirect(vVPCAccess) {
 		o.VPCAccess = vVPCAccess
 	}
 	return nil
@@ -7635,7 +7635,7 @@ func postReadExtractServiceTemplateContainersFields(r *Service, o *ServiceTempla
 	if err := extractServiceTemplateContainersResourcesFields(r, vResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResources) {
+	if !dcl.IsEmptyValueIndirect(vResources) {
 		o.Resources = vResources
 	}
 	return nil
@@ -7649,7 +7649,7 @@ func postReadExtractServiceTemplateContainersEnvFields(r *Service, o *ServiceTem
 	if err := extractServiceTemplateContainersEnvValueSourceFields(r, vValueSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValueSource) {
+	if !dcl.IsEmptyValueIndirect(vValueSource) {
 		o.ValueSource = vValueSource
 	}
 	return nil
@@ -7663,7 +7663,7 @@ func postReadExtractServiceTemplateContainersEnvValueSourceFields(r *Service, o 
 	if err := extractServiceTemplateContainersEnvValueSourceSecretKeyRefFields(r, vSecretKeyRef); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecretKeyRef) {
+	if !dcl.IsEmptyValueIndirect(vSecretKeyRef) {
 		o.SecretKeyRef = vSecretKeyRef
 	}
 	return nil
@@ -7689,7 +7689,7 @@ func postReadExtractServiceTemplateVolumesFields(r *Service, o *ServiceTemplateV
 	if err := extractServiceTemplateVolumesSecretFields(r, vSecret); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecret) {
+	if !dcl.IsEmptyValueIndirect(vSecret) {
 		o.Secret = vSecret
 	}
 	vCloudSqlInstance := o.CloudSqlInstance
@@ -7700,7 +7700,7 @@ func postReadExtractServiceTemplateVolumesFields(r *Service, o *ServiceTemplateV
 	if err := extractServiceTemplateVolumesCloudSqlInstanceFields(r, vCloudSqlInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudSqlInstance) {
+	if !dcl.IsEmptyValueIndirect(vCloudSqlInstance) {
 		o.CloudSqlInstance = vCloudSqlInstance
 	}
 	return nil

@@ -187,18 +187,18 @@ func (r *FirewallPolicyRule) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"description":           dcl.ValueOrEmptyString(nr.Description),
-		"priority":              dcl.ValueOrEmptyString(nr.Priority),
-		"match":                 dcl.ValueOrEmptyString(nr.Match),
-		"action":                dcl.ValueOrEmptyString(nr.Action),
-		"direction":             dcl.ValueOrEmptyString(nr.Direction),
-		"targetResources":       dcl.ValueOrEmptyString(nr.TargetResources),
-		"enableLogging":         dcl.ValueOrEmptyString(nr.EnableLogging),
-		"ruleTupleCount":        dcl.ValueOrEmptyString(nr.RuleTupleCount),
-		"targetServiceAccounts": dcl.ValueOrEmptyString(nr.TargetServiceAccounts),
-		"disabled":              dcl.ValueOrEmptyString(nr.Disabled),
-		"kind":                  dcl.ValueOrEmptyString(nr.Kind),
-		"firewallPolicy":        dcl.ValueOrEmptyString(nr.FirewallPolicy),
+		"description":             dcl.ValueOrEmptyString(nr.Description),
+		"priority":                dcl.ValueOrEmptyString(nr.Priority),
+		"match":                   dcl.ValueOrEmptyString(nr.Match),
+		"action":                  dcl.ValueOrEmptyString(nr.Action),
+		"direction":               dcl.ValueOrEmptyString(nr.Direction),
+		"target_resources":        dcl.ValueOrEmptyString(nr.TargetResources),
+		"enable_logging":          dcl.ValueOrEmptyString(nr.EnableLogging),
+		"rule_tuple_count":        dcl.ValueOrEmptyString(nr.RuleTupleCount),
+		"target_service_accounts": dcl.ValueOrEmptyString(nr.TargetServiceAccounts),
+		"disabled":                dcl.ValueOrEmptyString(nr.Disabled),
+		"kind":                    dcl.ValueOrEmptyString(nr.Kind),
+		"firewall_policy":         dcl.ValueOrEmptyString(nr.FirewallPolicy),
 	}
 	return dcl.Nprintf("locations/global/firewallPolicies/{{firewall_policy}}/rules/{{priority}}", params), nil
 }

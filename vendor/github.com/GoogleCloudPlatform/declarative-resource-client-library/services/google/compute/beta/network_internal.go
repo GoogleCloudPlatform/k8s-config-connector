@@ -434,7 +434,7 @@ func canonicalizeNetworkDesiredState(rawDesired, rawInitial *Network, opts ...dc
 
 func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Network, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -442,7 +442,7 @@ func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Netwo
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GatewayIPv4) && dcl.IsNotReturnedByServer(rawDesired.GatewayIPv4) {
+	if dcl.IsEmptyValueIndirect(rawNew.GatewayIPv4) && dcl.IsEmptyValueIndirect(rawDesired.GatewayIPv4) {
 		rawNew.GatewayIPv4 = rawDesired.GatewayIPv4
 	} else {
 		if dcl.StringCanonicalize(rawDesired.GatewayIPv4, rawNew.GatewayIPv4) {
@@ -450,7 +450,7 @@ func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Netwo
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -458,7 +458,7 @@ func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Netwo
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AutoCreateSubnetworks) && dcl.IsNotReturnedByServer(rawDesired.AutoCreateSubnetworks) {
+	if dcl.IsEmptyValueIndirect(rawNew.AutoCreateSubnetworks) && dcl.IsEmptyValueIndirect(rawDesired.AutoCreateSubnetworks) {
 		rawNew.AutoCreateSubnetworks = rawDesired.AutoCreateSubnetworks
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AutoCreateSubnetworks, rawNew.AutoCreateSubnetworks) {
@@ -466,20 +466,20 @@ func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Netwo
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RoutingConfig) && dcl.IsNotReturnedByServer(rawDesired.RoutingConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.RoutingConfig) && dcl.IsEmptyValueIndirect(rawDesired.RoutingConfig) {
 		rawNew.RoutingConfig = rawDesired.RoutingConfig
 	} else {
 		rawNew.RoutingConfig = canonicalizeNewNetworkRoutingConfig(c, rawDesired.RoutingConfig, rawNew.RoutingConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Mtu) && dcl.IsNotReturnedByServer(rawDesired.Mtu) {
+	if dcl.IsEmptyValueIndirect(rawNew.Mtu) && dcl.IsEmptyValueIndirect(rawDesired.Mtu) {
 		rawNew.Mtu = rawDesired.Mtu
 	} else {
 	}
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -487,7 +487,7 @@ func canonicalizeNetworkNewState(c *Client, rawNew, rawDesired *Network) (*Netwo
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLinkWithId) && dcl.IsNotReturnedByServer(rawDesired.SelfLinkWithId) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLinkWithId) && dcl.IsEmptyValueIndirect(rawDesired.SelfLinkWithId) {
 		rawNew.SelfLinkWithId = rawDesired.SelfLinkWithId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLinkWithId, rawNew.SelfLinkWithId) {
@@ -557,7 +557,7 @@ func canonicalizeNewNetworkRoutingConfig(c *Client, des, nw *NetworkRoutingConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for NetworkRoutingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1097,7 +1097,7 @@ func extractNetworkFields(r *Network) error {
 	if err := extractNetworkRoutingConfigFields(r, vRoutingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRoutingConfig) {
+	if !dcl.IsEmptyValueIndirect(vRoutingConfig) {
 		r.RoutingConfig = vRoutingConfig
 	}
 	return nil
@@ -1115,7 +1115,7 @@ func postReadExtractNetworkFields(r *Network) error {
 	if err := postReadExtractNetworkRoutingConfigFields(r, vRoutingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRoutingConfig) {
+	if !dcl.IsEmptyValueIndirect(vRoutingConfig) {
 		r.RoutingConfig = vRoutingConfig
 	}
 	return nil

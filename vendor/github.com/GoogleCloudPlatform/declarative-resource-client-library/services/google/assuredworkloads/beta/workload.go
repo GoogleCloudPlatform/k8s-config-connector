@@ -287,18 +287,18 @@ func (r *Workload) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                       dcl.ValueOrEmptyString(nr.Name),
-		"displayName":                dcl.ValueOrEmptyString(nr.DisplayName),
-		"resources":                  dcl.ValueOrEmptyString(nr.Resources),
-		"complianceRegime":           dcl.ValueOrEmptyString(nr.ComplianceRegime),
-		"createTime":                 dcl.ValueOrEmptyString(nr.CreateTime),
-		"billingAccount":             dcl.ValueOrEmptyString(nr.BillingAccount),
-		"labels":                     dcl.ValueOrEmptyString(nr.Labels),
-		"provisionedResourcesParent": dcl.ValueOrEmptyString(nr.ProvisionedResourcesParent),
-		"kmsSettings":                dcl.ValueOrEmptyString(nr.KmsSettings),
-		"resourceSettings":           dcl.ValueOrEmptyString(nr.ResourceSettings),
-		"organization":               dcl.ValueOrEmptyString(nr.Organization),
-		"location":                   dcl.ValueOrEmptyString(nr.Location),
+		"name":                         dcl.ValueOrEmptyString(nr.Name),
+		"display_name":                 dcl.ValueOrEmptyString(nr.DisplayName),
+		"resources":                    dcl.ValueOrEmptyString(nr.Resources),
+		"compliance_regime":            dcl.ValueOrEmptyString(nr.ComplianceRegime),
+		"create_time":                  dcl.ValueOrEmptyString(nr.CreateTime),
+		"billing_account":              dcl.ValueOrEmptyString(nr.BillingAccount),
+		"labels":                       dcl.ValueOrEmptyString(nr.Labels),
+		"provisioned_resources_parent": dcl.ValueOrEmptyString(nr.ProvisionedResourcesParent),
+		"kms_settings":                 dcl.ValueOrEmptyString(nr.KmsSettings),
+		"resource_settings":            dcl.ValueOrEmptyString(nr.ResourceSettings),
+		"organization":                 dcl.ValueOrEmptyString(nr.Organization),
+		"location":                     dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("organizations/{{organization}}/locations/{{location}}/workloads/{{name}}", params), nil
 }

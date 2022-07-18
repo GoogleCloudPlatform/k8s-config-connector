@@ -507,12 +507,12 @@ func canonicalizeOrganizationDesiredState(rawDesired, rawInitial *Organization, 
 
 func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organization) (*Organization, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -520,7 +520,7 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -528,22 +528,22 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreatedAt) && dcl.IsNotReturnedByServer(rawDesired.CreatedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreatedAt) && dcl.IsEmptyValueIndirect(rawDesired.CreatedAt) {
 		rawNew.CreatedAt = rawDesired.CreatedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastModifiedAt) && dcl.IsNotReturnedByServer(rawDesired.LastModifiedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastModifiedAt) && dcl.IsEmptyValueIndirect(rawDesired.LastModifiedAt) {
 		rawNew.LastModifiedAt = rawDesired.LastModifiedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExpiresAt) && dcl.IsNotReturnedByServer(rawDesired.ExpiresAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExpiresAt) && dcl.IsEmptyValueIndirect(rawDesired.ExpiresAt) {
 		rawNew.ExpiresAt = rawDesired.ExpiresAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Environments) && dcl.IsNotReturnedByServer(rawDesired.Environments) {
+	if dcl.IsEmptyValueIndirect(rawNew.Environments) && dcl.IsEmptyValueIndirect(rawDesired.Environments) {
 		rawNew.Environments = rawDesired.Environments
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Environments, rawNew.Environments) {
@@ -551,12 +551,12 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Properties) && dcl.IsNotReturnedByServer(rawDesired.Properties) {
+	if dcl.IsEmptyValueIndirect(rawNew.Properties) && dcl.IsEmptyValueIndirect(rawDesired.Properties) {
 		rawNew.Properties = rawDesired.Properties
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AnalyticsRegion) && dcl.IsNotReturnedByServer(rawDesired.AnalyticsRegion) {
+	if dcl.IsEmptyValueIndirect(rawNew.AnalyticsRegion) && dcl.IsEmptyValueIndirect(rawDesired.AnalyticsRegion) {
 		rawNew.AnalyticsRegion = rawDesired.AnalyticsRegion
 	} else {
 		if dcl.StringCanonicalize(rawDesired.AnalyticsRegion, rawNew.AnalyticsRegion) {
@@ -564,33 +564,33 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AuthorizedNetwork) && dcl.IsNotReturnedByServer(rawDesired.AuthorizedNetwork) {
+	if dcl.IsEmptyValueIndirect(rawNew.AuthorizedNetwork) && dcl.IsEmptyValueIndirect(rawDesired.AuthorizedNetwork) {
 		rawNew.AuthorizedNetwork = rawDesired.AuthorizedNetwork
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RuntimeType) && dcl.IsNotReturnedByServer(rawDesired.RuntimeType) {
+	if dcl.IsEmptyValueIndirect(rawNew.RuntimeType) && dcl.IsEmptyValueIndirect(rawDesired.RuntimeType) {
 		rawNew.RuntimeType = rawDesired.RuntimeType
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SubscriptionType) && dcl.IsNotReturnedByServer(rawDesired.SubscriptionType) {
+	if dcl.IsEmptyValueIndirect(rawNew.SubscriptionType) && dcl.IsEmptyValueIndirect(rawDesired.SubscriptionType) {
 		rawNew.SubscriptionType = rawDesired.SubscriptionType
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BillingType) && dcl.IsNotReturnedByServer(rawDesired.BillingType) {
+	if dcl.IsEmptyValueIndirect(rawNew.BillingType) && dcl.IsEmptyValueIndirect(rawDesired.BillingType) {
 		rawNew.BillingType = rawDesired.BillingType
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AddonsConfig) && dcl.IsNotReturnedByServer(rawDesired.AddonsConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.AddonsConfig) && dcl.IsEmptyValueIndirect(rawDesired.AddonsConfig) {
 		rawNew.AddonsConfig = rawDesired.AddonsConfig
 	} else {
 		rawNew.AddonsConfig = canonicalizeNewOrganizationAddonsConfig(c, rawDesired.AddonsConfig, rawNew.AddonsConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CaCertificate) && dcl.IsNotReturnedByServer(rawDesired.CaCertificate) {
+	if dcl.IsEmptyValueIndirect(rawNew.CaCertificate) && dcl.IsEmptyValueIndirect(rawDesired.CaCertificate) {
 		rawNew.CaCertificate = rawDesired.CaCertificate
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CaCertificate, rawNew.CaCertificate) {
@@ -598,12 +598,12 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RuntimeDatabaseEncryptionKeyName) && dcl.IsNotReturnedByServer(rawDesired.RuntimeDatabaseEncryptionKeyName) {
+	if dcl.IsEmptyValueIndirect(rawNew.RuntimeDatabaseEncryptionKeyName) && dcl.IsEmptyValueIndirect(rawDesired.RuntimeDatabaseEncryptionKeyName) {
 		rawNew.RuntimeDatabaseEncryptionKeyName = rawDesired.RuntimeDatabaseEncryptionKeyName
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ProjectId) && dcl.IsNotReturnedByServer(rawDesired.ProjectId) {
+	if dcl.IsEmptyValueIndirect(rawNew.ProjectId) && dcl.IsEmptyValueIndirect(rawDesired.ProjectId) {
 		rawNew.ProjectId = rawDesired.ProjectId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ProjectId, rawNew.ProjectId) {
@@ -611,7 +611,7 @@ func canonicalizeOrganizationNewState(c *Client, rawNew, rawDesired *Organizatio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
@@ -676,7 +676,7 @@ func canonicalizeNewOrganizationAddonsConfig(c *Client, des, nw *OrganizationAdd
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OrganizationAddonsConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -790,7 +790,7 @@ func canonicalizeNewOrganizationAddonsConfigAdvancedApiOpsConfig(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OrganizationAddonsConfigAdvancedApiOpsConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -905,7 +905,7 @@ func canonicalizeNewOrganizationAddonsConfigMonetizationConfig(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for OrganizationAddonsConfigMonetizationConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2008,7 +2008,7 @@ func extractOrganizationFields(r *Organization) error {
 	if err := extractOrganizationAddonsConfigFields(r, vAddonsConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAddonsConfig) {
+	if !dcl.IsEmptyValueIndirect(vAddonsConfig) {
 		r.AddonsConfig = vAddonsConfig
 	}
 	return nil
@@ -2022,7 +2022,7 @@ func extractOrganizationAddonsConfigFields(r *Organization, o *OrganizationAddon
 	if err := extractOrganizationAddonsConfigAdvancedApiOpsConfigFields(r, vAdvancedApiOpsConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAdvancedApiOpsConfig) {
+	if !dcl.IsEmptyValueIndirect(vAdvancedApiOpsConfig) {
 		o.AdvancedApiOpsConfig = vAdvancedApiOpsConfig
 	}
 	vMonetizationConfig := o.MonetizationConfig
@@ -2033,7 +2033,7 @@ func extractOrganizationAddonsConfigFields(r *Organization, o *OrganizationAddon
 	if err := extractOrganizationAddonsConfigMonetizationConfigFields(r, vMonetizationConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonetizationConfig) {
+	if !dcl.IsEmptyValueIndirect(vMonetizationConfig) {
 		o.MonetizationConfig = vMonetizationConfig
 	}
 	return nil
@@ -2054,7 +2054,7 @@ func postReadExtractOrganizationFields(r *Organization) error {
 	if err := postReadExtractOrganizationAddonsConfigFields(r, vAddonsConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAddonsConfig) {
+	if !dcl.IsEmptyValueIndirect(vAddonsConfig) {
 		r.AddonsConfig = vAddonsConfig
 	}
 	return nil
@@ -2068,7 +2068,7 @@ func postReadExtractOrganizationAddonsConfigFields(r *Organization, o *Organizat
 	if err := extractOrganizationAddonsConfigAdvancedApiOpsConfigFields(r, vAdvancedApiOpsConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAdvancedApiOpsConfig) {
+	if !dcl.IsEmptyValueIndirect(vAdvancedApiOpsConfig) {
 		o.AdvancedApiOpsConfig = vAdvancedApiOpsConfig
 	}
 	vMonetizationConfig := o.MonetizationConfig
@@ -2079,7 +2079,7 @@ func postReadExtractOrganizationAddonsConfigFields(r *Organization, o *Organizat
 	if err := extractOrganizationAddonsConfigMonetizationConfigFields(r, vMonetizationConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonetizationConfig) {
+	if !dcl.IsEmptyValueIndirect(vMonetizationConfig) {
 		o.MonetizationConfig = vMonetizationConfig
 	}
 	return nil

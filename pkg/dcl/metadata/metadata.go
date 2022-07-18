@@ -393,6 +393,11 @@ var serviceList = []ServiceMetadata{
 				Releasable: false,
 			},
 			{
+				Kind:                           "IAMWorkforcePool",
+				Releasable:                     true,
+				SupportsHierarchicalReferences: true,
+			},
+			{
 				Kind:                           "IAMWorkloadIdentityPool",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

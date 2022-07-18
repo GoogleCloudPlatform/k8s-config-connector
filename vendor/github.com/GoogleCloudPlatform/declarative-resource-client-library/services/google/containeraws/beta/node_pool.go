@@ -639,22 +639,22 @@ func (r *NodePool) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"version":           dcl.ValueOrEmptyString(nr.Version),
-		"config":            dcl.ValueOrEmptyString(nr.Config),
-		"autoscaling":       dcl.ValueOrEmptyString(nr.Autoscaling),
-		"subnetId":          dcl.ValueOrEmptyString(nr.SubnetId),
-		"state":             dcl.ValueOrEmptyString(nr.State),
-		"uid":               dcl.ValueOrEmptyString(nr.Uid),
-		"reconciling":       dcl.ValueOrEmptyString(nr.Reconciling),
-		"createTime":        dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":        dcl.ValueOrEmptyString(nr.UpdateTime),
-		"etag":              dcl.ValueOrEmptyString(nr.Etag),
-		"annotations":       dcl.ValueOrEmptyString(nr.Annotations),
-		"maxPodsConstraint": dcl.ValueOrEmptyString(nr.MaxPodsConstraint),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
-		"location":          dcl.ValueOrEmptyString(nr.Location),
-		"cluster":           dcl.ValueOrEmptyString(nr.Cluster),
+		"name":                dcl.ValueOrEmptyString(nr.Name),
+		"version":             dcl.ValueOrEmptyString(nr.Version),
+		"config":              dcl.ValueOrEmptyString(nr.Config),
+		"autoscaling":         dcl.ValueOrEmptyString(nr.Autoscaling),
+		"subnet_id":           dcl.ValueOrEmptyString(nr.SubnetId),
+		"state":               dcl.ValueOrEmptyString(nr.State),
+		"uid":                 dcl.ValueOrEmptyString(nr.Uid),
+		"reconciling":         dcl.ValueOrEmptyString(nr.Reconciling),
+		"create_time":         dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":         dcl.ValueOrEmptyString(nr.UpdateTime),
+		"etag":                dcl.ValueOrEmptyString(nr.Etag),
+		"annotations":         dcl.ValueOrEmptyString(nr.Annotations),
+		"max_pods_constraint": dcl.ValueOrEmptyString(nr.MaxPodsConstraint),
+		"project":             dcl.ValueOrEmptyString(nr.Project),
+		"location":            dcl.ValueOrEmptyString(nr.Location),
+		"cluster":             dcl.ValueOrEmptyString(nr.Cluster),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/awsClusters/{{cluster}}/awsNodePools/{{name}}", params), nil
 }

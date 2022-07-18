@@ -153,3 +153,91 @@ func expandCertificateConfigX509ConfigCAOptions(_ *Client, caOptions *Certificat
 
 	return m, nil
 }
+
+// base_key_usage has a custom flattener because the API does not return the object when all subfields are set to false.
+func flattenCertificateTemplateBaseKeyUsage(_ *Client, i interface{}, res *CertificateTemplate) *CertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		if res != nil && res.PredefinedValues != nil && res.PredefinedValues.KeyUsage != nil && res.PredefinedValues.KeyUsage.BaseKeyUsage != nil {
+			baseKeyUsage := res.PredefinedValues.KeyUsage.BaseKeyUsage
+			allFalse := true
+			for _, booleanField := range []*bool{
+				baseKeyUsage.DigitalSignature,
+				baseKeyUsage.ContentCommitment,
+				baseKeyUsage.KeyEncipherment,
+				baseKeyUsage.DataEncipherment,
+				baseKeyUsage.KeyAgreement,
+				baseKeyUsage.CertSign,
+				baseKeyUsage.CrlSign,
+				baseKeyUsage.EncipherOnly,
+				baseKeyUsage.DecipherOnly,
+			} {
+				if dcl.ValueOrEmptyBool(booleanField) {
+					allFalse = false
+				}
+			}
+			if allFalse {
+				return dcl.Copy(baseKeyUsage).(*CertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage)
+			}
+		}
+		return nil
+	}
+
+	r := &CertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage
+	}
+	r.DigitalSignature = dcl.FlattenBool(m["digitalSignature"])
+	r.ContentCommitment = dcl.FlattenBool(m["contentCommitment"])
+	r.KeyEncipherment = dcl.FlattenBool(m["keyEncipherment"])
+	r.DataEncipherment = dcl.FlattenBool(m["dataEncipherment"])
+	r.KeyAgreement = dcl.FlattenBool(m["keyAgreement"])
+	r.CertSign = dcl.FlattenBool(m["certSign"])
+	r.CrlSign = dcl.FlattenBool(m["crlSign"])
+	r.EncipherOnly = dcl.FlattenBool(m["encipherOnly"])
+	r.DecipherOnly = dcl.FlattenBool(m["decipherOnly"])
+
+	return r
+}
+
+// extended_key_usage has a custom flattener because the API does not return the object when all subfields are set to false.
+func flattenCertificateTemplateExtendedKeyUsage(_ *Client, i interface{}, res *CertificateTemplate) *CertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		if res != nil && res.PredefinedValues != nil && res.PredefinedValues.KeyUsage != nil && res.PredefinedValues.KeyUsage.ExtendedKeyUsage != nil {
+			extendedKeyUsage := res.PredefinedValues.KeyUsage.ExtendedKeyUsage
+			allFalse := true
+			for _, booleanField := range []*bool{
+				extendedKeyUsage.ServerAuth,
+				extendedKeyUsage.ClientAuth,
+				extendedKeyUsage.CodeSigning,
+				extendedKeyUsage.EmailProtection,
+				extendedKeyUsage.TimeStamping,
+				extendedKeyUsage.OcspSigning,
+			} {
+				if dcl.ValueOrEmptyBool(booleanField) {
+					allFalse = false
+				}
+			}
+			if allFalse {
+				return dcl.Copy(extendedKeyUsage).(*CertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage)
+			}
+		}
+		return nil
+	}
+
+	r := &CertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage
+	}
+	r.ServerAuth = dcl.FlattenBool(m["serverAuth"])
+	r.ClientAuth = dcl.FlattenBool(m["clientAuth"])
+	r.CodeSigning = dcl.FlattenBool(m["codeSigning"])
+	r.EmailProtection = dcl.FlattenBool(m["emailProtection"])
+	r.TimeStamping = dcl.FlattenBool(m["timeStamping"])
+	r.OcspSigning = dcl.FlattenBool(m["ocspSigning"])
+
+	return r
+}

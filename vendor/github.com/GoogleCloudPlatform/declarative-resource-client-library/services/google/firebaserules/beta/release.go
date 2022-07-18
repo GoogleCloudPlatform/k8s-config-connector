@@ -51,12 +51,12 @@ func (r *Release) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"rulesetName": dcl.ValueOrEmptyString(nr.RulesetName),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
-		"disabled":    dcl.ValueOrEmptyString(nr.Disabled),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"ruleset_name": dcl.ValueOrEmptyString(nr.RulesetName),
+		"create_time":  dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"disabled":     dcl.ValueOrEmptyString(nr.Disabled),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/releases/{{name}}", params), nil
 }

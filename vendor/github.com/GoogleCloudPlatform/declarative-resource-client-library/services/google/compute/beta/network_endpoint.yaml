@@ -23,21 +23,18 @@ paths:
     - name: NetworkEndpoint
       required: true
       description: A full instance of a NetworkEndpoint
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a NetworkEndpoint
     parameters:
     - name: NetworkEndpoint
       required: true
       description: A full instance of a NetworkEndpoint
-    timeoutSecs: 0
   delete:
     description: The function used to delete a NetworkEndpoint
     parameters:
     - name: NetworkEndpoint
       required: true
       description: A full instance of a NetworkEndpoint
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all NetworkEndpoint
     parameters:
@@ -53,7 +50,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many NetworkEndpoint
     parameters:
@@ -69,7 +65,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     NetworkEndpoint:
@@ -80,6 +75,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       properties:
         annotations:

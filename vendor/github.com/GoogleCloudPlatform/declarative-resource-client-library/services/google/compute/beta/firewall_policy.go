@@ -55,16 +55,16 @@ func (r *FirewallPolicy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"id":                dcl.ValueOrEmptyString(nr.Id),
-		"creationTimestamp": dcl.ValueOrEmptyString(nr.CreationTimestamp),
-		"description":       dcl.ValueOrEmptyString(nr.Description),
-		"fingerprint":       dcl.ValueOrEmptyString(nr.Fingerprint),
-		"selfLink":          dcl.ValueOrEmptyString(nr.SelfLink),
-		"selfLinkWithId":    dcl.ValueOrEmptyString(nr.SelfLinkWithId),
-		"ruleTupleCount":    dcl.ValueOrEmptyString(nr.RuleTupleCount),
-		"shortName":         dcl.ValueOrEmptyString(nr.ShortName),
-		"parent":            dcl.ValueOrEmptyString(nr.Parent),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"id":                 dcl.ValueOrEmptyString(nr.Id),
+		"creation_timestamp": dcl.ValueOrEmptyString(nr.CreationTimestamp),
+		"description":        dcl.ValueOrEmptyString(nr.Description),
+		"fingerprint":        dcl.ValueOrEmptyString(nr.Fingerprint),
+		"self_link":          dcl.ValueOrEmptyString(nr.SelfLink),
+		"self_link_with_id":  dcl.ValueOrEmptyString(nr.SelfLinkWithId),
+		"rule_tuple_count":   dcl.ValueOrEmptyString(nr.RuleTupleCount),
+		"short_name":         dcl.ValueOrEmptyString(nr.ShortName),
+		"parent":             dcl.ValueOrEmptyString(nr.Parent),
 	}
 	return dcl.Nprintf("locations/global/firewallPolicies/{{name}}", params), nil
 }

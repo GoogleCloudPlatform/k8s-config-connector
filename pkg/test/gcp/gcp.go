@@ -234,6 +234,7 @@ func ResourceSupportsDeletion(resourceKind string) bool {
 		"DataflowFlexTemplateJob",
 		"DataflowJob",
 		"IAMCustomRole",
+		"IAMWorkforcePool",
 		"IAMWorkloadIdentityPool",
 		"IAMWorkloadIdentityPoolProvider",
 		"KMSCryptoKey",

@@ -108,15 +108,15 @@ func (r *TenantOAuthIdpConfig) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":         dcl.ValueOrEmptyString(nr.Name),
-		"clientId":     dcl.ValueOrEmptyString(nr.ClientId),
-		"issuer":       dcl.ValueOrEmptyString(nr.Issuer),
-		"displayName":  dcl.ValueOrEmptyString(nr.DisplayName),
-		"enabled":      dcl.ValueOrEmptyString(nr.Enabled),
-		"clientSecret": dcl.ValueOrEmptyString(nr.ClientSecret),
-		"responseType": dcl.ValueOrEmptyString(nr.ResponseType),
-		"project":      dcl.ValueOrEmptyString(nr.Project),
-		"tenant":       dcl.ValueOrEmptyString(nr.Tenant),
+		"name":          dcl.ValueOrEmptyString(nr.Name),
+		"client_id":     dcl.ValueOrEmptyString(nr.ClientId),
+		"issuer":        dcl.ValueOrEmptyString(nr.Issuer),
+		"display_name":  dcl.ValueOrEmptyString(nr.DisplayName),
+		"enabled":       dcl.ValueOrEmptyString(nr.Enabled),
+		"client_secret": dcl.ValueOrEmptyString(nr.ClientSecret),
+		"response_type": dcl.ValueOrEmptyString(nr.ResponseType),
+		"project":       dcl.ValueOrEmptyString(nr.Project),
+		"tenant":        dcl.ValueOrEmptyString(nr.Tenant),
 	}
 	return dcl.Nprintf("projects/{{project}}/tenants/{{tenant}}/oauthIdpConfigs/{{name}}", params), nil
 }

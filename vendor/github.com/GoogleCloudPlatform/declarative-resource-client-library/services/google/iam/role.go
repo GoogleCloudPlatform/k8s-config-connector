@@ -136,19 +136,19 @@ func (r *Role) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"title":               dcl.ValueOrEmptyString(nr.Title),
-		"description":         dcl.ValueOrEmptyString(nr.Description),
-		"localizedValues":     dcl.ValueOrEmptyString(nr.LocalizedValues),
-		"lifecyclePhase":      dcl.ValueOrEmptyString(nr.LifecyclePhase),
-		"groupName":           dcl.ValueOrEmptyString(nr.GroupName),
-		"groupTitle":          dcl.ValueOrEmptyString(nr.GroupTitle),
-		"includedPermissions": dcl.ValueOrEmptyString(nr.IncludedPermissions),
-		"stage":               dcl.ValueOrEmptyString(nr.Stage),
-		"etag":                dcl.ValueOrEmptyString(nr.Etag),
-		"deleted":             dcl.ValueOrEmptyString(nr.Deleted),
-		"includedRoles":       dcl.ValueOrEmptyString(nr.IncludedRoles),
-		"parent":              dcl.ValueOrEmptyString(nr.Parent),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"title":                dcl.ValueOrEmptyString(nr.Title),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"localized_values":     dcl.ValueOrEmptyString(nr.LocalizedValues),
+		"lifecycle_phase":      dcl.ValueOrEmptyString(nr.LifecyclePhase),
+		"group_name":           dcl.ValueOrEmptyString(nr.GroupName),
+		"group_title":          dcl.ValueOrEmptyString(nr.GroupTitle),
+		"included_permissions": dcl.ValueOrEmptyString(nr.IncludedPermissions),
+		"stage":                dcl.ValueOrEmptyString(nr.Stage),
+		"etag":                 dcl.ValueOrEmptyString(nr.Etag),
+		"deleted":              dcl.ValueOrEmptyString(nr.Deleted),
+		"included_roles":       dcl.ValueOrEmptyString(nr.IncludedRoles),
+		"parent":               dcl.ValueOrEmptyString(nr.Parent),
 	}
 	return dcl.Nprintf("{{parent}}/roles/{{name}}", params), nil
 }

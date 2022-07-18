@@ -534,19 +534,19 @@ func (r *CryptoKey) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                     dcl.ValueOrEmptyString(nr.Name),
-		"primary":                  dcl.ValueOrEmptyString(nr.Primary),
-		"purpose":                  dcl.ValueOrEmptyString(nr.Purpose),
-		"createTime":               dcl.ValueOrEmptyString(nr.CreateTime),
-		"nextRotationTime":         dcl.ValueOrEmptyString(nr.NextRotationTime),
-		"rotationPeriod":           dcl.ValueOrEmptyString(nr.RotationPeriod),
-		"versionTemplate":          dcl.ValueOrEmptyString(nr.VersionTemplate),
-		"labels":                   dcl.ValueOrEmptyString(nr.Labels),
-		"importOnly":               dcl.ValueOrEmptyString(nr.ImportOnly),
-		"destroyScheduledDuration": dcl.ValueOrEmptyString(nr.DestroyScheduledDuration),
-		"project":                  dcl.ValueOrEmptyString(nr.Project),
-		"location":                 dcl.ValueOrEmptyString(nr.Location),
-		"keyRing":                  dcl.ValueOrEmptyString(nr.KeyRing),
+		"name":                       dcl.ValueOrEmptyString(nr.Name),
+		"primary":                    dcl.ValueOrEmptyString(nr.Primary),
+		"purpose":                    dcl.ValueOrEmptyString(nr.Purpose),
+		"create_time":                dcl.ValueOrEmptyString(nr.CreateTime),
+		"next_rotation_time":         dcl.ValueOrEmptyString(nr.NextRotationTime),
+		"rotation_period":            dcl.ValueOrEmptyString(nr.RotationPeriod),
+		"version_template":           dcl.ValueOrEmptyString(nr.VersionTemplate),
+		"labels":                     dcl.ValueOrEmptyString(nr.Labels),
+		"import_only":                dcl.ValueOrEmptyString(nr.ImportOnly),
+		"destroy_scheduled_duration": dcl.ValueOrEmptyString(nr.DestroyScheduledDuration),
+		"project":                    dcl.ValueOrEmptyString(nr.Project),
+		"location":                   dcl.ValueOrEmptyString(nr.Location),
+		"key_ring":                   dcl.ValueOrEmptyString(nr.KeyRing),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/keyRings/{{key_ring}}/cryptoKeys/{{name}}", params), nil
 }

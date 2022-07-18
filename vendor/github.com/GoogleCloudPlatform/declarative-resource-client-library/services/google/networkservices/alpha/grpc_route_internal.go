@@ -644,7 +644,7 @@ func canonicalizeGrpcRouteDesiredState(rawDesired, rawInitial *GrpcRoute, opts .
 
 func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*GrpcRoute, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -652,22 +652,22 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -675,7 +675,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Hostnames) && dcl.IsNotReturnedByServer(rawDesired.Hostnames) {
+	if dcl.IsEmptyValueIndirect(rawNew.Hostnames) && dcl.IsEmptyValueIndirect(rawDesired.Hostnames) {
 		rawNew.Hostnames = rawDesired.Hostnames
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Hostnames, rawNew.Hostnames) {
@@ -683,7 +683,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Routers) && dcl.IsNotReturnedByServer(rawDesired.Routers) {
+	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
 		rawNew.Routers = rawDesired.Routers
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
@@ -691,7 +691,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Meshes) && dcl.IsNotReturnedByServer(rawDesired.Meshes) {
+	if dcl.IsEmptyValueIndirect(rawNew.Meshes) && dcl.IsEmptyValueIndirect(rawDesired.Meshes) {
 		rawNew.Meshes = rawDesired.Meshes
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawNew.Meshes) {
@@ -699,7 +699,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Gateways) && dcl.IsNotReturnedByServer(rawDesired.Gateways) {
+	if dcl.IsEmptyValueIndirect(rawNew.Gateways) && dcl.IsEmptyValueIndirect(rawDesired.Gateways) {
 		rawNew.Gateways = rawDesired.Gateways
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawNew.Gateways) {
@@ -707,7 +707,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rules) && dcl.IsNotReturnedByServer(rawDesired.Rules) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rules) && dcl.IsEmptyValueIndirect(rawDesired.Rules) {
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewGrpcRouteRulesSlice(c, rawDesired.Rules, rawNew.Rules)
@@ -717,7 +717,7 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -783,7 +783,7 @@ func canonicalizeNewGrpcRouteRules(c *Client, des, nw *GrpcRouteRules) *GrpcRout
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -904,7 +904,7 @@ func canonicalizeNewGrpcRouteRulesMatches(c *Client, des, nw *GrpcRouteRulesMatc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesMatches while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1044,7 +1044,7 @@ func canonicalizeNewGrpcRouteRulesMatchesMethod(c *Client, des, nw *GrpcRouteRul
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesMatchesMethod while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1176,7 +1176,7 @@ func canonicalizeNewGrpcRouteRulesMatchesHeaders(c *Client, des, nw *GrpcRouteRu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesMatchesHeaders while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1297,7 +1297,7 @@ func canonicalizeNewGrpcRouteRulesAction(c *Client, des, nw *GrpcRouteRulesActio
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesAction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1432,7 +1432,7 @@ func canonicalizeNewGrpcRouteRulesActionDestinations(c *Client, des, nw *GrpcRou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesActionDestinations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1560,7 +1560,7 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicy(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesActionFaultInjectionPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1700,7 +1700,7 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyDelay(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesActionFaultInjectionPolicyDelay while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1842,7 +1842,7 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyAbort(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesActionFaultInjectionPolicyAbort while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1959,7 +1959,7 @@ func canonicalizeNewGrpcRouteRulesActionRetryPolicy(c *Client, des, nw *GrpcRout
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GrpcRouteRulesActionRetryPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4079,7 +4079,7 @@ func extractGrpcRouteRulesFields(r *GrpcRoute, o *GrpcRouteRules) error {
 	if err := extractGrpcRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -4093,7 +4093,7 @@ func extractGrpcRouteRulesMatchesFields(r *GrpcRoute, o *GrpcRouteRulesMatches) 
 	if err := extractGrpcRouteRulesMatchesMethodFields(r, vMethod); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMethod) {
+	if !dcl.IsEmptyValueIndirect(vMethod) {
 		o.Method = vMethod
 	}
 	return nil
@@ -4113,7 +4113,7 @@ func extractGrpcRouteRulesActionFields(r *GrpcRoute, o *GrpcRouteRulesAction) er
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyFields(r, vFaultInjectionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFaultInjectionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vFaultInjectionPolicy) {
 		o.FaultInjectionPolicy = vFaultInjectionPolicy
 	}
 	vRetryPolicy := o.RetryPolicy
@@ -4124,7 +4124,7 @@ func extractGrpcRouteRulesActionFields(r *GrpcRoute, o *GrpcRouteRulesAction) er
 	if err := extractGrpcRouteRulesActionRetryPolicyFields(r, vRetryPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRetryPolicy) {
 		o.RetryPolicy = vRetryPolicy
 	}
 	return nil
@@ -4141,7 +4141,7 @@ func extractGrpcRouteRulesActionFaultInjectionPolicyFields(r *GrpcRoute, o *Grpc
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyDelayFields(r, vDelay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDelay) {
+	if !dcl.IsEmptyValueIndirect(vDelay) {
 		o.Delay = vDelay
 	}
 	vAbort := o.Abort
@@ -4152,7 +4152,7 @@ func extractGrpcRouteRulesActionFaultInjectionPolicyFields(r *GrpcRoute, o *Grpc
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyAbortFields(r, vAbort); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAbort) {
+	if !dcl.IsEmptyValueIndirect(vAbort) {
 		o.Abort = vAbort
 	}
 	return nil
@@ -4179,7 +4179,7 @@ func postReadExtractGrpcRouteRulesFields(r *GrpcRoute, o *GrpcRouteRules) error 
 	if err := extractGrpcRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -4193,7 +4193,7 @@ func postReadExtractGrpcRouteRulesMatchesFields(r *GrpcRoute, o *GrpcRouteRulesM
 	if err := extractGrpcRouteRulesMatchesMethodFields(r, vMethod); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMethod) {
+	if !dcl.IsEmptyValueIndirect(vMethod) {
 		o.Method = vMethod
 	}
 	return nil
@@ -4213,7 +4213,7 @@ func postReadExtractGrpcRouteRulesActionFields(r *GrpcRoute, o *GrpcRouteRulesAc
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyFields(r, vFaultInjectionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFaultInjectionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vFaultInjectionPolicy) {
 		o.FaultInjectionPolicy = vFaultInjectionPolicy
 	}
 	vRetryPolicy := o.RetryPolicy
@@ -4224,7 +4224,7 @@ func postReadExtractGrpcRouteRulesActionFields(r *GrpcRoute, o *GrpcRouteRulesAc
 	if err := extractGrpcRouteRulesActionRetryPolicyFields(r, vRetryPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryPolicy) {
+	if !dcl.IsEmptyValueIndirect(vRetryPolicy) {
 		o.RetryPolicy = vRetryPolicy
 	}
 	return nil
@@ -4241,7 +4241,7 @@ func postReadExtractGrpcRouteRulesActionFaultInjectionPolicyFields(r *GrpcRoute,
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyDelayFields(r, vDelay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDelay) {
+	if !dcl.IsEmptyValueIndirect(vDelay) {
 		o.Delay = vDelay
 	}
 	vAbort := o.Abort
@@ -4252,7 +4252,7 @@ func postReadExtractGrpcRouteRulesActionFaultInjectionPolicyFields(r *GrpcRoute,
 	if err := extractGrpcRouteRulesActionFaultInjectionPolicyAbortFields(r, vAbort); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAbort) {
+	if !dcl.IsEmptyValueIndirect(vAbort) {
 		o.Abort = vAbort
 	}
 	return nil

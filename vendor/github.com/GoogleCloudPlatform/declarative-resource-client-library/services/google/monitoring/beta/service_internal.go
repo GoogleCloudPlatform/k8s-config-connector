@@ -452,7 +452,7 @@ func canonicalizeServiceDesiredState(rawDesired, rawInitial *Service, opts ...dc
 
 func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Service, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -460,7 +460,7 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -468,19 +468,19 @@ func canonicalizeServiceNewState(c *Client, rawNew, rawDesired *Service) (*Servi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Custom) && dcl.IsNotReturnedByServer(rawDesired.Custom) {
+	if dcl.IsEmptyValueIndirect(rawNew.Custom) && dcl.IsEmptyValueIndirect(rawDesired.Custom) {
 		rawNew.Custom = rawDesired.Custom
 	} else {
 		rawNew.Custom = canonicalizeNewServiceCustom(c, rawDesired.Custom, rawNew.Custom)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Telemetry) && dcl.IsNotReturnedByServer(rawDesired.Telemetry) {
+	if dcl.IsEmptyValueIndirect(rawNew.Telemetry) && dcl.IsEmptyValueIndirect(rawDesired.Telemetry) {
 		rawNew.Telemetry = rawDesired.Telemetry
 	} else {
 		rawNew.Telemetry = canonicalizeNewServiceTelemetry(c, rawDesired.Telemetry, rawNew.Telemetry)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UserLabels) && dcl.IsNotReturnedByServer(rawDesired.UserLabels) {
+	if dcl.IsEmptyValueIndirect(rawNew.UserLabels) && dcl.IsEmptyValueIndirect(rawDesired.UserLabels) {
 		rawNew.UserLabels = rawDesired.UserLabels
 	} else {
 	}
@@ -541,7 +541,7 @@ func canonicalizeNewServiceCustom(c *Client, des, nw *ServiceCustom) *ServiceCus
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceCustom while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -652,7 +652,7 @@ func canonicalizeNewServiceTelemetry(c *Client, des, nw *ServiceTelemetry) *Serv
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceTelemetry while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1238,7 +1238,7 @@ func extractServiceFields(r *Service) error {
 	if err := extractServiceCustomFields(r, vCustom); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCustom) {
+	if !dcl.IsEmptyValueIndirect(vCustom) {
 		r.Custom = vCustom
 	}
 	vTelemetry := r.Telemetry
@@ -1249,7 +1249,7 @@ func extractServiceFields(r *Service) error {
 	if err := extractServiceTelemetryFields(r, vTelemetry); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTelemetry) {
+	if !dcl.IsEmptyValueIndirect(vTelemetry) {
 		r.Telemetry = vTelemetry
 	}
 	return nil
@@ -1270,7 +1270,7 @@ func postReadExtractServiceFields(r *Service) error {
 	if err := postReadExtractServiceCustomFields(r, vCustom); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCustom) {
+	if !dcl.IsEmptyValueIndirect(vCustom) {
 		r.Custom = vCustom
 	}
 	vTelemetry := r.Telemetry
@@ -1281,7 +1281,7 @@ func postReadExtractServiceFields(r *Service) error {
 	if err := postReadExtractServiceTelemetryFields(r, vTelemetry); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTelemetry) {
+	if !dcl.IsEmptyValueIndirect(vTelemetry) {
 		r.Telemetry = vTelemetry
 	}
 	return nil

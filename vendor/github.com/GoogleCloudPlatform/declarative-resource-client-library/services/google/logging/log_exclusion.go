@@ -56,8 +56,8 @@ func (r *LogExclusion) ID() (string, error) {
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"filter":      dcl.ValueOrEmptyString(nr.Filter),
 		"disabled":    dcl.ValueOrEmptyString(nr.Disabled),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"parent":      dcl.ValueOrEmptyString(nr.Parent),
 	}
 	return dcl.Nprintf("{{parent}}/exclusions/{{name}}", params), nil

@@ -624,12 +624,12 @@ func canonicalizeUptimeCheckConfigDesiredState(rawDesired, rawInitial *UptimeChe
 
 func canonicalizeUptimeCheckConfigNewState(c *Client, rawNew, rawDesired *UptimeCheckConfig) (*UptimeCheckConfig, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -637,31 +637,31 @@ func canonicalizeUptimeCheckConfigNewState(c *Client, rawNew, rawDesired *Uptime
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MonitoredResource) && dcl.IsNotReturnedByServer(rawDesired.MonitoredResource) {
+	if dcl.IsEmptyValueIndirect(rawNew.MonitoredResource) && dcl.IsEmptyValueIndirect(rawDesired.MonitoredResource) {
 		rawNew.MonitoredResource = rawDesired.MonitoredResource
 	} else {
 		rawNew.MonitoredResource = canonicalizeNewUptimeCheckConfigMonitoredResource(c, rawDesired.MonitoredResource, rawNew.MonitoredResource)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ResourceGroup) && dcl.IsNotReturnedByServer(rawDesired.ResourceGroup) {
+	if dcl.IsEmptyValueIndirect(rawNew.ResourceGroup) && dcl.IsEmptyValueIndirect(rawDesired.ResourceGroup) {
 		rawNew.ResourceGroup = rawDesired.ResourceGroup
 	} else {
 		rawNew.ResourceGroup = canonicalizeNewUptimeCheckConfigResourceGroup(c, rawDesired.ResourceGroup, rawNew.ResourceGroup)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.HttpCheck) && dcl.IsNotReturnedByServer(rawDesired.HttpCheck) {
+	if dcl.IsEmptyValueIndirect(rawNew.HttpCheck) && dcl.IsEmptyValueIndirect(rawDesired.HttpCheck) {
 		rawNew.HttpCheck = rawDesired.HttpCheck
 	} else {
 		rawNew.HttpCheck = canonicalizeNewUptimeCheckConfigHttpCheck(c, rawDesired.HttpCheck, rawNew.HttpCheck)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TcpCheck) && dcl.IsNotReturnedByServer(rawDesired.TcpCheck) {
+	if dcl.IsEmptyValueIndirect(rawNew.TcpCheck) && dcl.IsEmptyValueIndirect(rawDesired.TcpCheck) {
 		rawNew.TcpCheck = rawDesired.TcpCheck
 	} else {
 		rawNew.TcpCheck = canonicalizeNewUptimeCheckConfigTcpCheck(c, rawDesired.TcpCheck, rawNew.TcpCheck)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Period) && dcl.IsNotReturnedByServer(rawDesired.Period) {
+	if dcl.IsEmptyValueIndirect(rawNew.Period) && dcl.IsEmptyValueIndirect(rawDesired.Period) {
 		rawNew.Period = rawDesired.Period
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Period, rawNew.Period) {
@@ -669,7 +669,7 @@ func canonicalizeUptimeCheckConfigNewState(c *Client, rawNew, rawDesired *Uptime
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Timeout) && dcl.IsNotReturnedByServer(rawDesired.Timeout) {
+	if dcl.IsEmptyValueIndirect(rawNew.Timeout) && dcl.IsEmptyValueIndirect(rawDesired.Timeout) {
 		rawNew.Timeout = rawDesired.Timeout
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Timeout, rawNew.Timeout) {
@@ -677,13 +677,13 @@ func canonicalizeUptimeCheckConfigNewState(c *Client, rawNew, rawDesired *Uptime
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ContentMatchers) && dcl.IsNotReturnedByServer(rawDesired.ContentMatchers) {
+	if dcl.IsEmptyValueIndirect(rawNew.ContentMatchers) && dcl.IsEmptyValueIndirect(rawDesired.ContentMatchers) {
 		rawNew.ContentMatchers = rawDesired.ContentMatchers
 	} else {
 		rawNew.ContentMatchers = canonicalizeNewUptimeCheckConfigContentMatchersSlice(c, rawDesired.ContentMatchers, rawNew.ContentMatchers)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelectedRegions) && dcl.IsNotReturnedByServer(rawDesired.SelectedRegions) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelectedRegions) && dcl.IsEmptyValueIndirect(rawDesired.SelectedRegions) {
 		rawNew.SelectedRegions = rawDesired.SelectedRegions
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.SelectedRegions, rawNew.SelectedRegions) {
@@ -760,7 +760,7 @@ func canonicalizeNewUptimeCheckConfigMonitoredResource(c *Client, des, nw *Uptim
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigMonitoredResource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -882,7 +882,7 @@ func canonicalizeNewUptimeCheckConfigResourceGroup(c *Client, des, nw *UptimeChe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigResourceGroup while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1046,7 +1046,7 @@ func canonicalizeNewUptimeCheckConfigHttpCheck(c *Client, des, nw *UptimeCheckCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigHttpCheck while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1188,7 +1188,7 @@ func canonicalizeNewUptimeCheckConfigHttpCheckAuthInfo(c *Client, des, nw *Uptim
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigHttpCheckAuthInfo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1305,7 +1305,7 @@ func canonicalizeNewUptimeCheckConfigTcpCheck(c *Client, des, nw *UptimeCheckCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigTcpCheck while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1426,7 +1426,7 @@ func canonicalizeNewUptimeCheckConfigContentMatchers(c *Client, des, nw *UptimeC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for UptimeCheckConfigContentMatchers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3039,7 +3039,7 @@ func extractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := extractUptimeCheckConfigMonitoredResourceFields(r, vMonitoredResource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonitoredResource) {
+	if !dcl.IsEmptyValueIndirect(vMonitoredResource) {
 		r.MonitoredResource = vMonitoredResource
 	}
 	vResourceGroup := r.ResourceGroup
@@ -3050,7 +3050,7 @@ func extractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := extractUptimeCheckConfigResourceGroupFields(r, vResourceGroup); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResourceGroup) {
+	if !dcl.IsEmptyValueIndirect(vResourceGroup) {
 		r.ResourceGroup = vResourceGroup
 	}
 	vHttpCheck := r.HttpCheck
@@ -3061,7 +3061,7 @@ func extractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := extractUptimeCheckConfigHttpCheckFields(r, vHttpCheck); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpCheck) {
+	if !dcl.IsEmptyValueIndirect(vHttpCheck) {
 		r.HttpCheck = vHttpCheck
 	}
 	vTcpCheck := r.TcpCheck
@@ -3072,7 +3072,7 @@ func extractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := extractUptimeCheckConfigTcpCheckFields(r, vTcpCheck); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTcpCheck) {
+	if !dcl.IsEmptyValueIndirect(vTcpCheck) {
 		r.TcpCheck = vTcpCheck
 	}
 	return nil
@@ -3092,7 +3092,7 @@ func extractUptimeCheckConfigHttpCheckFields(r *UptimeCheckConfig, o *UptimeChec
 	if err := extractUptimeCheckConfigHttpCheckAuthInfoFields(r, vAuthInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthInfo) {
+	if !dcl.IsEmptyValueIndirect(vAuthInfo) {
 		o.AuthInfo = vAuthInfo
 	}
 	return nil
@@ -3116,7 +3116,7 @@ func postReadExtractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := postReadExtractUptimeCheckConfigMonitoredResourceFields(r, vMonitoredResource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonitoredResource) {
+	if !dcl.IsEmptyValueIndirect(vMonitoredResource) {
 		r.MonitoredResource = vMonitoredResource
 	}
 	vResourceGroup := r.ResourceGroup
@@ -3127,7 +3127,7 @@ func postReadExtractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := postReadExtractUptimeCheckConfigResourceGroupFields(r, vResourceGroup); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResourceGroup) {
+	if !dcl.IsEmptyValueIndirect(vResourceGroup) {
 		r.ResourceGroup = vResourceGroup
 	}
 	vHttpCheck := r.HttpCheck
@@ -3138,7 +3138,7 @@ func postReadExtractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := postReadExtractUptimeCheckConfigHttpCheckFields(r, vHttpCheck); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpCheck) {
+	if !dcl.IsEmptyValueIndirect(vHttpCheck) {
 		r.HttpCheck = vHttpCheck
 	}
 	vTcpCheck := r.TcpCheck
@@ -3149,7 +3149,7 @@ func postReadExtractUptimeCheckConfigFields(r *UptimeCheckConfig) error {
 	if err := postReadExtractUptimeCheckConfigTcpCheckFields(r, vTcpCheck); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTcpCheck) {
+	if !dcl.IsEmptyValueIndirect(vTcpCheck) {
 		r.TcpCheck = vTcpCheck
 	}
 	return nil
@@ -3169,7 +3169,7 @@ func postReadExtractUptimeCheckConfigHttpCheckFields(r *UptimeCheckConfig, o *Up
 	if err := extractUptimeCheckConfigHttpCheckAuthInfoFields(r, vAuthInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthInfo) {
+	if !dcl.IsEmptyValueIndirect(vAuthInfo) {
 		o.AuthInfo = vAuthInfo
 	}
 	return nil

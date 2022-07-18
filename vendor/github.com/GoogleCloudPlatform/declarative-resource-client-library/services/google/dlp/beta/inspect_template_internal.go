@@ -641,12 +641,12 @@ func canonicalizeInspectTemplateDesiredState(rawDesired, rawInitial *InspectTemp
 
 func canonicalizeInspectTemplateNewState(c *Client, rawNew, rawDesired *InspectTemplate) (*InspectTemplate, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -654,7 +654,7 @@ func canonicalizeInspectTemplateNewState(c *Client, rawNew, rawDesired *InspectT
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -662,23 +662,23 @@ func canonicalizeInspectTemplateNewState(c *Client, rawNew, rawDesired *InspectT
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InspectConfig) && dcl.IsNotReturnedByServer(rawDesired.InspectConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.InspectConfig) && dcl.IsEmptyValueIndirect(rawDesired.InspectConfig) {
 		rawNew.InspectConfig = rawDesired.InspectConfig
 	} else {
 		rawNew.InspectConfig = canonicalizeNewInspectTemplateInspectConfig(c, rawDesired.InspectConfig, rawNew.InspectConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LocationId) && dcl.IsNotReturnedByServer(rawDesired.LocationId) {
+	if dcl.IsEmptyValueIndirect(rawNew.LocationId) && dcl.IsEmptyValueIndirect(rawDesired.LocationId) {
 		rawNew.LocationId = rawDesired.LocationId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LocationId, rawNew.LocationId) {
@@ -772,7 +772,7 @@ func canonicalizeNewInspectTemplateInspectConfig(c *Client, des, nw *InspectTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -894,7 +894,7 @@ func canonicalizeNewInspectTemplateInspectConfigInfoTypes(c *Client, des, nw *In
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1017,7 +1017,7 @@ func canonicalizeNewInspectTemplateInspectConfigLimits(c *Client, des, nw *Inspe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigLimits while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1132,7 +1132,7 @@ func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigLimitsMaxFindingsPerInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1245,7 +1245,7 @@ func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1412,7 +1412,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypes(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1529,7 +1529,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesInfoType(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesInfoType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1661,7 +1661,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionary(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1775,7 +1775,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryWordLis
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesDictionaryWordList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1890,7 +1890,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudSt
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2011,7 +2011,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesRegex(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2119,7 +2119,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSurrogateType(c *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesSurrogateType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2231,7 +2231,7 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesStoredType(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigCustomInfoTypesStoredType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2339,7 +2339,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSet(c *Client, des, nw *Insp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2453,7 +2453,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetInfoTypes(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2585,7 +2585,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRules(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2697,7 +2697,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRule(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesHotwordRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2818,7 +2818,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2940,7 +2940,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3078,7 +3078,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3223,7 +3223,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRule(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3355,7 +3355,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3469,7 +3469,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3584,7 +3584,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3705,7 +3705,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3816,7 +3816,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExclude
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3929,7 +3929,7 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExclude
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -8821,7 +8821,7 @@ func extractInspectTemplateFields(r *InspectTemplate) error {
 	if err := extractInspectTemplateInspectConfigFields(r, vInspectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectConfig) {
+	if !dcl.IsEmptyValueIndirect(vInspectConfig) {
 		r.InspectConfig = vInspectConfig
 	}
 	return nil
@@ -8835,7 +8835,7 @@ func extractInspectTemplateInspectConfigFields(r *InspectTemplate, o *InspectTem
 	if err := extractInspectTemplateInspectConfigLimitsFields(r, vLimits); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLimits) {
+	if !dcl.IsEmptyValueIndirect(vLimits) {
 		o.Limits = vLimits
 	}
 	return nil
@@ -8855,7 +8855,7 @@ func extractInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeFields(r *In
 	if err := extractInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	return nil
@@ -8872,7 +8872,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesFields(r *InspectTemplate
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	vDictionary := o.Dictionary
@@ -8883,7 +8883,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesFields(r *InspectTemplate
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -8894,7 +8894,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesFields(r *InspectTemplate
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vSurrogateType := o.SurrogateType
@@ -8905,7 +8905,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesFields(r *InspectTemplate
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeFields(r, vSurrogateType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateType) {
 		o.SurrogateType = vSurrogateType
 	}
 	vStoredType := o.StoredType
@@ -8916,7 +8916,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesFields(r *InspectTemplate
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesStoredTypeFields(r, vStoredType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStoredType) {
+	if !dcl.IsEmptyValueIndirect(vStoredType) {
 		o.StoredType = vStoredType
 	}
 	return nil
@@ -8933,7 +8933,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(r *Inspe
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -8944,7 +8944,7 @@ func extractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(r *Inspe
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -8979,7 +8979,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesFields(r *InspectTemplate, o
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	vExclusionRule := o.ExclusionRule
@@ -8990,7 +8990,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesFields(r *InspectTemplate, o
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(r, vExclusionRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExclusionRule) {
+	if !dcl.IsEmptyValueIndirect(vExclusionRule) {
 		o.ExclusionRule = vExclusionRule
 	}
 	return nil
@@ -9004,7 +9004,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -9015,7 +9015,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -9026,7 +9026,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -9049,7 +9049,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(r *Inspe
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -9060,7 +9060,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(r *Inspe
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vExcludeInfoTypes := o.ExcludeInfoTypes
@@ -9071,7 +9071,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(r *Inspe
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesFields(r, vExcludeInfoTypes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExcludeInfoTypes) {
+	if !dcl.IsEmptyValueIndirect(vExcludeInfoTypes) {
 		o.ExcludeInfoTypes = vExcludeInfoTypes
 	}
 	return nil
@@ -9085,7 +9085,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryField
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -9096,7 +9096,7 @@ func extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryField
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -9126,7 +9126,7 @@ func postReadExtractInspectTemplateFields(r *InspectTemplate) error {
 	if err := postReadExtractInspectTemplateInspectConfigFields(r, vInspectConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInspectConfig) {
+	if !dcl.IsEmptyValueIndirect(vInspectConfig) {
 		r.InspectConfig = vInspectConfig
 	}
 	return nil
@@ -9140,7 +9140,7 @@ func postReadExtractInspectTemplateInspectConfigFields(r *InspectTemplate, o *In
 	if err := extractInspectTemplateInspectConfigLimitsFields(r, vLimits); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLimits) {
+	if !dcl.IsEmptyValueIndirect(vLimits) {
 		o.Limits = vLimits
 	}
 	return nil
@@ -9160,7 +9160,7 @@ func postReadExtractInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeFiel
 	if err := extractInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	return nil
@@ -9177,7 +9177,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesInfoTypeFields(r, vInfoType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInfoType) {
+	if !dcl.IsEmptyValueIndirect(vInfoType) {
 		o.InfoType = vInfoType
 	}
 	vDictionary := o.Dictionary
@@ -9188,7 +9188,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -9199,7 +9199,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vSurrogateType := o.SurrogateType
@@ -9210,7 +9210,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeFields(r, vSurrogateType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSurrogateType) {
+	if !dcl.IsEmptyValueIndirect(vSurrogateType) {
 		o.SurrogateType = vSurrogateType
 	}
 	vStoredType := o.StoredType
@@ -9221,7 +9221,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesFields(r *Inspect
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesStoredTypeFields(r, vStoredType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStoredType) {
+	if !dcl.IsEmptyValueIndirect(vStoredType) {
 		o.StoredType = vStoredType
 	}
 	return nil
@@ -9238,7 +9238,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -9249,7 +9249,7 @@ func postReadExtractInspectTemplateInspectConfigCustomInfoTypesDictionaryFields(
 	if err := extractInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil
@@ -9284,7 +9284,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesFields(r *InspectTem
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r, vHotwordRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRule) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRule) {
 		o.HotwordRule = vHotwordRule
 	}
 	vExclusionRule := o.ExclusionRule
@@ -9295,7 +9295,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesFields(r *InspectTem
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(r, vExclusionRule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExclusionRule) {
+	if !dcl.IsEmptyValueIndirect(vExclusionRule) {
 		o.ExclusionRule = vExclusionRule
 	}
 	return nil
@@ -9309,7 +9309,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r 
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexFields(r, vHotwordRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHotwordRegex) {
+	if !dcl.IsEmptyValueIndirect(vHotwordRegex) {
 		o.HotwordRegex = vHotwordRegex
 	}
 	vProximity := o.Proximity
@@ -9320,7 +9320,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r 
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityFields(r, vProximity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProximity) {
+	if !dcl.IsEmptyValueIndirect(vProximity) {
 		o.Proximity = vProximity
 	}
 	vLikelihoodAdjustment := o.LikelihoodAdjustment
@@ -9331,7 +9331,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesHotwordRuleFields(r 
 	if err := extractInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFields(r, vLikelihoodAdjustment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLikelihoodAdjustment) {
+	if !dcl.IsEmptyValueIndirect(vLikelihoodAdjustment) {
 		o.LikelihoodAdjustment = vLikelihoodAdjustment
 	}
 	return nil
@@ -9354,7 +9354,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryFields(r, vDictionary); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDictionary) {
+	if !dcl.IsEmptyValueIndirect(vDictionary) {
 		o.Dictionary = vDictionary
 	}
 	vRegex := o.Regex
@@ -9365,7 +9365,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vExcludeInfoTypes := o.ExcludeInfoTypes
@@ -9376,7 +9376,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesExclusionRuleFields(
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesFields(r, vExcludeInfoTypes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExcludeInfoTypes) {
+	if !dcl.IsEmptyValueIndirect(vExcludeInfoTypes) {
 		o.ExcludeInfoTypes = vExcludeInfoTypes
 	}
 	return nil
@@ -9390,7 +9390,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListFields(r, vWordList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWordList) {
+	if !dcl.IsEmptyValueIndirect(vWordList) {
 		o.WordList = vWordList
 	}
 	vCloudStoragePath := o.CloudStoragePath
@@ -9401,7 +9401,7 @@ func postReadExtractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	if err := extractInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathFields(r, vCloudStoragePath); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudStoragePath) {
+	if !dcl.IsEmptyValueIndirect(vCloudStoragePath) {
 		o.CloudStoragePath = vCloudStoragePath
 	}
 	return nil

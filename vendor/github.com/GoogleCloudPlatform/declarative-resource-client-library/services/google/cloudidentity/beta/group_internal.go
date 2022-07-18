@@ -562,24 +562,24 @@ func canonicalizeGroupDesiredState(rawDesired, rawInitial *Group, opts ...dcl.Ap
 
 func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GroupKey) && dcl.IsNotReturnedByServer(rawDesired.GroupKey) {
+	if dcl.IsEmptyValueIndirect(rawNew.GroupKey) && dcl.IsEmptyValueIndirect(rawDesired.GroupKey) {
 		rawNew.GroupKey = rawDesired.GroupKey
 	} else {
 		rawNew.GroupKey = canonicalizeNewGroupGroupKey(c, rawDesired.GroupKey, rawNew.GroupKey)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AdditionalGroupKeys) && dcl.IsNotReturnedByServer(rawDesired.AdditionalGroupKeys) {
+	if dcl.IsEmptyValueIndirect(rawNew.AdditionalGroupKeys) && dcl.IsEmptyValueIndirect(rawDesired.AdditionalGroupKeys) {
 		rawNew.AdditionalGroupKeys = rawDesired.AdditionalGroupKeys
 	} else {
 		rawNew.AdditionalGroupKeys = rawDesired.AdditionalGroupKeys
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Parent) && dcl.IsNotReturnedByServer(rawDesired.Parent) {
+	if dcl.IsEmptyValueIndirect(rawNew.Parent) && dcl.IsEmptyValueIndirect(rawDesired.Parent) {
 		rawNew.Parent = rawDesired.Parent
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Parent, rawNew.Parent) {
@@ -587,7 +587,7 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -595,7 +595,7 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -603,45 +603,45 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DirectMemberCount) && dcl.IsNotReturnedByServer(rawDesired.DirectMemberCount) {
+	if dcl.IsEmptyValueIndirect(rawNew.DirectMemberCount) && dcl.IsEmptyValueIndirect(rawDesired.DirectMemberCount) {
 		rawNew.DirectMemberCount = rawDesired.DirectMemberCount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DirectMemberCountPerType) && dcl.IsNotReturnedByServer(rawDesired.DirectMemberCountPerType) {
+	if dcl.IsEmptyValueIndirect(rawNew.DirectMemberCountPerType) && dcl.IsEmptyValueIndirect(rawDesired.DirectMemberCountPerType) {
 		rawNew.DirectMemberCountPerType = rawDesired.DirectMemberCountPerType
 	} else {
 		rawNew.DirectMemberCountPerType = canonicalizeNewGroupDirectMemberCountPerType(c, rawDesired.DirectMemberCountPerType, rawNew.DirectMemberCountPerType)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DerivedAliases) && dcl.IsNotReturnedByServer(rawDesired.DerivedAliases) {
+	if dcl.IsEmptyValueIndirect(rawNew.DerivedAliases) && dcl.IsEmptyValueIndirect(rawDesired.DerivedAliases) {
 		rawNew.DerivedAliases = rawDesired.DerivedAliases
 	} else {
 		rawNew.DerivedAliases = canonicalizeNewGroupDerivedAliasesSlice(c, rawDesired.DerivedAliases, rawNew.DerivedAliases)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DynamicGroupMetadata) && dcl.IsNotReturnedByServer(rawDesired.DynamicGroupMetadata) {
+	if dcl.IsEmptyValueIndirect(rawNew.DynamicGroupMetadata) && dcl.IsEmptyValueIndirect(rawDesired.DynamicGroupMetadata) {
 		rawNew.DynamicGroupMetadata = rawDesired.DynamicGroupMetadata
 	} else {
 		rawNew.DynamicGroupMetadata = canonicalizeNewGroupDynamicGroupMetadata(c, rawDesired.DynamicGroupMetadata, rawNew.DynamicGroupMetadata)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PosixGroups) && dcl.IsNotReturnedByServer(rawDesired.PosixGroups) {
+	if dcl.IsEmptyValueIndirect(rawNew.PosixGroups) && dcl.IsEmptyValueIndirect(rawDesired.PosixGroups) {
 		rawNew.PosixGroups = rawDesired.PosixGroups
 	} else {
 		rawNew.PosixGroups = canonicalizeNewGroupPosixGroupsSlice(c, rawDesired.PosixGroups, rawNew.PosixGroups)
@@ -715,7 +715,7 @@ func canonicalizeNewGroupGroupKey(c *Client, des, nw *GroupGroupKey) *GroupGroup
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupGroupKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -838,7 +838,7 @@ func canonicalizeNewGroupAdditionalGroupKeys(c *Client, des, nw *GroupAdditional
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupAdditionalGroupKeys while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -950,7 +950,7 @@ func canonicalizeNewGroupDirectMemberCountPerType(c *Client, des, nw *GroupDirec
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupDirectMemberCountPerType while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1066,7 +1066,7 @@ func canonicalizeNewGroupDerivedAliases(c *Client, des, nw *GroupDerivedAliases)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupDerivedAliases while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1180,7 +1180,7 @@ func canonicalizeNewGroupDynamicGroupMetadata(c *Client, des, nw *GroupDynamicGr
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupDynamicGroupMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1300,7 +1300,7 @@ func canonicalizeNewGroupDynamicGroupMetadataQueries(c *Client, des, nw *GroupDy
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupDynamicGroupMetadataQueries while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1422,7 +1422,7 @@ func canonicalizeNewGroupDynamicGroupMetadataStatus(c *Client, des, nw *GroupDyn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupDynamicGroupMetadataStatus while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1543,7 +1543,7 @@ func canonicalizeNewGroupPosixGroups(c *Client, des, nw *GroupPosixGroups) *Grou
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GroupPosixGroups while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3342,7 +3342,7 @@ func extractGroupFields(r *Group) error {
 	if err := extractGroupGroupKeyFields(r, vGroupKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGroupKey) {
+	if !dcl.IsEmptyValueIndirect(vGroupKey) {
 		r.GroupKey = vGroupKey
 	}
 	vDirectMemberCountPerType := r.DirectMemberCountPerType
@@ -3353,7 +3353,7 @@ func extractGroupFields(r *Group) error {
 	if err := extractGroupDirectMemberCountPerTypeFields(r, vDirectMemberCountPerType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDirectMemberCountPerType) {
+	if !dcl.IsEmptyValueIndirect(vDirectMemberCountPerType) {
 		r.DirectMemberCountPerType = vDirectMemberCountPerType
 	}
 	vDynamicGroupMetadata := r.DynamicGroupMetadata
@@ -3364,7 +3364,7 @@ func extractGroupFields(r *Group) error {
 	if err := extractGroupDynamicGroupMetadataFields(r, vDynamicGroupMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDynamicGroupMetadata) {
+	if !dcl.IsEmptyValueIndirect(vDynamicGroupMetadata) {
 		r.DynamicGroupMetadata = vDynamicGroupMetadata
 	}
 	return nil
@@ -3390,7 +3390,7 @@ func extractGroupDynamicGroupMetadataFields(r *Group, o *GroupDynamicGroupMetada
 	if err := extractGroupDynamicGroupMetadataStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		o.Status = vStatus
 	}
 	return nil
@@ -3414,7 +3414,7 @@ func postReadExtractGroupFields(r *Group) error {
 	if err := postReadExtractGroupGroupKeyFields(r, vGroupKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGroupKey) {
+	if !dcl.IsEmptyValueIndirect(vGroupKey) {
 		r.GroupKey = vGroupKey
 	}
 	vDirectMemberCountPerType := r.DirectMemberCountPerType
@@ -3425,7 +3425,7 @@ func postReadExtractGroupFields(r *Group) error {
 	if err := postReadExtractGroupDirectMemberCountPerTypeFields(r, vDirectMemberCountPerType); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDirectMemberCountPerType) {
+	if !dcl.IsEmptyValueIndirect(vDirectMemberCountPerType) {
 		r.DirectMemberCountPerType = vDirectMemberCountPerType
 	}
 	vDynamicGroupMetadata := r.DynamicGroupMetadata
@@ -3436,7 +3436,7 @@ func postReadExtractGroupFields(r *Group) error {
 	if err := postReadExtractGroupDynamicGroupMetadataFields(r, vDynamicGroupMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDynamicGroupMetadata) {
+	if !dcl.IsEmptyValueIndirect(vDynamicGroupMetadata) {
 		r.DynamicGroupMetadata = vDynamicGroupMetadata
 	}
 	return nil
@@ -3462,7 +3462,7 @@ func postReadExtractGroupDynamicGroupMetadataFields(r *Group, o *GroupDynamicGro
 	if err := extractGroupDynamicGroupMetadataStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		o.Status = vStatus
 	}
 	return nil

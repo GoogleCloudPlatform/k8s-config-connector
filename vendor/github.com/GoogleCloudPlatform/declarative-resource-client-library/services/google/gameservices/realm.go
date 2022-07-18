@@ -54,10 +54,10 @@ func (r *Realm) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
-		"timeZone":    dcl.ValueOrEmptyString(nr.TimeZone),
+		"time_zone":   dcl.ValueOrEmptyString(nr.TimeZone),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"location":    dcl.ValueOrEmptyString(nr.Location),
 		"project":     dcl.ValueOrEmptyString(nr.Project),

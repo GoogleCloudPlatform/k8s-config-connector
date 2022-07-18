@@ -826,45 +826,45 @@ func canonicalizeWorkflowTemplateNewState(c *Client, rawNew, rawDesired *Workflo
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.Version) && dcl.IsNotReturnedByServer(rawDesired.Version) {
+	if dcl.IsEmptyValueIndirect(rawNew.Version) && dcl.IsEmptyValueIndirect(rawDesired.Version) {
 		rawNew.Version = rawDesired.Version
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Placement) && dcl.IsNotReturnedByServer(rawDesired.Placement) {
+	if dcl.IsEmptyValueIndirect(rawNew.Placement) && dcl.IsEmptyValueIndirect(rawDesired.Placement) {
 		rawNew.Placement = rawDesired.Placement
 	} else {
 		rawNew.Placement = canonicalizeNewWorkflowTemplatePlacement(c, rawDesired.Placement, rawNew.Placement)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Jobs) && dcl.IsNotReturnedByServer(rawDesired.Jobs) {
+	if dcl.IsEmptyValueIndirect(rawNew.Jobs) && dcl.IsEmptyValueIndirect(rawDesired.Jobs) {
 		rawNew.Jobs = rawDesired.Jobs
 	} else {
 		rawNew.Jobs = canonicalizeNewWorkflowTemplateJobsSlice(c, rawDesired.Jobs, rawNew.Jobs)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Parameters) && dcl.IsNotReturnedByServer(rawDesired.Parameters) {
+	if dcl.IsEmptyValueIndirect(rawNew.Parameters) && dcl.IsEmptyValueIndirect(rawDesired.Parameters) {
 		rawNew.Parameters = rawDesired.Parameters
 	} else {
 		rawNew.Parameters = canonicalizeNewWorkflowTemplateParametersSlice(c, rawDesired.Parameters, rawNew.Parameters)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DagTimeout) && dcl.IsNotReturnedByServer(rawDesired.DagTimeout) {
+	if dcl.IsEmptyValueIndirect(rawNew.DagTimeout) && dcl.IsEmptyValueIndirect(rawDesired.DagTimeout) {
 		rawNew.DagTimeout = rawDesired.DagTimeout
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DagTimeout, rawNew.DagTimeout) {
@@ -934,7 +934,7 @@ func canonicalizeNewWorkflowTemplatePlacement(c *Client, des, nw *WorkflowTempla
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacement while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1055,7 +1055,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedCluster(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedCluster while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1189,7 +1189,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfig(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1359,7 +1359,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1496,7 +1496,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1615,7 +1615,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1751,7 +1751,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfig(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigMasterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1890,7 +1890,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigDis
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1999,7 +1999,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigMan
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2123,7 +2123,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigAcc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2263,7 +2263,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfig(c 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2402,7 +2402,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDis
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2511,7 +2511,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigMan
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2635,7 +2635,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigAcc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2775,7 +2775,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2914,7 +2914,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3023,7 +3023,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3147,7 +3147,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3274,7 +3274,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSoftwareConfig(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSoftwareConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3394,7 +3394,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigInitializationA
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigInitializationActions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3513,7 +3513,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEncryptionConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigEncryptionConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3625,7 +3625,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigAutoscalingConf
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3732,7 +3732,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfig(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecurityConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3917,7 +3917,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigK
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4079,7 +4079,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigLifecycleConfig
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigLifecycleConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4197,7 +4197,7 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEndpointConfig(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementManagedClusterConfigEndpointConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4318,7 +4318,7 @@ func canonicalizeNewWorkflowTemplatePlacementClusterSelector(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplatePlacementClusterSelector while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4453,7 +4453,7 @@ func canonicalizeNewWorkflowTemplateJobs(c *Client, des, nw *WorkflowTemplateJob
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4612,7 +4612,7 @@ func canonicalizeNewWorkflowTemplateJobsHadoopJob(c *Client, des, nw *WorkflowTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsHadoopJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4744,7 +4744,7 @@ func canonicalizeNewWorkflowTemplateJobsHadoopJobLoggingConfig(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsHadoopJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4887,7 +4887,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkJob(c *Client, des, nw *WorkflowTem
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5019,7 +5019,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkJobLoggingConfig(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5162,7 +5162,7 @@ func canonicalizeNewWorkflowTemplateJobsPysparkJob(c *Client, des, nw *WorkflowT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPysparkJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5294,7 +5294,7 @@ func canonicalizeNewWorkflowTemplateJobsPysparkJobLoggingConfig(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPysparkJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5428,7 +5428,7 @@ func canonicalizeNewWorkflowTemplateJobsHiveJob(c *Client, des, nw *WorkflowTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsHiveJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5550,7 +5550,7 @@ func canonicalizeNewWorkflowTemplateJobsHiveJobQueryList(c *Client, des, nw *Wor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsHiveJobQueryList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5689,7 +5689,7 @@ func canonicalizeNewWorkflowTemplateJobsPigJob(c *Client, des, nw *WorkflowTempl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPigJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5812,7 +5812,7 @@ func canonicalizeNewWorkflowTemplateJobsPigJobQueryList(c *Client, des, nw *Work
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPigJobQueryList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5928,7 +5928,7 @@ func canonicalizeNewWorkflowTemplateJobsPigJobLoggingConfig(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPigJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6061,7 +6061,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkRJob(c *Client, des, nw *WorkflowTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkRJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6187,7 +6187,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkRJobLoggingConfig(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkRJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6317,7 +6317,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJob(c *Client, des, nw *Workflow
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkSqlJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6437,7 +6437,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJobQueryList(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkSqlJobQueryList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6553,7 +6553,7 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJobLoggingConfig(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsSparkSqlJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6687,7 +6687,7 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJob(c *Client, des, nw *WorkflowTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPrestoJob while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6813,7 +6813,7 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJobQueryList(c *Client, des, nw *W
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPrestoJobQueryList while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6929,7 +6929,7 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJobLoggingConfig(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsPrestoJobLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7047,7 +7047,7 @@ func canonicalizeNewWorkflowTemplateJobsScheduling(c *Client, des, nw *WorkflowT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateJobsScheduling while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7169,7 +7169,7 @@ func canonicalizeNewWorkflowTemplateParameters(c *Client, des, nw *WorkflowTempl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateParameters while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7288,7 +7288,7 @@ func canonicalizeNewWorkflowTemplateParametersValidation(c *Client, des, nw *Wor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateParametersValidation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7402,7 +7402,7 @@ func canonicalizeNewWorkflowTemplateParametersValidationRegex(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateParametersValidationRegex while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7517,7 +7517,7 @@ func canonicalizeNewWorkflowTemplateParametersValidationValues(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkflowTemplateParametersValidationValues while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -17341,7 +17341,7 @@ func extractWorkflowTemplateFields(r *WorkflowTemplate) error {
 	if err := extractWorkflowTemplatePlacementFields(r, vPlacement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPlacement) {
+	if !dcl.IsEmptyValueIndirect(vPlacement) {
 		r.Placement = vPlacement
 	}
 	return nil
@@ -17355,7 +17355,7 @@ func extractWorkflowTemplatePlacementFields(r *WorkflowTemplate, o *WorkflowTemp
 	if err := extractWorkflowTemplatePlacementManagedClusterFields(r, vManagedCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedCluster) {
+	if !dcl.IsEmptyValueIndirect(vManagedCluster) {
 		o.ManagedCluster = vManagedCluster
 	}
 	vClusterSelector := o.ClusterSelector
@@ -17366,7 +17366,7 @@ func extractWorkflowTemplatePlacementFields(r *WorkflowTemplate, o *WorkflowTemp
 	if err := extractWorkflowTemplatePlacementClusterSelectorFields(r, vClusterSelector); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vClusterSelector) {
+	if !dcl.IsEmptyValueIndirect(vClusterSelector) {
 		o.ClusterSelector = vClusterSelector
 	}
 	return nil
@@ -17380,7 +17380,7 @@ func extractWorkflowTemplatePlacementManagedClusterFields(r *WorkflowTemplate, o
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		o.Config = vConfig
 	}
 	return nil
@@ -17394,7 +17394,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigFields(r, vGceClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGceClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGceClusterConfig) {
 		o.GceClusterConfig = vGceClusterConfig
 	}
 	vMasterConfig := o.MasterConfig
@@ -17405,7 +17405,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFields(r, vMasterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMasterConfig) {
+	if !dcl.IsEmptyValueIndirect(vMasterConfig) {
 		o.MasterConfig = vMasterConfig
 	}
 	vWorkerConfig := o.WorkerConfig
@@ -17416,7 +17416,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := o.SecondaryWorkerConfig
@@ -17427,7 +17427,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		o.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	vSoftwareConfig := o.SoftwareConfig
@@ -17438,7 +17438,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSoftwareConfigFields(r, vSoftwareConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSoftwareConfig) {
+	if !dcl.IsEmptyValueIndirect(vSoftwareConfig) {
 		o.SoftwareConfig = vSoftwareConfig
 	}
 	vEncryptionConfig := o.EncryptionConfig
@@ -17449,7 +17449,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigEncryptionConfigFields(r, vEncryptionConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEncryptionConfig) {
+	if !dcl.IsEmptyValueIndirect(vEncryptionConfig) {
 		o.EncryptionConfig = vEncryptionConfig
 	}
 	vAutoscalingConfig := o.AutoscalingConfig
@@ -17460,7 +17460,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigAutoscalingConfigFields(r, vAutoscalingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscalingConfig) {
+	if !dcl.IsEmptyValueIndirect(vAutoscalingConfig) {
 		o.AutoscalingConfig = vAutoscalingConfig
 	}
 	vSecurityConfig := o.SecurityConfig
@@ -17471,7 +17471,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigFields(r, vSecurityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecurityConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecurityConfig) {
 		o.SecurityConfig = vSecurityConfig
 	}
 	vLifecycleConfig := o.LifecycleConfig
@@ -17482,7 +17482,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigLifecycleConfigFields(r, vLifecycleConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycleConfig) {
+	if !dcl.IsEmptyValueIndirect(vLifecycleConfig) {
 		o.LifecycleConfig = vLifecycleConfig
 	}
 	vEndpointConfig := o.EndpointConfig
@@ -17493,7 +17493,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigFields(r *WorkflowTempl
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigEndpointConfigFields(r, vEndpointConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpointConfig) {
+	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
 	return nil
@@ -17507,7 +17507,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigFields(
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinityFields(r, vReservationAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReservationAffinity) {
+	if !dcl.IsEmptyValueIndirect(vReservationAffinity) {
 		o.ReservationAffinity = vReservationAffinity
 	}
 	vNodeGroupAffinity := o.NodeGroupAffinity
@@ -17518,7 +17518,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigFields(
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinityFields(r, vNodeGroupAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNodeGroupAffinity) {
+	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
 	return nil
@@ -17538,7 +17538,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFields(r *W
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -17549,7 +17549,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFields(r *W
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -17572,7 +17572,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFields(r *W
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -17583,7 +17583,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFields(r *W
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -17606,7 +17606,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigFi
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -17617,7 +17617,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigFi
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -17652,7 +17652,7 @@ func extractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigFields(r 
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfigFields(r, vKerberosConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKerberosConfig) {
+	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
 	return nil
@@ -17678,7 +17678,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsHadoopJobFields(r, vHadoopJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHadoopJob) {
+	if !dcl.IsEmptyValueIndirect(vHadoopJob) {
 		o.HadoopJob = vHadoopJob
 	}
 	vSparkJob := o.SparkJob
@@ -17689,7 +17689,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsSparkJobFields(r, vSparkJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkJob) {
 		o.SparkJob = vSparkJob
 	}
 	vPysparkJob := o.PysparkJob
@@ -17700,7 +17700,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsPysparkJobFields(r, vPysparkJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPysparkJob) {
+	if !dcl.IsEmptyValueIndirect(vPysparkJob) {
 		o.PysparkJob = vPysparkJob
 	}
 	vHiveJob := o.HiveJob
@@ -17711,7 +17711,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsHiveJobFields(r, vHiveJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHiveJob) {
+	if !dcl.IsEmptyValueIndirect(vHiveJob) {
 		o.HiveJob = vHiveJob
 	}
 	vPigJob := o.PigJob
@@ -17722,7 +17722,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsPigJobFields(r, vPigJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPigJob) {
+	if !dcl.IsEmptyValueIndirect(vPigJob) {
 		o.PigJob = vPigJob
 	}
 	vSparkRJob := o.SparkRJob
@@ -17733,7 +17733,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsSparkRJobFields(r, vSparkRJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkRJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkRJob) {
 		o.SparkRJob = vSparkRJob
 	}
 	vSparkSqlJob := o.SparkSqlJob
@@ -17744,7 +17744,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsSparkSqlJobFields(r, vSparkSqlJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkSqlJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkSqlJob) {
 		o.SparkSqlJob = vSparkSqlJob
 	}
 	vPrestoJob := o.PrestoJob
@@ -17755,7 +17755,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsPrestoJobFields(r, vPrestoJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrestoJob) {
+	if !dcl.IsEmptyValueIndirect(vPrestoJob) {
 		o.PrestoJob = vPrestoJob
 	}
 	vScheduling := o.Scheduling
@@ -17766,7 +17766,7 @@ func extractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowTemplateJ
 	if err := extractWorkflowTemplateJobsSchedulingFields(r, vScheduling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScheduling) {
+	if !dcl.IsEmptyValueIndirect(vScheduling) {
 		o.Scheduling = vScheduling
 	}
 	return nil
@@ -17780,7 +17780,7 @@ func extractWorkflowTemplateJobsHadoopJobFields(r *WorkflowTemplate, o *Workflow
 	if err := extractWorkflowTemplateJobsHadoopJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17797,7 +17797,7 @@ func extractWorkflowTemplateJobsSparkJobFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsSparkJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17814,7 +17814,7 @@ func extractWorkflowTemplateJobsPysparkJobFields(r *WorkflowTemplate, o *Workflo
 	if err := extractWorkflowTemplateJobsPysparkJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17831,7 +17831,7 @@ func extractWorkflowTemplateJobsHiveJobFields(r *WorkflowTemplate, o *WorkflowTe
 	if err := extractWorkflowTemplateJobsHiveJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	return nil
@@ -17848,7 +17848,7 @@ func extractWorkflowTemplateJobsPigJobFields(r *WorkflowTemplate, o *WorkflowTem
 	if err := extractWorkflowTemplateJobsPigJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -17859,7 +17859,7 @@ func extractWorkflowTemplateJobsPigJobFields(r *WorkflowTemplate, o *WorkflowTem
 	if err := extractWorkflowTemplateJobsPigJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17879,7 +17879,7 @@ func extractWorkflowTemplateJobsSparkRJobFields(r *WorkflowTemplate, o *Workflow
 	if err := extractWorkflowTemplateJobsSparkRJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17896,7 +17896,7 @@ func extractWorkflowTemplateJobsSparkSqlJobFields(r *WorkflowTemplate, o *Workfl
 	if err := extractWorkflowTemplateJobsSparkSqlJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -17907,7 +17907,7 @@ func extractWorkflowTemplateJobsSparkSqlJobFields(r *WorkflowTemplate, o *Workfl
 	if err := extractWorkflowTemplateJobsSparkSqlJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17927,7 +17927,7 @@ func extractWorkflowTemplateJobsPrestoJobFields(r *WorkflowTemplate, o *Workflow
 	if err := extractWorkflowTemplateJobsPrestoJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -17938,7 +17938,7 @@ func extractWorkflowTemplateJobsPrestoJobFields(r *WorkflowTemplate, o *Workflow
 	if err := extractWorkflowTemplateJobsPrestoJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -17961,7 +17961,7 @@ func extractWorkflowTemplateParametersFields(r *WorkflowTemplate, o *WorkflowTem
 	if err := extractWorkflowTemplateParametersValidationFields(r, vValidation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValidation) {
+	if !dcl.IsEmptyValueIndirect(vValidation) {
 		o.Validation = vValidation
 	}
 	return nil
@@ -17975,7 +17975,7 @@ func extractWorkflowTemplateParametersValidationFields(r *WorkflowTemplate, o *W
 	if err := extractWorkflowTemplateParametersValidationRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vValues := o.Values
@@ -17986,7 +17986,7 @@ func extractWorkflowTemplateParametersValidationFields(r *WorkflowTemplate, o *W
 	if err := extractWorkflowTemplateParametersValidationValuesFields(r, vValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValues) {
+	if !dcl.IsEmptyValueIndirect(vValues) {
 		o.Values = vValues
 	}
 	return nil
@@ -18007,7 +18007,7 @@ func postReadExtractWorkflowTemplateFields(r *WorkflowTemplate) error {
 	if err := postReadExtractWorkflowTemplatePlacementFields(r, vPlacement); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPlacement) {
+	if !dcl.IsEmptyValueIndirect(vPlacement) {
 		r.Placement = vPlacement
 	}
 	return nil
@@ -18021,7 +18021,7 @@ func postReadExtractWorkflowTemplatePlacementFields(r *WorkflowTemplate, o *Work
 	if err := extractWorkflowTemplatePlacementManagedClusterFields(r, vManagedCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedCluster) {
+	if !dcl.IsEmptyValueIndirect(vManagedCluster) {
 		o.ManagedCluster = vManagedCluster
 	}
 	vClusterSelector := o.ClusterSelector
@@ -18032,7 +18032,7 @@ func postReadExtractWorkflowTemplatePlacementFields(r *WorkflowTemplate, o *Work
 	if err := extractWorkflowTemplatePlacementClusterSelectorFields(r, vClusterSelector); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vClusterSelector) {
+	if !dcl.IsEmptyValueIndirect(vClusterSelector) {
 		o.ClusterSelector = vClusterSelector
 	}
 	return nil
@@ -18046,7 +18046,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterFields(r *WorkflowTem
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigFields(r, vConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfig) {
 		o.Config = vConfig
 	}
 	return nil
@@ -18060,7 +18060,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigFields(r, vGceClusterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGceClusterConfig) {
+	if !dcl.IsEmptyValueIndirect(vGceClusterConfig) {
 		o.GceClusterConfig = vGceClusterConfig
 	}
 	vMasterConfig := o.MasterConfig
@@ -18071,7 +18071,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFields(r, vMasterConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMasterConfig) {
+	if !dcl.IsEmptyValueIndirect(vMasterConfig) {
 		o.MasterConfig = vMasterConfig
 	}
 	vWorkerConfig := o.WorkerConfig
@@ -18082,7 +18082,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := o.SecondaryWorkerConfig
@@ -18093,7 +18093,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		o.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	vSoftwareConfig := o.SoftwareConfig
@@ -18104,7 +18104,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSoftwareConfigFields(r, vSoftwareConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSoftwareConfig) {
+	if !dcl.IsEmptyValueIndirect(vSoftwareConfig) {
 		o.SoftwareConfig = vSoftwareConfig
 	}
 	vEncryptionConfig := o.EncryptionConfig
@@ -18115,7 +18115,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigEncryptionConfigFields(r, vEncryptionConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEncryptionConfig) {
+	if !dcl.IsEmptyValueIndirect(vEncryptionConfig) {
 		o.EncryptionConfig = vEncryptionConfig
 	}
 	vAutoscalingConfig := o.AutoscalingConfig
@@ -18126,7 +18126,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigAutoscalingConfigFields(r, vAutoscalingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAutoscalingConfig) {
+	if !dcl.IsEmptyValueIndirect(vAutoscalingConfig) {
 		o.AutoscalingConfig = vAutoscalingConfig
 	}
 	vSecurityConfig := o.SecurityConfig
@@ -18137,7 +18137,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigFields(r, vSecurityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecurityConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecurityConfig) {
 		o.SecurityConfig = vSecurityConfig
 	}
 	vLifecycleConfig := o.LifecycleConfig
@@ -18148,7 +18148,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigLifecycleConfigFields(r, vLifecycleConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLifecycleConfig) {
+	if !dcl.IsEmptyValueIndirect(vLifecycleConfig) {
 		o.LifecycleConfig = vLifecycleConfig
 	}
 	vEndpointConfig := o.EndpointConfig
@@ -18159,7 +18159,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigFields(r *Workf
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigEndpointConfigFields(r, vEndpointConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpointConfig) {
+	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
 	return nil
@@ -18173,7 +18173,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinityFields(r, vReservationAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vReservationAffinity) {
+	if !dcl.IsEmptyValueIndirect(vReservationAffinity) {
 		o.ReservationAffinity = vReservationAffinity
 	}
 	vNodeGroupAffinity := o.NodeGroupAffinity
@@ -18184,7 +18184,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinityFields(r, vNodeGroupAffinity); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNodeGroupAffinity) {
+	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
 	return nil
@@ -18204,7 +18204,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFie
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -18215,7 +18215,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigMasterConfigFie
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -18238,7 +18238,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFie
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -18249,7 +18249,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigFie
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -18272,7 +18272,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfigFields(r, vDiskConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDiskConfig) {
+	if !dcl.IsEmptyValueIndirect(vDiskConfig) {
 		o.DiskConfig = vDiskConfig
 	}
 	vManagedGroupConfig := o.ManagedGroupConfig
@@ -18283,7 +18283,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r, vManagedGroupConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagedGroupConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagedGroupConfig) {
 		o.ManagedGroupConfig = vManagedGroupConfig
 	}
 	return nil
@@ -18318,7 +18318,7 @@ func postReadExtractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigF
 	if err := extractWorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfigFields(r, vKerberosConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKerberosConfig) {
+	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
 	return nil
@@ -18344,7 +18344,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsHadoopJobFields(r, vHadoopJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHadoopJob) {
+	if !dcl.IsEmptyValueIndirect(vHadoopJob) {
 		o.HadoopJob = vHadoopJob
 	}
 	vSparkJob := o.SparkJob
@@ -18355,7 +18355,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsSparkJobFields(r, vSparkJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkJob) {
 		o.SparkJob = vSparkJob
 	}
 	vPysparkJob := o.PysparkJob
@@ -18366,7 +18366,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsPysparkJobFields(r, vPysparkJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPysparkJob) {
+	if !dcl.IsEmptyValueIndirect(vPysparkJob) {
 		o.PysparkJob = vPysparkJob
 	}
 	vHiveJob := o.HiveJob
@@ -18377,7 +18377,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsHiveJobFields(r, vHiveJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHiveJob) {
+	if !dcl.IsEmptyValueIndirect(vHiveJob) {
 		o.HiveJob = vHiveJob
 	}
 	vPigJob := o.PigJob
@@ -18388,7 +18388,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsPigJobFields(r, vPigJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPigJob) {
+	if !dcl.IsEmptyValueIndirect(vPigJob) {
 		o.PigJob = vPigJob
 	}
 	vSparkRJob := o.SparkRJob
@@ -18399,7 +18399,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsSparkRJobFields(r, vSparkRJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkRJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkRJob) {
 		o.SparkRJob = vSparkRJob
 	}
 	vSparkSqlJob := o.SparkSqlJob
@@ -18410,7 +18410,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsSparkSqlJobFields(r, vSparkSqlJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSparkSqlJob) {
+	if !dcl.IsEmptyValueIndirect(vSparkSqlJob) {
 		o.SparkSqlJob = vSparkSqlJob
 	}
 	vPrestoJob := o.PrestoJob
@@ -18421,7 +18421,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsPrestoJobFields(r, vPrestoJob); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrestoJob) {
+	if !dcl.IsEmptyValueIndirect(vPrestoJob) {
 		o.PrestoJob = vPrestoJob
 	}
 	vScheduling := o.Scheduling
@@ -18432,7 +18432,7 @@ func postReadExtractWorkflowTemplateJobsFields(r *WorkflowTemplate, o *WorkflowT
 	if err := extractWorkflowTemplateJobsSchedulingFields(r, vScheduling); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScheduling) {
+	if !dcl.IsEmptyValueIndirect(vScheduling) {
 		o.Scheduling = vScheduling
 	}
 	return nil
@@ -18446,7 +18446,7 @@ func postReadExtractWorkflowTemplateJobsHadoopJobFields(r *WorkflowTemplate, o *
 	if err := extractWorkflowTemplateJobsHadoopJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18463,7 +18463,7 @@ func postReadExtractWorkflowTemplateJobsSparkJobFields(r *WorkflowTemplate, o *W
 	if err := extractWorkflowTemplateJobsSparkJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18480,7 +18480,7 @@ func postReadExtractWorkflowTemplateJobsPysparkJobFields(r *WorkflowTemplate, o 
 	if err := extractWorkflowTemplateJobsPysparkJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18497,7 +18497,7 @@ func postReadExtractWorkflowTemplateJobsHiveJobFields(r *WorkflowTemplate, o *Wo
 	if err := extractWorkflowTemplateJobsHiveJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	return nil
@@ -18514,7 +18514,7 @@ func postReadExtractWorkflowTemplateJobsPigJobFields(r *WorkflowTemplate, o *Wor
 	if err := extractWorkflowTemplateJobsPigJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -18525,7 +18525,7 @@ func postReadExtractWorkflowTemplateJobsPigJobFields(r *WorkflowTemplate, o *Wor
 	if err := extractWorkflowTemplateJobsPigJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18545,7 +18545,7 @@ func postReadExtractWorkflowTemplateJobsSparkRJobFields(r *WorkflowTemplate, o *
 	if err := extractWorkflowTemplateJobsSparkRJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18562,7 +18562,7 @@ func postReadExtractWorkflowTemplateJobsSparkSqlJobFields(r *WorkflowTemplate, o
 	if err := extractWorkflowTemplateJobsSparkSqlJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -18573,7 +18573,7 @@ func postReadExtractWorkflowTemplateJobsSparkSqlJobFields(r *WorkflowTemplate, o
 	if err := extractWorkflowTemplateJobsSparkSqlJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18593,7 +18593,7 @@ func postReadExtractWorkflowTemplateJobsPrestoJobFields(r *WorkflowTemplate, o *
 	if err := extractWorkflowTemplateJobsPrestoJobQueryListFields(r, vQueryList); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQueryList) {
+	if !dcl.IsEmptyValueIndirect(vQueryList) {
 		o.QueryList = vQueryList
 	}
 	vLoggingConfig := o.LoggingConfig
@@ -18604,7 +18604,7 @@ func postReadExtractWorkflowTemplateJobsPrestoJobFields(r *WorkflowTemplate, o *
 	if err := extractWorkflowTemplateJobsPrestoJobLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		o.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -18627,7 +18627,7 @@ func postReadExtractWorkflowTemplateParametersFields(r *WorkflowTemplate, o *Wor
 	if err := extractWorkflowTemplateParametersValidationFields(r, vValidation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValidation) {
+	if !dcl.IsEmptyValueIndirect(vValidation) {
 		o.Validation = vValidation
 	}
 	return nil
@@ -18641,7 +18641,7 @@ func postReadExtractWorkflowTemplateParametersValidationFields(r *WorkflowTempla
 	if err := extractWorkflowTemplateParametersValidationRegexFields(r, vRegex); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRegex) {
+	if !dcl.IsEmptyValueIndirect(vRegex) {
 		o.Regex = vRegex
 	}
 	vValues := o.Values
@@ -18652,7 +18652,7 @@ func postReadExtractWorkflowTemplateParametersValidationFields(r *WorkflowTempla
 	if err := extractWorkflowTemplateParametersValidationValuesFields(r, vValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValues) {
+	if !dcl.IsEmptyValueIndirect(vValues) {
 		o.Values = vValues
 	}
 	return nil

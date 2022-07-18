@@ -538,7 +538,7 @@ func canonicalizeAuthorizationPolicyDesiredState(rawDesired, rawInitial *Authori
 
 func canonicalizeAuthorizationPolicyNewState(c *Client, rawNew, rawDesired *AuthorizationPolicy) (*AuthorizationPolicy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -546,7 +546,7 @@ func canonicalizeAuthorizationPolicyNewState(c *Client, rawNew, rawDesired *Auth
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -554,27 +554,27 @@ func canonicalizeAuthorizationPolicyNewState(c *Client, rawNew, rawDesired *Auth
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Action) && dcl.IsNotReturnedByServer(rawDesired.Action) {
+	if dcl.IsEmptyValueIndirect(rawNew.Action) && dcl.IsEmptyValueIndirect(rawDesired.Action) {
 		rawNew.Action = rawDesired.Action
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rules) && dcl.IsNotReturnedByServer(rawDesired.Rules) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rules) && dcl.IsEmptyValueIndirect(rawDesired.Rules) {
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewAuthorizationPolicyRulesSlice(c, rawDesired.Rules, rawNew.Rules)
@@ -642,7 +642,7 @@ func canonicalizeNewAuthorizationPolicyRules(c *Client, des, nw *AuthorizationPo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AuthorizationPolicyRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -761,7 +761,7 @@ func canonicalizeNewAuthorizationPolicyRulesSources(c *Client, des, nw *Authoriz
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AuthorizationPolicyRulesSources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -891,7 +891,7 @@ func canonicalizeNewAuthorizationPolicyRulesDestinations(c *Client, des, nw *Aut
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AuthorizationPolicyRulesDestinations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1015,7 +1015,7 @@ func canonicalizeNewAuthorizationPolicyRulesDestinationsHttpHeaderMatch(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AuthorizationPolicyRulesDestinationsHttpHeaderMatch while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2082,7 +2082,7 @@ func extractAuthorizationPolicyRulesDestinationsFields(r *AuthorizationPolicy, o
 	if err := extractAuthorizationPolicyRulesDestinationsHttpHeaderMatchFields(r, vHttpHeaderMatch); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpHeaderMatch) {
+	if !dcl.IsEmptyValueIndirect(vHttpHeaderMatch) {
 		o.HttpHeaderMatch = vHttpHeaderMatch
 	}
 	return nil
@@ -2109,7 +2109,7 @@ func postReadExtractAuthorizationPolicyRulesDestinationsFields(r *AuthorizationP
 	if err := extractAuthorizationPolicyRulesDestinationsHttpHeaderMatchFields(r, vHttpHeaderMatch); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpHeaderMatch) {
+	if !dcl.IsEmptyValueIndirect(vHttpHeaderMatch) {
 		o.HttpHeaderMatch = vHttpHeaderMatch
 	}
 	return nil

@@ -437,17 +437,17 @@ func canonicalizeProjectDesiredState(rawDesired, rawInitial *Project, opts ...dc
 
 func canonicalizeProjectNewState(c *Client, rawNew, rawDesired *Project) (*Project, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LifecycleState) && dcl.IsNotReturnedByServer(rawDesired.LifecycleState) {
+	if dcl.IsEmptyValueIndirect(rawNew.LifecycleState) && dcl.IsEmptyValueIndirect(rawDesired.LifecycleState) {
 		rawNew.LifecycleState = rawDesired.LifecycleState
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -455,7 +455,7 @@ func canonicalizeProjectNewState(c *Client, rawNew, rawDesired *Project) (*Proje
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Parent) && dcl.IsNotReturnedByServer(rawDesired.Parent) {
+	if dcl.IsEmptyValueIndirect(rawNew.Parent) && dcl.IsEmptyValueIndirect(rawDesired.Parent) {
 		rawNew.Parent = rawDesired.Parent
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Parent, rawNew.Parent) {
@@ -463,7 +463,7 @@ func canonicalizeProjectNewState(c *Client, rawNew, rawDesired *Project) (*Proje
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -471,7 +471,7 @@ func canonicalizeProjectNewState(c *Client, rawNew, rawDesired *Project) (*Proje
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ProjectNumber) && dcl.IsNotReturnedByServer(rawDesired.ProjectNumber) {
+	if dcl.IsEmptyValueIndirect(rawNew.ProjectNumber) && dcl.IsEmptyValueIndirect(rawDesired.ProjectNumber) {
 		rawNew.ProjectNumber = rawDesired.ProjectNumber
 	} else {
 	}

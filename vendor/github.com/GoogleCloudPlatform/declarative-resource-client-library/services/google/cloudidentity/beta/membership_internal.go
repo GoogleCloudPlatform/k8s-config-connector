@@ -521,50 +521,50 @@ func canonicalizeMembershipDesiredState(rawDesired, rawInitial *Membership, opts
 
 func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (*Membership, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PreferredMemberKey) && dcl.IsNotReturnedByServer(rawDesired.PreferredMemberKey) {
+	if dcl.IsEmptyValueIndirect(rawNew.PreferredMemberKey) && dcl.IsEmptyValueIndirect(rawDesired.PreferredMemberKey) {
 		rawNew.PreferredMemberKey = rawDesired.PreferredMemberKey
 	} else {
 		rawNew.PreferredMemberKey = canonicalizeNewMembershipPreferredMemberKey(c, rawDesired.PreferredMemberKey, rawNew.PreferredMemberKey)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Roles) && dcl.IsNotReturnedByServer(rawDesired.Roles) {
+	if dcl.IsEmptyValueIndirect(rawNew.Roles) && dcl.IsEmptyValueIndirect(rawDesired.Roles) {
 		rawNew.Roles = rawDesired.Roles
 	} else {
 		rawNew.Roles = canonicalizeNewMembershipRolesSet(c, rawDesired.Roles, rawNew.Roles)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeliverySetting) && dcl.IsNotReturnedByServer(rawDesired.DeliverySetting) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeliverySetting) && dcl.IsEmptyValueIndirect(rawDesired.DeliverySetting) {
 		rawNew.DeliverySetting = rawDesired.DeliverySetting
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		rawNew.DisplayName = canonicalizeNewMembershipDisplayName(c, rawDesired.DisplayName, rawNew.DisplayName)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MemberKey) && dcl.IsNotReturnedByServer(rawDesired.MemberKey) {
+	if dcl.IsEmptyValueIndirect(rawNew.MemberKey) && dcl.IsEmptyValueIndirect(rawDesired.MemberKey) {
 		rawNew.MemberKey = rawDesired.MemberKey
 	} else {
 		rawNew.MemberKey = canonicalizeNewMembershipMemberKey(c, rawDesired.MemberKey, rawNew.MemberKey)
@@ -638,7 +638,7 @@ func canonicalizeNewMembershipPreferredMemberKey(c *Client, des, nw *MembershipP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipPreferredMemberKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -758,7 +758,7 @@ func canonicalizeNewMembershipRoles(c *Client, des, nw *MembershipRoles) *Member
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipRoles while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -876,7 +876,7 @@ func canonicalizeNewMembershipRolesExpiryDetail(c *Client, des, nw *MembershipRo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipRolesExpiryDetail while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -983,7 +983,7 @@ func canonicalizeNewMembershipRolesRestrictionEvaluations(c *Client, des, nw *Me
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipRolesRestrictionEvaluations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1090,7 +1090,7 @@ func canonicalizeNewMembershipRolesRestrictionEvaluationsMemberRestrictionEvalua
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1225,7 +1225,7 @@ func canonicalizeNewMembershipDisplayName(c *Client, des, nw *MembershipDisplayN
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipDisplayName while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1351,7 +1351,7 @@ func canonicalizeNewMembershipMemberKey(c *Client, des, nw *MembershipMemberKey)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipMemberKey while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2921,7 +2921,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipPreferredMemberKeyFields(r, vPreferredMemberKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreferredMemberKey) {
+	if !dcl.IsEmptyValueIndirect(vPreferredMemberKey) {
 		r.PreferredMemberKey = vPreferredMemberKey
 	}
 	vDisplayName := r.DisplayName
@@ -2932,7 +2932,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipDisplayNameFields(r, vDisplayName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisplayName) {
+	if !dcl.IsEmptyValueIndirect(vDisplayName) {
 		r.DisplayName = vDisplayName
 	}
 	vMemberKey := r.MemberKey
@@ -2943,7 +2943,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipMemberKeyFields(r, vMemberKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMemberKey) {
+	if !dcl.IsEmptyValueIndirect(vMemberKey) {
 		r.MemberKey = vMemberKey
 	}
 	return nil
@@ -2960,7 +2960,7 @@ func extractMembershipRolesFields(r *Membership, o *MembershipRoles) error {
 	if err := extractMembershipRolesExpiryDetailFields(r, vExpiryDetail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpiryDetail) {
+	if !dcl.IsEmptyValueIndirect(vExpiryDetail) {
 		o.ExpiryDetail = vExpiryDetail
 	}
 	vRestrictionEvaluations := o.RestrictionEvaluations
@@ -2971,7 +2971,7 @@ func extractMembershipRolesFields(r *Membership, o *MembershipRoles) error {
 	if err := extractMembershipRolesRestrictionEvaluationsFields(r, vRestrictionEvaluations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRestrictionEvaluations) {
+	if !dcl.IsEmptyValueIndirect(vRestrictionEvaluations) {
 		o.RestrictionEvaluations = vRestrictionEvaluations
 	}
 	return nil
@@ -2988,7 +2988,7 @@ func extractMembershipRolesRestrictionEvaluationsFields(r *Membership, o *Member
 	if err := extractMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationFields(r, vMemberRestrictionEvaluation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMemberRestrictionEvaluation) {
+	if !dcl.IsEmptyValueIndirect(vMemberRestrictionEvaluation) {
 		o.MemberRestrictionEvaluation = vMemberRestrictionEvaluation
 	}
 	return nil
@@ -3012,7 +3012,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipPreferredMemberKeyFields(r, vPreferredMemberKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreferredMemberKey) {
+	if !dcl.IsEmptyValueIndirect(vPreferredMemberKey) {
 		r.PreferredMemberKey = vPreferredMemberKey
 	}
 	vDisplayName := r.DisplayName
@@ -3023,7 +3023,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipDisplayNameFields(r, vDisplayName); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisplayName) {
+	if !dcl.IsEmptyValueIndirect(vDisplayName) {
 		r.DisplayName = vDisplayName
 	}
 	vMemberKey := r.MemberKey
@@ -3034,7 +3034,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipMemberKeyFields(r, vMemberKey); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMemberKey) {
+	if !dcl.IsEmptyValueIndirect(vMemberKey) {
 		r.MemberKey = vMemberKey
 	}
 	return nil
@@ -3051,7 +3051,7 @@ func postReadExtractMembershipRolesFields(r *Membership, o *MembershipRoles) err
 	if err := extractMembershipRolesExpiryDetailFields(r, vExpiryDetail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExpiryDetail) {
+	if !dcl.IsEmptyValueIndirect(vExpiryDetail) {
 		o.ExpiryDetail = vExpiryDetail
 	}
 	vRestrictionEvaluations := o.RestrictionEvaluations
@@ -3062,7 +3062,7 @@ func postReadExtractMembershipRolesFields(r *Membership, o *MembershipRoles) err
 	if err := extractMembershipRolesRestrictionEvaluationsFields(r, vRestrictionEvaluations); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRestrictionEvaluations) {
+	if !dcl.IsEmptyValueIndirect(vRestrictionEvaluations) {
 		o.RestrictionEvaluations = vRestrictionEvaluations
 	}
 	return nil
@@ -3079,7 +3079,7 @@ func postReadExtractMembershipRolesRestrictionEvaluationsFields(r *Membership, o
 	if err := extractMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationFields(r, vMemberRestrictionEvaluation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMemberRestrictionEvaluation) {
+	if !dcl.IsEmptyValueIndirect(vMemberRestrictionEvaluation) {
 		o.MemberRestrictionEvaluation = vMemberRestrictionEvaluation
 	}
 	return nil

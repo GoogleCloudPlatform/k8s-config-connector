@@ -660,52 +660,6 @@ func IsEmptyValueIndirect(i interface{}) bool {
 	return false
 }
 
-// IsNotReturnedByServer returns true if the value provided is "empty", according
-// to the *proto* rules.  This corresponds to whether the value will be sent by the
-// server in a response - it is useful for diffing a response against a provided
-// value.  The "Indirect" refers to the fact that this method returns correct
-// results even if the provided value is a pointer.  This differs from IsEmptyValueIndirect
-// in its handling of booleans - IEVI treats `false` as non-empty but INRBS
-// treats `false` as empty.
-func IsNotReturnedByServer(i interface{}) bool {
-	if i == nil {
-		return true
-	}
-
-	rt := reflect.TypeOf(i)
-	switch rt.Kind() {
-	case reflect.Slice:
-		return reflect.ValueOf(i).Len() == 0
-	case reflect.Array:
-		return rt.Len() == 0
-	case reflect.Map:
-		return len(reflect.ValueOf(i).MapKeys()) == 0
-	}
-
-	iv := reflect.Indirect(reflect.ValueOf(i))
-
-	if !iv.IsValid() || iv.IsZero() {
-		return true
-	}
-	if hasEmptyStructField(i) {
-		return true
-	}
-	if iv.Type().Kind() == reflect.Struct {
-		for f := 0; f < iv.NumField(); f++ {
-			field := iv.Field(f)
-			// Unexported fields should be ignored.
-			if !field.CanInterface() {
-				continue
-			}
-			if !IsNotReturnedByServer(field.Interface()) {
-				return false
-			}
-		}
-		return true
-	}
-	return false
-}
-
 // hasEmptyStructField returns true if the provided value is a struct
 // with an unexported field called 'empty', and that value is a boolean,
 // and that boolean is true.  This is useful when a user needs to explicitly

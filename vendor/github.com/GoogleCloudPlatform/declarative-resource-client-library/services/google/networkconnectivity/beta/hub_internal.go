@@ -458,7 +458,7 @@ func canonicalizeHubDesiredState(rawDesired, rawInitial *Hub, opts ...dcl.ApplyO
 
 func canonicalizeHubNewState(c *Client, rawNew, rawDesired *Hub) (*Hub, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -466,22 +466,22 @@ func canonicalizeHubNewState(c *Client, rawNew, rawDesired *Hub) (*Hub, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -489,7 +489,7 @@ func canonicalizeHubNewState(c *Client, rawNew, rawDesired *Hub) (*Hub, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UniqueId) && dcl.IsNotReturnedByServer(rawDesired.UniqueId) {
+	if dcl.IsEmptyValueIndirect(rawNew.UniqueId) && dcl.IsEmptyValueIndirect(rawDesired.UniqueId) {
 		rawNew.UniqueId = rawDesired.UniqueId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.UniqueId, rawNew.UniqueId) {
@@ -497,14 +497,14 @@ func canonicalizeHubNewState(c *Client, rawNew, rawDesired *Hub) (*Hub, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.RoutingVpcs) && dcl.IsNotReturnedByServer(rawDesired.RoutingVpcs) {
+	if dcl.IsEmptyValueIndirect(rawNew.RoutingVpcs) && dcl.IsEmptyValueIndirect(rawDesired.RoutingVpcs) {
 		rawNew.RoutingVpcs = rawDesired.RoutingVpcs
 	} else {
 		rawNew.RoutingVpcs = canonicalizeNewHubRoutingVpcsSlice(c, rawDesired.RoutingVpcs, rawNew.RoutingVpcs)
@@ -572,7 +572,7 @@ func canonicalizeNewHubRoutingVpcs(c *Client, des, nw *HubRoutingVpcs) *HubRouti
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for HubRoutingVpcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}

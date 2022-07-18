@@ -577,7 +577,7 @@ func canonicalizeDeliveryPipelineDesiredState(rawDesired, rawInitial *DeliveryPi
 
 func canonicalizeDeliveryPipelineNewState(c *Client, rawNew, rawDesired *DeliveryPipeline) (*DeliveryPipeline, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -585,7 +585,7 @@ func canonicalizeDeliveryPipelineNewState(c *Client, rawNew, rawDesired *Deliver
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -593,7 +593,7 @@ func canonicalizeDeliveryPipelineNewState(c *Client, rawNew, rawDesired *Deliver
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -601,39 +601,39 @@ func canonicalizeDeliveryPipelineNewState(c *Client, rawNew, rawDesired *Deliver
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SerialPipeline) && dcl.IsNotReturnedByServer(rawDesired.SerialPipeline) {
+	if dcl.IsEmptyValueIndirect(rawNew.SerialPipeline) && dcl.IsEmptyValueIndirect(rawDesired.SerialPipeline) {
 		rawNew.SerialPipeline = rawDesired.SerialPipeline
 	} else {
 		rawNew.SerialPipeline = canonicalizeNewDeliveryPipelineSerialPipeline(c, rawDesired.SerialPipeline, rawNew.SerialPipeline)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Condition) && dcl.IsNotReturnedByServer(rawDesired.Condition) {
+	if dcl.IsEmptyValueIndirect(rawNew.Condition) && dcl.IsEmptyValueIndirect(rawDesired.Condition) {
 		rawNew.Condition = rawDesired.Condition
 	} else {
 		rawNew.Condition = canonicalizeNewDeliveryPipelineCondition(c, rawDesired.Condition, rawNew.Condition)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -645,7 +645,7 @@ func canonicalizeDeliveryPipelineNewState(c *Client, rawNew, rawDesired *Deliver
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.Suspended) && dcl.IsNotReturnedByServer(rawDesired.Suspended) {
+	if dcl.IsEmptyValueIndirect(rawNew.Suspended) && dcl.IsEmptyValueIndirect(rawDesired.Suspended) {
 		rawNew.Suspended = rawDesired.Suspended
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Suspended, rawNew.Suspended) {
@@ -710,7 +710,7 @@ func canonicalizeNewDeliveryPipelineSerialPipeline(c *Client, des, nw *DeliveryP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeliveryPipelineSerialPipeline while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -828,7 +828,7 @@ func canonicalizeNewDeliveryPipelineSerialPipelineStages(c *Client, des, nw *Del
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeliveryPipelineSerialPipelineStages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -943,7 +943,7 @@ func canonicalizeNewDeliveryPipelineCondition(c *Client, des, nw *DeliveryPipeli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeliveryPipelineCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1063,7 +1063,7 @@ func canonicalizeNewDeliveryPipelineConditionPipelineReadyCondition(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeliveryPipelineConditionPipelineReadyCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1189,7 +1189,7 @@ func canonicalizeNewDeliveryPipelineConditionTargetsPresentCondition(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for DeliveryPipelineConditionTargetsPresentCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2365,7 +2365,7 @@ func extractDeliveryPipelineFields(r *DeliveryPipeline) error {
 	if err := extractDeliveryPipelineSerialPipelineFields(r, vSerialPipeline); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSerialPipeline) {
+	if !dcl.IsEmptyValueIndirect(vSerialPipeline) {
 		r.SerialPipeline = vSerialPipeline
 	}
 	vCondition := r.Condition
@@ -2376,7 +2376,7 @@ func extractDeliveryPipelineFields(r *DeliveryPipeline) error {
 	if err := extractDeliveryPipelineConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		r.Condition = vCondition
 	}
 	return nil
@@ -2396,7 +2396,7 @@ func extractDeliveryPipelineConditionFields(r *DeliveryPipeline, o *DeliveryPipe
 	if err := extractDeliveryPipelineConditionPipelineReadyConditionFields(r, vPipelineReadyCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPipelineReadyCondition) {
+	if !dcl.IsEmptyValueIndirect(vPipelineReadyCondition) {
 		o.PipelineReadyCondition = vPipelineReadyCondition
 	}
 	vTargetsPresentCondition := o.TargetsPresentCondition
@@ -2407,7 +2407,7 @@ func extractDeliveryPipelineConditionFields(r *DeliveryPipeline, o *DeliveryPipe
 	if err := extractDeliveryPipelineConditionTargetsPresentConditionFields(r, vTargetsPresentCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTargetsPresentCondition) {
+	if !dcl.IsEmptyValueIndirect(vTargetsPresentCondition) {
 		o.TargetsPresentCondition = vTargetsPresentCondition
 	}
 	return nil
@@ -2428,7 +2428,7 @@ func postReadExtractDeliveryPipelineFields(r *DeliveryPipeline) error {
 	if err := postReadExtractDeliveryPipelineSerialPipelineFields(r, vSerialPipeline); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSerialPipeline) {
+	if !dcl.IsEmptyValueIndirect(vSerialPipeline) {
 		r.SerialPipeline = vSerialPipeline
 	}
 	vCondition := r.Condition
@@ -2439,7 +2439,7 @@ func postReadExtractDeliveryPipelineFields(r *DeliveryPipeline) error {
 	if err := postReadExtractDeliveryPipelineConditionFields(r, vCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCondition) {
+	if !dcl.IsEmptyValueIndirect(vCondition) {
 		r.Condition = vCondition
 	}
 	return nil
@@ -2459,7 +2459,7 @@ func postReadExtractDeliveryPipelineConditionFields(r *DeliveryPipeline, o *Deli
 	if err := extractDeliveryPipelineConditionPipelineReadyConditionFields(r, vPipelineReadyCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPipelineReadyCondition) {
+	if !dcl.IsEmptyValueIndirect(vPipelineReadyCondition) {
 		o.PipelineReadyCondition = vPipelineReadyCondition
 	}
 	vTargetsPresentCondition := o.TargetsPresentCondition
@@ -2470,7 +2470,7 @@ func postReadExtractDeliveryPipelineConditionFields(r *DeliveryPipeline, o *Deli
 	if err := extractDeliveryPipelineConditionTargetsPresentConditionFields(r, vTargetsPresentCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTargetsPresentCondition) {
+	if !dcl.IsEmptyValueIndirect(vTargetsPresentCondition) {
 		o.TargetsPresentCondition = vTargetsPresentCondition
 	}
 	return nil

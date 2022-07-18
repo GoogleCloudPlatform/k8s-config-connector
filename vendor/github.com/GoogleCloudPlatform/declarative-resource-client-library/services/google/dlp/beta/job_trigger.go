@@ -3627,19 +3627,19 @@ func (r *JobTrigger) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"description": dcl.ValueOrEmptyString(nr.Description),
-		"inspectJob":  dcl.ValueOrEmptyString(nr.InspectJob),
-		"triggers":    dcl.ValueOrEmptyString(nr.Triggers),
-		"errors":      dcl.ValueOrEmptyString(nr.Errors),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
-		"lastRunTime": dcl.ValueOrEmptyString(nr.LastRunTime),
-		"status":      dcl.ValueOrEmptyString(nr.Status),
-		"locationId":  dcl.ValueOrEmptyString(nr.LocationId),
-		"parent":      dcl.ValueOrEmptyString(nr.Parent),
-		"location":    dcl.ValueOrEmptyString(nr.Location),
+		"name":          dcl.ValueOrEmptyString(nr.Name),
+		"display_name":  dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":   dcl.ValueOrEmptyString(nr.Description),
+		"inspect_job":   dcl.ValueOrEmptyString(nr.InspectJob),
+		"triggers":      dcl.ValueOrEmptyString(nr.Triggers),
+		"errors":        dcl.ValueOrEmptyString(nr.Errors),
+		"create_time":   dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":   dcl.ValueOrEmptyString(nr.UpdateTime),
+		"last_run_time": dcl.ValueOrEmptyString(nr.LastRunTime),
+		"status":        dcl.ValueOrEmptyString(nr.Status),
+		"location_id":   dcl.ValueOrEmptyString(nr.LocationId),
+		"parent":        dcl.ValueOrEmptyString(nr.Parent),
+		"location":      dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("{{parent}}/jobTriggers/{{name}}", params), nil
 }

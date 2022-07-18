@@ -55,16 +55,16 @@ func (r *HttpFilter) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"createTime":    dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":    dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":        dcl.ValueOrEmptyString(nr.Labels),
-		"filterName":    dcl.ValueOrEmptyString(nr.FilterName),
-		"configTypeUrl": dcl.ValueOrEmptyString(nr.ConfigTypeUrl),
-		"config":        dcl.ValueOrEmptyString(nr.Config),
-		"description":   dcl.ValueOrEmptyString(nr.Description),
-		"project":       dcl.ValueOrEmptyString(nr.Project),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":            dcl.ValueOrEmptyString(nr.Name),
+		"create_time":     dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":     dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":          dcl.ValueOrEmptyString(nr.Labels),
+		"filter_name":     dcl.ValueOrEmptyString(nr.FilterName),
+		"config_type_url": dcl.ValueOrEmptyString(nr.ConfigTypeUrl),
+		"config":          dcl.ValueOrEmptyString(nr.Config),
+		"description":     dcl.ValueOrEmptyString(nr.Description),
+		"project":         dcl.ValueOrEmptyString(nr.Project),
+		"location":        dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/httpFilters/{{name}}", params), nil
 }

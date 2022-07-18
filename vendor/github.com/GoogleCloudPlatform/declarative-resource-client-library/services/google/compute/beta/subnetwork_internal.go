@@ -644,12 +644,12 @@ func canonicalizeSubnetworkDesiredState(rawDesired, rawInitial *Subnetwork, opts
 
 func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (*Subnetwork, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.CreationTimestamp) && dcl.IsNotReturnedByServer(rawDesired.CreationTimestamp) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreationTimestamp) && dcl.IsEmptyValueIndirect(rawDesired.CreationTimestamp) {
 		rawNew.CreationTimestamp = rawDesired.CreationTimestamp
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -657,7 +657,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GatewayAddress) && dcl.IsNotReturnedByServer(rawDesired.GatewayAddress) {
+	if dcl.IsEmptyValueIndirect(rawNew.GatewayAddress) && dcl.IsEmptyValueIndirect(rawDesired.GatewayAddress) {
 		rawNew.GatewayAddress = rawDesired.GatewayAddress
 	} else {
 		if dcl.StringCanonicalize(rawDesired.GatewayAddress, rawNew.GatewayAddress) {
@@ -665,7 +665,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IPCidrRange) && dcl.IsNotReturnedByServer(rawDesired.IPCidrRange) {
+	if dcl.IsEmptyValueIndirect(rawNew.IPCidrRange) && dcl.IsEmptyValueIndirect(rawDesired.IPCidrRange) {
 		rawNew.IPCidrRange = rawDesired.IPCidrRange
 	} else {
 		if dcl.StringCanonicalize(rawDesired.IPCidrRange, rawNew.IPCidrRange) {
@@ -673,7 +673,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -681,12 +681,12 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Network) && dcl.IsNotReturnedByServer(rawDesired.Network) {
+	if dcl.IsEmptyValueIndirect(rawNew.Network) && dcl.IsEmptyValueIndirect(rawDesired.Network) {
 		rawNew.Network = rawDesired.Network
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Fingerprint) && dcl.IsNotReturnedByServer(rawDesired.Fingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Fingerprint) && dcl.IsEmptyValueIndirect(rawDesired.Fingerprint) {
 		rawNew.Fingerprint = rawDesired.Fingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Fingerprint, rawNew.Fingerprint) {
@@ -694,23 +694,23 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Purpose) && dcl.IsNotReturnedByServer(rawDesired.Purpose) {
+	if dcl.IsEmptyValueIndirect(rawNew.Purpose) && dcl.IsEmptyValueIndirect(rawDesired.Purpose) {
 		rawNew.Purpose = rawDesired.Purpose
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Role) && dcl.IsNotReturnedByServer(rawDesired.Role) {
+	if dcl.IsEmptyValueIndirect(rawNew.Role) && dcl.IsEmptyValueIndirect(rawDesired.Role) {
 		rawNew.Role = rawDesired.Role
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SecondaryIPRanges) && dcl.IsNotReturnedByServer(rawDesired.SecondaryIPRanges) {
+	if dcl.IsEmptyValueIndirect(rawNew.SecondaryIPRanges) && dcl.IsEmptyValueIndirect(rawDesired.SecondaryIPRanges) {
 		rawNew.SecondaryIPRanges = rawDesired.SecondaryIPRanges
 	} else {
 		rawNew.SecondaryIPRanges = canonicalizeNewSubnetworkSecondaryIPRangesSlice(c, rawDesired.SecondaryIPRanges, rawNew.SecondaryIPRanges)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PrivateIPGoogleAccess) && dcl.IsNotReturnedByServer(rawDesired.PrivateIPGoogleAccess) {
+	if dcl.IsEmptyValueIndirect(rawNew.PrivateIPGoogleAccess) && dcl.IsEmptyValueIndirect(rawDesired.PrivateIPGoogleAccess) {
 		rawNew.PrivateIPGoogleAccess = rawDesired.PrivateIPGoogleAccess
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.PrivateIPGoogleAccess, rawNew.PrivateIPGoogleAccess) {
@@ -720,7 +720,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 
 	rawNew.Region = rawDesired.Region
 
-	if dcl.IsNotReturnedByServer(rawNew.LogConfig) && dcl.IsNotReturnedByServer(rawDesired.LogConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.LogConfig) && dcl.IsEmptyValueIndirect(rawDesired.LogConfig) {
 		rawNew.LogConfig = rawDesired.LogConfig
 	} else {
 		rawNew.LogConfig = canonicalizeNewSubnetworkLogConfig(c, rawDesired.LogConfig, rawNew.LogConfig)
@@ -728,7 +728,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 
 	rawNew.Project = rawDesired.Project
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -736,7 +736,7 @@ func canonicalizeSubnetworkNewState(c *Client, rawNew, rawDesired *Subnetwork) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableFlowLogs) && dcl.IsNotReturnedByServer(rawDesired.EnableFlowLogs) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableFlowLogs) && dcl.IsEmptyValueIndirect(rawDesired.EnableFlowLogs) {
 		rawNew.EnableFlowLogs = rawDesired.EnableFlowLogs
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableFlowLogs, rawNew.EnableFlowLogs) {
@@ -810,7 +810,7 @@ func canonicalizeNewSubnetworkSecondaryIPRanges(c *Client, des, nw *SubnetworkSe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SubnetworkSecondaryIPRanges while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -953,7 +953,7 @@ func canonicalizeNewSubnetworkLogConfig(c *Client, des, nw *SubnetworkLogConfig)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SubnetworkLogConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1956,7 +1956,7 @@ func extractSubnetworkFields(r *Subnetwork) error {
 	if err := extractSubnetworkLogConfigFields(r, vLogConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogConfig) {
+	if !dcl.IsEmptyValueIndirect(vLogConfig) {
 		r.LogConfig = vLogConfig
 	}
 	return nil
@@ -1977,7 +1977,7 @@ func postReadExtractSubnetworkFields(r *Subnetwork) error {
 	if err := postReadExtractSubnetworkLogConfigFields(r, vLogConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLogConfig) {
+	if !dcl.IsEmptyValueIndirect(vLogConfig) {
 		r.LogConfig = vLogConfig
 	}
 	return nil

@@ -35,6 +35,33 @@ func (r *FeatureMembership) String() string {
 	return dcl.SprintResource(r)
 }
 
+// The enum FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum.
+type FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum string
+
+// FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumRef returns a *FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumRef(s string) *FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+	v := FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum(s)
+	return &v
+}
+
+func (v FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"MONITORING_BACKEND_UNSPECIFIED", "PROMETHEUS", "CLOUD_MONITORING"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
 type FeatureMembershipConfigmanagement struct {
 	empty               bool                                                  `json:"-"`
 	ConfigSync          *FeatureMembershipConfigmanagementConfigSync          `json:"configSync"`
@@ -213,13 +240,15 @@ func (r *FeatureMembershipConfigmanagementConfigSyncGit) HashCode() string {
 }
 
 type FeatureMembershipConfigmanagementPolicyController struct {
-	empty                    bool     `json:"-"`
-	Enabled                  *bool    `json:"enabled"`
-	ExemptableNamespaces     []string `json:"exemptableNamespaces"`
-	ReferentialRulesEnabled  *bool    `json:"referentialRulesEnabled"`
-	LogDeniesEnabled         *bool    `json:"logDeniesEnabled"`
-	TemplateLibraryInstalled *bool    `json:"templateLibraryInstalled"`
-	AuditIntervalSeconds     *string  `json:"auditIntervalSeconds"`
+	empty                    bool                                                         `json:"-"`
+	Enabled                  *bool                                                        `json:"enabled"`
+	ExemptableNamespaces     []string                                                     `json:"exemptableNamespaces"`
+	ReferentialRulesEnabled  *bool                                                        `json:"referentialRulesEnabled"`
+	LogDeniesEnabled         *bool                                                        `json:"logDeniesEnabled"`
+	MutationEnabled          *bool                                                        `json:"mutationEnabled"`
+	Monitoring               *FeatureMembershipConfigmanagementPolicyControllerMonitoring `json:"monitoring"`
+	TemplateLibraryInstalled *bool                                                        `json:"templateLibraryInstalled"`
+	AuditIntervalSeconds     *string                                                      `json:"auditIntervalSeconds"`
 }
 
 type jsonFeatureMembershipConfigmanagementPolicyController FeatureMembershipConfigmanagementPolicyController
@@ -245,6 +274,10 @@ func (r *FeatureMembershipConfigmanagementPolicyController) UnmarshalJSON(data [
 
 		r.LogDeniesEnabled = res.LogDeniesEnabled
 
+		r.MutationEnabled = res.MutationEnabled
+
+		r.Monitoring = res.Monitoring
+
 		r.TemplateLibraryInstalled = res.TemplateLibraryInstalled
 
 		r.AuditIntervalSeconds = res.AuditIntervalSeconds
@@ -267,6 +300,52 @@ func (r *FeatureMembershipConfigmanagementPolicyController) String() string {
 }
 
 func (r *FeatureMembershipConfigmanagementPolicyController) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureMembershipConfigmanagementPolicyControllerMonitoring struct {
+	empty    bool                                                                      `json:"-"`
+	Backends []FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum `json:"backends"`
+}
+
+type jsonFeatureMembershipConfigmanagementPolicyControllerMonitoring FeatureMembershipConfigmanagementPolicyControllerMonitoring
+
+func (r *FeatureMembershipConfigmanagementPolicyControllerMonitoring) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureMembershipConfigmanagementPolicyControllerMonitoring
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring
+	} else {
+
+		r.Backends = res.Backends
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureMembershipConfigmanagementPolicyControllerMonitoring is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring *FeatureMembershipConfigmanagementPolicyControllerMonitoring = &FeatureMembershipConfigmanagementPolicyControllerMonitoring{empty: true}
+
+func (r *FeatureMembershipConfigmanagementPolicyControllerMonitoring) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureMembershipConfigmanagementPolicyControllerMonitoring) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureMembershipConfigmanagementPolicyControllerMonitoring) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

@@ -100,6 +100,9 @@ var testDisabledList = map[string]bool{
 	"cloudidentitygroup":              true,
 	"membership-with-expiration-date": true,
 	"membership-with-manager-role":    true,
+	// The following tests require using a Service Account under an allowlisted project (with
+	// label WORKFORCE_POOLS_TRUSTED_TESTER).
+	"iamworkforcepool": true,
 	// The samples below requires a custom project with the test billing account
 	// configured, which has a quota limit on the number of projects attached to
 	// it. We should disable redundant sample tests for the same resource.

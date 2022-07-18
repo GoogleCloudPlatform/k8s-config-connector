@@ -1120,13 +1120,13 @@ func (r *CaPool) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"tier":              dcl.ValueOrEmptyString(nr.Tier),
-		"issuancePolicy":    dcl.ValueOrEmptyString(nr.IssuancePolicy),
-		"publishingOptions": dcl.ValueOrEmptyString(nr.PublishingOptions),
-		"labels":            dcl.ValueOrEmptyString(nr.Labels),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
-		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"tier":               dcl.ValueOrEmptyString(nr.Tier),
+		"issuance_policy":    dcl.ValueOrEmptyString(nr.IssuancePolicy),
+		"publishing_options": dcl.ValueOrEmptyString(nr.PublishingOptions),
+		"labels":             dcl.ValueOrEmptyString(nr.Labels),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
+		"location":           dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/caPools/{{name}}", params), nil
 }

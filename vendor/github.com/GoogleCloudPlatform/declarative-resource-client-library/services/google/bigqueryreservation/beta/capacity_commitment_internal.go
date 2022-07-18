@@ -492,43 +492,43 @@ func canonicalizeCapacityCommitmentDesiredState(rawDesired, rawInitial *Capacity
 
 func canonicalizeCapacityCommitmentNewState(c *Client, rawNew, rawDesired *CapacityCommitment) (*CapacityCommitment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SlotCount) && dcl.IsNotReturnedByServer(rawDesired.SlotCount) {
+	if dcl.IsEmptyValueIndirect(rawNew.SlotCount) && dcl.IsEmptyValueIndirect(rawDesired.SlotCount) {
 		rawNew.SlotCount = rawDesired.SlotCount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Plan) && dcl.IsNotReturnedByServer(rawDesired.Plan) {
+	if dcl.IsEmptyValueIndirect(rawNew.Plan) && dcl.IsEmptyValueIndirect(rawDesired.Plan) {
 		rawNew.Plan = rawDesired.Plan
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CommitmentStartTime) && dcl.IsNotReturnedByServer(rawDesired.CommitmentStartTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CommitmentStartTime) && dcl.IsEmptyValueIndirect(rawDesired.CommitmentStartTime) {
 		rawNew.CommitmentStartTime = rawDesired.CommitmentStartTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CommitmentEndTime) && dcl.IsNotReturnedByServer(rawDesired.CommitmentEndTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CommitmentEndTime) && dcl.IsEmptyValueIndirect(rawDesired.CommitmentEndTime) {
 		rawNew.CommitmentEndTime = rawDesired.CommitmentEndTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.FailureStatus) && dcl.IsNotReturnedByServer(rawDesired.FailureStatus) {
+	if dcl.IsEmptyValueIndirect(rawNew.FailureStatus) && dcl.IsEmptyValueIndirect(rawDesired.FailureStatus) {
 		rawNew.FailureStatus = rawDesired.FailureStatus
 	} else {
 		rawNew.FailureStatus = canonicalizeNewCapacityCommitmentFailureStatus(c, rawDesired.FailureStatus, rawNew.FailureStatus)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RenewalPlan) && dcl.IsNotReturnedByServer(rawDesired.RenewalPlan) {
+	if dcl.IsEmptyValueIndirect(rawNew.RenewalPlan) && dcl.IsEmptyValueIndirect(rawDesired.RenewalPlan) {
 		rawNew.RenewalPlan = rawDesired.RenewalPlan
 	} else {
 	}
@@ -605,7 +605,7 @@ func canonicalizeNewCapacityCommitmentFailureStatus(c *Client, des, nw *Capacity
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CapacityCommitmentFailureStatus while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -726,7 +726,7 @@ func canonicalizeNewCapacityCommitmentFailureStatusDetails(c *Client, des, nw *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CapacityCommitmentFailureStatusDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1565,7 +1565,7 @@ func extractCapacityCommitmentFields(r *CapacityCommitment) error {
 	if err := extractCapacityCommitmentFailureStatusFields(r, vFailureStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFailureStatus) {
+	if !dcl.IsEmptyValueIndirect(vFailureStatus) {
 		r.FailureStatus = vFailureStatus
 	}
 	return nil
@@ -1586,7 +1586,7 @@ func postReadExtractCapacityCommitmentFields(r *CapacityCommitment) error {
 	if err := postReadExtractCapacityCommitmentFailureStatusFields(r, vFailureStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFailureStatus) {
+	if !dcl.IsEmptyValueIndirect(vFailureStatus) {
 		r.FailureStatus = vFailureStatus
 	}
 	return nil

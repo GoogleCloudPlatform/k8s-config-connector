@@ -342,15 +342,15 @@ func (r *Key) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":            dcl.ValueOrEmptyString(nr.Name),
-		"displayName":     dcl.ValueOrEmptyString(nr.DisplayName),
-		"webSettings":     dcl.ValueOrEmptyString(nr.WebSettings),
-		"androidSettings": dcl.ValueOrEmptyString(nr.AndroidSettings),
-		"iosSettings":     dcl.ValueOrEmptyString(nr.IosSettings),
-		"labels":          dcl.ValueOrEmptyString(nr.Labels),
-		"createTime":      dcl.ValueOrEmptyString(nr.CreateTime),
-		"testingOptions":  dcl.ValueOrEmptyString(nr.TestingOptions),
-		"project":         dcl.ValueOrEmptyString(nr.Project),
+		"name":             dcl.ValueOrEmptyString(nr.Name),
+		"display_name":     dcl.ValueOrEmptyString(nr.DisplayName),
+		"web_settings":     dcl.ValueOrEmptyString(nr.WebSettings),
+		"android_settings": dcl.ValueOrEmptyString(nr.AndroidSettings),
+		"ios_settings":     dcl.ValueOrEmptyString(nr.IosSettings),
+		"labels":           dcl.ValueOrEmptyString(nr.Labels),
+		"create_time":      dcl.ValueOrEmptyString(nr.CreateTime),
+		"testing_options":  dcl.ValueOrEmptyString(nr.TestingOptions),
+		"project":          dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/keys/{{name}}", params), nil
 }

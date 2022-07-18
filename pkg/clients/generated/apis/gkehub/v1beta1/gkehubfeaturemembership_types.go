@@ -125,6 +125,12 @@ type FeaturemembershipHierarchyController struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+type FeaturemembershipMonitoring struct {
+	/*  Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
+	// +optional
+	Backends []string `json:"backends,omitempty"`
+}
+
 type FeaturemembershipPolicyController struct {
 	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
 	// +optional
@@ -141,6 +147,14 @@ type FeaturemembershipPolicyController struct {
 	/* Logs all denies and dry run failures. */
 	// +optional
 	LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+
+	/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
+	// +optional
+	Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
+
+	/* Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster. */
+	// +optional
+	MutationEnabled *bool `json:"mutationEnabled,omitempty"`
 
 	/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
 	// +optional

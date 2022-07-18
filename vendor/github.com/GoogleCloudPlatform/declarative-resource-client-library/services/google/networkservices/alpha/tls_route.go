@@ -252,9 +252,9 @@ func (r *TlsRoute) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"selfLink":    dcl.ValueOrEmptyString(nr.SelfLink),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"self_link":   dcl.ValueOrEmptyString(nr.SelfLink),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),

@@ -884,12 +884,12 @@ func canonicalizeInstanceGroupManagerDesiredState(rawDesired, rawInitial *Instan
 
 func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *InstanceGroupManager) (*InstanceGroupManager, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreationTimestamp) && dcl.IsNotReturnedByServer(rawDesired.CreationTimestamp) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreationTimestamp) && dcl.IsEmptyValueIndirect(rawDesired.CreationTimestamp) {
 		rawNew.CreationTimestamp = rawDesired.CreationTimestamp
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CreationTimestamp, rawNew.CreationTimestamp) {
@@ -897,7 +897,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -905,7 +905,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -913,7 +913,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Zone) && dcl.IsNotReturnedByServer(rawDesired.Zone) {
+	if dcl.IsEmptyValueIndirect(rawNew.Zone) && dcl.IsEmptyValueIndirect(rawDesired.Zone) {
 		rawNew.Zone = rawDesired.Zone
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Zone, rawNew.Zone) {
@@ -921,7 +921,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Region) && dcl.IsNotReturnedByServer(rawDesired.Region) {
+	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
 		rawNew.Region = rawDesired.Region
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
@@ -929,29 +929,29 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DistributionPolicy) && dcl.IsNotReturnedByServer(rawDesired.DistributionPolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.DistributionPolicy) && dcl.IsEmptyValueIndirect(rawDesired.DistributionPolicy) {
 		rawNew.DistributionPolicy = rawDesired.DistributionPolicy
 	} else {
 		rawNew.DistributionPolicy = canonicalizeNewInstanceGroupManagerDistributionPolicy(c, rawDesired.DistributionPolicy, rawNew.DistributionPolicy)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InstanceTemplate) && dcl.IsNotReturnedByServer(rawDesired.InstanceTemplate) {
+	if dcl.IsEmptyValueIndirect(rawNew.InstanceTemplate) && dcl.IsEmptyValueIndirect(rawDesired.InstanceTemplate) {
 		rawNew.InstanceTemplate = rawDesired.InstanceTemplate
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Versions) && dcl.IsNotReturnedByServer(rawDesired.Versions) {
+	if dcl.IsEmptyValueIndirect(rawNew.Versions) && dcl.IsEmptyValueIndirect(rawDesired.Versions) {
 		rawNew.Versions = rawDesired.Versions
 	} else {
 		rawNew.Versions = canonicalizeNewInstanceGroupManagerVersionsSlice(c, rawDesired.Versions, rawNew.Versions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InstanceGroup) && dcl.IsNotReturnedByServer(rawDesired.InstanceGroup) {
+	if dcl.IsEmptyValueIndirect(rawNew.InstanceGroup) && dcl.IsEmptyValueIndirect(rawDesired.InstanceGroup) {
 		rawNew.InstanceGroup = rawDesired.InstanceGroup
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TargetPools) && dcl.IsNotReturnedByServer(rawDesired.TargetPools) {
+	if dcl.IsEmptyValueIndirect(rawNew.TargetPools) && dcl.IsEmptyValueIndirect(rawDesired.TargetPools) {
 		rawNew.TargetPools = rawDesired.TargetPools
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.TargetPools, rawNew.TargetPools) {
@@ -959,7 +959,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BaseInstanceName) && dcl.IsNotReturnedByServer(rawDesired.BaseInstanceName) {
+	if dcl.IsEmptyValueIndirect(rawNew.BaseInstanceName) && dcl.IsEmptyValueIndirect(rawDesired.BaseInstanceName) {
 		rawNew.BaseInstanceName = rawDesired.BaseInstanceName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.BaseInstanceName, rawNew.BaseInstanceName) {
@@ -967,7 +967,7 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Fingerprint) && dcl.IsNotReturnedByServer(rawDesired.Fingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Fingerprint) && dcl.IsEmptyValueIndirect(rawDesired.Fingerprint) {
 		rawNew.Fingerprint = rawDesired.Fingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Fingerprint, rawNew.Fingerprint) {
@@ -975,24 +975,24 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CurrentActions) && dcl.IsNotReturnedByServer(rawDesired.CurrentActions) {
+	if dcl.IsEmptyValueIndirect(rawNew.CurrentActions) && dcl.IsEmptyValueIndirect(rawDesired.CurrentActions) {
 		rawNew.CurrentActions = rawDesired.CurrentActions
 	} else {
 		rawNew.CurrentActions = canonicalizeNewInstanceGroupManagerCurrentActions(c, rawDesired.CurrentActions, rawNew.CurrentActions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 		rawNew.Status = canonicalizeNewInstanceGroupManagerStatus(c, rawDesired.Status, rawNew.Status)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TargetSize) && dcl.IsNotReturnedByServer(rawDesired.TargetSize) {
+	if dcl.IsEmptyValueIndirect(rawNew.TargetSize) && dcl.IsEmptyValueIndirect(rawDesired.TargetSize) {
 		rawNew.TargetSize = rawDesired.TargetSize
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -1000,36 +1000,36 @@ func canonicalizeInstanceGroupManagerNewState(c *Client, rawNew, rawDesired *Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AutoHealingPolicies) && dcl.IsNotReturnedByServer(rawDesired.AutoHealingPolicies) {
+	if dcl.IsEmptyValueIndirect(rawNew.AutoHealingPolicies) && dcl.IsEmptyValueIndirect(rawDesired.AutoHealingPolicies) {
 		rawNew.AutoHealingPolicies = rawDesired.AutoHealingPolicies
 	} else {
 		rawNew.AutoHealingPolicies = canonicalizeNewInstanceGroupManagerAutoHealingPoliciesSlice(c, rawDesired.AutoHealingPolicies, rawNew.AutoHealingPolicies)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdatePolicy) && dcl.IsNotReturnedByServer(rawDesired.UpdatePolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdatePolicy) && dcl.IsEmptyValueIndirect(rawDesired.UpdatePolicy) {
 		rawNew.UpdatePolicy = rawDesired.UpdatePolicy
 	} else {
 		rawNew.UpdatePolicy = canonicalizeNewInstanceGroupManagerUpdatePolicy(c, rawDesired.UpdatePolicy, rawNew.UpdatePolicy)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NamedPorts) && dcl.IsNotReturnedByServer(rawDesired.NamedPorts) {
+	if dcl.IsEmptyValueIndirect(rawNew.NamedPorts) && dcl.IsEmptyValueIndirect(rawDesired.NamedPorts) {
 		rawNew.NamedPorts = rawDesired.NamedPorts
 	} else {
 		rawNew.NamedPorts = canonicalizeNewInstanceGroupManagerNamedPortsSlice(c, rawDesired.NamedPorts, rawNew.NamedPorts)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StatefulPolicy) && dcl.IsNotReturnedByServer(rawDesired.StatefulPolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.StatefulPolicy) && dcl.IsEmptyValueIndirect(rawDesired.StatefulPolicy) {
 		rawNew.StatefulPolicy = rawDesired.StatefulPolicy
 	} else {
 		rawNew.StatefulPolicy = canonicalizeNewInstanceGroupManagerStatefulPolicy(c, rawDesired.StatefulPolicy, rawNew.StatefulPolicy)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceAccount) && dcl.IsNotReturnedByServer(rawDesired.ServiceAccount) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceAccount) && dcl.IsEmptyValueIndirect(rawDesired.ServiceAccount) {
 		rawNew.ServiceAccount = rawDesired.ServiceAccount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.FailoverAction) && dcl.IsNotReturnedByServer(rawDesired.FailoverAction) {
+	if dcl.IsEmptyValueIndirect(rawNew.FailoverAction) && dcl.IsEmptyValueIndirect(rawDesired.FailoverAction) {
 		rawNew.FailoverAction = rawDesired.FailoverAction
 	} else {
 	}
@@ -1101,7 +1101,7 @@ func canonicalizeNewInstanceGroupManagerDistributionPolicy(c *Client, des, nw *I
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerDistributionPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1214,7 +1214,7 @@ func canonicalizeNewInstanceGroupManagerDistributionPolicyZones(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerDistributionPolicyZones while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1336,7 +1336,7 @@ func canonicalizeNewInstanceGroupManagerVersions(c *Client, des, nw *InstanceGro
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerVersions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1459,7 +1459,7 @@ func canonicalizeNewInstanceGroupManagerVersionsTargetSize(c *Client, des, nw *I
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerVersionsTargetSize while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1564,7 +1564,7 @@ func canonicalizeNewInstanceGroupManagerCurrentActions(c *Client, des, nw *Insta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerCurrentActions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1669,7 +1669,7 @@ func canonicalizeNewInstanceGroupManagerStatus(c *Client, des, nw *InstanceGroup
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatus while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1783,7 +1783,7 @@ func canonicalizeNewInstanceGroupManagerStatusVersionTarget(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatusVersionTarget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1892,7 +1892,7 @@ func canonicalizeNewInstanceGroupManagerStatusStateful(c *Client, des, nw *Insta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatusStateful while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2011,7 +2011,7 @@ func canonicalizeNewInstanceGroupManagerStatusStatefulPerInstanceConfigs(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatusStatefulPerInstanceConfigs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2133,7 +2133,7 @@ func canonicalizeNewInstanceGroupManagerAutoHealingPolicies(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerAutoHealingPolicies while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2277,7 +2277,7 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicy(c *Client, des, nw *Instanc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerUpdatePolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2398,7 +2398,7 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxSurge(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerUpdatePolicyMaxSurge while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2516,7 +2516,7 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxUnavailable(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerUpdatePolicyMaxUnavailable while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2633,7 +2633,7 @@ func canonicalizeNewInstanceGroupManagerNamedPorts(c *Client, des, nw *InstanceG
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerNamedPorts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2744,7 +2744,7 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicy(c *Client, des, nw *Insta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatefulPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2870,7 +2870,7 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedState(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatefulPolicyPreservedState while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2982,7 +2982,7 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateDisks(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatefulPolicyPreservedStateDisks while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3094,7 +3094,7 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateInternalIps(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatefulPolicyPreservedStateInternalIps while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3206,7 +3206,7 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateExternalIps(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceGroupManagerStatefulPolicyPreservedStateExternalIps while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7328,7 +7328,7 @@ func extractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := extractInstanceGroupManagerDistributionPolicyFields(r, vDistributionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vDistributionPolicy) {
 		r.DistributionPolicy = vDistributionPolicy
 	}
 	vCurrentActions := r.CurrentActions
@@ -7339,7 +7339,7 @@ func extractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := extractInstanceGroupManagerCurrentActionsFields(r, vCurrentActions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCurrentActions) {
+	if !dcl.IsEmptyValueIndirect(vCurrentActions) {
 		r.CurrentActions = vCurrentActions
 	}
 	vStatus := r.Status
@@ -7350,7 +7350,7 @@ func extractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := extractInstanceGroupManagerStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vUpdatePolicy := r.UpdatePolicy
@@ -7361,7 +7361,7 @@ func extractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := extractInstanceGroupManagerUpdatePolicyFields(r, vUpdatePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpdatePolicy) {
+	if !dcl.IsEmptyValueIndirect(vUpdatePolicy) {
 		r.UpdatePolicy = vUpdatePolicy
 	}
 	vStatefulPolicy := r.StatefulPolicy
@@ -7372,7 +7372,7 @@ func extractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := extractInstanceGroupManagerStatefulPolicyFields(r, vStatefulPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatefulPolicy) {
+	if !dcl.IsEmptyValueIndirect(vStatefulPolicy) {
 		r.StatefulPolicy = vStatefulPolicy
 	}
 	return nil
@@ -7392,7 +7392,7 @@ func extractInstanceGroupManagerVersionsFields(r *InstanceGroupManager, o *Insta
 	if err := extractInstanceGroupManagerVersionsTargetSizeFields(r, vTargetSize); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTargetSize) {
+	if !dcl.IsEmptyValueIndirect(vTargetSize) {
 		o.TargetSize = vTargetSize
 	}
 	return nil
@@ -7412,7 +7412,7 @@ func extractInstanceGroupManagerStatusFields(r *InstanceGroupManager, o *Instanc
 	if err := extractInstanceGroupManagerStatusVersionTargetFields(r, vVersionTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersionTarget) {
+	if !dcl.IsEmptyValueIndirect(vVersionTarget) {
 		o.VersionTarget = vVersionTarget
 	}
 	vStateful := o.Stateful
@@ -7423,7 +7423,7 @@ func extractInstanceGroupManagerStatusFields(r *InstanceGroupManager, o *Instanc
 	if err := extractInstanceGroupManagerStatusStatefulFields(r, vStateful); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStateful) {
+	if !dcl.IsEmptyValueIndirect(vStateful) {
 		o.Stateful = vStateful
 	}
 	return nil
@@ -7440,7 +7440,7 @@ func extractInstanceGroupManagerStatusStatefulFields(r *InstanceGroupManager, o 
 	if err := extractInstanceGroupManagerStatusStatefulPerInstanceConfigsFields(r, vPerInstanceConfigs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPerInstanceConfigs) {
+	if !dcl.IsEmptyValueIndirect(vPerInstanceConfigs) {
 		o.PerInstanceConfigs = vPerInstanceConfigs
 	}
 	return nil
@@ -7460,7 +7460,7 @@ func extractInstanceGroupManagerUpdatePolicyFields(r *InstanceGroupManager, o *I
 	if err := extractInstanceGroupManagerUpdatePolicyMaxSurgeFields(r, vMaxSurge); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxSurge) {
+	if !dcl.IsEmptyValueIndirect(vMaxSurge) {
 		o.MaxSurge = vMaxSurge
 	}
 	vMaxUnavailable := o.MaxUnavailable
@@ -7471,7 +7471,7 @@ func extractInstanceGroupManagerUpdatePolicyFields(r *InstanceGroupManager, o *I
 	if err := extractInstanceGroupManagerUpdatePolicyMaxUnavailableFields(r, vMaxUnavailable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxUnavailable) {
+	if !dcl.IsEmptyValueIndirect(vMaxUnavailable) {
 		o.MaxUnavailable = vMaxUnavailable
 	}
 	return nil
@@ -7494,7 +7494,7 @@ func extractInstanceGroupManagerStatefulPolicyFields(r *InstanceGroupManager, o 
 	if err := extractInstanceGroupManagerStatefulPolicyPreservedStateFields(r, vPreservedState); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreservedState) {
+	if !dcl.IsEmptyValueIndirect(vPreservedState) {
 		o.PreservedState = vPreservedState
 	}
 	return nil
@@ -7521,7 +7521,7 @@ func postReadExtractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := postReadExtractInstanceGroupManagerDistributionPolicyFields(r, vDistributionPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDistributionPolicy) {
+	if !dcl.IsEmptyValueIndirect(vDistributionPolicy) {
 		r.DistributionPolicy = vDistributionPolicy
 	}
 	vCurrentActions := r.CurrentActions
@@ -7532,7 +7532,7 @@ func postReadExtractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := postReadExtractInstanceGroupManagerCurrentActionsFields(r, vCurrentActions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCurrentActions) {
+	if !dcl.IsEmptyValueIndirect(vCurrentActions) {
 		r.CurrentActions = vCurrentActions
 	}
 	vStatus := r.Status
@@ -7543,7 +7543,7 @@ func postReadExtractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := postReadExtractInstanceGroupManagerStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vUpdatePolicy := r.UpdatePolicy
@@ -7554,7 +7554,7 @@ func postReadExtractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := postReadExtractInstanceGroupManagerUpdatePolicyFields(r, vUpdatePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vUpdatePolicy) {
+	if !dcl.IsEmptyValueIndirect(vUpdatePolicy) {
 		r.UpdatePolicy = vUpdatePolicy
 	}
 	vStatefulPolicy := r.StatefulPolicy
@@ -7565,7 +7565,7 @@ func postReadExtractInstanceGroupManagerFields(r *InstanceGroupManager) error {
 	if err := postReadExtractInstanceGroupManagerStatefulPolicyFields(r, vStatefulPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatefulPolicy) {
+	if !dcl.IsEmptyValueIndirect(vStatefulPolicy) {
 		r.StatefulPolicy = vStatefulPolicy
 	}
 	return nil
@@ -7585,7 +7585,7 @@ func postReadExtractInstanceGroupManagerVersionsFields(r *InstanceGroupManager, 
 	if err := extractInstanceGroupManagerVersionsTargetSizeFields(r, vTargetSize); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTargetSize) {
+	if !dcl.IsEmptyValueIndirect(vTargetSize) {
 		o.TargetSize = vTargetSize
 	}
 	return nil
@@ -7605,7 +7605,7 @@ func postReadExtractInstanceGroupManagerStatusFields(r *InstanceGroupManager, o 
 	if err := extractInstanceGroupManagerStatusVersionTargetFields(r, vVersionTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVersionTarget) {
+	if !dcl.IsEmptyValueIndirect(vVersionTarget) {
 		o.VersionTarget = vVersionTarget
 	}
 	vStateful := o.Stateful
@@ -7616,7 +7616,7 @@ func postReadExtractInstanceGroupManagerStatusFields(r *InstanceGroupManager, o 
 	if err := extractInstanceGroupManagerStatusStatefulFields(r, vStateful); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStateful) {
+	if !dcl.IsEmptyValueIndirect(vStateful) {
 		o.Stateful = vStateful
 	}
 	return nil
@@ -7633,7 +7633,7 @@ func postReadExtractInstanceGroupManagerStatusStatefulFields(r *InstanceGroupMan
 	if err := extractInstanceGroupManagerStatusStatefulPerInstanceConfigsFields(r, vPerInstanceConfigs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPerInstanceConfigs) {
+	if !dcl.IsEmptyValueIndirect(vPerInstanceConfigs) {
 		o.PerInstanceConfigs = vPerInstanceConfigs
 	}
 	return nil
@@ -7653,7 +7653,7 @@ func postReadExtractInstanceGroupManagerUpdatePolicyFields(r *InstanceGroupManag
 	if err := extractInstanceGroupManagerUpdatePolicyMaxSurgeFields(r, vMaxSurge); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxSurge) {
+	if !dcl.IsEmptyValueIndirect(vMaxSurge) {
 		o.MaxSurge = vMaxSurge
 	}
 	vMaxUnavailable := o.MaxUnavailable
@@ -7664,7 +7664,7 @@ func postReadExtractInstanceGroupManagerUpdatePolicyFields(r *InstanceGroupManag
 	if err := extractInstanceGroupManagerUpdatePolicyMaxUnavailableFields(r, vMaxUnavailable); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMaxUnavailable) {
+	if !dcl.IsEmptyValueIndirect(vMaxUnavailable) {
 		o.MaxUnavailable = vMaxUnavailable
 	}
 	return nil
@@ -7687,7 +7687,7 @@ func postReadExtractInstanceGroupManagerStatefulPolicyFields(r *InstanceGroupMan
 	if err := extractInstanceGroupManagerStatefulPolicyPreservedStateFields(r, vPreservedState); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreservedState) {
+	if !dcl.IsEmptyValueIndirect(vPreservedState) {
 		o.PreservedState = vPreservedState
 	}
 	return nil

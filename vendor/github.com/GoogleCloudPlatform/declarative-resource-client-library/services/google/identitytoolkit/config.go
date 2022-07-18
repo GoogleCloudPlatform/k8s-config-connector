@@ -1746,17 +1746,17 @@ func (r *Config) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"signIn":            dcl.ValueOrEmptyString(nr.SignIn),
-		"notification":      dcl.ValueOrEmptyString(nr.Notification),
-		"quota":             dcl.ValueOrEmptyString(nr.Quota),
-		"monitoring":        dcl.ValueOrEmptyString(nr.Monitoring),
-		"multiTenant":       dcl.ValueOrEmptyString(nr.MultiTenant),
-		"authorizedDomains": dcl.ValueOrEmptyString(nr.AuthorizedDomains),
-		"subtype":           dcl.ValueOrEmptyString(nr.Subtype),
-		"client":            dcl.ValueOrEmptyString(nr.Client),
-		"mfa":               dcl.ValueOrEmptyString(nr.Mfa),
-		"blockingFunctions": dcl.ValueOrEmptyString(nr.BlockingFunctions),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"sign_in":            dcl.ValueOrEmptyString(nr.SignIn),
+		"notification":       dcl.ValueOrEmptyString(nr.Notification),
+		"quota":              dcl.ValueOrEmptyString(nr.Quota),
+		"monitoring":         dcl.ValueOrEmptyString(nr.Monitoring),
+		"multi_tenant":       dcl.ValueOrEmptyString(nr.MultiTenant),
+		"authorized_domains": dcl.ValueOrEmptyString(nr.AuthorizedDomains),
+		"subtype":            dcl.ValueOrEmptyString(nr.Subtype),
+		"client":             dcl.ValueOrEmptyString(nr.Client),
+		"mfa":                dcl.ValueOrEmptyString(nr.Mfa),
+		"blocking_functions": dcl.ValueOrEmptyString(nr.BlockingFunctions),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/config", params), nil
 }

@@ -108,7 +108,7 @@ func (r *Assignment) ID() (string, error) {
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
 		"assignee":    dcl.ValueOrEmptyString(nr.Assignee),
-		"jobType":     dcl.ValueOrEmptyString(nr.JobType),
+		"job_type":    dcl.ValueOrEmptyString(nr.JobType),
 		"state":       dcl.ValueOrEmptyString(nr.State),
 		"project":     dcl.ValueOrEmptyString(nr.Project),
 		"location":    dcl.ValueOrEmptyString(nr.Location),

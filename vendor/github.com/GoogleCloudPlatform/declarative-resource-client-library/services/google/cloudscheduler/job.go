@@ -627,22 +627,22 @@ func (r *Job) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"description":         dcl.ValueOrEmptyString(nr.Description),
-		"pubsubTarget":        dcl.ValueOrEmptyString(nr.PubsubTarget),
-		"appEngineHttpTarget": dcl.ValueOrEmptyString(nr.AppEngineHttpTarget),
-		"httpTarget":          dcl.ValueOrEmptyString(nr.HttpTarget),
-		"schedule":            dcl.ValueOrEmptyString(nr.Schedule),
-		"timeZone":            dcl.ValueOrEmptyString(nr.TimeZone),
-		"userUpdateTime":      dcl.ValueOrEmptyString(nr.UserUpdateTime),
-		"state":               dcl.ValueOrEmptyString(nr.State),
-		"status":              dcl.ValueOrEmptyString(nr.Status),
-		"scheduleTime":        dcl.ValueOrEmptyString(nr.ScheduleTime),
-		"lastAttemptTime":     dcl.ValueOrEmptyString(nr.LastAttemptTime),
-		"retryConfig":         dcl.ValueOrEmptyString(nr.RetryConfig),
-		"attemptDeadline":     dcl.ValueOrEmptyString(nr.AttemptDeadline),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
-		"location":            dcl.ValueOrEmptyString(nr.Location),
+		"name":                   dcl.ValueOrEmptyString(nr.Name),
+		"description":            dcl.ValueOrEmptyString(nr.Description),
+		"pubsub_target":          dcl.ValueOrEmptyString(nr.PubsubTarget),
+		"app_engine_http_target": dcl.ValueOrEmptyString(nr.AppEngineHttpTarget),
+		"http_target":            dcl.ValueOrEmptyString(nr.HttpTarget),
+		"schedule":               dcl.ValueOrEmptyString(nr.Schedule),
+		"time_zone":              dcl.ValueOrEmptyString(nr.TimeZone),
+		"user_update_time":       dcl.ValueOrEmptyString(nr.UserUpdateTime),
+		"state":                  dcl.ValueOrEmptyString(nr.State),
+		"status":                 dcl.ValueOrEmptyString(nr.Status),
+		"schedule_time":          dcl.ValueOrEmptyString(nr.ScheduleTime),
+		"last_attempt_time":      dcl.ValueOrEmptyString(nr.LastAttemptTime),
+		"retry_config":           dcl.ValueOrEmptyString(nr.RetryConfig),
+		"attempt_deadline":       dcl.ValueOrEmptyString(nr.AttemptDeadline),
+		"project":                dcl.ValueOrEmptyString(nr.Project),
+		"location":               dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/jobs/{{name}}", params), nil
 }

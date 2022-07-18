@@ -269,20 +269,20 @@ func (r *Lake) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":            dcl.ValueOrEmptyString(nr.Name),
-		"displayName":     dcl.ValueOrEmptyString(nr.DisplayName),
-		"uid":             dcl.ValueOrEmptyString(nr.Uid),
-		"createTime":      dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":      dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":          dcl.ValueOrEmptyString(nr.Labels),
-		"description":     dcl.ValueOrEmptyString(nr.Description),
-		"state":           dcl.ValueOrEmptyString(nr.State),
-		"serviceAccount":  dcl.ValueOrEmptyString(nr.ServiceAccount),
-		"metastore":       dcl.ValueOrEmptyString(nr.Metastore),
-		"assetStatus":     dcl.ValueOrEmptyString(nr.AssetStatus),
-		"metastoreStatus": dcl.ValueOrEmptyString(nr.MetastoreStatus),
-		"project":         dcl.ValueOrEmptyString(nr.Project),
-		"location":        dcl.ValueOrEmptyString(nr.Location),
+		"name":             dcl.ValueOrEmptyString(nr.Name),
+		"display_name":     dcl.ValueOrEmptyString(nr.DisplayName),
+		"uid":              dcl.ValueOrEmptyString(nr.Uid),
+		"create_time":      dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":      dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":           dcl.ValueOrEmptyString(nr.Labels),
+		"description":      dcl.ValueOrEmptyString(nr.Description),
+		"state":            dcl.ValueOrEmptyString(nr.State),
+		"service_account":  dcl.ValueOrEmptyString(nr.ServiceAccount),
+		"metastore":        dcl.ValueOrEmptyString(nr.Metastore),
+		"asset_status":     dcl.ValueOrEmptyString(nr.AssetStatus),
+		"metastore_status": dcl.ValueOrEmptyString(nr.MetastoreStatus),
+		"project":          dcl.ValueOrEmptyString(nr.Project),
+		"location":         dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/lakes/{{name}}", params), nil
 }

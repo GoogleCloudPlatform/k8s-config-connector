@@ -505,7 +505,7 @@ func canonicalizeServiceAccountDesiredState(rawDesired, rawInitial *ServiceAccou
 
 func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAccount) (*ServiceAccount, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -513,12 +513,12 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Project) && dcl.IsNotReturnedByServer(rawDesired.Project) {
+	if dcl.IsEmptyValueIndirect(rawNew.Project) && dcl.IsEmptyValueIndirect(rawDesired.Project) {
 		rawNew.Project = rawDesired.Project
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UniqueId) && dcl.IsNotReturnedByServer(rawDesired.UniqueId) {
+	if dcl.IsEmptyValueIndirect(rawNew.UniqueId) && dcl.IsEmptyValueIndirect(rawDesired.UniqueId) {
 		rawNew.UniqueId = rawDesired.UniqueId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.UniqueId, rawNew.UniqueId) {
@@ -526,7 +526,7 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Email) && dcl.IsNotReturnedByServer(rawDesired.Email) {
+	if dcl.IsEmptyValueIndirect(rawNew.Email) && dcl.IsEmptyValueIndirect(rawDesired.Email) {
 		rawNew.Email = rawDesired.Email
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Email, rawNew.Email) {
@@ -534,7 +534,7 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -542,7 +542,7 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -550,7 +550,7 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.OAuth2ClientId) && dcl.IsNotReturnedByServer(rawDesired.OAuth2ClientId) {
+	if dcl.IsEmptyValueIndirect(rawNew.OAuth2ClientId) && dcl.IsEmptyValueIndirect(rawDesired.OAuth2ClientId) {
 		rawNew.OAuth2ClientId = rawDesired.OAuth2ClientId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.OAuth2ClientId, rawNew.OAuth2ClientId) {
@@ -558,13 +558,13 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ActasResources) && dcl.IsNotReturnedByServer(rawDesired.ActasResources) {
+	if dcl.IsEmptyValueIndirect(rawNew.ActasResources) && dcl.IsEmptyValueIndirect(rawDesired.ActasResources) {
 		rawNew.ActasResources = rawDesired.ActasResources
 	} else {
 		rawNew.ActasResources = canonicalizeNewServiceAccountActasResources(c, rawDesired.ActasResources, rawNew.ActasResources)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {
@@ -629,7 +629,7 @@ func canonicalizeNewServiceAccountActasResources(c *Client, des, nw *ServiceAcco
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceAccountActasResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -742,7 +742,7 @@ func canonicalizeNewServiceAccountActasResourcesResources(c *Client, des, nw *Se
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServiceAccountActasResourcesResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1385,7 +1385,7 @@ func extractServiceAccountFields(r *ServiceAccount) error {
 	if err := extractServiceAccountActasResourcesFields(r, vActasResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vActasResources) {
+	if !dcl.IsEmptyValueIndirect(vActasResources) {
 		r.ActasResources = vActasResources
 	}
 	return nil
@@ -1406,7 +1406,7 @@ func postReadExtractServiceAccountFields(r *ServiceAccount) error {
 	if err := postReadExtractServiceAccountActasResourcesFields(r, vActasResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vActasResources) {
+	if !dcl.IsEmptyValueIndirect(vActasResources) {
 		r.ActasResources = vActasResources
 	}
 	return nil

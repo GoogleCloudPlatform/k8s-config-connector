@@ -112,19 +112,19 @@ func (r *Backup) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"state":              dcl.ValueOrEmptyString(nr.State),
-		"createTime":         dcl.ValueOrEmptyString(nr.CreateTime),
-		"labels":             dcl.ValueOrEmptyString(nr.Labels),
-		"capacityGb":         dcl.ValueOrEmptyString(nr.CapacityGb),
-		"storageBytes":       dcl.ValueOrEmptyString(nr.StorageBytes),
-		"sourceInstance":     dcl.ValueOrEmptyString(nr.SourceInstance),
-		"sourceFileShare":    dcl.ValueOrEmptyString(nr.SourceFileShare),
-		"sourceInstanceTier": dcl.ValueOrEmptyString(nr.SourceInstanceTier),
-		"downloadBytes":      dcl.ValueOrEmptyString(nr.DownloadBytes),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
-		"location":           dcl.ValueOrEmptyString(nr.Location),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"state":                dcl.ValueOrEmptyString(nr.State),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"labels":               dcl.ValueOrEmptyString(nr.Labels),
+		"capacity_gb":          dcl.ValueOrEmptyString(nr.CapacityGb),
+		"storage_bytes":        dcl.ValueOrEmptyString(nr.StorageBytes),
+		"source_instance":      dcl.ValueOrEmptyString(nr.SourceInstance),
+		"source_file_share":    dcl.ValueOrEmptyString(nr.SourceFileShare),
+		"source_instance_tier": dcl.ValueOrEmptyString(nr.SourceInstanceTier),
+		"download_bytes":       dcl.ValueOrEmptyString(nr.DownloadBytes),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/backups/{{name}}", params), nil
 }

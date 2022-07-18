@@ -159,15 +159,15 @@ func (r *Tenant) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"displayName":           dcl.ValueOrEmptyString(nr.DisplayName),
-		"allowPasswordSignup":   dcl.ValueOrEmptyString(nr.AllowPasswordSignup),
-		"enableEmailLinkSignin": dcl.ValueOrEmptyString(nr.EnableEmailLinkSignin),
-		"disableAuth":           dcl.ValueOrEmptyString(nr.DisableAuth),
-		"enableAnonymousUser":   dcl.ValueOrEmptyString(nr.EnableAnonymousUser),
-		"mfaConfig":             dcl.ValueOrEmptyString(nr.MfaConfig),
-		"testPhoneNumbers":      dcl.ValueOrEmptyString(nr.TestPhoneNumbers),
-		"project":               dcl.ValueOrEmptyString(nr.Project),
+		"name":                     dcl.ValueOrEmptyString(nr.Name),
+		"display_name":             dcl.ValueOrEmptyString(nr.DisplayName),
+		"allow_password_signup":    dcl.ValueOrEmptyString(nr.AllowPasswordSignup),
+		"enable_email_link_signin": dcl.ValueOrEmptyString(nr.EnableEmailLinkSignin),
+		"disable_auth":             dcl.ValueOrEmptyString(nr.DisableAuth),
+		"enable_anonymous_user":    dcl.ValueOrEmptyString(nr.EnableAnonymousUser),
+		"mfa_config":               dcl.ValueOrEmptyString(nr.MfaConfig),
+		"test_phone_numbers":       dcl.ValueOrEmptyString(nr.TestPhoneNumbers),
+		"project":                  dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/tenants/{{name}}", params), nil
 }

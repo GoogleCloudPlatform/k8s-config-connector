@@ -90,6 +90,10 @@ Note: GKE Hub REST documentation is under construction.
       exemptableNamespaces:
       - string
       logDeniesEnabled: boolean
+      monitoring:
+        backends:
+        - string
+      mutationEnabled: boolean
       referentialRulesEnabled: boolean
       templateLibraryInstalled: boolean
     version: string
@@ -395,6 +399,46 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Logs all denies and dry run failures.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.policyController.monitoring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"]{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.policyController.monitoring.backends</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.policyController.monitoring.backends[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.policyController.mutationEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -612,7 +612,7 @@ func canonicalizeWorkerPoolDesiredState(rawDesired, rawInitial *WorkerPool, opts
 
 func canonicalizeWorkerPoolNewState(c *Client, rawNew, rawDesired *WorkerPool) (*WorkerPool, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -620,7 +620,7 @@ func canonicalizeWorkerPoolNewState(c *Client, rawNew, rawDesired *WorkerPool) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -628,7 +628,7 @@ func canonicalizeWorkerPoolNewState(c *Client, rawNew, rawDesired *WorkerPool) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -636,38 +636,38 @@ func canonicalizeWorkerPoolNewState(c *Client, rawNew, rawDesired *WorkerPool) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeleteTime) && dcl.IsNotReturnedByServer(rawDesired.DeleteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeleteTime) && dcl.IsEmptyValueIndirect(rawDesired.DeleteTime) {
 		rawNew.DeleteTime = rawDesired.DeleteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PrivatePoolV1Config) && dcl.IsNotReturnedByServer(rawDesired.PrivatePoolV1Config) {
+	if dcl.IsEmptyValueIndirect(rawNew.PrivatePoolV1Config) && dcl.IsEmptyValueIndirect(rawDesired.PrivatePoolV1Config) {
 		rawNew.PrivatePoolV1Config = rawDesired.PrivatePoolV1Config
 	} else {
 		rawNew.PrivatePoolV1Config = canonicalizeNewWorkerPoolPrivatePoolV1Config(c, rawDesired.PrivatePoolV1Config, rawNew.PrivatePoolV1Config)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -675,13 +675,13 @@ func canonicalizeWorkerPoolNewState(c *Client, rawNew, rawDesired *WorkerPool) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.WorkerConfig) && dcl.IsNotReturnedByServer(rawDesired.WorkerConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.WorkerConfig) && dcl.IsEmptyValueIndirect(rawDesired.WorkerConfig) {
 		rawNew.WorkerConfig = rawDesired.WorkerConfig
 	} else {
 		rawNew.WorkerConfig = canonicalizeNewWorkerPoolWorkerConfig(c, rawDesired.WorkerConfig, rawNew.WorkerConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NetworkConfig) && dcl.IsNotReturnedByServer(rawDesired.NetworkConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.NetworkConfig) && dcl.IsEmptyValueIndirect(rawDesired.NetworkConfig) {
 		rawNew.NetworkConfig = rawDesired.NetworkConfig
 	} else {
 		rawNew.NetworkConfig = canonicalizeNewWorkerPoolNetworkConfig(c, rawDesired.NetworkConfig, rawNew.NetworkConfig)
@@ -749,7 +749,7 @@ func canonicalizeNewWorkerPoolPrivatePoolV1Config(c *Client, des, nw *WorkerPool
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkerPoolPrivatePoolV1Config while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -869,7 +869,7 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigWorkerConfig(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkerPoolPrivatePoolV1ConfigWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -991,7 +991,7 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigNetworkConfig(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkerPoolPrivatePoolV1ConfigNetworkConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1113,7 +1113,7 @@ func canonicalizeNewWorkerPoolWorkerConfig(c *Client, des, nw *WorkerPoolWorkerC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkerPoolWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1232,7 +1232,7 @@ func canonicalizeNewWorkerPoolNetworkConfig(c *Client, des, nw *WorkerPoolNetwor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkerPoolNetworkConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2516,7 +2516,7 @@ func extractWorkerPoolFields(r *WorkerPool) error {
 	if err := extractWorkerPoolPrivatePoolV1ConfigFields(r, vPrivatePoolV1Config); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrivatePoolV1Config) {
+	if !dcl.IsEmptyValueIndirect(vPrivatePoolV1Config) {
 		r.PrivatePoolV1Config = vPrivatePoolV1Config
 	}
 	vWorkerConfig := r.WorkerConfig
@@ -2527,7 +2527,7 @@ func extractWorkerPoolFields(r *WorkerPool) error {
 	if err := extractWorkerPoolWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		r.WorkerConfig = vWorkerConfig
 	}
 	vNetworkConfig := r.NetworkConfig
@@ -2538,7 +2538,7 @@ func extractWorkerPoolFields(r *WorkerPool) error {
 	if err := extractWorkerPoolNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		r.NetworkConfig = vNetworkConfig
 	}
 	return nil
@@ -2552,7 +2552,7 @@ func extractWorkerPoolPrivatePoolV1ConfigFields(r *WorkerPool, o *WorkerPoolPriv
 	if err := extractWorkerPoolPrivatePoolV1ConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vNetworkConfig := o.NetworkConfig
@@ -2563,7 +2563,7 @@ func extractWorkerPoolPrivatePoolV1ConfigFields(r *WorkerPool, o *WorkerPoolPriv
 	if err := extractWorkerPoolPrivatePoolV1ConfigNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		o.NetworkConfig = vNetworkConfig
 	}
 	return nil
@@ -2592,7 +2592,7 @@ func postReadExtractWorkerPoolFields(r *WorkerPool) error {
 	if err := postReadExtractWorkerPoolPrivatePoolV1ConfigFields(r, vPrivatePoolV1Config); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrivatePoolV1Config) {
+	if !dcl.IsEmptyValueIndirect(vPrivatePoolV1Config) {
 		r.PrivatePoolV1Config = vPrivatePoolV1Config
 	}
 	vWorkerConfig := r.WorkerConfig
@@ -2603,7 +2603,7 @@ func postReadExtractWorkerPoolFields(r *WorkerPool) error {
 	if err := postReadExtractWorkerPoolWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		r.WorkerConfig = vWorkerConfig
 	}
 	vNetworkConfig := r.NetworkConfig
@@ -2614,7 +2614,7 @@ func postReadExtractWorkerPoolFields(r *WorkerPool) error {
 	if err := postReadExtractWorkerPoolNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		r.NetworkConfig = vNetworkConfig
 	}
 	return nil
@@ -2628,7 +2628,7 @@ func postReadExtractWorkerPoolPrivatePoolV1ConfigFields(r *WorkerPool, o *Worker
 	if err := extractWorkerPoolPrivatePoolV1ConfigWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		o.WorkerConfig = vWorkerConfig
 	}
 	vNetworkConfig := o.NetworkConfig
@@ -2639,7 +2639,7 @@ func postReadExtractWorkerPoolPrivatePoolV1ConfigFields(r *WorkerPool, o *Worker
 	if err := extractWorkerPoolPrivatePoolV1ConfigNetworkConfigFields(r, vNetworkConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworkConfig) {
+	if !dcl.IsEmptyValueIndirect(vNetworkConfig) {
 		o.NetworkConfig = vNetworkConfig
 	}
 	return nil

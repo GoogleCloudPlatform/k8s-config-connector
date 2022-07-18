@@ -536,14 +536,14 @@ func (r *StoredInfoType) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"displayName":           dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":           dcl.ValueOrEmptyString(nr.Description),
-		"largeCustomDictionary": dcl.ValueOrEmptyString(nr.LargeCustomDictionary),
-		"dictionary":            dcl.ValueOrEmptyString(nr.Dictionary),
-		"regex":                 dcl.ValueOrEmptyString(nr.Regex),
-		"parent":                dcl.ValueOrEmptyString(nr.Parent),
-		"location":              dcl.ValueOrEmptyString(nr.Location),
+		"name":                    dcl.ValueOrEmptyString(nr.Name),
+		"display_name":            dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":             dcl.ValueOrEmptyString(nr.Description),
+		"large_custom_dictionary": dcl.ValueOrEmptyString(nr.LargeCustomDictionary),
+		"dictionary":              dcl.ValueOrEmptyString(nr.Dictionary),
+		"regex":                   dcl.ValueOrEmptyString(nr.Regex),
+		"parent":                  dcl.ValueOrEmptyString(nr.Parent),
+		"location":                dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("{{parent}}/storedInfoTypes/{{name}}", params), nil
 }

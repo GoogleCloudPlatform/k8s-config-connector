@@ -830,7 +830,7 @@ func canonicalizePatchDeploymentDesiredState(rawDesired, rawInitial *PatchDeploy
 
 func canonicalizePatchDeploymentNewState(c *Client, rawNew, rawDesired *PatchDeployment) (*PatchDeployment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -838,7 +838,7 @@ func canonicalizePatchDeploymentNewState(c *Client, rawNew, rawDesired *PatchDep
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -846,19 +846,19 @@ func canonicalizePatchDeploymentNewState(c *Client, rawNew, rawDesired *PatchDep
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InstanceFilter) && dcl.IsNotReturnedByServer(rawDesired.InstanceFilter) {
+	if dcl.IsEmptyValueIndirect(rawNew.InstanceFilter) && dcl.IsEmptyValueIndirect(rawDesired.InstanceFilter) {
 		rawNew.InstanceFilter = rawDesired.InstanceFilter
 	} else {
 		rawNew.InstanceFilter = canonicalizeNewPatchDeploymentInstanceFilter(c, rawDesired.InstanceFilter, rawNew.InstanceFilter)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PatchConfig) && dcl.IsNotReturnedByServer(rawDesired.PatchConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.PatchConfig) && dcl.IsEmptyValueIndirect(rawDesired.PatchConfig) {
 		rawNew.PatchConfig = rawDesired.PatchConfig
 	} else {
 		rawNew.PatchConfig = canonicalizeNewPatchDeploymentPatchConfig(c, rawDesired.PatchConfig, rawNew.PatchConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Duration) && dcl.IsNotReturnedByServer(rawDesired.Duration) {
+	if dcl.IsEmptyValueIndirect(rawNew.Duration) && dcl.IsEmptyValueIndirect(rawDesired.Duration) {
 		rawNew.Duration = rawDesired.Duration
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Duration, rawNew.Duration) {
@@ -866,34 +866,34 @@ func canonicalizePatchDeploymentNewState(c *Client, rawNew, rawDesired *PatchDep
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.OneTimeSchedule) && dcl.IsNotReturnedByServer(rawDesired.OneTimeSchedule) {
+	if dcl.IsEmptyValueIndirect(rawNew.OneTimeSchedule) && dcl.IsEmptyValueIndirect(rawDesired.OneTimeSchedule) {
 		rawNew.OneTimeSchedule = rawDesired.OneTimeSchedule
 	} else {
 		rawNew.OneTimeSchedule = canonicalizeNewPatchDeploymentOneTimeSchedule(c, rawDesired.OneTimeSchedule, rawNew.OneTimeSchedule)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RecurringSchedule) && dcl.IsNotReturnedByServer(rawDesired.RecurringSchedule) {
+	if dcl.IsEmptyValueIndirect(rawNew.RecurringSchedule) && dcl.IsEmptyValueIndirect(rawDesired.RecurringSchedule) {
 		rawNew.RecurringSchedule = rawDesired.RecurringSchedule
 	} else {
 		rawNew.RecurringSchedule = canonicalizeNewPatchDeploymentRecurringSchedule(c, rawDesired.RecurringSchedule, rawNew.RecurringSchedule)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastExecuteTime) && dcl.IsNotReturnedByServer(rawDesired.LastExecuteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastExecuteTime) && dcl.IsEmptyValueIndirect(rawDesired.LastExecuteTime) {
 		rawNew.LastExecuteTime = rawDesired.LastExecuteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rollout) && dcl.IsNotReturnedByServer(rawDesired.Rollout) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rollout) && dcl.IsEmptyValueIndirect(rawDesired.Rollout) {
 		rawNew.Rollout = rawDesired.Rollout
 	} else {
 		rawNew.Rollout = canonicalizeNewPatchDeploymentRollout(c, rawDesired.Rollout, rawNew.Rollout)
@@ -1058,7 +1058,7 @@ func canonicalizeNewPatchDeploymentInstanceFilter(c *Client, des, nw *PatchDeplo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentInstanceFilter while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1184,7 +1184,7 @@ func canonicalizeNewPatchDeploymentInstanceFilterGroupLabels(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentInstanceFilterGroupLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1303,7 +1303,7 @@ func canonicalizeNewPatchDeploymentPatchConfig(c *Client, des, nw *PatchDeployme
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1453,7 +1453,7 @@ func canonicalizeNewPatchDeploymentPatchConfigApt(c *Client, des, nw *PatchDeplo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigApt while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1606,7 +1606,7 @@ func canonicalizeNewPatchDeploymentPatchConfigYum(c *Client, des, nw *PatchDeplo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigYum while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1723,7 +1723,7 @@ func canonicalizeNewPatchDeploymentPatchConfigGoo(c *Client, des, nw *PatchDeplo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigGoo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1959,7 +1959,7 @@ func canonicalizeNewPatchDeploymentPatchConfigZypper(c *Client, des, nw *PatchDe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigZypper while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2140,7 +2140,7 @@ func canonicalizeNewPatchDeploymentPatchConfigWindowsUpdate(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigWindowsUpdate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2255,7 +2255,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPreStep(c *Client, des, nw *PatchD
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPreStep while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2402,7 +2402,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPreStepLinuxExecStepConfig(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPreStepLinuxExecStepConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2529,7 +2529,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjec
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2680,7 +2680,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPreStepWindowsExecStepConfig(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPreStepWindowsExecStepConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2807,7 +2807,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObj
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2922,7 +2922,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPostStep(c *Client, des, nw *Patch
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPostStep while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3069,7 +3069,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPostStepLinuxExecStepConfig(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPostStepLinuxExecStepConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3196,7 +3196,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObje
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3347,7 +3347,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPostStepWindowsExecStepConfig(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPostStepWindowsExecStepConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3474,7 +3474,7 @@ func canonicalizeNewPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsOb
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObject while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3593,7 +3593,7 @@ func canonicalizeNewPatchDeploymentOneTimeSchedule(c *Client, des, nw *PatchDepl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentOneTimeSchedule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3761,7 +3761,7 @@ func canonicalizeNewPatchDeploymentRecurringSchedule(c *Client, des, nw *PatchDe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringSchedule while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3882,7 +3882,7 @@ func canonicalizeNewPatchDeploymentRecurringScheduleTimeZone(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringScheduleTimeZone while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4019,7 +4019,7 @@ func canonicalizeNewPatchDeploymentRecurringScheduleTimeOfDay(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringScheduleTimeOfDay while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4131,7 +4131,7 @@ func canonicalizeNewPatchDeploymentRecurringScheduleWeekly(c *Client, des, nw *P
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringScheduleWeekly while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4264,7 +4264,7 @@ func canonicalizeNewPatchDeploymentRecurringScheduleMonthly(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringScheduleMonthly while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4384,7 +4384,7 @@ func canonicalizeNewPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth(c *Cli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4497,7 +4497,7 @@ func canonicalizeNewPatchDeploymentRollout(c *Client, des, nw *PatchDeploymentRo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRollout while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4637,7 +4637,7 @@ func canonicalizeNewPatchDeploymentRolloutDisruptionBudget(c *Client, des, nw *P
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for PatchDeploymentRolloutDisruptionBudget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10124,7 +10124,7 @@ func extractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := extractPatchDeploymentInstanceFilterFields(r, vInstanceFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstanceFilter) {
+	if !dcl.IsEmptyValueIndirect(vInstanceFilter) {
 		r.InstanceFilter = vInstanceFilter
 	}
 	vPatchConfig := r.PatchConfig
@@ -10135,7 +10135,7 @@ func extractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := extractPatchDeploymentPatchConfigFields(r, vPatchConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPatchConfig) {
+	if !dcl.IsEmptyValueIndirect(vPatchConfig) {
 		r.PatchConfig = vPatchConfig
 	}
 	vOneTimeSchedule := r.OneTimeSchedule
@@ -10146,7 +10146,7 @@ func extractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := extractPatchDeploymentOneTimeScheduleFields(r, vOneTimeSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOneTimeSchedule) {
+	if !dcl.IsEmptyValueIndirect(vOneTimeSchedule) {
 		r.OneTimeSchedule = vOneTimeSchedule
 	}
 	vRecurringSchedule := r.RecurringSchedule
@@ -10157,7 +10157,7 @@ func extractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := extractPatchDeploymentRecurringScheduleFields(r, vRecurringSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRecurringSchedule) {
+	if !dcl.IsEmptyValueIndirect(vRecurringSchedule) {
 		r.RecurringSchedule = vRecurringSchedule
 	}
 	vRollout := r.Rollout
@@ -10168,7 +10168,7 @@ func extractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := extractPatchDeploymentRolloutFields(r, vRollout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRollout) {
+	if !dcl.IsEmptyValueIndirect(vRollout) {
 		r.Rollout = vRollout
 	}
 	return nil
@@ -10188,7 +10188,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -10199,7 +10199,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vGoo := o.Goo
@@ -10210,7 +10210,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	vZypper := o.Zypper
@@ -10221,7 +10221,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vWindowsUpdate := o.WindowsUpdate
@@ -10232,7 +10232,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigWindowsUpdateFields(r, vWindowsUpdate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsUpdate) {
+	if !dcl.IsEmptyValueIndirect(vWindowsUpdate) {
 		o.WindowsUpdate = vWindowsUpdate
 	}
 	vPreStep := o.PreStep
@@ -10243,7 +10243,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigPreStepFields(r, vPreStep); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreStep) {
+	if !dcl.IsEmptyValueIndirect(vPreStep) {
 		o.PreStep = vPreStep
 	}
 	vPostStep := o.PostStep
@@ -10254,7 +10254,7 @@ func extractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *PatchDeploym
 	if err := extractPatchDeploymentPatchConfigPostStepFields(r, vPostStep); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPostStep) {
+	if !dcl.IsEmptyValueIndirect(vPostStep) {
 		o.PostStep = vPostStep
 	}
 	return nil
@@ -10283,7 +10283,7 @@ func extractPatchDeploymentPatchConfigPreStepFields(r *PatchDeployment, o *Patch
 	if err := extractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigFields(r, vLinuxExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinuxExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vLinuxExecStepConfig) {
 		o.LinuxExecStepConfig = vLinuxExecStepConfig
 	}
 	vWindowsExecStepConfig := o.WindowsExecStepConfig
@@ -10294,7 +10294,7 @@ func extractPatchDeploymentPatchConfigPreStepFields(r *PatchDeployment, o *Patch
 	if err := extractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigFields(r, vWindowsExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vWindowsExecStepConfig) {
 		o.WindowsExecStepConfig = vWindowsExecStepConfig
 	}
 	return nil
@@ -10308,7 +10308,7 @@ func extractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigFields(r *PatchD
 	if err := extractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10325,7 +10325,7 @@ func extractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigFields(r *Patc
 	if err := extractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10342,7 +10342,7 @@ func extractPatchDeploymentPatchConfigPostStepFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigFields(r, vLinuxExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinuxExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vLinuxExecStepConfig) {
 		o.LinuxExecStepConfig = vLinuxExecStepConfig
 	}
 	vWindowsExecStepConfig := o.WindowsExecStepConfig
@@ -10353,7 +10353,7 @@ func extractPatchDeploymentPatchConfigPostStepFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigFields(r, vWindowsExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vWindowsExecStepConfig) {
 		o.WindowsExecStepConfig = vWindowsExecStepConfig
 	}
 	return nil
@@ -10367,7 +10367,7 @@ func extractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigFields(r *Patch
 	if err := extractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10384,7 +10384,7 @@ func extractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigFields(r *Pat
 	if err := extractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10404,7 +10404,7 @@ func extractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o *PatchD
 	if err := extractPatchDeploymentRecurringScheduleTimeZoneFields(r, vTimeZone); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeZone) {
+	if !dcl.IsEmptyValueIndirect(vTimeZone) {
 		o.TimeZone = vTimeZone
 	}
 	vTimeOfDay := o.TimeOfDay
@@ -10415,7 +10415,7 @@ func extractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o *PatchD
 	if err := extractPatchDeploymentRecurringScheduleTimeOfDayFields(r, vTimeOfDay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeOfDay) {
+	if !dcl.IsEmptyValueIndirect(vTimeOfDay) {
 		o.TimeOfDay = vTimeOfDay
 	}
 	vWeekly := o.Weekly
@@ -10426,7 +10426,7 @@ func extractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o *PatchD
 	if err := extractPatchDeploymentRecurringScheduleWeeklyFields(r, vWeekly); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWeekly) {
+	if !dcl.IsEmptyValueIndirect(vWeekly) {
 		o.Weekly = vWeekly
 	}
 	vMonthly := o.Monthly
@@ -10437,7 +10437,7 @@ func extractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o *PatchD
 	if err := extractPatchDeploymentRecurringScheduleMonthlyFields(r, vMonthly); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonthly) {
+	if !dcl.IsEmptyValueIndirect(vMonthly) {
 		o.Monthly = vMonthly
 	}
 	return nil
@@ -10460,7 +10460,7 @@ func extractPatchDeploymentRecurringScheduleMonthlyFields(r *PatchDeployment, o 
 	if err := extractPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthFields(r, vWeekDayOfMonth); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWeekDayOfMonth) {
+	if !dcl.IsEmptyValueIndirect(vWeekDayOfMonth) {
 		o.WeekDayOfMonth = vWeekDayOfMonth
 	}
 	return nil
@@ -10477,7 +10477,7 @@ func extractPatchDeploymentRolloutFields(r *PatchDeployment, o *PatchDeploymentR
 	if err := extractPatchDeploymentRolloutDisruptionBudgetFields(r, vDisruptionBudget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisruptionBudget) {
+	if !dcl.IsEmptyValueIndirect(vDisruptionBudget) {
 		o.DisruptionBudget = vDisruptionBudget
 	}
 	return nil
@@ -10495,7 +10495,7 @@ func postReadExtractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := postReadExtractPatchDeploymentInstanceFilterFields(r, vInstanceFilter); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vInstanceFilter) {
+	if !dcl.IsEmptyValueIndirect(vInstanceFilter) {
 		r.InstanceFilter = vInstanceFilter
 	}
 	vPatchConfig := r.PatchConfig
@@ -10506,7 +10506,7 @@ func postReadExtractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := postReadExtractPatchDeploymentPatchConfigFields(r, vPatchConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPatchConfig) {
+	if !dcl.IsEmptyValueIndirect(vPatchConfig) {
 		r.PatchConfig = vPatchConfig
 	}
 	vOneTimeSchedule := r.OneTimeSchedule
@@ -10517,7 +10517,7 @@ func postReadExtractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := postReadExtractPatchDeploymentOneTimeScheduleFields(r, vOneTimeSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOneTimeSchedule) {
+	if !dcl.IsEmptyValueIndirect(vOneTimeSchedule) {
 		r.OneTimeSchedule = vOneTimeSchedule
 	}
 	vRecurringSchedule := r.RecurringSchedule
@@ -10528,7 +10528,7 @@ func postReadExtractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := postReadExtractPatchDeploymentRecurringScheduleFields(r, vRecurringSchedule); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRecurringSchedule) {
+	if !dcl.IsEmptyValueIndirect(vRecurringSchedule) {
 		r.RecurringSchedule = vRecurringSchedule
 	}
 	vRollout := r.Rollout
@@ -10539,7 +10539,7 @@ func postReadExtractPatchDeploymentFields(r *PatchDeployment) error {
 	if err := postReadExtractPatchDeploymentRolloutFields(r, vRollout); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRollout) {
+	if !dcl.IsEmptyValueIndirect(vRollout) {
 		r.Rollout = vRollout
 	}
 	return nil
@@ -10559,7 +10559,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -10570,7 +10570,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vGoo := o.Goo
@@ -10581,7 +10581,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	vZypper := o.Zypper
@@ -10592,7 +10592,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vWindowsUpdate := o.WindowsUpdate
@@ -10603,7 +10603,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigWindowsUpdateFields(r, vWindowsUpdate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsUpdate) {
+	if !dcl.IsEmptyValueIndirect(vWindowsUpdate) {
 		o.WindowsUpdate = vWindowsUpdate
 	}
 	vPreStep := o.PreStep
@@ -10614,7 +10614,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigPreStepFields(r, vPreStep); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPreStep) {
+	if !dcl.IsEmptyValueIndirect(vPreStep) {
 		o.PreStep = vPreStep
 	}
 	vPostStep := o.PostStep
@@ -10625,7 +10625,7 @@ func postReadExtractPatchDeploymentPatchConfigFields(r *PatchDeployment, o *Patc
 	if err := extractPatchDeploymentPatchConfigPostStepFields(r, vPostStep); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPostStep) {
+	if !dcl.IsEmptyValueIndirect(vPostStep) {
 		o.PostStep = vPostStep
 	}
 	return nil
@@ -10654,7 +10654,7 @@ func postReadExtractPatchDeploymentPatchConfigPreStepFields(r *PatchDeployment, 
 	if err := extractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigFields(r, vLinuxExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinuxExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vLinuxExecStepConfig) {
 		o.LinuxExecStepConfig = vLinuxExecStepConfig
 	}
 	vWindowsExecStepConfig := o.WindowsExecStepConfig
@@ -10665,7 +10665,7 @@ func postReadExtractPatchDeploymentPatchConfigPreStepFields(r *PatchDeployment, 
 	if err := extractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigFields(r, vWindowsExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vWindowsExecStepConfig) {
 		o.WindowsExecStepConfig = vWindowsExecStepConfig
 	}
 	return nil
@@ -10679,7 +10679,7 @@ func postReadExtractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigFields(r
 	if err := extractPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10696,7 +10696,7 @@ func postReadExtractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigFields
 	if err := extractPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10713,7 +10713,7 @@ func postReadExtractPatchDeploymentPatchConfigPostStepFields(r *PatchDeployment,
 	if err := extractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigFields(r, vLinuxExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinuxExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vLinuxExecStepConfig) {
 		o.LinuxExecStepConfig = vLinuxExecStepConfig
 	}
 	vWindowsExecStepConfig := o.WindowsExecStepConfig
@@ -10724,7 +10724,7 @@ func postReadExtractPatchDeploymentPatchConfigPostStepFields(r *PatchDeployment,
 	if err := extractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigFields(r, vWindowsExecStepConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWindowsExecStepConfig) {
+	if !dcl.IsEmptyValueIndirect(vWindowsExecStepConfig) {
 		o.WindowsExecStepConfig = vWindowsExecStepConfig
 	}
 	return nil
@@ -10738,7 +10738,7 @@ func postReadExtractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigFields(
 	if err := extractPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10755,7 +10755,7 @@ func postReadExtractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigField
 	if err := extractPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObjectFields(r, vGcsObject); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcsObject) {
+	if !dcl.IsEmptyValueIndirect(vGcsObject) {
 		o.GcsObject = vGcsObject
 	}
 	return nil
@@ -10775,7 +10775,7 @@ func postReadExtractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o
 	if err := extractPatchDeploymentRecurringScheduleTimeZoneFields(r, vTimeZone); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeZone) {
+	if !dcl.IsEmptyValueIndirect(vTimeZone) {
 		o.TimeZone = vTimeZone
 	}
 	vTimeOfDay := o.TimeOfDay
@@ -10786,7 +10786,7 @@ func postReadExtractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o
 	if err := extractPatchDeploymentRecurringScheduleTimeOfDayFields(r, vTimeOfDay); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTimeOfDay) {
+	if !dcl.IsEmptyValueIndirect(vTimeOfDay) {
 		o.TimeOfDay = vTimeOfDay
 	}
 	vWeekly := o.Weekly
@@ -10797,7 +10797,7 @@ func postReadExtractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o
 	if err := extractPatchDeploymentRecurringScheduleWeeklyFields(r, vWeekly); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWeekly) {
+	if !dcl.IsEmptyValueIndirect(vWeekly) {
 		o.Weekly = vWeekly
 	}
 	vMonthly := o.Monthly
@@ -10808,7 +10808,7 @@ func postReadExtractPatchDeploymentRecurringScheduleFields(r *PatchDeployment, o
 	if err := extractPatchDeploymentRecurringScheduleMonthlyFields(r, vMonthly); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonthly) {
+	if !dcl.IsEmptyValueIndirect(vMonthly) {
 		o.Monthly = vMonthly
 	}
 	return nil
@@ -10831,7 +10831,7 @@ func postReadExtractPatchDeploymentRecurringScheduleMonthlyFields(r *PatchDeploy
 	if err := extractPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthFields(r, vWeekDayOfMonth); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWeekDayOfMonth) {
+	if !dcl.IsEmptyValueIndirect(vWeekDayOfMonth) {
 		o.WeekDayOfMonth = vWeekDayOfMonth
 	}
 	return nil
@@ -10848,7 +10848,7 @@ func postReadExtractPatchDeploymentRolloutFields(r *PatchDeployment, o *PatchDep
 	if err := extractPatchDeploymentRolloutDisruptionBudgetFields(r, vDisruptionBudget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDisruptionBudget) {
+	if !dcl.IsEmptyValueIndirect(vDisruptionBudget) {
 		o.DisruptionBudget = vDisruptionBudget
 	}
 	return nil

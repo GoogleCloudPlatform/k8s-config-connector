@@ -291,7 +291,7 @@ func canonicalizeKeyRingDesiredState(rawDesired, rawInitial *KeyRing, opts ...dc
 
 func canonicalizeKeyRingNewState(c *Client, rawNew, rawDesired *KeyRing) (*KeyRing, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -299,7 +299,7 @@ func canonicalizeKeyRingNewState(c *Client, rawNew, rawDesired *KeyRing) (*KeyRi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}

@@ -306,19 +306,19 @@ func (r *DeliveryPipeline) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"uid":            dcl.ValueOrEmptyString(nr.Uid),
-		"description":    dcl.ValueOrEmptyString(nr.Description),
-		"annotations":    dcl.ValueOrEmptyString(nr.Annotations),
-		"labels":         dcl.ValueOrEmptyString(nr.Labels),
-		"createTime":     dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":     dcl.ValueOrEmptyString(nr.UpdateTime),
-		"serialPipeline": dcl.ValueOrEmptyString(nr.SerialPipeline),
-		"condition":      dcl.ValueOrEmptyString(nr.Condition),
-		"etag":           dcl.ValueOrEmptyString(nr.Etag),
-		"project":        dcl.ValueOrEmptyString(nr.Project),
-		"location":       dcl.ValueOrEmptyString(nr.Location),
-		"suspended":      dcl.ValueOrEmptyString(nr.Suspended),
+		"name":            dcl.ValueOrEmptyString(nr.Name),
+		"uid":             dcl.ValueOrEmptyString(nr.Uid),
+		"description":     dcl.ValueOrEmptyString(nr.Description),
+		"annotations":     dcl.ValueOrEmptyString(nr.Annotations),
+		"labels":          dcl.ValueOrEmptyString(nr.Labels),
+		"create_time":     dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":     dcl.ValueOrEmptyString(nr.UpdateTime),
+		"serial_pipeline": dcl.ValueOrEmptyString(nr.SerialPipeline),
+		"condition":       dcl.ValueOrEmptyString(nr.Condition),
+		"etag":            dcl.ValueOrEmptyString(nr.Etag),
+		"project":         dcl.ValueOrEmptyString(nr.Project),
+		"location":        dcl.ValueOrEmptyString(nr.Location),
+		"suspended":       dcl.ValueOrEmptyString(nr.Suspended),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/deliveryPipelines/{{name}}", params), nil
 }

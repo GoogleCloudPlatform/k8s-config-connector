@@ -683,7 +683,7 @@ func canonicalizeGuestPolicyDesiredState(rawDesired, rawInitial *GuestPolicy, op
 
 func canonicalizeGuestPolicyNewState(c *Client, rawNew, rawDesired *GuestPolicy) (*GuestPolicy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -691,7 +691,7 @@ func canonicalizeGuestPolicyNewState(c *Client, rawNew, rawDesired *GuestPolicy)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -699,41 +699,41 @@ func canonicalizeGuestPolicyNewState(c *Client, rawNew, rawDesired *GuestPolicy)
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Assignment) && dcl.IsNotReturnedByServer(rawDesired.Assignment) {
+	if dcl.IsEmptyValueIndirect(rawNew.Assignment) && dcl.IsEmptyValueIndirect(rawDesired.Assignment) {
 		rawNew.Assignment = rawDesired.Assignment
 	} else {
 		rawNew.Assignment = canonicalizeNewGuestPolicyAssignment(c, rawDesired.Assignment, rawNew.Assignment)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Packages) && dcl.IsNotReturnedByServer(rawDesired.Packages) {
+	if dcl.IsEmptyValueIndirect(rawNew.Packages) && dcl.IsEmptyValueIndirect(rawDesired.Packages) {
 		rawNew.Packages = rawDesired.Packages
 	} else {
 		rawNew.Packages = canonicalizeNewGuestPolicyPackagesSlice(c, rawDesired.Packages, rawNew.Packages)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PackageRepositories) && dcl.IsNotReturnedByServer(rawDesired.PackageRepositories) {
+	if dcl.IsEmptyValueIndirect(rawNew.PackageRepositories) && dcl.IsEmptyValueIndirect(rawDesired.PackageRepositories) {
 		rawNew.PackageRepositories = rawDesired.PackageRepositories
 	} else {
 		rawNew.PackageRepositories = canonicalizeNewGuestPolicyPackageRepositoriesSlice(c, rawDesired.PackageRepositories, rawNew.PackageRepositories)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Recipes) && dcl.IsNotReturnedByServer(rawDesired.Recipes) {
+	if dcl.IsEmptyValueIndirect(rawNew.Recipes) && dcl.IsEmptyValueIndirect(rawDesired.Recipes) {
 		rawNew.Recipes = rawDesired.Recipes
 	} else {
 		rawNew.Recipes = canonicalizeNewGuestPolicyRecipesSlice(c, rawDesired.Recipes, rawNew.Recipes)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -816,7 +816,7 @@ func canonicalizeNewGuestPolicyAssignment(c *Client, des, nw *GuestPolicyAssignm
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyAssignment while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -940,7 +940,7 @@ func canonicalizeNewGuestPolicyAssignmentGroupLabels(c *Client, des, nw *GuestPo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyAssignmentGroupLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1061,7 +1061,7 @@ func canonicalizeNewGuestPolicyAssignmentOSTypes(c *Client, des, nw *GuestPolicy
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyAssignmentOSTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1194,7 +1194,7 @@ func canonicalizeNewGuestPolicyPackages(c *Client, des, nw *GuestPolicyPackages)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1348,7 +1348,7 @@ func canonicalizeNewGuestPolicyPackageRepositories(c *Client, des, nw *GuestPoli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackageRepositories while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1485,7 +1485,7 @@ func canonicalizeNewGuestPolicyPackageRepositoriesApt(c *Client, des, nw *GuestP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackageRepositoriesApt while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1624,7 +1624,7 @@ func canonicalizeNewGuestPolicyPackageRepositoriesYum(c *Client, des, nw *GuestP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackageRepositoriesYum while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1763,7 +1763,7 @@ func canonicalizeNewGuestPolicyPackageRepositoriesZypper(c *Client, des, nw *Gue
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackageRepositoriesZypper while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1892,7 +1892,7 @@ func canonicalizeNewGuestPolicyPackageRepositoriesGoo(c *Client, des, nw *GuestP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyPackageRepositoriesGoo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2044,7 +2044,7 @@ func canonicalizeNewGuestPolicyRecipes(c *Client, des, nw *GuestPolicyRecipes) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2172,7 +2172,7 @@ func canonicalizeNewGuestPolicyRecipesArtifacts(c *Client, des, nw *GuestPolicyR
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesArtifacts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2297,7 +2297,7 @@ func canonicalizeNewGuestPolicyRecipesArtifactsRemote(c *Client, des, nw *GuestP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesArtifactsRemote while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2427,7 +2427,7 @@ func canonicalizeNewGuestPolicyRecipesArtifactsGcs(c *Client, des, nw *GuestPoli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesArtifactsGcs while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2544,7 +2544,7 @@ func canonicalizeNewGuestPolicyRecipesInstallSteps(c *Client, des, nw *GuestPoli
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallSteps while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2678,7 +2678,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsFileCopy(c *Client, des, nw *G
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsFileCopy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2813,7 +2813,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsArchiveExtraction(c *Client, d
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsArchiveExtraction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2942,7 +2942,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsMsiInstallation(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsMsiInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3060,7 +3060,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsDpkgInstallation(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsDpkgInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3175,7 +3175,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsRpmInstallation(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsRpmInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3306,7 +3306,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsFileExec(c *Client, des, nw *G
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsFileExec while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3439,7 +3439,7 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsScriptRun(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesInstallStepsScriptRun while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3556,7 +3556,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateSteps(c *Client, des, nw *GuestPolic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateSteps while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3690,7 +3690,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsFileCopy(c *Client, des, nw *Gu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsFileCopy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3825,7 +3825,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsArchiveExtraction(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsArchiveExtraction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3954,7 +3954,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsMsiInstallation(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsMsiInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4072,7 +4072,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsDpkgInstallation(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsDpkgInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4187,7 +4187,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsRpmInstallation(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsRpmInstallation while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4318,7 +4318,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsFileExec(c *Client, des, nw *Gu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsFileExec while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -4451,7 +4451,7 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsScriptRun(c *Client, des, nw *G
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for GuestPolicyRecipesUpdateStepsScriptRun while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -10178,7 +10178,7 @@ func extractGuestPolicyFields(r *GuestPolicy) error {
 	if err := extractGuestPolicyAssignmentFields(r, vAssignment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAssignment) {
+	if !dcl.IsEmptyValueIndirect(vAssignment) {
 		r.Assignment = vAssignment
 	}
 	return nil
@@ -10204,7 +10204,7 @@ func extractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *GuestPolicyP
 	if err := extractGuestPolicyPackageRepositoriesAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -10215,7 +10215,7 @@ func extractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *GuestPolicyP
 	if err := extractGuestPolicyPackageRepositoriesYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -10226,7 +10226,7 @@ func extractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *GuestPolicyP
 	if err := extractGuestPolicyPackageRepositoriesZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vGoo := o.Goo
@@ -10237,7 +10237,7 @@ func extractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *GuestPolicyP
 	if err := extractGuestPolicyPackageRepositoriesGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	return nil
@@ -10266,7 +10266,7 @@ func extractGuestPolicyRecipesArtifactsFields(r *GuestPolicy, o *GuestPolicyReci
 	if err := extractGuestPolicyRecipesArtifactsRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -10277,7 +10277,7 @@ func extractGuestPolicyRecipesArtifactsFields(r *GuestPolicy, o *GuestPolicyReci
 	if err := extractGuestPolicyRecipesArtifactsGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -10297,7 +10297,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsFileCopyFields(r, vFileCopy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileCopy) {
+	if !dcl.IsEmptyValueIndirect(vFileCopy) {
 		o.FileCopy = vFileCopy
 	}
 	vArchiveExtraction := o.ArchiveExtraction
@@ -10308,7 +10308,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsArchiveExtractionFields(r, vArchiveExtraction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vArchiveExtraction) {
+	if !dcl.IsEmptyValueIndirect(vArchiveExtraction) {
 		o.ArchiveExtraction = vArchiveExtraction
 	}
 	vMsiInstallation := o.MsiInstallation
@@ -10319,7 +10319,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsMsiInstallationFields(r, vMsiInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsiInstallation) {
+	if !dcl.IsEmptyValueIndirect(vMsiInstallation) {
 		o.MsiInstallation = vMsiInstallation
 	}
 	vDpkgInstallation := o.DpkgInstallation
@@ -10330,7 +10330,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsDpkgInstallationFields(r, vDpkgInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDpkgInstallation) {
+	if !dcl.IsEmptyValueIndirect(vDpkgInstallation) {
 		o.DpkgInstallation = vDpkgInstallation
 	}
 	vRpmInstallation := o.RpmInstallation
@@ -10341,7 +10341,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsRpmInstallationFields(r, vRpmInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpmInstallation) {
+	if !dcl.IsEmptyValueIndirect(vRpmInstallation) {
 		o.RpmInstallation = vRpmInstallation
 	}
 	vFileExec := o.FileExec
@@ -10352,7 +10352,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsFileExecFields(r, vFileExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileExec) {
+	if !dcl.IsEmptyValueIndirect(vFileExec) {
 		o.FileExec = vFileExec
 	}
 	vScriptRun := o.ScriptRun
@@ -10363,7 +10363,7 @@ func extractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *GuestPolicyR
 	if err := extractGuestPolicyRecipesInstallStepsScriptRunFields(r, vScriptRun); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScriptRun) {
+	if !dcl.IsEmptyValueIndirect(vScriptRun) {
 		o.ScriptRun = vScriptRun
 	}
 	return nil
@@ -10398,7 +10398,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsFileCopyFields(r, vFileCopy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileCopy) {
+	if !dcl.IsEmptyValueIndirect(vFileCopy) {
 		o.FileCopy = vFileCopy
 	}
 	vArchiveExtraction := o.ArchiveExtraction
@@ -10409,7 +10409,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsArchiveExtractionFields(r, vArchiveExtraction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vArchiveExtraction) {
+	if !dcl.IsEmptyValueIndirect(vArchiveExtraction) {
 		o.ArchiveExtraction = vArchiveExtraction
 	}
 	vMsiInstallation := o.MsiInstallation
@@ -10420,7 +10420,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsMsiInstallationFields(r, vMsiInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsiInstallation) {
+	if !dcl.IsEmptyValueIndirect(vMsiInstallation) {
 		o.MsiInstallation = vMsiInstallation
 	}
 	vDpkgInstallation := o.DpkgInstallation
@@ -10431,7 +10431,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsDpkgInstallationFields(r, vDpkgInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDpkgInstallation) {
+	if !dcl.IsEmptyValueIndirect(vDpkgInstallation) {
 		o.DpkgInstallation = vDpkgInstallation
 	}
 	vRpmInstallation := o.RpmInstallation
@@ -10442,7 +10442,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsRpmInstallationFields(r, vRpmInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpmInstallation) {
+	if !dcl.IsEmptyValueIndirect(vRpmInstallation) {
 		o.RpmInstallation = vRpmInstallation
 	}
 	vFileExec := o.FileExec
@@ -10453,7 +10453,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsFileExecFields(r, vFileExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileExec) {
+	if !dcl.IsEmptyValueIndirect(vFileExec) {
 		o.FileExec = vFileExec
 	}
 	vScriptRun := o.ScriptRun
@@ -10464,7 +10464,7 @@ func extractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *GuestPolicyRe
 	if err := extractGuestPolicyRecipesUpdateStepsScriptRunFields(r, vScriptRun); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScriptRun) {
+	if !dcl.IsEmptyValueIndirect(vScriptRun) {
 		o.ScriptRun = vScriptRun
 	}
 	return nil
@@ -10500,7 +10500,7 @@ func postReadExtractGuestPolicyFields(r *GuestPolicy) error {
 	if err := postReadExtractGuestPolicyAssignmentFields(r, vAssignment); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAssignment) {
+	if !dcl.IsEmptyValueIndirect(vAssignment) {
 		r.Assignment = vAssignment
 	}
 	return nil
@@ -10526,7 +10526,7 @@ func postReadExtractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyPackageRepositoriesAptFields(r, vApt); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vApt) {
+	if !dcl.IsEmptyValueIndirect(vApt) {
 		o.Apt = vApt
 	}
 	vYum := o.Yum
@@ -10537,7 +10537,7 @@ func postReadExtractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyPackageRepositoriesYumFields(r, vYum); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYum) {
+	if !dcl.IsEmptyValueIndirect(vYum) {
 		o.Yum = vYum
 	}
 	vZypper := o.Zypper
@@ -10548,7 +10548,7 @@ func postReadExtractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyPackageRepositoriesZypperFields(r, vZypper); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vZypper) {
+	if !dcl.IsEmptyValueIndirect(vZypper) {
 		o.Zypper = vZypper
 	}
 	vGoo := o.Goo
@@ -10559,7 +10559,7 @@ func postReadExtractGuestPolicyPackageRepositoriesFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyPackageRepositoriesGooFields(r, vGoo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGoo) {
+	if !dcl.IsEmptyValueIndirect(vGoo) {
 		o.Goo = vGoo
 	}
 	return nil
@@ -10588,7 +10588,7 @@ func postReadExtractGuestPolicyRecipesArtifactsFields(r *GuestPolicy, o *GuestPo
 	if err := extractGuestPolicyRecipesArtifactsRemoteFields(r, vRemote); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRemote) {
+	if !dcl.IsEmptyValueIndirect(vRemote) {
 		o.Remote = vRemote
 	}
 	vGcs := o.Gcs
@@ -10599,7 +10599,7 @@ func postReadExtractGuestPolicyRecipesArtifactsFields(r *GuestPolicy, o *GuestPo
 	if err := extractGuestPolicyRecipesArtifactsGcsFields(r, vGcs); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGcs) {
+	if !dcl.IsEmptyValueIndirect(vGcs) {
 		o.Gcs = vGcs
 	}
 	return nil
@@ -10619,7 +10619,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsFileCopyFields(r, vFileCopy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileCopy) {
+	if !dcl.IsEmptyValueIndirect(vFileCopy) {
 		o.FileCopy = vFileCopy
 	}
 	vArchiveExtraction := o.ArchiveExtraction
@@ -10630,7 +10630,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsArchiveExtractionFields(r, vArchiveExtraction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vArchiveExtraction) {
+	if !dcl.IsEmptyValueIndirect(vArchiveExtraction) {
 		o.ArchiveExtraction = vArchiveExtraction
 	}
 	vMsiInstallation := o.MsiInstallation
@@ -10641,7 +10641,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsMsiInstallationFields(r, vMsiInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsiInstallation) {
+	if !dcl.IsEmptyValueIndirect(vMsiInstallation) {
 		o.MsiInstallation = vMsiInstallation
 	}
 	vDpkgInstallation := o.DpkgInstallation
@@ -10652,7 +10652,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsDpkgInstallationFields(r, vDpkgInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDpkgInstallation) {
+	if !dcl.IsEmptyValueIndirect(vDpkgInstallation) {
 		o.DpkgInstallation = vDpkgInstallation
 	}
 	vRpmInstallation := o.RpmInstallation
@@ -10663,7 +10663,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsRpmInstallationFields(r, vRpmInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpmInstallation) {
+	if !dcl.IsEmptyValueIndirect(vRpmInstallation) {
 		o.RpmInstallation = vRpmInstallation
 	}
 	vFileExec := o.FileExec
@@ -10674,7 +10674,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsFileExecFields(r, vFileExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileExec) {
+	if !dcl.IsEmptyValueIndirect(vFileExec) {
 		o.FileExec = vFileExec
 	}
 	vScriptRun := o.ScriptRun
@@ -10685,7 +10685,7 @@ func postReadExtractGuestPolicyRecipesInstallStepsFields(r *GuestPolicy, o *Gues
 	if err := extractGuestPolicyRecipesInstallStepsScriptRunFields(r, vScriptRun); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScriptRun) {
+	if !dcl.IsEmptyValueIndirect(vScriptRun) {
 		o.ScriptRun = vScriptRun
 	}
 	return nil
@@ -10720,7 +10720,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsFileCopyFields(r, vFileCopy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileCopy) {
+	if !dcl.IsEmptyValueIndirect(vFileCopy) {
 		o.FileCopy = vFileCopy
 	}
 	vArchiveExtraction := o.ArchiveExtraction
@@ -10731,7 +10731,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsArchiveExtractionFields(r, vArchiveExtraction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vArchiveExtraction) {
+	if !dcl.IsEmptyValueIndirect(vArchiveExtraction) {
 		o.ArchiveExtraction = vArchiveExtraction
 	}
 	vMsiInstallation := o.MsiInstallation
@@ -10742,7 +10742,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsMsiInstallationFields(r, vMsiInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMsiInstallation) {
+	if !dcl.IsEmptyValueIndirect(vMsiInstallation) {
 		o.MsiInstallation = vMsiInstallation
 	}
 	vDpkgInstallation := o.DpkgInstallation
@@ -10753,7 +10753,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsDpkgInstallationFields(r, vDpkgInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDpkgInstallation) {
+	if !dcl.IsEmptyValueIndirect(vDpkgInstallation) {
 		o.DpkgInstallation = vDpkgInstallation
 	}
 	vRpmInstallation := o.RpmInstallation
@@ -10764,7 +10764,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsRpmInstallationFields(r, vRpmInstallation); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRpmInstallation) {
+	if !dcl.IsEmptyValueIndirect(vRpmInstallation) {
 		o.RpmInstallation = vRpmInstallation
 	}
 	vFileExec := o.FileExec
@@ -10775,7 +10775,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsFileExecFields(r, vFileExec); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFileExec) {
+	if !dcl.IsEmptyValueIndirect(vFileExec) {
 		o.FileExec = vFileExec
 	}
 	vScriptRun := o.ScriptRun
@@ -10786,7 +10786,7 @@ func postReadExtractGuestPolicyRecipesUpdateStepsFields(r *GuestPolicy, o *Guest
 	if err := extractGuestPolicyRecipesUpdateStepsScriptRunFields(r, vScriptRun); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vScriptRun) {
+	if !dcl.IsEmptyValueIndirect(vScriptRun) {
 		o.ScriptRun = vScriptRun
 	}
 	return nil

@@ -240,21 +240,21 @@ func (r *Target) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"targetId":         dcl.ValueOrEmptyString(nr.TargetId),
-		"uid":              dcl.ValueOrEmptyString(nr.Uid),
-		"description":      dcl.ValueOrEmptyString(nr.Description),
-		"annotations":      dcl.ValueOrEmptyString(nr.Annotations),
-		"labels":           dcl.ValueOrEmptyString(nr.Labels),
-		"requireApproval":  dcl.ValueOrEmptyString(nr.RequireApproval),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"gke":              dcl.ValueOrEmptyString(nr.Gke),
-		"anthosCluster":    dcl.ValueOrEmptyString(nr.AnthosCluster),
-		"etag":             dcl.ValueOrEmptyString(nr.Etag),
-		"executionConfigs": dcl.ValueOrEmptyString(nr.ExecutionConfigs),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"target_id":         dcl.ValueOrEmptyString(nr.TargetId),
+		"uid":               dcl.ValueOrEmptyString(nr.Uid),
+		"description":       dcl.ValueOrEmptyString(nr.Description),
+		"annotations":       dcl.ValueOrEmptyString(nr.Annotations),
+		"labels":            dcl.ValueOrEmptyString(nr.Labels),
+		"require_approval":  dcl.ValueOrEmptyString(nr.RequireApproval),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"gke":               dcl.ValueOrEmptyString(nr.Gke),
+		"anthos_cluster":    dcl.ValueOrEmptyString(nr.AnthosCluster),
+		"etag":              dcl.ValueOrEmptyString(nr.Etag),
+		"execution_configs": dcl.ValueOrEmptyString(nr.ExecutionConfigs),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/targets/{{name}}", params), nil
 }

@@ -438,7 +438,7 @@ func canonicalizeLogExclusionDesiredState(rawDesired, rawInitial *LogExclusion, 
 
 func canonicalizeLogExclusionNewState(c *Client, rawNew, rawDesired *LogExclusion) (*LogExclusion, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -446,7 +446,7 @@ func canonicalizeLogExclusionNewState(c *Client, rawNew, rawDesired *LogExclusio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -454,7 +454,7 @@ func canonicalizeLogExclusionNewState(c *Client, rawNew, rawDesired *LogExclusio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Filter) && dcl.IsNotReturnedByServer(rawDesired.Filter) {
+	if dcl.IsEmptyValueIndirect(rawNew.Filter) && dcl.IsEmptyValueIndirect(rawDesired.Filter) {
 		rawNew.Filter = rawDesired.Filter
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Filter, rawNew.Filter) {
@@ -462,7 +462,7 @@ func canonicalizeLogExclusionNewState(c *Client, rawNew, rawDesired *LogExclusio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {
@@ -470,12 +470,12 @@ func canonicalizeLogExclusionNewState(c *Client, rawNew, rawDesired *LogExclusio
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}

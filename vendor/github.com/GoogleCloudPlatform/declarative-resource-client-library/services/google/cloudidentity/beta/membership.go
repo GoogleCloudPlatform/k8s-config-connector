@@ -478,16 +478,16 @@ func (r *Membership) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"preferredMemberKey": dcl.ValueOrEmptyString(nr.PreferredMemberKey),
-		"createTime":         dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":         dcl.ValueOrEmptyString(nr.UpdateTime),
-		"roles":              dcl.ValueOrEmptyString(nr.Roles),
-		"type":               dcl.ValueOrEmptyString(nr.Type),
-		"deliverySetting":    dcl.ValueOrEmptyString(nr.DeliverySetting),
-		"displayName":        dcl.ValueOrEmptyString(nr.DisplayName),
-		"memberKey":          dcl.ValueOrEmptyString(nr.MemberKey),
-		"group":              dcl.ValueOrEmptyString(nr.Group),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"preferred_member_key": dcl.ValueOrEmptyString(nr.PreferredMemberKey),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"roles":                dcl.ValueOrEmptyString(nr.Roles),
+		"type":                 dcl.ValueOrEmptyString(nr.Type),
+		"delivery_setting":     dcl.ValueOrEmptyString(nr.DeliverySetting),
+		"display_name":         dcl.ValueOrEmptyString(nr.DisplayName),
+		"member_key":           dcl.ValueOrEmptyString(nr.MemberKey),
+		"group":                dcl.ValueOrEmptyString(nr.Group),
 	}
 	return dcl.Nprintf("groups/{{group}}/memberships/{{name}}", params), nil
 }

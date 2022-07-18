@@ -120,6 +120,7 @@ func DCLZoneSchema() *dcl.Schema {
 						Required: []string{
 							"name",
 							"type",
+							"discoverySpec",
 							"resourceSpec",
 							"project",
 							"location",
@@ -170,7 +171,7 @@ func DCLZoneSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "DiscoverySpec",
 								GoType:      "ZoneDiscoverySpec",
-								Description: "Optional. Specification of the discovery feature applied to data in this zone.",
+								Description: "Required. Specification of the discovery feature applied to data in this zone.",
 								Required: []string{
 									"enabled",
 								},
@@ -311,7 +312,8 @@ func DCLZoneSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "ResourceSpec",
 								GoType:      "ZoneResourceSpec",
-								Description: "Required. Specification of the resources that are referenced by the assets within this zone.",
+								Description: "Required. Immutable. Specification of the resources that are referenced by the assets within this zone.",
+								Immutable:   true,
 								Required: []string{
 									"locationType",
 								},
@@ -321,6 +323,7 @@ func DCLZoneSchema() *dcl.Schema {
 										GoName:      "LocationType",
 										GoType:      "ZoneResourceSpecLocationTypeEnum",
 										Description: "Required. Immutable. The location type of the resources that are allowed to be attached to the assets within this zone. Possible values: LOCATION_TYPE_UNSPECIFIED, SINGLE_REGION, MULTI_REGION",
+										Immutable:   true,
 										Enum: []string{
 											"LOCATION_TYPE_UNSPECIFIED",
 											"SINGLE_REGION",

@@ -137,6 +137,7 @@ func DCLAssetSchema() *dcl.Schema {
 						Required: []string{
 							"name",
 							"resourceSpec",
+							"discoverySpec",
 							"project",
 							"location",
 							"lake",
@@ -160,7 +161,7 @@ func DCLAssetSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "DiscoverySpec",
 								GoType:      "AssetDiscoverySpec",
-								Description: "Optional. Specification of the discovery feature applied to data referenced by this asset. When this spec is left unset, the asset will use the spec set on the parent zone.",
+								Description: "Required. Specification of the discovery feature applied to data referenced by this asset. When this spec is left unset, the asset will use the spec set on the parent zone.",
 								Properties: map[string]*dcl.Property{
 									"csvOptions": &dcl.Property{
 										Type:        "object",
@@ -194,7 +195,7 @@ func DCLAssetSchema() *dcl.Schema {
 									"enabled": &dcl.Property{
 										Type:        "boolean",
 										GoName:      "Enabled",
-										Description: "Optional. Whether discovery is enabled.",
+										Description: "Required. Whether discovery is enabled.",
 									},
 									"excludePatterns": &dcl.Property{
 										Type:        "array",
@@ -373,7 +374,8 @@ func DCLAssetSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "ResourceSpec",
 								GoType:      "AssetResourceSpec",
-								Description: "Required. Specification of the resource that is referenced by this asset.",
+								Description: "Required. Immutable. Specification of the resource that is referenced by this asset.",
+								Immutable:   true,
 								Required: []string{
 									"type",
 								},
@@ -382,12 +384,14 @@ func DCLAssetSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "Name",
 										Description: "Immutable. Relative name of the cloud resource that contains the data that is being managed within a lake. For example: `projects/{project_number}/buckets/{bucket_id}` `projects/{project_number}/datasets/{dataset_id}`",
+										Immutable:   true,
 									},
 									"type": &dcl.Property{
 										Type:        "string",
 										GoName:      "Type",
 										GoType:      "AssetResourceSpecTypeEnum",
 										Description: "Required. Immutable. Type of resource. Possible values: TYPE_UNSPECIFIED, STORAGE_BUCKET, BIGQUERY_DATASET",
+										Immutable:   true,
 										Enum: []string{
 											"TYPE_UNSPECIFIED",
 											"STORAGE_BUCKET",

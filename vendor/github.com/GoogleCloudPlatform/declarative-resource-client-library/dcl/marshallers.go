@@ -322,14 +322,12 @@ func ValueFromRegexOnField(fieldName string, val *string, containerVal *string, 
 	if containerVal != nil && *containerVal != "" {
 		r := re.MustCompile(regex)
 		m := r.FindStringSubmatch(*containerVal)
-		if m == nil {
+		if m != nil && len(m) >= 2 {
+			containerGroupedVal = String(m[1])
+		} else if val == nil || *val == "" {
+			// The regex didn't match and the value doesn't exist.
 			return nil, fmt.Errorf("%s field parent has no matching values from regex %s in value %s", fieldName, regex, *containerVal)
 		}
-
-		if len(m) < 2 {
-			return nil, fmt.Errorf("%s field parent has no matching values from regex %s in value %s", fieldName, regex, *containerVal)
-		}
-		containerGroupedVal = String(m[1])
 	}
 
 	// If value exists + different from what's in container, error.
@@ -337,11 +335,6 @@ func ValueFromRegexOnField(fieldName string, val *string, containerVal *string, 
 		if containerGroupedVal != nil && *containerGroupedVal != "" && *containerGroupedVal != *val {
 			return nil, fmt.Errorf("%s field has conflicting values of %s (from parent) and %s (from self)", fieldName, *containerGroupedVal, *val)
 		}
-	}
-
-	// If everything is unset, error.
-	if (val == nil || *val == "") && (containerGroupedVal == nil || *containerGroupedVal == "") {
-		return nil, fmt.Errorf("%s field is unset", fieldName)
 	}
 
 	// If value does not exist, use the value in container.

@@ -578,7 +578,7 @@ func canonicalizeSpokeDesiredState(rawDesired, rawInitial *Spoke, opts ...dcl.Ap
 
 func canonicalizeSpokeNewState(c *Client, rawNew, rawDesired *Spoke) (*Spoke, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -586,22 +586,22 @@ func canonicalizeSpokeNewState(c *Client, rawNew, rawDesired *Spoke) (*Spoke, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -609,30 +609,30 @@ func canonicalizeSpokeNewState(c *Client, rawNew, rawDesired *Spoke) (*Spoke, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Hub) && dcl.IsNotReturnedByServer(rawDesired.Hub) {
+	if dcl.IsEmptyValueIndirect(rawNew.Hub) && dcl.IsEmptyValueIndirect(rawDesired.Hub) {
 		rawNew.Hub = rawDesired.Hub
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LinkedVpnTunnels) && dcl.IsNotReturnedByServer(rawDesired.LinkedVpnTunnels) {
+	if dcl.IsEmptyValueIndirect(rawNew.LinkedVpnTunnels) && dcl.IsEmptyValueIndirect(rawDesired.LinkedVpnTunnels) {
 		rawNew.LinkedVpnTunnels = rawDesired.LinkedVpnTunnels
 	} else {
 		rawNew.LinkedVpnTunnels = canonicalizeNewSpokeLinkedVpnTunnels(c, rawDesired.LinkedVpnTunnels, rawNew.LinkedVpnTunnels)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LinkedInterconnectAttachments) && dcl.IsNotReturnedByServer(rawDesired.LinkedInterconnectAttachments) {
+	if dcl.IsEmptyValueIndirect(rawNew.LinkedInterconnectAttachments) && dcl.IsEmptyValueIndirect(rawDesired.LinkedInterconnectAttachments) {
 		rawNew.LinkedInterconnectAttachments = rawDesired.LinkedInterconnectAttachments
 	} else {
 		rawNew.LinkedInterconnectAttachments = canonicalizeNewSpokeLinkedInterconnectAttachments(c, rawDesired.LinkedInterconnectAttachments, rawNew.LinkedInterconnectAttachments)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LinkedRouterApplianceInstances) && dcl.IsNotReturnedByServer(rawDesired.LinkedRouterApplianceInstances) {
+	if dcl.IsEmptyValueIndirect(rawNew.LinkedRouterApplianceInstances) && dcl.IsEmptyValueIndirect(rawDesired.LinkedRouterApplianceInstances) {
 		rawNew.LinkedRouterApplianceInstances = rawDesired.LinkedRouterApplianceInstances
 	} else {
 		rawNew.LinkedRouterApplianceInstances = canonicalizeNewSpokeLinkedRouterApplianceInstances(c, rawDesired.LinkedRouterApplianceInstances, rawNew.LinkedRouterApplianceInstances)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UniqueId) && dcl.IsNotReturnedByServer(rawDesired.UniqueId) {
+	if dcl.IsEmptyValueIndirect(rawNew.UniqueId) && dcl.IsEmptyValueIndirect(rawDesired.UniqueId) {
 		rawNew.UniqueId = rawDesired.UniqueId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.UniqueId, rawNew.UniqueId) {
@@ -640,7 +640,7 @@ func canonicalizeSpokeNewState(c *Client, rawNew, rawDesired *Spoke) (*Spoke, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
@@ -715,7 +715,7 @@ func canonicalizeNewSpokeLinkedVpnTunnels(c *Client, des, nw *SpokeLinkedVpnTunn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SpokeLinkedVpnTunnels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -838,7 +838,7 @@ func canonicalizeNewSpokeLinkedInterconnectAttachments(c *Client, des, nw *Spoke
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SpokeLinkedInterconnectAttachments while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -957,7 +957,7 @@ func canonicalizeNewSpokeLinkedRouterApplianceInstances(c *Client, des, nw *Spok
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SpokeLinkedRouterApplianceInstances while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1079,7 +1079,7 @@ func canonicalizeNewSpokeLinkedRouterApplianceInstancesInstances(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for SpokeLinkedRouterApplianceInstancesInstances while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2152,7 +2152,7 @@ func extractSpokeFields(r *Spoke) error {
 	if err := extractSpokeLinkedVpnTunnelsFields(r, vLinkedVpnTunnels); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedVpnTunnels) {
+	if !dcl.IsEmptyValueIndirect(vLinkedVpnTunnels) {
 		r.LinkedVpnTunnels = vLinkedVpnTunnels
 	}
 	vLinkedInterconnectAttachments := r.LinkedInterconnectAttachments
@@ -2163,7 +2163,7 @@ func extractSpokeFields(r *Spoke) error {
 	if err := extractSpokeLinkedInterconnectAttachmentsFields(r, vLinkedInterconnectAttachments); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedInterconnectAttachments) {
+	if !dcl.IsEmptyValueIndirect(vLinkedInterconnectAttachments) {
 		r.LinkedInterconnectAttachments = vLinkedInterconnectAttachments
 	}
 	vLinkedRouterApplianceInstances := r.LinkedRouterApplianceInstances
@@ -2174,7 +2174,7 @@ func extractSpokeFields(r *Spoke) error {
 	if err := extractSpokeLinkedRouterApplianceInstancesFields(r, vLinkedRouterApplianceInstances); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedRouterApplianceInstances) {
+	if !dcl.IsEmptyValueIndirect(vLinkedRouterApplianceInstances) {
 		r.LinkedRouterApplianceInstances = vLinkedRouterApplianceInstances
 	}
 	return nil
@@ -2201,7 +2201,7 @@ func postReadExtractSpokeFields(r *Spoke) error {
 	if err := postReadExtractSpokeLinkedVpnTunnelsFields(r, vLinkedVpnTunnels); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedVpnTunnels) {
+	if !dcl.IsEmptyValueIndirect(vLinkedVpnTunnels) {
 		r.LinkedVpnTunnels = vLinkedVpnTunnels
 	}
 	vLinkedInterconnectAttachments := r.LinkedInterconnectAttachments
@@ -2212,7 +2212,7 @@ func postReadExtractSpokeFields(r *Spoke) error {
 	if err := postReadExtractSpokeLinkedInterconnectAttachmentsFields(r, vLinkedInterconnectAttachments); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedInterconnectAttachments) {
+	if !dcl.IsEmptyValueIndirect(vLinkedInterconnectAttachments) {
 		r.LinkedInterconnectAttachments = vLinkedInterconnectAttachments
 	}
 	vLinkedRouterApplianceInstances := r.LinkedRouterApplianceInstances
@@ -2223,7 +2223,7 @@ func postReadExtractSpokeFields(r *Spoke) error {
 	if err := postReadExtractSpokeLinkedRouterApplianceInstancesFields(r, vLinkedRouterApplianceInstances); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLinkedRouterApplianceInstances) {
+	if !dcl.IsEmptyValueIndirect(vLinkedRouterApplianceInstances) {
 		r.LinkedRouterApplianceInstances = vLinkedRouterApplianceInstances
 	}
 	return nil

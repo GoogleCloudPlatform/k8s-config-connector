@@ -149,15 +149,15 @@ func (r *ServiceAccount) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":           dcl.ValueOrEmptyString(nr.Name),
-		"project":        dcl.ValueOrEmptyString(nr.Project),
-		"uniqueId":       dcl.ValueOrEmptyString(nr.UniqueId),
-		"email":          dcl.ValueOrEmptyString(nr.Email),
-		"displayName":    dcl.ValueOrEmptyString(nr.DisplayName),
-		"description":    dcl.ValueOrEmptyString(nr.Description),
-		"oAuth2ClientId": dcl.ValueOrEmptyString(nr.OAuth2ClientId),
-		"actasResources": dcl.ValueOrEmptyString(nr.ActasResources),
-		"disabled":       dcl.ValueOrEmptyString(nr.Disabled),
+		"name":             dcl.ValueOrEmptyString(nr.Name),
+		"project":          dcl.ValueOrEmptyString(nr.Project),
+		"unique_id":        dcl.ValueOrEmptyString(nr.UniqueId),
+		"email":            dcl.ValueOrEmptyString(nr.Email),
+		"display_name":     dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":      dcl.ValueOrEmptyString(nr.Description),
+		"oauth2_client_id": dcl.ValueOrEmptyString(nr.OAuth2ClientId),
+		"actas_resources":  dcl.ValueOrEmptyString(nr.ActasResources),
+		"disabled":         dcl.ValueOrEmptyString(nr.Disabled),
 	}
 	return dcl.Nprintf("projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com", params), nil
 }

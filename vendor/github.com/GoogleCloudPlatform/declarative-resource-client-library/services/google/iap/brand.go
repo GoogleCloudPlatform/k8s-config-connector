@@ -50,11 +50,11 @@ func (r *Brand) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"applicationTitle": dcl.ValueOrEmptyString(nr.ApplicationTitle),
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"orgInternalOnly":  dcl.ValueOrEmptyString(nr.OrgInternalOnly),
-		"supportEmail":     dcl.ValueOrEmptyString(nr.SupportEmail),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
+		"application_title": dcl.ValueOrEmptyString(nr.ApplicationTitle),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"org_internal_only": dcl.ValueOrEmptyString(nr.OrgInternalOnly),
+		"support_email":     dcl.ValueOrEmptyString(nr.SupportEmail),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/brands/{{name}}", params), nil
 }

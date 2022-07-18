@@ -51,7 +51,7 @@ func (r *EnvironmentGroupAttachment) ID() (string, error) {
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
 		"environment": dcl.ValueOrEmptyString(nr.Environment),
-		"createdAt":   dcl.ValueOrEmptyString(nr.CreatedAt),
+		"created_at":  dcl.ValueOrEmptyString(nr.CreatedAt),
 		"envgroup":    dcl.ValueOrEmptyString(nr.Envgroup),
 	}
 	return dcl.Nprintf("{{envgroup}}/attachments/{{name}}", params), nil

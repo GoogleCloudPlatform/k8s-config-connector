@@ -23,21 +23,18 @@ paths:
     - name: LogView
       required: true
       description: A full instance of a LogView
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a LogView
     parameters:
     - name: LogView
       required: true
       description: A full instance of a LogView
-    timeoutSecs: 0
   delete:
     description: The function used to delete a LogView
     parameters:
     - name: LogView
       required: true
       description: A full instance of a LogView
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all LogView
     parameters:
@@ -53,7 +50,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many LogView
     parameters:
@@ -69,7 +65,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     LogView:
@@ -77,6 +72,9 @@ components:
       x-dcl-id: '{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}'
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

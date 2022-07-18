@@ -639,7 +639,7 @@ func canonicalizeCaPoolDesiredState(rawDesired, rawInitial *CaPool, opts ...dcl.
 
 func canonicalizeCaPoolNewState(c *Client, rawNew, rawDesired *CaPool) (*CaPool, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -647,24 +647,24 @@ func canonicalizeCaPoolNewState(c *Client, rawNew, rawDesired *CaPool) (*CaPool,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Tier) && dcl.IsNotReturnedByServer(rawDesired.Tier) {
+	if dcl.IsEmptyValueIndirect(rawNew.Tier) && dcl.IsEmptyValueIndirect(rawDesired.Tier) {
 		rawNew.Tier = rawDesired.Tier
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IssuancePolicy) && dcl.IsNotReturnedByServer(rawDesired.IssuancePolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.IssuancePolicy) && dcl.IsEmptyValueIndirect(rawDesired.IssuancePolicy) {
 		rawNew.IssuancePolicy = rawDesired.IssuancePolicy
 	} else {
 		rawNew.IssuancePolicy = canonicalizeNewCaPoolIssuancePolicy(c, rawDesired.IssuancePolicy, rawNew.IssuancePolicy)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PublishingOptions) && dcl.IsNotReturnedByServer(rawDesired.PublishingOptions) {
+	if dcl.IsEmptyValueIndirect(rawNew.PublishingOptions) && dcl.IsEmptyValueIndirect(rawDesired.PublishingOptions) {
 		rawNew.PublishingOptions = rawDesired.PublishingOptions
 	} else {
 		rawNew.PublishingOptions = canonicalizeNewCaPoolPublishingOptions(c, rawDesired.PublishingOptions, rawNew.PublishingOptions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
@@ -739,7 +739,7 @@ func canonicalizeNewCaPoolIssuancePolicy(c *Client, des, nw *CaPoolIssuancePolic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -876,7 +876,7 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypes(c *Client, des, nw *CaPo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyAllowedKeyTypes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -997,7 +997,7 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesRsa(c *Client, des, nw *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyAllowedKeyTypesRsa while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1109,7 +1109,7 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyAllowedKeyTypesEllipticCurve while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1225,7 +1225,7 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedIssuanceModes(c *Client, des, nw 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyAllowedIssuanceModes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1347,7 +1347,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValues(c *Client, des, nw *CaPoo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValues while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1464,7 +1464,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsage(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1619,7 +1619,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1783,7 +1783,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage(c
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1914,7 +1914,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKey
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2031,7 +2031,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesCaOptions(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesCaOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2148,7 +2148,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesPolicyIds(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesPolicyIds while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2265,7 +2265,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensions(c *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2385,7 +2385,7 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObject
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2502,7 +2502,7 @@ func canonicalizeNewCaPoolIssuancePolicyIdentityConstraints(c *Client, des, nw *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyIdentityConstraints while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2636,7 +2636,7 @@ func canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsCelExpression(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyIdentityConstraintsCelExpression while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2762,7 +2762,7 @@ func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensions(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyPassthroughExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2876,7 +2876,7 @@ func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtension
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2992,7 +2992,7 @@ func canonicalizeNewCaPoolPublishingOptions(c *Client, des, nw *CaPoolPublishing
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for CaPoolPublishingOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -6651,7 +6651,7 @@ func extractCaPoolFields(r *CaPool) error {
 	if err := extractCaPoolIssuancePolicyFields(r, vIssuancePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIssuancePolicy) {
+	if !dcl.IsEmptyValueIndirect(vIssuancePolicy) {
 		r.IssuancePolicy = vIssuancePolicy
 	}
 	vPublishingOptions := r.PublishingOptions
@@ -6662,7 +6662,7 @@ func extractCaPoolFields(r *CaPool) error {
 	if err := extractCaPoolPublishingOptionsFields(r, vPublishingOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishingOptions) {
+	if !dcl.IsEmptyValueIndirect(vPublishingOptions) {
 		r.PublishingOptions = vPublishingOptions
 	}
 	return nil
@@ -6676,7 +6676,7 @@ func extractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolicy) error
 	if err := extractCaPoolIssuancePolicyAllowedIssuanceModesFields(r, vAllowedIssuanceModes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAllowedIssuanceModes) {
+	if !dcl.IsEmptyValueIndirect(vAllowedIssuanceModes) {
 		o.AllowedIssuanceModes = vAllowedIssuanceModes
 	}
 	vBaselineValues := o.BaselineValues
@@ -6687,7 +6687,7 @@ func extractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolicy) error
 	if err := extractCaPoolIssuancePolicyBaselineValuesFields(r, vBaselineValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaselineValues) {
+	if !dcl.IsEmptyValueIndirect(vBaselineValues) {
 		o.BaselineValues = vBaselineValues
 	}
 	vIdentityConstraints := o.IdentityConstraints
@@ -6698,7 +6698,7 @@ func extractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolicy) error
 	if err := extractCaPoolIssuancePolicyIdentityConstraintsFields(r, vIdentityConstraints); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIdentityConstraints) {
+	if !dcl.IsEmptyValueIndirect(vIdentityConstraints) {
 		o.IdentityConstraints = vIdentityConstraints
 	}
 	vPassthroughExtensions := o.PassthroughExtensions
@@ -6709,7 +6709,7 @@ func extractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolicy) error
 	if err := extractCaPoolIssuancePolicyPassthroughExtensionsFields(r, vPassthroughExtensions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPassthroughExtensions) {
+	if !dcl.IsEmptyValueIndirect(vPassthroughExtensions) {
 		o.PassthroughExtensions = vPassthroughExtensions
 	}
 	return nil
@@ -6723,7 +6723,7 @@ func extractCaPoolIssuancePolicyAllowedKeyTypesFields(r *CaPool, o *CaPoolIssuan
 	if err := extractCaPoolIssuancePolicyAllowedKeyTypesRsaFields(r, vRsa); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRsa) {
+	if !dcl.IsEmptyValueIndirect(vRsa) {
 		o.Rsa = vRsa
 	}
 	vEllipticCurve := o.EllipticCurve
@@ -6734,7 +6734,7 @@ func extractCaPoolIssuancePolicyAllowedKeyTypesFields(r *CaPool, o *CaPoolIssuan
 	if err := extractCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveFields(r, vEllipticCurve); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEllipticCurve) {
+	if !dcl.IsEmptyValueIndirect(vEllipticCurve) {
 		o.EllipticCurve = vEllipticCurve
 	}
 	return nil
@@ -6757,7 +6757,7 @@ func extractCaPoolIssuancePolicyBaselineValuesFields(r *CaPool, o *CaPoolIssuanc
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -6768,7 +6768,7 @@ func extractCaPoolIssuancePolicyBaselineValuesFields(r *CaPool, o *CaPoolIssuanc
 	if err := extractCaPoolIssuancePolicyBaselineValuesCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -6782,7 +6782,7 @@ func extractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r *CaPool, o *CaPoo
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -6793,7 +6793,7 @@ func extractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r *CaPool, o *CaPoo
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -6822,7 +6822,7 @@ func extractCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsFields(r *CaPo
 	if err := extractCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -6839,7 +6839,7 @@ func extractCaPoolIssuancePolicyIdentityConstraintsFields(r *CaPool, o *CaPoolIs
 	if err := extractCaPoolIssuancePolicyIdentityConstraintsCelExpressionFields(r, vCelExpression); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCelExpression) {
+	if !dcl.IsEmptyValueIndirect(vCelExpression) {
 		o.CelExpression = vCelExpression
 	}
 	return nil
@@ -6866,7 +6866,7 @@ func postReadExtractCaPoolFields(r *CaPool) error {
 	if err := postReadExtractCaPoolIssuancePolicyFields(r, vIssuancePolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIssuancePolicy) {
+	if !dcl.IsEmptyValueIndirect(vIssuancePolicy) {
 		r.IssuancePolicy = vIssuancePolicy
 	}
 	vPublishingOptions := r.PublishingOptions
@@ -6877,7 +6877,7 @@ func postReadExtractCaPoolFields(r *CaPool) error {
 	if err := postReadExtractCaPoolPublishingOptionsFields(r, vPublishingOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPublishingOptions) {
+	if !dcl.IsEmptyValueIndirect(vPublishingOptions) {
 		r.PublishingOptions = vPublishingOptions
 	}
 	return nil
@@ -6891,7 +6891,7 @@ func postReadExtractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolic
 	if err := extractCaPoolIssuancePolicyAllowedIssuanceModesFields(r, vAllowedIssuanceModes); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAllowedIssuanceModes) {
+	if !dcl.IsEmptyValueIndirect(vAllowedIssuanceModes) {
 		o.AllowedIssuanceModes = vAllowedIssuanceModes
 	}
 	vBaselineValues := o.BaselineValues
@@ -6902,7 +6902,7 @@ func postReadExtractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolic
 	if err := extractCaPoolIssuancePolicyBaselineValuesFields(r, vBaselineValues); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaselineValues) {
+	if !dcl.IsEmptyValueIndirect(vBaselineValues) {
 		o.BaselineValues = vBaselineValues
 	}
 	vIdentityConstraints := o.IdentityConstraints
@@ -6913,7 +6913,7 @@ func postReadExtractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolic
 	if err := extractCaPoolIssuancePolicyIdentityConstraintsFields(r, vIdentityConstraints); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vIdentityConstraints) {
+	if !dcl.IsEmptyValueIndirect(vIdentityConstraints) {
 		o.IdentityConstraints = vIdentityConstraints
 	}
 	vPassthroughExtensions := o.PassthroughExtensions
@@ -6924,7 +6924,7 @@ func postReadExtractCaPoolIssuancePolicyFields(r *CaPool, o *CaPoolIssuancePolic
 	if err := extractCaPoolIssuancePolicyPassthroughExtensionsFields(r, vPassthroughExtensions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPassthroughExtensions) {
+	if !dcl.IsEmptyValueIndirect(vPassthroughExtensions) {
 		o.PassthroughExtensions = vPassthroughExtensions
 	}
 	return nil
@@ -6938,7 +6938,7 @@ func postReadExtractCaPoolIssuancePolicyAllowedKeyTypesFields(r *CaPool, o *CaPo
 	if err := extractCaPoolIssuancePolicyAllowedKeyTypesRsaFields(r, vRsa); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRsa) {
+	if !dcl.IsEmptyValueIndirect(vRsa) {
 		o.Rsa = vRsa
 	}
 	vEllipticCurve := o.EllipticCurve
@@ -6949,7 +6949,7 @@ func postReadExtractCaPoolIssuancePolicyAllowedKeyTypesFields(r *CaPool, o *CaPo
 	if err := extractCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveFields(r, vEllipticCurve); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEllipticCurve) {
+	if !dcl.IsEmptyValueIndirect(vEllipticCurve) {
 		o.EllipticCurve = vEllipticCurve
 	}
 	return nil
@@ -6972,7 +6972,7 @@ func postReadExtractCaPoolIssuancePolicyBaselineValuesFields(r *CaPool, o *CaPoo
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r, vKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vKeyUsage) {
 		o.KeyUsage = vKeyUsage
 	}
 	vCaOptions := o.CaOptions
@@ -6983,7 +6983,7 @@ func postReadExtractCaPoolIssuancePolicyBaselineValuesFields(r *CaPool, o *CaPoo
 	if err := extractCaPoolIssuancePolicyBaselineValuesCaOptionsFields(r, vCaOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCaOptions) {
+	if !dcl.IsEmptyValueIndirect(vCaOptions) {
 		o.CaOptions = vCaOptions
 	}
 	return nil
@@ -6997,7 +6997,7 @@ func postReadExtractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r *CaPool, 
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageFields(r, vBaseKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBaseKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vBaseKeyUsage) {
 		o.BaseKeyUsage = vBaseKeyUsage
 	}
 	vExtendedKeyUsage := o.ExtendedKeyUsage
@@ -7008,7 +7008,7 @@ func postReadExtractCaPoolIssuancePolicyBaselineValuesKeyUsageFields(r *CaPool, 
 	if err := extractCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageFields(r, vExtendedKeyUsage); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vExtendedKeyUsage) {
+	if !dcl.IsEmptyValueIndirect(vExtendedKeyUsage) {
 		o.ExtendedKeyUsage = vExtendedKeyUsage
 	}
 	return nil
@@ -7037,7 +7037,7 @@ func postReadExtractCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsFields
 	if err := extractCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdFields(r, vObjectId); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vObjectId) {
+	if !dcl.IsEmptyValueIndirect(vObjectId) {
 		o.ObjectId = vObjectId
 	}
 	return nil
@@ -7054,7 +7054,7 @@ func postReadExtractCaPoolIssuancePolicyIdentityConstraintsFields(r *CaPool, o *
 	if err := extractCaPoolIssuancePolicyIdentityConstraintsCelExpressionFields(r, vCelExpression); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCelExpression) {
+	if !dcl.IsEmptyValueIndirect(vCelExpression) {
 		o.CelExpression = vCelExpression
 	}
 	return nil

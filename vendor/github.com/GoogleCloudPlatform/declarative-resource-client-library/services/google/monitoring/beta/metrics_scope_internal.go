@@ -168,7 +168,7 @@ func canonicalizeMetricsScopeDesiredState(rawDesired, rawInitial *MetricsScope, 
 
 func canonicalizeMetricsScopeNewState(c *Client, rawNew, rawDesired *MetricsScope) (*MetricsScope, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -176,17 +176,17 @@ func canonicalizeMetricsScopeNewState(c *Client, rawNew, rawDesired *MetricsScop
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MonitoredProjects) && dcl.IsNotReturnedByServer(rawDesired.MonitoredProjects) {
+	if dcl.IsEmptyValueIndirect(rawNew.MonitoredProjects) && dcl.IsEmptyValueIndirect(rawDesired.MonitoredProjects) {
 		rawNew.MonitoredProjects = rawDesired.MonitoredProjects
 	} else {
 		rawNew.MonitoredProjects = canonicalizeNewMetricsScopeMonitoredProjectsSlice(c, rawDesired.MonitoredProjects, rawNew.MonitoredProjects)
@@ -253,7 +253,7 @@ func canonicalizeNewMetricsScopeMonitoredProjects(c *Client, des, nw *MetricsSco
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MetricsScopeMonitoredProjects while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}

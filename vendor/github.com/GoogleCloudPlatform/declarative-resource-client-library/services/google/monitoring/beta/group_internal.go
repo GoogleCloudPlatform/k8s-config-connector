@@ -462,7 +462,7 @@ func canonicalizeGroupDesiredState(rawDesired, rawInitial *Group, opts ...dcl.Ap
 
 func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -470,7 +470,7 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Filter) && dcl.IsNotReturnedByServer(rawDesired.Filter) {
+	if dcl.IsEmptyValueIndirect(rawNew.Filter) && dcl.IsEmptyValueIndirect(rawDesired.Filter) {
 		rawNew.Filter = rawDesired.Filter
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Filter, rawNew.Filter) {
@@ -478,7 +478,7 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IsCluster) && dcl.IsNotReturnedByServer(rawDesired.IsCluster) {
+	if dcl.IsEmptyValueIndirect(rawNew.IsCluster) && dcl.IsEmptyValueIndirect(rawDesired.IsCluster) {
 		rawNew.IsCluster = rawDesired.IsCluster
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.IsCluster, rawNew.IsCluster) {
@@ -486,12 +486,12 @@ func canonicalizeGroupNewState(c *Client, rawNew, rawDesired *Group) (*Group, er
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ParentName) && dcl.IsNotReturnedByServer(rawDesired.ParentName) {
+	if dcl.IsEmptyValueIndirect(rawNew.ParentName) && dcl.IsEmptyValueIndirect(rawDesired.ParentName) {
 		rawNew.ParentName = rawDesired.ParentName
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.ParentName, rawNew.ParentName) {

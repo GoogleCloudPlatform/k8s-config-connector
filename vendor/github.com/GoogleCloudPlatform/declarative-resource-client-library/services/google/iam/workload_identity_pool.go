@@ -78,13 +78,13 @@ func (r *WorkloadIdentityPool) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"description": dcl.ValueOrEmptyString(nr.Description),
-		"state":       dcl.ValueOrEmptyString(nr.State),
-		"disabled":    dcl.ValueOrEmptyString(nr.Disabled),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
-		"location":    dcl.ValueOrEmptyString(nr.Location),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"description":  dcl.ValueOrEmptyString(nr.Description),
+		"state":        dcl.ValueOrEmptyString(nr.State),
+		"disabled":     dcl.ValueOrEmptyString(nr.Disabled),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"location":     dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/workloadIdentityPools/{{name}}", params), nil
 }

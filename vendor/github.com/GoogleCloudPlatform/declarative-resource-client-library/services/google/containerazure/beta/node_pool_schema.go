@@ -152,7 +152,6 @@ func DCLNodePoolSchema() *dcl.Schema {
 								GoName:      "Autoscaling",
 								GoType:      "NodePoolAutoscaling",
 								Description: "Autoscaler configuration for this node pool.",
-								Immutable:   true,
 								Required: []string{
 									"minNodeCount",
 									"maxNodeCount",
@@ -163,14 +162,12 @@ func DCLNodePoolSchema() *dcl.Schema {
 										Format:      "int64",
 										GoName:      "MaxNodeCount",
 										Description: "Maximum number of nodes in the node pool. Must be >= min_node_count.",
-										Immutable:   true,
 									},
 									"minNodeCount": &dcl.Property{
 										Type:        "integer",
 										Format:      "int64",
 										GoName:      "MinNodeCount",
 										Description: "Minimum number of nodes in the node pool. Must be >= 1 and <= max_node_count.",
-										Immutable:   true,
 									},
 								},
 							},
@@ -199,7 +196,6 @@ func DCLNodePoolSchema() *dcl.Schema {
 								GoName:      "Config",
 								GoType:      "NodePoolConfig",
 								Description: "The node configuration of the node pool.",
-								Immutable:   true,
 								Required: []string{
 									"sshConfig",
 								},
@@ -259,7 +255,6 @@ func DCLNodePoolSchema() *dcl.Schema {
 										GoName:      "SshConfig",
 										GoType:      "NodePoolConfigSshConfig",
 										Description: "SSH configuration for how to access the node pool machines.",
-										Immutable:   true,
 										Required: []string{
 											"authorizedKey",
 										},
@@ -268,7 +263,6 @@ func DCLNodePoolSchema() *dcl.Schema {
 												Type:        "string",
 												GoName:      "AuthorizedKey",
 												Description: "The SSH public key data for VMs managed by Anthos. This accepts the authorized_keys file format used in OpenSSH according to the sshd(8) manual page.",
-												Immutable:   true,
 											},
 										},
 									},

@@ -577,7 +577,7 @@ func canonicalizeTriggerDesiredState(rawDesired, rawInitial *Trigger, opts ...dc
 
 func canonicalizeTriggerNewState(c *Client, rawNew, rawDesired *Trigger) (*Trigger, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -585,7 +585,7 @@ func canonicalizeTriggerNewState(c *Client, rawNew, rawDesired *Trigger) (*Trigg
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -593,45 +593,45 @@ func canonicalizeTriggerNewState(c *Client, rawNew, rawDesired *Trigger) (*Trigg
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MatchingCriteria) && dcl.IsNotReturnedByServer(rawDesired.MatchingCriteria) {
+	if dcl.IsEmptyValueIndirect(rawNew.MatchingCriteria) && dcl.IsEmptyValueIndirect(rawDesired.MatchingCriteria) {
 		rawNew.MatchingCriteria = rawDesired.MatchingCriteria
 	} else {
 		rawNew.MatchingCriteria = canonicalizeNewTriggerMatchingCriteriaSet(c, rawDesired.MatchingCriteria, rawNew.MatchingCriteria)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServiceAccount) && dcl.IsNotReturnedByServer(rawDesired.ServiceAccount) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServiceAccount) && dcl.IsEmptyValueIndirect(rawDesired.ServiceAccount) {
 		rawNew.ServiceAccount = rawDesired.ServiceAccount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Destination) && dcl.IsNotReturnedByServer(rawDesired.Destination) {
+	if dcl.IsEmptyValueIndirect(rawNew.Destination) && dcl.IsEmptyValueIndirect(rawDesired.Destination) {
 		rawNew.Destination = rawDesired.Destination
 	} else {
 		rawNew.Destination = canonicalizeNewTriggerDestination(c, rawDesired.Destination, rawNew.Destination)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Transport) && dcl.IsNotReturnedByServer(rawDesired.Transport) {
+	if dcl.IsEmptyValueIndirect(rawNew.Transport) && dcl.IsEmptyValueIndirect(rawDesired.Transport) {
 		rawNew.Transport = rawDesired.Transport
 	} else {
 		rawNew.Transport = canonicalizeNewTriggerTransport(c, rawDesired.Transport, rawNew.Transport)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -714,7 +714,7 @@ func canonicalizeNewTriggerMatchingCriteria(c *Client, des, nw *TriggerMatchingC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerMatchingCriteria while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -882,7 +882,7 @@ func canonicalizeNewTriggerDestination(c *Client, des, nw *TriggerDestination) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerDestination while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1013,7 +1013,7 @@ func canonicalizeNewTriggerDestinationCloudRunService(c *Client, des, nw *Trigge
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerDestinationCloudRunService while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1152,7 +1152,7 @@ func canonicalizeNewTriggerDestinationGke(c *Client, des, nw *TriggerDestination
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerDestinationGke while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1272,7 +1272,7 @@ func canonicalizeNewTriggerTransport(c *Client, des, nw *TriggerTransport) *Trig
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerTransport while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1385,7 +1385,7 @@ func canonicalizeNewTriggerTransportPubsub(c *Client, des, nw *TriggerTransportP
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TriggerTransportPubsub while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2784,7 +2784,7 @@ func extractTriggerFields(r *Trigger) error {
 	if err := extractTriggerDestinationFields(r, vDestination); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDestination) {
+	if !dcl.IsEmptyValueIndirect(vDestination) {
 		r.Destination = vDestination
 	}
 	vTransport := r.Transport
@@ -2795,7 +2795,7 @@ func extractTriggerFields(r *Trigger) error {
 	if err := extractTriggerTransportFields(r, vTransport); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransport) {
+	if !dcl.IsEmptyValueIndirect(vTransport) {
 		r.Transport = vTransport
 	}
 	return nil
@@ -2812,7 +2812,7 @@ func extractTriggerDestinationFields(r *Trigger, o *TriggerDestination) error {
 	if err := extractTriggerDestinationCloudRunServiceFields(r, vCloudRunService); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudRunService) {
+	if !dcl.IsEmptyValueIndirect(vCloudRunService) {
 		o.CloudRunService = vCloudRunService
 	}
 	vGke := o.Gke
@@ -2823,7 +2823,7 @@ func extractTriggerDestinationFields(r *Trigger, o *TriggerDestination) error {
 	if err := extractTriggerDestinationGkeFields(r, vGke); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGke) {
+	if !dcl.IsEmptyValueIndirect(vGke) {
 		o.Gke = vGke
 	}
 	return nil
@@ -2843,7 +2843,7 @@ func extractTriggerTransportFields(r *Trigger, o *TriggerTransport) error {
 	if err := extractTriggerTransportPubsubFields(r, vPubsub); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubsub) {
+	if !dcl.IsEmptyValueIndirect(vPubsub) {
 		o.Pubsub = vPubsub
 	}
 	return nil
@@ -2861,7 +2861,7 @@ func postReadExtractTriggerFields(r *Trigger) error {
 	if err := postReadExtractTriggerDestinationFields(r, vDestination); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDestination) {
+	if !dcl.IsEmptyValueIndirect(vDestination) {
 		r.Destination = vDestination
 	}
 	vTransport := r.Transport
@@ -2872,7 +2872,7 @@ func postReadExtractTriggerFields(r *Trigger) error {
 	if err := postReadExtractTriggerTransportFields(r, vTransport); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTransport) {
+	if !dcl.IsEmptyValueIndirect(vTransport) {
 		r.Transport = vTransport
 	}
 	return nil
@@ -2889,7 +2889,7 @@ func postReadExtractTriggerDestinationFields(r *Trigger, o *TriggerDestination) 
 	if err := extractTriggerDestinationCloudRunServiceFields(r, vCloudRunService); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudRunService) {
+	if !dcl.IsEmptyValueIndirect(vCloudRunService) {
 		o.CloudRunService = vCloudRunService
 	}
 	vGke := o.Gke
@@ -2900,7 +2900,7 @@ func postReadExtractTriggerDestinationFields(r *Trigger, o *TriggerDestination) 
 	if err := extractTriggerDestinationGkeFields(r, vGke); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGke) {
+	if !dcl.IsEmptyValueIndirect(vGke) {
 		o.Gke = vGke
 	}
 	return nil
@@ -2920,7 +2920,7 @@ func postReadExtractTriggerTransportFields(r *Trigger, o *TriggerTransport) erro
 	if err := extractTriggerTransportPubsubFields(r, vPubsub); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubsub) {
+	if !dcl.IsEmptyValueIndirect(vPubsub) {
 		o.Pubsub = vPubsub
 	}
 	return nil

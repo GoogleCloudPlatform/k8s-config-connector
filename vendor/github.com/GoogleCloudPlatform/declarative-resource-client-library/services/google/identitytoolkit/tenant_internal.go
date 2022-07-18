@@ -486,12 +486,12 @@ func canonicalizeTenantDesiredState(rawDesired, rawInitial *Tenant, opts ...dcl.
 
 func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -499,7 +499,7 @@ func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AllowPasswordSignup) && dcl.IsNotReturnedByServer(rawDesired.AllowPasswordSignup) {
+	if dcl.IsEmptyValueIndirect(rawNew.AllowPasswordSignup) && dcl.IsEmptyValueIndirect(rawDesired.AllowPasswordSignup) {
 		rawNew.AllowPasswordSignup = rawDesired.AllowPasswordSignup
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AllowPasswordSignup, rawNew.AllowPasswordSignup) {
@@ -507,7 +507,7 @@ func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableEmailLinkSignin) && dcl.IsNotReturnedByServer(rawDesired.EnableEmailLinkSignin) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableEmailLinkSignin) && dcl.IsEmptyValueIndirect(rawDesired.EnableEmailLinkSignin) {
 		rawNew.EnableEmailLinkSignin = rawDesired.EnableEmailLinkSignin
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableEmailLinkSignin, rawNew.EnableEmailLinkSignin) {
@@ -515,7 +515,7 @@ func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisableAuth) && dcl.IsNotReturnedByServer(rawDesired.DisableAuth) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisableAuth) && dcl.IsEmptyValueIndirect(rawDesired.DisableAuth) {
 		rawNew.DisableAuth = rawDesired.DisableAuth
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.DisableAuth, rawNew.DisableAuth) {
@@ -523,7 +523,7 @@ func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EnableAnonymousUser) && dcl.IsNotReturnedByServer(rawDesired.EnableAnonymousUser) {
+	if dcl.IsEmptyValueIndirect(rawNew.EnableAnonymousUser) && dcl.IsEmptyValueIndirect(rawDesired.EnableAnonymousUser) {
 		rawNew.EnableAnonymousUser = rawDesired.EnableAnonymousUser
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.EnableAnonymousUser, rawNew.EnableAnonymousUser) {
@@ -531,13 +531,13 @@ func canonicalizeTenantNewState(c *Client, rawNew, rawDesired *Tenant) (*Tenant,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MfaConfig) && dcl.IsNotReturnedByServer(rawDesired.MfaConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.MfaConfig) && dcl.IsEmptyValueIndirect(rawDesired.MfaConfig) {
 		rawNew.MfaConfig = rawDesired.MfaConfig
 	} else {
 		rawNew.MfaConfig = canonicalizeNewTenantMfaConfig(c, rawDesired.MfaConfig, rawNew.MfaConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TestPhoneNumbers) && dcl.IsNotReturnedByServer(rawDesired.TestPhoneNumbers) {
+	if dcl.IsEmptyValueIndirect(rawNew.TestPhoneNumbers) && dcl.IsEmptyValueIndirect(rawDesired.TestPhoneNumbers) {
 		rawNew.TestPhoneNumbers = rawDesired.TestPhoneNumbers
 	} else {
 	}
@@ -612,7 +612,7 @@ func canonicalizeNewTenantMfaConfig(c *Client, des, nw *TenantMfaConfig) *Tenant
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TenantMfaConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1218,7 +1218,7 @@ func extractTenantFields(r *Tenant) error {
 	if err := extractTenantMfaConfigFields(r, vMfaConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMfaConfig) {
+	if !dcl.IsEmptyValueIndirect(vMfaConfig) {
 		r.MfaConfig = vMfaConfig
 	}
 	return nil
@@ -1236,7 +1236,7 @@ func postReadExtractTenantFields(r *Tenant) error {
 	if err := postReadExtractTenantMfaConfigFields(r, vMfaConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMfaConfig) {
+	if !dcl.IsEmptyValueIndirect(vMfaConfig) {
 		r.MfaConfig = vMfaConfig
 	}
 	return nil

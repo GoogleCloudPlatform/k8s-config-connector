@@ -100,10 +100,10 @@ func (r *MetricsScope) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"createTime":        dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":        dcl.ValueOrEmptyString(nr.UpdateTime),
-		"monitoredProjects": dcl.ValueOrEmptyString(nr.MonitoredProjects),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"create_time":        dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":        dcl.ValueOrEmptyString(nr.UpdateTime),
+		"monitored_projects": dcl.ValueOrEmptyString(nr.MonitoredProjects),
 	}
 	return dcl.Nprintf("locations/global/metricsScopes/{{name}}", params), nil
 }

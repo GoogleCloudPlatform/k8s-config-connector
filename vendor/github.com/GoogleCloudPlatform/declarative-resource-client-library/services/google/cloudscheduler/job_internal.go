@@ -559,7 +559,7 @@ func canonicalizeJobDesiredState(rawDesired, rawInitial *Job, opts ...dcl.ApplyO
 
 func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -567,7 +567,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -575,25 +575,25 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PubsubTarget) && dcl.IsNotReturnedByServer(rawDesired.PubsubTarget) {
+	if dcl.IsEmptyValueIndirect(rawNew.PubsubTarget) && dcl.IsEmptyValueIndirect(rawDesired.PubsubTarget) {
 		rawNew.PubsubTarget = rawDesired.PubsubTarget
 	} else {
 		rawNew.PubsubTarget = canonicalizeNewJobPubsubTarget(c, rawDesired.PubsubTarget, rawNew.PubsubTarget)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AppEngineHttpTarget) && dcl.IsNotReturnedByServer(rawDesired.AppEngineHttpTarget) {
+	if dcl.IsEmptyValueIndirect(rawNew.AppEngineHttpTarget) && dcl.IsEmptyValueIndirect(rawDesired.AppEngineHttpTarget) {
 		rawNew.AppEngineHttpTarget = rawDesired.AppEngineHttpTarget
 	} else {
 		rawNew.AppEngineHttpTarget = canonicalizeNewJobAppEngineHttpTarget(c, rawDesired.AppEngineHttpTarget, rawNew.AppEngineHttpTarget)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.HttpTarget) && dcl.IsNotReturnedByServer(rawDesired.HttpTarget) {
+	if dcl.IsEmptyValueIndirect(rawNew.HttpTarget) && dcl.IsEmptyValueIndirect(rawDesired.HttpTarget) {
 		rawNew.HttpTarget = rawDesired.HttpTarget
 	} else {
 		rawNew.HttpTarget = canonicalizeNewJobHttpTarget(c, rawDesired.HttpTarget, rawNew.HttpTarget)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Schedule) && dcl.IsNotReturnedByServer(rawDesired.Schedule) {
+	if dcl.IsEmptyValueIndirect(rawNew.Schedule) && dcl.IsEmptyValueIndirect(rawDesired.Schedule) {
 		rawNew.Schedule = rawDesired.Schedule
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Schedule, rawNew.Schedule) {
@@ -601,7 +601,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TimeZone) && dcl.IsNotReturnedByServer(rawDesired.TimeZone) {
+	if dcl.IsEmptyValueIndirect(rawNew.TimeZone) && dcl.IsEmptyValueIndirect(rawDesired.TimeZone) {
 		rawNew.TimeZone = rawDesired.TimeZone
 	} else {
 		if dcl.StringCanonicalize(rawDesired.TimeZone, rawNew.TimeZone) {
@@ -609,39 +609,39 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UserUpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UserUpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UserUpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UserUpdateTime) {
 		rawNew.UserUpdateTime = rawDesired.UserUpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 		rawNew.Status = canonicalizeNewJobStatus(c, rawDesired.Status, rawNew.Status)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ScheduleTime) && dcl.IsNotReturnedByServer(rawDesired.ScheduleTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.ScheduleTime) && dcl.IsEmptyValueIndirect(rawDesired.ScheduleTime) {
 		rawNew.ScheduleTime = rawDesired.ScheduleTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastAttemptTime) && dcl.IsNotReturnedByServer(rawDesired.LastAttemptTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastAttemptTime) && dcl.IsEmptyValueIndirect(rawDesired.LastAttemptTime) {
 		rawNew.LastAttemptTime = rawDesired.LastAttemptTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RetryConfig) && dcl.IsNotReturnedByServer(rawDesired.RetryConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.RetryConfig) && dcl.IsEmptyValueIndirect(rawDesired.RetryConfig) {
 		rawNew.RetryConfig = rawDesired.RetryConfig
 	} else {
 		rawNew.RetryConfig = canonicalizeNewJobRetryConfig(c, rawDesired.RetryConfig, rawNew.RetryConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AttemptDeadline) && dcl.IsNotReturnedByServer(rawDesired.AttemptDeadline) {
+	if dcl.IsEmptyValueIndirect(rawNew.AttemptDeadline) && dcl.IsEmptyValueIndirect(rawDesired.AttemptDeadline) {
 		rawNew.AttemptDeadline = rawDesired.AttemptDeadline
 	} else {
 		if dcl.StringCanonicalize(rawDesired.AttemptDeadline, rawNew.AttemptDeadline) {
@@ -726,7 +726,7 @@ func canonicalizeNewJobPubsubTarget(c *Client, des, nw *JobPubsubTarget) *JobPub
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobPubsubTarget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -859,7 +859,7 @@ func canonicalizeNewJobAppEngineHttpTarget(c *Client, des, nw *JobAppEngineHttpT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobAppEngineHttpTarget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -988,7 +988,7 @@ func canonicalizeNewJobAppEngineHttpTargetAppEngineRouting(c *Client, des, nw *J
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobAppEngineHttpTargetAppEngineRouting while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1131,7 +1131,7 @@ func canonicalizeNewJobHttpTarget(c *Client, des, nw *JobHttpTarget) *JobHttpTar
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobHttpTarget while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1257,7 +1257,7 @@ func canonicalizeNewJobHttpTargetOAuthToken(c *Client, des, nw *JobHttpTargetOAu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobHttpTargetOAuthToken while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1378,7 +1378,7 @@ func canonicalizeNewJobHttpTargetOidcToken(c *Client, des, nw *JobHttpTargetOidc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobHttpTargetOidcToken while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1500,7 +1500,7 @@ func canonicalizeNewJobStatus(c *Client, des, nw *JobStatus) *JobStatus {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobStatus while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1621,7 +1621,7 @@ func canonicalizeNewJobStatusDetails(c *Client, des, nw *JobStatusDetails) *JobS
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobStatusDetails while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1761,7 +1761,7 @@ func canonicalizeNewJobRetryConfig(c *Client, des, nw *JobRetryConfig) *JobRetry
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobRetryConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3902,7 +3902,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobPubsubTargetFields(r, vPubsubTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubsubTarget) {
+	if !dcl.IsEmptyValueIndirect(vPubsubTarget) {
 		r.PubsubTarget = vPubsubTarget
 	}
 	vAppEngineHttpTarget := r.AppEngineHttpTarget
@@ -3913,7 +3913,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobAppEngineHttpTargetFields(r, vAppEngineHttpTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAppEngineHttpTarget) {
+	if !dcl.IsEmptyValueIndirect(vAppEngineHttpTarget) {
 		r.AppEngineHttpTarget = vAppEngineHttpTarget
 	}
 	vHttpTarget := r.HttpTarget
@@ -3924,7 +3924,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobHttpTargetFields(r, vHttpTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpTarget) {
+	if !dcl.IsEmptyValueIndirect(vHttpTarget) {
 		r.HttpTarget = vHttpTarget
 	}
 	vStatus := r.Status
@@ -3935,7 +3935,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vRetryConfig := r.RetryConfig
@@ -3946,7 +3946,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobRetryConfigFields(r, vRetryConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryConfig) {
+	if !dcl.IsEmptyValueIndirect(vRetryConfig) {
 		r.RetryConfig = vRetryConfig
 	}
 	return nil
@@ -3963,7 +3963,7 @@ func extractJobAppEngineHttpTargetFields(r *Job, o *JobAppEngineHttpTarget) erro
 	if err := extractJobAppEngineHttpTargetAppEngineRoutingFields(r, vAppEngineRouting); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAppEngineRouting) {
+	if !dcl.IsEmptyValueIndirect(vAppEngineRouting) {
 		o.AppEngineRouting = vAppEngineRouting
 	}
 	return nil
@@ -3980,7 +3980,7 @@ func extractJobHttpTargetFields(r *Job, o *JobHttpTarget) error {
 	if err := extractJobHttpTargetOAuthTokenFields(r, vOAuthToken); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOAuthToken) {
+	if !dcl.IsEmptyValueIndirect(vOAuthToken) {
 		o.OAuthToken = vOAuthToken
 	}
 	vOidcToken := o.OidcToken
@@ -3991,7 +3991,7 @@ func extractJobHttpTargetFields(r *Job, o *JobHttpTarget) error {
 	if err := extractJobHttpTargetOidcTokenFields(r, vOidcToken); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOidcToken) {
+	if !dcl.IsEmptyValueIndirect(vOidcToken) {
 		o.OidcToken = vOidcToken
 	}
 	return nil
@@ -4021,7 +4021,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobPubsubTargetFields(r, vPubsubTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPubsubTarget) {
+	if !dcl.IsEmptyValueIndirect(vPubsubTarget) {
 		r.PubsubTarget = vPubsubTarget
 	}
 	vAppEngineHttpTarget := r.AppEngineHttpTarget
@@ -4032,7 +4032,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobAppEngineHttpTargetFields(r, vAppEngineHttpTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAppEngineHttpTarget) {
+	if !dcl.IsEmptyValueIndirect(vAppEngineHttpTarget) {
 		r.AppEngineHttpTarget = vAppEngineHttpTarget
 	}
 	vHttpTarget := r.HttpTarget
@@ -4043,7 +4043,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobHttpTargetFields(r, vHttpTarget); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHttpTarget) {
+	if !dcl.IsEmptyValueIndirect(vHttpTarget) {
 		r.HttpTarget = vHttpTarget
 	}
 	vStatus := r.Status
@@ -4054,7 +4054,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobStatusFields(r, vStatus); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStatus) {
+	if !dcl.IsEmptyValueIndirect(vStatus) {
 		r.Status = vStatus
 	}
 	vRetryConfig := r.RetryConfig
@@ -4065,7 +4065,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobRetryConfigFields(r, vRetryConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRetryConfig) {
+	if !dcl.IsEmptyValueIndirect(vRetryConfig) {
 		r.RetryConfig = vRetryConfig
 	}
 	return nil
@@ -4082,7 +4082,7 @@ func postReadExtractJobAppEngineHttpTargetFields(r *Job, o *JobAppEngineHttpTarg
 	if err := extractJobAppEngineHttpTargetAppEngineRoutingFields(r, vAppEngineRouting); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAppEngineRouting) {
+	if !dcl.IsEmptyValueIndirect(vAppEngineRouting) {
 		o.AppEngineRouting = vAppEngineRouting
 	}
 	return nil
@@ -4099,7 +4099,7 @@ func postReadExtractJobHttpTargetFields(r *Job, o *JobHttpTarget) error {
 	if err := extractJobHttpTargetOAuthTokenFields(r, vOAuthToken); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOAuthToken) {
+	if !dcl.IsEmptyValueIndirect(vOAuthToken) {
 		o.OAuthToken = vOAuthToken
 	}
 	vOidcToken := o.OidcToken
@@ -4110,7 +4110,7 @@ func postReadExtractJobHttpTargetFields(r *Job, o *JobHttpTarget) error {
 	if err := extractJobHttpTargetOidcTokenFields(r, vOidcToken); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOidcToken) {
+	if !dcl.IsEmptyValueIndirect(vOidcToken) {
 		o.OidcToken = vOidcToken
 	}
 	return nil

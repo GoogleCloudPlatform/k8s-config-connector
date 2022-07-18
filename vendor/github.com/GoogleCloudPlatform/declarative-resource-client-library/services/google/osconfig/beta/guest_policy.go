@@ -1814,16 +1814,16 @@ func (r *GuestPolicy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                dcl.ValueOrEmptyString(nr.Name),
-		"description":         dcl.ValueOrEmptyString(nr.Description),
-		"createTime":          dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":          dcl.ValueOrEmptyString(nr.UpdateTime),
-		"assignment":          dcl.ValueOrEmptyString(nr.Assignment),
-		"packages":            dcl.ValueOrEmptyString(nr.Packages),
-		"packageRepositories": dcl.ValueOrEmptyString(nr.PackageRepositories),
-		"recipes":             dcl.ValueOrEmptyString(nr.Recipes),
-		"etag":                dcl.ValueOrEmptyString(nr.Etag),
-		"project":             dcl.ValueOrEmptyString(nr.Project),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"assignment":           dcl.ValueOrEmptyString(nr.Assignment),
+		"packages":             dcl.ValueOrEmptyString(nr.Packages),
+		"package_repositories": dcl.ValueOrEmptyString(nr.PackageRepositories),
+		"recipes":              dcl.ValueOrEmptyString(nr.Recipes),
+		"etag":                 dcl.ValueOrEmptyString(nr.Etag),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/guestPolicies/{{name}}", params), nil
 }

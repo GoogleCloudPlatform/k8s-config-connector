@@ -1510,22 +1510,22 @@ func (r *Note) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"shortDescription": dcl.ValueOrEmptyString(nr.ShortDescription),
-		"longDescription":  dcl.ValueOrEmptyString(nr.LongDescription),
-		"relatedUrl":       dcl.ValueOrEmptyString(nr.RelatedUrl),
-		"expirationTime":   dcl.ValueOrEmptyString(nr.ExpirationTime),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":       dcl.ValueOrEmptyString(nr.UpdateTime),
-		"relatedNoteNames": dcl.ValueOrEmptyString(nr.RelatedNoteNames),
-		"vulnerability":    dcl.ValueOrEmptyString(nr.Vulnerability),
-		"build":            dcl.ValueOrEmptyString(nr.Build),
-		"image":            dcl.ValueOrEmptyString(nr.Image),
-		"package":          dcl.ValueOrEmptyString(nr.Package),
-		"discovery":        dcl.ValueOrEmptyString(nr.Discovery),
-		"deployment":       dcl.ValueOrEmptyString(nr.Deployment),
-		"attestation":      dcl.ValueOrEmptyString(nr.Attestation),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"short_description":  dcl.ValueOrEmptyString(nr.ShortDescription),
+		"long_description":   dcl.ValueOrEmptyString(nr.LongDescription),
+		"related_url":        dcl.ValueOrEmptyString(nr.RelatedUrl),
+		"expiration_time":    dcl.ValueOrEmptyString(nr.ExpirationTime),
+		"create_time":        dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":        dcl.ValueOrEmptyString(nr.UpdateTime),
+		"related_note_names": dcl.ValueOrEmptyString(nr.RelatedNoteNames),
+		"vulnerability":      dcl.ValueOrEmptyString(nr.Vulnerability),
+		"build":              dcl.ValueOrEmptyString(nr.Build),
+		"image":              dcl.ValueOrEmptyString(nr.Image),
+		"package":            dcl.ValueOrEmptyString(nr.Package),
+		"discovery":          dcl.ValueOrEmptyString(nr.Discovery),
+		"deployment":         dcl.ValueOrEmptyString(nr.Deployment),
+		"attestation":        dcl.ValueOrEmptyString(nr.Attestation),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/notes/{{name}}", params), nil
 }

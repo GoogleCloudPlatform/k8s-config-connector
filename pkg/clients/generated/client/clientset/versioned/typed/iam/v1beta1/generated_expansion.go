@@ -35,6 +35,8 @@ type IAMServiceAccountExpansion interface{}
 
 type IAMServiceAccountKeyExpansion interface{}
 
+type IAMWorkforcePoolExpansion interface{}
+
 type IAMWorkloadIdentityPoolExpansion interface{}
 
 type IAMWorkloadIdentityPoolProviderExpansion interface{}

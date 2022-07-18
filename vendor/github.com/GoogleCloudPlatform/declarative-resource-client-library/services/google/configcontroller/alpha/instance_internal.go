@@ -450,7 +450,7 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 
 func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Instance, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -458,18 +458,18 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BundlesConfig) && dcl.IsNotReturnedByServer(rawDesired.BundlesConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.BundlesConfig) && dcl.IsEmptyValueIndirect(rawDesired.BundlesConfig) {
 		rawNew.BundlesConfig = rawDesired.BundlesConfig
 	} else {
 		rawNew.BundlesConfig = canonicalizeNewInstanceBundlesConfig(c, rawDesired.BundlesConfig, rawNew.BundlesConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UsePrivateEndpoint) && dcl.IsNotReturnedByServer(rawDesired.UsePrivateEndpoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.UsePrivateEndpoint) && dcl.IsEmptyValueIndirect(rawDesired.UsePrivateEndpoint) {
 		rawNew.UsePrivateEndpoint = rawDesired.UsePrivateEndpoint
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.UsePrivateEndpoint, rawNew.UsePrivateEndpoint) {
@@ -477,7 +477,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.GkeResourceLink) && dcl.IsNotReturnedByServer(rawDesired.GkeResourceLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.GkeResourceLink) && dcl.IsEmptyValueIndirect(rawDesired.GkeResourceLink) {
 		rawNew.GkeResourceLink = rawDesired.GkeResourceLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.GkeResourceLink, rawNew.GkeResourceLink) {
@@ -485,12 +485,12 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ManagementConfig) && dcl.IsNotReturnedByServer(rawDesired.ManagementConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.ManagementConfig) && dcl.IsEmptyValueIndirect(rawDesired.ManagementConfig) {
 		rawNew.ManagementConfig = rawDesired.ManagementConfig
 	} else {
 		rawNew.ManagementConfig = canonicalizeNewInstanceManagementConfig(c, rawDesired.ManagementConfig, rawNew.ManagementConfig)
@@ -557,7 +557,7 @@ func canonicalizeNewInstanceBundlesConfig(c *Client, des, nw *InstanceBundlesCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceBundlesConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -670,7 +670,7 @@ func canonicalizeNewInstanceBundlesConfigConfigControllerConfig(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceBundlesConfigConfigControllerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -781,7 +781,7 @@ func canonicalizeNewInstanceManagementConfig(c *Client, des, nw *InstanceManagem
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceManagementConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -925,7 +925,7 @@ func canonicalizeNewInstanceManagementConfigStandardManagementConfig(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceManagementConfigStandardManagementConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1980,7 +1980,7 @@ func extractInstanceFields(r *Instance) error {
 	if err := extractInstanceBundlesConfigFields(r, vBundlesConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBundlesConfig) {
+	if !dcl.IsEmptyValueIndirect(vBundlesConfig) {
 		r.BundlesConfig = vBundlesConfig
 	}
 	vManagementConfig := r.ManagementConfig
@@ -1991,7 +1991,7 @@ func extractInstanceFields(r *Instance) error {
 	if err := extractInstanceManagementConfigFields(r, vManagementConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagementConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagementConfig) {
 		r.ManagementConfig = vManagementConfig
 	}
 	return nil
@@ -2005,7 +2005,7 @@ func extractInstanceBundlesConfigFields(r *Instance, o *InstanceBundlesConfig) e
 	if err := extractInstanceBundlesConfigConfigControllerConfigFields(r, vConfigControllerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigControllerConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfigControllerConfig) {
 		o.ConfigControllerConfig = vConfigControllerConfig
 	}
 	return nil
@@ -2022,7 +2022,7 @@ func extractInstanceManagementConfigFields(r *Instance, o *InstanceManagementCon
 	if err := extractInstanceManagementConfigStandardManagementConfigFields(r, vStandardManagementConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStandardManagementConfig) {
+	if !dcl.IsEmptyValueIndirect(vStandardManagementConfig) {
 		o.StandardManagementConfig = vStandardManagementConfig
 	}
 	return nil
@@ -2040,7 +2040,7 @@ func postReadExtractInstanceFields(r *Instance) error {
 	if err := postReadExtractInstanceBundlesConfigFields(r, vBundlesConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBundlesConfig) {
+	if !dcl.IsEmptyValueIndirect(vBundlesConfig) {
 		r.BundlesConfig = vBundlesConfig
 	}
 	vManagementConfig := r.ManagementConfig
@@ -2051,7 +2051,7 @@ func postReadExtractInstanceFields(r *Instance) error {
 	if err := postReadExtractInstanceManagementConfigFields(r, vManagementConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vManagementConfig) {
+	if !dcl.IsEmptyValueIndirect(vManagementConfig) {
 		r.ManagementConfig = vManagementConfig
 	}
 	return nil
@@ -2065,7 +2065,7 @@ func postReadExtractInstanceBundlesConfigFields(r *Instance, o *InstanceBundlesC
 	if err := extractInstanceBundlesConfigConfigControllerConfigFields(r, vConfigControllerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vConfigControllerConfig) {
+	if !dcl.IsEmptyValueIndirect(vConfigControllerConfig) {
 		o.ConfigControllerConfig = vConfigControllerConfig
 	}
 	return nil
@@ -2082,7 +2082,7 @@ func postReadExtractInstanceManagementConfigFields(r *Instance, o *InstanceManag
 	if err := extractInstanceManagementConfigStandardManagementConfigFields(r, vStandardManagementConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vStandardManagementConfig) {
+	if !dcl.IsEmptyValueIndirect(vStandardManagementConfig) {
 		o.StandardManagementConfig = vStandardManagementConfig
 	}
 	return nil

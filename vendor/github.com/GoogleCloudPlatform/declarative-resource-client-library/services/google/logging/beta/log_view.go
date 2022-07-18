@@ -55,8 +55,8 @@ func (r *LogView) ID() (string, error) {
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
 		"description": dcl.ValueOrEmptyString(nr.Description),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"filter":      dcl.ValueOrEmptyString(nr.Filter),
 		"parent":      dcl.ValueOrEmptyString(nr.Parent),
 		"location":    dcl.ValueOrEmptyString(nr.Location),

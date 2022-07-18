@@ -702,7 +702,7 @@ func canonicalizeJobDesiredState(rawDesired, rawInitial *Job, opts ...dcl.ApplyO
 
 func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -710,7 +710,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -718,42 +718,42 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Generation) && dcl.IsNotReturnedByServer(rawDesired.Generation) {
+	if dcl.IsEmptyValueIndirect(rawNew.Generation) && dcl.IsEmptyValueIndirect(rawDesired.Generation) {
 		rawNew.Generation = rawDesired.Generation
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeleteTime) && dcl.IsNotReturnedByServer(rawDesired.DeleteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeleteTime) && dcl.IsEmptyValueIndirect(rawDesired.DeleteTime) {
 		rawNew.DeleteTime = rawDesired.DeleteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExpireTime) && dcl.IsNotReturnedByServer(rawDesired.ExpireTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExpireTime) && dcl.IsEmptyValueIndirect(rawDesired.ExpireTime) {
 		rawNew.ExpireTime = rawDesired.ExpireTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Creator) && dcl.IsNotReturnedByServer(rawDesired.Creator) {
+	if dcl.IsEmptyValueIndirect(rawNew.Creator) && dcl.IsEmptyValueIndirect(rawDesired.Creator) {
 		rawNew.Creator = rawDesired.Creator
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Creator, rawNew.Creator) {
@@ -761,7 +761,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastModifier) && dcl.IsNotReturnedByServer(rawDesired.LastModifier) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastModifier) && dcl.IsEmptyValueIndirect(rawDesired.LastModifier) {
 		rawNew.LastModifier = rawDesired.LastModifier
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LastModifier, rawNew.LastModifier) {
@@ -769,7 +769,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Client) && dcl.IsNotReturnedByServer(rawDesired.Client) {
+	if dcl.IsEmptyValueIndirect(rawNew.Client) && dcl.IsEmptyValueIndirect(rawDesired.Client) {
 		rawNew.Client = rawDesired.Client
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Client, rawNew.Client) {
@@ -777,7 +777,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ClientVersion) && dcl.IsNotReturnedByServer(rawDesired.ClientVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.ClientVersion) && dcl.IsEmptyValueIndirect(rawDesired.ClientVersion) {
 		rawNew.ClientVersion = rawDesired.ClientVersion
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ClientVersion, rawNew.ClientVersion) {
@@ -785,58 +785,58 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LaunchStage) && dcl.IsNotReturnedByServer(rawDesired.LaunchStage) {
+	if dcl.IsEmptyValueIndirect(rawNew.LaunchStage) && dcl.IsEmptyValueIndirect(rawDesired.LaunchStage) {
 		rawNew.LaunchStage = rawDesired.LaunchStage
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BinaryAuthorization) && dcl.IsNotReturnedByServer(rawDesired.BinaryAuthorization) {
+	if dcl.IsEmptyValueIndirect(rawNew.BinaryAuthorization) && dcl.IsEmptyValueIndirect(rawDesired.BinaryAuthorization) {
 		rawNew.BinaryAuthorization = rawDesired.BinaryAuthorization
 	} else {
 		rawNew.BinaryAuthorization = canonicalizeNewJobBinaryAuthorization(c, rawDesired.BinaryAuthorization, rawNew.BinaryAuthorization)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Template) && dcl.IsNotReturnedByServer(rawDesired.Template) {
+	if dcl.IsEmptyValueIndirect(rawNew.Template) && dcl.IsEmptyValueIndirect(rawDesired.Template) {
 		rawNew.Template = rawDesired.Template
 	} else {
 		rawNew.Template = canonicalizeNewJobTemplate(c, rawDesired.Template, rawNew.Template)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ObservedGeneration) && dcl.IsNotReturnedByServer(rawDesired.ObservedGeneration) {
+	if dcl.IsEmptyValueIndirect(rawNew.ObservedGeneration) && dcl.IsEmptyValueIndirect(rawDesired.ObservedGeneration) {
 		rawNew.ObservedGeneration = rawDesired.ObservedGeneration
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TerminalCondition) && dcl.IsNotReturnedByServer(rawDesired.TerminalCondition) {
+	if dcl.IsEmptyValueIndirect(rawNew.TerminalCondition) && dcl.IsEmptyValueIndirect(rawDesired.TerminalCondition) {
 		rawNew.TerminalCondition = rawDesired.TerminalCondition
 	} else {
 		rawNew.TerminalCondition = canonicalizeNewJobTerminalCondition(c, rawDesired.TerminalCondition, rawNew.TerminalCondition)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Conditions) && dcl.IsNotReturnedByServer(rawDesired.Conditions) {
+	if dcl.IsEmptyValueIndirect(rawNew.Conditions) && dcl.IsEmptyValueIndirect(rawDesired.Conditions) {
 		rawNew.Conditions = rawDesired.Conditions
 	} else {
 		rawNew.Conditions = canonicalizeNewJobConditionsSlice(c, rawDesired.Conditions, rawNew.Conditions)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExecutionCount) && dcl.IsNotReturnedByServer(rawDesired.ExecutionCount) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExecutionCount) && dcl.IsEmptyValueIndirect(rawDesired.ExecutionCount) {
 		rawNew.ExecutionCount = rawDesired.ExecutionCount
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LatestSucceededExecution) && dcl.IsNotReturnedByServer(rawDesired.LatestSucceededExecution) {
+	if dcl.IsEmptyValueIndirect(rawNew.LatestSucceededExecution) && dcl.IsEmptyValueIndirect(rawDesired.LatestSucceededExecution) {
 		rawNew.LatestSucceededExecution = rawDesired.LatestSucceededExecution
 	} else {
 		rawNew.LatestSucceededExecution = canonicalizeNewJobLatestSucceededExecution(c, rawDesired.LatestSucceededExecution, rawNew.LatestSucceededExecution)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LatestCreatedExecution) && dcl.IsNotReturnedByServer(rawDesired.LatestCreatedExecution) {
+	if dcl.IsEmptyValueIndirect(rawNew.LatestCreatedExecution) && dcl.IsEmptyValueIndirect(rawDesired.LatestCreatedExecution) {
 		rawNew.LatestCreatedExecution = rawDesired.LatestCreatedExecution
 	} else {
 		rawNew.LatestCreatedExecution = canonicalizeNewJobLatestCreatedExecution(c, rawDesired.LatestCreatedExecution, rawNew.LatestCreatedExecution)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Reconciling) && dcl.IsNotReturnedByServer(rawDesired.Reconciling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Reconciling) && dcl.IsEmptyValueIndirect(rawDesired.Reconciling) {
 		rawNew.Reconciling = rawDesired.Reconciling
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Reconciling, rawNew.Reconciling) {
@@ -844,7 +844,7 @@ func canonicalizeJobNewState(c *Client, rawNew, rawDesired *Job) (*Job, error) {
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -922,7 +922,7 @@ func canonicalizeNewJobBinaryAuthorization(c *Client, des, nw *JobBinaryAuthoriz
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobBinaryAuthorization while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1060,7 +1060,7 @@ func canonicalizeNewJobTemplate(c *Client, des, nw *JobTemplate) *JobTemplate {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1199,7 +1199,7 @@ func canonicalizeNewJobTemplateTemplate(c *Client, des, nw *JobTemplateTemplate)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1339,7 +1339,7 @@ func canonicalizeNewJobTemplateTemplateContainers(c *Client, des, nw *JobTemplat
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1493,7 +1493,7 @@ func canonicalizeNewJobTemplateTemplateContainersEnv(c *Client, des, nw *JobTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersEnv while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1608,7 +1608,7 @@ func canonicalizeNewJobTemplateTemplateContainersEnvValueSource(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersEnvValueSource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1728,7 +1728,7 @@ func canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSecretKeyRef(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersEnvValueSourceSecretKeyRef while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1845,7 +1845,7 @@ func canonicalizeNewJobTemplateTemplateContainersResources(c *Client, des, nw *J
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1966,7 +1966,7 @@ func canonicalizeNewJobTemplateTemplateContainersPorts(c *Client, des, nw *JobTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersPorts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2086,7 +2086,7 @@ func canonicalizeNewJobTemplateTemplateContainersVolumeMounts(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateContainersVolumeMounts while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2226,7 +2226,7 @@ func canonicalizeNewJobTemplateTemplateVolumes(c *Client, des, nw *JobTemplateTe
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateVolumes while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2350,7 +2350,7 @@ func canonicalizeNewJobTemplateTemplateVolumesSecret(c *Client, des, nw *JobTemp
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateVolumesSecret while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2477,7 +2477,7 @@ func canonicalizeNewJobTemplateTemplateVolumesSecretItems(c *Client, des, nw *Jo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateVolumesSecretItems while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2595,7 +2595,7 @@ func canonicalizeNewJobTemplateTemplateVolumesCloudSqlInstance(c *Client, des, n
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateVolumesCloudSqlInstance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2717,7 +2717,7 @@ func canonicalizeNewJobTemplateTemplateVPCAccess(c *Client, des, nw *JobTemplate
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTemplateTemplateVPCAccess while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2931,7 +2931,7 @@ func canonicalizeNewJobTerminalCondition(c *Client, des, nw *JobTerminalConditio
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobTerminalCondition while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3120,7 +3120,7 @@ func canonicalizeNewJobConditions(c *Client, des, nw *JobConditions) *JobConditi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobConditions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3245,7 +3245,7 @@ func canonicalizeNewJobLatestSucceededExecution(c *Client, des, nw *JobLatestSuc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobLatestSucceededExecution while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3363,7 +3363,7 @@ func canonicalizeNewJobLatestCreatedExecution(c *Client, des, nw *JobLatestCreat
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for JobLatestCreatedExecution while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -7926,7 +7926,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobBinaryAuthorizationFields(r, vBinaryAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinaryAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vBinaryAuthorization) {
 		r.BinaryAuthorization = vBinaryAuthorization
 	}
 	vTemplate := r.Template
@@ -7937,7 +7937,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		r.Template = vTemplate
 	}
 	vTerminalCondition := r.TerminalCondition
@@ -7948,7 +7948,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobTerminalConditionFields(r, vTerminalCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTerminalCondition) {
+	if !dcl.IsEmptyValueIndirect(vTerminalCondition) {
 		r.TerminalCondition = vTerminalCondition
 	}
 	vLatestSucceededExecution := r.LatestSucceededExecution
@@ -7959,7 +7959,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobLatestSucceededExecutionFields(r, vLatestSucceededExecution); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestSucceededExecution) {
+	if !dcl.IsEmptyValueIndirect(vLatestSucceededExecution) {
 		r.LatestSucceededExecution = vLatestSucceededExecution
 	}
 	vLatestCreatedExecution := r.LatestCreatedExecution
@@ -7970,7 +7970,7 @@ func extractJobFields(r *Job) error {
 	if err := extractJobLatestCreatedExecutionFields(r, vLatestCreatedExecution); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestCreatedExecution) {
+	if !dcl.IsEmptyValueIndirect(vLatestCreatedExecution) {
 		r.LatestCreatedExecution = vLatestCreatedExecution
 	}
 	return nil
@@ -7987,7 +7987,7 @@ func extractJobTemplateFields(r *Job, o *JobTemplate) error {
 	if err := extractJobTemplateTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		o.Template = vTemplate
 	}
 	return nil
@@ -8001,7 +8001,7 @@ func extractJobTemplateTemplateFields(r *Job, o *JobTemplateTemplate) error {
 	if err := extractJobTemplateTemplateVPCAccessFields(r, vVPCAccess); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVPCAccess) {
+	if !dcl.IsEmptyValueIndirect(vVPCAccess) {
 		o.VPCAccess = vVPCAccess
 	}
 	return nil
@@ -8015,7 +8015,7 @@ func extractJobTemplateTemplateContainersFields(r *Job, o *JobTemplateTemplateCo
 	if err := extractJobTemplateTemplateContainersResourcesFields(r, vResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResources) {
+	if !dcl.IsEmptyValueIndirect(vResources) {
 		o.Resources = vResources
 	}
 	return nil
@@ -8029,7 +8029,7 @@ func extractJobTemplateTemplateContainersEnvFields(r *Job, o *JobTemplateTemplat
 	if err := extractJobTemplateTemplateContainersEnvValueSourceFields(r, vValueSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValueSource) {
+	if !dcl.IsEmptyValueIndirect(vValueSource) {
 		o.ValueSource = vValueSource
 	}
 	return nil
@@ -8043,7 +8043,7 @@ func extractJobTemplateTemplateContainersEnvValueSourceFields(r *Job, o *JobTemp
 	if err := extractJobTemplateTemplateContainersEnvValueSourceSecretKeyRefFields(r, vSecretKeyRef); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecretKeyRef) {
+	if !dcl.IsEmptyValueIndirect(vSecretKeyRef) {
 		o.SecretKeyRef = vSecretKeyRef
 	}
 	return nil
@@ -8069,7 +8069,7 @@ func extractJobTemplateTemplateVolumesFields(r *Job, o *JobTemplateTemplateVolum
 	if err := extractJobTemplateTemplateVolumesSecretFields(r, vSecret); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecret) {
+	if !dcl.IsEmptyValueIndirect(vSecret) {
 		o.Secret = vSecret
 	}
 	vCloudSqlInstance := o.CloudSqlInstance
@@ -8080,7 +8080,7 @@ func extractJobTemplateTemplateVolumesFields(r *Job, o *JobTemplateTemplateVolum
 	if err := extractJobTemplateTemplateVolumesCloudSqlInstanceFields(r, vCloudSqlInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudSqlInstance) {
+	if !dcl.IsEmptyValueIndirect(vCloudSqlInstance) {
 		o.CloudSqlInstance = vCloudSqlInstance
 	}
 	return nil
@@ -8119,7 +8119,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobBinaryAuthorizationFields(r, vBinaryAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBinaryAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vBinaryAuthorization) {
 		r.BinaryAuthorization = vBinaryAuthorization
 	}
 	vTemplate := r.Template
@@ -8130,7 +8130,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		r.Template = vTemplate
 	}
 	vTerminalCondition := r.TerminalCondition
@@ -8141,7 +8141,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobTerminalConditionFields(r, vTerminalCondition); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTerminalCondition) {
+	if !dcl.IsEmptyValueIndirect(vTerminalCondition) {
 		r.TerminalCondition = vTerminalCondition
 	}
 	vLatestSucceededExecution := r.LatestSucceededExecution
@@ -8152,7 +8152,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobLatestSucceededExecutionFields(r, vLatestSucceededExecution); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestSucceededExecution) {
+	if !dcl.IsEmptyValueIndirect(vLatestSucceededExecution) {
 		r.LatestSucceededExecution = vLatestSucceededExecution
 	}
 	vLatestCreatedExecution := r.LatestCreatedExecution
@@ -8163,7 +8163,7 @@ func postReadExtractJobFields(r *Job) error {
 	if err := postReadExtractJobLatestCreatedExecutionFields(r, vLatestCreatedExecution); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLatestCreatedExecution) {
+	if !dcl.IsEmptyValueIndirect(vLatestCreatedExecution) {
 		r.LatestCreatedExecution = vLatestCreatedExecution
 	}
 	return nil
@@ -8180,7 +8180,7 @@ func postReadExtractJobTemplateFields(r *Job, o *JobTemplate) error {
 	if err := extractJobTemplateTemplateFields(r, vTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vTemplate) {
+	if !dcl.IsEmptyValueIndirect(vTemplate) {
 		o.Template = vTemplate
 	}
 	return nil
@@ -8194,7 +8194,7 @@ func postReadExtractJobTemplateTemplateFields(r *Job, o *JobTemplateTemplate) er
 	if err := extractJobTemplateTemplateVPCAccessFields(r, vVPCAccess); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVPCAccess) {
+	if !dcl.IsEmptyValueIndirect(vVPCAccess) {
 		o.VPCAccess = vVPCAccess
 	}
 	return nil
@@ -8208,7 +8208,7 @@ func postReadExtractJobTemplateTemplateContainersFields(r *Job, o *JobTemplateTe
 	if err := extractJobTemplateTemplateContainersResourcesFields(r, vResources); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResources) {
+	if !dcl.IsEmptyValueIndirect(vResources) {
 		o.Resources = vResources
 	}
 	return nil
@@ -8222,7 +8222,7 @@ func postReadExtractJobTemplateTemplateContainersEnvFields(r *Job, o *JobTemplat
 	if err := extractJobTemplateTemplateContainersEnvValueSourceFields(r, vValueSource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vValueSource) {
+	if !dcl.IsEmptyValueIndirect(vValueSource) {
 		o.ValueSource = vValueSource
 	}
 	return nil
@@ -8236,7 +8236,7 @@ func postReadExtractJobTemplateTemplateContainersEnvValueSourceFields(r *Job, o 
 	if err := extractJobTemplateTemplateContainersEnvValueSourceSecretKeyRefFields(r, vSecretKeyRef); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecretKeyRef) {
+	if !dcl.IsEmptyValueIndirect(vSecretKeyRef) {
 		o.SecretKeyRef = vSecretKeyRef
 	}
 	return nil
@@ -8262,7 +8262,7 @@ func postReadExtractJobTemplateTemplateVolumesFields(r *Job, o *JobTemplateTempl
 	if err := extractJobTemplateTemplateVolumesSecretFields(r, vSecret); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecret) {
+	if !dcl.IsEmptyValueIndirect(vSecret) {
 		o.Secret = vSecret
 	}
 	vCloudSqlInstance := o.CloudSqlInstance
@@ -8273,7 +8273,7 @@ func postReadExtractJobTemplateTemplateVolumesFields(r *Job, o *JobTemplateTempl
 	if err := extractJobTemplateTemplateVolumesCloudSqlInstanceFields(r, vCloudSqlInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCloudSqlInstance) {
+	if !dcl.IsEmptyValueIndirect(vCloudSqlInstance) {
 		o.CloudSqlInstance = vCloudSqlInstance
 	}
 	return nil

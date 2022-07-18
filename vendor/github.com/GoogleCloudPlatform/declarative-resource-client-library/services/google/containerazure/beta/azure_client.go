@@ -53,14 +53,14 @@ func (r *AzureClient) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"tenantId":      dcl.ValueOrEmptyString(nr.TenantId),
-		"applicationId": dcl.ValueOrEmptyString(nr.ApplicationId),
-		"certificate":   dcl.ValueOrEmptyString(nr.Certificate),
-		"uid":           dcl.ValueOrEmptyString(nr.Uid),
-		"createTime":    dcl.ValueOrEmptyString(nr.CreateTime),
-		"project":       dcl.ValueOrEmptyString(nr.Project),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":           dcl.ValueOrEmptyString(nr.Name),
+		"tenant_id":      dcl.ValueOrEmptyString(nr.TenantId),
+		"application_id": dcl.ValueOrEmptyString(nr.ApplicationId),
+		"certificate":    dcl.ValueOrEmptyString(nr.Certificate),
+		"uid":            dcl.ValueOrEmptyString(nr.Uid),
+		"create_time":    dcl.ValueOrEmptyString(nr.CreateTime),
+		"project":        dcl.ValueOrEmptyString(nr.Project),
+		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/azureClients/{{name}}", params), nil
 }

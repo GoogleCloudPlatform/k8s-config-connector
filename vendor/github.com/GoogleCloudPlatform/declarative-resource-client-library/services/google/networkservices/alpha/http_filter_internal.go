@@ -506,7 +506,7 @@ func canonicalizeHttpFilterDesiredState(rawDesired, rawInitial *HttpFilter, opts
 
 func canonicalizeHttpFilterNewState(c *Client, rawNew, rawDesired *HttpFilter) (*HttpFilter, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -514,22 +514,22 @@ func canonicalizeHttpFilterNewState(c *Client, rawNew, rawDesired *HttpFilter) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.FilterName) && dcl.IsNotReturnedByServer(rawDesired.FilterName) {
+	if dcl.IsEmptyValueIndirect(rawNew.FilterName) && dcl.IsEmptyValueIndirect(rawDesired.FilterName) {
 		rawNew.FilterName = rawDesired.FilterName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.FilterName, rawNew.FilterName) {
@@ -537,7 +537,7 @@ func canonicalizeHttpFilterNewState(c *Client, rawNew, rawDesired *HttpFilter) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ConfigTypeUrl) && dcl.IsNotReturnedByServer(rawDesired.ConfigTypeUrl) {
+	if dcl.IsEmptyValueIndirect(rawNew.ConfigTypeUrl) && dcl.IsEmptyValueIndirect(rawDesired.ConfigTypeUrl) {
 		rawNew.ConfigTypeUrl = rawDesired.ConfigTypeUrl
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ConfigTypeUrl, rawNew.ConfigTypeUrl) {
@@ -545,7 +545,7 @@ func canonicalizeHttpFilterNewState(c *Client, rawNew, rawDesired *HttpFilter) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Config) && dcl.IsNotReturnedByServer(rawDesired.Config) {
+	if dcl.IsEmptyValueIndirect(rawNew.Config) && dcl.IsEmptyValueIndirect(rawDesired.Config) {
 		rawNew.Config = rawDesired.Config
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Config, rawNew.Config) {
@@ -553,7 +553,7 @@ func canonicalizeHttpFilterNewState(c *Client, rawNew, rawDesired *HttpFilter) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {

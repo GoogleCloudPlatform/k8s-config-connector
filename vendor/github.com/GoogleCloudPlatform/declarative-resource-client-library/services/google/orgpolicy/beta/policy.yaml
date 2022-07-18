@@ -35,21 +35,18 @@ paths:
     - name: Policy
       required: true
       description: A full instance of a Policy
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Policy
     parameters:
     - name: Policy
       required: true
       description: A full instance of a Policy
-    timeoutSecs: 0
   delete:
     description: The function used to delete a Policy
     parameters:
     - name: Policy
       required: true
       description: A full instance of a Policy
-    timeoutSecs: 0
   deleteAll:
     description: The function used to delete all Policy
     parameters:
@@ -57,7 +54,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
   list:
     description: The function used to list information about many Policy
     parameters:
@@ -65,7 +61,6 @@ paths:
       required: true
       schema:
         type: string
-    timeoutSecs: 0
 components:
   schemas:
     Policy:
@@ -73,6 +68,9 @@ components:
       x-dcl-id: '{{parent}}/policies/{{name}}'
       x-dcl-has-create: true
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - name

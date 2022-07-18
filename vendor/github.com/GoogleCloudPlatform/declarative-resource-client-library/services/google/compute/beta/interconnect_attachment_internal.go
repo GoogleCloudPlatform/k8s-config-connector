@@ -592,7 +592,7 @@ func canonicalizeInterconnectAttachmentDesiredState(rawDesired, rawInitial *Inte
 
 func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *InterconnectAttachment) (*InterconnectAttachment, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -600,7 +600,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -608,12 +608,12 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -621,7 +621,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Interconnect) && dcl.IsNotReturnedByServer(rawDesired.Interconnect) {
+	if dcl.IsEmptyValueIndirect(rawNew.Interconnect) && dcl.IsEmptyValueIndirect(rawDesired.Interconnect) {
 		rawNew.Interconnect = rawDesired.Interconnect
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Interconnect, rawNew.Interconnect) {
@@ -629,7 +629,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Router) && dcl.IsNotReturnedByServer(rawDesired.Router) {
+	if dcl.IsEmptyValueIndirect(rawNew.Router) && dcl.IsEmptyValueIndirect(rawDesired.Router) {
 		rawNew.Router = rawDesired.Router
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Router, rawNew.Router) {
@@ -637,7 +637,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Region) && dcl.IsNotReturnedByServer(rawDesired.Region) {
+	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
 		rawNew.Region = rawDesired.Region
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
@@ -645,23 +645,23 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Mtu) && dcl.IsNotReturnedByServer(rawDesired.Mtu) {
+	if dcl.IsEmptyValueIndirect(rawNew.Mtu) && dcl.IsEmptyValueIndirect(rawDesired.Mtu) {
 		rawNew.Mtu = rawDesired.Mtu
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PrivateInterconnectInfo) && dcl.IsNotReturnedByServer(rawDesired.PrivateInterconnectInfo) {
+	if dcl.IsEmptyValueIndirect(rawNew.PrivateInterconnectInfo) && dcl.IsEmptyValueIndirect(rawDesired.PrivateInterconnectInfo) {
 		rawNew.PrivateInterconnectInfo = rawDesired.PrivateInterconnectInfo
 	} else {
 		rawNew.PrivateInterconnectInfo = canonicalizeNewInterconnectAttachmentPrivateInterconnectInfo(c, rawDesired.PrivateInterconnectInfo, rawNew.PrivateInterconnectInfo)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.OperationalStatus) && dcl.IsNotReturnedByServer(rawDesired.OperationalStatus) {
+	if dcl.IsEmptyValueIndirect(rawNew.OperationalStatus) && dcl.IsEmptyValueIndirect(rawDesired.OperationalStatus) {
 		rawNew.OperationalStatus = rawDesired.OperationalStatus
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CloudRouterIPAddress) && dcl.IsNotReturnedByServer(rawDesired.CloudRouterIPAddress) {
+	if dcl.IsEmptyValueIndirect(rawNew.CloudRouterIPAddress) && dcl.IsEmptyValueIndirect(rawDesired.CloudRouterIPAddress) {
 		rawNew.CloudRouterIPAddress = rawDesired.CloudRouterIPAddress
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CloudRouterIPAddress, rawNew.CloudRouterIPAddress) {
@@ -669,7 +669,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CustomerRouterIPAddress) && dcl.IsNotReturnedByServer(rawDesired.CustomerRouterIPAddress) {
+	if dcl.IsEmptyValueIndirect(rawNew.CustomerRouterIPAddress) && dcl.IsEmptyValueIndirect(rawDesired.CustomerRouterIPAddress) {
 		rawNew.CustomerRouterIPAddress = rawDesired.CustomerRouterIPAddress
 	} else {
 		if dcl.StringCanonicalize(rawDesired.CustomerRouterIPAddress, rawNew.CustomerRouterIPAddress) {
@@ -677,12 +677,12 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PairingKey) && dcl.IsNotReturnedByServer(rawDesired.PairingKey) {
+	if dcl.IsEmptyValueIndirect(rawNew.PairingKey) && dcl.IsEmptyValueIndirect(rawDesired.PairingKey) {
 		rawNew.PairingKey = rawDesired.PairingKey
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PairingKey, rawNew.PairingKey) {
@@ -690,7 +690,7 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AdminEnabled) && dcl.IsNotReturnedByServer(rawDesired.AdminEnabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.AdminEnabled) && dcl.IsEmptyValueIndirect(rawDesired.AdminEnabled) {
 		rawNew.AdminEnabled = rawDesired.AdminEnabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AdminEnabled, rawNew.AdminEnabled) {
@@ -698,17 +698,17 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VlanTag8021q) && dcl.IsNotReturnedByServer(rawDesired.VlanTag8021q) {
+	if dcl.IsEmptyValueIndirect(rawNew.VlanTag8021q) && dcl.IsEmptyValueIndirect(rawDesired.VlanTag8021q) {
 		rawNew.VlanTag8021q = rawDesired.VlanTag8021q
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.EdgeAvailabilityDomain) && dcl.IsNotReturnedByServer(rawDesired.EdgeAvailabilityDomain) {
+	if dcl.IsEmptyValueIndirect(rawNew.EdgeAvailabilityDomain) && dcl.IsEmptyValueIndirect(rawDesired.EdgeAvailabilityDomain) {
 		rawNew.EdgeAvailabilityDomain = rawDesired.EdgeAvailabilityDomain
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CandidateSubnets) && dcl.IsNotReturnedByServer(rawDesired.CandidateSubnets) {
+	if dcl.IsEmptyValueIndirect(rawNew.CandidateSubnets) && dcl.IsEmptyValueIndirect(rawDesired.CandidateSubnets) {
 		rawNew.CandidateSubnets = rawDesired.CandidateSubnets
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.CandidateSubnets, rawNew.CandidateSubnets) {
@@ -716,33 +716,33 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Bandwidth) && dcl.IsNotReturnedByServer(rawDesired.Bandwidth) {
+	if dcl.IsEmptyValueIndirect(rawNew.Bandwidth) && dcl.IsEmptyValueIndirect(rawDesired.Bandwidth) {
 		rawNew.Bandwidth = rawDesired.Bandwidth
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PartnerMetadata) && dcl.IsNotReturnedByServer(rawDesired.PartnerMetadata) {
+	if dcl.IsEmptyValueIndirect(rawNew.PartnerMetadata) && dcl.IsEmptyValueIndirect(rawDesired.PartnerMetadata) {
 		rawNew.PartnerMetadata = rawDesired.PartnerMetadata
 	} else {
 		rawNew.PartnerMetadata = canonicalizeNewInterconnectAttachmentPartnerMetadata(c, rawDesired.PartnerMetadata, rawNew.PartnerMetadata)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PartnerAsn) && dcl.IsNotReturnedByServer(rawDesired.PartnerAsn) {
+	if dcl.IsEmptyValueIndirect(rawNew.PartnerAsn) && dcl.IsEmptyValueIndirect(rawDesired.PartnerAsn) {
 		rawNew.PartnerAsn = rawDesired.PartnerAsn
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Encryption) && dcl.IsNotReturnedByServer(rawDesired.Encryption) {
+	if dcl.IsEmptyValueIndirect(rawNew.Encryption) && dcl.IsEmptyValueIndirect(rawDesired.Encryption) {
 		rawNew.Encryption = rawDesired.Encryption
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IpsecInternalAddresses) && dcl.IsNotReturnedByServer(rawDesired.IpsecInternalAddresses) {
+	if dcl.IsEmptyValueIndirect(rawNew.IpsecInternalAddresses) && dcl.IsEmptyValueIndirect(rawDesired.IpsecInternalAddresses) {
 		rawNew.IpsecInternalAddresses = rawDesired.IpsecInternalAddresses
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.IpsecInternalAddresses, rawNew.IpsecInternalAddresses) {
@@ -750,12 +750,12 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DataplaneVersion) && dcl.IsNotReturnedByServer(rawDesired.DataplaneVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.DataplaneVersion) && dcl.IsEmptyValueIndirect(rawDesired.DataplaneVersion) {
 		rawNew.DataplaneVersion = rawDesired.DataplaneVersion
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SatisfiesPzs) && dcl.IsNotReturnedByServer(rawDesired.SatisfiesPzs) {
+	if dcl.IsEmptyValueIndirect(rawNew.SatisfiesPzs) && dcl.IsEmptyValueIndirect(rawDesired.SatisfiesPzs) {
 		rawNew.SatisfiesPzs = rawDesired.SatisfiesPzs
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.SatisfiesPzs, rawNew.SatisfiesPzs) {
@@ -763,12 +763,12 @@ func canonicalizeInterconnectAttachmentNewState(c *Client, rawNew, rawDesired *I
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LabelFingerprint) && dcl.IsNotReturnedByServer(rawDesired.LabelFingerprint) {
+	if dcl.IsEmptyValueIndirect(rawNew.LabelFingerprint) && dcl.IsEmptyValueIndirect(rawDesired.LabelFingerprint) {
 		rawNew.LabelFingerprint = rawDesired.LabelFingerprint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.LabelFingerprint, rawNew.LabelFingerprint) {
@@ -833,7 +833,7 @@ func canonicalizeNewInterconnectAttachmentPrivateInterconnectInfo(c *Client, des
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InterconnectAttachmentPrivateInterconnectInfo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -954,7 +954,7 @@ func canonicalizeNewInterconnectAttachmentPartnerMetadata(c *Client, des, nw *In
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InterconnectAttachmentPartnerMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2136,7 +2136,7 @@ func extractInterconnectAttachmentFields(r *InterconnectAttachment) error {
 	if err := extractInterconnectAttachmentPrivateInterconnectInfoFields(r, vPrivateInterconnectInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrivateInterconnectInfo) {
+	if !dcl.IsEmptyValueIndirect(vPrivateInterconnectInfo) {
 		r.PrivateInterconnectInfo = vPrivateInterconnectInfo
 	}
 	vPartnerMetadata := r.PartnerMetadata
@@ -2147,7 +2147,7 @@ func extractInterconnectAttachmentFields(r *InterconnectAttachment) error {
 	if err := extractInterconnectAttachmentPartnerMetadataFields(r, vPartnerMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPartnerMetadata) {
+	if !dcl.IsEmptyValueIndirect(vPartnerMetadata) {
 		r.PartnerMetadata = vPartnerMetadata
 	}
 	return nil
@@ -2168,7 +2168,7 @@ func postReadExtractInterconnectAttachmentFields(r *InterconnectAttachment) erro
 	if err := postReadExtractInterconnectAttachmentPrivateInterconnectInfoFields(r, vPrivateInterconnectInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPrivateInterconnectInfo) {
+	if !dcl.IsEmptyValueIndirect(vPrivateInterconnectInfo) {
 		r.PrivateInterconnectInfo = vPrivateInterconnectInfo
 	}
 	vPartnerMetadata := r.PartnerMetadata
@@ -2179,7 +2179,7 @@ func postReadExtractInterconnectAttachmentFields(r *InterconnectAttachment) erro
 	if err := postReadExtractInterconnectAttachmentPartnerMetadataFields(r, vPartnerMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPartnerMetadata) {
+	if !dcl.IsEmptyValueIndirect(vPartnerMetadata) {
 		r.PartnerMetadata = vPartnerMetadata
 	}
 	return nil

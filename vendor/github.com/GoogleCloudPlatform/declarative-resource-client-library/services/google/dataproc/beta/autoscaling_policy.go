@@ -264,12 +264,12 @@ func (r *AutoscalingPolicy) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                  dcl.ValueOrEmptyString(nr.Name),
-		"basicAlgorithm":        dcl.ValueOrEmptyString(nr.BasicAlgorithm),
-		"workerConfig":          dcl.ValueOrEmptyString(nr.WorkerConfig),
-		"secondaryWorkerConfig": dcl.ValueOrEmptyString(nr.SecondaryWorkerConfig),
-		"project":               dcl.ValueOrEmptyString(nr.Project),
-		"location":              dcl.ValueOrEmptyString(nr.Location),
+		"name":                    dcl.ValueOrEmptyString(nr.Name),
+		"basic_algorithm":         dcl.ValueOrEmptyString(nr.BasicAlgorithm),
+		"worker_config":           dcl.ValueOrEmptyString(nr.WorkerConfig),
+		"secondary_worker_config": dcl.ValueOrEmptyString(nr.SecondaryWorkerConfig),
+		"project":                 dcl.ValueOrEmptyString(nr.Project),
+		"location":                dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{name}}", params), nil
 }

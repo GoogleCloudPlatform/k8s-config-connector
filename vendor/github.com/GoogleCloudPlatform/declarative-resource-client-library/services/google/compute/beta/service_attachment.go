@@ -267,22 +267,22 @@ func (r *ServiceAttachment) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"id":                     dcl.ValueOrEmptyString(nr.Id),
-		"name":                   dcl.ValueOrEmptyString(nr.Name),
-		"description":            dcl.ValueOrEmptyString(nr.Description),
-		"selfLink":               dcl.ValueOrEmptyString(nr.SelfLink),
-		"region":                 dcl.ValueOrEmptyString(nr.Region),
-		"targetService":          dcl.ValueOrEmptyString(nr.TargetService),
-		"connectionPreference":   dcl.ValueOrEmptyString(nr.ConnectionPreference),
-		"connectedEndpoints":     dcl.ValueOrEmptyString(nr.ConnectedEndpoints),
-		"natSubnets":             dcl.ValueOrEmptyString(nr.NatSubnets),
-		"enableProxyProtocol":    dcl.ValueOrEmptyString(nr.EnableProxyProtocol),
-		"consumerRejectLists":    dcl.ValueOrEmptyString(nr.ConsumerRejectLists),
-		"consumerAcceptLists":    dcl.ValueOrEmptyString(nr.ConsumerAcceptLists),
-		"pscServiceAttachmentId": dcl.ValueOrEmptyString(nr.PscServiceAttachmentId),
-		"fingerprint":            dcl.ValueOrEmptyString(nr.Fingerprint),
-		"project":                dcl.ValueOrEmptyString(nr.Project),
-		"location":               dcl.ValueOrEmptyString(nr.Location),
+		"id":                        dcl.ValueOrEmptyString(nr.Id),
+		"name":                      dcl.ValueOrEmptyString(nr.Name),
+		"description":               dcl.ValueOrEmptyString(nr.Description),
+		"self_link":                 dcl.ValueOrEmptyString(nr.SelfLink),
+		"region":                    dcl.ValueOrEmptyString(nr.Region),
+		"target_service":            dcl.ValueOrEmptyString(nr.TargetService),
+		"connection_preference":     dcl.ValueOrEmptyString(nr.ConnectionPreference),
+		"connected_endpoints":       dcl.ValueOrEmptyString(nr.ConnectedEndpoints),
+		"nat_subnets":               dcl.ValueOrEmptyString(nr.NatSubnets),
+		"enable_proxy_protocol":     dcl.ValueOrEmptyString(nr.EnableProxyProtocol),
+		"consumer_reject_lists":     dcl.ValueOrEmptyString(nr.ConsumerRejectLists),
+		"consumer_accept_lists":     dcl.ValueOrEmptyString(nr.ConsumerAcceptLists),
+		"psc_service_attachment_id": dcl.ValueOrEmptyString(nr.PscServiceAttachmentId),
+		"fingerprint":               dcl.ValueOrEmptyString(nr.Fingerprint),
+		"project":                   dcl.ValueOrEmptyString(nr.Project),
+		"location":                  dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/regions/{{location}}/serviceAttachments/{{name}}", params), nil
 }

@@ -534,12 +534,12 @@ func canonicalizeWorkloadDesiredState(rawDesired, rawInitial *Workload, opts ...
 
 func canonicalizeWorkloadNewState(c *Client, rawNew, rawDesired *Workload) (*Workload, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -547,29 +547,29 @@ func canonicalizeWorkloadNewState(c *Client, rawNew, rawDesired *Workload) (*Wor
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Resources) && dcl.IsNotReturnedByServer(rawDesired.Resources) {
+	if dcl.IsEmptyValueIndirect(rawNew.Resources) && dcl.IsEmptyValueIndirect(rawDesired.Resources) {
 		rawNew.Resources = rawDesired.Resources
 	} else {
 		rawNew.Resources = canonicalizeNewWorkloadResourcesSlice(c, rawDesired.Resources, rawNew.Resources)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ComplianceRegime) && dcl.IsNotReturnedByServer(rawDesired.ComplianceRegime) {
+	if dcl.IsEmptyValueIndirect(rawNew.ComplianceRegime) && dcl.IsEmptyValueIndirect(rawDesired.ComplianceRegime) {
 		rawNew.ComplianceRegime = rawDesired.ComplianceRegime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BillingAccount) && dcl.IsNotReturnedByServer(rawDesired.BillingAccount) {
+	if dcl.IsEmptyValueIndirect(rawNew.BillingAccount) && dcl.IsEmptyValueIndirect(rawDesired.BillingAccount) {
 		rawNew.BillingAccount = rawDesired.BillingAccount
 	} else {
 		rawNew.BillingAccount = rawDesired.BillingAccount
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
@@ -652,7 +652,7 @@ func canonicalizeNewWorkloadResources(c *Client, des, nw *WorkloadResources) *Wo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkloadResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -769,7 +769,7 @@ func canonicalizeNewWorkloadKmsSettings(c *Client, des, nw *WorkloadKmsSettings)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkloadKmsSettings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -890,7 +890,7 @@ func canonicalizeNewWorkloadResourceSettings(c *Client, des, nw *WorkloadResourc
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkloadResourceSettings while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1902,7 +1902,7 @@ func extractWorkloadFields(r *Workload) error {
 	if err := extractWorkloadKmsSettingsFields(r, vKmsSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsSettings) {
+	if !dcl.IsEmptyValueIndirect(vKmsSettings) {
 		r.KmsSettings = vKmsSettings
 	}
 	return nil
@@ -1926,7 +1926,7 @@ func postReadExtractWorkloadFields(r *Workload) error {
 	if err := postReadExtractWorkloadKmsSettingsFields(r, vKmsSettings); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKmsSettings) {
+	if !dcl.IsEmptyValueIndirect(vKmsSettings) {
 		r.KmsSettings = vKmsSettings
 	}
 	return nil

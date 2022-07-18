@@ -23,14 +23,12 @@ paths:
     - name: Config
       required: true
       description: A full instance of a Config
-    timeoutSecs: 0
   apply:
     description: The function used to apply information about a Config
     parameters:
     - name: Config
       required: true
       description: A full instance of a Config
-    timeoutSecs: 0
 components:
   schemas:
     Config:
@@ -40,6 +38,9 @@ components:
       x-dcl-parent-container: project
       x-dcl-has-create: false
       x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
       type: object
       required:
       - project

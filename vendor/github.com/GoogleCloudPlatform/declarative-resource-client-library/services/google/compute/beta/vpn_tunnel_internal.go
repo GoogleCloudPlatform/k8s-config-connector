@@ -528,17 +528,17 @@ func canonicalizeVpnTunnelDesiredState(rawDesired, rawInitial *VpnTunnel, opts .
 
 func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*VpnTunnel, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Id) && dcl.IsNotReturnedByServer(rawDesired.Id) {
+	if dcl.IsEmptyValueIndirect(rawNew.Id) && dcl.IsEmptyValueIndirect(rawDesired.Id) {
 		rawNew.Id = rawDesired.Id
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -546,7 +546,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -554,7 +554,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Region) && dcl.IsNotReturnedByServer(rawDesired.Region) {
+	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
 		rawNew.Region = rawDesired.Region
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
@@ -562,22 +562,22 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.TargetVpnGateway) && dcl.IsNotReturnedByServer(rawDesired.TargetVpnGateway) {
+	if dcl.IsEmptyValueIndirect(rawNew.TargetVpnGateway) && dcl.IsEmptyValueIndirect(rawDesired.TargetVpnGateway) {
 		rawNew.TargetVpnGateway = rawDesired.TargetVpnGateway
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VpnGateway) && dcl.IsNotReturnedByServer(rawDesired.VpnGateway) {
+	if dcl.IsEmptyValueIndirect(rawNew.VpnGateway) && dcl.IsEmptyValueIndirect(rawDesired.VpnGateway) {
 		rawNew.VpnGateway = rawDesired.VpnGateway
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.VpnGatewayInterface) && dcl.IsNotReturnedByServer(rawDesired.VpnGatewayInterface) {
+	if dcl.IsEmptyValueIndirect(rawNew.VpnGatewayInterface) && dcl.IsEmptyValueIndirect(rawDesired.VpnGatewayInterface) {
 		rawNew.VpnGatewayInterface = rawDesired.VpnGatewayInterface
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PeerExternalGateway) && dcl.IsNotReturnedByServer(rawDesired.PeerExternalGateway) {
+	if dcl.IsEmptyValueIndirect(rawNew.PeerExternalGateway) && dcl.IsEmptyValueIndirect(rawDesired.PeerExternalGateway) {
 		rawNew.PeerExternalGateway = rawDesired.PeerExternalGateway
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PeerExternalGateway, rawNew.PeerExternalGateway) {
@@ -585,12 +585,12 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PeerExternalGatewayInterface) && dcl.IsNotReturnedByServer(rawDesired.PeerExternalGatewayInterface) {
+	if dcl.IsEmptyValueIndirect(rawNew.PeerExternalGatewayInterface) && dcl.IsEmptyValueIndirect(rawDesired.PeerExternalGatewayInterface) {
 		rawNew.PeerExternalGatewayInterface = rawDesired.PeerExternalGatewayInterface
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PeerGcpGateway) && dcl.IsNotReturnedByServer(rawDesired.PeerGcpGateway) {
+	if dcl.IsEmptyValueIndirect(rawNew.PeerGcpGateway) && dcl.IsEmptyValueIndirect(rawDesired.PeerGcpGateway) {
 		rawNew.PeerGcpGateway = rawDesired.PeerGcpGateway
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PeerGcpGateway, rawNew.PeerGcpGateway) {
@@ -598,7 +598,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Router) && dcl.IsNotReturnedByServer(rawDesired.Router) {
+	if dcl.IsEmptyValueIndirect(rawNew.Router) && dcl.IsEmptyValueIndirect(rawDesired.Router) {
 		rawNew.Router = rawDesired.Router
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Router, rawNew.Router) {
@@ -606,7 +606,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PeerIP) && dcl.IsNotReturnedByServer(rawDesired.PeerIP) {
+	if dcl.IsEmptyValueIndirect(rawNew.PeerIP) && dcl.IsEmptyValueIndirect(rawDesired.PeerIP) {
 		rawNew.PeerIP = rawDesired.PeerIP
 	} else {
 		if dcl.StringCanonicalize(rawDesired.PeerIP, rawNew.PeerIP) {
@@ -616,7 +616,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 
 	rawNew.SharedSecret = rawDesired.SharedSecret
 
-	if dcl.IsNotReturnedByServer(rawNew.SharedSecretHash) && dcl.IsNotReturnedByServer(rawDesired.SharedSecretHash) {
+	if dcl.IsEmptyValueIndirect(rawNew.SharedSecretHash) && dcl.IsEmptyValueIndirect(rawDesired.SharedSecretHash) {
 		rawNew.SharedSecretHash = rawDesired.SharedSecretHash
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SharedSecretHash, rawNew.SharedSecretHash) {
@@ -624,12 +624,12 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Status) && dcl.IsNotReturnedByServer(rawDesired.Status) {
+	if dcl.IsEmptyValueIndirect(rawNew.Status) && dcl.IsEmptyValueIndirect(rawDesired.Status) {
 		rawNew.Status = rawDesired.Status
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -637,12 +637,12 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.IkeVersion) && dcl.IsNotReturnedByServer(rawDesired.IkeVersion) {
+	if dcl.IsEmptyValueIndirect(rawNew.IkeVersion) && dcl.IsEmptyValueIndirect(rawDesired.IkeVersion) {
 		rawNew.IkeVersion = rawDesired.IkeVersion
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DetailedStatus) && dcl.IsNotReturnedByServer(rawDesired.DetailedStatus) {
+	if dcl.IsEmptyValueIndirect(rawNew.DetailedStatus) && dcl.IsEmptyValueIndirect(rawDesired.DetailedStatus) {
 		rawNew.DetailedStatus = rawDesired.DetailedStatus
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DetailedStatus, rawNew.DetailedStatus) {
@@ -650,7 +650,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LocalTrafficSelector) && dcl.IsNotReturnedByServer(rawDesired.LocalTrafficSelector) {
+	if dcl.IsEmptyValueIndirect(rawNew.LocalTrafficSelector) && dcl.IsEmptyValueIndirect(rawDesired.LocalTrafficSelector) {
 		rawNew.LocalTrafficSelector = rawDesired.LocalTrafficSelector
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.LocalTrafficSelector, rawNew.LocalTrafficSelector) {
@@ -658,7 +658,7 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RemoteTrafficSelector) && dcl.IsNotReturnedByServer(rawDesired.RemoteTrafficSelector) {
+	if dcl.IsEmptyValueIndirect(rawNew.RemoteTrafficSelector) && dcl.IsEmptyValueIndirect(rawDesired.RemoteTrafficSelector) {
 		rawNew.RemoteTrafficSelector = rawDesired.RemoteTrafficSelector
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.RemoteTrafficSelector, rawNew.RemoteTrafficSelector) {

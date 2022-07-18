@@ -1842,15 +1842,15 @@ func (r *Cluster) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":       dcl.ValueOrEmptyString(nr.Project),
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"config":        dcl.ValueOrEmptyString(nr.Config),
-		"labels":        dcl.ValueOrEmptyString(nr.Labels),
-		"status":        dcl.ValueOrEmptyString(nr.Status),
-		"statusHistory": dcl.ValueOrEmptyString(nr.StatusHistory),
-		"clusterUuid":   dcl.ValueOrEmptyString(nr.ClusterUuid),
-		"metrics":       dcl.ValueOrEmptyString(nr.Metrics),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"project":        dcl.ValueOrEmptyString(nr.Project),
+		"name":           dcl.ValueOrEmptyString(nr.Name),
+		"config":         dcl.ValueOrEmptyString(nr.Config),
+		"labels":         dcl.ValueOrEmptyString(nr.Labels),
+		"status":         dcl.ValueOrEmptyString(nr.Status),
+		"status_history": dcl.ValueOrEmptyString(nr.StatusHistory),
+		"cluster_uuid":   dcl.ValueOrEmptyString(nr.ClusterUuid),
+		"metrics":        dcl.ValueOrEmptyString(nr.Metrics),
+		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/regions/{{location}}/clusters/{{name}}", params), nil
 }

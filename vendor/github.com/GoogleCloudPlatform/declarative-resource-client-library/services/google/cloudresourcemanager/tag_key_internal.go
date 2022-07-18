@@ -429,12 +429,12 @@ func canonicalizeTagKeyDesiredState(rawDesired, rawInitial *TagKey, opts ...dcl.
 
 func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Parent) && dcl.IsNotReturnedByServer(rawDesired.Parent) {
+	if dcl.IsEmptyValueIndirect(rawNew.Parent) && dcl.IsEmptyValueIndirect(rawDesired.Parent) {
 		rawNew.Parent = rawDesired.Parent
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Parent, rawNew.Parent) {
@@ -442,7 +442,7 @@ func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ShortName) && dcl.IsNotReturnedByServer(rawDesired.ShortName) {
+	if dcl.IsEmptyValueIndirect(rawNew.ShortName) && dcl.IsEmptyValueIndirect(rawDesired.ShortName) {
 		rawNew.ShortName = rawDesired.ShortName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ShortName, rawNew.ShortName) {
@@ -450,7 +450,7 @@ func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.NamespacedName) && dcl.IsNotReturnedByServer(rawDesired.NamespacedName) {
+	if dcl.IsEmptyValueIndirect(rawNew.NamespacedName) && dcl.IsEmptyValueIndirect(rawDesired.NamespacedName) {
 		rawNew.NamespacedName = rawDesired.NamespacedName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.NamespacedName, rawNew.NamespacedName) {
@@ -458,7 +458,7 @@ func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -466,17 +466,17 @@ func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -484,12 +484,12 @@ func canonicalizeTagKeyNewState(c *Client, rawNew, rawDesired *TagKey) (*TagKey,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Purpose) && dcl.IsNotReturnedByServer(rawDesired.Purpose) {
+	if dcl.IsEmptyValueIndirect(rawNew.Purpose) && dcl.IsEmptyValueIndirect(rawDesired.Purpose) {
 		rawNew.Purpose = rawDesired.Purpose
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PurposeData) && dcl.IsNotReturnedByServer(rawDesired.PurposeData) {
+	if dcl.IsEmptyValueIndirect(rawNew.PurposeData) && dcl.IsEmptyValueIndirect(rawDesired.PurposeData) {
 		rawNew.PurposeData = rawDesired.PurposeData
 	} else {
 	}

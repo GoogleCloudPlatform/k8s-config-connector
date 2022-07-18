@@ -500,7 +500,7 @@ func canonicalizeAutoscalingPolicyDesiredState(rawDesired, rawInitial *Autoscali
 
 func canonicalizeAutoscalingPolicyNewState(c *Client, rawNew, rawDesired *AutoscalingPolicy) (*AutoscalingPolicy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -508,19 +508,19 @@ func canonicalizeAutoscalingPolicyNewState(c *Client, rawNew, rawDesired *Autosc
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BasicAlgorithm) && dcl.IsNotReturnedByServer(rawDesired.BasicAlgorithm) {
+	if dcl.IsEmptyValueIndirect(rawNew.BasicAlgorithm) && dcl.IsEmptyValueIndirect(rawDesired.BasicAlgorithm) {
 		rawNew.BasicAlgorithm = rawDesired.BasicAlgorithm
 	} else {
 		rawNew.BasicAlgorithm = canonicalizeNewAutoscalingPolicyBasicAlgorithm(c, rawDesired.BasicAlgorithm, rawNew.BasicAlgorithm)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.WorkerConfig) && dcl.IsNotReturnedByServer(rawDesired.WorkerConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.WorkerConfig) && dcl.IsEmptyValueIndirect(rawDesired.WorkerConfig) {
 		rawNew.WorkerConfig = rawDesired.WorkerConfig
 	} else {
 		rawNew.WorkerConfig = canonicalizeNewAutoscalingPolicyWorkerConfig(c, rawDesired.WorkerConfig, rawNew.WorkerConfig)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.SecondaryWorkerConfig) && dcl.IsNotReturnedByServer(rawDesired.SecondaryWorkerConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.SecondaryWorkerConfig) && dcl.IsEmptyValueIndirect(rawDesired.SecondaryWorkerConfig) {
 		rawNew.SecondaryWorkerConfig = rawDesired.SecondaryWorkerConfig
 	} else {
 		rawNew.SecondaryWorkerConfig = canonicalizeNewAutoscalingPolicySecondaryWorkerConfig(c, rawDesired.SecondaryWorkerConfig, rawNew.SecondaryWorkerConfig)
@@ -592,7 +592,7 @@ func canonicalizeNewAutoscalingPolicyBasicAlgorithm(c *Client, des, nw *Autoscal
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AutoscalingPolicyBasicAlgorithm while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -732,7 +732,7 @@ func canonicalizeNewAutoscalingPolicyBasicAlgorithmYarnConfig(c *Client, des, nw
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AutoscalingPolicyBasicAlgorithmYarnConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -860,7 +860,7 @@ func canonicalizeNewAutoscalingPolicyWorkerConfig(c *Client, des, nw *Autoscalin
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AutoscalingPolicyWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -984,7 +984,7 @@ func canonicalizeNewAutoscalingPolicySecondaryWorkerConfig(c *Client, des, nw *A
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for AutoscalingPolicySecondaryWorkerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1987,7 +1987,7 @@ func extractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := extractAutoscalingPolicyBasicAlgorithmFields(r, vBasicAlgorithm); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicAlgorithm) {
+	if !dcl.IsEmptyValueIndirect(vBasicAlgorithm) {
 		r.BasicAlgorithm = vBasicAlgorithm
 	}
 	vWorkerConfig := r.WorkerConfig
@@ -1998,7 +1998,7 @@ func extractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := extractAutoscalingPolicyWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		r.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := r.SecondaryWorkerConfig
@@ -2009,7 +2009,7 @@ func extractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := extractAutoscalingPolicySecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		r.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	return nil
@@ -2023,7 +2023,7 @@ func extractAutoscalingPolicyBasicAlgorithmFields(r *AutoscalingPolicy, o *Autos
 	if err := extractAutoscalingPolicyBasicAlgorithmYarnConfigFields(r, vYarnConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYarnConfig) {
+	if !dcl.IsEmptyValueIndirect(vYarnConfig) {
 		o.YarnConfig = vYarnConfig
 	}
 	return nil
@@ -2047,7 +2047,7 @@ func postReadExtractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := postReadExtractAutoscalingPolicyBasicAlgorithmFields(r, vBasicAlgorithm); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBasicAlgorithm) {
+	if !dcl.IsEmptyValueIndirect(vBasicAlgorithm) {
 		r.BasicAlgorithm = vBasicAlgorithm
 	}
 	vWorkerConfig := r.WorkerConfig
@@ -2058,7 +2058,7 @@ func postReadExtractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := postReadExtractAutoscalingPolicyWorkerConfigFields(r, vWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkerConfig) {
 		r.WorkerConfig = vWorkerConfig
 	}
 	vSecondaryWorkerConfig := r.SecondaryWorkerConfig
@@ -2069,7 +2069,7 @@ func postReadExtractAutoscalingPolicyFields(r *AutoscalingPolicy) error {
 	if err := postReadExtractAutoscalingPolicySecondaryWorkerConfigFields(r, vSecondaryWorkerConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSecondaryWorkerConfig) {
+	if !dcl.IsEmptyValueIndirect(vSecondaryWorkerConfig) {
 		r.SecondaryWorkerConfig = vSecondaryWorkerConfig
 	}
 	return nil
@@ -2083,7 +2083,7 @@ func postReadExtractAutoscalingPolicyBasicAlgorithmFields(r *AutoscalingPolicy, 
 	if err := extractAutoscalingPolicyBasicAlgorithmYarnConfigFields(r, vYarnConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vYarnConfig) {
+	if !dcl.IsEmptyValueIndirect(vYarnConfig) {
 		o.YarnConfig = vYarnConfig
 	}
 	return nil

@@ -427,7 +427,7 @@ func canonicalizeMetricDescriptorDesiredState(rawDesired, rawInitial *MetricDesc
 
 func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricDescriptor) (*MetricDescriptor, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -435,7 +435,7 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Type) && dcl.IsNotReturnedByServer(rawDesired.Type) {
+	if dcl.IsEmptyValueIndirect(rawNew.Type) && dcl.IsEmptyValueIndirect(rawDesired.Type) {
 		rawNew.Type = rawDesired.Type
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Type, rawNew.Type) {
@@ -443,18 +443,18 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 		rawNew.Labels = canonicalizeNewMetricDescriptorLabelsSet(c, rawDesired.Labels, rawNew.Labels)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MetricKind) && dcl.IsNotReturnedByServer(rawDesired.MetricKind) {
+	if dcl.IsEmptyValueIndirect(rawNew.MetricKind) && dcl.IsEmptyValueIndirect(rawDesired.MetricKind) {
 		rawNew.MetricKind = rawDesired.MetricKind
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ValueType) && dcl.IsNotReturnedByServer(rawDesired.ValueType) {
+	if dcl.IsEmptyValueIndirect(rawNew.ValueType) && dcl.IsEmptyValueIndirect(rawDesired.ValueType) {
 		rawNew.ValueType = rawDesired.ValueType
 	} else {
 		if canonicalizeMetricDescriptorValueType(rawDesired.ValueType, rawNew.ValueType) {
@@ -462,7 +462,7 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Unit) && dcl.IsNotReturnedByServer(rawDesired.Unit) {
+	if dcl.IsEmptyValueIndirect(rawNew.Unit) && dcl.IsEmptyValueIndirect(rawDesired.Unit) {
 		rawNew.Unit = rawDesired.Unit
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Unit, rawNew.Unit) {
@@ -470,7 +470,7 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -478,7 +478,7 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -490,7 +490,7 @@ func canonicalizeMetricDescriptorNewState(c *Client, rawNew, rawDesired *MetricD
 
 	rawNew.LaunchStage = rawDesired.LaunchStage
 
-	if dcl.IsNotReturnedByServer(rawNew.MonitoredResourceTypes) && dcl.IsNotReturnedByServer(rawDesired.MonitoredResourceTypes) {
+	if dcl.IsEmptyValueIndirect(rawNew.MonitoredResourceTypes) && dcl.IsEmptyValueIndirect(rawDesired.MonitoredResourceTypes) {
 		rawNew.MonitoredResourceTypes = rawDesired.MonitoredResourceTypes
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.MonitoredResourceTypes, rawNew.MonitoredResourceTypes) {
@@ -571,7 +571,7 @@ func canonicalizeNewMetricDescriptorLabels(c *Client, des, nw *MetricDescriptorL
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MetricDescriptorLabels while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -703,7 +703,7 @@ func canonicalizeNewMetricDescriptorMetadata(c *Client, des, nw *MetricDescripto
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MetricDescriptorMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1662,7 +1662,7 @@ func extractMetricDescriptorFields(r *MetricDescriptor) error {
 	if err := extractMetricDescriptorMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		r.Metadata = vMetadata
 	}
 	return nil
@@ -1683,7 +1683,7 @@ func postReadExtractMetricDescriptorFields(r *MetricDescriptor) error {
 	if err := postReadExtractMetricDescriptorMetadataFields(r, vMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMetadata) {
+	if !dcl.IsEmptyValueIndirect(vMetadata) {
 		r.Metadata = vMetadata
 	}
 	return nil

@@ -408,7 +408,7 @@ func canonicalizeReleaseDesiredState(rawDesired, rawInitial *Release, opts ...dc
 
 func canonicalizeReleaseNewState(c *Client, rawNew, rawDesired *Release) (*Release, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -416,7 +416,7 @@ func canonicalizeReleaseNewState(c *Client, rawNew, rawDesired *Release) (*Relea
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.RulesetName) && dcl.IsNotReturnedByServer(rawDesired.RulesetName) {
+	if dcl.IsEmptyValueIndirect(rawNew.RulesetName) && dcl.IsEmptyValueIndirect(rawDesired.RulesetName) {
 		rawNew.RulesetName = rawDesired.RulesetName
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.RulesetName, rawNew.RulesetName) {
@@ -424,17 +424,17 @@ func canonicalizeReleaseNewState(c *Client, rawNew, rawDesired *Release) (*Relea
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {

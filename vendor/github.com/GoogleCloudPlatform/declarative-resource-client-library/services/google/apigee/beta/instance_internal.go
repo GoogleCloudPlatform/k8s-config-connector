@@ -393,7 +393,7 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 
 func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Instance, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
@@ -401,7 +401,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Location) && dcl.IsNotReturnedByServer(rawDesired.Location) {
+	if dcl.IsEmptyValueIndirect(rawNew.Location) && dcl.IsEmptyValueIndirect(rawDesired.Location) {
 		rawNew.Location = rawDesired.Location
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Location, rawNew.Location) {
@@ -409,12 +409,12 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.PeeringCidrRange) && dcl.IsNotReturnedByServer(rawDesired.PeeringCidrRange) {
+	if dcl.IsEmptyValueIndirect(rawNew.PeeringCidrRange) && dcl.IsEmptyValueIndirect(rawDesired.PeeringCidrRange) {
 		rawNew.PeeringCidrRange = rawDesired.PeeringCidrRange
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Host) && dcl.IsNotReturnedByServer(rawDesired.Host) {
+	if dcl.IsEmptyValueIndirect(rawNew.Host) && dcl.IsEmptyValueIndirect(rawDesired.Host) {
 		rawNew.Host = rawDesired.Host
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Host, rawNew.Host) {
@@ -422,7 +422,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Port) && dcl.IsNotReturnedByServer(rawDesired.Port) {
+	if dcl.IsEmptyValueIndirect(rawNew.Port) && dcl.IsEmptyValueIndirect(rawDesired.Port) {
 		rawNew.Port = rawDesired.Port
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Port, rawNew.Port) {
@@ -430,7 +430,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -438,7 +438,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -446,22 +446,22 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreatedAt) && dcl.IsNotReturnedByServer(rawDesired.CreatedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreatedAt) && dcl.IsEmptyValueIndirect(rawDesired.CreatedAt) {
 		rawNew.CreatedAt = rawDesired.CreatedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastModifiedAt) && dcl.IsNotReturnedByServer(rawDesired.LastModifiedAt) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastModifiedAt) && dcl.IsEmptyValueIndirect(rawDesired.LastModifiedAt) {
 		rawNew.LastModifiedAt = rawDesired.LastModifiedAt
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DiskEncryptionKeyName) && dcl.IsNotReturnedByServer(rawDesired.DiskEncryptionKeyName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DiskEncryptionKeyName) && dcl.IsEmptyValueIndirect(rawDesired.DiskEncryptionKeyName) {
 		rawNew.DiskEncryptionKeyName = rawDesired.DiskEncryptionKeyName
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}

@@ -298,18 +298,18 @@ func (r *MetricDescriptor) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"selfLink":               dcl.ValueOrEmptyString(nr.SelfLink),
-		"type":                   dcl.ValueOrEmptyString(nr.Type),
-		"labels":                 dcl.ValueOrEmptyString(nr.Labels),
-		"metricKind":             dcl.ValueOrEmptyString(nr.MetricKind),
-		"valueType":              dcl.ValueOrEmptyString(nr.ValueType),
-		"unit":                   dcl.ValueOrEmptyString(nr.Unit),
-		"description":            dcl.ValueOrEmptyString(nr.Description),
-		"displayName":            dcl.ValueOrEmptyString(nr.DisplayName),
-		"metadata":               dcl.ValueOrEmptyString(nr.Metadata),
-		"launchStage":            dcl.ValueOrEmptyString(nr.LaunchStage),
-		"monitoredResourceTypes": dcl.ValueOrEmptyString(nr.MonitoredResourceTypes),
-		"project":                dcl.ValueOrEmptyString(nr.Project),
+		"self_link":                dcl.ValueOrEmptyString(nr.SelfLink),
+		"type":                     dcl.ValueOrEmptyString(nr.Type),
+		"labels":                   dcl.ValueOrEmptyString(nr.Labels),
+		"metric_kind":              dcl.ValueOrEmptyString(nr.MetricKind),
+		"value_type":               dcl.ValueOrEmptyString(nr.ValueType),
+		"unit":                     dcl.ValueOrEmptyString(nr.Unit),
+		"description":              dcl.ValueOrEmptyString(nr.Description),
+		"display_name":             dcl.ValueOrEmptyString(nr.DisplayName),
+		"metadata":                 dcl.ValueOrEmptyString(nr.Metadata),
+		"launch_stage":             dcl.ValueOrEmptyString(nr.LaunchStage),
+		"monitored_resource_types": dcl.ValueOrEmptyString(nr.MonitoredResourceTypes),
+		"project":                  dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/metricDescriptors/{{type}}", params), nil
 }

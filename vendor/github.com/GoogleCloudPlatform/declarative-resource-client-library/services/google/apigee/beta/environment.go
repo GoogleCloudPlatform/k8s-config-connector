@@ -81,14 +81,14 @@ func (r *Environment) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"createdAt":          dcl.ValueOrEmptyString(nr.CreatedAt),
-		"lastModifiedAt":     dcl.ValueOrEmptyString(nr.LastModifiedAt),
-		"properties":         dcl.ValueOrEmptyString(nr.Properties),
-		"displayName":        dcl.ValueOrEmptyString(nr.DisplayName),
-		"state":              dcl.ValueOrEmptyString(nr.State),
-		"apigeeOrganization": dcl.ValueOrEmptyString(nr.ApigeeOrganization),
+		"name":                dcl.ValueOrEmptyString(nr.Name),
+		"description":         dcl.ValueOrEmptyString(nr.Description),
+		"created_at":          dcl.ValueOrEmptyString(nr.CreatedAt),
+		"last_modified_at":    dcl.ValueOrEmptyString(nr.LastModifiedAt),
+		"properties":          dcl.ValueOrEmptyString(nr.Properties),
+		"display_name":        dcl.ValueOrEmptyString(nr.DisplayName),
+		"state":               dcl.ValueOrEmptyString(nr.State),
+		"apigee_organization": dcl.ValueOrEmptyString(nr.ApigeeOrganization),
 	}
 	return dcl.Nprintf("organizations/{{apigee_organization}}/environments/{{name}}", params), nil
 }

@@ -496,37 +496,37 @@ func canonicalizeConfigDesiredState(rawDesired, rawInitial *Config, opts ...dcl.
 
 func canonicalizeConfigNewState(c *Client, rawNew, rawDesired *Config) (*Config, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.SignIn) && dcl.IsNotReturnedByServer(rawDesired.SignIn) {
+	if dcl.IsEmptyValueIndirect(rawNew.SignIn) && dcl.IsEmptyValueIndirect(rawDesired.SignIn) {
 		rawNew.SignIn = rawDesired.SignIn
 	} else {
 		rawNew.SignIn = canonicalizeNewConfigSignIn(c, rawDesired.SignIn, rawNew.SignIn)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Notification) && dcl.IsNotReturnedByServer(rawDesired.Notification) {
+	if dcl.IsEmptyValueIndirect(rawNew.Notification) && dcl.IsEmptyValueIndirect(rawDesired.Notification) {
 		rawNew.Notification = rawDesired.Notification
 	} else {
 		rawNew.Notification = canonicalizeNewConfigNotification(c, rawDesired.Notification, rawNew.Notification)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Quota) && dcl.IsNotReturnedByServer(rawDesired.Quota) {
+	if dcl.IsEmptyValueIndirect(rawNew.Quota) && dcl.IsEmptyValueIndirect(rawDesired.Quota) {
 		rawNew.Quota = rawDesired.Quota
 	} else {
 		rawNew.Quota = canonicalizeNewConfigQuota(c, rawDesired.Quota, rawNew.Quota)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Monitoring) && dcl.IsNotReturnedByServer(rawDesired.Monitoring) {
+	if dcl.IsEmptyValueIndirect(rawNew.Monitoring) && dcl.IsEmptyValueIndirect(rawDesired.Monitoring) {
 		rawNew.Monitoring = rawDesired.Monitoring
 	} else {
 		rawNew.Monitoring = canonicalizeNewConfigMonitoring(c, rawDesired.Monitoring, rawNew.Monitoring)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MultiTenant) && dcl.IsNotReturnedByServer(rawDesired.MultiTenant) {
+	if dcl.IsEmptyValueIndirect(rawNew.MultiTenant) && dcl.IsEmptyValueIndirect(rawDesired.MultiTenant) {
 		rawNew.MultiTenant = rawDesired.MultiTenant
 	} else {
 		rawNew.MultiTenant = canonicalizeNewConfigMultiTenant(c, rawDesired.MultiTenant, rawNew.MultiTenant)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AuthorizedDomains) && dcl.IsNotReturnedByServer(rawDesired.AuthorizedDomains) {
+	if dcl.IsEmptyValueIndirect(rawNew.AuthorizedDomains) && dcl.IsEmptyValueIndirect(rawDesired.AuthorizedDomains) {
 		rawNew.AuthorizedDomains = rawDesired.AuthorizedDomains
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.AuthorizedDomains, rawNew.AuthorizedDomains) {
@@ -534,24 +534,24 @@ func canonicalizeConfigNewState(c *Client, rawNew, rawDesired *Config) (*Config,
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Subtype) && dcl.IsNotReturnedByServer(rawDesired.Subtype) {
+	if dcl.IsEmptyValueIndirect(rawNew.Subtype) && dcl.IsEmptyValueIndirect(rawDesired.Subtype) {
 		rawNew.Subtype = rawDesired.Subtype
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Client) && dcl.IsNotReturnedByServer(rawDesired.Client) {
+	if dcl.IsEmptyValueIndirect(rawNew.Client) && dcl.IsEmptyValueIndirect(rawDesired.Client) {
 		rawNew.Client = rawDesired.Client
 	} else {
 		rawNew.Client = canonicalizeNewConfigClient(c, rawDesired.Client, rawNew.Client)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Mfa) && dcl.IsNotReturnedByServer(rawDesired.Mfa) {
+	if dcl.IsEmptyValueIndirect(rawNew.Mfa) && dcl.IsEmptyValueIndirect(rawDesired.Mfa) {
 		rawNew.Mfa = rawDesired.Mfa
 	} else {
 		rawNew.Mfa = canonicalizeNewConfigMfa(c, rawDesired.Mfa, rawNew.Mfa)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.BlockingFunctions) && dcl.IsNotReturnedByServer(rawDesired.BlockingFunctions) {
+	if dcl.IsEmptyValueIndirect(rawNew.BlockingFunctions) && dcl.IsEmptyValueIndirect(rawDesired.BlockingFunctions) {
 		rawNew.BlockingFunctions = rawDesired.BlockingFunctions
 	} else {
 		rawNew.BlockingFunctions = canonicalizeNewConfigBlockingFunctions(c, rawDesired.BlockingFunctions, rawNew.BlockingFunctions)
@@ -623,7 +623,7 @@ func canonicalizeNewConfigSignIn(c *Client, des, nw *ConfigSignIn) *ConfigSignIn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignIn while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -747,7 +747,7 @@ func canonicalizeNewConfigSignInEmail(c *Client, des, nw *ConfigSignInEmail) *Co
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignInEmail while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -860,7 +860,7 @@ func canonicalizeNewConfigSignInEmailHashConfig(c *Client, des, nw *ConfigSignIn
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignInEmailHashConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -983,7 +983,7 @@ func canonicalizeNewConfigSignInPhoneNumber(c *Client, des, nw *ConfigSignInPhon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignInPhoneNumber while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1101,7 +1101,7 @@ func canonicalizeNewConfigSignInAnonymous(c *Client, des, nw *ConfigSignInAnonym
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignInAnonymous while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1210,7 +1210,7 @@ func canonicalizeNewConfigSignInHashConfig(c *Client, des, nw *ConfigSignInHashC
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigSignInHashConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1330,7 +1330,7 @@ func canonicalizeNewConfigNotification(c *Client, des, nw *ConfigNotification) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotification while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1459,7 +1459,7 @@ func canonicalizeNewConfigNotificationSendEmail(c *Client, des, nw *ConfigNotifi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmail while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1607,7 +1607,7 @@ func canonicalizeNewConfigNotificationSendEmailSmtp(c *Client, des, nw *ConfigNo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailSmtp while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1755,7 +1755,7 @@ func canonicalizeNewConfigNotificationSendEmailResetPasswordTemplate(c *Client, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailResetPasswordTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1911,7 +1911,7 @@ func canonicalizeNewConfigNotificationSendEmailVerifyEmailTemplate(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailVerifyEmailTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2067,7 +2067,7 @@ func canonicalizeNewConfigNotificationSendEmailChangeEmailTemplate(c *Client, de
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailChangeEmailTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2197,7 +2197,7 @@ func canonicalizeNewConfigNotificationSendEmailDnsInfo(c *Client, des, nw *Confi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailDnsInfo while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2344,7 +2344,7 @@ func canonicalizeNewConfigNotificationSendEmailRevertSecondFactorAdditionTemplat
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2474,7 +2474,7 @@ func canonicalizeNewConfigNotificationSendSms(c *Client, des, nw *ConfigNotifica
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendSms while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2584,7 +2584,7 @@ func canonicalizeNewConfigNotificationSendSmsSmsTemplate(c *Client, des, nw *Con
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigNotificationSendSmsSmsTemplate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2695,7 +2695,7 @@ func canonicalizeNewConfigQuota(c *Client, des, nw *ConfigQuota) *ConfigQuota {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigQuota while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2820,7 +2820,7 @@ func canonicalizeNewConfigQuotaSignUpQuotaConfig(c *Client, des, nw *ConfigQuota
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigQuotaSignUpQuotaConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2931,7 +2931,7 @@ func canonicalizeNewConfigMonitoring(c *Client, des, nw *ConfigMonitoring) *Conf
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigMonitoring while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3044,7 +3044,7 @@ func canonicalizeNewConfigMonitoringRequestLogging(c *Client, des, nw *ConfigMon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigMonitoringRequestLogging while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3165,7 +3165,7 @@ func canonicalizeNewConfigMultiTenant(c *Client, des, nw *ConfigMultiTenant) *Co
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigMultiTenant while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3276,7 +3276,7 @@ func canonicalizeNewConfigClient(c *Client, des, nw *ConfigClient) *ConfigClient
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigClient while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3400,7 +3400,7 @@ func canonicalizeNewConfigClientPermissions(c *Client, des, nw *ConfigClientPerm
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigClientPermissions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3519,7 +3519,7 @@ func canonicalizeNewConfigMfa(c *Client, des, nw *ConfigMfa) *ConfigMfa {
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigMfa while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3631,7 +3631,7 @@ func canonicalizeNewConfigBlockingFunctions(c *Client, des, nw *ConfigBlockingFu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigBlockingFunctions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3743,7 +3743,7 @@ func canonicalizeNewConfigBlockingFunctionsTriggers(c *Client, des, nw *ConfigBl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ConfigBlockingFunctionsTriggers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -9062,7 +9062,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigSignInFields(r, vSignIn); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSignIn) {
+	if !dcl.IsEmptyValueIndirect(vSignIn) {
 		r.SignIn = vSignIn
 	}
 	vNotification := r.Notification
@@ -9073,7 +9073,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigNotificationFields(r, vNotification); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNotification) {
+	if !dcl.IsEmptyValueIndirect(vNotification) {
 		r.Notification = vNotification
 	}
 	vQuota := r.Quota
@@ -9084,7 +9084,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigQuotaFields(r, vQuota); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQuota) {
+	if !dcl.IsEmptyValueIndirect(vQuota) {
 		r.Quota = vQuota
 	}
 	vMonitoring := r.Monitoring
@@ -9095,7 +9095,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigMonitoringFields(r, vMonitoring); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonitoring) {
+	if !dcl.IsEmptyValueIndirect(vMonitoring) {
 		r.Monitoring = vMonitoring
 	}
 	vMultiTenant := r.MultiTenant
@@ -9106,7 +9106,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigMultiTenantFields(r, vMultiTenant); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMultiTenant) {
+	if !dcl.IsEmptyValueIndirect(vMultiTenant) {
 		r.MultiTenant = vMultiTenant
 	}
 	vClient := r.Client
@@ -9117,7 +9117,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigClientFields(r, vClient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vClient) {
+	if !dcl.IsEmptyValueIndirect(vClient) {
 		r.Client = vClient
 	}
 	vMfa := r.Mfa
@@ -9128,7 +9128,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigMfaFields(r, vMfa); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMfa) {
+	if !dcl.IsEmptyValueIndirect(vMfa) {
 		r.Mfa = vMfa
 	}
 	vBlockingFunctions := r.BlockingFunctions
@@ -9139,7 +9139,7 @@ func extractConfigFields(r *Config) error {
 	if err := extractConfigBlockingFunctionsFields(r, vBlockingFunctions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlockingFunctions) {
+	if !dcl.IsEmptyValueIndirect(vBlockingFunctions) {
 		r.BlockingFunctions = vBlockingFunctions
 	}
 	return nil
@@ -9153,7 +9153,7 @@ func extractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInEmailFields(r, vEmail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEmail) {
+	if !dcl.IsEmptyValueIndirect(vEmail) {
 		o.Email = vEmail
 	}
 	vPhoneNumber := o.PhoneNumber
@@ -9164,7 +9164,7 @@ func extractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInPhoneNumberFields(r, vPhoneNumber); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPhoneNumber) {
+	if !dcl.IsEmptyValueIndirect(vPhoneNumber) {
 		o.PhoneNumber = vPhoneNumber
 	}
 	vAnonymous := o.Anonymous
@@ -9175,7 +9175,7 @@ func extractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInAnonymousFields(r, vAnonymous); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAnonymous) {
+	if !dcl.IsEmptyValueIndirect(vAnonymous) {
 		o.Anonymous = vAnonymous
 	}
 	vHashConfig := o.HashConfig
@@ -9186,7 +9186,7 @@ func extractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInHashConfigFields(r, vHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vHashConfig) {
 		o.HashConfig = vHashConfig
 	}
 	return nil
@@ -9200,7 +9200,7 @@ func extractConfigSignInEmailFields(r *Config, o *ConfigSignInEmail) error {
 	if err := extractConfigSignInEmailHashConfigFields(r, vHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vHashConfig) {
 		o.HashConfig = vHashConfig
 	}
 	return nil
@@ -9226,7 +9226,7 @@ func extractConfigNotificationFields(r *Config, o *ConfigNotification) error {
 	if err := extractConfigNotificationSendEmailFields(r, vSendEmail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSendEmail) {
+	if !dcl.IsEmptyValueIndirect(vSendEmail) {
 		o.SendEmail = vSendEmail
 	}
 	vSendSms := o.SendSms
@@ -9237,7 +9237,7 @@ func extractConfigNotificationFields(r *Config, o *ConfigNotification) error {
 	if err := extractConfigNotificationSendSmsFields(r, vSendSms); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSendSms) {
+	if !dcl.IsEmptyValueIndirect(vSendSms) {
 		o.SendSms = vSendSms
 	}
 	return nil
@@ -9251,7 +9251,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailSmtpFields(r, vSmtp); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSmtp) {
+	if !dcl.IsEmptyValueIndirect(vSmtp) {
 		o.Smtp = vSmtp
 	}
 	vResetPasswordTemplate := o.ResetPasswordTemplate
@@ -9262,7 +9262,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailResetPasswordTemplateFields(r, vResetPasswordTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResetPasswordTemplate) {
+	if !dcl.IsEmptyValueIndirect(vResetPasswordTemplate) {
 		o.ResetPasswordTemplate = vResetPasswordTemplate
 	}
 	vVerifyEmailTemplate := o.VerifyEmailTemplate
@@ -9273,7 +9273,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailVerifyEmailTemplateFields(r, vVerifyEmailTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVerifyEmailTemplate) {
+	if !dcl.IsEmptyValueIndirect(vVerifyEmailTemplate) {
 		o.VerifyEmailTemplate = vVerifyEmailTemplate
 	}
 	vChangeEmailTemplate := o.ChangeEmailTemplate
@@ -9284,7 +9284,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailChangeEmailTemplateFields(r, vChangeEmailTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChangeEmailTemplate) {
+	if !dcl.IsEmptyValueIndirect(vChangeEmailTemplate) {
 		o.ChangeEmailTemplate = vChangeEmailTemplate
 	}
 	vDnsInfo := o.DnsInfo
@@ -9295,7 +9295,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailDnsInfoFields(r, vDnsInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDnsInfo) {
+	if !dcl.IsEmptyValueIndirect(vDnsInfo) {
 		o.DnsInfo = vDnsInfo
 	}
 	vRevertSecondFactorAdditionTemplate := o.RevertSecondFactorAdditionTemplate
@@ -9306,7 +9306,7 @@ func extractConfigNotificationSendEmailFields(r *Config, o *ConfigNotificationSe
 	if err := extractConfigNotificationSendEmailRevertSecondFactorAdditionTemplateFields(r, vRevertSecondFactorAdditionTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRevertSecondFactorAdditionTemplate) {
+	if !dcl.IsEmptyValueIndirect(vRevertSecondFactorAdditionTemplate) {
 		o.RevertSecondFactorAdditionTemplate = vRevertSecondFactorAdditionTemplate
 	}
 	return nil
@@ -9338,7 +9338,7 @@ func extractConfigNotificationSendSmsFields(r *Config, o *ConfigNotificationSend
 	if err := extractConfigNotificationSendSmsSmsTemplateFields(r, vSmsTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSmsTemplate) {
+	if !dcl.IsEmptyValueIndirect(vSmsTemplate) {
 		o.SmsTemplate = vSmsTemplate
 	}
 	return nil
@@ -9355,7 +9355,7 @@ func extractConfigQuotaFields(r *Config, o *ConfigQuota) error {
 	if err := extractConfigQuotaSignUpQuotaConfigFields(r, vSignUpQuotaConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSignUpQuotaConfig) {
+	if !dcl.IsEmptyValueIndirect(vSignUpQuotaConfig) {
 		o.SignUpQuotaConfig = vSignUpQuotaConfig
 	}
 	return nil
@@ -9372,7 +9372,7 @@ func extractConfigMonitoringFields(r *Config, o *ConfigMonitoring) error {
 	if err := extractConfigMonitoringRequestLoggingFields(r, vRequestLogging); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestLogging) {
+	if !dcl.IsEmptyValueIndirect(vRequestLogging) {
 		o.RequestLogging = vRequestLogging
 	}
 	return nil
@@ -9392,7 +9392,7 @@ func extractConfigClientFields(r *Config, o *ConfigClient) error {
 	if err := extractConfigClientPermissionsFields(r, vPermissions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPermissions) {
+	if !dcl.IsEmptyValueIndirect(vPermissions) {
 		o.Permissions = vPermissions
 	}
 	return nil
@@ -9419,7 +9419,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigSignInFields(r, vSignIn); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSignIn) {
+	if !dcl.IsEmptyValueIndirect(vSignIn) {
 		r.SignIn = vSignIn
 	}
 	vNotification := r.Notification
@@ -9430,7 +9430,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigNotificationFields(r, vNotification); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNotification) {
+	if !dcl.IsEmptyValueIndirect(vNotification) {
 		r.Notification = vNotification
 	}
 	vQuota := r.Quota
@@ -9441,7 +9441,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigQuotaFields(r, vQuota); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vQuota) {
+	if !dcl.IsEmptyValueIndirect(vQuota) {
 		r.Quota = vQuota
 	}
 	vMonitoring := r.Monitoring
@@ -9452,7 +9452,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigMonitoringFields(r, vMonitoring); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMonitoring) {
+	if !dcl.IsEmptyValueIndirect(vMonitoring) {
 		r.Monitoring = vMonitoring
 	}
 	vMultiTenant := r.MultiTenant
@@ -9463,7 +9463,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigMultiTenantFields(r, vMultiTenant); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMultiTenant) {
+	if !dcl.IsEmptyValueIndirect(vMultiTenant) {
 		r.MultiTenant = vMultiTenant
 	}
 	vClient := r.Client
@@ -9474,7 +9474,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigClientFields(r, vClient); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vClient) {
+	if !dcl.IsEmptyValueIndirect(vClient) {
 		r.Client = vClient
 	}
 	vMfa := r.Mfa
@@ -9485,7 +9485,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigMfaFields(r, vMfa); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMfa) {
+	if !dcl.IsEmptyValueIndirect(vMfa) {
 		r.Mfa = vMfa
 	}
 	vBlockingFunctions := r.BlockingFunctions
@@ -9496,7 +9496,7 @@ func postReadExtractConfigFields(r *Config) error {
 	if err := postReadExtractConfigBlockingFunctionsFields(r, vBlockingFunctions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vBlockingFunctions) {
+	if !dcl.IsEmptyValueIndirect(vBlockingFunctions) {
 		r.BlockingFunctions = vBlockingFunctions
 	}
 	return nil
@@ -9510,7 +9510,7 @@ func postReadExtractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInEmailFields(r, vEmail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEmail) {
+	if !dcl.IsEmptyValueIndirect(vEmail) {
 		o.Email = vEmail
 	}
 	vPhoneNumber := o.PhoneNumber
@@ -9521,7 +9521,7 @@ func postReadExtractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInPhoneNumberFields(r, vPhoneNumber); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPhoneNumber) {
+	if !dcl.IsEmptyValueIndirect(vPhoneNumber) {
 		o.PhoneNumber = vPhoneNumber
 	}
 	vAnonymous := o.Anonymous
@@ -9532,7 +9532,7 @@ func postReadExtractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInAnonymousFields(r, vAnonymous); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAnonymous) {
+	if !dcl.IsEmptyValueIndirect(vAnonymous) {
 		o.Anonymous = vAnonymous
 	}
 	vHashConfig := o.HashConfig
@@ -9543,7 +9543,7 @@ func postReadExtractConfigSignInFields(r *Config, o *ConfigSignIn) error {
 	if err := extractConfigSignInHashConfigFields(r, vHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vHashConfig) {
 		o.HashConfig = vHashConfig
 	}
 	return nil
@@ -9557,7 +9557,7 @@ func postReadExtractConfigSignInEmailFields(r *Config, o *ConfigSignInEmail) err
 	if err := extractConfigSignInEmailHashConfigFields(r, vHashConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vHashConfig) {
+	if !dcl.IsEmptyValueIndirect(vHashConfig) {
 		o.HashConfig = vHashConfig
 	}
 	return nil
@@ -9583,7 +9583,7 @@ func postReadExtractConfigNotificationFields(r *Config, o *ConfigNotification) e
 	if err := extractConfigNotificationSendEmailFields(r, vSendEmail); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSendEmail) {
+	if !dcl.IsEmptyValueIndirect(vSendEmail) {
 		o.SendEmail = vSendEmail
 	}
 	vSendSms := o.SendSms
@@ -9594,7 +9594,7 @@ func postReadExtractConfigNotificationFields(r *Config, o *ConfigNotification) e
 	if err := extractConfigNotificationSendSmsFields(r, vSendSms); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSendSms) {
+	if !dcl.IsEmptyValueIndirect(vSendSms) {
 		o.SendSms = vSendSms
 	}
 	return nil
@@ -9608,7 +9608,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailSmtpFields(r, vSmtp); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSmtp) {
+	if !dcl.IsEmptyValueIndirect(vSmtp) {
 		o.Smtp = vSmtp
 	}
 	vResetPasswordTemplate := o.ResetPasswordTemplate
@@ -9619,7 +9619,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailResetPasswordTemplateFields(r, vResetPasswordTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResetPasswordTemplate) {
+	if !dcl.IsEmptyValueIndirect(vResetPasswordTemplate) {
 		o.ResetPasswordTemplate = vResetPasswordTemplate
 	}
 	vVerifyEmailTemplate := o.VerifyEmailTemplate
@@ -9630,7 +9630,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailVerifyEmailTemplateFields(r, vVerifyEmailTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vVerifyEmailTemplate) {
+	if !dcl.IsEmptyValueIndirect(vVerifyEmailTemplate) {
 		o.VerifyEmailTemplate = vVerifyEmailTemplate
 	}
 	vChangeEmailTemplate := o.ChangeEmailTemplate
@@ -9641,7 +9641,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailChangeEmailTemplateFields(r, vChangeEmailTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vChangeEmailTemplate) {
+	if !dcl.IsEmptyValueIndirect(vChangeEmailTemplate) {
 		o.ChangeEmailTemplate = vChangeEmailTemplate
 	}
 	vDnsInfo := o.DnsInfo
@@ -9652,7 +9652,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailDnsInfoFields(r, vDnsInfo); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDnsInfo) {
+	if !dcl.IsEmptyValueIndirect(vDnsInfo) {
 		o.DnsInfo = vDnsInfo
 	}
 	vRevertSecondFactorAdditionTemplate := o.RevertSecondFactorAdditionTemplate
@@ -9663,7 +9663,7 @@ func postReadExtractConfigNotificationSendEmailFields(r *Config, o *ConfigNotifi
 	if err := extractConfigNotificationSendEmailRevertSecondFactorAdditionTemplateFields(r, vRevertSecondFactorAdditionTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRevertSecondFactorAdditionTemplate) {
+	if !dcl.IsEmptyValueIndirect(vRevertSecondFactorAdditionTemplate) {
 		o.RevertSecondFactorAdditionTemplate = vRevertSecondFactorAdditionTemplate
 	}
 	return nil
@@ -9695,7 +9695,7 @@ func postReadExtractConfigNotificationSendSmsFields(r *Config, o *ConfigNotifica
 	if err := extractConfigNotificationSendSmsSmsTemplateFields(r, vSmsTemplate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSmsTemplate) {
+	if !dcl.IsEmptyValueIndirect(vSmsTemplate) {
 		o.SmsTemplate = vSmsTemplate
 	}
 	return nil
@@ -9712,7 +9712,7 @@ func postReadExtractConfigQuotaFields(r *Config, o *ConfigQuota) error {
 	if err := extractConfigQuotaSignUpQuotaConfigFields(r, vSignUpQuotaConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSignUpQuotaConfig) {
+	if !dcl.IsEmptyValueIndirect(vSignUpQuotaConfig) {
 		o.SignUpQuotaConfig = vSignUpQuotaConfig
 	}
 	return nil
@@ -9729,7 +9729,7 @@ func postReadExtractConfigMonitoringFields(r *Config, o *ConfigMonitoring) error
 	if err := extractConfigMonitoringRequestLoggingFields(r, vRequestLogging); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRequestLogging) {
+	if !dcl.IsEmptyValueIndirect(vRequestLogging) {
 		o.RequestLogging = vRequestLogging
 	}
 	return nil
@@ -9749,7 +9749,7 @@ func postReadExtractConfigClientFields(r *Config, o *ConfigClient) error {
 	if err := extractConfigClientPermissionsFields(r, vPermissions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vPermissions) {
+	if !dcl.IsEmptyValueIndirect(vPermissions) {
 		o.Permissions = vPermissions
 	}
 	return nil

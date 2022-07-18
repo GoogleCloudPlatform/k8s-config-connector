@@ -481,17 +481,17 @@ func (r *UptimeCheckConfig) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"displayName":       dcl.ValueOrEmptyString(nr.DisplayName),
-		"monitoredResource": dcl.ValueOrEmptyString(nr.MonitoredResource),
-		"resourceGroup":     dcl.ValueOrEmptyString(nr.ResourceGroup),
-		"httpCheck":         dcl.ValueOrEmptyString(nr.HttpCheck),
-		"tcpCheck":          dcl.ValueOrEmptyString(nr.TcpCheck),
-		"period":            dcl.ValueOrEmptyString(nr.Period),
-		"timeout":           dcl.ValueOrEmptyString(nr.Timeout),
-		"contentMatchers":   dcl.ValueOrEmptyString(nr.ContentMatchers),
-		"selectedRegions":   dcl.ValueOrEmptyString(nr.SelectedRegions),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"display_name":       dcl.ValueOrEmptyString(nr.DisplayName),
+		"monitored_resource": dcl.ValueOrEmptyString(nr.MonitoredResource),
+		"resource_group":     dcl.ValueOrEmptyString(nr.ResourceGroup),
+		"http_check":         dcl.ValueOrEmptyString(nr.HttpCheck),
+		"tcp_check":          dcl.ValueOrEmptyString(nr.TcpCheck),
+		"period":             dcl.ValueOrEmptyString(nr.Period),
+		"timeout":            dcl.ValueOrEmptyString(nr.Timeout),
+		"content_matchers":   dcl.ValueOrEmptyString(nr.ContentMatchers),
+		"selected_regions":   dcl.ValueOrEmptyString(nr.SelectedRegions),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/uptimeCheckConfigs/{{name}}", params), nil
 }

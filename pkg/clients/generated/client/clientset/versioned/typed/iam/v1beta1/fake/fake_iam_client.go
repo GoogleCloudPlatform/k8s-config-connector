@@ -59,6 +59,10 @@ func (c *FakeIamV1beta1) IAMServiceAccountKeys(namespace string) v1beta1.IAMServ
 	return &FakeIAMServiceAccountKeys{c, namespace}
 }
 
+func (c *FakeIamV1beta1) IAMWorkforcePools(namespace string) v1beta1.IAMWorkforcePoolInterface {
+	return &FakeIAMWorkforcePools{c, namespace}
+}
+
 func (c *FakeIamV1beta1) IAMWorkloadIdentityPools(namespace string) v1beta1.IAMWorkloadIdentityPoolInterface {
 	return &FakeIAMWorkloadIdentityPools{c, namespace}
 }

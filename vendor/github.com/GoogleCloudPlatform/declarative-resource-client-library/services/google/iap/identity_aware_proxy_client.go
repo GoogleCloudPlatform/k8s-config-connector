@@ -50,11 +50,11 @@ func (r *IdentityAwareProxyClient) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":        dcl.ValueOrEmptyString(nr.Name),
-		"secret":      dcl.ValueOrEmptyString(nr.Secret),
-		"displayName": dcl.ValueOrEmptyString(nr.DisplayName),
-		"project":     dcl.ValueOrEmptyString(nr.Project),
-		"brand":       dcl.ValueOrEmptyString(nr.Brand),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
+		"secret":       dcl.ValueOrEmptyString(nr.Secret),
+		"display_name": dcl.ValueOrEmptyString(nr.DisplayName),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"brand":        dcl.ValueOrEmptyString(nr.Brand),
 	}
 	return dcl.Nprintf("projects/{{project}}/brands/{{brand}}/identityAwareProxyClients/{{name}}", params), nil
 }

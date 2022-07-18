@@ -1074,8 +1074,8 @@ func (r *HttpRoute) ID() (string, error) {
 	params := map[string]interface{}{
 		"name":        dcl.ValueOrEmptyString(nr.Name),
 		"description": dcl.ValueOrEmptyString(nr.Description),
-		"createTime":  dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":  dcl.ValueOrEmptyString(nr.UpdateTime),
+		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"hostnames":   dcl.ValueOrEmptyString(nr.Hostnames),
 		"routers":     dcl.ValueOrEmptyString(nr.Routers),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),
@@ -1084,7 +1084,7 @@ func (r *HttpRoute) ID() (string, error) {
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
 		"project":     dcl.ValueOrEmptyString(nr.Project),
 		"location":    dcl.ValueOrEmptyString(nr.Location),
-		"selfLink":    dcl.ValueOrEmptyString(nr.SelfLink),
+		"self_link":   dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/httpRoutes/{{name}}", params), nil
 }

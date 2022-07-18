@@ -273,6 +273,37 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 												GoName:      "LogDeniesEnabled",
 												Description: "Logs all denies and dry run failures.",
 											},
+											"monitoring": &dcl.Property{
+												Type:          "object",
+												GoName:        "Monitoring",
+												GoType:        "FeatureMembershipConfigmanagementPolicyControllerMonitoring",
+												Description:   "Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: [\"cloudmonitoring\", \"prometheus\"]. Default: [\"cloudmonitoring\", \"prometheus\"]",
+												ServerDefault: true,
+												Properties: map[string]*dcl.Property{
+													"backends": &dcl.Property{
+														Type:          "array",
+														GoName:        "Backends",
+														Description:   " Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.",
+														ServerDefault: true,
+														SendEmpty:     true,
+														ListType:      "list",
+														Items: &dcl.Property{
+															Type:   "string",
+															GoType: "FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum",
+															Enum: []string{
+																"MONITORING_BACKEND_UNSPECIFIED",
+																"PROMETHEUS",
+																"CLOUD_MONITORING",
+															},
+														},
+													},
+												},
+											},
+											"mutationEnabled": &dcl.Property{
+												Type:        "boolean",
+												GoName:      "MutationEnabled",
+												Description: "Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster.",
+											},
 											"referentialRulesEnabled": &dcl.Property{
 												Type:        "boolean",
 												GoName:      "ReferentialRulesEnabled",

@@ -552,7 +552,7 @@ func canonicalizeWorkloadIdentityPoolProviderDesiredState(rawDesired, rawInitial
 
 func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesired *WorkloadIdentityPoolProvider) (*WorkloadIdentityPoolProvider, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -560,7 +560,7 @@ func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DisplayName) && dcl.IsNotReturnedByServer(rawDesired.DisplayName) {
+	if dcl.IsEmptyValueIndirect(rawNew.DisplayName) && dcl.IsEmptyValueIndirect(rawDesired.DisplayName) {
 		rawNew.DisplayName = rawDesired.DisplayName
 	} else {
 		if dcl.StringCanonicalize(rawDesired.DisplayName, rawNew.DisplayName) {
@@ -568,7 +568,7 @@ func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -576,12 +576,12 @@ func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Disabled) && dcl.IsNotReturnedByServer(rawDesired.Disabled) {
+	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Disabled, rawNew.Disabled) {
@@ -589,12 +589,12 @@ func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AttributeMapping) && dcl.IsNotReturnedByServer(rawDesired.AttributeMapping) {
+	if dcl.IsEmptyValueIndirect(rawNew.AttributeMapping) && dcl.IsEmptyValueIndirect(rawDesired.AttributeMapping) {
 		rawNew.AttributeMapping = rawDesired.AttributeMapping
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AttributeCondition) && dcl.IsNotReturnedByServer(rawDesired.AttributeCondition) {
+	if dcl.IsEmptyValueIndirect(rawNew.AttributeCondition) && dcl.IsEmptyValueIndirect(rawDesired.AttributeCondition) {
 		rawNew.AttributeCondition = rawDesired.AttributeCondition
 	} else {
 		if dcl.StringCanonicalize(rawDesired.AttributeCondition, rawNew.AttributeCondition) {
@@ -602,13 +602,13 @@ func canonicalizeWorkloadIdentityPoolProviderNewState(c *Client, rawNew, rawDesi
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Aws) && dcl.IsNotReturnedByServer(rawDesired.Aws) {
+	if dcl.IsEmptyValueIndirect(rawNew.Aws) && dcl.IsEmptyValueIndirect(rawDesired.Aws) {
 		rawNew.Aws = rawDesired.Aws
 	} else {
 		rawNew.Aws = canonicalizeNewWorkloadIdentityPoolProviderAws(c, rawDesired.Aws, rawNew.Aws)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Oidc) && dcl.IsNotReturnedByServer(rawDesired.Oidc) {
+	if dcl.IsEmptyValueIndirect(rawNew.Oidc) && dcl.IsEmptyValueIndirect(rawDesired.Oidc) {
 		rawNew.Oidc = rawDesired.Oidc
 	} else {
 		rawNew.Oidc = canonicalizeNewWorkloadIdentityPoolProviderOidc(c, rawDesired.Oidc, rawNew.Oidc)
@@ -686,7 +686,7 @@ func canonicalizeNewWorkloadIdentityPoolProviderAws(c *Client, des, nw *Workload
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkloadIdentityPoolProviderAws while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -807,7 +807,7 @@ func canonicalizeNewWorkloadIdentityPoolProviderOidc(c *Client, des, nw *Workloa
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for WorkloadIdentityPoolProviderOidc while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1581,7 +1581,7 @@ func extractWorkloadIdentityPoolProviderFields(r *WorkloadIdentityPoolProvider) 
 	if err := extractWorkloadIdentityPoolProviderAwsFields(r, vAws); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAws) {
+	if !dcl.IsEmptyValueIndirect(vAws) {
 		r.Aws = vAws
 	}
 	vOidc := r.Oidc
@@ -1592,7 +1592,7 @@ func extractWorkloadIdentityPoolProviderFields(r *WorkloadIdentityPoolProvider) 
 	if err := extractWorkloadIdentityPoolProviderOidcFields(r, vOidc); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOidc) {
+	if !dcl.IsEmptyValueIndirect(vOidc) {
 		r.Oidc = vOidc
 	}
 	return nil
@@ -1613,7 +1613,7 @@ func postReadExtractWorkloadIdentityPoolProviderFields(r *WorkloadIdentityPoolPr
 	if err := postReadExtractWorkloadIdentityPoolProviderAwsFields(r, vAws); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAws) {
+	if !dcl.IsEmptyValueIndirect(vAws) {
 		r.Aws = vAws
 	}
 	vOidc := r.Oidc
@@ -1624,7 +1624,7 @@ func postReadExtractWorkloadIdentityPoolProviderFields(r *WorkloadIdentityPoolPr
 	if err := postReadExtractWorkloadIdentityPoolProviderOidcFields(r, vOidc); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vOidc) {
+	if !dcl.IsEmptyValueIndirect(vOidc) {
 		r.Oidc = vOidc
 	}
 	return nil

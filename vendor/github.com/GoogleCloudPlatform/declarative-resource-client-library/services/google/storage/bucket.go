@@ -539,15 +539,15 @@ func (r *Bucket) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":      dcl.ValueOrEmptyString(nr.Project),
-		"location":     dcl.ValueOrEmptyString(nr.Location),
-		"name":         dcl.ValueOrEmptyString(nr.Name),
-		"cors":         dcl.ValueOrEmptyString(nr.Cors),
-		"lifecycle":    dcl.ValueOrEmptyString(nr.Lifecycle),
-		"logging":      dcl.ValueOrEmptyString(nr.Logging),
-		"storageClass": dcl.ValueOrEmptyString(nr.StorageClass),
-		"versioning":   dcl.ValueOrEmptyString(nr.Versioning),
-		"website":      dcl.ValueOrEmptyString(nr.Website),
+		"project":       dcl.ValueOrEmptyString(nr.Project),
+		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":          dcl.ValueOrEmptyString(nr.Name),
+		"cors":          dcl.ValueOrEmptyString(nr.Cors),
+		"lifecycle":     dcl.ValueOrEmptyString(nr.Lifecycle),
+		"logging":       dcl.ValueOrEmptyString(nr.Logging),
+		"storage_class": dcl.ValueOrEmptyString(nr.StorageClass),
+		"versioning":    dcl.ValueOrEmptyString(nr.Versioning),
+		"website":       dcl.ValueOrEmptyString(nr.Website),
 	}
 	return dcl.Nprintf("b/{{name}}?userProject={{project}}", params), nil
 }

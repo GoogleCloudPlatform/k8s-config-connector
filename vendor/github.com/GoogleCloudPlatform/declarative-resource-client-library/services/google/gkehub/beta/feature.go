@@ -350,16 +350,16 @@ func (r *Feature) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":          dcl.ValueOrEmptyString(nr.Name),
-		"labels":        dcl.ValueOrEmptyString(nr.Labels),
-		"resourceState": dcl.ValueOrEmptyString(nr.ResourceState),
-		"spec":          dcl.ValueOrEmptyString(nr.Spec),
-		"state":         dcl.ValueOrEmptyString(nr.State),
-		"createTime":    dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":    dcl.ValueOrEmptyString(nr.UpdateTime),
-		"deleteTime":    dcl.ValueOrEmptyString(nr.DeleteTime),
-		"project":       dcl.ValueOrEmptyString(nr.Project),
-		"location":      dcl.ValueOrEmptyString(nr.Location),
+		"name":           dcl.ValueOrEmptyString(nr.Name),
+		"labels":         dcl.ValueOrEmptyString(nr.Labels),
+		"resource_state": dcl.ValueOrEmptyString(nr.ResourceState),
+		"spec":           dcl.ValueOrEmptyString(nr.Spec),
+		"state":          dcl.ValueOrEmptyString(nr.State),
+		"create_time":    dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":    dcl.ValueOrEmptyString(nr.UpdateTime),
+		"delete_time":    dcl.ValueOrEmptyString(nr.DeleteTime),
+		"project":        dcl.ValueOrEmptyString(nr.Project),
+		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/features/{{name}}", params), nil
 }

@@ -1778,18 +1778,18 @@ func (r *PatchDeployment) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":              dcl.ValueOrEmptyString(nr.Name),
-		"description":       dcl.ValueOrEmptyString(nr.Description),
-		"instanceFilter":    dcl.ValueOrEmptyString(nr.InstanceFilter),
-		"patchConfig":       dcl.ValueOrEmptyString(nr.PatchConfig),
-		"duration":          dcl.ValueOrEmptyString(nr.Duration),
-		"oneTimeSchedule":   dcl.ValueOrEmptyString(nr.OneTimeSchedule),
-		"recurringSchedule": dcl.ValueOrEmptyString(nr.RecurringSchedule),
-		"createTime":        dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":        dcl.ValueOrEmptyString(nr.UpdateTime),
-		"lastExecuteTime":   dcl.ValueOrEmptyString(nr.LastExecuteTime),
-		"rollout":           dcl.ValueOrEmptyString(nr.Rollout),
-		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"name":               dcl.ValueOrEmptyString(nr.Name),
+		"description":        dcl.ValueOrEmptyString(nr.Description),
+		"instance_filter":    dcl.ValueOrEmptyString(nr.InstanceFilter),
+		"patch_config":       dcl.ValueOrEmptyString(nr.PatchConfig),
+		"duration":           dcl.ValueOrEmptyString(nr.Duration),
+		"one_time_schedule":  dcl.ValueOrEmptyString(nr.OneTimeSchedule),
+		"recurring_schedule": dcl.ValueOrEmptyString(nr.RecurringSchedule),
+		"create_time":        dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":        dcl.ValueOrEmptyString(nr.UpdateTime),
+		"last_execute_time":  dcl.ValueOrEmptyString(nr.LastExecuteTime),
+		"rollout":            dcl.ValueOrEmptyString(nr.Rollout),
+		"project":            dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/patchDeployments/{{name}}", params), nil
 }

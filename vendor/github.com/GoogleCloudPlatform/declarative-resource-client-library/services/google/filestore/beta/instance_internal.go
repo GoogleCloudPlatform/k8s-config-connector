@@ -474,7 +474,7 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 
 	rawNew.Name = rawDesired.Name
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -482,12 +482,12 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.StatusMessage) && dcl.IsNotReturnedByServer(rawDesired.StatusMessage) {
+	if dcl.IsEmptyValueIndirect(rawNew.StatusMessage) && dcl.IsEmptyValueIndirect(rawDesired.StatusMessage) {
 		rawNew.StatusMessage = rawDesired.StatusMessage
 	} else {
 		if dcl.StringCanonicalize(rawDesired.StatusMessage, rawNew.StatusMessage) {
@@ -495,34 +495,34 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Tier) && dcl.IsNotReturnedByServer(rawDesired.Tier) {
+	if dcl.IsEmptyValueIndirect(rawNew.Tier) && dcl.IsEmptyValueIndirect(rawDesired.Tier) {
 		rawNew.Tier = rawDesired.Tier
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.FileShares) && dcl.IsNotReturnedByServer(rawDesired.FileShares) {
+	if dcl.IsEmptyValueIndirect(rawNew.FileShares) && dcl.IsEmptyValueIndirect(rawDesired.FileShares) {
 		rawNew.FileShares = rawDesired.FileShares
 	} else {
 		rawNew.FileShares = canonicalizeNewInstanceFileSharesSlice(c, rawDesired.FileShares, rawNew.FileShares)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Networks) && dcl.IsNotReturnedByServer(rawDesired.Networks) {
+	if dcl.IsEmptyValueIndirect(rawNew.Networks) && dcl.IsEmptyValueIndirect(rawDesired.Networks) {
 		rawNew.Networks = rawDesired.Networks
 	} else {
 		rawNew.Networks = canonicalizeNewInstanceNetworksSlice(c, rawDesired.Networks, rawNew.Networks)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -608,7 +608,7 @@ func canonicalizeNewInstanceFileShares(c *Client, des, nw *InstanceFileShares) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceFileShares while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -748,7 +748,7 @@ func canonicalizeNewInstanceFileSharesNfsExportOptions(c *Client, des, nw *Insta
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceFileSharesNfsExportOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -875,7 +875,7 @@ func canonicalizeNewInstanceNetworks(c *Client, des, nw *InstanceNetworks) *Inst
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for InstanceNetworks while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}

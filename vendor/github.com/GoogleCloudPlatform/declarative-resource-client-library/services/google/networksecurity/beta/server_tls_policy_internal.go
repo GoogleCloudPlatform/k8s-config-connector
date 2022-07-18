@@ -585,7 +585,7 @@ func canonicalizeServerTlsPolicyDesiredState(rawDesired, rawInitial *ServerTlsPo
 
 func canonicalizeServerTlsPolicyNewState(c *Client, rawNew, rawDesired *ServerTlsPolicy) (*ServerTlsPolicy, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -593,7 +593,7 @@ func canonicalizeServerTlsPolicyNewState(c *Client, rawNew, rawDesired *ServerTl
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -601,22 +601,22 @@ func canonicalizeServerTlsPolicyNewState(c *Client, rawNew, rawDesired *ServerTl
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AllowOpen) && dcl.IsNotReturnedByServer(rawDesired.AllowOpen) {
+	if dcl.IsEmptyValueIndirect(rawNew.AllowOpen) && dcl.IsEmptyValueIndirect(rawDesired.AllowOpen) {
 		rawNew.AllowOpen = rawDesired.AllowOpen
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.AllowOpen, rawNew.AllowOpen) {
@@ -624,13 +624,13 @@ func canonicalizeServerTlsPolicyNewState(c *Client, rawNew, rawDesired *ServerTl
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ServerCertificate) && dcl.IsNotReturnedByServer(rawDesired.ServerCertificate) {
+	if dcl.IsEmptyValueIndirect(rawNew.ServerCertificate) && dcl.IsEmptyValueIndirect(rawDesired.ServerCertificate) {
 		rawNew.ServerCertificate = rawDesired.ServerCertificate
 	} else {
 		rawNew.ServerCertificate = canonicalizeNewServerTlsPolicyServerCertificate(c, rawDesired.ServerCertificate, rawNew.ServerCertificate)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.MtlsPolicy) && dcl.IsNotReturnedByServer(rawDesired.MtlsPolicy) {
+	if dcl.IsEmptyValueIndirect(rawNew.MtlsPolicy) && dcl.IsEmptyValueIndirect(rawDesired.MtlsPolicy) {
 		rawNew.MtlsPolicy = rawDesired.MtlsPolicy
 	} else {
 		rawNew.MtlsPolicy = canonicalizeNewServerTlsPolicyMtlsPolicy(c, rawDesired.MtlsPolicy, rawNew.MtlsPolicy)
@@ -718,7 +718,7 @@ func canonicalizeNewServerTlsPolicyServerCertificate(c *Client, des, nw *ServerT
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyServerCertificate while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -832,7 +832,7 @@ func canonicalizeNewServerTlsPolicyServerCertificateGrpcEndpoint(c *Client, des,
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyServerCertificateGrpcEndpoint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -947,7 +947,7 @@ func canonicalizeNewServerTlsPolicyServerCertificateCertificateProviderInstance(
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyServerCertificateCertificateProviderInstance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1058,7 +1058,7 @@ func canonicalizeNewServerTlsPolicyMtlsPolicy(c *Client, des, nw *ServerTlsPolic
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyMtlsPolicy while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1188,7 +1188,7 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCa(c *Client, des, 
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyMtlsPolicyClientValidationCa while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1302,7 +1302,7 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1417,7 +1417,7 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaCertificateProvid
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2823,7 +2823,7 @@ func extractServerTlsPolicyFields(r *ServerTlsPolicy) error {
 	if err := extractServerTlsPolicyServerCertificateFields(r, vServerCertificate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServerCertificate) {
+	if !dcl.IsEmptyValueIndirect(vServerCertificate) {
 		r.ServerCertificate = vServerCertificate
 	}
 	vMtlsPolicy := r.MtlsPolicy
@@ -2834,7 +2834,7 @@ func extractServerTlsPolicyFields(r *ServerTlsPolicy) error {
 	if err := extractServerTlsPolicyMtlsPolicyFields(r, vMtlsPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMtlsPolicy) {
+	if !dcl.IsEmptyValueIndirect(vMtlsPolicy) {
 		r.MtlsPolicy = vMtlsPolicy
 	}
 	return nil
@@ -2848,7 +2848,7 @@ func extractServerTlsPolicyServerCertificateFields(r *ServerTlsPolicy, o *Server
 	if err := extractServerTlsPolicyServerCertificateGrpcEndpointFields(r, vGrpcEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGrpcEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vGrpcEndpoint) {
 		o.GrpcEndpoint = vGrpcEndpoint
 	}
 	vCertificateProviderInstance := o.CertificateProviderInstance
@@ -2859,7 +2859,7 @@ func extractServerTlsPolicyServerCertificateFields(r *ServerTlsPolicy, o *Server
 	if err := extractServerTlsPolicyServerCertificateCertificateProviderInstanceFields(r, vCertificateProviderInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateProviderInstance) {
+	if !dcl.IsEmptyValueIndirect(vCertificateProviderInstance) {
 		o.CertificateProviderInstance = vCertificateProviderInstance
 	}
 	return nil
@@ -2882,7 +2882,7 @@ func extractServerTlsPolicyMtlsPolicyClientValidationCaFields(r *ServerTlsPolicy
 	if err := extractServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointFields(r, vGrpcEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGrpcEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vGrpcEndpoint) {
 		o.GrpcEndpoint = vGrpcEndpoint
 	}
 	vCertificateProviderInstance := o.CertificateProviderInstance
@@ -2893,7 +2893,7 @@ func extractServerTlsPolicyMtlsPolicyClientValidationCaFields(r *ServerTlsPolicy
 	if err := extractServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceFields(r, vCertificateProviderInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateProviderInstance) {
+	if !dcl.IsEmptyValueIndirect(vCertificateProviderInstance) {
 		o.CertificateProviderInstance = vCertificateProviderInstance
 	}
 	return nil
@@ -2914,7 +2914,7 @@ func postReadExtractServerTlsPolicyFields(r *ServerTlsPolicy) error {
 	if err := postReadExtractServerTlsPolicyServerCertificateFields(r, vServerCertificate); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vServerCertificate) {
+	if !dcl.IsEmptyValueIndirect(vServerCertificate) {
 		r.ServerCertificate = vServerCertificate
 	}
 	vMtlsPolicy := r.MtlsPolicy
@@ -2925,7 +2925,7 @@ func postReadExtractServerTlsPolicyFields(r *ServerTlsPolicy) error {
 	if err := postReadExtractServerTlsPolicyMtlsPolicyFields(r, vMtlsPolicy); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMtlsPolicy) {
+	if !dcl.IsEmptyValueIndirect(vMtlsPolicy) {
 		r.MtlsPolicy = vMtlsPolicy
 	}
 	return nil
@@ -2939,7 +2939,7 @@ func postReadExtractServerTlsPolicyServerCertificateFields(r *ServerTlsPolicy, o
 	if err := extractServerTlsPolicyServerCertificateGrpcEndpointFields(r, vGrpcEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGrpcEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vGrpcEndpoint) {
 		o.GrpcEndpoint = vGrpcEndpoint
 	}
 	vCertificateProviderInstance := o.CertificateProviderInstance
@@ -2950,7 +2950,7 @@ func postReadExtractServerTlsPolicyServerCertificateFields(r *ServerTlsPolicy, o
 	if err := extractServerTlsPolicyServerCertificateCertificateProviderInstanceFields(r, vCertificateProviderInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateProviderInstance) {
+	if !dcl.IsEmptyValueIndirect(vCertificateProviderInstance) {
 		o.CertificateProviderInstance = vCertificateProviderInstance
 	}
 	return nil
@@ -2973,7 +2973,7 @@ func postReadExtractServerTlsPolicyMtlsPolicyClientValidationCaFields(r *ServerT
 	if err := extractServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointFields(r, vGrpcEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGrpcEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vGrpcEndpoint) {
 		o.GrpcEndpoint = vGrpcEndpoint
 	}
 	vCertificateProviderInstance := o.CertificateProviderInstance
@@ -2984,7 +2984,7 @@ func postReadExtractServerTlsPolicyMtlsPolicyClientValidationCaFields(r *ServerT
 	if err := extractServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceFields(r, vCertificateProviderInstance); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vCertificateProviderInstance) {
+	if !dcl.IsEmptyValueIndirect(vCertificateProviderInstance) {
 		o.CertificateProviderInstance = vCertificateProviderInstance
 	}
 	return nil

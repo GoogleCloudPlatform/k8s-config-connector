@@ -576,21 +576,21 @@ func (r *Membership) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"endpoint":           dcl.ValueOrEmptyString(nr.Endpoint),
-		"name":               dcl.ValueOrEmptyString(nr.Name),
-		"labels":             dcl.ValueOrEmptyString(nr.Labels),
-		"description":        dcl.ValueOrEmptyString(nr.Description),
-		"state":              dcl.ValueOrEmptyString(nr.State),
-		"createTime":         dcl.ValueOrEmptyString(nr.CreateTime),
-		"updateTime":         dcl.ValueOrEmptyString(nr.UpdateTime),
-		"deleteTime":         dcl.ValueOrEmptyString(nr.DeleteTime),
-		"externalId":         dcl.ValueOrEmptyString(nr.ExternalId),
-		"lastConnectionTime": dcl.ValueOrEmptyString(nr.LastConnectionTime),
-		"uniqueId":           dcl.ValueOrEmptyString(nr.UniqueId),
-		"authority":          dcl.ValueOrEmptyString(nr.Authority),
-		"infrastructureType": dcl.ValueOrEmptyString(nr.InfrastructureType),
-		"project":            dcl.ValueOrEmptyString(nr.Project),
-		"location":           dcl.ValueOrEmptyString(nr.Location),
+		"endpoint":             dcl.ValueOrEmptyString(nr.Endpoint),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"labels":               dcl.ValueOrEmptyString(nr.Labels),
+		"description":          dcl.ValueOrEmptyString(nr.Description),
+		"state":                dcl.ValueOrEmptyString(nr.State),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"delete_time":          dcl.ValueOrEmptyString(nr.DeleteTime),
+		"external_id":          dcl.ValueOrEmptyString(nr.ExternalId),
+		"last_connection_time": dcl.ValueOrEmptyString(nr.LastConnectionTime),
+		"unique_id":            dcl.ValueOrEmptyString(nr.UniqueId),
+		"authority":            dcl.ValueOrEmptyString(nr.Authority),
+		"infrastructure_type":  dcl.ValueOrEmptyString(nr.InfrastructureType),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/memberships/{{name}}", params), nil
 }

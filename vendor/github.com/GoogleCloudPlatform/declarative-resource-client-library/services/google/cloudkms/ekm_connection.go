@@ -179,12 +179,12 @@ func (r *EkmConnection) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"createTime":       dcl.ValueOrEmptyString(nr.CreateTime),
-		"serviceResolvers": dcl.ValueOrEmptyString(nr.ServiceResolvers),
-		"etag":             dcl.ValueOrEmptyString(nr.Etag),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"service_resolvers": dcl.ValueOrEmptyString(nr.ServiceResolvers),
+		"etag":              dcl.ValueOrEmptyString(nr.Etag),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/ekmConnections/{{name}}", params), nil
 }

@@ -697,7 +697,7 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 
 func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Cluster, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -705,7 +705,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -713,7 +713,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.AzureRegion) && dcl.IsNotReturnedByServer(rawDesired.AzureRegion) {
+	if dcl.IsEmptyValueIndirect(rawNew.AzureRegion) && dcl.IsEmptyValueIndirect(rawDesired.AzureRegion) {
 		rawNew.AzureRegion = rawDesired.AzureRegion
 	} else {
 		if dcl.StringCanonicalize(rawDesired.AzureRegion, rawNew.AzureRegion) {
@@ -721,7 +721,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ResourceGroupId) && dcl.IsNotReturnedByServer(rawDesired.ResourceGroupId) {
+	if dcl.IsEmptyValueIndirect(rawNew.ResourceGroupId) && dcl.IsEmptyValueIndirect(rawDesired.ResourceGroupId) {
 		rawNew.ResourceGroupId = rawDesired.ResourceGroupId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ResourceGroupId, rawNew.ResourceGroupId) {
@@ -729,35 +729,35 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Client) && dcl.IsNotReturnedByServer(rawDesired.Client) {
+	if dcl.IsEmptyValueIndirect(rawNew.Client) && dcl.IsEmptyValueIndirect(rawDesired.Client) {
 		rawNew.Client = rawDesired.Client
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Networking) && dcl.IsNotReturnedByServer(rawDesired.Networking) {
+	if dcl.IsEmptyValueIndirect(rawNew.Networking) && dcl.IsEmptyValueIndirect(rawDesired.Networking) {
 		rawNew.Networking = rawDesired.Networking
 	} else {
 		rawNew.Networking = canonicalizeNewClusterNetworking(c, rawDesired.Networking, rawNew.Networking)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ControlPlane) && dcl.IsNotReturnedByServer(rawDesired.ControlPlane) {
+	if dcl.IsEmptyValueIndirect(rawNew.ControlPlane) && dcl.IsEmptyValueIndirect(rawDesired.ControlPlane) {
 		rawNew.ControlPlane = rawDesired.ControlPlane
 	} else {
 		rawNew.ControlPlane = canonicalizeNewClusterControlPlane(c, rawDesired.ControlPlane, rawNew.ControlPlane)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Authorization) && dcl.IsNotReturnedByServer(rawDesired.Authorization) {
+	if dcl.IsEmptyValueIndirect(rawNew.Authorization) && dcl.IsEmptyValueIndirect(rawDesired.Authorization) {
 		rawNew.Authorization = rawDesired.Authorization
 	} else {
 		rawNew.Authorization = canonicalizeNewClusterAuthorization(c, rawDesired.Authorization, rawNew.Authorization)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Endpoint) && dcl.IsNotReturnedByServer(rawDesired.Endpoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Endpoint) && dcl.IsEmptyValueIndirect(rawDesired.Endpoint) {
 		rawNew.Endpoint = rawDesired.Endpoint
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Endpoint, rawNew.Endpoint) {
@@ -765,7 +765,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Uid) && dcl.IsNotReturnedByServer(rawDesired.Uid) {
+	if dcl.IsEmptyValueIndirect(rawNew.Uid) && dcl.IsEmptyValueIndirect(rawDesired.Uid) {
 		rawNew.Uid = rawDesired.Uid
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Uid, rawNew.Uid) {
@@ -773,7 +773,7 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Reconciling) && dcl.IsNotReturnedByServer(rawDesired.Reconciling) {
+	if dcl.IsEmptyValueIndirect(rawNew.Reconciling) && dcl.IsEmptyValueIndirect(rawDesired.Reconciling) {
 		rawNew.Reconciling = rawDesired.Reconciling
 	} else {
 		if dcl.BoolCanonicalize(rawDesired.Reconciling, rawNew.Reconciling) {
@@ -781,17 +781,17 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Etag) && dcl.IsNotReturnedByServer(rawDesired.Etag) {
+	if dcl.IsEmptyValueIndirect(rawNew.Etag) && dcl.IsEmptyValueIndirect(rawDesired.Etag) {
 		rawNew.Etag = rawDesired.Etag
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Etag, rawNew.Etag) {
@@ -799,12 +799,12 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Annotations) && dcl.IsNotReturnedByServer(rawDesired.Annotations) {
+	if dcl.IsEmptyValueIndirect(rawNew.Annotations) && dcl.IsEmptyValueIndirect(rawDesired.Annotations) {
 		rawNew.Annotations = rawDesired.Annotations
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.WorkloadIdentityConfig) && dcl.IsNotReturnedByServer(rawDesired.WorkloadIdentityConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.WorkloadIdentityConfig) && dcl.IsEmptyValueIndirect(rawDesired.WorkloadIdentityConfig) {
 		rawNew.WorkloadIdentityConfig = rawDesired.WorkloadIdentityConfig
 	} else {
 		rawNew.WorkloadIdentityConfig = canonicalizeNewClusterWorkloadIdentityConfig(c, rawDesired.WorkloadIdentityConfig, rawNew.WorkloadIdentityConfig)
@@ -814,13 +814,13 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.Fleet) && dcl.IsNotReturnedByServer(rawDesired.Fleet) {
+	if dcl.IsEmptyValueIndirect(rawNew.Fleet) && dcl.IsEmptyValueIndirect(rawDesired.Fleet) {
 		rawNew.Fleet = rawDesired.Fleet
 	} else {
 		rawNew.Fleet = canonicalizeNewClusterFleet(c, rawDesired.Fleet, rawNew.Fleet)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LoggingConfig) && dcl.IsNotReturnedByServer(rawDesired.LoggingConfig) {
+	if dcl.IsEmptyValueIndirect(rawNew.LoggingConfig) && dcl.IsEmptyValueIndirect(rawDesired.LoggingConfig) {
 		rawNew.LoggingConfig = rawDesired.LoggingConfig
 	} else {
 		rawNew.LoggingConfig = canonicalizeNewClusterLoggingConfig(c, rawDesired.LoggingConfig, rawNew.LoggingConfig)
@@ -897,7 +897,7 @@ func canonicalizeNewClusterNetworking(c *Client, des, nw *ClusterNetworking) *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterNetworking while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1040,7 +1040,7 @@ func canonicalizeNewClusterControlPlane(c *Client, des, nw *ClusterControlPlane)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlane while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1167,7 +1167,7 @@ func canonicalizeNewClusterControlPlaneSshConfig(c *Client, des, nw *ClusterCont
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneSshConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1283,7 +1283,7 @@ func canonicalizeNewClusterControlPlaneRootVolume(c *Client, des, nw *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneRootVolume while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1395,7 +1395,7 @@ func canonicalizeNewClusterControlPlaneMainVolume(c *Client, des, nw *ClusterCon
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneMainVolume while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1506,7 +1506,7 @@ func canonicalizeNewClusterControlPlaneDatabaseEncryption(c *Client, des, nw *Cl
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneDatabaseEncryption while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1626,7 +1626,7 @@ func canonicalizeNewClusterControlPlaneProxyConfig(c *Client, des, nw *ClusterCo
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneProxyConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1749,7 +1749,7 @@ func canonicalizeNewClusterControlPlaneReplicaPlacements(c *Client, des, nw *Clu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterControlPlaneReplicaPlacements while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1863,7 +1863,7 @@ func canonicalizeNewClusterAuthorization(c *Client, des, nw *ClusterAuthorizatio
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterAuthorization while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1976,7 +1976,7 @@ func canonicalizeNewClusterAuthorizationAdminUsers(c *Client, des, nw *ClusterAu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterAuthorizationAdminUsers while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2101,7 +2101,7 @@ func canonicalizeNewClusterWorkloadIdentityConfig(c *Client, des, nw *ClusterWor
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterWorkloadIdentityConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2222,7 +2222,7 @@ func canonicalizeNewClusterFleet(c *Client, des, nw *ClusterFleet) *ClusterFleet
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterFleet while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2336,7 +2336,7 @@ func canonicalizeNewClusterLoggingConfig(c *Client, des, nw *ClusterLoggingConfi
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2450,7 +2450,7 @@ func canonicalizeNewClusterLoggingConfigComponentConfig(c *Client, des, nw *Clus
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for ClusterLoggingConfigComponentConfig while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -5229,7 +5229,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterNetworkingFields(r, vNetworking); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworking) {
+	if !dcl.IsEmptyValueIndirect(vNetworking) {
 		r.Networking = vNetworking
 	}
 	vControlPlane := r.ControlPlane
@@ -5240,7 +5240,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterControlPlaneFields(r, vControlPlane); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vControlPlane) {
+	if !dcl.IsEmptyValueIndirect(vControlPlane) {
 		r.ControlPlane = vControlPlane
 	}
 	vAuthorization := r.Authorization
@@ -5251,7 +5251,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterAuthorizationFields(r, vAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vAuthorization) {
 		r.Authorization = vAuthorization
 	}
 	vWorkloadIdentityConfig := r.WorkloadIdentityConfig
@@ -5262,7 +5262,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterWorkloadIdentityConfigFields(r, vWorkloadIdentityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkloadIdentityConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkloadIdentityConfig) {
 		r.WorkloadIdentityConfig = vWorkloadIdentityConfig
 	}
 	vFleet := r.Fleet
@@ -5273,7 +5273,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterFleetFields(r, vFleet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFleet) {
+	if !dcl.IsEmptyValueIndirect(vFleet) {
 		r.Fleet = vFleet
 	}
 	vLoggingConfig := r.LoggingConfig
@@ -5284,7 +5284,7 @@ func extractClusterFields(r *Cluster) error {
 	if err := extractClusterLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		r.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -5301,7 +5301,7 @@ func extractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane) error 
 	if err := extractClusterControlPlaneSshConfigFields(r, vSshConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSshConfig) {
+	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
 	vRootVolume := o.RootVolume
@@ -5312,7 +5312,7 @@ func extractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane) error 
 	if err := extractClusterControlPlaneRootVolumeFields(r, vRootVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRootVolume) {
+	if !dcl.IsEmptyValueIndirect(vRootVolume) {
 		o.RootVolume = vRootVolume
 	}
 	vMainVolume := o.MainVolume
@@ -5323,7 +5323,7 @@ func extractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane) error 
 	if err := extractClusterControlPlaneMainVolumeFields(r, vMainVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMainVolume) {
+	if !dcl.IsEmptyValueIndirect(vMainVolume) {
 		o.MainVolume = vMainVolume
 	}
 	vDatabaseEncryption := o.DatabaseEncryption
@@ -5334,7 +5334,7 @@ func extractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane) error 
 	if err := extractClusterControlPlaneDatabaseEncryptionFields(r, vDatabaseEncryption); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDatabaseEncryption) {
+	if !dcl.IsEmptyValueIndirect(vDatabaseEncryption) {
 		o.DatabaseEncryption = vDatabaseEncryption
 	}
 	vProxyConfig := o.ProxyConfig
@@ -5345,7 +5345,7 @@ func extractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane) error 
 	if err := extractClusterControlPlaneProxyConfigFields(r, vProxyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProxyConfig) {
+	if !dcl.IsEmptyValueIndirect(vProxyConfig) {
 		o.ProxyConfig = vProxyConfig
 	}
 	return nil
@@ -5389,7 +5389,7 @@ func extractClusterLoggingConfigFields(r *Cluster, o *ClusterLoggingConfig) erro
 	if err := extractClusterLoggingConfigComponentConfigFields(r, vComponentConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vComponentConfig) {
+	if !dcl.IsEmptyValueIndirect(vComponentConfig) {
 		o.ComponentConfig = vComponentConfig
 	}
 	return nil
@@ -5407,7 +5407,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterNetworkingFields(r, vNetworking); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vNetworking) {
+	if !dcl.IsEmptyValueIndirect(vNetworking) {
 		r.Networking = vNetworking
 	}
 	vControlPlane := r.ControlPlane
@@ -5418,7 +5418,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterControlPlaneFields(r, vControlPlane); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vControlPlane) {
+	if !dcl.IsEmptyValueIndirect(vControlPlane) {
 		r.ControlPlane = vControlPlane
 	}
 	vAuthorization := r.Authorization
@@ -5429,7 +5429,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterAuthorizationFields(r, vAuthorization); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthorization) {
+	if !dcl.IsEmptyValueIndirect(vAuthorization) {
 		r.Authorization = vAuthorization
 	}
 	vWorkloadIdentityConfig := r.WorkloadIdentityConfig
@@ -5440,7 +5440,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterWorkloadIdentityConfigFields(r, vWorkloadIdentityConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vWorkloadIdentityConfig) {
+	if !dcl.IsEmptyValueIndirect(vWorkloadIdentityConfig) {
 		r.WorkloadIdentityConfig = vWorkloadIdentityConfig
 	}
 	vFleet := r.Fleet
@@ -5451,7 +5451,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterFleetFields(r, vFleet); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vFleet) {
+	if !dcl.IsEmptyValueIndirect(vFleet) {
 		r.Fleet = vFleet
 	}
 	vLoggingConfig := r.LoggingConfig
@@ -5462,7 +5462,7 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if err := postReadExtractClusterLoggingConfigFields(r, vLoggingConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vLoggingConfig) {
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		r.LoggingConfig = vLoggingConfig
 	}
 	return nil
@@ -5479,7 +5479,7 @@ func postReadExtractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane
 	if err := extractClusterControlPlaneSshConfigFields(r, vSshConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vSshConfig) {
+	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
 	vRootVolume := o.RootVolume
@@ -5490,7 +5490,7 @@ func postReadExtractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane
 	if err := extractClusterControlPlaneRootVolumeFields(r, vRootVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vRootVolume) {
+	if !dcl.IsEmptyValueIndirect(vRootVolume) {
 		o.RootVolume = vRootVolume
 	}
 	vMainVolume := o.MainVolume
@@ -5501,7 +5501,7 @@ func postReadExtractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane
 	if err := extractClusterControlPlaneMainVolumeFields(r, vMainVolume); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vMainVolume) {
+	if !dcl.IsEmptyValueIndirect(vMainVolume) {
 		o.MainVolume = vMainVolume
 	}
 	vDatabaseEncryption := o.DatabaseEncryption
@@ -5512,7 +5512,7 @@ func postReadExtractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane
 	if err := extractClusterControlPlaneDatabaseEncryptionFields(r, vDatabaseEncryption); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vDatabaseEncryption) {
+	if !dcl.IsEmptyValueIndirect(vDatabaseEncryption) {
 		o.DatabaseEncryption = vDatabaseEncryption
 	}
 	vProxyConfig := o.ProxyConfig
@@ -5523,7 +5523,7 @@ func postReadExtractClusterControlPlaneFields(r *Cluster, o *ClusterControlPlane
 	if err := extractClusterControlPlaneProxyConfigFields(r, vProxyConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vProxyConfig) {
+	if !dcl.IsEmptyValueIndirect(vProxyConfig) {
 		o.ProxyConfig = vProxyConfig
 	}
 	return nil
@@ -5567,7 +5567,7 @@ func postReadExtractClusterLoggingConfigFields(r *Cluster, o *ClusterLoggingConf
 	if err := extractClusterLoggingConfigComponentConfigFields(r, vComponentConfig); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vComponentConfig) {
+	if !dcl.IsEmptyValueIndirect(vComponentConfig) {
 		o.ComponentConfig = vComponentConfig
 	}
 	return nil

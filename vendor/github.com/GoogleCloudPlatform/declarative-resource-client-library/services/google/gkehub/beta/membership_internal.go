@@ -582,13 +582,13 @@ func canonicalizeMembershipDesiredState(rawDesired, rawInitial *Membership, opts
 
 func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (*Membership, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Endpoint) && dcl.IsNotReturnedByServer(rawDesired.Endpoint) {
+	if dcl.IsEmptyValueIndirect(rawNew.Endpoint) && dcl.IsEmptyValueIndirect(rawDesired.Endpoint) {
 		rawNew.Endpoint = rawDesired.Endpoint
 	} else {
 		rawNew.Endpoint = canonicalizeNewMembershipEndpoint(c, rawDesired.Endpoint, rawNew.Endpoint)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -596,12 +596,12 @@ func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -609,28 +609,28 @@ func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.State) && dcl.IsNotReturnedByServer(rawDesired.State) {
+	if dcl.IsEmptyValueIndirect(rawNew.State) && dcl.IsEmptyValueIndirect(rawDesired.State) {
 		rawNew.State = rawDesired.State
 	} else {
 		rawNew.State = canonicalizeNewMembershipState(c, rawDesired.State, rawNew.State)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.DeleteTime) && dcl.IsNotReturnedByServer(rawDesired.DeleteTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.DeleteTime) && dcl.IsEmptyValueIndirect(rawDesired.DeleteTime) {
 		rawNew.DeleteTime = rawDesired.DeleteTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.ExternalId) && dcl.IsNotReturnedByServer(rawDesired.ExternalId) {
+	if dcl.IsEmptyValueIndirect(rawNew.ExternalId) && dcl.IsEmptyValueIndirect(rawDesired.ExternalId) {
 		rawNew.ExternalId = rawDesired.ExternalId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.ExternalId, rawNew.ExternalId) {
@@ -638,12 +638,12 @@ func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.LastConnectionTime) && dcl.IsNotReturnedByServer(rawDesired.LastConnectionTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.LastConnectionTime) && dcl.IsEmptyValueIndirect(rawDesired.LastConnectionTime) {
 		rawNew.LastConnectionTime = rawDesired.LastConnectionTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UniqueId) && dcl.IsNotReturnedByServer(rawDesired.UniqueId) {
+	if dcl.IsEmptyValueIndirect(rawNew.UniqueId) && dcl.IsEmptyValueIndirect(rawDesired.UniqueId) {
 		rawNew.UniqueId = rawDesired.UniqueId
 	} else {
 		if dcl.StringCanonicalize(rawDesired.UniqueId, rawNew.UniqueId) {
@@ -651,13 +651,13 @@ func canonicalizeMembershipNewState(c *Client, rawNew, rawDesired *Membership) (
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Authority) && dcl.IsNotReturnedByServer(rawDesired.Authority) {
+	if dcl.IsEmptyValueIndirect(rawNew.Authority) && dcl.IsEmptyValueIndirect(rawDesired.Authority) {
 		rawNew.Authority = rawDesired.Authority
 	} else {
 		rawNew.Authority = canonicalizeNewMembershipAuthority(c, rawDesired.Authority, rawNew.Authority)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.InfrastructureType) && dcl.IsNotReturnedByServer(rawDesired.InfrastructureType) {
+	if dcl.IsEmptyValueIndirect(rawNew.InfrastructureType) && dcl.IsEmptyValueIndirect(rawDesired.InfrastructureType) {
 		rawNew.InfrastructureType = rawDesired.InfrastructureType
 	} else {
 	}
@@ -724,7 +724,7 @@ func canonicalizeNewMembershipEndpoint(c *Client, des, nw *MembershipEndpoint) *
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpoint while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -840,7 +840,7 @@ func canonicalizeNewMembershipEndpointGkeCluster(c *Client, des, nw *MembershipE
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointGkeCluster while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -945,7 +945,7 @@ func canonicalizeNewMembershipEndpointKubernetesMetadata(c *Client, des, nw *Mem
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointKubernetesMetadata while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1064,7 +1064,7 @@ func canonicalizeNewMembershipEndpointKubernetesResource(c *Client, des, nw *Mem
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointKubernetesResource while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1185,7 +1185,7 @@ func canonicalizeNewMembershipEndpointKubernetesResourceMembershipResources(c *C
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointKubernetesResourceMembershipResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1308,7 +1308,7 @@ func canonicalizeNewMembershipEndpointKubernetesResourceConnectResources(c *Clie
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointKubernetesResourceConnectResources while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1431,7 +1431,7 @@ func canonicalizeNewMembershipEndpointKubernetesResourceResourceOptions(c *Clien
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipEndpointKubernetesResourceResourceOptions while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1543,7 +1543,7 @@ func canonicalizeNewMembershipState(c *Client, des, nw *MembershipState) *Member
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipState while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1654,7 +1654,7 @@ func canonicalizeNewMembershipAuthority(c *Client, des, nw *MembershipAuthority)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for MembershipAuthority while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -3604,7 +3604,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipEndpointFields(r, vEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vEndpoint) {
 		r.Endpoint = vEndpoint
 	}
 	vState := r.State
@@ -3615,7 +3615,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipStateFields(r, vState); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vState) {
+	if !dcl.IsEmptyValueIndirect(vState) {
 		r.State = vState
 	}
 	vAuthority := r.Authority
@@ -3626,7 +3626,7 @@ func extractMembershipFields(r *Membership) error {
 	if err := extractMembershipAuthorityFields(r, vAuthority); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthority) {
+	if !dcl.IsEmptyValueIndirect(vAuthority) {
 		r.Authority = vAuthority
 	}
 	return nil
@@ -3640,7 +3640,7 @@ func extractMembershipEndpointFields(r *Membership, o *MembershipEndpoint) error
 	if err := extractMembershipEndpointGkeClusterFields(r, vGkeCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGkeCluster) {
+	if !dcl.IsEmptyValueIndirect(vGkeCluster) {
 		o.GkeCluster = vGkeCluster
 	}
 	vKubernetesMetadata := o.KubernetesMetadata
@@ -3651,7 +3651,7 @@ func extractMembershipEndpointFields(r *Membership, o *MembershipEndpoint) error
 	if err := extractMembershipEndpointKubernetesMetadataFields(r, vKubernetesMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKubernetesMetadata) {
+	if !dcl.IsEmptyValueIndirect(vKubernetesMetadata) {
 		o.KubernetesMetadata = vKubernetesMetadata
 	}
 	vKubernetesResource := o.KubernetesResource
@@ -3662,7 +3662,7 @@ func extractMembershipEndpointFields(r *Membership, o *MembershipEndpoint) error
 	if err := extractMembershipEndpointKubernetesResourceFields(r, vKubernetesResource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKubernetesResource) {
+	if !dcl.IsEmptyValueIndirect(vKubernetesResource) {
 		o.KubernetesResource = vKubernetesResource
 	}
 	return nil
@@ -3682,7 +3682,7 @@ func extractMembershipEndpointKubernetesResourceFields(r *Membership, o *Members
 	if err := extractMembershipEndpointKubernetesResourceResourceOptionsFields(r, vResourceOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResourceOptions) {
+	if !dcl.IsEmptyValueIndirect(vResourceOptions) {
 		o.ResourceOptions = vResourceOptions
 	}
 	return nil
@@ -3712,7 +3712,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipEndpointFields(r, vEndpoint); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vEndpoint) {
+	if !dcl.IsEmptyValueIndirect(vEndpoint) {
 		r.Endpoint = vEndpoint
 	}
 	vState := r.State
@@ -3723,7 +3723,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipStateFields(r, vState); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vState) {
+	if !dcl.IsEmptyValueIndirect(vState) {
 		r.State = vState
 	}
 	vAuthority := r.Authority
@@ -3734,7 +3734,7 @@ func postReadExtractMembershipFields(r *Membership) error {
 	if err := postReadExtractMembershipAuthorityFields(r, vAuthority); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAuthority) {
+	if !dcl.IsEmptyValueIndirect(vAuthority) {
 		r.Authority = vAuthority
 	}
 	return nil
@@ -3748,7 +3748,7 @@ func postReadExtractMembershipEndpointFields(r *Membership, o *MembershipEndpoin
 	if err := extractMembershipEndpointGkeClusterFields(r, vGkeCluster); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vGkeCluster) {
+	if !dcl.IsEmptyValueIndirect(vGkeCluster) {
 		o.GkeCluster = vGkeCluster
 	}
 	vKubernetesMetadata := o.KubernetesMetadata
@@ -3759,7 +3759,7 @@ func postReadExtractMembershipEndpointFields(r *Membership, o *MembershipEndpoin
 	if err := extractMembershipEndpointKubernetesMetadataFields(r, vKubernetesMetadata); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKubernetesMetadata) {
+	if !dcl.IsEmptyValueIndirect(vKubernetesMetadata) {
 		o.KubernetesMetadata = vKubernetesMetadata
 	}
 	vKubernetesResource := o.KubernetesResource
@@ -3770,7 +3770,7 @@ func postReadExtractMembershipEndpointFields(r *Membership, o *MembershipEndpoin
 	if err := extractMembershipEndpointKubernetesResourceFields(r, vKubernetesResource); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vKubernetesResource) {
+	if !dcl.IsEmptyValueIndirect(vKubernetesResource) {
 		o.KubernetesResource = vKubernetesResource
 	}
 	return nil
@@ -3790,7 +3790,7 @@ func postReadExtractMembershipEndpointKubernetesResourceFields(r *Membership, o 
 	if err := extractMembershipEndpointKubernetesResourceResourceOptionsFields(r, vResourceOptions); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vResourceOptions) {
+	if !dcl.IsEmptyValueIndirect(vResourceOptions) {
 		o.ResourceOptions = vResourceOptions
 	}
 	return nil

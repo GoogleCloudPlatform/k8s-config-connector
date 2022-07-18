@@ -557,7 +557,7 @@ func canonicalizeTcpRouteDesiredState(rawDesired, rawInitial *TcpRoute, opts ...
 
 func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*TcpRoute, error) {
 
-	if dcl.IsNotReturnedByServer(rawNew.Name) && dcl.IsNotReturnedByServer(rawDesired.Name) {
+	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
 		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
@@ -565,17 +565,17 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.CreateTime) && dcl.IsNotReturnedByServer(rawDesired.CreateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.UpdateTime) && dcl.IsNotReturnedByServer(rawDesired.UpdateTime) {
+	if dcl.IsEmptyValueIndirect(rawNew.UpdateTime) && dcl.IsEmptyValueIndirect(rawDesired.UpdateTime) {
 		rawNew.UpdateTime = rawDesired.UpdateTime
 	} else {
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Description) && dcl.IsNotReturnedByServer(rawDesired.Description) {
+	if dcl.IsEmptyValueIndirect(rawNew.Description) && dcl.IsEmptyValueIndirect(rawDesired.Description) {
 		rawNew.Description = rawDesired.Description
 	} else {
 		if dcl.StringCanonicalize(rawDesired.Description, rawNew.Description) {
@@ -583,13 +583,13 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Rules) && dcl.IsNotReturnedByServer(rawDesired.Rules) {
+	if dcl.IsEmptyValueIndirect(rawNew.Rules) && dcl.IsEmptyValueIndirect(rawDesired.Rules) {
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewTcpRouteRulesSlice(c, rawDesired.Rules, rawNew.Rules)
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Routers) && dcl.IsNotReturnedByServer(rawDesired.Routers) {
+	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
 		rawNew.Routers = rawDesired.Routers
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
@@ -597,7 +597,7 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Meshes) && dcl.IsNotReturnedByServer(rawDesired.Meshes) {
+	if dcl.IsEmptyValueIndirect(rawNew.Meshes) && dcl.IsEmptyValueIndirect(rawDesired.Meshes) {
 		rawNew.Meshes = rawDesired.Meshes
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawNew.Meshes) {
@@ -605,7 +605,7 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Gateways) && dcl.IsNotReturnedByServer(rawDesired.Gateways) {
+	if dcl.IsEmptyValueIndirect(rawNew.Gateways) && dcl.IsEmptyValueIndirect(rawDesired.Gateways) {
 		rawNew.Gateways = rawDesired.Gateways
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Gateways, rawNew.Gateways) {
@@ -613,7 +613,7 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		}
 	}
 
-	if dcl.IsNotReturnedByServer(rawNew.Labels) && dcl.IsNotReturnedByServer(rawDesired.Labels) {
+	if dcl.IsEmptyValueIndirect(rawNew.Labels) && dcl.IsEmptyValueIndirect(rawDesired.Labels) {
 		rawNew.Labels = rawDesired.Labels
 	} else {
 	}
@@ -622,7 +622,7 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 
 	rawNew.Location = rawDesired.Location
 
-	if dcl.IsNotReturnedByServer(rawNew.SelfLink) && dcl.IsNotReturnedByServer(rawDesired.SelfLink) {
+	if dcl.IsEmptyValueIndirect(rawNew.SelfLink) && dcl.IsEmptyValueIndirect(rawDesired.SelfLink) {
 		rawNew.SelfLink = rawDesired.SelfLink
 	} else {
 		if dcl.StringCanonicalize(rawDesired.SelfLink, rawNew.SelfLink) {
@@ -688,7 +688,7 @@ func canonicalizeNewTcpRouteRules(c *Client, des, nw *TcpRouteRules) *TcpRouteRu
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TcpRouteRules while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -807,7 +807,7 @@ func canonicalizeNewTcpRouteRulesMatches(c *Client, des, nw *TcpRouteRulesMatche
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TcpRouteRulesMatches while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -926,7 +926,7 @@ func canonicalizeNewTcpRouteRulesAction(c *Client, des, nw *TcpRouteRulesAction)
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TcpRouteRulesAction while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -1049,7 +1049,7 @@ func canonicalizeNewTcpRouteRulesActionDestinations(c *Client, des, nw *TcpRoute
 	}
 
 	if nw == nil {
-		if dcl.IsNotReturnedByServer(des) {
+		if dcl.IsEmptyValueIndirect(des) {
 			c.Config.Logger.Info("Found explicitly empty value for TcpRouteRulesActionDestinations while comparing non-nil desired to nil actual.  Returning desired object.")
 			return des
 		}
@@ -2061,7 +2061,7 @@ func extractTcpRouteRulesFields(r *TcpRoute, o *TcpRouteRules) error {
 	if err := extractTcpRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil
@@ -2088,7 +2088,7 @@ func postReadExtractTcpRouteRulesFields(r *TcpRoute, o *TcpRouteRules) error {
 	if err := extractTcpRouteRulesActionFields(r, vAction); err != nil {
 		return err
 	}
-	if !dcl.IsNotReturnedByServer(vAction) {
+	if !dcl.IsEmptyValueIndirect(vAction) {
 		o.Action = vAction
 	}
 	return nil

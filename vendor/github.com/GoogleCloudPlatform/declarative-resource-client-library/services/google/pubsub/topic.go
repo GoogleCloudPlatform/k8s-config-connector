@@ -98,11 +98,11 @@ func (r *Topic) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                 dcl.ValueOrEmptyString(nr.Name),
-		"kmsKeyName":           dcl.ValueOrEmptyString(nr.KmsKeyName),
-		"labels":               dcl.ValueOrEmptyString(nr.Labels),
-		"messageStoragePolicy": dcl.ValueOrEmptyString(nr.MessageStoragePolicy),
-		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"name":                   dcl.ValueOrEmptyString(nr.Name),
+		"kms_key_name":           dcl.ValueOrEmptyString(nr.KmsKeyName),
+		"labels":                 dcl.ValueOrEmptyString(nr.Labels),
+		"message_storage_policy": dcl.ValueOrEmptyString(nr.MessageStoragePolicy),
+		"project":                dcl.ValueOrEmptyString(nr.Project),
 	}
 	return dcl.Nprintf("projects/{{project}}/topics/{{name}}", params), nil
 }
