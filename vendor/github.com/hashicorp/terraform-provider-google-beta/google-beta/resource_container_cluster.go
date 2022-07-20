@@ -521,43 +521,11 @@ func resourceContainerCluster() *schema.Resource {
 			},
 
 			"enable_tpu": {
-				Type:          schema.TypeBool,
-				Optional:      true,
-				ForceNew:      true,
-				Description:   `Whether to enable Cloud TPU resources in this cluster.`,
-				ConflictsWith: []string{"tpu_config"},
-				Computed:      true,
-				// TODO: deprecate when tpu_config is correctly returned by the API
-				// Deprecated: "Deprecated in favor of tpu_config",
-			},
-
-			"tpu_config": {
-				Type:        schema.TypeList,
+				Type:        schema.TypeBool,
 				Optional:    true,
-				Computed:    true,
-				MaxItems:    1,
-				Description: `TPU configuration for the cluster.`,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"enabled": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							ForceNew:    true,
-							Description: `Whether Cloud TPU integration is enabled or not`,
-						},
-						"ipv4_cidr_block": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: `IPv4 CIDR block reserved for Cloud TPU in the VPC.`,
-						},
-						"use_service_networking": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							ForceNew:    true,
-							Description: `Whether to use service networking for Cloud TPU or not`,
-						},
-					},
-				},
+				ForceNew:    true,
+				Description: `Whether to enable Cloud TPU resources in this cluster.`,
+				Default:     false,
 			},
 
 			"enable_legacy_abac": {
@@ -1656,10 +1624,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("identity_service_config"); ok {
 		cluster.IdentityServiceConfig = expandIdentityServiceConfig(v)
-	}
-
-	if v, ok := d.GetOk("tpu_config"); ok {
-		cluster.TpuConfig = expandContainerClusterTpuConfig(v)
 	}
 
 	if v, ok := d.GetOk("resource_usage_export_config"); ok {
@@ -3729,19 +3693,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 		}
 	}
 	return mc
-}
-
-func expandContainerClusterTpuConfig(configured interface{}) *container.TpuConfig {
-	l := configured.([]interface{})
-	if len(l) == 0 || l[0] == nil {
-		return nil
-	}
-
-	config := l[0].(map[string]interface{})
-	return &container.TpuConfig{
-		Enabled:              config["enabled"].(bool),
-		UseServiceNetworking: config["use_service_networking"].(bool),
-	}
 }
 
 func flattenNotificationConfig(c *container.NotificationConfig) []map[string]interface{} {

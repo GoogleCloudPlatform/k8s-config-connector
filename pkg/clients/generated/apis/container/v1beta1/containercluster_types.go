@@ -653,19 +653,6 @@ type ClusterTaint struct {
 	Value string `json:"value"`
 }
 
-type ClusterTpuConfig struct {
-	/* Immutable. Whether Cloud TPU integration is enabled or not. */
-	Enabled bool `json:"enabled"`
-
-	/* IPv4 CIDR block reserved for Cloud TPU in the VPC. */
-	// +optional
-	Ipv4CidrBlock *string `json:"ipv4CidrBlock,omitempty"`
-
-	/* Immutable. Whether to use service networking for Cloud TPU or not. */
-	// +optional
-	UseServiceNetworking *bool `json:"useServiceNetworking,omitempty"`
-}
-
 type ClusterValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
@@ -881,10 +868,6 @@ type ContainerClusterSpec struct {
 	/*  */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
-
-	/* TPU configuration for the cluster. */
-	// +optional
-	TpuConfig *ClusterTpuConfig `json:"tpuConfig,omitempty"`
 
 	/* Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it. */
 	// +optional

@@ -301,10 +301,6 @@ removes the default node pool created during cluster creation.
     external: string
     name: string
     namespace: string
-  tpuConfig:
-    enabled: boolean
-    ipv4CidrBlock: string
-    useServiceNetworking: boolean
   verticalPodAutoscaling:
     enabled: boolean
   workloadIdentityConfig:
@@ -2533,46 +2529,6 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>tpuConfig</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}TPU configuration for the cluster.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>tpuConfig.enabled</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Whether Cloud TPU integration is enabled or not.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>tpuConfig.ipv4CidrBlock</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}IPv4 CIDR block reserved for Cloud TPU in the VPC.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>tpuConfig.useServiceNetworking</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Whether to use service networking for Cloud TPU or not.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

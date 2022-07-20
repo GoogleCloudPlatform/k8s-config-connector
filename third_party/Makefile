@@ -264,3 +264,7 @@ apply-patches:
 	# Change field "layer_7_ddos_defense_config" to "layer7_ddos_defense_config"
 	# See b/220930832 for context
 	git apply ../hack/terraform-overrides/compute_security_policy_fieldname.patch
+	# tpu_config field is causing constant diff during ContainerCluster resource reconciliation.
+	# Ignore the field for now to fix build break and unblock KCC releases.
+	# See b/239812293 for context
+	git apply ../hack/terraform-overrides/container_cluster_ignore_tpuconfig.patch
