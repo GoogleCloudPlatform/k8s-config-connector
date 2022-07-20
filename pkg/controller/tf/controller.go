@@ -91,7 +91,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
 		Watches(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %v", err)
@@ -173,59 +173,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
 	r.logger.Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
-}
-
-// TODO(b/238913094): remove function after 100% of TF resources have been approved for immediate reconcilation
-func supportsImmediateReconciliation(resourceKind string) bool {
-	switch resourceKind {
-	case "ComputeTargetPool",
-		"ComputeNetworkEndpointGroup":
-		return true
-	}
-	return false
-}
-
-func (r *Reconciler) supportsImmediateReconciliations() bool {
-	return r.immediateReconcileRequests != nil
-}
-
-func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
-	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
-	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
-		// Requeue resource for immediate reconciliation
-		// with exponential backoff applied
-		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
-	}
-	depWatcher, err := dependencywatcher.CreateWatchForResource(resource, r.mgr.GetConfig())
-	if err != nil {
-		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
-	}
-	if err := depWatcher.WatchReferenceUntilReady(ctx, refNN, refGVK, func() {
-		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
-	}); err != nil {
-		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error requesting dependencyWatcher to watch reference %v %v until ready: %v", refGVK.Kind, refNN, err))
-	}
-	r.logger.Info("dependencyWatcher successfully created watch requested by resource on reference",
-		"resource", resource.GetNamespacedName(),
-		"resourceGVK", resource.GroupVersionKind(),
-		"reference", refNN,
-		"referenceGVK", refGVK)
-	// Do not requeue resource for immediate reconciliation. Wait for either
-	// the next periodic reconciliation or for the referenced resource to be ready (which
-	// triggers a reconciliation), whichever comes first.
-	return false, r.HandleUnresolvableDeps(ctx, resource, originErr)
-}
-
-// enqueueForImmediateReconciliation enqueues the given resource for immediate
-// reconciliation. Note that this function only takes in the name and namespace
-// of the resource and not its GVK since the controller instance that this
-// reconcile instance belongs to can only reconcile resources of one GVK.
-func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.NamespacedName) {
-	genEvent := event.GenericEvent{}
-	genEvent.Object = &unstructured.Unstructured{}
-	genEvent.Object.SetNamespace(resourceNN.Namespace)
-	genEvent.Object.SetName(resourceNN.Name)
-	r.immediateReconcileRequests <- genEvent
 }
 
 func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
@@ -347,6 +294,59 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %v", err))
 	}
 	return false, r.handleUpToDate(ctx, krmResource, newState, secretVersions)
+}
+
+// TODO(b/238913094): remove function after 100% of TF resources have been approved for immediate reconcilation
+func supportsImmediateReconciliation(resourceKind string) bool {
+	switch resourceKind {
+	case "ComputeTargetPool",
+		"ComputeNetworkEndpointGroup":
+		return true
+	}
+	return false
+}
+
+func (r *Reconciler) supportsImmediateReconciliations() bool {
+	return r.immediateReconcileRequests != nil
+}
+
+func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnresolvableResourceRefs(originErr)
+	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
+		// Requeue resource for immediate reconciliation
+		// with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
+	}
+	depWatcher, err := dependencywatcher.CreateWatchForResource(resource, r.mgr.GetConfig())
+	if err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
+	}
+	if err := depWatcher.WatchReferenceUntilReady(ctx, refNN, refGVK, func() {
+		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
+	}); err != nil {
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error requesting dependencyWatcher to watch reference %v %v until ready: %v", refGVK.Kind, refNN, err))
+	}
+	r.logger.Info("dependencyWatcher successfully created watch requested by resource on reference",
+		"resource", resource.GetNamespacedName(),
+		"resourceGVK", resource.GroupVersionKind(),
+		"reference", refNN,
+		"referenceGVK", refGVK)
+	// Do not requeue resource for immediate reconciliation. Wait for either
+	// the next periodic reconciliation or for the referenced resource to be ready (which
+	// triggers a reconciliation), whichever comes first.
+	return false, r.HandleUnresolvableDeps(ctx, resource, originErr)
+}
+
+// enqueueForImmediateReconciliation enqueues the given resource for immediate
+// reconciliation. Note that this function only takes in the name and namespace
+// of the resource and not its GVK since the controller instance that this
+// reconcile instance belongs to can only reconcile resources of one GVK.
+func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.NamespacedName) {
+	genEvent := event.GenericEvent{}
+	genEvent.Object = &unstructured.Unstructured{}
+	genEvent.Object.SetNamespace(resourceNN.Namespace)
+	genEvent.Object.SetName(resourceNN.Name)
+	r.immediateReconcileRequests <- genEvent
 }
 
 func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, resource *krmtotf.Resource) error {
