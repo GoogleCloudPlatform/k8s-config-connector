@@ -107,10 +107,10 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
-		LifecycleHandler: lifecyclehandler.LifecycleHandler{
-			Client:   mgr.GetClient(),
-			Recorder: mgr.GetEventRecorderFor(controllerName),
-		},
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			mgr.GetClient(),
+			mgr.GetEventRecorderFor(controllerName),
+		),
 		resourceLeaser: leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
 		mgr:            mgr,
 		crd:            crd,

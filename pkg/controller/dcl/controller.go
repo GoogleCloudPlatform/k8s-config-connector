@@ -136,10 +136,10 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 	}
 
 	return &Reconciler{
-		LifecycleHandler: lifecyclehandler.LifecycleHandler{
-			Client:   mgr.GetClient(),
-			Recorder: mgr.GetEventRecorderFor(controllerName),
-		},
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			mgr.GetClient(),
+			mgr.GetEventRecorderFor(controllerName),
+		),
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},

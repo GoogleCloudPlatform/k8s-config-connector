@@ -40,7 +40,20 @@ import (
 // The LifecycleHandler contains common methods to handle the lifecycle of the reconciliation
 type LifecycleHandler struct {
 	client.Client
-	Recorder record.EventRecorder
+	Recorder   record.EventRecorder
+	fieldOwner string
+}
+
+func NewLifecycleHandler(c client.Client, r record.EventRecorder) LifecycleHandler {
+	return NewLifecycleHandlerWithFieldOwner(c, r, k8s.ControllerManagedFieldManager)
+}
+
+func NewLifecycleHandlerWithFieldOwner(c client.Client, r record.EventRecorder, fieldOwner string) LifecycleHandler {
+	return LifecycleHandler{
+		Client:     c,
+		Recorder:   r,
+		fieldOwner: fieldOwner,
+	}
 }
 
 func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resource) error {
@@ -48,7 +61,7 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 	if err != nil {
 		return err
 	}
-	if err := r.Client.Status().Update(ctx, u, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
+	if err := r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		return fmt.Errorf("error with status update call to API server: %v", err)
 	}
 	// rejections by some validating webhooks won't be returned as an error; instead, they will be
@@ -74,7 +87,7 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 		return err
 	}
 	removeSystemLabels(u)
-	if err := r.Client.Update(ctx, u, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
+	if err := r.Client.Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
 			return fmt.Errorf("couldn't update the api server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
 		}

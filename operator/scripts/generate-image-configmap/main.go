@@ -50,7 +50,7 @@ func main() {
 	ctx := context.Background()
 	cc := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
-			Mode:                 "cluster",
+			Mode:                 k8s.NamespacedMode,
 			GoogleServiceAccount: "someGSA",
 		},
 	}
@@ -74,6 +74,18 @@ func main() {
 	}
 	objects := make([]*manifest.Object, 0)
 	for _, str := range manifestStrs {
+		m, err := manifest.ParseObjects(ctx, str)
+		if err != nil {
+			log.Fatalf("parsing manifest: %v", err)
+		}
+		objects = append(objects, m.Items...)
+	}
+
+	namespacedStrs, err := r.LoadNamespacedComponents(ctx, cc.ComponentName(), version.Version)
+	if err != nil {
+		log.Fatalf("error loading namespaced components for package %v of version %v: %v", version.Package, version.Version, err)
+	}
+	for _, str := range namespacedStrs {
 		m, err := manifest.ParseObjects(ctx, str)
 		if err != nil {
 			log.Fatalf("parsing manifest: %v", err)

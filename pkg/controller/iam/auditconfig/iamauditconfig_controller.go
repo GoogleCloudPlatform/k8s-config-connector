@@ -64,10 +64,10 @@ func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemapp
 func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
 	converter *conversion.Converter, dclConfig *mmdcl.Config) (*Reconciler, error) {
 	r := Reconciler{
-		LifecycleHandler: lifecyclehandler.LifecycleHandler{
-			Client:   mgr.GetClient(),
-			Recorder: mgr.GetEventRecorderFor(controllerName),
-		},
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			mgr.GetClient(),
+			mgr.GetEventRecorderFor(controllerName),
+		),
 		Client:    mgr.GetClient(),
 		iamClient: kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig).TFIAMClient,
 		scheme:    mgr.GetScheme(),

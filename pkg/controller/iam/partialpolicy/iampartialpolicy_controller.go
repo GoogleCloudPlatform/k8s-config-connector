@@ -70,10 +70,10 @@ func Add(mgr manager.Manager, tfProvider *tfschema.Provider, smLoader *servicema
 func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
 	converter *conversion.Converter, dclConfig *mmdcl.Config) (*ReconcileIAMPartialPolicy, error) {
 	r := ReconcileIAMPartialPolicy{
-		LifecycleHandler: lifecyclehandler.LifecycleHandler{
-			Client:   mgr.GetClient(),
-			Recorder: mgr.GetEventRecorderFor(controllerName),
-		},
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			mgr.GetClient(),
+			mgr.GetEventRecorderFor(controllerName),
+		),
 		Client:    mgr.GetClient(),
 		iamClient: iamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig),
 		scheme:    mgr.GetScheme(),
