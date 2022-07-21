@@ -21,12 +21,12 @@ import (
 	"time"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dependencywatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclclientconfig "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -320,27 +320,37 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		// with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
 	}
-	depWatcher, err := dependencywatcher.CreateWatchForResource(resource, r.mgr.GetConfig())
+
+	logger := r.logger.WithValues(
+		"resource", resource.GetNamespacedName(),
+		"resourceGVK", resource.GroupVersionKind(),
+		"reference", refNN,
+		"referenceGVK", refGVK)
+	// Create a logger for ResourceWatcher that contains info
+	// about the referencing resource. This is done since the
+	// messages logged by ResourceWatcher only include the
+	// information of the resource it is watching by default.
+	watcherLogger := r.logger.WithValues(
+		"referencingResource", resource.GetNamespacedName(),
+		"referencingResourceGVK", resource.GroupVersionKind())
+	watcher, err := resourcewatcher.New(r.mgr.GetConfig(), watcherLogger)
 	if err != nil {
-		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error creating dependencyWatcher to watch reference: %v %v: %v", refGVK.Kind, refNN, err))
+		return false, r.HandleUpdateFailed(ctx, resource, fmt.Errorf("error initializing new resourcewatcher: %w", err))
 	}
+
 	go func() {
-		logger := r.logger.WithValues(
-			"resource", resource.GetNamespacedName(),
-			"resourceGVK", resource.GroupVersionKind(),
-			"reference", refNN,
-			"referenceGVK", refGVK)
 		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := depWatcher.WaitForReferenceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
 		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
 		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
 	}()
+
 	// Do not requeue resource immediately for reconciliation. Wait for either
 	// the next periodic reconciliation or for the referenced resource to be ready (which
 	// triggers a reconciliation), whichever comes first.
