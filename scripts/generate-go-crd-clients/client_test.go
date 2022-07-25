@@ -94,6 +94,30 @@ func TestSpannerInstanceGoClient(t *testing.T) {
 func TestComputeInstanceGoClient(t *testing.T) {
 	client := computeclient.NewForConfigOrDie(mgr.GetConfig())
 	testId := testvariable.NewUniqueId()
+
+	// The ComputeAddress is referenced by the ComputeInstance via the
+	// `networkIpRef` field.
+	computeAddressName := "computeaddress"
+	location := "europe-west1"
+	addressType := "INTERNAL"
+	address := "10.0.42.42"
+	purpose := "GCE_ENDPOINT"
+
+	computeAddress := computev1beta1.ComputeAddress{
+		// TypeMeta (Kind/APIVersion) is automatically filled out
+		ObjectMeta: v1.ObjectMeta{
+			Name:      computeAddressName,
+			Namespace: testId,
+		},
+		Spec: computev1beta1.ComputeAddressSpec{
+			Location:    location,
+			Address:     &address,
+			AddressType: &addressType,
+			Purpose:     &purpose,
+		},
+	}
+
+	computeInstanceName := "computeinstance"
 	autoDelete := true
 	bootDiskSize := 20
 	bootDiskType := "pd-ssd"
@@ -102,7 +126,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 	computeInstance := computev1beta1.ComputeInstance{
 		// TypeMeta (Kind/APIVersion) is automatically filled out
 		ObjectMeta: v1.ObjectMeta{
-			Name:      "computeinstance",
+			Name:      computeInstanceName,
 			Namespace: testId,
 			Labels:    map[string]string{"key": "value"},
 		},
@@ -127,27 +151,61 @@ func TestComputeInstanceGoClient(t *testing.T) {
 					SubnetworkRef: &v1alpha1.ResourceRef{
 						External: "default",
 					},
+					NetworkIpRef: &v1alpha1.ResourceRef{
+						Kind: "ComputeAddress",
+						Name: computeAddressName,
+					},
 				},
 			},
 		},
 	}
 	testcontroller.SetupNamespaceForDefaultProject(t, mgr.GetClient(), testId)
+
+	// Create the dependent ComputeAddress first.
+	if _, err := client.ComputeAddresses(testId).Create(context.TODO(), &computeAddress, v1.CreateOptions{}); err != nil {
+		t.Fatalf("Error creating ComputeAddress: %v", err)
+	}
+
+	// Verify that the referenced field, `spec.address` field, has been
+	// properly populated in the ComputeAddress before referencing it in
+	// ComputeInstance
+	computeAddressNamespacedName := k8s.GetNamespacedName(&computeAddress)
+	computeAddressUnstructured := unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       "ComputeAddress",
+			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+		},
+	}
+
+	if err := mgr.GetClient().Get(context.TODO(), computeAddressNamespacedName, &computeAddressUnstructured); err != nil {
+		t.Fatalf("Error getting ComputeAddress: %v", err)
+	}
+	ip, found, err := unstructured.NestedString(computeAddressUnstructured.Object, "spec", "address")
+	if err != nil {
+		t.Errorf("Error getting `spec.address` field: %v", err)
+	}
+
+	if !found || ip == "" {
+		t.Errorf("`spec.address` field does not have any value")
+	}
+
+	// Then create the ComputeInstance.
 	if _, err := client.ComputeInstances(testId).Create(context.TODO(), &computeInstance, v1.CreateOptions{}); err != nil {
 		t.Fatalf("Error creating ComputeInstance: %v", err)
 	}
 
-	name := k8s.GetNamespacedName(&computeInstance)
-	u := unstructured.Unstructured{
+	computeInstanceNamespacedName := k8s.GetNamespacedName(&computeInstance)
+	computeInstanceUnstructured := unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       "ComputeInstance",
 			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
 		},
 	}
-	if err := mgr.GetClient().Get(context.TODO(), name, &u); err != nil {
-		t.Fatalf("Error getting compute instance: %v", err)
+	if err := mgr.GetClient().Get(context.TODO(), computeInstanceNamespacedName, &computeInstanceUnstructured); err != nil {
+		t.Fatalf("Error getting ComputeInstance: %v", err)
 	}
 
-	s, found, err := unstructured.NestedString(u.Object, "spec", "bootDisk", "initializeParams", "type")
+	s, found, err := unstructured.NestedString(computeInstanceUnstructured.Object, "spec", "bootDisk", "initializeParams", "type")
 	if err != nil {
 		t.Errorf("Error getting nested field: %v ", err)
 	}
@@ -161,12 +219,19 @@ func TestComputeInstanceGoClient(t *testing.T) {
 	}
 
 	// Cleanup
-	if err = client.ComputeInstances(testId).Delete(context.TODO(), "computeinstance", v1.DeleteOptions{}); err != nil {
-		t.Errorf("Error deleting Compute Instance: %v", err)
+	if err := client.ComputeInstances(testId).Delete(context.TODO(), computeInstanceName, v1.DeleteOptions{}); err != nil {
+		t.Errorf("Error deleting ComputeInstance: %v", err)
 	}
-	err = mgr.GetClient().Get(context.TODO(), name, &u)
+	err = mgr.GetClient().Get(context.TODO(), computeInstanceNamespacedName, &computeInstanceUnstructured)
 	if err == nil || !errors.IsNotFound(err) {
-		t.Errorf("Unexpected error value: '%v'", err)
+		t.Errorf("Expect a NotFound error after deleting ComputeInstance, but got: '%v'", err)
+	}
+	if err := client.ComputeAddresses(testId).Delete(context.TODO(), computeAddressName, v1.DeleteOptions{}); err != nil {
+		t.Errorf("Error deleting ComputeAddress: %v", err)
+	}
+	err = mgr.GetClient().Get(context.TODO(), computeAddressNamespacedName, &computeAddressUnstructured)
+	if err == nil || !errors.IsNotFound(err) {
+		t.Errorf("Expect a NotFound error after deleting ComputeAddress, but got: '%v'", err)
 	}
 }
 
