@@ -22,7 +22,7 @@ wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
 sudo tar -xvzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 rm go${GO_VERSION}.linux-amd64.tar.gz
 
-echo PATH=/usr/local/go/bin:$PATH >> ~/.profile
+echo PATH=$PATH:/usr/local/go/bin >> ~/.profile
 source ~/.profile
 go version
 
