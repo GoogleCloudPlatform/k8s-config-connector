@@ -392,7 +392,6 @@ and is not a valid configuration.{% endverbatim %}</p>
       label-one: "value-one"
     name: pubsubtopic-sample
   spec:
-    resourceID: pubsubtopic-sample
     schemaSettings:
       schemaRef:
         name: pubsubtopic-dep

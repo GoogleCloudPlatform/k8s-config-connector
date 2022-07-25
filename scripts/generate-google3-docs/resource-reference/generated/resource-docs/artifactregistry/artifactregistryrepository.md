@@ -362,7 +362,6 @@ snapshot versions.{% endverbatim %}</p>
   spec:
     format: DOCKER
     location: us-west1
-    description: "User-provided description of the repository"
   ```
 
 
