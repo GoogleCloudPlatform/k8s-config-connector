@@ -75,6 +75,7 @@ var (
 	SERVICES = []string{
 		"container.googleapis.com",
 		"iamcredentials.googleapis.com",
+		"artifactregistry.googleapis.com",
 	}
 	organization        = testgcp.GetOrgID(nil)
 	billingAccount      = testgcp.GetBillingAccountID(nil)
@@ -194,16 +195,16 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName); err != nil {
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
 	}
 	log.Info("Uninstalling KCC...")
@@ -254,45 +255,45 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
 	// add an extra finalizer to ensure resources are not deleted, the config-connector-operator should wait
 	// until all KCC resources are deleted before deleting the related KCC pods
 	log.Info("Adding custom finalizer to prevent deletion...")
 	extraFinalizer := "extra-finalizer"
-	if err := cluster.addFinalizerToPubSubTopic(namespace, topicName, extraFinalizer); err != nil {
-		t.Fatalf("error adding finalizer to PubSubTopic: %v", err)
+	if err := cluster.addFinalizerToArtifactRegistryRepository(namespace, repoName, extraFinalizer); err != nil {
+		t.Fatalf("error adding finalizer to ArtifactRegistryRepository: %v", err)
 	}
 	log.Info("Deleting Namespace...")
 	if err := cluster.deleteNamespace(namespace); err != nil {
 		t.Fatalf("error deleting namespace: %v", err)
 	}
 	// Sometimes, it takes a long time for k8s to cascade delete KCC resource CRs under the deleted namespace.
-	// Therefore we perform a direct deletion on the PubSubTopic object to speed things up.
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName, "--wait=false"); err != nil {
+	// Therefore we perform a direct deletion on the ArtifactRegistryRepository object to speed things up.
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName, "--wait=false"); err != nil {
 		t.Fatal(err)
 	}
 	// The CNRM manager pod should still be running as the operator should wait until all CNRM resources deleted before
-	// deleting the manager pods. This check ensures the manager is able to remove its finalizer from the PubSubTopic.
-	log.Info("Waiting for CNRM finalizer to be removed from PubSubTopic...")
-	if err := cluster.waitForCNRMFinalizersToBeRemovedFromPubSubTopic(namespace, topicName); err != nil {
-		t.Fatalf("error waiting for CNRM finalizer to be removed from PubSubTopic: %v", err)
+	// deleting the manager pods. This check ensures the manager is able to remove its finalizer from the ArtifactRegistryRepository.
+	log.Info("Waiting for CNRM finalizer to be removed from ArtifactRegistryRepository...")
+	if err := cluster.waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository(namespace, repoName); err != nil {
+		t.Fatalf("error waiting for CNRM finalizer to be removed from ArtifactRegistryRepository: %v", err)
 	}
-	// The config connector context should NOT be removed as the PubSubTopic has not yet been removed due to its extra finalizer
+	// The config connector context should NOT be removed as the ArtifactRegistryRepository has not yet been removed due to its extra finalizer
 	log.Info("Verifying the ConfigConnectorContext still exists but is unhealthy...")
 	if err := cluster.waitForConfigConnectorContextToBeUnhealthy(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
 		t.Fatalf("error verifying the ConfigConnectorContext's health: %v", err)
 	}
 	log.Info("Removing custom finalizer to enable deletion...")
-	if err := cluster.removeFinalizerToPubSubTopic(namespace, topicName, extraFinalizer); err != nil {
-		t.Fatalf("error removing finalizer from PubSubTopic: %v", err)
+	if err := cluster.removeFinalizerToArtifactRegistryRepository(namespace, repoName, extraFinalizer); err != nil {
+		t.Fatalf("error removing finalizer from ArtifactRegistryRepository: %v", err)
 	}
 	log.Info("Waiting for ConfigConnectorContext to be removed...")
 	if err := cluster.waitForConfigConnectorContextToBeRemoved(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
@@ -344,16 +345,16 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName); err != nil {
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
 	}
 	log.Info("Uninstalling KCC...")
@@ -403,16 +404,16 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName); err != nil {
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
 	}
 	log.Info("Uninstalling KCC...")
@@ -464,19 +465,19 @@ func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
 		t.Fatalf("error uninstalling KCC: %v", err)
 	}
-	if err := checkPubSubTopicExistsOnGCP(topicName, f.projectID); err != nil {
+	if err := checkArtifactRegistryRepositoryExistsOnGCP(repoName, f.projectID); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -521,23 +522,23 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopicShouldFail(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepositoryShouldFail(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
-	ok, err := cluster.doesPubSubTopicHaveFinalizer(namespace, topicName, k8s.KCCFinalizer)
+	ok, err := cluster.doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoName, k8s.KCCFinalizer)
 	if err != nil {
-		t.Fatalf("error checking if PubSubTopic has finalizer: %v", err)
+		t.Fatalf("error checking if ArtifactRegistryRepository has finalizer: %v", err)
 	}
 	if ok {
-		t.Fatalf("expected PubSubTopic to not have finalizer '%v', but it does", k8s.KCCFinalizer)
+		t.Fatalf("expected ArtifactRegistryRepository to not have finalizer '%v', but it does", k8s.KCCFinalizer)
 	}
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName); err != nil {
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -585,13 +586,13 @@ func TestUpgrade(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
 	}
-	topicName, topicYAMLDir, err := getPubSubTopicSample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting PubSubTopic sample from KCC release assets: %v", err)
+		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
 	}
-	log.Info("Creating PubSubTopic...")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error creating PubSubTopic: %v", err)
+	log.Info("Creating ArtifactRegistryRepository...")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
 	}
 	log.Info("Upgrading the operator to the latest version")
 	manifestsDir, _, err = getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
@@ -607,12 +608,12 @@ func TestUpgrade(t *testing.T) {
 		t.Fatalf("error waitting for ConfigConnector to be healthy: %v", err)
 	}
 	checkIfKCCHasUpgradedToTheLatestVersion(t, cluster, log)
-	log.Info("Re-applying PubSubTopic")
-	if err := cluster.createPubSubTopic(namespace, topicName, topicYAMLDir); err != nil {
-		t.Fatalf("error re-applying PubSubTopic: %v", err)
+	log.Info("Re-applying ArtifactRegistryRepository")
+	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
+		t.Fatalf("error re-applying ArtifactRegistryRepository: %v", err)
 	}
-	log.Info("Deleting PubSubTopic...")
-	if err := cluster.deletePubSubTopic(namespace, topicName); err != nil {
+	log.Info("Deleting ArtifactRegistryRepository...")
+	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
 	}
 	log.Info("Deleting ConfigConnectorContext...")
@@ -915,11 +916,11 @@ func setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID str
 	return nil
 }
 
-func getPubSubTopicSample(kccReleaseAssetsDir, uniqueId string) (topicName string, topicYAMLDir string, err error) {
-	topicYAMLDir = path.Join(kccReleaseAssetsDir, "samples", "resources", "pubsubtopic")
-	yamlPaths, err := getYAMLFilesInDir(topicYAMLDir)
+func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (repoName string, repoYAMLDir string, err error) {
+	repoYAMLDir = path.Join(kccReleaseAssetsDir, "samples", "resources", "artifactregistryrepository")
+	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
-		return "", "", fmt.Errorf("error getting paths to YAML files in PubSubTopic sample directory '%v': %v", topicYAMLDir, err)
+		return "", "", fmt.Errorf("error getting paths to YAML files in ArtifactRegistryRepository sample directory '%v': %v", repoYAMLDir, err)
 	}
 	for _, yamlPath := range yamlPaths {
 		b, err := ioutil.ReadFile(yamlPath)
@@ -935,18 +936,18 @@ func getPubSubTopicSample(kccReleaseAssetsDir, uniqueId string) (topicName strin
 			return "", "", fmt.Errorf("error updating file '%v': %v", yamlPath, err)
 		}
 	}
-	topicName, err = getTopicNameFromPubSubTopicSampleDir(topicYAMLDir)
+	repoName, err = getRepoNameFromArtifactRegistryRepositorySampleDir(repoYAMLDir)
 	if err != nil {
-		return "", "", fmt.Errorf("error getting name of PubSubTopic for PubSubTopic sample directory '%v': %v", topicYAMLDir, err)
+		return "", "", fmt.Errorf("error getting name of ArtifactRegistryRepository for ArtifactRegistryRepository sample directory '%v': %v", repoYAMLDir, err)
 	}
-	return topicName, topicYAMLDir, nil
+	return repoName, repoYAMLDir, nil
 }
 
-func getTopicNameFromPubSubTopicSampleDir(topicYAMLDir string) (string, error) {
+func getRepoNameFromArtifactRegistryRepositorySampleDir(repoYAMLDir string) (string, error) {
 	unstructs := make([]*unstructured.Unstructured, 0)
-	yamlPaths, err := getYAMLFilesInDir(topicYAMLDir)
+	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
-		return "", fmt.Errorf("error getting paths to YAML files in directory '%v': %v", topicYAMLDir, err)
+		return "", fmt.Errorf("error getting paths to YAML files in directory '%v': %v", repoYAMLDir, err)
 	}
 	for _, yamlPath := range yamlPaths {
 		u, err := utils.ReadFileToUnstructs(yamlPath)
@@ -955,19 +956,19 @@ func getTopicNameFromPubSubTopicSampleDir(topicYAMLDir string) (string, error) {
 		}
 		unstructs = append(unstructs, u...)
 	}
-	topicNames := make([]string, 0)
+	repoNames := make([]string, 0)
 	for _, u := range unstructs {
-		if u.GetKind() == "PubSubTopic" {
-			topicNames = append(topicNames, u.GetName())
+		if u.GetKind() == "ArtifactRegistryRepository" {
+			repoNames = append(repoNames, u.GetName())
 		}
 	}
-	switch len(topicNames) {
+	switch len(repoNames) {
 	case 0:
-		return "", fmt.Errorf("no PubSubTopic found in directory '%v'", topicYAMLDir)
+		return "", fmt.Errorf("no ArtifactRegistryRepository found in directory '%v'", repoYAMLDir)
 	case 1:
-		return topicNames[0], nil
+		return repoNames[0], nil
 	default:
-		return "", fmt.Errorf("multiple PubSubTopics found in directory '%v'", topicYAMLDir)
+		return "", fmt.Errorf("multiple ArtifactRegistryRepositories found in directory '%v'", repoYAMLDir)
 	}
 }
 
@@ -989,54 +990,54 @@ func getYAMLFilesInDir(dir string) (yamlPaths []string, err error) {
 	return yamlPaths, nil
 }
 
-func (c *cluster) createPubSubTopic(namespace, topicName, topicYAMLDir string) error {
-	if err := c.createPubSubTopicAndWait(namespace, topicName, topicYAMLDir); err != nil {
+func (c *cluster) createArtifactRegistryRepository(namespace, repoName, repoYAMLDir string) error {
+	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
 		if err == wait.ErrWaitTimeout {
-			out, _ := c.kubectl.get("-n", namespace, "pubsubtopic", topicName, "-o", "yaml")
-			return fmt.Errorf("timed out waiting for PubSubTopic to reach an UpToDate state:\n%v", out)
+			out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
+			return fmt.Errorf("timed out waiting for ArtifactRegistryRepository to reach an UpToDate state:\n%v", out)
 		}
 		return err
 	}
 	return nil
 }
 
-func (c *cluster) createPubSubTopicShouldFail(namespace, topicName, topicYAMLDir string) error {
-	if err := c.createPubSubTopicAndWait(namespace, topicName, topicYAMLDir); err != nil {
+func (c *cluster) createArtifactRegistryRepositoryShouldFail(namespace, repoName, repoYAMLDir string) error {
+	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
 		if err == wait.ErrWaitTimeout {
-			return nil // i.e. PubSubTopic never reached an "UpToDate" state as expected
+			return nil // i.e. ArtifactRegistryRepository never reached an "UpToDate" state as expected
 		}
 		return err
 	}
-	// PubSubTopic ended up being created successfully contrary to expectations, so return an error
-	out, _ := c.kubectl.get("-n", namespace, "pubsubtopic", topicName, "-o", "yaml")
-	return fmt.Errorf("expected creation of PubSubTopic to fail, but got:\n%v", out)
+	// ArtifactRegistryRepository ended up being created successfully contrary to expectations, so return an error
+	out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
+	return fmt.Errorf("expected creation of ArtifactRegistryRepository to fail, but got:\n%v", out)
 }
 
-func (c *cluster) createPubSubTopicAndWait(namespace, topicName, topicYAMLDir string) error {
-	if _, err := c.kubectl.apply("-n", namespace, "-f", topicYAMLDir); err != nil {
-		return fmt.Errorf("error applying PubSubTopic: %v", err)
+func (c *cluster) createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir string) error {
+	if _, err := c.kubectl.apply("-n", namespace, "-f", repoYAMLDir); err != nil {
+		return fmt.Errorf("error applying ArtifactRegistryRepository: %v", err)
 	}
 	return wait.PollImmediate(5*time.Second, 2*time.Minute, func() (done bool, err error) {
-		c.log.Info("Getting PubSubTopic...", "name", topicName)
+		c.log.Info("Getting ArtifactRegistryRepository...", "name", repoName)
 		f := func() (interface{}, error) {
-			return c.kubectl.get("-n", namespace, "pubsubtopic", topicName, "-o", "yaml")
+			return c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 		}
 		// Sometime, polling on object returns some transient-ish connection errors;
 		// here we want to be more tolerant/robust by retrying a little more with a longer interval.
 		out, err := c.retry(f, longIntervalBackOff)
 		if err != nil {
-			return false, fmt.Errorf("error getting PubSubTopic '%v/%v': %v", namespace, topicName, err)
+			return false, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %v", namespace, repoName, err)
 		}
-		c.log.Info("Waiting for PubSubTopic to reach an UpToDate state...", "name", topicName)
+		c.log.Info("Waiting for ArtifactRegistryRepository to reach an UpToDate state...", "name", repoName)
 		return strings.Contains(out.(string), "UpToDate"), nil
 	})
 }
 
-func (c *cluster) waitForCNRMFinalizersToBeRemovedFromPubSubTopic(namespace, topicName string) error {
+func (c *cluster) waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository(namespace, repoName string) error {
 	waitFunc := func() (done bool, err error) {
-		ok, err := c.doesPubSubTopicHaveFinalizer(namespace, topicName, k8s.KCCFinalizer)
+		ok, err := c.doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoName, k8s.KCCFinalizer)
 		if err != nil {
-			return false, fmt.Errorf("error checking for the finalizer on PubSubTopic: %w", err)
+			return false, fmt.Errorf("error checking for the finalizer on ArtifactRegistryRepository: %w", err)
 		}
 		return !ok, nil
 	}
@@ -1044,22 +1045,22 @@ func (c *cluster) waitForCNRMFinalizersToBeRemovedFromPubSubTopic(namespace, top
 		if err != wait.ErrWaitTimeout {
 			return err
 		}
-		out, _ := c.kubectl.get("-n", namespace, "pubsubtopic", topicName, "-o", "yaml")
-		return fmt.Errorf("timed out waiting for the CNRM finalizers to be removed from PubSubTopic '%v/%v':\n%v", namespace, topicName, out)
+		out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
+		return fmt.Errorf("timed out waiting for the CNRM finalizers to be removed from ArtifactRegistryRepository '%v/%v':\n%v", namespace, repoName, out)
 	}
 	return nil
 }
 
-func (c *cluster) getTopicUnstructured(namespace, topicName string) (*unstructured.Unstructured, error) {
-	out, err := c.kubectl.get("-n", namespace, "pubsubtopic", topicName, "-o", "yaml")
+func (c *cluster) getArtifctRegistryRepositoryUnstructured(namespace, repoName string) (*unstructured.Unstructured, error) {
+	out, err := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 	if err != nil {
-		return nil, fmt.Errorf("error getting PubSubTopic '%v/%v': %v", namespace, topicName, err)
+		return nil, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %v", namespace, repoName, err)
 	}
-	topicUnstruct, err := utils.BytesToUnstruct([]byte(out))
+	repoUnstruct, err := utils.BytesToUnstruct([]byte(out))
 	if err != nil {
 		return nil, fmt.Errorf("error converting '%v' to unstruct: %w", out, err)
 	}
-	return topicUnstruct, err
+	return repoUnstruct, err
 }
 
 func (c *cluster) applyUnstructured(u *unstructured.Unstructured) error {
@@ -1073,12 +1074,12 @@ func (c *cluster) applyUnstructured(u *unstructured.Unstructured) error {
 	return nil
 }
 
-func (c *cluster) removeFinalizerToPubSubTopic(namespace, topicName, finalizer string) error {
-	topicUnstruct, err := c.getTopicUnstructured(namespace, topicName)
+func (c *cluster) removeFinalizerToArtifactRegistryRepository(namespace, repoName, finalizer string) error {
+	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return err
 	}
-	finalizers := append(topicUnstruct.GetFinalizers(), finalizer)
+	finalizers := append(repoUnstruct.GetFinalizers(), finalizer)
 	var newFinalizers []string
 	for _, f := range finalizers {
 		if f == finalizer {
@@ -1086,26 +1087,26 @@ func (c *cluster) removeFinalizerToPubSubTopic(namespace, topicName, finalizer s
 		}
 		newFinalizers = append(newFinalizers, f)
 	}
-	topicUnstruct.SetFinalizers(newFinalizers)
-	return c.applyUnstructured(topicUnstruct)
+	repoUnstruct.SetFinalizers(newFinalizers)
+	return c.applyUnstructured(repoUnstruct)
 }
 
-func (c *cluster) addFinalizerToPubSubTopic(namespace, topicName, finalizer string) error {
-	topicUnstruct, err := c.getTopicUnstructured(namespace, topicName)
+func (c *cluster) addFinalizerToArtifactRegistryRepository(namespace, repoName, finalizer string) error {
+	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return err
 	}
-	finalizers := append(topicUnstruct.GetFinalizers(), finalizer)
-	topicUnstruct.SetFinalizers(finalizers)
-	return c.applyUnstructured(topicUnstruct)
+	finalizers := append(repoUnstruct.GetFinalizers(), finalizer)
+	repoUnstruct.SetFinalizers(finalizers)
+	return c.applyUnstructured(repoUnstruct)
 }
 
-func (c *cluster) doesPubSubTopicHaveFinalizer(namespace, topicName, finalizer string) (ok bool, err error) {
-	topicUnstruct, err := c.getTopicUnstructured(namespace, topicName)
+func (c *cluster) doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoName, finalizer string) (ok bool, err error) {
+	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return false, err
 	}
-	for _, f := range topicUnstruct.GetFinalizers() {
+	for _, f := range repoUnstruct.GetFinalizers() {
 		if finalizer == f {
 			return true, nil
 		}
@@ -1113,15 +1114,15 @@ func (c *cluster) doesPubSubTopicHaveFinalizer(namespace, topicName, finalizer s
 	return false, nil
 }
 
-func (c *cluster) deletePubSubTopic(namespace, topicName string, extraArgs ...string) error {
-	args := []string{"-n", namespace, "pubsubtopic", topicName}
+func (c *cluster) deleteArtifactRegistryRepository(namespace, repoName string, extraArgs ...string) error {
+	args := []string{"-n", namespace, "artifactregistryrepository", repoName}
 	args = append(args, extraArgs...)
 	f := func() (interface{}, error) {
 		return c.kubectl.delete(args...)
 	}
 	_, err := c.retry(f, defaultBackOff)
 	if err != nil {
-		return fmt.Errorf("error deleting PubSubTopic: %v", err)
+		return fmt.Errorf("error deleting ArtifactRegistryRepository: %v", err)
 	}
 	return nil
 }
@@ -1243,14 +1244,16 @@ func (c *cluster) waitForNamespaceToBeDeleted(namespace string) error {
 	return nil
 }
 
-func checkPubSubTopicExistsOnGCP(topicName, projectID string) error {
-	cmd := exec.Command("gcloud", "pubsub", "topics", "describe", topicName, "--project", projectID)
+func checkArtifactRegistryRepositoryExistsOnGCP(repoName, projectID string) error {
+	cmd := exec.Command("gcloud", "artifacts", "repositories", "describe", repoName,
+		"--location", "us-west1",
+		"--project", projectID)
 	_, err := utils.ExecuteAndCaptureOutput(cmd)
 	if err != nil {
 		if strings.Contains(err.Error(), "NOT_FOUND") {
-			return fmt.Errorf("expected project '%v' to have PubSub topic named '%v', but got:\n%v", projectID, topicName, err)
+			return fmt.Errorf("expected project '%v' to have Artifact Registry Repository named '%v', but got:\n%v", projectID, repoName, err)
 		}
-		return fmt.Errorf("error checking if PubSub topic exists on GCP: %v", err)
+		return fmt.Errorf("error checking if Artifact Registry Repository exists on GCP: %v", err)
 	}
 	return nil
 }
