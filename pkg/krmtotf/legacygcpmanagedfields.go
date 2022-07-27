@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -37,7 +38,13 @@ func ResolveLegacyGCPManagedFields(r *Resource, liveState *terraform.InstanceSta
 	case "SQLInstance":
 		return resolveSQLInstanceDiskSize(r, config)
 	case "ContainerCluster":
-		return resolveContainerClusterNodeVersion(r, config)
+		if err := resolveContainerClusterNodeVersion(r, config); err != nil {
+			return err
+		}
+		if err := resolveContainerClusterNodeConfig(r, liveState, config); err != nil {
+			return err
+		}
+		return nil
 	case "ContainerNodePool":
 		if err := resolveContainerNodePoolVersion(r, config); err != nil {
 			return err
@@ -130,6 +137,58 @@ func resolveContainerNodePoolVersion(r *Resource, config map[string]interface{})
 		return fmt.Errorf("error resolving field '%v' in config: %w", field, err)
 	}
 	return nil
+}
+
+// Remove `nodeConfig` from the desired config when `remove-default-node-pool`
+// directive is set to `true` and the liveState doesn't contain this field.
+//
+// When `remove-default-node-pool` directive is set to `true`, the default node
+// pool will be removed, and `spec.nodeConfig` field should be managed by the API.
+// However, because the service-generated value of `spec.nodeConfig` contains
+// lists, which are preserved by KCC even if the live state of the GCP resource
+// no longer has `nodeConfig` field, it triggers unexpected recreation of the
+// resource. So in this case, we need to manually clean up `nodeConfig` field.
+func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.InstanceState, config map[string]interface{}) error {
+	removeDefaultNodePoolDirective := "remove-default-node-pool"
+	nodeConfigFieldInTFState := "node_config"
+	nodeConfigFieldInKRMConfig := text.SnakeCaseToLowerCamelCase(nodeConfigFieldInTFState)
+
+	key := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
+	val, ok := k8s.GetAnnotation(key, r)
+	if !ok || val != "true" {
+		return nil
+	}
+
+	liveStateMap := InstanceStateToMap(r.TFResource, liveState)
+	exists, err := topLevelObjectFieldExistsInStateMap(liveStateMap, nodeConfigFieldInTFState)
+	if err != nil {
+		return fmt.Errorf("error resolving field '%v' in 'ContainerCluster': %w", nodeConfigFieldInKRMConfig, err)
+	}
+	if exists {
+		return nil
+	}
+
+	if err := removeFromConfigIfNotApplied(r, config, nodeConfigFieldInKRMConfig); err != nil {
+		return fmt.Errorf("error removing field '%v' in config: %w", nodeConfigFieldInKRMConfig, err)
+	}
+	return nil
+}
+
+func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field string) (bool, error) {
+	value, ok := state[field]
+	if !ok {
+		return false, nil
+	}
+	listVal, ok := value.([]interface{})
+	if !ok {
+		return false, fmt.Errorf("field '%v' is not an object field", field)
+	}
+	// An object field should be considered non-existent if no sub-field is specified.
+	if len(listVal) == 0 {
+		return false, nil
+	}
+	// The response returned by terraform may insert a list of size 1 for nested fields.
+	return listVal[0] != nil, nil
 }
 
 func resolveContainerNodePoolInitialNodeCount(r *Resource, config map[string]interface{}) error {
