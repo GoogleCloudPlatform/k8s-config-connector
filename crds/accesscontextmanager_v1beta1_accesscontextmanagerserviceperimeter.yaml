@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.89.0
+    cnrm.cloud.google.com/version: 1.90.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -247,6 +247,14 @@ spec:
                             and destination resources that \ncause this 'EgressPolicy'
                             to apply."
                           properties:
+                            externalResources:
+                              description: |-
+                                A list of external resources that are allowed to be accessed. A request
+                                matches if it contains an external resource in this list (Example:
+                                s3://bucket/path). Currently '*' is not allowed.
+                              items:
+                                type: string
+                              type: array
                             operations:
                               description: "A list of 'ApiOperations' that this egress
                                 rule applies to. A request matches \nif it contains
@@ -745,6 +753,14 @@ spec:
                             and destination resources that \ncause this 'EgressPolicy'
                             to apply."
                           properties:
+                            externalResources:
+                              description: |-
+                                A list of external resources that are allowed to be accessed. A request
+                                matches if it contains an external resource in this list (Example:
+                                s3://bucket/path). Currently '*' is not allowed.
+                              items:
+                                type: string
+                              type: array
                             operations:
                               description: "A list of 'ApiOperations' that this egress
                                 rule applies to. A request matches \nif it contains

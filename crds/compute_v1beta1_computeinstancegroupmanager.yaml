@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.89.0
+    cnrm.cloud.google.com/version: 1.90.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -288,6 +288,40 @@ spec:
                         description: Disks created on the instances that will be preserved
                           on instance delete, update, etc. This map is keyed with
                           the device names of the disks.
+                        type: object
+                      externalIps:
+                        additionalProperties:
+                          properties:
+                            autoDelete:
+                              description: 'These stateful IPs will never be released
+                                during autohealing, update or VM instance recreate
+                                operations. This flag is used to configure if the
+                                IP reservation should be deleted after it is no longer
+                                used by the group, e.g. when the given instance or
+                                the whole group is deleted. Possible values: NEVER,
+                                ON_PERMANENT_INSTANCE_DELETION'
+                              type: string
+                          type: object
+                        description: External network IPs assigned to the instances
+                          that will be preserved on instance delete, update, etc.
+                          This map is keyed with the network interface name.
+                        type: object
+                      internalIps:
+                        additionalProperties:
+                          properties:
+                            autoDelete:
+                              description: 'These stateful IPs will never be released
+                                during autohealing, update or VM instance recreate
+                                operations. This flag is used to configure if the
+                                IP reservation should be deleted after it is no longer
+                                used by the group, e.g. when the given instance or
+                                the whole group is deleted. Possible values: NEVER,
+                                ON_PERMANENT_INSTANCE_DELETION'
+                              type: string
+                          type: object
+                        description: Internal network IPs assigned to the instances
+                          that will be preserved on instance delete, update, etc.
+                          This map is keyed with the network interface name.
                         type: object
                     type: object
                 type: object

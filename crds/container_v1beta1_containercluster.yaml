@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.89.0
+    cnrm.cloud.google.com/version: 1.90.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -663,8 +663,16 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - enableComponents
+                  managedPrometheus:
+                    description: Configuration for Google Cloud Managed Services for
+                      Prometheus.
+                    properties:
+                      enabled:
+                        description: Whether or not the managed collection is enabled.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                 type: object
               monitoringService:
                 description: The monitoring service that the cluster should write

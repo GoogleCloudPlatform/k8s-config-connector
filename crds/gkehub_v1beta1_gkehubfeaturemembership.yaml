@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.89.0
+    cnrm.cloud.google.com/version: 1.90.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -127,7 +127,9 @@ spec:
                             type: string
                           secretType:
                             description: Type of secret configured for access to the
-                              Git repo.
+                              Git repo. Must be one of ssh, cookiefile, gcenode, token,
+                              gcpserviceaccount or none. The validation of this is
+                              case-sensitive.
                             type: string
                           syncBranch:
                             description: 'The branch of the repository to sync from.
@@ -146,6 +148,11 @@ spec:
                               Default: 15.'
                             type: string
                         type: object
+                      preventDrift:
+                        description: Set to true to enable the Config Sync admission
+                          webhook to prevent drifts. If set to `false`, disables the
+                          Config Sync admission webhook and does not prevent drifts.
+                        type: boolean
                       sourceFormat:
                         description: Specifies whether the Config Sync Repo is in
                           "hierarchical" or "unstructured" mode.
