@@ -39,6 +39,7 @@ import (
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"golang.org/x/sync/semaphore"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -187,20 +188,21 @@ func (r *TestReconciler) newReconcilerForKind(kind string) reconcile.Reconciler 
 
 func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
-		// Set 'immediateReconcileRequests' to nil to disable
-		// reconciler's ability to create asynchronous watches
-		// on unready dependencies. This feature of the reconciler
-		// is unnecessary for our integration tests since we reconcile
-		// each dependency first before the resource under test is
-		// reconciled. Overall, the feature adds risk of complications
-		// due to it's multi-threaded nature.
+		// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
+		// to nil to disable reconciler's ability to create asynchronous
+		// watches on unready dependencies. This feature of the reconciler
+		// is unnecessary for our tests since we reconcile each dependency
+		// first before the resource under test is reconciled. Overall,
+		// the feature adds risk of complications due to it's multi-threaded
+		// nature.
 		var immediateReconcileRequests chan event.GenericEvent = nil
+		var resourceWatcherRoutines *semaphore.Weighted = nil
 
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests)
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests)
+			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

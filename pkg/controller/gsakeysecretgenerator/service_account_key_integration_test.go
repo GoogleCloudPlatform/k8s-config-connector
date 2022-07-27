@@ -42,12 +42,14 @@ import (
 
 	"github.com/ghodss/yaml"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/iam/v1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -162,14 +164,17 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	}
 	crd := dynamic.UnmarshalFileToCRD(t, crdPath)
 	smLoader := testservicemappingloader.New(t)
-	// Disable reconciler's ability to create asynchronous
-	// watches on unready dependencies by passing nil in for
-	// 'immediateReconcileRequests'. This feature of the
-	// reconciler is unnecessary for our integration tests
-	// since we reconcile each dependency first before the
-	// resource under test is reconciled. Overall, the feature
-	// adds risk of complications due to it's multi-threaded nature.
-	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, nil)
+	// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
+	// to nil to disable reconciler's ability to create asynchronous
+	// watches on unready dependencies. This feature of the reconciler
+	// is unnecessary for our integration tests since we reconcile
+	// each dependency first before the resource under test is
+	// reconciled. Overall, the feature adds risk of complications
+	// due to it's multi-threaded nature.
+	var immediateReconcileRequests chan event.GenericEvent = nil
+	var resourceWatcherRoutines *semaphore.Weighted = nil
+
+	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
 	}

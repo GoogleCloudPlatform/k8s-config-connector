@@ -64,6 +64,7 @@ const (
 	AnnotationPrefix                     = CNRMGroup
 	NamespaceEnvVar                      = "NAMESPACE"
 	ImmediateReconcileRequestsBufferSize = 10000
+	MaxNumResourceWatcherRoutines        = 10000
 
 	ReadinessServerPort = 23232
 	ReadinessServerPath = "/ready"

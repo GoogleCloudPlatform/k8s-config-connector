@@ -47,6 +47,7 @@ import (
 	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
 	"github.com/go-logr/logr"
 	"github.com/nasa9084/go-openapi"
+	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -74,19 +75,21 @@ var LifecycleParams = []mmdcl.ApplyOption{
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser             *leaser.ResourceLeaser
-	mgr                        manager.Manager
-	crd                        *apiextensions.CustomResourceDefinition
-	jsonSchema                 *apiextensions.JSONSchemaProps
-	gvk                        schema.GroupVersionKind
-	logger                     logr.Logger
-	immediateReconcileRequests chan event.GenericEvent
+	resourceLeaser *leaser.ResourceLeaser
+	mgr            manager.Manager
+	crd            *apiextensions.CustomResourceDefinition
+	jsonSchema     *apiextensions.JSONSchemaProps
+	gvk            schema.GroupVersionKind
+	logger         logr.Logger
 	// DCL related fields
 	schema    *openapi.Schema
 	dclConfig *mmdcl.Config
 	converter *conversion.Converter
 	// TF related fields
 	serviceMappingLoader *servicemappingloader.ServiceMappingLoader
+	// Fields used for triggering reconciliations when dependencies are ready
+	immediateReconcileRequests chan event.GenericEvent
+	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
@@ -95,7 +98,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
-	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests)
+	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
+	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
 		return err
 	}
@@ -119,7 +123,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
@@ -150,6 +154,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		converter:                  converter,
 		serviceMappingLoader:       serviceMappingLoader,
 		immediateReconcileRequests: immediateReconcileRequests,
+		resourceWatcherRoutines:    resourceWatcherRoutines,
 	}, nil
 }
 
@@ -320,6 +325,13 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		// with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
 	}
+	// Don't start a watch on the reference if there
+	// are too many ongoing watches already
+	if !r.resourceWatcherRoutines.TryAcquire(1) {
+		// Requeue resource for immediate reconciliation
+		// with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
+	}
 
 	logger := r.logger.WithValues(
 		"resource", resource.GetNamespacedName(),
@@ -339,6 +351,9 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 	}
 
 	go func() {
+		// Decrement the number of active resource watches after
+		// the watch finishes
+		defer r.resourceWatcherRoutines.Release(1)
 		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()

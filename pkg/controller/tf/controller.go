@@ -39,6 +39,7 @@ import (
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -60,15 +61,17 @@ var logger = klog.Log
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser             *leaser.ResourceLeaser
-	mgr                        manager.Manager
-	crd                        *apiextensions.CustomResourceDefinition
-	jsonSchema                 *apiextensions.JSONSchemaProps
-	gvk                        schema.GroupVersionKind
-	provider                   *tfschema.Provider
-	smLoader                   *servicemappingloader.ServiceMappingLoader
+	resourceLeaser *leaser.ResourceLeaser
+	mgr            manager.Manager
+	crd            *apiextensions.CustomResourceDefinition
+	jsonSchema     *apiextensions.JSONSchemaProps
+	gvk            schema.GroupVersionKind
+	provider       *tfschema.Provider
+	smLoader       *servicemappingloader.ServiceMappingLoader
+	logger         logr.Logger
+	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
-	logger                     logr.Logger
+	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) error {
@@ -76,7 +79,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
-	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests)
+	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
+	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
 		return err
 	}
@@ -100,7 +104,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.LifecycleHandler{
@@ -123,6 +127,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		smLoader:                   smLoader,
 		logger:                     logger.WithName(controllerName),
 		immediateReconcileRequests: immediateReconcileRequests,
+		resourceWatcherRoutines:    resourceWatcherRoutines,
 	}, nil
 }
 
@@ -318,6 +323,13 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		// with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
 	}
+	// Don't start a watch on the reference if there
+	// are too many ongoing watches already
+	if !r.resourceWatcherRoutines.TryAcquire(1) {
+		// Requeue resource for immediate reconciliation
+		// with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
+	}
 
 	logger := r.logger.WithValues(
 		"resource", resource.GetNamespacedName(),
@@ -337,6 +349,9 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 	}
 
 	go func() {
+		// Decrement the count of active resource watches after
+		// the watch finishes
+		defer r.resourceWatcherRoutines.Release(1)
 		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
