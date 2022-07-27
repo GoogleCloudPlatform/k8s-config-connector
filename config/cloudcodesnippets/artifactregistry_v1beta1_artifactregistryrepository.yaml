@@ -10,4 +10,3 @@ insertText: |
   spec:
     format: \${4:DOCKER}
     location: \${5:us-west1}
-    description: \${6:User-provided description of the repository}

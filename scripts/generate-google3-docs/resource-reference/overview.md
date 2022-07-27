@@ -318,7 +318,7 @@
   <td><a href="/config-connector/docs/reference/resource-docs/configcontroller/configcontrollerinstance.md">ConfigControllerInstance</a></td>
 </tr>
 <tr>
-  <td><a href="/containeranalysis/docs/">{{compute_name}}</a></td>
+  <td><a href="/container-analysis/docs/">{{container_analysis_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/containeranalysis/containeranalysisnote.md">ContainerAnalysisNote</a></td>
 </tr>
 <tr>
@@ -530,11 +530,11 @@
   <td><a href="/config-connector/docs/reference/resource-docs/monitoring/monitoringuptimecheckconfig.md">MonitoringUptimeCheckConfig</a></td>
 </tr>
 <tr>
-  <td><a href="/networkconnectivity/docs/">{{network_connectivity}}</a></td>
+  <td><a href="/network-connectivity/docs/">{{network_connectivity}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityhub.md">NetworkConnectivityHub</a></td>
 </tr>
 <tr>
-  <td><a href="/networkconnectivity/docs/">{{network_connectivity}}</a></td>
+  <td><a href="/network-connectivity/docs/">{{network_connectivity}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityspoke.md">NetworkConnectivitySpoke</a></td>
 </tr>
 <tr>

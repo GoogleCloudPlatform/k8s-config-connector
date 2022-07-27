@@ -1,0 +1,17 @@
+label: Config Connector ServiceDirectoryEndpoint
+markdownDescription: Creates yaml for a ServiceDirectoryEndpoint resource
+insertText: |
+  apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+  kind: ServiceDirectoryEndpoint
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:servicedirectoryendpoint-name}
+  spec:
+    serviceRef:
+      name: \${4:servicedirectoryendpoint-dep}
+    addressRef:
+      name: \${5:servicedirectoryendpoint-dep}
+    port: \${6:443}
+    networkRef:
+      external: \${7:projects/[PROJECT_NUMBER?]/locations/global/networks/servicedirectory-dep}

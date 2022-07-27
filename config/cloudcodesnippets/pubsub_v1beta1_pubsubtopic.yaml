@@ -8,4 +8,7 @@ insertText: |
       \${1:label-one}: \${2:value-one}
     name: \${3:pubsubtopic-name}
   spec:
-    resourceID: \${4:pubsubtopic-sample}
+    schemaSettings:
+      schemaRef:
+        name: \${4:pubsubtopic-dep}
+      encoding: \${5:JSON}
