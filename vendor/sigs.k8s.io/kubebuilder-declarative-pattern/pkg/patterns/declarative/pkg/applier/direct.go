@@ -66,6 +66,20 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 	}
 
 	applyOpts := apply.NewApplyOptions(ioStreams)
+
+	for i, arg := range opt.ExtraArgs {
+		switch arg {
+		case "--force":
+			applyOpts.ForceConflicts = true
+		case "--prune":
+			applyOpts.Prune = true
+		case "--selector":
+			applyOpts.Selector = opt.ExtraArgs[i + 1]
+		default:
+			continue
+		}
+	}
+
 	applyOpts.Namespace = opt.Namespace
 	applyOpts.SetObjects(infos)
 	applyOpts.ToPrinter = func(operation string) (printers.ResourcePrinter, error) {

@@ -90,17 +90,24 @@ func apply(base *unstructured.Unstructured, patches []*unstructured.Unstructured
 			return nil, err
 		default:
 			// Use Strategic-Merge-Patch to handle types w/ schema
-			// TODO: Change this to use the new Merge package.
 			// Store the name of the base object, because this name may have been munged.
 			// Apply this name to the patched object.
-			lookupPatchMeta, err := strategicpatch.NewPatchMetaFromStruct(versionedObj)
+			baseBytes, err := merged.MarshalJSON()
 			if err != nil {
 				return nil, err
 			}
-			merged.Object, err = strategicpatch.StrategicMergeMapPatchUsingLookupPatchMeta(
-				merged.Object,
-				p.Object,
-				lookupPatchMeta)
+			patchBytes, err := p.MarshalJSON()
+			if err != nil {
+				return nil, err
+			}
+			mergedBytes, err := strategicpatch.StrategicMergePatch(
+				baseBytes,
+				patchBytes,
+				versionedObj)
+			if err != nil {
+				return nil, err
+			}
+			err = merged.UnmarshalJSON(mergedBytes)
 			if err != nil {
 				return nil, err
 			}

@@ -39,10 +39,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/kustomize/api/krusty"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
+
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/applier"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
-	"sigs.k8s.io/kustomize/api/filesys"
-	"sigs.k8s.io/kustomize/api/krusty"
 )
 
 var _ reconcile.Reconciler = &Reconciler{}
@@ -71,6 +72,15 @@ type kubectlClient interface {
 type DeclarativeObject interface {
 	runtime.Object
 	metav1.Object
+}
+
+type ErrorResult struct {
+	Result reconcile.Result
+	Err    error
+}
+
+func (e *ErrorResult) Error() string {
+	return e.Err.Error()
 }
 
 // For mocking
@@ -118,6 +128,7 @@ func (r *Reconciler) Init(mgr manager.Manager, prototype DeclarativeObject, opts
 
 // +rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	var objects *manifest.Objects
 	log := log.Log
 	defer r.collectMetrics(request, result, err)
 
@@ -134,6 +145,22 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		return reconcile.Result{}, err
 	}
 
+	// status.Reconciled should catch all error
+	defer func() {
+		// error is data
+		resultErr, ok := err.(*ErrorResult)
+		if ok {
+			result = resultErr.Result
+			err = resultErr.Err
+		}
+
+		if r.options.status != nil {
+			if err = r.options.status.Reconciled(ctx, instance, objects, err); err != nil {
+				log.Error(err, "failed to reconcile status")
+			}
+		}
+	}()
+
 	if r.options.status != nil {
 		if err := r.options.status.Preflight(ctx, instance); err != nil {
 			log.Error(err, "preflight check failed, not reconciling")
@@ -141,10 +168,12 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 	}
 
-	return r.reconcileExists(ctx, request.NamespacedName, instance)
+	objects, err = r.reconcileExists(ctx, request.NamespacedName, instance)
+
+	return result, err
 }
 
-func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedName, instance DeclarativeObject) (reconcile.Result, error) {
+func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedName, instance DeclarativeObject) (*manifest.Objects, error) {
 	log := log.Log
 	log.WithValues("object", name.String()).Info("reconciling")
 
@@ -156,7 +185,7 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 	objects, err := r.BuildDeploymentObjectsWithFs(ctx, name, instance, fs)
 	if err != nil {
 		log.Error(err, "building deployment objects")
-		return reconcile.Result{}, fmt.Errorf("error building deployment objects: %v", err)
+		return nil, fmt.Errorf("error building deployment objects: %v", err)
 	}
 	log.WithValues("objects", fmt.Sprintf("%d", len(objects.Items))).Info("built deployment objects")
 
@@ -166,35 +195,27 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 			if !isValidVersion {
 				// r.client isn't exported so can't be updated in version check function
 				if err := r.client.Status().Update(ctx, instance); err != nil {
-					return reconcile.Result{}, err
+					return objects, err
 				}
 				r.recorder.Event(instance, "Warning", "Failed version check", err.Error())
 				log.Error(err, "Version check failed, not reconciling")
-				return reconcile.Result{}, nil
+				return objects, nil
 			}
 			log.Error(err, "Version check failed, trying to reconcile")
-			return reconcile.Result{}, err
+			return objects, err
 		}
 	}
-
-	defer func() {
-		if r.options.status != nil {
-			if err := r.options.status.Reconciled(ctx, instance, objects); err != nil {
-				log.Error(err, "failed to reconcile status")
-			}
-		}
-	}()
 
 	objects, err = parseListKind(objects)
 
 	if err != nil {
 		log.Error(err, "Parsing list kind")
-		return reconcile.Result{}, fmt.Errorf("error parsing list kind: %v", err)
+		return objects, fmt.Errorf("error parsing list kind: %v", err)
 	}
 
 	err = r.injectOwnerRef(ctx, instance, objects)
 	if err != nil {
-		return reconcile.Result{}, err
+		return objects, err
 	}
 
 	var newItems []*manifest.Object
@@ -221,7 +242,7 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 	m, err := objects.JSONManifest()
 	if err != nil {
 		log.Error(err, "creating final manifest")
-		return reconcile.Result{}, fmt.Errorf("error creating manifest: %v", err)
+		return objects, fmt.Errorf("error creating manifest: %v", err)
 	}
 	manifestStr = m
 
@@ -267,16 +288,16 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 
 	if err := r.kubectl.Apply(ctx, applyOpt); err != nil {
 		log.Error(err, "applying manifest")
-		return reconcile.Result{}, fmt.Errorf("error applying manifest: %v", err)
+		return objects, fmt.Errorf("error applying manifest: %v", err)
 	}
 
 	if r.options.sink != nil {
 		if err := r.options.sink.Notify(ctx, instance, objects); err != nil {
 			log.Error(err, "notifying sink")
-			return reconcile.Result{}, err
+			return objects, err
 		}
 	}
-	return reconcile.Result{}, nil
+	return objects, nil
 }
 
 // BuildDeploymentObjects performs all manifest operations to build a final set of objects for deployment

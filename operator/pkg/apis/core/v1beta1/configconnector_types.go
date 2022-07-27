@@ -23,6 +23,8 @@ import (
 // ConfigConnectorSpec defines the desired state of ConfigConnector
 type ConfigConnectorSpec struct {
 	addonv1alpha1.CommonSpec `json:"-"`
+	addonv1alpha1.PatchSpec  `json:",inline"`
+
 	// The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs. This field is used only when running in cluster mode with Workload Identity enabled.
 	// See Google Kubernetes Engine (GKE) workload-identity (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for details. This field cannot be specified together with `credentialSecretName`.
 	// For namespaced mode, use `googleServiceAccount` in ConfigConnectorContext CRD to specify the Google Service Account to be used to authenticate with Google Cloud APIs per namespace.
