@@ -84,7 +84,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `KMSCryptoKey`
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
                       resource.'
                     type: string
                   name:

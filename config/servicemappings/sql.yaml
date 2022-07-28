@@ -73,6 +73,7 @@ spec:
             kind: KMSCryptoKey
             version: v1beta1
             group: kms.cnrm.cloud.google.com
+          targetField: self_link
       ignoredFields:
         - settings.version
         - deletion_protection

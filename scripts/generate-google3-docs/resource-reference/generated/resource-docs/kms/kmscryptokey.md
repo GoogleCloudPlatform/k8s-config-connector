@@ -324,7 +324,7 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}.{% endverbatim %}</p>
+            <p>{% verbatim %}The self link of the created key in the format projects/{project}/locations/{location}/keyRings/{keyRingName}/cryptoKeys/{name}.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -143,7 +143,7 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
 			"self_link": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}.",
+				Description: "The self link of the created key in the format projects/{project}/locations/{location}/keyRings/{keyRingName}/cryptoKeys/{name}.",
 			},
 		},
 		UseJSONNumber: true,

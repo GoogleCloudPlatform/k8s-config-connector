@@ -91,7 +91,7 @@ type KMSCryptoKeyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/* The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}. */
+	/* The self link of the created key in the format projects/{project}/locations/{location}/keyRings/{keyRingName}/cryptoKeys/{name}. */
 	SelfLink string `json:"selfLink,omitempty"`
 }
 

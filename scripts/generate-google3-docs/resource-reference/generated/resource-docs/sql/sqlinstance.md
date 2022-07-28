@@ -202,7 +202,7 @@ documentation</a>.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

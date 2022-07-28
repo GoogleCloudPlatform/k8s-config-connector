@@ -173,7 +173,7 @@ spec:
                   the resource.
                 type: integer
               selfLink:
-                description: The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}.
+                description: The self link of the created key in the format projects/{project}/locations/{location}/keyRings/{keyRingName}/cryptoKeys/{name}.
                 type: string
             type: object
         required:
