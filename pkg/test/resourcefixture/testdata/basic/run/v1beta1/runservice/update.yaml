@@ -21,10 +21,7 @@ spec:
   launchStage: "GA"
   location: "us-central1"
   projectRef:
-    # Use a pre-existing test project that is allowlisted to
-    # talk to the Cloud Run v2 alpha API. This project will be used to test
-    # the alpha Run resources.
-    external: "projects/${CLOUD_RUN_TEST_PROJECT}"
+    external: "projects/${projectId}"
   template:
     containers:
       - env:

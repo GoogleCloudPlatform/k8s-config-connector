@@ -44,7 +44,6 @@ const (
 	IAMIntegrationTestsBillingAccountId     = "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"
 	FirestoreTestProject                    = "FIRESTORE_TEST_PROJECT"
 	CloudFunctionsTestProject               = "CLOUD_FUNCTIONS_TEST_PROJECT"
-	CloudRunTestProject                     = "CLOUD_RUN_TEST_PROJECT"
 	IdentityPlatformTestProject             = "IDENTITY_PLATFORM_TEST_PROJECT"
 	InterconnectTestProject                 = "INTERCONNECT_TEST_PROJECT"
 	HighCPUQuotaTestProject                 = "HIGH_CPU_QUOTA_TEST_PROJECT"
@@ -62,7 +61,6 @@ var (
 	iamIntegrationTestsBillingAccountId     = os.Getenv(IAMIntegrationTestsBillingAccountId)
 	firestoreTestProject                    = os.Getenv(FirestoreTestProject)
 	cloudFunctionsTestProject               = os.Getenv(CloudFunctionsTestProject)
-	cloudRunTestProject                     = os.Getenv(CloudRunTestProject)
 	identityPlatformTestProject             = os.Getenv(IdentityPlatformTestProject)
 	interconnectTestProject                 = os.Getenv(InterconnectTestProject)
 	highCpuQuotaTestProject                 = os.Getenv(HighCPUQuotaTestProject)
@@ -145,10 +143,6 @@ func GetFirestoreTestProject(t *testing.T) string {
 
 func GetCloudFunctionsTestProject(t *testing.T) string {
 	return cloudFunctionsTestProject
-}
-
-func GetCloudRunTestProject(t *testing.T) string {
-	return cloudRunTestProject
 }
 
 func GetIdentityPlatformTestProject(t *testing.T) string {

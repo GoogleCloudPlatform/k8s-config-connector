@@ -196,8 +196,6 @@ var testDisabledList = map[string]bool{
 	// The below tests require the project to be added to the allowlist for resource creation.
 	"android-recaptcha-enterprise-key": true,
 	"ios-recaptcha-enterprise-key":     true,
-	// RunService is an alpha that can't be run on non-allowlisted projects.
-	"runservice": true,
 	// This sample uses cloud source repo, as a result it is required:
 	// 1. The deployer account needs to have access to the repo.
 	// 2. The repo contains to-be-deployed source code.

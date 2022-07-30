@@ -164,7 +164,6 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueId, projectId string) []byte 
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsBillingAccountId), testgcp.GetIAMIntegrationTestsBillingAccountId(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.FirestoreTestProject), testgcp.GetFirestoreTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.CloudFunctionsTestProject), testgcp.GetCloudFunctionsTestProject(t), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.CloudRunTestProject), testgcp.GetCloudRunTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IdentityPlatformTestProject), testgcp.GetIdentityPlatformTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.InterconnectTestProject), testgcp.GetInterconnectTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCpuQuotaTestProject(t), -1)
