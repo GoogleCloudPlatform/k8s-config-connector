@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: gameservices.cnrm.cloud.google.com/v1beta1
-kind: GameServicesRealm
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
 metadata:
-  labels:
-    label-one: "value-one"
-  name: realm-${uniqueId}
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+  name: containeranalysisnote-${uniqueId}
 spec:
-  resourceID: realm-custom-name-${uniqueId}
-  timeZone: EST
-  location: us-east1
+  shortDescription: "short description"
+  longDescription: "new long description"
+  relatedUrl:
+    - url: "some.url"
+      label: "test"
+  attestation:
+    hint:
+      humanReadableName: "Attestor Note2"
