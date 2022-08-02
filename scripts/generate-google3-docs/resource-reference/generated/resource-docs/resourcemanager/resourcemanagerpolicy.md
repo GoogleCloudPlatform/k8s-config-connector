@@ -33,7 +33,7 @@ one of `projectRef`, `folderRef`, or `organizationRef`.
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/resource-manager/reference/rest/v1/policy">/resource-manager/reference/rest/v1/policy</a></td>
+<td><a href="/resource-manager/reference/rest/v1/Policy">/resource-manager/reference/rest/v1/Policy</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
