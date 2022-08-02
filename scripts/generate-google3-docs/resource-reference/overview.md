@@ -431,6 +431,10 @@
 </tr>
 <tr>
   <td><a href="/iam/docs/">{{iam_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/iam/iamworkforcepool.md">IAMWorkforcePool</a></td>
+</tr>
+<tr>
+  <td><a href="/iam/docs/">{{iam_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypool.md">IAMWorkloadIdentityPool</a></td>
 </tr>
 <tr>

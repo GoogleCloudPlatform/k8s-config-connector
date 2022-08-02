@@ -120,6 +120,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/iam/iamserviceaccount.md
   - title: "IAMServiceAccountKey"
     path: /config-connector/docs/reference/resource-docs/iam/iamserviceaccountkey.md
+  - title: "IAMWorkforcePool"
+    path: /config-connector/docs/reference/resource-docs/iam/iamworkforcepool.md
   - title: "IAMWorkloadIdentityPool"
     path: /config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypool.md
   - title: "IAMWorkloadIdentityPoolProvider"
