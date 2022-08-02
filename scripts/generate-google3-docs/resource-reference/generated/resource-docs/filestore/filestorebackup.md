@@ -58,20 +58,20 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  sourceFileShare: string
-  sourceInstanceRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+description: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+sourceFileShare: string
+sourceInstanceRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -211,21 +211,21 @@ Allowed value: The Google Cloud resource name of a `FilestoreInstance` resource 
 
 ### Status
 #### Schema
-  ```yaml
-  capacityGb: integer
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  downloadBytes: integer
-  observedGeneration: integer
-  sourceInstanceTier: string
-  state: string
-  storageBytes: integer
-  ```
+```yaml
+capacityGb: integer
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+downloadBytes: integer
+observedGeneration: integer
+sourceInstanceTier: string
+state: string
+storageBytes: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -338,63 +338,63 @@ Allowed value: The Google Cloud resource name of a `FilestoreInstance` resource 
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: filestore.cnrm.cloud.google.com/v1beta1
-  kind: FilestoreBackup
-  metadata:
-    name: filestorebackup-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    description: "A sample backup"
-    location: us-central1
-    sourceFileShare: my_share
-    sourceInstanceRef:
-      name: filestorebackup-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreBackup
+metadata:
+  name: filestorebackup-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  description: "A sample backup"
+  location: us-central1
+  sourceFileShare: my_share
+  sourceInstanceRef:
     name: filestorebackup-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: filestore.cnrm.cloud.google.com/v1beta1
-  kind: FilestoreInstance
-  metadata:
-    name: filestorebackup-dep
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    description: "Sample FilestoreInstance dependency for FilestoreBackup"
-    fileShares:
-      - capacityGb: 4800
-        name: my_share
-    location: us-central1-c
-    networks:
-      - modes:
-          - MODE_IPV4
-        networkRef:
-          name: filestorebackup-dep
-        reservedIPRange: 10.0.0.0/29
-    tier: PREMIUM
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: filestorebackup-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreInstance
+metadata:
+  name: filestorebackup-dep
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  description: "Sample FilestoreInstance dependency for FilestoreBackup"
+  fileShares:
+    - capacityGb: 4800
+      name: my_share
+  location: us-central1-c
+  networks:
+    - modes:
+        - MODE_IPV4
+      networkRef:
+        name: filestorebackup-dep
+      reservedIPRange: 10.0.0.0/29
+  tier: PREMIUM
+```
 
 
 {% endblock %}

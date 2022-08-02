@@ -99,55 +99,55 @@ the objects within a storage bucket before issuing the delete command.
 
 ### Spec
 #### Schema
-  ```yaml
-  bucketPolicyOnly: boolean
-  cors:
-  - maxAgeSeconds: integer
-    method:
+```yaml
+bucketPolicyOnly: boolean
+cors:
+- maxAgeSeconds: integer
+  method:
+  - string
+  origin:
+  - string
+  responseHeader:
+  - string
+defaultEventBasedHold: boolean
+encryption:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+lifecycleRule:
+- action:
+    storageClass: string
+    type: string
+  condition:
+    age: integer
+    createdBefore: string
+    customTimeBefore: string
+    daysSinceCustomTime: integer
+    daysSinceNoncurrentTime: integer
+    matchesStorageClass:
     - string
-    origin:
-    - string
-    responseHeader:
-    - string
-  defaultEventBasedHold: boolean
-  encryption:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-  lifecycleRule:
-  - action:
-      storageClass: string
-      type: string
-    condition:
-      age: integer
-      createdBefore: string
-      customTimeBefore: string
-      daysSinceCustomTime: integer
-      daysSinceNoncurrentTime: integer
-      matchesStorageClass:
-      - string
-      noncurrentTimeBefore: string
-      numNewerVersions: integer
-      withState: string
-  location: string
-  logging:
-    logBucket: string
-    logObjectPrefix: string
-  publicAccessPrevention: string
-  requesterPays: boolean
-  resourceID: string
-  retentionPolicy:
-    isLocked: boolean
-    retentionPeriod: integer
-  storageClass: string
-  uniformBucketLevelAccess: boolean
-  versioning:
-    enabled: boolean
-  website:
-    mainPageSuffix: string
-    notFoundPage: string
-  ```
+    noncurrentTimeBefore: string
+    numNewerVersions: integer
+    withState: string
+location: string
+logging:
+  logBucket: string
+  logObjectPrefix: string
+publicAccessPrevention: string
+requesterPays: boolean
+resourceID: string
+retentionPolicy:
+  isLocked: boolean
+  retentionPeriod: integer
+storageClass: string
+uniformBucketLevelAccess: boolean
+versioning:
+  enabled: boolean
+website:
+  mainPageSuffix: string
+  notFoundPage: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -657,17 +657,17 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  url: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+url: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -752,45 +752,45 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/force-destroy: "false"
-    labels:
-      label-one: "value-one"
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    name: ${PROJECT_ID?}-sample
-  spec:
-    lifecycleRule:
-      - action:
-          type: Delete
-        condition:
-          age: 7
-    versioning:
-      enabled: true
-    cors:
-      - origin: ["http://example.appspot.com"]
-        responseHeader: ["Content-Type"]
-        method: ["GET", "HEAD", "DELETE"]
-        maxAgeSeconds: 3600
-    uniformBucketLevelAccess: true
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "false"
+  labels:
+    label-one: "value-one"
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-sample
+spec:
+  lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 7
+  versioning:
+    enabled: true
+  cors:
+    - origin: ["http://example.appspot.com"]
+      responseHeader: ["Content-Type"]
+      method: ["GET", "HEAD", "DELETE"]
+      maxAgeSeconds: 3600
+  uniformBucketLevelAccess: true
+```
 
 
 {% endblock %}

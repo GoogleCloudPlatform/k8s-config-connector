@@ -87,101 +87,101 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 
 ### Spec
 #### Schema
-  ```yaml
+```yaml
+annotations:
+  string: string
+binaryAuthorization:
+  breakglassJustification: string
+  useDefault: boolean
+client: string
+clientVersion: string
+description: string
+ingress: string
+launchStage: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+template:
   annotations:
     string: string
-  binaryAuthorization:
-    breakglassJustification: string
-    useDefault: boolean
-  client: string
-  clientVersion: string
-  description: string
-  ingress: string
-  launchStage: string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  template:
-    annotations:
-      string: string
-    containerConcurrency: integer
-    containers:
-    - args:
-      - string
-      command:
-      - string
-      env:
-      - name: string
-        value: string
-        valueSource:
-          secretKeyRef:
-            secretRef:
-              external: string
-              name: string
-              namespace: string
-            versionRef:
-              external: string
-              name: string
-              namespace: string
-      image: string
-      name: string
-      ports:
-      - containerPort: integer
-        name: string
-      resources:
-        cpuIdle: boolean
-        limits:
-          string: string
-      volumeMounts:
-      - mountPath: string
-        name: string
-    executionEnvironment: string
-    labels:
-      string: string
-    revision: string
-    scaling:
-      maxInstanceCount: integer
-      minInstanceCount: integer
-    serviceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    timeout: string
-    volumes:
-    - cloudSqlInstance:
-        instances:
-        - external: string
-          name: string
-          namespace: string
-      name: string
-      secret:
-        defaultMode: integer
-        items:
-        - mode: integer
-          path: string
+  containerConcurrency: integer
+  containers:
+  - args:
+    - string
+    command:
+    - string
+    env:
+    - name: string
+      value: string
+      valueSource:
+        secretKeyRef:
+          secretRef:
+            external: string
+            name: string
+            namespace: string
           versionRef:
             external: string
             name: string
             namespace: string
-        secretRef:
+    image: string
+    name: string
+    ports:
+    - containerPort: integer
+      name: string
+    resources:
+      cpuIdle: boolean
+      limits:
+        string: string
+    volumeMounts:
+    - mountPath: string
+      name: string
+  executionEnvironment: string
+  labels:
+    string: string
+  revision: string
+  scaling:
+    maxInstanceCount: integer
+    minInstanceCount: integer
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  timeout: string
+  volumes:
+  - cloudSqlInstance:
+      instances:
+      - external: string
+        name: string
+        namespace: string
+    name: string
+    secret:
+      defaultMode: integer
+      items:
+      - mode: integer
+        path: string
+        versionRef:
           external: string
           name: string
           namespace: string
-    vpcAccess:
-      connectorRef:
+      secretRef:
         external: string
         name: string
         namespace: string
-      egress: string
-  traffic:
-  - percent: integer
-    revision: string
-    tag: string
-    type: string
-  ```
+  vpcAccess:
+    connectorRef:
+      external: string
+      name: string
+      namespace: string
+    egress: string
+traffic:
+- percent: integer
+  revision: string
+  tag: string
+  type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1183,45 +1183,45 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  creator: string
-  deleteTime: string
-  etag: string
-  expireTime: string
-  labels:
-    string: string
-  lastModifier: string
-  latestCreatedRevision: string
-  latestReadyRevision: string
-  observedGeneration: integer
-  reconciling: boolean
-  resourceGeneration: integer
-  terminalCondition:
-    jobReason: string
-    lastTransitionTime: string
-    message: string
-    reason: string
-    revisionReason: string
-    severity: string
-    state: string
-    type: string
-  trafficStatuses:
-  - percent: integer
-    revision: string
-    tag: string
-    type: string
-    uri: string
-  uid: string
-  updateTime: string
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+creator: string
+deleteTime: string
+etag: string
+expireTime: string
+labels:
+  string: string
+lastModifier: string
+latestCreatedRevision: string
+latestReadyRevision: string
+observedGeneration: integer
+reconciling: boolean
+resourceGeneration: integer
+terminalCondition:
+  jobReason: string
+  lastTransitionTime: string
+  message: string
+  reason: string
+  revisionReason: string
+  severity: string
+  state: string
+  type: string
+trafficStatuses:
+- percent: integer
+  revision: string
+  tag: string
+  type: string
   uri: string
-  ```
+uid: string
+updateTime: string
+uri: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1502,44 +1502,44 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: run.cnrm.cloud.google.com/v1beta1
-  kind: RunService
-  metadata:
-    name: runservice-sample
-  spec:
-    ingress: "INGRESS_TRAFFIC_ALL"
-    launchStage: "GA"
-    location: "us-central1"
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    template:
-      containers:
-        - env:
-            - name: "FOO"
-              value: "bar]"
-          image: "gcr.io/cloudrun/hello"
-      scaling:
-        maxInstanceCount: 2
-    traffic:
-      - percent: 100
-        type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - env:
+          - name: "FOO"
+            value: "bar]"
+        image: "gcr.io/cloudrun/hello"
+    scaling:
+      maxInstanceCount: 2
+  traffic:
+    - percent: 100
+      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+```
 
 
 {% endblock %}

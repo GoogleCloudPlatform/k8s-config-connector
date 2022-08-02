@@ -81,25 +81,25 @@ the `spec.location` field. To manage a regional ComputeAddress, use a region nam
 
 ### Spec
 #### Schema
-  ```yaml
-  address: string
-  addressType: string
-  description: string
-  ipVersion: string
-  location: string
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  networkTier: string
-  prefixLength: integer
-  purpose: string
-  resourceID: string
-  subnetworkRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+address: string
+addressType: string
+description: string
+ipVersion: string
+location: string
+networkRef:
+  external: string
+  name: string
+  namespace: string
+networkTier: string
+prefixLength: integer
+purpose: string
+resourceID: string
+subnetworkRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -314,20 +314,20 @@ purposes.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  labelFingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  users:
-  - string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+labelFingerprint: string
+observedGeneration: integer
+selfLink: string
+users:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -434,94 +434,94 @@ internally during updates.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Global Compute Address
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
-    name: computeaddress-sample-global
-    labels:
-      label-one: "value-one"
-  spec:
-    addressType: INTERNAL
-    description: a test global address
-    location: global
-    ipVersion: IPV4
-    purpose: VPC_PEERING
-    prefixLength: 16
-    networkRef:
-      name: computeaddress-dep-global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-sample-global
+  labels:
+    label-one: "value-one"
+spec:
+  addressType: INTERNAL
+  description: a test global address
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 16
+  networkRef:
     name: computeaddress-dep-global
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeaddress-dep-global
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+```
 
 ### Regional Compute Address
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
-    name: computeaddress-sample-regional
-    labels:
-      label-one: "value-one"
-  spec:
-    addressType: INTERNAL
-    description: a test regional address
-    location: us-central1
-    ipVersion: IPV6
-    subnetworkRef:
-      name: computeaddress-dep-regional
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-sample-regional
+  labels:
+    label-one: "value-one"
+spec:
+  addressType: INTERNAL
+  description: a test regional address
+  location: us-central1
+  ipVersion: IPV6
+  subnetworkRef:
     name: computeaddress-dep-regional
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeaddress-dep-regional
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeaddress-dep-regional
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
     name: computeaddress-dep-regional
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    networkRef:
-      name: computeaddress-dep-regional
-  ```
+```
 
 
 {% endblock %}

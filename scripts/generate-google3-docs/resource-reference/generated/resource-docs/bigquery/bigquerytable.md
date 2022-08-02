@@ -90,67 +90,67 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  clustering:
-  - string
-  datasetRef:
+```yaml
+clustering:
+- string
+datasetRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+encryptionConfiguration:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  description: string
-  encryptionConfiguration:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    kmsKeyVersion: string
-  expirationTime: integer
-  externalDataConfiguration:
-    autodetect: boolean
-    compression: string
-    connectionId: string
-    csvOptions:
-      allowJaggedRows: boolean
-      allowQuotedNewlines: boolean
-      encoding: string
-      fieldDelimiter: string
-      quote: string
-      skipLeadingRows: integer
-    googleSheetsOptions:
-      range: string
-      skipLeadingRows: integer
-    hivePartitioningOptions:
-      mode: string
-      requirePartitionFilter: boolean
-      sourceUriPrefix: string
-    ignoreUnknownValues: boolean
-    maxBadRecords: integer
-    schema: string
-    sourceFormat: string
-    sourceUris:
-    - string
-  friendlyName: string
-  materializedView:
-    enableRefresh: boolean
-    query: string
-    refreshIntervalMs: integer
-  rangePartitioning:
-    field: string
-    range:
-      end: integer
-      interval: integer
-      start: integer
-  resourceID: string
-  schema: string
-  timePartitioning:
-    expirationMs: integer
-    field: string
+  kmsKeyVersion: string
+expirationTime: integer
+externalDataConfiguration:
+  autodetect: boolean
+  compression: string
+  connectionId: string
+  csvOptions:
+    allowJaggedRows: boolean
+    allowQuotedNewlines: boolean
+    encoding: string
+    fieldDelimiter: string
+    quote: string
+    skipLeadingRows: integer
+  googleSheetsOptions:
+    range: string
+    skipLeadingRows: integer
+  hivePartitioningOptions:
+    mode: string
     requirePartitionFilter: boolean
-    type: string
-  view:
-    query: string
-    useLegacySql: boolean
-  ```
+    sourceUriPrefix: string
+  ignoreUnknownValues: boolean
+  maxBadRecords: integer
+  schema: string
+  sourceFormat: string
+  sourceUris:
+  - string
+friendlyName: string
+materializedView:
+  enableRefresh: boolean
+  query: string
+  refreshIntervalMs: integer
+rangePartitioning:
+  field: string
+  range:
+    end: integer
+    interval: integer
+    start: integer
+resourceID: string
+schema: string
+timePartitioning:
+  expirationMs: integer
+  field: string
+  requirePartitionFilter: boolean
+  type: string
+view:
+  query: string
+  useLegacySql: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -758,24 +758,24 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTime: integer
-  etag: string
-  lastModifiedTime: integer
-  location: string
-  numBytes: integer
-  numLongTermBytes: integer
-  numRows: integer
-  observedGeneration: integer
-  selfLink: string
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
   type: string
-  ```
+creationTime: integer
+etag: string
+lastModifiedTime: integer
+location: string
+numBytes: integer
+numLongTermBytes: integer
+numRows: integer
+observedGeneration: integer
+selfLink: string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -909,50 +909,50 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigquerytablesample
-    labels:
-      data-source: "external"
-      schema-type: "auto-junk"
-  spec:
-    description: "BigQuery Sample Table"
-    datasetRef:
-      name: bigquerytabledep
-    friendlyName: bigquerytable-sample
-    externalDataConfiguration:
-      autodetect: true
-      compression: NONE
-      ignoreUnknownValues: false
-      maxBadRecords: 10
-      sourceFormat: CSV
-      sourceUris:
-        - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
-        - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytablesample
+  labels:
+    data-source: "external"
+    schema-type: "auto-junk"
+spec:
+  description: "BigQuery Sample Table"
+  datasetRef:
     name: bigquerytabledep
-  spec:
-    friendlyName: bigquerytable-dep
-  ```
+  friendlyName: bigquerytable-sample
+  externalDataConfiguration:
+    autodetect: true
+    compression: NONE
+    ignoreUnknownValues: false
+    maxBadRecords: 10
+    sourceFormat: CSV
+    sourceUris:
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerytabledep
+spec:
+  friendlyName: bigquerytable-dep
+```
 
 
 {% endblock %}

@@ -533,29 +533,29 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Spec
 #### Schema
-  ```yaml
-  bindings:
-  - condition:
-      description: string
-      expression: string
-      title: string
-    members:
-    - member: string
-      memberFrom:
-        logSinkRef:
-          name: string
-          namespace: string
-        serviceAccountRef:
-          name: string
-          namespace: string
-    role: string
-  resourceRef:
-    apiVersion: string
-    external: string
-    kind: string
-    name: string
-    namespace: string
-  ```
+```yaml
+bindings:
+- condition:
+    description: string
+    expression: string
+    title: string
+  members:
+  - member: string
+    memberFrom:
+      logSinkRef:
+        name: string
+        namespace: string
+      serviceAccountRef:
+        name: string
+        namespace: string
+  role: string
+resourceRef:
+  apiVersion: string
+  external: string
+  kind: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -803,31 +803,31 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Status
 #### Schema
-  ```yaml
-  allBindings:
-  - condition:
-      description: string
-      expression: string
-      title: string
-    members:
-    - string
-    role: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  lastAppliedBindings:
-  - condition:
-      description: string
-      expression: string
-      title: string
-    members:
-    - string
-    role: string
-  observedGeneration: integer
-  ```
+```yaml
+allBindings:
+- condition:
+    description: string
+    expression: string
+    title: string
+  members:
+  - string
+  role: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+lastAppliedBindings:
+- condition:
+    description: string
+    expression: string
+    title: string
+  members:
+  - string
+  role: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -1024,107 +1024,107 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 ## Sample YAML(s)
 
 ### Project Level Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # **NOTE**: The policy here represents a non-authoritative declarative intent for the
-  # referenced project. It will merge with the existing bindings on the project.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPartialPolicy
-  metadata:
-    name: iampartialpolicy-sample-project
-  spec:
-    resourceRef:
-      kind: Project
-      name: iampartialpolicy-dep-project
-    bindings:
-      - role: roles/storage.admin
-        members:
-          - member: serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
-      - role: roles/editor
-        members:
-          - memberFrom:
-              serviceAccountRef:
-                name: iampartialpolicy-dep-project
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: iampartialpolicy-dep-project
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# **NOTE**: The policy here represents a non-authoritative declarative intent for the
+# referenced project. It will merge with the existing bindings on the project.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-sample-project
+spec:
+  resourceRef:
+    kind: Project
     name: iampartialpolicy-dep-project
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/auto-create-network: "false"
-    name: iampartialpolicy-dep-project
-  spec:
-    name: Config Connector Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID of the parent organization
-      external: "${ORG_ID?}"
-  ```
+  bindings:
+    - role: roles/storage.admin
+      members:
+        - member: serviceAccount:iampartialpolicy-dep-project@iampartialpolicy-dep-project.iam.gserviceaccount.com
+    - role: roles/editor
+      members:
+        - memberFrom:
+            serviceAccountRef:
+              name: iampartialpolicy-dep-project
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: iampartialpolicy-dep-project
+  name: iampartialpolicy-dep-project
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: iampartialpolicy-dep-project
+spec:
+  name: Config Connector Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    external: "${ORG_ID?}"
+```
 
 ### Pubsub Admin Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPartialPolicy
-  metadata:
-    name: iampartialpolicy-sample-pubsubadmin
-  spec:
-    resourceRef:
-      kind: PubSubTopic
-      name: iampartialpolicy-dep-pubsubadmin
-    bindings:
-      - role: roles/editor
-        members:
-          - member: serviceAccount:partialpolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: partialpolicy-dep-pubsubadmin
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-sample-pubsubadmin
+spec:
+  resourceRef:
+    kind: PubSubTopic
     name: iampartialpolicy-dep-pubsubadmin
-  ```
+  bindings:
+    - role: roles/editor
+      members:
+        - member: serviceAccount:partialpolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: partialpolicy-dep-pubsubadmin
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: iampartialpolicy-dep-pubsubadmin
+```
 
 
 {% endblock %}

@@ -80,31 +80,31 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  admissionWhitelistPatterns:
-  - namePattern: string
-  clusterAdmissionRules:
-    string: object
-  defaultAdmissionRule:
-    enforcementMode: string
-    evaluationMode: string
-    requireAttestationsBy:
-    - external: string
-      name: string
-      namespace: string
-  description: string
-  globalPolicyEvaluationMode: string
-  istioServiceIdentityAdmissionRules:
-    string: object
-  kubernetesNamespaceAdmissionRules:
-    string: object
-  kubernetesServiceAccountAdmissionRules:
-    string: object
-  projectRef:
-    external: string
+```yaml
+admissionWhitelistPatterns:
+- namePattern: string
+clusterAdmissionRules:
+  string: object
+defaultAdmissionRule:
+  enforcementMode: string
+  evaluationMode: string
+  requireAttestationsBy:
+  - external: string
     name: string
     namespace: string
-  ```
+description: string
+globalPolicyEvaluationMode: string
+istioServiceIdentityAdmissionRules:
+  string: object
+kubernetesNamespaceAdmissionRules:
+  string: object
+kubernetesServiceAccountAdmissionRules:
+  string: object
+projectRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -332,17 +332,17 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -427,451 +427,451 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Cluster Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationPolicy
-  metadata:
-    name: binaryauthorizationpolicy-sample-cluster
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-cluster
-    admissionWhitelistPatterns:
-      - namePattern: "gcr.io/*"
-    clusterAdmissionRules:
-      us-west1-a.test-cluster:
-        evaluationMode: "REQUIRE_ATTESTATION"
-        requireAttestationsBy:
-          - name: binaryauthorizationpolicy-dep-cluster
-        enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    defaultAdmissionRule:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationPolicy
+metadata:
+  name: binaryauthorizationpolicy-sample-cluster
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
+  admissionWhitelistPatterns:
+    - namePattern: "gcr.io/*"
+  clusterAdmissionRules:
+    us-west1-a.test-cluster:
       evaluationMode: "REQUIRE_ATTESTATION"
       requireAttestationsBy:
         - name: binaryauthorizationpolicy-dep-cluster
       enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    description: A sample Binary Authorization policy with a cluster admission rule
-    globalPolicyEvaluationMode: DISABLE
-  ---
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationAttestor
-  metadata:
-    name: binaryauthorizationpolicy-dep-cluster
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-cluster
-    description: A sample binary authorization attestor.
-    userOwnedDrydockNote:
-      noteRef:
-        name: binaryauthorizationpolicy-dep-cluster
-  ---
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: binaryauthorizationpolicy-dep-cluster
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-cluster
-    package:
-      name: test-package
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+  defaultAdmissionRule:
+    evaluationMode: "REQUIRE_ATTESTATION"
+    requireAttestationsBy:
+      - name: binaryauthorizationpolicy-dep-cluster
+    enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  description: A sample Binary Authorization policy with a cluster admission rule
+  globalPolicyEvaluationMode: DISABLE
+---
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationAttestor
+metadata:
+  name: binaryauthorizationpolicy-dep-cluster
+spec:
+  projectRef:
     name: binauthzpolicy-dep-cluster
-  spec:
-    name: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep1-cluster
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-cluster
-    resourceID: containeranalysis.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep2-cluster
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-cluster
-    resourceID: binaryauthorization.googleapis.com
-  ```
+  description: A sample binary authorization attestor.
+  userOwnedDrydockNote:
+    noteRef:
+      name: binaryauthorizationpolicy-dep-cluster
+---
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: binaryauthorizationpolicy-dep-cluster
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
+  package:
+    name: test-package
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: binauthzpolicy-dep-cluster
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep1-cluster
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
+  resourceID: containeranalysis.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep2-cluster
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-cluster
+  resourceID: binaryauthorization.googleapis.com
+```
 
 ### Default Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationPolicy
-  metadata:
-    name: binaryauthorizationpolicy-sample-default
-  spec:
-    projectRef:
-      name: binauthpolicy-dep-default
-    admissionWhitelistPatterns:
-      - namePattern: "gcr.io/google_containers/*"
-      - namePattern: "gcr.io/google-containers/*"
-      - namePattern: "k8s.gcr.io/*"
-      - namePattern: "gke.gcr.io/*"
-      - namePattern: "gcr.io/stackdriver-agents/*"
-    defaultAdmissionRule:
-      enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-      evaluationMode: "ALWAYS_ALLOW"
-    globalPolicyEvaluationMode: ENABLE
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/auto-create-network: "false"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationPolicy
+metadata:
+  name: binaryauthorizationpolicy-sample-default
+spec:
+  projectRef:
     name: binauthpolicy-dep-default
-  spec:
-    name: Config Connector Sample
-    folderRef:
-      # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
-      external: "${FOLDER_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: binauthpolicy-dep-default
-    name: binaryauthorizationpolicy-dep-default
-  spec:
-    resourceID: binaryauthorization.googleapis.com
-  ```
+  admissionWhitelistPatterns:
+    - namePattern: "gcr.io/google_containers/*"
+    - namePattern: "gcr.io/google-containers/*"
+    - namePattern: "k8s.gcr.io/*"
+    - namePattern: "gke.gcr.io/*"
+    - namePattern: "gcr.io/stackdriver-agents/*"
+  defaultAdmissionRule:
+    enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    evaluationMode: "ALWAYS_ALLOW"
+  globalPolicyEvaluationMode: ENABLE
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: binauthpolicy-dep-default
+spec:
+  name: Config Connector Sample
+  folderRef:
+    # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
+    external: "${FOLDER_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: binauthpolicy-dep-default
+  name: binaryauthorizationpolicy-dep-default
+spec:
+  resourceID: binaryauthorization.googleapis.com
+```
 
 ### Namespace Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationPolicy
-  metadata:
-    name: binaryauthorizationpolicy-sample-namespace
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-namespace
-    admissionWhitelistPatterns:
-      - namePattern: "gcr.io/*"
-    kubernetesNamespaceAdmissionRules:
-      test-namespace:
-        evaluationMode: "REQUIRE_ATTESTATION"
-        requireAttestationsBy:
-          - name: binaryauthorizationpolicy-dep-namespace
-        enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    defaultAdmissionRule:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationPolicy
+metadata:
+  name: binaryauthorizationpolicy-sample-namespace
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
+  admissionWhitelistPatterns:
+    - namePattern: "gcr.io/*"
+  kubernetesNamespaceAdmissionRules:
+    test-namespace:
       evaluationMode: "REQUIRE_ATTESTATION"
       requireAttestationsBy:
         - name: binaryauthorizationpolicy-dep-namespace
       enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    description: A sample Binary Authorization policy
-    globalPolicyEvaluationMode: DISABLE
-  ---
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationAttestor
-  metadata:
-    name: binaryauthorizationpolicy-dep-namespace
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-namespace
-    description: A sample binary authorization attestor.
-    userOwnedDrydockNote:
-      noteRef:
-        name: binaryauthorizationpolicy-dep-namespace
-  ---
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: binaryauthorizationpolicy-dep-namespace
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-namespace
-    package:
-      name: test-package
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+  defaultAdmissionRule:
+    evaluationMode: "REQUIRE_ATTESTATION"
+    requireAttestationsBy:
+      - name: binaryauthorizationpolicy-dep-namespace
+    enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  description: A sample Binary Authorization policy
+  globalPolicyEvaluationMode: DISABLE
+---
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationAttestor
+metadata:
+  name: binaryauthorizationpolicy-dep-namespace
+spec:
+  projectRef:
     name: binauthzpolicy-dep-namespace
-  spec:
-    name: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep1-namespace
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-namespace
-    resourceID: containeranalysis.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep2-namespace
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-namespace
-    resourceID: binaryauthorization.googleapis.com
-  ```
+  description: A sample binary authorization attestor.
+  userOwnedDrydockNote:
+    noteRef:
+      name: binaryauthorizationpolicy-dep-namespace
+---
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: binaryauthorizationpolicy-dep-namespace
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
+  package:
+    name: test-package
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: binauthzpolicy-dep-namespace
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep1-namespace
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
+  resourceID: containeranalysis.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep2-namespace
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-namespace
+  resourceID: binaryauthorization.googleapis.com
+```
 
 ### Service Account Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationPolicy
-  metadata:
-    name: binaryauthorizationpolicy-sample-serviceaccount
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-sa
-    admissionWhitelistPatterns:
-      - namePattern: "gcr.io/*"
-    kubernetesServiceAccountAdmissionRules:
-      test-namespace:default:
-        evaluationMode: "REQUIRE_ATTESTATION"
-        requireAttestationsBy:
-          - name: binaryauthorizationpolicy-dep-serviceaccount
-        enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    defaultAdmissionRule:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationPolicy
+metadata:
+  name: binaryauthorizationpolicy-sample-serviceaccount
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-sa
+  admissionWhitelistPatterns:
+    - namePattern: "gcr.io/*"
+  kubernetesServiceAccountAdmissionRules:
+    test-namespace:default:
       evaluationMode: "REQUIRE_ATTESTATION"
       requireAttestationsBy:
         - name: binaryauthorizationpolicy-dep-serviceaccount
       enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    description: A sample Binary Authorization policy
-    globalPolicyEvaluationMode: DISABLE
-  ---
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationAttestor
-  metadata:
-    name: binaryauthorizationpolicy-dep-serviceaccount
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-sa
-    description: A sample binary authorization attestor.
-    userOwnedDrydockNote:
-      noteRef:
-        name: binaryauthorizationpolicy-dep-serviceaccount
-  ---
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: binaryauthorizationpolicy-dep-serviceaccount
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-sa
-    package:
-      name: test-package
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+  defaultAdmissionRule:
+    evaluationMode: "REQUIRE_ATTESTATION"
+    requireAttestationsBy:
+      - name: binaryauthorizationpolicy-dep-serviceaccount
+    enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  description: A sample Binary Authorization policy
+  globalPolicyEvaluationMode: DISABLE
+---
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationAttestor
+metadata:
+  name: binaryauthorizationpolicy-dep-serviceaccount
+spec:
+  projectRef:
     name: binauthzpolicy-dep-sa
-  spec:
-    name: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep1-serviceaccount
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-sa
-    resourceID: containeranalysis.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep2-serviceaccount
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-sa
-    resourceID: binaryauthorization.googleapis.com
-  ```
+  description: A sample binary authorization attestor.
+  userOwnedDrydockNote:
+    noteRef:
+      name: binaryauthorizationpolicy-dep-serviceaccount
+---
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: binaryauthorizationpolicy-dep-serviceaccount
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-sa
+  package:
+    name: test-package
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: binauthzpolicy-dep-sa
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep1-serviceaccount
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-sa
+  resourceID: containeranalysis.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep2-serviceaccount
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-sa
+  resourceID: binaryauthorization.googleapis.com
+```
 
 ### Service Identity Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationPolicy
-  metadata:
-    name: binaryauthorizationpolicy-sample-serviceidentity
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-si
-    admissionWhitelistPatterns:
-      - namePattern: "gcr.io/*"
-    istioServiceIdentityAdmissionRules:
-      spiffe://example.com/ns/test-ns/sa/default:
-        evaluationMode: "REQUIRE_ATTESTATION"
-        requireAttestationsBy:
-          - name: binaryauthorizationpolicy-dep-serviceidentity
-        enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    defaultAdmissionRule:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationPolicy
+metadata:
+  name: binaryauthorizationpolicy-sample-serviceidentity
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-si
+  admissionWhitelistPatterns:
+    - namePattern: "gcr.io/*"
+  istioServiceIdentityAdmissionRules:
+    spiffe://example.com/ns/test-ns/sa/default:
       evaluationMode: "REQUIRE_ATTESTATION"
       requireAttestationsBy:
         - name: binaryauthorizationpolicy-dep-serviceidentity
       enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
-    description: A sample Binary Authorization policy
-    globalPolicyEvaluationMode: DISABLE
-  ---
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationAttestor
-  metadata:
-    name: binaryauthorizationpolicy-dep-serviceidentity
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-si
-    description: A sample binary authorization attestor.
-    userOwnedDrydockNote:
-      noteRef:
-        name: binaryauthorizationpolicy-dep-serviceidentity
-  ---
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: binaryauthorizationpolicy-dep-serviceidentity
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-si
-    package:
-      name: test-package
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+  defaultAdmissionRule:
+    evaluationMode: "REQUIRE_ATTESTATION"
+    requireAttestationsBy:
+      - name: binaryauthorizationpolicy-dep-serviceidentity
+    enforcementMode: "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  description: A sample Binary Authorization policy
+  globalPolicyEvaluationMode: DISABLE
+---
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationAttestor
+metadata:
+  name: binaryauthorizationpolicy-dep-serviceidentity
+spec:
+  projectRef:
     name: binauthzpolicy-dep-si
-  spec:
-    name: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep1-serviceidentity
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-si
-    resourceID: containeranalysis.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: binaryauthorizationpolicy-dep2-serviceidentity
-  spec:
-    projectRef:
-      name: binauthzpolicy-dep-si
-    resourceID: binaryauthorization.googleapis.com
-  ```
+  description: A sample binary authorization attestor.
+  userOwnedDrydockNote:
+    noteRef:
+      name: binaryauthorizationpolicy-dep-serviceidentity
+---
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: binaryauthorizationpolicy-dep-serviceidentity
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-si
+  package:
+    name: test-package
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: binauthzpolicy-dep-si
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep1-serviceidentity
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-si
+  resourceID: containeranalysis.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: binaryauthorizationpolicy-dep2-serviceidentity
+spec:
+  projectRef:
+    name: binauthzpolicy-dep-si
+  resourceID: binaryauthorization.googleapis.com
+```
 
 
 {% endblock %}

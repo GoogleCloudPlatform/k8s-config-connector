@@ -57,35 +57,35 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  action: string
-  description: string
-  direction: string
-  disabled: boolean
-  enableLogging: boolean
-  firewallPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  match:
-    destIPRanges:
+```yaml
+action: string
+description: string
+direction: string
+disabled: boolean
+enableLogging: boolean
+firewallPolicyRef:
+  external: string
+  name: string
+  namespace: string
+match:
+  destIPRanges:
+  - string
+  layer4Configs:
+  - ipProtocol: string
+    ports:
     - string
-    layer4Configs:
-    - ipProtocol: string
-      ports:
-      - string
-    srcIPRanges:
-    - string
-  priority: integer
-  targetResources:
-  - external: string
-    name: string
-    namespace: string
-  targetServiceAccounts:
-  - external: string
-    name: string
-    namespace: string
-  ```
+  srcIPRanges:
+  - string
+priority: integer
+targetResources:
+- external: string
+  name: string
+  namespace: string
+targetServiceAccounts:
+- external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -403,17 +403,17 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  kind: string
-  observedGeneration: integer
-  ruleTupleCount: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+kind: string
+observedGeneration: integer
+ruleTupleCount: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -498,73 +498,73 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicyRule
-  metadata:
-    name: firewallpolicyrule-sample
-  spec:
-    action: "deny"
-    description: "A Firewall Policy Rule"
-    direction: "INGRESS"
-    disabled: false
-    enableLogging: false
-    firewallPolicyRef:
-      name: firewallpolicyrule-dep
-    match:
-      layer4Configs:
-      - ipProtocol: "tcp"
-      srcIPRanges:
-      - "10.100.0.1/32"
-    priority: 9000
-    targetResources:
-      - name: firewallpolicyrule-dep
-    targetServiceAccounts:
-      - name: firewallpolicyrule-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicy
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyRule
+metadata:
+  name: firewallpolicyrule-sample
+spec:
+  action: "deny"
+  description: "A Firewall Policy Rule"
+  direction: "INGRESS"
+  disabled: false
+  enableLogging: false
+  firewallPolicyRef:
     name: firewallpolicyrule-dep
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    # ComputeFirewallPolicy shortNames must be unique in the organization in
-    # which the firewall policy is created
-    shortName: ${PROJECT_ID?}-short
-    description: "A basic organization firewall policy"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: firewallpolicyrule-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      # Replace ${PROJECT_ID?} with your project ID.
-      cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
-    name: firewallpolicyrule-dep
-  ```
+  match:
+    layer4Configs:
+    - ipProtocol: "tcp"
+    srcIPRanges:
+    - "10.100.0.1/32"
+  priority: 9000
+  targetResources:
+    - name: firewallpolicyrule-dep
+  targetServiceAccounts:
+    - name: firewallpolicyrule-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  name: firewallpolicyrule-dep
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  # ComputeFirewallPolicy shortNames must be unique in the organization in
+  # which the firewall policy is created
+  shortName: ${PROJECT_ID?}-short
+  description: "A basic organization firewall policy"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: firewallpolicyrule-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID.
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
+  name: firewallpolicyrule-dep
+```
 
 
 {% endblock %}

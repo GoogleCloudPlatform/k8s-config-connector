@@ -72,118 +72,118 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  advancedMachineFeatures:
-    enableNestedVirtualization: boolean
-    threadsPerCore: integer
-  canIpForward: boolean
-  confidentialInstanceConfig:
-    enableConfidentialCompute: boolean
-  description: string
-  disk:
-  - autoDelete: boolean
-    boot: boolean
-    deviceName: string
-    diskEncryptionKey:
-      kmsKeyRef:
-        external: string
-        name: string
-        namespace: string
-    diskName: string
-    diskSizeGb: integer
-    diskType: string
-    interface: string
-    labels:
-      string: string
-    mode: string
-    resourcePolicies:
-    - external: string
-      name: string
-      namespace: string
-    sourceDiskRef:
+```yaml
+advancedMachineFeatures:
+  enableNestedVirtualization: boolean
+  threadsPerCore: integer
+canIpForward: boolean
+confidentialInstanceConfig:
+  enableConfidentialCompute: boolean
+description: string
+disk:
+- autoDelete: boolean
+  boot: boolean
+  deviceName: string
+  diskEncryptionKey:
+    kmsKeyRef:
       external: string
       name: string
       namespace: string
-    sourceImageRef:
-      external: string
-      name: string
-      namespace: string
-    type: string
-  enableDisplay: boolean
-  guestAccelerator:
-  - count: integer
-    type: string
-  instanceDescription: string
-  machineType: string
-  metadata:
-  - key: string
-    value: string
-  metadataStartupScript: string
-  minCpuPlatform: string
-  namePrefix: string
-  networkInterface:
-  - accessConfig:
-    - natIpRef:
-        external: string
-        name: string
-        namespace: string
-      networkTier: string
-      publicPtrDomainName: string
-    aliasIpRange:
-    - ipCidrRange: string
-      subnetworkRangeName: string
-    ipv6AccessConfig:
-    - externalIpv6: string
-      externalIpv6PrefixLength: string
-      networkTier: string
-      publicPtrDomainName: string
-    ipv6AccessType: string
+  diskName: string
+  diskSizeGb: integer
+  diskType: string
+  interface: string
+  labels:
+    string: string
+  mode: string
+  resourcePolicies:
+  - external: string
     name: string
-    networkIp: string
-    networkRef:
+    namespace: string
+  sourceDiskRef:
+    external: string
+    name: string
+    namespace: string
+  sourceImageRef:
+    external: string
+    name: string
+    namespace: string
+  type: string
+enableDisplay: boolean
+guestAccelerator:
+- count: integer
+  type: string
+instanceDescription: string
+machineType: string
+metadata:
+- key: string
+  value: string
+metadataStartupScript: string
+minCpuPlatform: string
+namePrefix: string
+networkInterface:
+- accessConfig:
+  - natIpRef:
       external: string
       name: string
       namespace: string
-    nicType: string
-    queueCount: integer
-    stackType: string
-    subnetworkProject: string
-    subnetworkRef:
-      external: string
-      name: string
-      namespace: string
-  networkPerformanceConfig:
-    totalEgressBandwidthTier: string
-  region: string
-  reservationAffinity:
-    specificReservation:
-      key: string
-      values:
-      - string
-    type: string
-  resourceID: string
-  scheduling:
-    automaticRestart: boolean
-    minNodeCpus: integer
-    nodeAffinities:
-    - value: {}
-    onHostMaintenance: string
-    preemptible: boolean
-    provisioningModel: string
-  serviceAccount:
-    scopes:
+    networkTier: string
+    publicPtrDomainName: string
+  aliasIpRange:
+  - ipCidrRange: string
+    subnetworkRangeName: string
+  ipv6AccessConfig:
+  - externalIpv6: string
+    externalIpv6PrefixLength: string
+    networkTier: string
+    publicPtrDomainName: string
+  ipv6AccessType: string
+  name: string
+  networkIp: string
+  networkRef:
+    external: string
+    name: string
+    namespace: string
+  nicType: string
+  queueCount: integer
+  stackType: string
+  subnetworkProject: string
+  subnetworkRef:
+    external: string
+    name: string
+    namespace: string
+networkPerformanceConfig:
+  totalEgressBandwidthTier: string
+region: string
+reservationAffinity:
+  specificReservation:
+    key: string
+    values:
     - string
-    serviceAccountRef:
-      external: string
-      name: string
-      namespace: string
-  shieldedInstanceConfig:
-    enableIntegrityMonitoring: boolean
-    enableSecureBoot: boolean
-    enableVtpm: boolean
-  tags:
+  type: string
+resourceID: string
+scheduling:
+  automaticRestart: boolean
+  minNodeCpus: integer
+  nodeAffinities:
+  - value: {}
+  onHostMaintenance: string
+  preemptible: boolean
+  provisioningModel: string
+serviceAccount:
+  scopes:
   - string
-  ```
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+shieldedInstanceConfig:
+  enableIntegrityMonitoring: boolean
+  enableSecureBoot: boolean
+  enableVtpm: boolean
+tags:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1381,18 +1381,18 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  metadataFingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  tagsFingerprint: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+metadataFingerprint: string
+observedGeneration: integer
+selfLink: string
+tagsFingerprint: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1484,132 +1484,132 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
-    name: instancetemplate-sample
-    labels:
-      env: "dev"
-  spec:
-    description: a sample instance template
-    tags:
-      - foo
-      - bar
-    instanceDescription: a sample instance created from the sample instance template
-    machineType: n1-standard-1
-    region: us-west1
-    disk:
-      - sourceDiskRef:
-          name: instancetemplate-dep
-        autoDelete: false
-        boot: true
-      - sourceImageRef:
-          name: instancetemplate-dep
-        autoDelete: true
-        boot: false
-        diskName: sample-attached-disk
-        deviceName: attachment
-        interface: SCSI
-        diskType: pd-ssd
-        diskSizeGb: 10
-        type: PERSISTENT
-    networkInterface:
-      - networkRef:
-          name: instancetemplate-dep
-        subnetworkRef:
-          name: instancetemplate-dep
-        networkIp: "10.2.0.1"
-        aliasIpRange:
-          - ipCidrRange: /16
-            subnetworkRangeName: sub-range
-    canIpForward: false
-    scheduling:
-      automaticRestart: true
-      onHostMaintenance: "MIGRATE"
-      preemptible: false
-    metadataStartupScript: "echo hi > /test.txt"
-    serviceAccount:
-      serviceAccountRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: instancetemplate-sample
+  labels:
+    env: "dev"
+spec:
+  description: a sample instance template
+  tags:
+    - foo
+    - bar
+  instanceDescription: a sample instance created from the sample instance template
+  machineType: n1-standard-1
+  region: us-west1
+  disk:
+    - sourceDiskRef:
         name: instancetemplate-dep
-      scopes:
-        - userinfo-email
-        - compute-ro
-        - storage-ro
-    guestAccelerator:
-      - type: nvidia-tesla-k80
-        count: 1
-    minCpuPlatform: "Intel Skylake"
-    shieldedInstanceConfig:
-      enableSecureBoot: false
-      enableVtpm: true
-      enableIntegrityMonitoring: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: instancetemplate-dep
-  spec:
-    description: a sample encrypted, blank disk
-    physicalBlockSizeBytes: 4096
-    size: 1
-    type: pd-ssd
-    location: us-west1-c
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeImage
-  metadata:
-    name: instancetemplate-dep
-  spec:
-    description: A sample image created from an empty disk resource
-    diskRef:
+      autoDelete: false
+      boot: true
+    - sourceImageRef:
+        name: instancetemplate-dep
+      autoDelete: true
+      boot: false
+      diskName: sample-attached-disk
+      deviceName: attachment
+      interface: SCSI
+      diskType: pd-ssd
+      diskSizeGb: 10
+      type: PERSISTENT
+  networkInterface:
+    - networkRef:
+        name: instancetemplate-dep
+      subnetworkRef:
+        name: instancetemplate-dep
+      networkIp: "10.2.0.1"
+      aliasIpRange:
+        - ipCidrRange: /16
+          subnetworkRangeName: sub-range
+  canIpForward: false
+  scheduling:
+    automaticRestart: true
+    onHostMaintenance: "MIGRATE"
+    preemptible: false
+  metadataStartupScript: "echo hi > /test.txt"
+  serviceAccount:
+    serviceAccountRef:
       name: instancetemplate-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+    scopes:
+      - userinfo-email
+      - compute-ro
+      - storage-ro
+  guestAccelerator:
+    - type: nvidia-tesla-k80
+      count: 1
+  minCpuPlatform: "Intel Skylake"
+  shieldedInstanceConfig:
+    enableSecureBoot: false
+    enableVtpm: true
+    enableIntegrityMonitoring: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: instancetemplate-dep
+spec:
+  description: a sample encrypted, blank disk
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west1-c
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: instancetemplate-dep
+spec:
+  description: A sample image created from an empty disk resource
+  diskRef:
     name: instancetemplate-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: instancetemplate-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: instancetemplate-dep
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-west1
+  description: a sample subnetwork
+  privateIpGoogleAccess: false
+  networkRef:
     name: instancetemplate-dep
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-west1
-    description: a sample subnetwork
-    privateIpGoogleAccess: false
-    networkRef:
-      name: instancetemplate-dep
-    logConfig:
-      aggregationInterval: INTERVAL_10_MIN
-      flowSampling: 0.5
-      metadata: INCLUDE_ALL_METADATA
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    name: instancetemplate-dep
-  spec:
-    displayName: a sample Service Account
-  ```
+  logConfig:
+    aggregationInterval: INTERVAL_10_MIN
+    flowSampling: 0.5
+    metadata: INCLUDE_ALL_METADATA
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: instancetemplate-dep
+spec:
+  displayName: a sample Service Account
+```
 
 
 {% endblock %}

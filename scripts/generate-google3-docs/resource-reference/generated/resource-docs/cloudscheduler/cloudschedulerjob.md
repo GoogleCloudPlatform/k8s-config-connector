@@ -72,56 +72,56 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  appEngineHttpTarget:
-    appEngineRouting:
-      instance: string
-      service: string
-      version: string
-    body: string
-    headers:
-      string: string
-    httpMethod: string
-    relativeUri: string
-  attemptDeadline: string
-  description: string
-  httpTarget:
-    body: string
-    headers:
-      string: string
-    httpMethod: string
-    oauthToken:
-      scope: string
-      serviceAccountRef:
-        external: string
-        name: string
-        namespace: string
-    oidcToken:
-      audience: string
-      serviceAccountRef:
-        external: string
-        name: string
-        namespace: string
-    uri: string
-  location: string
-  pubsubTarget:
-    attributes:
-      string: string
-    data: string
-    topicRef:
+```yaml
+appEngineHttpTarget:
+  appEngineRouting:
+    instance: string
+    service: string
+    version: string
+  body: string
+  headers:
+    string: string
+  httpMethod: string
+  relativeUri: string
+attemptDeadline: string
+description: string
+httpTarget:
+  body: string
+  headers:
+    string: string
+  httpMethod: string
+  oauthToken:
+    scope: string
+    serviceAccountRef:
       external: string
       name: string
       namespace: string
-  resourceID: string
-  retryConfig:
-    maxBackoffDuration: string
-    maxDoublings: integer
-    maxRetryDuration: string
-    minBackoffDuration: string
-    retryCount: integer
-  schedule: string
-  timeZone: string
-  ```
+  oidcToken:
+    audience: string
+    serviceAccountRef:
+      external: string
+      name: string
+      namespace: string
+  uri: string
+location: string
+pubsubTarget:
+  attributes:
+    string: string
+  data: string
+  topicRef:
+    external: string
+    name: string
+    namespace: string
+resourceID: string
+retryConfig:
+  maxBackoffDuration: string
+  maxDoublings: integer
+  maxRetryDuration: string
+  minBackoffDuration: string
+  retryCount: integer
+schedule: string
+timeZone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -595,28 +595,28 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
 
 ### Status
 #### Schema
-  ```yaml
-  appEngineHttpTarget:
-    appEngineRouting:
-      host: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  lastAttemptTime: string
-  observedGeneration: integer
-  scheduleTime: string
-  state: string
-  status:
-    code: integer
-    details:
-    - typeUrl: string
-      value: string
-    message: string
-  userUpdateTime: string
-  ```
+```yaml
+appEngineHttpTarget:
+  appEngineRouting:
+    host: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+lastAttemptTime: string
+observedGeneration: integer
+scheduleTime: string
+state: string
+status:
+  code: integer
+  details:
+  - typeUrl: string
+    value: string
+  message: string
+userUpdateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -785,125 +785,125 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
 ## Sample YAML(s)
 
 ### Scheduler Job Http
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
-  kind: CloudSchedulerJob
-  metadata:
-    name: cloudscheduler-sample-http
-  spec:
-    description: "scheduler-http-target-job"
-    schedule: "*/5 * * * *"
-    location: "us-west2"
-    timeZone: "EST"
-    attemptDeadline: "600s"
-    retryConfig:
-      retryCount: 3
-      maxRetryDuration: "60s"
-      maxDoublings: 2
-    httpTarget:
-      headers:
-        app: test
-        Content-Type: application/octet-stream
-        User-Agent: Google-Cloud-Scheduler
-      httpMethod: "POST"
-      uri: "https://example.com/ping"
-      body: "eyJmb28iOiJiYXIifQo=" # base64 encoded {"foo":"bar"}
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+kind: CloudSchedulerJob
+metadata:
+  name: cloudscheduler-sample-http
+spec:
+  description: "scheduler-http-target-job"
+  schedule: "*/5 * * * *"
+  location: "us-west2"
+  timeZone: "EST"
+  attemptDeadline: "600s"
+  retryConfig:
+    retryCount: 3
+    maxRetryDuration: "60s"
+    maxDoublings: 2
+  httpTarget:
+    headers:
+      app: test
+      Content-Type: application/octet-stream
+      User-Agent: Google-Cloud-Scheduler
+    httpMethod: "POST"
+    uri: "https://example.com/ping"
+    body: "eyJmb28iOiJiYXIifQo=" # base64 encoded {"foo":"bar"}
+```
 
 ### Scheduler Job Oauth
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
-  kind: CloudSchedulerJob
-  metadata:
-    name: cloudscheduler-sample-oauth
-  spec:
-    description: "scheduler-http-target-job"
-    schedule: "*/5 * * * *"
-    location: "us-west2"
-    timeZone: "America/New_York"
-    attemptDeadline: "600s"
-    retryConfig:
-      retryCount: 3
-      maxRetryDuration: "60s"
-      maxDoublings: 2
-    httpTarget:
-      httpMethod: "GET"
-      uri: "https://cloudscheduler.googleapis.com/v1/projects/my-project-name/locations/us-west1/jobs"
-      oauthToken:
-        serviceAccountRef:
-          name: cloudscheduler-oauth-dep
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    name: cloudscheduler-oauth-dep
-  spec:
-    displayName: Example Service Account
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+kind: CloudSchedulerJob
+metadata:
+  name: cloudscheduler-sample-oauth
+spec:
+  description: "scheduler-http-target-job"
+  schedule: "*/5 * * * *"
+  location: "us-west2"
+  timeZone: "America/New_York"
+  attemptDeadline: "600s"
+  retryConfig:
+    retryCount: 3
+    maxRetryDuration: "60s"
+    maxDoublings: 2
+  httpTarget:
+    httpMethod: "GET"
+    uri: "https://cloudscheduler.googleapis.com/v1/projects/my-project-name/locations/us-west1/jobs"
+    oauthToken:
+      serviceAccountRef:
+        name: cloudscheduler-oauth-dep
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: cloudscheduler-oauth-dep
+spec:
+  displayName: Example Service Account
+```
 
 ### Scheduler Job Pubsub
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
-  kind: CloudSchedulerJob
-  metadata:
-    name: cloudscheduler-sample-pubsub
-  spec:
-    description: "scheduler-pubsub-target-job"
-    schedule: "*/2 * * * *"
-    location: "us-west2"
-    pubsubTarget:
-      data: "dGVzdCBtZXNzYWdlCg==" # based64 encode "test message"
-      topicRef:
-        name: cloudscheduler-sample-pubsub-dep
-    timeZone: "EST"
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: cloudscheduler-sample-pubsub-dep
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudscheduler.cnrm.cloud.google.com/v1beta1
+kind: CloudSchedulerJob
+metadata:
+  name: cloudscheduler-sample-pubsub
+spec:
+  description: "scheduler-pubsub-target-job"
+  schedule: "*/2 * * * *"
+  location: "us-west2"
+  pubsubTarget:
+    data: "dGVzdCBtZXNzYWdlCg==" # based64 encode "test message"
+    topicRef:
+      name: cloudscheduler-sample-pubsub-dep
+  timeZone: "EST"
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: cloudscheduler-sample-pubsub-dep
+```
 
 
 {% endblock %}

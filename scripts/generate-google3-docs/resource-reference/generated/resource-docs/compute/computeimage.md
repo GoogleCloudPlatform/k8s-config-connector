@@ -90,32 +90,32 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  diskRef:
-    external: string
-    name: string
-    namespace: string
-  diskSizeGb: integer
-  family: string
-  guestOsFeatures:
-  - type: string
-  licenses:
-  - string
-  rawDisk:
-    containerType: string
-    sha1: string
-    source: string
-  resourceID: string
-  sourceImageRef:
-    external: string
-    name: string
-    namespace: string
-  sourceSnapshotRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+description: string
+diskRef:
+  external: string
+  name: string
+  namespace: string
+diskSizeGb: integer
+family: string
+guestOsFeatures:
+- type: string
+licenses:
+- string
+rawDisk:
+  containerType: string
+  sha1: string
+  source: string
+resourceID: string
+sourceImageRef:
+  external: string
+  name: string
+  namespace: string
+sourceSnapshotRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -397,19 +397,19 @@ but not both.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  archiveSizeBytes: integer
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  labelFingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+archiveSizeBytes: integer
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+labelFingerprint: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -510,69 +510,69 @@ internally during updates.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Image From Existing Disk
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeImage
-  metadata:
-    name: computeimage-sample-fromexistingdisk
-  spec:
-    description: A sample image created from an empty disk resource
-    diskRef:
-      name: computeimage-dep-fromexistingdisk
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: computeimage-sample-fromexistingdisk
+spec:
+  description: A sample image created from an empty disk resource
+  diskRef:
     name: computeimage-dep-fromexistingdisk
-  spec:
-    location: us-central1-a
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeimage-dep-fromexistingdisk
+spec:
+  location: us-central1-a
+```
 
 ### Image From Url Raw
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeImage
-  metadata:
-    name: computeimage-sample-fromurlraw
-    labels:
-      image-type: stemcell
-  spec:
-    description: A sample image created from URL to a raw TAR disk image
-    family: ubuntu-custom
-    licenses: ["https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"]
-    rawDisk:
-      source: "https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz"
-      containerType: "TAR"
-      sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: computeimage-sample-fromurlraw
+  labels:
+    image-type: stemcell
+spec:
+  description: A sample image created from URL to a raw TAR disk image
+  family: ubuntu-custom
+  licenses: ["https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"]
+  rawDisk:
+    source: "https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz"
+    containerType: "TAR"
+    sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
+```
 
 
 {% endblock %}

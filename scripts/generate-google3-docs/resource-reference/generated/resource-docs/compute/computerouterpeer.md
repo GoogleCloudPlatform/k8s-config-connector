@@ -72,35 +72,35 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  advertiseMode: string
-  advertisedGroups:
-  - string
-  advertisedIpRanges:
-  - description: string
-    range: string
-  advertisedRoutePriority: integer
-  bfd:
-    minReceiveInterval: integer
-    minTransmitInterval: integer
-    multiplier: integer
-    sessionInitializationMode: string
-  enable: boolean
-  ipAddress:
-    external: string
-  peerAsn: integer
-  peerIpAddress: string
-  region: string
-  resourceID: string
-  routerInterfaceRef:
-    external: string
-    name: string
-    namespace: string
-  routerRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+advertiseMode: string
+advertisedGroups:
+- string
+advertisedIpRanges:
+- description: string
+  range: string
+advertisedRoutePriority: integer
+bfd:
+  minReceiveInterval: integer
+  minTransmitInterval: integer
+  multiplier: integer
+  sessionInitializationMode: string
+enable: boolean
+ipAddress:
+  external: string
+peerAsn: integer
+peerIpAddress: string
+region: string
+resourceID: string
+routerInterfaceRef:
+  external: string
+  name: string
+  namespace: string
+routerRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -438,16 +438,16 @@ If it is not provided, the provider region is used.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  managementType: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+managementType: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -534,74 +534,74 @@ or deleted.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterPeer
-  metadata:
-    name: computerouterpeer-sample
-  spec:
-    region: us-central1
-    peerIpAddress: "169.254.0.2"
-    peerAsn: 65513
-    ipAddress:
-      external: "169.254.0.1"
-    advertisedRoutePriority: 1
-    routerRef:
-      name: computerouterpeer-dep
-    routerInterfaceRef:
-      name: computerouterpeer-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterPeer
+metadata:
+  name: computerouterpeer-sample
+spec:
+  region: us-central1
+  peerIpAddress: "169.254.0.2"
+  peerAsn: 65513
+  ipAddress:
+    external: "169.254.0.1"
+  advertisedRoutePriority: 1
+  routerRef:
     name: computerouterpeer-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouter
-  metadata:
+  routerInterfaceRef:
     name: computerouterpeer-dep
-  spec:
-    networkRef:
-      name: computerouterpeer-dep
-    description: example router description
-    region: us-central1
-    bgp:
-      asn: 64514
-      advertiseMode: CUSTOM
-      advertisedGroups:
-        - ALL_SUBNETS
-      advertisedIpRanges:
-        - range: "1.2.3.4"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterInterface
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterpeer-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouterpeer-dep
+spec:
+  networkRef:
     name: computerouterpeer-dep
-  spec:
-    routerRef:
-      name: computerouterpeer-dep
-    region: us-central1
-    ipRange: "169.254.0.1/30"
-  ```
+  description: example router description
+  region: us-central1
+  bgp:
+    asn: 64514
+    advertiseMode: CUSTOM
+    advertisedGroups:
+      - ALL_SUBNETS
+    advertisedIpRanges:
+      - range: "1.2.3.4"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterInterface
+metadata:
+  name: computerouterpeer-dep
+spec:
+  routerRef:
+    name: computerouterpeer-dep
+  region: us-central1
+  ipRange: "169.254.0.1/30"
+```
 
 
 {% endblock %}

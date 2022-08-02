@@ -64,118 +64,118 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  gateways:
-  - external: string
-    name: string
-    namespace: string
-  hostnames:
-  - string
-  labels:
-    string: string
-  location: string
-  meshes:
-  - external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  routers:
-  - string
-  rules:
-  - action:
-      corsPolicy:
-        allowCredentials: boolean
-        allowHeaders:
-        - string
-        allowMethods:
-        - string
-        allowOriginRegexes:
-        - string
-        allowOrigins:
-        - string
-        disabled: boolean
-        exposeHeaders:
-        - string
-        maxAge: string
-      destinations:
-      - serviceRef:
+```yaml
+description: string
+gateways:
+- external: string
+  name: string
+  namespace: string
+hostnames:
+- string
+labels:
+  string: string
+location: string
+meshes:
+- external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+routers:
+- string
+rules:
+- action:
+    corsPolicy:
+      allowCredentials: boolean
+      allowHeaders:
+      - string
+      allowMethods:
+      - string
+      allowOriginRegexes:
+      - string
+      allowOrigins:
+      - string
+      disabled: boolean
+      exposeHeaders:
+      - string
+      maxAge: string
+    destinations:
+    - serviceRef:
+        external: string
+        name: string
+        namespace: string
+      weight: integer
+    faultInjectionPolicy:
+      abort:
+        httpStatus: integer
+        percentage: integer
+      delay:
+        fixedDelay: string
+        percentage: integer
+    originalDestination: boolean
+    redirect:
+      hostRedirect: string
+      httpsRedirect: boolean
+      pathRedirect: string
+      portRedirect: integer
+      prefixRewrite: string
+      responseCode: string
+      stripQuery: boolean
+    requestHeaderModifier:
+      add:
+        string: string
+      remove:
+      - string
+      set:
+        string: string
+    requestMirrorPolicy:
+      destination:
+        serviceRef:
           external: string
           name: string
           namespace: string
         weight: integer
-      faultInjectionPolicy:
-        abort:
-          httpStatus: integer
-          percentage: integer
-        delay:
-          fixedDelay: string
-          percentage: integer
-      originalDestination: boolean
-      redirect:
-        hostRedirect: string
-        httpsRedirect: boolean
-        pathRedirect: string
-        portRedirect: integer
-        prefixRewrite: string
-        responseCode: string
-        stripQuery: boolean
-      requestHeaderModifier:
-        add:
-          string: string
-        remove:
-        - string
-        set:
-          string: string
-      requestMirrorPolicy:
-        destination:
-          serviceRef:
-            external: string
-            name: string
-            namespace: string
-          weight: integer
-      responseHeaderModifier:
-        add:
-          string: string
-        remove:
-        - string
-        set:
-          string: string
-      retryPolicy:
-        numRetries: integer
-        perTryTimeout: string
-        retryConditions:
-        - string
-      timeout: string
-      urlRewrite:
-        hostRewrite: string
-        pathPrefixRewrite: string
-    matches:
-    - fullPathMatch: string
-      headers:
-      - exactMatch: string
-        header: string
-        invertMatch: boolean
-        prefixMatch: string
-        presentMatch: boolean
-        rangeMatch:
-          end: integer
-          start: integer
-        regexMatch: string
-        suffixMatch: string
-      ignoreCase: boolean
+    responseHeaderModifier:
+      add:
+        string: string
+      remove:
+      - string
+      set:
+        string: string
+    retryPolicy:
+      numRetries: integer
+      perTryTimeout: string
+      retryConditions:
+      - string
+    timeout: string
+    urlRewrite:
+      hostRewrite: string
+      pathPrefixRewrite: string
+  matches:
+  - fullPathMatch: string
+    headers:
+    - exactMatch: string
+      header: string
+      invertMatch: boolean
       prefixMatch: string
-      queryParameters:
-      - exactMatch: string
-        presentMatch: boolean
-        queryParameter: string
-        regexMatch: string
+      presentMatch: boolean
+      rangeMatch:
+        end: integer
+        start: integer
       regexMatch: string
-  ```
+      suffixMatch: string
+    ignoreCase: boolean
+    prefixMatch: string
+    queryParameters:
+    - exactMatch: string
+      presentMatch: boolean
+      queryParameter: string
+      regexMatch: string
+    regexMatch: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1317,18 +1317,18 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  selfLink: string
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+selfLink: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1420,123 +1420,123 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-  kind: NetworkServicesHTTPRoute
-  metadata:
-    labels:
-      key-one: value-one
-    name: networkserviceshttproute-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: "projects/${PROJECT_ID?}"
-    location: global
-    hostnames: ["bar.baz"]
-    meshes:
-      - name: networkserviceshttproute-dep
-    gateways:
-      - name: networkserviceshttproute-dep
-    rules:
-    - matches:
-      - fullPathMatch: "/foo/bar"
-        headers:
-        - header: "foo-header"
-          prefixMatch: "bar-value"
-      action:
-        destinations:
-        - serviceRef:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesHTTPRoute
+metadata:
+  labels:
+    key-one: value-one
+  name: networkserviceshttproute-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: "projects/${PROJECT_ID?}"
+  location: global
+  hostnames: ["bar.baz"]
+  meshes:
+    - name: networkserviceshttproute-dep
+  gateways:
+    - name: networkserviceshttproute-dep
+  rules:
+  - matches:
+    - fullPathMatch: "/foo/bar"
+      headers:
+      - header: "foo-header"
+        prefixMatch: "bar-value"
+    action:
+      destinations:
+      - serviceRef:
+          name: networkserviceshttproute-dep
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 501
+          percentage: 1
+        delay:
+          fixedDelay: "10s"
+          percentage: 2
+      requestHeaderModifier:
+        add:
+          foo1: bar1
+          baz1: qux1
+        set:
+          foo2: bar2
+          baz2: qux2
+        remove:
+        - foo3
+        - bar3
+      requestMirrorPolicy:
+        destination:
+          serviceRef:
             name: networkserviceshttproute-dep
-        faultInjectionPolicy:
-          abort:
-            httpStatus: 501
-            percentage: 1
-          delay:
-            fixedDelay: "10s"
-            percentage: 2
-        requestHeaderModifier:
-          add:
-            foo1: bar1
-            baz1: qux1
-          set:
-            foo2: bar2
-            baz2: qux2
-          remove:
-          - foo3
-          - bar3
-        requestMirrorPolicy:
-          destination:
-            serviceRef:
-              name: networkserviceshttproute-dep
-        responseHeaderModifier:
-          add:
-            foo1: bar1
-            baz1: qux1
-          set:
-            foo2: bar2
-            baz2: qux2
-          remove:
-          - foo3
-          - bar3
-        retryPolicy:
-          numRetries: 3
-          perTryTimeout: "5s"
-          retryConditions:
-          - "refused-stream"
-          - "cancelled"
-        timeout: "30s"
-    - action:
-        destinations:
-        - serviceRef:
-            name: networkserviceshttproute-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: networkserviceshttproute-dep
-  spec:
-    loadBalancingScheme: INTERNAL_SELF_MANAGED
-    location: global
-  ---
-  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-  kind: NetworkServicesGateway
-  metadata:
-    name: networkserviceshttproute-dep
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: "projects/${PROJECT_ID?}"
-    type: OPEN_MESH
-    ports:
-    - 80
-    - 443
-    location: global
-    scope: httproute-sample-scope
-  ---
-  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-  kind: NetworkServicesMesh
-  metadata:
-    name: networkserviceshttproute-dep
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: "projects/${PROJECT_ID?}"
-    location: global
-  ```
+      responseHeaderModifier:
+        add:
+          foo1: bar1
+          baz1: qux1
+        set:
+          foo2: bar2
+          baz2: qux2
+        remove:
+        - foo3
+        - bar3
+      retryPolicy:
+        numRetries: 3
+        perTryTimeout: "5s"
+        retryConditions:
+        - "refused-stream"
+        - "cancelled"
+      timeout: "30s"
+  - action:
+      destinations:
+      - serviceRef:
+          name: networkserviceshttproute-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: networkserviceshttproute-dep
+spec:
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  location: global
+---
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesGateway
+metadata:
+  name: networkserviceshttproute-dep
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: "projects/${PROJECT_ID?}"
+  type: OPEN_MESH
+  ports:
+  - 80
+  - 443
+  location: global
+  scope: httproute-sample-scope
+---
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesMesh
+metadata:
+  name: networkserviceshttproute-dep
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: "projects/${PROJECT_ID?}"
+  location: global
+```
 
 
 {% endblock %}

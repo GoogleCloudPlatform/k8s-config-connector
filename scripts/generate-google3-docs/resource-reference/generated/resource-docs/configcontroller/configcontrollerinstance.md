@@ -64,27 +64,27 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 
 ### Spec
 #### Schema
-  ```yaml
-  location: string
-  managementConfig:
-    standardManagementConfig:
-      clusterCidrBlock: string
-      clusterNamedRange: string
-      manBlock: string
-      masterIPv4CidrBlock: string
-      networkRef:
-        external: string
-        name: string
-        namespace: string
-      servicesCidrBlock: string
-      servicesNamedRange: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  usePrivateEndpoint: boolean
-  ```
+```yaml
+location: string
+managementConfig:
+  standardManagementConfig:
+    clusterCidrBlock: string
+    clusterNamedRange: string
+    manBlock: string
+    masterIPv4CidrBlock: string
+    networkRef:
+      external: string
+      name: string
+      namespace: string
+    servicesCidrBlock: string
+    servicesNamedRange: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+usePrivateEndpoint: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -294,17 +294,17 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  gkeResourceLink: string
-  observedGeneration: integer
-  state: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+gkeResourceLink: string
+observedGeneration: integer
+state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -389,49 +389,49 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
-  kind: ConfigControllerInstance
-  metadata:
-    labels:
-      label-one: "value-one"
-    # The maximum allowed length for the name of a ConfigControllerInstance is 24.
-    name: ccinstance-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: us-central1
-    managementConfig:
-      standardManagementConfig:
-        networkRef:
-          name: configcontrollerinstance-dep
-        masterIPv4CidrBlock: 172.16.123.64/28
-        clusterCidrBlock: /20
-        servicesCidrBlock: /24
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: configcontrollerinstance-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: true
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
+kind: ConfigControllerInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  # The maximum allowed length for the name of a ConfigControllerInstance is 24.
+  name: ccinstance-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: us-central1
+  managementConfig:
+    standardManagementConfig:
+      networkRef:
+        name: configcontrollerinstance-dep
+      masterIPv4CidrBlock: 172.16.123.64/28
+      clusterCidrBlock: /20
+      servicesCidrBlock: /24
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: configcontrollerinstance-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: true
+```
 
 
 {% endblock %}

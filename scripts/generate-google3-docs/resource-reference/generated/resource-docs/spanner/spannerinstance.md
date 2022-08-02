@@ -93,13 +93,13 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  config: string
-  displayName: string
-  numNodes: integer
-  processingUnits: integer
-  resourceID: string
-  ```
+```yaml
+config: string
+displayName: string
+numNodes: integer
+processingUnits: integer
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -171,16 +171,16 @@ unique per project and between 4 and 30 characters in length.{% endverbatim %}</
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  state: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -258,32 +258,32 @@ unique per project and between 4 and 30 characters in length.{% endverbatim %}</
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: spanner.cnrm.cloud.google.com/v1beta1
-  kind: SpannerInstance
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: spannerinstance-sample
-  spec:
-    config: regional-us-west1
-    displayName: Spanner Instance Sample
-    numNodes: 2
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: spannerinstance-sample
+spec:
+  config: regional-us-west1
+  displayName: Spanner Instance Sample
+  numNodes: 2
+```
 
 
 {% endblock %}

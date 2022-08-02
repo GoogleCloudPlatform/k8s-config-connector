@@ -72,26 +72,26 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  cloudFunction:
-    functionRef:
-      external: string
-      name: string
-      namespace: string
-    urlMask: string
-  cloudRun:
-    serviceRef:
-      external: string
-      name: string
-      namespace: string
-    tag: string
-    urlMask: string
-  description: string
-  networkEndpointType: string
-  pscTargetService: string
-  region: string
-  resourceID: string
-  ```
+```yaml
+cloudFunction:
+  functionRef:
+    external: string
+    name: string
+    namespace: string
+  urlMask: string
+cloudRun:
+  serviceRef:
+    external: string
+    name: string
+    namespace: string
+  tag: string
+  urlMask: string
+description: string
+networkEndpointType: string
+pscTargetService: string
+region: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -315,16 +315,16 @@ a Google API or a PSC Producer Service Attachment.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -402,100 +402,100 @@ a Google API or a PSC Producer Service Attachment.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Cloud Function Region Network Endpoint Group
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRegionNetworkEndpointGroup
-  metadata:
-    name: computeregionnetworkendpointgroup-sample-cloudfunction
-  spec:
-    region: us-west1
-    defaultPort: 90
-    description: A sample regional network endpoint group.
-    cloudFunction:
-      functionRef:
-        external: computeregionnetworkendpointgroup-dep-cloudfunction
-  ---
-  apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
-  kind: CloudFunctionsFunction
-  metadata:
-    name: computeregionnetworkendpointgroup-dep-cloudfunction
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    region: us-west1
-    runtime: "nodejs8"
-    sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-    entryPoint: "helloGET"
-    httpsTrigger:
-      securityLevel: "SECURE_OPTIONAL"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-sample-cloudfunction
+spec:
+  region: us-west1
+  defaultPort: 90
+  description: A sample regional network endpoint group.
+  cloudFunction:
+    functionRef:
+      external: computeregionnetworkendpointgroup-dep-cloudfunction
+---
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: computeregionnetworkendpointgroup-dep-cloudfunction
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  region: us-west1
+  runtime: "nodejs8"
+  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
+  entryPoint: "helloGET"
+  httpsTrigger:
+    securityLevel: "SECURE_OPTIONAL"
+```
 
 ### Cloud Run Region Network Endpoint Group
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRegionNetworkEndpointGroup
-  metadata:
-    name: computeregionnetworkendpointgroup-sample-cloudrun
-  spec:
-    region: us-west1
-    defaultPort: 90
-    description: A sample regional network endpoint group.
-    cloudRun:
-      serviceRef:
-        external: computeregionnetworkendpointgroup-dep-cloudrun
-  ---
-  apiVersion: run.cnrm.cloud.google.com/v1beta1
-  kind: RunService
-  metadata:
-    name: computeregionnetworkendpointgroup-dep-cloudrun
-  spec:
-    ingress: "INGRESS_TRAFFIC_ALL"
-    launchStage: "GA"
-    location: us-west1
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    template:
-      containers:
-        - env:
-            - name: "FOO"
-              value: "bar]"
-          image: "gcr.io/cloudrun/hello"
-      scaling:
-        maxInstanceCount: 2
-    traffic:
-      - percent: 100
-        type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-sample-cloudrun
+spec:
+  region: us-west1
+  defaultPort: 90
+  description: A sample regional network endpoint group.
+  cloudRun:
+    serviceRef:
+      external: computeregionnetworkendpointgroup-dep-cloudrun
+---
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: computeregionnetworkendpointgroup-dep-cloudrun
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: us-west1
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - env:
+          - name: "FOO"
+            value: "bar]"
+        image: "gcr.io/cloudrun/hello"
+    scaling:
+      maxInstanceCount: 2
+  traffic:
+    - percent: 100
+      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+```
 
 
 {% endblock %}

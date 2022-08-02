@@ -75,20 +75,20 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  instanceRef:
-    external: string
-    name: string
-    namespace: string
-  multiClusterRoutingClusterIds:
-  - string
-  multiClusterRoutingUseAny: boolean
-  resourceID: string
-  singleClusterRouting:
-    allowTransactionalWrites: boolean
-    clusterId: string
-  ```
+```yaml
+description: string
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+multiClusterRoutingClusterIds:
+- string
+multiClusterRoutingUseAny: boolean
+resourceID: string
+singleClusterRouting:
+  allowTransactionalWrites: boolean
+  clusterId: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -229,16 +229,16 @@ It is unsafe to send these requests to the same table/row/column in multiple clu
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -316,94 +316,94 @@ It is unsafe to send these requests to the same table/row/column in multiple clu
 ## Sample YAML(s)
 
 ### Multicluster Bigtable App Profile
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableAppProfile
-  metadata:
-    name: bigtableappprofile-sample-multicluster
-    annotations:
-      cnrm.cloud.google.com/ignore-warnings: "true"
-  spec:
-    description: Automatically routes requests to the nearest available cluster in an instance.
-    instanceRef:
-      name: bigtableappprofile-dep-multi
-    multiClusterRoutingUseAny: true
-    multiClusterRoutingClusterIds:
-      - bigtableappprofile-dep1-multi
-      - bigtableappprofile-dep2-multi
-  ---
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableInstance
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableAppProfile
+metadata:
+  name: bigtableappprofile-sample-multicluster
+  annotations:
+    cnrm.cloud.google.com/ignore-warnings: "true"
+spec:
+  description: Automatically routes requests to the nearest available cluster in an instance.
+  instanceRef:
     name: bigtableappprofile-dep-multi
-  spec:
-    displayName: BigtableSample
-    cluster:
-    - clusterId: bigtableappprofile-dep1-multi
-      zone: us-central1-a
-      numNodes: 3
-    - clusterId: bigtableappprofile-dep2-multi
-      zone: us-west1-a
-      numNodes: 3
-  ```
+  multiClusterRoutingUseAny: true
+  multiClusterRoutingClusterIds:
+    - bigtableappprofile-dep1-multi
+    - bigtableappprofile-dep2-multi
+---
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableappprofile-dep-multi
+spec:
+  displayName: BigtableSample
+  cluster:
+  - clusterId: bigtableappprofile-dep1-multi
+    zone: us-central1-a
+    numNodes: 3
+  - clusterId: bigtableappprofile-dep2-multi
+    zone: us-west1-a
+    numNodes: 3
+```
 
 ### Single Cluster Bigtable App Profile
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableAppProfile
-  metadata:
-    name: bigtableappprofile-sample-singlecluster
-  spec:
-    description: Routes all requests to a single cluster. If that cluster becomes unavailable, you must manually fail over to another cluster.
-    instanceRef:
-      name: bigtableappprofile-dep-single
-    singleClusterRouting:
-      allowTransactionalWrites: true
-      clusterId: bigtableappprofile-dep1-single
-  ---
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableInstance
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableAppProfile
+metadata:
+  name: bigtableappprofile-sample-singlecluster
+spec:
+  description: Routes all requests to a single cluster. If that cluster becomes unavailable, you must manually fail over to another cluster.
+  instanceRef:
     name: bigtableappprofile-dep-single
-  spec:
-    displayName: BigtableSample
-    instanceType: PRODUCTION
-    cluster:
-    - clusterId: bigtableappprofile-dep1-single
-      zone: us-central1-a
-      numNodes: 3
-    - clusterId: bigtableappprofile-dep2-single
-      zone: us-west1-a
-      numNodes: 3
-  ```
+  singleClusterRouting:
+    allowTransactionalWrites: true
+    clusterId: bigtableappprofile-dep1-single
+---
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableappprofile-dep-single
+spec:
+  displayName: BigtableSample
+  instanceType: PRODUCTION
+  cluster:
+  - clusterId: bigtableappprofile-dep1-single
+    zone: us-central1-a
+    numNodes: 3
+  - clusterId: bigtableappprofile-dep2-single
+    zone: us-west1-a
+    numNodes: 3
+```
 
 
 {% endblock %}

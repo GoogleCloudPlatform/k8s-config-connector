@@ -61,18 +61,18 @@ A Lien represents an encumbrance on the actions that can be performed on a resou
 
 ### Spec
 #### Schema
-  ```yaml
-  origin: string
-  parent:
-    projectRef:
-      external: string
-      name: string
-      namespace: string
-  reason: string
-  resourceID: string
-  restrictions:
-  - string
-  ```
+```yaml
+origin: string
+parent:
+  projectRef:
+    external: string
+    name: string
+    namespace: string
+reason: string
+resourceID: string
+restrictions:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -195,17 +195,17 @@ e.g. ['resourcemanager.projects.delete'].{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -290,45 +290,45 @@ e.g. ['resourcemanager.projects.delete'].{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: ResourceManagerLien
-  metadata:
-    name: resourcemanagerlien-sample
-  spec:
-    origin: project-deletion-prohibited
-    reason: This project is protected from deletion, for reasons which can be explained in this field.
-    parent:
-      projectRef:
-        name: resourcemanagerlien-dep
-    restrictions:
-      - resourcemanager.projects.delete
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-      cnrm.cloud.google.com/auto-create-network: "false"
-    name: resourcemanagerlien-dep
-  spec:
-    name: ResourceManagerLien dependency
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerLien
+metadata:
+  name: resourcemanagerlien-sample
+spec:
+  origin: project-deletion-prohibited
+  reason: This project is protected from deletion, for reasons which can be explained in this field.
+  parent:
+    projectRef:
+      name: resourcemanagerlien-dep
+  restrictions:
+    - resourcemanager.projects.delete
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: resourcemanagerlien-dep
+spec:
+  name: ResourceManagerLien dependency
+```
 
 
 {% endblock %}

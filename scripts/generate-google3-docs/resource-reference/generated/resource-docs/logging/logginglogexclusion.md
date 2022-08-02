@@ -73,28 +73,28 @@ one of `projectRef`, `folderRef`, `organizationRef`, or `billingAccountRef`.
 
 ### Spec
 #### Schema
-  ```yaml
-  billingAccountRef:
-    external: string
-    name: string
-    namespace: string
-  description: string
-  disabled: boolean
-  filter: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+billingAccountRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+disabled: boolean
+filter: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -312,17 +312,17 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -407,137 +407,137 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 ## Sample YAML(s)
 
 ### Billing Exclusion
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogExclusion
-  metadata:
-    name: logginglogexclusion-sample-billing
-  spec:
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "billingAccounts/${BILLING_ACCOUNT_ID?}"
-    description: "A billing log exclusion"
-    filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogExclusion
+metadata:
+  name: logginglogexclusion-sample-billing
+spec:
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "billingAccounts/${BILLING_ACCOUNT_ID?}"
+  description: "A billing log exclusion"
+  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+```
 
 ### Folder Exclusion
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogExclusion
-  metadata:
-    name: logginglogexclusion-sample-folder
-  spec:
-    folderRef:
-      name: logginglogexclusion-dep-folder
-    description: "A folder log exclusion"
-    filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogExclusion
+metadata:
+  name: logginglogexclusion-sample-folder
+spec:
+  folderRef:
     name: logginglogexclusion-dep-folder
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    displayName: Folder Log Exclusion Sample
-  ```
+  description: "A folder log exclusion"
+  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  name: logginglogexclusion-dep-folder
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  displayName: Folder Log Exclusion Sample
+```
 
 ### Organization Exclusion
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogExclusion
-  metadata:
-    name: logginglogexclusion-sample-org
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    description: "An organization log exclusion"
-    filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogExclusion
+metadata:
+  name: logginglogexclusion-sample-org
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  description: "An organization log exclusion"
+  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+```
 
 ### Project Exclusion
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogExclusion
-  metadata:
-    name: logginglogexclusion-sample-proj
-  spec:
-    projectRef:
-      name: logginglogexclusion-dep-proj
-    description: "A project log exclusion"
-    filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogExclusion
+metadata:
+  name: logginglogexclusion-sample-proj
+spec:
+  projectRef:
     name: logginglogexclusion-dep-proj
-  spec:
-    name: Project Log Exclusion Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+  description: "A project log exclusion"
+  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: logginglogexclusion-dep-proj
+spec:
+  name: Project Log Exclusion Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 
 {% endblock %}

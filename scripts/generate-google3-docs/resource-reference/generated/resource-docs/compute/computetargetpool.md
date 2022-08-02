@@ -72,26 +72,26 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  backupTargetPoolRef:
+```yaml
+backupTargetPoolRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+failoverRatio: float
+healthChecks:
+- httpHealthCheckRef:
     external: string
     name: string
     namespace: string
-  description: string
-  failoverRatio: float
-  healthChecks:
-  - httpHealthCheckRef:
-      external: string
-      name: string
-      namespace: string
-  instances:
-  - external: string
-    name: string
-    namespace: string
-  region: string
-  resourceID: string
-  sessionAffinity: string
-  ```
+instances:
+- external: string
+  name: string
+  namespace: string
+region: string
+resourceID: string
+sessionAffinity: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -307,16 +307,16 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -394,123 +394,123 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeTargetPool
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetPool
+metadata:
+  name: computetargetpool-dep
+spec:
+  region: us-central1
+  instances:
+    - name: computetargetpool-dep3
+    - name: computetargetpool-dep4
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetPool
+metadata:
+  name: computetargetpool-sample
+spec:
+  backupTargetPoolRef:
     name: computetargetpool-dep
-  spec:
-    region: us-central1
-    instances:
-      - name: computetargetpool-dep3
-      - name: computetargetpool-dep4
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeTargetPool
-  metadata:
-    name: computetargetpool-sample
-  spec:
-    backupTargetPoolRef:
-      name: computetargetpool-dep
-    description: A pool of compute instances to use as a backend to a load balancer, with health check and backup pool. A hash of requester's IP is used to determine session affinity to instances.
-    instances:
-    - name: computetargetpool-dep1
-    - name: computetargetpool-dep2
-    healthChecks:
-      - httpHealthCheckRef:
-          name: computetargetpool-dep
-    failoverRatio: 0.5
-    region: us-central1
-    sessionAffinity: CLIENT_IP
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHTTPHealthCheck
-  metadata:
+  description: A pool of compute instances to use as a backend to a load balancer, with health check and backup pool. A hash of requester's IP is used to determine session affinity to instances.
+  instances:
+  - name: computetargetpool-dep1
+  - name: computetargetpool-dep2
+  healthChecks:
+    - httpHealthCheckRef:
+        name: computetargetpool-dep
+  failoverRatio: 0.5
+  region: us-central1
+  sessionAffinity: CLIENT_IP
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHTTPHealthCheck
+metadata:
+  name: computetargetpool-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetpool-dep1
+spec:
+  instanceTemplateRef:
     name: computetargetpool-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computetargetpool-dep1
-  spec:
-    instanceTemplateRef:
-      name: computetargetpool-dep
-    zone: us-central1-a
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computetargetpool-dep2
-  spec:
-    instanceTemplateRef:
-      name: computetargetpool-dep
-    zone: us-central1-b
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computetargetpool-dep3
-  spec:
-    instanceTemplateRef:
-      name: computetargetpool-dep
-    zone: us-central1-b
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computetargetpool-dep4
-  spec:
-    instanceTemplateRef:
-      name: computetargetpool-dep
-    zone: us-central1-f
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
+  zone: us-central1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetpool-dep2
+spec:
+  instanceTemplateRef:
     name: computetargetpool-dep
-  spec:
-    machineType: n1-standard-1
-    disk:
-      - sourceImageRef:
-          external: debian-cloud/debian-9
-        boot: true
-    networkInterface:
-      - networkRef:
-          name: computetargetpool-dep
-        subnetworkRef:
-          name: computetargetpool-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+  zone: us-central1-b
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetpool-dep3
+spec:
+  instanceTemplateRef:
     name: computetargetpool-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
+  zone: us-central1-b
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetpool-dep4
+spec:
+  instanceTemplateRef:
     name: computetargetpool-dep
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    networkRef:
-      name: computetargetpool-dep
-  ```
+  zone: us-central1-f
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computetargetpool-dep
+spec:
+  machineType: n1-standard-1
+  disk:
+    - sourceImageRef:
+        external: debian-cloud/debian-9
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computetargetpool-dep
+      subnetworkRef:
+        name: computetargetpool-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computetargetpool-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computetargetpool-dep
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computetargetpool-dep
+```
 
 
 {% endblock %}

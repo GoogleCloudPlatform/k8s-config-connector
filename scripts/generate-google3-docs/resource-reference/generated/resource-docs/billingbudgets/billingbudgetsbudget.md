@@ -58,60 +58,60 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  allUpdatesRule:
-    disableDefaultIamRecipients: boolean
-    monitoringNotificationChannels:
-    - external: string
-      name: string
-      namespace: string
-    pubsubTopicRef:
-      external: string
-      name: string
-      namespace: string
-    schemaVersion: string
-  amount:
-    lastPeriodAmount: {}
-    specifiedAmount:
-      currencyCode: string
-      nanos: integer
-      units: integer
-  billingAccountRef:
+```yaml
+allUpdatesRule:
+  disableDefaultIamRecipients: boolean
+  monitoringNotificationChannels:
+  - external: string
+    name: string
+    namespace: string
+  pubsubTopicRef:
     external: string
     name: string
     namespace: string
-  budgetFilter:
-    calendarPeriod: string
-    creditTypes:
-    - string
-    creditTypesTreatment: string
-    customPeriod:
-      endDate:
-        day: integer
-        month: integer
-        year: integer
-      startDate:
-        day: integer
-        month: integer
-        year: integer
-    labels:
-      string: object
-    projects:
-    - external: string
-      name: string
-      namespace: string
-    services:
-    - string
-    subaccounts:
-    - external: string
-      name: string
-      namespace: string
-  displayName: string
-  resourceID: string
-  thresholdRules:
-  - spendBasis: string
-    thresholdPercent: float
-  ```
+  schemaVersion: string
+amount:
+  lastPeriodAmount: {}
+  specifiedAmount:
+    currencyCode: string
+    nanos: integer
+    units: integer
+billingAccountRef:
+  external: string
+  name: string
+  namespace: string
+budgetFilter:
+  calendarPeriod: string
+  creditTypes:
+  - string
+  creditTypesTreatment: string
+  customPeriod:
+    endDate:
+      day: integer
+      month: integer
+      year: integer
+    startDate:
+      day: integer
+      month: integer
+      year: integer
+  labels:
+    string: object
+  projects:
+  - external: string
+    name: string
+    namespace: string
+  services:
+  - string
+  subaccounts:
+  - external: string
+    name: string
+    namespace: string
+displayName: string
+resourceID: string
+thresholdRules:
+- spendBasis: string
+  thresholdPercent: float
+```
 
 <table class="properties responsive">
 <thead>
@@ -685,16 +685,16 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  etag: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+etag: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -772,131 +772,131 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 ## Sample YAML(s)
 
 ### Calendar Budget
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
-  kind: BillingBudgetsBudget
-  metadata:
-    name: billingbudgetsbudget-sample-calendarbudget
-  spec:
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
-    displayName: "sample-budget"
-    budgetFilter:
-      projects:
-      - name: "billingbudgetsbudget-dep-calb"
-      creditTypes:
-      - "DISCOUNT"
-      creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
-      services:
-      # This is the service name for the Geolocation API.
-      - "services/0245-C3C9-3864"
-      labels:
-        label-one:
-          values:
-          - "value-one"
-      calendarPeriod: "MONTH"
-    amount:
-      specifiedAmount:
-        currencyCode: "USD"
-        units: 9000000
-        nanos: 0
-    thresholdRules:
-    - thresholdPercent: 0.5
-      spendBasis: "CURRENT_SPEND"
-    allUpdatesRule:
-      pubsubTopicRef:
-        name: "billingbudgetsbudget-dep-calendarbudget"
-      schemaVersion: "1.0"
-      monitoringNotificationChannels:
-      - name: "billingbudgetsbudget-dep-calendarbudget"
-      disableDefaultIamRecipients: false
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    name: billingbudgetsbudget-dep-calendarbudget
-  spec:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
+kind: BillingBudgetsBudget
+metadata:
+  name: billingbudgetsbudget-sample-calendarbudget
+spec:
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
+  displayName: "sample-budget"
+  budgetFilter:
+    projects:
+    - name: "billingbudgetsbudget-dep-calb"
+    creditTypes:
+    - "DISCOUNT"
+    creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
+    services:
+    # This is the service name for the Geolocation API.
+    - "services/0245-C3C9-3864"
     labels:
-      email_address: test@example.com
-    type: "email"
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: billingbudgetsbudget-dep-calendarbudget
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    name: billingbudgetsbudget-dep-calb
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    name: "billingbudgetsbudget-dep-calb"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
-  ```
+      label-one:
+        values:
+        - "value-one"
+    calendarPeriod: "MONTH"
+  amount:
+    specifiedAmount:
+      currencyCode: "USD"
+      units: 9000000
+      nanos: 0
+  thresholdRules:
+  - thresholdPercent: 0.5
+    spendBasis: "CURRENT_SPEND"
+  allUpdatesRule:
+    pubsubTopicRef:
+      name: "billingbudgetsbudget-dep-calendarbudget"
+    schemaVersion: "1.0"
+    monitoringNotificationChannels:
+    - name: "billingbudgetsbudget-dep-calendarbudget"
+    disableDefaultIamRecipients: false
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: billingbudgetsbudget-dep-calendarbudget
+spec:
+  labels:
+    email_address: test@example.com
+  type: "email"
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: billingbudgetsbudget-dep-calendarbudget
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: billingbudgetsbudget-dep-calb
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  name: "billingbudgetsbudget-dep-calb"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
+```
 
 ### Custom Budget
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
-  kind: BillingBudgetsBudget
-  metadata:
-    name: billingbudgetsbudget-sample-custombudget
-  spec:
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
-    budgetFilter:
-      creditTypes:
-      - "DISCOUNT"
-      creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
-      customPeriod:
-        startDate:
-          year: 2140
-          month: 1
-          day: 1
-        endDate:
-          year: 2312
-          month: 3
-          day: 14
-    amount:
-      specifiedAmount:
-        currencyCode: "USD"
-        units: 9000000
-        nanos: 0
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
+kind: BillingBudgetsBudget
+metadata:
+  name: billingbudgetsbudget-sample-custombudget
+spec:
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
+  budgetFilter:
+    creditTypes:
+    - "DISCOUNT"
+    creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
+    customPeriod:
+      startDate:
+        year: 2140
+        month: 1
+        day: 1
+      endDate:
+        year: 2312
+        month: 3
+        day: 14
+  amount:
+    specifiedAmount:
+      currencyCode: "USD"
+      units: 9000000
+      nanos: 0
+```
 
 
 {% endblock %}

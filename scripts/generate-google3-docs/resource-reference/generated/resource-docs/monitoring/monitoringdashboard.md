@@ -58,152 +58,10 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  columnLayout:
-    columns:
-    - weight: integer
-      widgets:
-      - blank: {}
-        logsPanel:
-          filter: string
-          resourceNames:
-          - external: string
-            name: string
-            namespace: string
-        scorecard:
-          gaugeView:
-            lowerBound: float
-            upperBound: float
-          sparkChartView:
-            minAlignmentPeriod: string
-            sparkChartType: string
-          thresholds:
-          - color: string
-            direction: string
-            label: string
-            value: float
-          timeSeriesQuery:
-            timeSeriesFilter:
-              aggregation:
-                alignmentPeriod: string
-                crossSeriesReducer: string
-                groupByFields:
-                - string
-                perSeriesAligner: string
-              filter: string
-              pickTimeSeriesFilter:
-                direction: string
-                numTimeSeries: integer
-                rankingMethod: string
-              secondaryAggregation:
-                alignmentPeriod: string
-                crossSeriesReducer: string
-                groupByFields:
-                - string
-                perSeriesAligner: string
-            timeSeriesFilterRatio:
-              denominator:
-                aggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-                filter: string
-              numerator:
-                aggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-                filter: string
-              pickTimeSeriesFilter:
-                direction: string
-                numTimeSeries: integer
-                rankingMethod: string
-              secondaryAggregation:
-                alignmentPeriod: string
-                crossSeriesReducer: string
-                groupByFields:
-                - string
-                perSeriesAligner: string
-            timeSeriesQueryLanguage: string
-            unitOverride: string
-        text:
-          content: string
-          format: string
-        title: string
-        xyChart:
-          chartOptions:
-            mode: string
-          dataSets:
-          - legendTemplate: string
-            minAlignmentPeriod: string
-            plotType: string
-            timeSeriesQuery:
-              timeSeriesFilter:
-                aggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-                filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesFilterRatio:
-                denominator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                numerator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesQueryLanguage: string
-              unitOverride: string
-          thresholds:
-          - color: string
-            direction: string
-            label: string
-            value: float
-          timeshiftDuration: string
-          xAxis:
-            label: string
-            scale: string
-          yAxis:
-            label: string
-            scale: string
-  displayName: string
-  gridLayout:
-    columns: integer
+```yaml
+columnLayout:
+  columns:
+  - weight: integer
     widgets:
     - blank: {}
       logsPanel:
@@ -343,30 +201,231 @@
         yAxis:
           label: string
           scale: string
-  mosaicLayout:
-    columns: integer
-    tiles:
-    - height: integer
-      widget:
-        blank: {}
-        logsPanel:
+displayName: string
+gridLayout:
+  columns: integer
+  widgets:
+  - blank: {}
+    logsPanel:
+      filter: string
+      resourceNames:
+      - external: string
+        name: string
+        namespace: string
+    scorecard:
+      gaugeView:
+        lowerBound: float
+        upperBound: float
+      sparkChartView:
+        minAlignmentPeriod: string
+        sparkChartType: string
+      thresholds:
+      - color: string
+        direction: string
+        label: string
+        value: float
+      timeSeriesQuery:
+        timeSeriesFilter:
+          aggregation:
+            alignmentPeriod: string
+            crossSeriesReducer: string
+            groupByFields:
+            - string
+            perSeriesAligner: string
           filter: string
-          resourceNames:
-          - external: string
-            name: string
-            namespace: string
-        scorecard:
-          gaugeView:
-            lowerBound: float
-            upperBound: float
-          sparkChartView:
-            minAlignmentPeriod: string
-            sparkChartType: string
-          thresholds:
-          - color: string
+          pickTimeSeriesFilter:
             direction: string
-            label: string
-            value: float
+            numTimeSeries: integer
+            rankingMethod: string
+          secondaryAggregation:
+            alignmentPeriod: string
+            crossSeriesReducer: string
+            groupByFields:
+            - string
+            perSeriesAligner: string
+        timeSeriesFilterRatio:
+          denominator:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+          numerator:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+          pickTimeSeriesFilter:
+            direction: string
+            numTimeSeries: integer
+            rankingMethod: string
+          secondaryAggregation:
+            alignmentPeriod: string
+            crossSeriesReducer: string
+            groupByFields:
+            - string
+            perSeriesAligner: string
+        timeSeriesQueryLanguage: string
+        unitOverride: string
+    text:
+      content: string
+      format: string
+    title: string
+    xyChart:
+      chartOptions:
+        mode: string
+      dataSets:
+      - legendTemplate: string
+        minAlignmentPeriod: string
+        plotType: string
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesFilterRatio:
+            denominator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            numerator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesQueryLanguage: string
+          unitOverride: string
+      thresholds:
+      - color: string
+        direction: string
+        label: string
+        value: float
+      timeshiftDuration: string
+      xAxis:
+        label: string
+        scale: string
+      yAxis:
+        label: string
+        scale: string
+mosaicLayout:
+  columns: integer
+  tiles:
+  - height: integer
+    widget:
+      blank: {}
+      logsPanel:
+        filter: string
+        resourceNames:
+        - external: string
+          name: string
+          namespace: string
+      scorecard:
+        gaugeView:
+          lowerBound: float
+          upperBound: float
+        sparkChartView:
+          minAlignmentPeriod: string
+          sparkChartType: string
+        thresholds:
+        - color: string
+          direction: string
+          label: string
+          value: float
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesFilterRatio:
+            denominator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            numerator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesQueryLanguage: string
+          unitOverride: string
+      text:
+        content: string
+        format: string
+      title: string
+      xyChart:
+        chartOptions:
+          mode: string
+        dataSets:
+        - legendTemplate: string
+          minAlignmentPeriod: string
+          plotType: string
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
@@ -415,108 +474,108 @@
                 perSeriesAligner: string
             timeSeriesQueryLanguage: string
             unitOverride: string
-        text:
-          content: string
-          format: string
-        title: string
-        xyChart:
-          chartOptions:
-            mode: string
-          dataSets:
-          - legendTemplate: string
-            minAlignmentPeriod: string
-            plotType: string
-            timeSeriesQuery:
-              timeSeriesFilter:
-                aggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-                filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesFilterRatio:
-                denominator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                numerator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesQueryLanguage: string
-              unitOverride: string
-          thresholds:
-          - color: string
-            direction: string
-            label: string
-            value: float
-          timeshiftDuration: string
-          xAxis:
-            label: string
-            scale: string
-          yAxis:
-            label: string
-            scale: string
-      width: integer
-      xPos: integer
-      yPos: integer
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  rowLayout:
-    rows:
-    - weight: integer
-      widgets:
-      - blank: {}
-        logsPanel:
-          filter: string
-          resourceNames:
-          - external: string
-            name: string
-            namespace: string
-        scorecard:
-          gaugeView:
-            lowerBound: float
-            upperBound: float
-          sparkChartView:
-            minAlignmentPeriod: string
-            sparkChartType: string
-          thresholds:
-          - color: string
-            direction: string
-            label: string
-            value: float
+        thresholds:
+        - color: string
+          direction: string
+          label: string
+          value: float
+        timeshiftDuration: string
+        xAxis:
+          label: string
+          scale: string
+        yAxis:
+          label: string
+          scale: string
+    width: integer
+    xPos: integer
+    yPos: integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+rowLayout:
+  rows:
+  - weight: integer
+    widgets:
+    - blank: {}
+      logsPanel:
+        filter: string
+        resourceNames:
+        - external: string
+          name: string
+          namespace: string
+      scorecard:
+        gaugeView:
+          lowerBound: float
+          upperBound: float
+        sparkChartView:
+          minAlignmentPeriod: string
+          sparkChartType: string
+        thresholds:
+        - color: string
+          direction: string
+          label: string
+          value: float
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesFilterRatio:
+            denominator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            numerator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesQueryLanguage: string
+          unitOverride: string
+      text:
+        content: string
+        format: string
+      title: string
+      xyChart:
+        chartOptions:
+          mode: string
+        dataSets:
+        - legendTemplate: string
+          minAlignmentPeriod: string
+          plotType: string
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
@@ -565,78 +624,19 @@
                 perSeriesAligner: string
             timeSeriesQueryLanguage: string
             unitOverride: string
-        text:
-          content: string
-          format: string
-        title: string
-        xyChart:
-          chartOptions:
-            mode: string
-          dataSets:
-          - legendTemplate: string
-            minAlignmentPeriod: string
-            plotType: string
-            timeSeriesQuery:
-              timeSeriesFilter:
-                aggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-                filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesFilterRatio:
-                denominator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                numerator:
-                  aggregation:
-                    alignmentPeriod: string
-                    crossSeriesReducer: string
-                    groupByFields:
-                    - string
-                    perSeriesAligner: string
-                  filter: string
-                pickTimeSeriesFilter:
-                  direction: string
-                  numTimeSeries: integer
-                  rankingMethod: string
-                secondaryAggregation:
-                  alignmentPeriod: string
-                  crossSeriesReducer: string
-                  groupByFields:
-                  - string
-                  perSeriesAligner: string
-              timeSeriesQueryLanguage: string
-              unitOverride: string
-          thresholds:
-          - color: string
-            direction: string
-            label: string
-            value: float
-          timeshiftDuration: string
-          xAxis:
-            label: string
-            scale: string
-          yAxis:
-            label: string
-            scale: string
-  ```
+        thresholds:
+        - color: string
+          direction: string
+          label: string
+          value: float
+        timeshiftDuration: string
+        xAxis:
+          label: string
+          scale: string
+        yAxis:
+          label: string
+          scale: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -6646,16 +6646,16 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  etag: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+etag: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -6733,72 +6733,72 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringDashboard
-  metadata:
-    name: monitoringdashboard-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    displayName: "monitoringdashboard-sample"
-    columnLayout:
-      columns:
-      - weight: 2
-        widgets:
-        - title: "Widget 1"
-          xyChart:
-            dataSets:
-            - timeSeriesQuery:
-                timeSeriesFilter:
-                  filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
-                  aggregation:
-                    perSeriesAligner: "ALIGN_RATE"
-                unitOverride: "1"
-              plotType: LINE
-            timeshiftDuration: 0s
-            yAxis:
-              label: y1Axis
-              scale: LINEAR
-        - text:
-            content: "Widget 2"
-            format: "MARKDOWN"
-        - title: "Widget 3"
-          xyChart:
-            dataSets:
-            - timeSeriesQuery:
-                timeSeriesFilter:
-                  filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
-                  aggregation:
-                    perSeriesAligner: ALIGN_RATE
-                unitOverride: "1"
-              plotType: "STACKED_BAR"
-            timeshiftDuration: 0s
-            yAxis:
-              label: y1Axis
-              scale: LINEAR
-        - title: "Widget 4"
-          logsPanel:
-            filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
-            resourceNames:
-              # Replace ${PROJECT_ID?} with the ID of the project you wish to monitor
-              - external: "projects/${PROJECT_ID?}"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  displayName: "monitoringdashboard-sample"
+  columnLayout:
+    columns:
+    - weight: 2
+      widgets:
+      - title: "Widget 1"
+        xyChart:
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+                aggregation:
+                  perSeriesAligner: "ALIGN_RATE"
+              unitOverride: "1"
+            plotType: LINE
+          timeshiftDuration: 0s
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - text:
+          content: "Widget 2"
+          format: "MARKDOWN"
+      - title: "Widget 3"
+        xyChart:
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+              unitOverride: "1"
+            plotType: "STACKED_BAR"
+          timeshiftDuration: 0s
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - title: "Widget 4"
+        logsPanel:
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+          resourceNames:
+            # Replace ${PROJECT_ID?} with the ID of the project you wish to monitor
+            - external: "projects/${PROJECT_ID?}"
+```
 
 
 {% endblock %}

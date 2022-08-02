@@ -71,50 +71,50 @@ organization. The parent resource is configured by setting one of
 
 ### Spec
 #### Schema
-  ```yaml
-  bigqueryOptions:
-    usePartitionedTables: boolean
-  description: string
-  destination:
-    bigQueryDatasetRef:
-      external: string
-      name: string
-      namespace: string
-    loggingLogBucketRef:
-      external: string
-      name: string
-      namespace: string
-    pubSubTopicRef:
-      external: string
-      name: string
-      namespace: string
-    storageBucketRef:
-      external: string
-      name: string
-      namespace: string
+```yaml
+bigqueryOptions:
+  usePartitionedTables: boolean
+description: string
+destination:
+  bigQueryDatasetRef:
+    external: string
+    name: string
+    namespace: string
+  loggingLogBucketRef:
+    external: string
+    name: string
+    namespace: string
+  pubSubTopicRef:
+    external: string
+    name: string
+    namespace: string
+  storageBucketRef:
+    external: string
+    name: string
+    namespace: string
+disabled: boolean
+exclusions:
+- description: string
   disabled: boolean
-  exclusions:
-  - description: string
-    disabled: boolean
-    filter: string
-    name: string
   filter: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  includeChildren: boolean
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  uniqueWriterIdentity: boolean
-  ```
+  name: string
+filter: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+includeChildren: boolean
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+uniqueWriterIdentity: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -565,16 +565,16 @@ folderRef, or organizationRef may be specified.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  writerIdentity: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+writerIdentity: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -652,137 +652,137 @@ folderRef, or organizationRef may be specified.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Folder Sink
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogSink
-  metadata:
-    name: logginglogsink-sample-folder
-  spec:
-    folderRef:
-      name: logginglogsink-dep-folder
-    destination:
-      bigQueryDatasetRef:
-        name: logginglogsinkdepfolder
-    filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/delete-contents-on-destroy: "true"
-    name: logginglogsinkdepfolder
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: logginglogsink-sample-folder
+spec:
+  folderRef:
     name: logginglogsink-dep-folder
-  spec:
-    displayName: Folder Log Sink Sample
-  ```
+  destination:
+    bigQueryDatasetRef:
+      name: logginglogsinkdepfolder
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "true"
+  name: logginglogsinkdepfolder
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: logginglogsink-dep-folder
+spec:
+  displayName: Folder Log Sink Sample
+```
 
 ### Organization Sink
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogSink
-  metadata:
-    name: logginglogsink-sample-org
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    destination:
-      storageBucketRef:
-        # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-        name: ${PROJECT_ID?}-logginglogsink-dep-org
-    filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/force-destroy: "true"
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    name: ${PROJECT_ID?}-logginglogsink-dep-org
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: logginglogsink-sample-org
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  destination:
+    storageBucketRef:
+      # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+      name: ${PROJECT_ID?}-logginglogsink-dep-org
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-logginglogsink-dep-org
+```
 
 ### Project Sink
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogSink
-  metadata:
-    name: logginglogsink-sample-project
-  spec:
-    projectRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: logginglogsink-sample-project
+spec:
+  projectRef:
+    name: logginglogsink-dep-project
+  uniqueWriterIdentity: true
+  destination:
+    pubSubTopicRef:
       name: logginglogsink-dep-project
-    uniqueWriterIdentity: true
-    destination:
-      pubSubTopicRef:
-        name: logginglogsink-dep-project
-    filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: logginglogsink-dep-project
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-    name: logginglogsink-dep-project
-  spec:
-    name: Project Log Sink Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: logginglogsink-dep-project
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: logginglogsink-dep-project
+spec:
+  name: Project Log Sink Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 
 {% endblock %}

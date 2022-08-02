@@ -72,46 +72,46 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  alternativeLocationId: string
-  authEnabled: boolean
-  authString: string
-  authorizedNetworkRef:
-    external: string
-    name: string
-    namespace: string
-  connectMode: string
-  displayName: string
-  locationId: string
-  maintenancePolicy:
-    createTime: string
-    description: string
-    updateTime: string
-    weeklyMaintenanceWindow:
-    - day: string
-      duration: string
-      startTime:
-        hours: integer
-        minutes: integer
-        nanos: integer
-        seconds: integer
-  maintenanceSchedule:
-    endTime: string
-    scheduleDeadlineTime: string
-    startTime: string
-  memorySizeGb: integer
-  readReplicasMode: string
-  redisConfigs:
-    string: string
-  redisVersion: string
-  region: string
-  replicaCount: integer
-  reservedIpRange: string
-  resourceID: string
-  secondaryIpRange: string
-  tier: string
-  transitEncryptionMode: string
-  ```
+```yaml
+alternativeLocationId: string
+authEnabled: boolean
+authString: string
+authorizedNetworkRef:
+  external: string
+  name: string
+  namespace: string
+connectMode: string
+displayName: string
+locationId: string
+maintenancePolicy:
+  createTime: string
+  description: string
+  updateTime: string
+  weeklyMaintenanceWindow:
+  - day: string
+    duration: string
+    startTime:
+      hours: integer
+      minutes: integer
+      nanos: integer
+      seconds: integer
+maintenanceSchedule:
+  endTime: string
+  scheduleDeadlineTime: string
+  startTime: string
+memorySizeGb: integer
+readReplicasMode: string
+redisConfigs:
+  string: string
+redisVersion: string
+region: string
+replicaCount: integer
+reservedIpRange: string
+resourceID: string
+secondaryIpRange: string
+tier: string
+transitEncryptionMode: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -572,31 +572,31 @@ range associated with the private service access connection, or "auto".{% endver
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+currentLocationId: string
+host: string
+nodes:
+- id: string
+  zone: string
+observedGeneration: integer
+persistenceIamIdentity: string
+port: integer
+readEndpoint: string
+readEndpointPort: integer
+serverCaCerts:
+- cert: string
   createTime: string
-  currentLocationId: string
-  host: string
-  nodes:
-  - id: string
-    zone: string
-  observedGeneration: integer
-  persistenceIamIdentity: string
-  port: integer
-  readEndpoint: string
-  readEndpointPort: integer
-  serverCaCerts:
-  - cert: string
-    createTime: string
-    expireTime: string
-    serialNumber: string
-    sha1Fingerprint: string
-  ```
+  expireTime: string
+  serialNumber: string
+  sha1Fingerprint: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -805,33 +805,33 @@ Write requests should target 'port'.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: redis.cnrm.cloud.google.com/v1beta1
-  kind: RedisInstance
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: redisinstance-sample
-  spec:
-    displayName: Sample Redis Instance
-    region: us-central1
-    tier: BASIC
-    memorySizeGb: 16
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: redisinstance-sample
+spec:
+  displayName: Sample Redis Instance
+  region: us-central1
+  tier: BASIC
+  memorySizeGb: 16
+```
 
 
 {% endblock %}

@@ -58,15 +58,15 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  bucketRef:
-    external: string
-    name: string
-    namespace: string
-  entity: string
-  object: string
-  role: string
-  ```
+```yaml
+bucketRef:
+  external: string
+  name: string
+  namespace: string
+entity: string
+object: string
+role: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -160,22 +160,22 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  domain: string
-  email: string
-  entityId: string
-  generation: integer
-  observedGeneration: integer
-  projectTeam:
-    projectNumber: string
-    team: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+domain: string
+email: string
+entityId: string
+generation: integer
+observedGeneration: integer
+projectTeam:
+  projectNumber: string
+  team: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -295,39 +295,39 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageDefaultObjectAccessControl
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: storagedefaultobjectaccesscontrol-sample
-  spec:
-    bucketRef:
-      name: ${PROJECT_ID?}-objectaccesscontrol-dep
-    entity: allAuthenticatedUsers
-    role: READER
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageDefaultObjectAccessControl
+metadata:
+  labels:
+    label-one: "value-one"
+  name: storagedefaultobjectaccesscontrol-sample
+spec:
+  bucketRef:
     name: ${PROJECT_ID?}-objectaccesscontrol-dep
-  ```
+  entity: allAuthenticatedUsers
+  role: READER
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-objectaccesscontrol-dep
+```
 
 
 {% endblock %}

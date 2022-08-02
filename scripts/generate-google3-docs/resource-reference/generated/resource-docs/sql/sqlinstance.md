@@ -78,95 +78,95 @@ documentation</a>.
 
 ### Spec
 #### Schema
-  ```yaml
-  databaseVersion: string
-  encryptionKMSCryptoKeyRef:
-    external: string
-    name: string
-    namespace: string
-  masterInstanceRef:
-    external: string
-    name: string
-    namespace: string
-  region: string
-  replicaConfiguration:
-    caCertificate: string
-    clientCertificate: string
-    clientKey: string
-    connectRetryInterval: integer
-    dumpFilePath: string
-    failoverTarget: boolean
-    masterHeartbeatPeriod: integer
-    password:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    sslCipher: string
-    username: string
-    verifyServerCertificate: boolean
-  resourceID: string
-  rootPassword:
+```yaml
+databaseVersion: string
+encryptionKMSCryptoKeyRef:
+  external: string
+  name: string
+  namespace: string
+masterInstanceRef:
+  external: string
+  name: string
+  namespace: string
+region: string
+replicaConfiguration:
+  caCertificate: string
+  clientCertificate: string
+  clientKey: string
+  connectRetryInterval: integer
+  dumpFilePath: string
+  failoverTarget: boolean
+  masterHeartbeatPeriod: integer
+  password:
     value: string
     valueFrom:
       secretKeyRef:
         key: string
         name: string
-  settings:
-    activationPolicy: string
-    activeDirectoryConfig:
-      domain: string
-    authorizedGaeApplications:
-    - string
-    availabilityType: string
-    backupConfiguration:
-      backupRetentionSettings:
-        retainedBackups: integer
-        retentionUnit: string
-      binaryLogEnabled: boolean
-      enabled: boolean
-      location: string
-      pointInTimeRecoveryEnabled: boolean
-      startTime: string
-      transactionLogRetentionDays: integer
-    collation: string
-    crashSafeReplication: boolean
-    databaseFlags:
-    - name: string
+  sslCipher: string
+  username: string
+  verifyServerCertificate: boolean
+resourceID: string
+rootPassword:
+  value: string
+  valueFrom:
+    secretKeyRef:
+      key: string
+      name: string
+settings:
+  activationPolicy: string
+  activeDirectoryConfig:
+    domain: string
+  authorizedGaeApplications:
+  - string
+  availabilityType: string
+  backupConfiguration:
+    backupRetentionSettings:
+      retainedBackups: integer
+      retentionUnit: string
+    binaryLogEnabled: boolean
+    enabled: boolean
+    location: string
+    pointInTimeRecoveryEnabled: boolean
+    startTime: string
+    transactionLogRetentionDays: integer
+  collation: string
+  crashSafeReplication: boolean
+  databaseFlags:
+  - name: string
+    value: string
+  diskAutoresize: boolean
+  diskAutoresizeLimit: integer
+  diskSize: integer
+  diskType: string
+  insightsConfig:
+    queryInsightsEnabled: boolean
+    queryStringLength: integer
+    recordApplicationTags: boolean
+    recordClientAddress: boolean
+  ipConfiguration:
+    allocatedIpRange: string
+    authorizedNetworks:
+    - expirationTime: string
+      name: string
       value: string
-    diskAutoresize: boolean
-    diskAutoresizeLimit: integer
-    diskSize: integer
-    diskType: string
-    insightsConfig:
-      queryInsightsEnabled: boolean
-      queryStringLength: integer
-      recordApplicationTags: boolean
-      recordClientAddress: boolean
-    ipConfiguration:
-      allocatedIpRange: string
-      authorizedNetworks:
-      - expirationTime: string
-        name: string
-        value: string
-      ipv4Enabled: boolean
-      privateNetworkRef:
-        external: string
-        name: string
-        namespace: string
-      requireSsl: boolean
-    locationPreference:
-      followGaeApplication: string
-      zone: string
-    maintenanceWindow:
-      day: integer
-      hour: integer
-      updateTrack: string
-    pricingPlan: string
-    replicationType: string
-    tier: string
-  ```
+    ipv4Enabled: boolean
+    privateNetworkRef:
+      external: string
+      name: string
+      namespace: string
+    requireSsl: boolean
+  locationPreference:
+    followGaeApplication: string
+    zone: string
+  maintenanceWindow:
+    day: integer
+    hour: integer
+    updateTrack: string
+  pricingPlan: string
+  replicationType: string
+  tier: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1082,31 +1082,31 @@ Specifying this field has no-ops; it's recommended to remove this field from you
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  connectionName: string
-  firstIpAddress: string
-  ipAddress:
-  - ipAddress: string
-    timeToRetire: string
-    type: string
-  observedGeneration: integer
-  privateIpAddress: string
-  publicIpAddress: string
-  selfLink: string
-  serverCaCert:
-    cert: string
-    commonName: string
-    createTime: string
-    expirationTime: string
-    sha1Fingerprint: string
-  serviceAccountEmailAddress: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+connectionName: string
+firstIpAddress: string
+ipAddress:
+- ipAddress: string
+  timeToRetire: string
+  type: string
+observedGeneration: integer
+privateIpAddress: string
+publicIpAddress: string
+selfLink: string
+serverCaCert:
+  cert: string
+  commonName: string
+  createTime: string
+  expirationTime: string
+  sha1Fingerprint: string
+serviceAccountEmailAddress: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1296,206 +1296,206 @@ Specifying this field has no-ops; it's recommended to remove this field from you
 ## Sample YAML(s)
 
 ### Mysql SQL Instance
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample-mysql
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-    settings:
-      tier: db-f1-micro
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-mysql
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+```
 
 ### Mysql SQL Instance High Availability
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample-mysqlhighavailability
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-    settings:
-      tier: db-g1-small
-      diskSize: 25
-      diskType: PD_SSD
-      availabilityType: REGIONAL
-      backupConfiguration:
-        binaryLogEnabled: true
-        enabled: true
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-mysqlhighavailability
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-g1-small
+    diskSize: 25
+    diskType: PD_SSD
+    availabilityType: REGIONAL
+    backupConfiguration:
+      binaryLogEnabled: true
+      enabled: true
+```
 
 ### Mysql SQL Instance With Replication
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample1-mysqlwithreplication
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+    backupConfiguration:
+        binaryLogEnabled: true
+        enabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    locationPreference:
+        zone: us-central1-b
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample2-mysqlwithreplication
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  masterInstanceRef: 
     name: sqlinstance-sample1-mysqlwithreplication
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-    settings:
-      tier: db-f1-micro
-      backupConfiguration:
-          binaryLogEnabled: true
-          enabled: true
-          startTime: "18:00"
-      ipConfiguration:
-        requireSsl: true
-      locationPreference:
-          zone: us-central1-b
-  ---
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample2-mysqlwithreplication
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-    masterInstanceRef: 
-      name: sqlinstance-sample1-mysqlwithreplication
-    replicaConfiguration:
-      connectRetryInterval: 30
-    settings:
-      tier: db-f1-micro
-      ipConfiguration:
-        requireSsl: true
-      locationPreference:
-          zone: us-central1-c
-  ```
+  replicaConfiguration:
+    connectRetryInterval: 30
+  settings:
+    tier: db-f1-micro
+    ipConfiguration:
+      requireSsl: true
+    locationPreference:
+        zone: us-central1-c
+```
 
 ### Postgres SQL Instance High Availability
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample-postgreshighavailability
-  spec:
-    databaseVersion: POSTGRES_9_6
-    region: us-central1
-    settings:
-      tier: db-custom-1-3840
-      availabilityType: REGIONAL
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-postgreshighavailability
+spec:
+  databaseVersion: POSTGRES_9_6
+  region: us-central1
+  settings:
+    tier: db-custom-1-3840
+    availabilityType: REGIONAL
+```
 
 ### Private Ip Instance
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample-private-ip
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-    settings:
-      tier: db-f1-micro
-      ipConfiguration:
-        ipv4Enabled: false
-        privateNetworkRef:
-          name: sqlinstance-dep-private-ip
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-private-ip
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+    ipConfiguration:
+      ipv4Enabled: false
+      privateNetworkRef:
+        name: sqlinstance-dep-private-ip
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: sqlinstance-dep-private-ip
+spec:
+  addressType: INTERNAL
+  location: global
+  purpose: VPC_PEERING
+  prefixLength: 16
+  networkRef:
     name: sqlinstance-dep-private-ip
-  spec:
-    addressType: INTERNAL
-    location: global
-    purpose: VPC_PEERING
-    prefixLength: 16
-    networkRef:
-      name: sqlinstance-dep-private-ip
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: sqlinstance-dep-private-ip
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: sqlinstance-dep-private-ip
+spec:
+  networkRef:
     name: sqlinstance-dep-private-ip
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
-  kind: ServiceNetworkingConnection
-  metadata:
-    name: sqlinstance-dep-private-ip
-  spec:
-    networkRef:
-      name: sqlinstance-dep-private-ip
-    reservedPeeringRanges:
-      - name: sqlinstance-dep-private-ip
-    service: servicenetworking.googleapis.com
-  ```
+  reservedPeeringRanges:
+    - name: sqlinstance-dep-private-ip
+  service: servicenetworking.googleapis.com
+```
 
 
 {% endblock %}

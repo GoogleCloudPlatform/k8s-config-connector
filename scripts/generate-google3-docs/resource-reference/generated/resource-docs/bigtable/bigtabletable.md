@@ -90,17 +90,17 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  columnFamily:
-  - family: string
-  instanceRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  splitKeys:
-  - string
-  ```
+```yaml
+columnFamily:
+- family: string
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+splitKeys:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -218,15 +218,15 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -297,48 +297,48 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableTable
-  metadata:
-    name: bigtabletable-sample
-  spec:
-    columnFamily:
-    - family: family1
-    - family: family2
-    instanceRef:
-      name: bigtabletable-dep
-    splitKeys:
-    - a
-  ---
-  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-  kind: BigtableInstance
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableTable
+metadata:
+  name: bigtabletable-sample
+spec:
+  columnFamily:
+  - family: family1
+  - family: family2
+  instanceRef:
     name: bigtabletable-dep
-  spec:
-    displayName: BigtableSample
-    cluster:
-    - clusterId: cluster1
-      zone: us-central1-a
-      numNodes: 3
-    - clusterId: cluster2
-      zone: us-west1-a
-      numNodes: 3
-  ```
+  splitKeys:
+  - a
+---
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtabletable-dep
+spec:
+  displayName: BigtableSample
+  cluster:
+  - clusterId: cluster1
+    zone: us-central1-a
+    numNodes: 3
+  - clusterId: cluster2
+    zone: us-west1-a
+    numNodes: 3
+```
 
 
 {% endblock %}

@@ -58,32 +58,32 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  androidSettings:
-    allowAllPackageNames: boolean
-    allowedPackageNames:
-    - string
-  displayName: string
-  iosSettings:
-    allowAllBundleIds: boolean
-    allowedBundleIds:
-    - string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  testingOptions:
-    testingChallenge: string
-    testingScore: float
-  webSettings:
-    allowAllDomains: boolean
-    allowAmpTraffic: boolean
-    allowedDomains:
-    - string
-    challengeSecurityPreference: string
-    integrationType: string
-  ```
+```yaml
+androidSettings:
+  allowAllPackageNames: boolean
+  allowedPackageNames:
+  - string
+displayName: string
+iosSettings:
+  allowAllBundleIds: boolean
+  allowedBundleIds:
+  - string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+testingOptions:
+  testingChallenge: string
+  testingScore: float
+webSettings:
+  allowAllDomains: boolean
+  allowAmpTraffic: boolean
+  allowedDomains:
+  - string
+  challengeSecurityPreference: string
+  integrationType: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -343,16 +343,16 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -430,141 +430,141 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Android Recaptcha Enterprise Key
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
-  kind: RecaptchaEnterpriseKey
-  metadata:
-    name: recaptchaenterprisekey-sample-android
-    labels:
-      label-one: value-one
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: display-name-one
-    androidSettings:
-      allowAllPackageNames: true
-    testingOptions:
-      testingScore: 0.8
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  name: recaptchaenterprisekey-sample-android
+  labels:
+    label-one: value-one
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: display-name-one
+  androidSettings:
+    allowAllPackageNames: true
+  testingOptions:
+    testingScore: 0.8
+```
 
 ### Challenge Based Web Recaptcha Enterprise Key
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
-  kind: RecaptchaEnterpriseKey
-  metadata:
-    name: recaptchaenterprisekey-sample-challengebasedweb
-    labels:
-      label-one: value-one
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: display-name-one
-    webSettings:
-      allowAllDomains: true
-      integrationType: CHECKBOX
-      challengeSecurityPreference: USABILITY
-    testingOptions:
-      testingScore: 0.5
-      testingChallenge: NOCAPTCHA
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  name: recaptchaenterprisekey-sample-challengebasedweb
+  labels:
+    label-one: value-one
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: display-name-one
+  webSettings:
+    allowAllDomains: true
+    integrationType: CHECKBOX
+    challengeSecurityPreference: USABILITY
+  testingOptions:
+    testingScore: 0.5
+    testingChallenge: NOCAPTCHA
+```
 
 ### Ios Recaptcha Enterprise Key
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
-  kind: RecaptchaEnterpriseKey
-  metadata:
-    name: recaptchaenterprisekey-sample-ios
-    labels:
-      label-one: value-one
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: display-name-one
-    iosSettings:
-      allowAllBundleIds: true
-    testingOptions: 
-      testingScore: 1
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  name: recaptchaenterprisekey-sample-ios
+  labels:
+    label-one: value-one
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: display-name-one
+  iosSettings:
+    allowAllBundleIds: true
+  testingOptions: 
+    testingScore: 1
+```
 
 ### Score Based Web Recaptcha Enterprise Key
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
-  kind: RecaptchaEnterpriseKey
-  metadata:
-    name: recaptchaenterprisekey-sample-scorebasedweb
-    labels:
-      label-one: value-one
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: display-name-one
-    webSettings:
-      allowAllDomains: true
-      allowAmpTraffic: false
-      integrationType: SCORE
-    testingOptions:
-      testingScore: 0.5
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  name: recaptchaenterprisekey-sample-scorebasedweb
+  labels:
+    label-one: value-one
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: display-name-one
+  webSettings:
+    allowAllDomains: true
+    allowAmpTraffic: false
+    integrationType: SCORE
+  testingOptions:
+    testingScore: 0.5
+```
 
 
 {% endblock %}

@@ -59,52 +59,52 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  contentMatchers:
-  - content: string
-    matcher: string
-  displayName: string
-  httpCheck:
-    authInfo:
-      password:
-        value: string
-        valueFrom:
-          secretKeyRef:
-            key: string
-            name: string
-      username: string
-    body: string
-    contentType: string
-    headers:
-      string: string
-    maskHeaders: boolean
-    path: string
-    port: integer
-    requestMethod: string
-    useSsl: boolean
-    validateSsl: boolean
-  monitoredResource:
-    filterLabels:
-      string: string
-    type: string
-  period: string
-  projectRef:
+```yaml
+contentMatchers:
+- content: string
+  matcher: string
+displayName: string
+httpCheck:
+  authInfo:
+    password:
+      value: string
+      valueFrom:
+        secretKeyRef:
+          key: string
+          name: string
+    username: string
+  body: string
+  contentType: string
+  headers:
+    string: string
+  maskHeaders: boolean
+  path: string
+  port: integer
+  requestMethod: string
+  useSsl: boolean
+  validateSsl: boolean
+monitoredResource:
+  filterLabels:
+    string: string
+  type: string
+period: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceGroup:
+  groupRef:
     external: string
     name: string
     namespace: string
-  resourceGroup:
-    groupRef:
-      external: string
-      name: string
-      namespace: string
-    resourceType: string
-  resourceID: string
-  selectedRegions:
-  - string
-  tcpCheck:
-    port: integer
-  timeout: string
-  ```
+  resourceType: string
+resourceID: string
+selectedRegions:
+- string
+tcpCheck:
+  port: integer
+timeout: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -556,15 +556,15 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -635,114 +635,114 @@ Allowed value: The Google Cloud resource name of a `MonitoringGroup` resource (f
 ## Sample YAML(s)
 
 ### Http Uptime Check Config
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringUptimeCheckConfig
-  metadata:
-    name: monitoringuptimecheckconfig-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    displayName: "A sample http uptime check config"
-    period: 60s
-    timeout: 30s
-    contentMatchers:
-      - content: ".*"
-        matcher: "MATCHES_REGEX"
-    selectedRegions:
-      - USA
-    monitoredResource:
-      type: "uptime_url"
-      filterLabels:
-        host: "192.168.1.1"
-        # Replace ${PROJECT_ID?} with the ID of a monitored project.
-        project_id: ${PROJECT_ID?}
-    httpCheck:
-      requestMethod: POST
-      useSsl: true
-      path: "/main"
-      port: 80
-      authInfo:
-        username: test
-        password:
-          valueFrom:
-            secretKeyRef:
-              name: monitoringuptimecheckconfig-dep
-              key: password
-      maskHeaders: true
-      headers:
-        header-one: "value-one"
-      contentType: "URL_ENCODED"
-      validateSsl: false
-      body: "c3RyaW5nCg=="
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: monitoringuptimecheckconfig-dep
-  data:
-    password: cGFzc3dvcmQ=
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringUptimeCheckConfig
+metadata:
+  name: monitoringuptimecheckconfig-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  displayName: "A sample http uptime check config"
+  period: 60s
+  timeout: 30s
+  contentMatchers:
+    - content: ".*"
+      matcher: "MATCHES_REGEX"
+  selectedRegions:
+    - USA
+  monitoredResource:
+    type: "uptime_url"
+    filterLabels:
+      host: "192.168.1.1"
+      # Replace ${PROJECT_ID?} with the ID of a monitored project.
+      project_id: ${PROJECT_ID?}
+  httpCheck:
+    requestMethod: POST
+    useSsl: true
+    path: "/main"
+    port: 80
+    authInfo:
+      username: test
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: monitoringuptimecheckconfig-dep
+            key: password
+    maskHeaders: true
+    headers:
+      header-one: "value-one"
+    contentType: "URL_ENCODED"
+    validateSsl: false
+    body: "c3RyaW5nCg=="
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: monitoringuptimecheckconfig-dep
+data:
+  password: cGFzc3dvcmQ=
+```
 
 ### Tcp Uptime Check Config
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringUptimeCheckConfig
-  metadata:
-    name: monitoringuptimecheckconfig-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    displayName: "A sample TCP uptime check config"
-    timeout: 30s
-    resourceGroup:
-      groupRef:
-        name: monitoringuptimecheckconfig-dep
-      resourceType: INSTANCE
-    tcpCheck:
-      port: 80
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringGroup
-  metadata:
-    name: monitoringuptimecheckconfig-dep
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    filter: resource.metadata.region=europe-west2
-    displayName: "A sample monitoring group"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringUptimeCheckConfig
+metadata:
+  name: monitoringuptimecheckconfig-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  displayName: "A sample TCP uptime check config"
+  timeout: 30s
+  resourceGroup:
+    groupRef:
+      name: monitoringuptimecheckconfig-dep
+    resourceType: INSTANCE
+  tcpCheck:
+    port: 80
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringGroup
+metadata:
+  name: monitoringuptimecheckconfig-dep
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  filter: resource.metadata.region=europe-west2
+  displayName: "A sample monitoring group"
+```
 
 
 {% endblock %}

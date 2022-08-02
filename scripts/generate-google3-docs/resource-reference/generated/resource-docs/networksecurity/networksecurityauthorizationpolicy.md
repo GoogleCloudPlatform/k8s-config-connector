@@ -80,32 +80,32 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  action: string
-  description: string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  rules:
-  - destinations:
-    - hosts:
-      - string
-      httpHeaderMatch:
-        headerName: string
-        regexMatch: string
-      methods:
-      - string
-      ports:
-      - integer
-    sources:
-    - ipBlocks:
-      - string
-      principals:
-      - string
-  ```
+```yaml
+action: string
+description: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+rules:
+- destinations:
+  - hosts:
+    - string
+    httpHeaderMatch:
+      headerName: string
+      regexMatch: string
+    methods:
+    - string
+    ports:
+    - integer
+  sources:
+  - ipBlocks:
+    - string
+    principals:
+    - string
+```
 
 <table class="properties responsive">
 <thead>
@@ -395,17 +395,17 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -490,60 +490,60 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkSecurityAuthorizationPolicy
-  metadata:
-    labels:
-      key-one: value-one
-    name: networksecurityauthorizationpolicy-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: global
-    action: ALLOW
-    description: Test Authorization Policy
-    rules:
-    - sources:
-      - ipBlocks:
-        - "1.2.3.4"
-        principals:
-        - "*"
-      destinations:
-      - hosts:
-        - "demo-service"
-        ports:
-        - 8080
-        methods:
-        - "POST"
-    - sources:
-      - ipBlocks:
-        - "1.2.3.5"
-        principals:
-        - "*"
-      destinations:
-      - hosts:
-        - "test-service"
-        ports:
-        - 8081
-        methods:
-        - "GET"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  labels:
+    key-one: value-one
+  name: networksecurityauthorizationpolicy-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: global
+  action: ALLOW
+  description: Test Authorization Policy
+  rules:
+  - sources:
+    - ipBlocks:
+      - "1.2.3.4"
+      principals:
+      - "*"
+    destinations:
+    - hosts:
+      - "demo-service"
+      ports:
+      - 8080
+      methods:
+      - "POST"
+  - sources:
+    - ipBlocks:
+      - "1.2.3.5"
+      principals:
+      - "*"
+    destinations:
+    - hosts:
+      - "test-service"
+      ports:
+      - 8081
+      methods:
+      - "GET"
+```
 
 
 {% endblock %}

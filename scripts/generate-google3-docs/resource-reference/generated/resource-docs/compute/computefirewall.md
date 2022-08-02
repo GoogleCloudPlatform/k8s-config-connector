@@ -72,44 +72,44 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  allow:
-  - ports:
-    - string
-    protocol: string
-  deny:
-  - ports:
-    - string
-    protocol: string
-  description: string
-  destinationRanges:
+```yaml
+allow:
+- ports:
   - string
-  direction: string
-  disabled: boolean
-  enableLogging: boolean
-  logConfig:
-    metadata: string
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  priority: integer
-  resourceID: string
-  sourceRanges:
+  protocol: string
+deny:
+- ports:
   - string
-  sourceServiceAccounts:
-  - external: string
-    name: string
-    namespace: string
-  sourceTags:
-  - string
-  targetServiceAccounts:
-  - external: string
-    name: string
-    namespace: string
-  targetTags:
-  - string
-  ```
+  protocol: string
+description: string
+destinationRanges:
+- string
+direction: string
+disabled: boolean
+enableLogging: boolean
+logConfig:
+  metadata: string
+networkRef:
+  external: string
+  name: string
+  namespace: string
+priority: integer
+resourceID: string
+sourceRanges:
+- string
+sourceServiceAccounts:
+- external: string
+  name: string
+  namespace: string
+sourceTags:
+- string
+targetServiceAccounts:
+- external: string
+  name: string
+  namespace: string
+targetTags:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -599,17 +599,17 @@ instances on the specified network.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -694,85 +694,85 @@ instances on the specified network.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Allow Rule Firewall
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewall
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computefirewall-sample-allow
-  spec:
-    allow:
-      - protocol: tcp
-        ports:
-         - "80"
-         - "1000-2000"
-    networkRef:
-      name: computefirewall-dep-allow
-    sourceTags:
-      - "web"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewall
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computefirewall-sample-allow
+spec:
+  allow:
+    - protocol: tcp
+      ports:
+       - "80"
+       - "1000-2000"
+  networkRef:
     name: computefirewall-dep-allow
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ```
+  sourceTags:
+    - "web"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computefirewall-dep-allow
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+```
 
 ### Deny Rule Firewall
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewall
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computefirewall-sample-deny
-  spec:
-    deny:
-      - protocol: icmp
-    networkRef:
-      name: computefirewall-dep-deny
-    sourceTags:
-    - "web"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewall
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computefirewall-sample-deny
+spec:
+  deny:
+    - protocol: icmp
+  networkRef:
     name: computefirewall-dep-deny
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ```
+  sourceTags:
+  - "web"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computefirewall-dep-deny
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+```
 
 
 {% endblock %}

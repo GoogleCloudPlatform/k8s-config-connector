@@ -58,26 +58,26 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  projectRef:
+```yaml
+description: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+userOwnedDrydockNote:
+  noteRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  userOwnedDrydockNote:
-    noteRef:
-      external: string
-      name: string
-      namespace: string
-    publicKeys:
-    - asciiArmoredPgpPublicKey: string
-      comment: string
-      id: string
-      pkixPublicKey:
-        publicKeyPem: string
-        signatureAlgorithm: string
-  ```
+  publicKeys:
+  - asciiArmoredPgpPublicKey: string
+    comment: string
+    id: string
+    pkixPublicKey:
+      publicKeyPem: string
+      signatureAlgorithm: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -289,18 +289,18 @@ Allowed value: The Google Cloud resource name of a `ContainerAnalysisNote` resou
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  updateTime: string
-  userOwnedDrydockNote:
-    delegationServiceAccountEmail: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+updateTime: string
+userOwnedDrydockNote:
+  delegationServiceAccountEmail: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -392,51 +392,51 @@ Allowed value: The Google Cloud resource name of a `ContainerAnalysisNote` resou
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
-  kind: BinaryAuthorizationAttestor
-  metadata:
-    name: binaryauthorizationattestor-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    description: A sample binary authorization attestor.
-    userOwnedDrydockNote:
-      noteRef:
-        name: binaryauthorizationattestor-dep
-      publicKeys:
-        - comment: A sample key
-          pkixPublicKey:
-            publicKeyPem: |
-              -----BEGIN PUBLIC KEY-----
-              MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8qErzp1izKNonCWqj5KSqdz6g2Tf
-              ZWvtX3I6huRWGD0pIMieOOUdFD/hbMH6xYx0ml2vVkUqFJzeSmQt8pbtnw==
-              -----END PUBLIC KEY-----
-            signatureAlgorithm: ECDSA_P256_SHA256
-  ---
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: binaryauthorizationattestor-dep
-  spec:
-    package:
-      name: test-package
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+kind: BinaryAuthorizationAttestor
+metadata:
+  name: binaryauthorizationattestor-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  description: A sample binary authorization attestor.
+  userOwnedDrydockNote:
+    noteRef:
+      name: binaryauthorizationattestor-dep
+    publicKeys:
+      - comment: A sample key
+        pkixPublicKey:
+          publicKeyPem: |
+            -----BEGIN PUBLIC KEY-----
+            MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8qErzp1izKNonCWqj5KSqdz6g2Tf
+            ZWvtX3I6huRWGD0pIMieOOUdFD/hbMH6xYx0ml2vVkUqFJzeSmQt8pbtnw==
+            -----END PUBLIC KEY-----
+          signatureAlgorithm: ECDSA_P256_SHA256
+---
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: binaryauthorizationattestor-dep
+spec:
+  package:
+    name: test-package
+```
 
 
 {% endblock %}

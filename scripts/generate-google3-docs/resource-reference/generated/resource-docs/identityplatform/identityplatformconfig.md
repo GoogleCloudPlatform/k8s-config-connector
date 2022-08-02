@@ -61,98 +61,98 @@ Note: You must enable <a href="/identity-platform/docs/quickstart-email-password
 
 ### Spec
 #### Schema
-  ```yaml
-  authorizedDomains:
-  - string
-  blockingFunctions:
-    triggers:
-      string: object
-  client:
-    permissions:
-      disabledUserDeletion: boolean
-      disabledUserSignup: boolean
-  mfa:
-    state: string
-  monitoring:
-    requestLogging:
-      enabled: boolean
-  multiTenant:
-    allowTenants: boolean
-    defaultTenantLocationRef:
-      external: string
-      kind: string
-      name: string
-      namespace: string
-  notification:
-    defaultLocale: string
-    sendEmail:
-      callbackUri: string
-      changeEmailTemplate:
-        body: string
-        bodyFormat: string
-        replyTo: string
-        senderDisplayName: string
-        senderLocalPart: string
-        subject: string
-      dnsInfo:
-        useCustomDomain: boolean
-      method: string
-      resetPasswordTemplate:
-        body: string
-        bodyFormat: string
-        replyTo: string
-        senderDisplayName: string
-        senderLocalPart: string
-        subject: string
-      revertSecondFactorAdditionTemplate:
-        body: string
-        bodyFormat: string
-        replyTo: string
-        senderDisplayName: string
-        senderLocalPart: string
-        subject: string
-      smtp:
-        host: string
-        password:
-          value: string
-          valueFrom:
-            secretKeyRef:
-              key: string
-              name: string
-        port: integer
-        securityMode: string
-        senderEmail: string
-        username: string
-      verifyEmailTemplate:
-        body: string
-        bodyFormat: string
-        replyTo: string
-        senderDisplayName: string
-        senderLocalPart: string
-        subject: string
-    sendSms:
-      useDeviceLocale: boolean
-  projectRef:
+```yaml
+authorizedDomains:
+- string
+blockingFunctions:
+  triggers:
+    string: object
+client:
+  permissions:
+    disabledUserDeletion: boolean
+    disabledUserSignup: boolean
+mfa:
+  state: string
+monitoring:
+  requestLogging:
+    enabled: boolean
+multiTenant:
+  allowTenants: boolean
+  defaultTenantLocationRef:
     external: string
+    kind: string
     name: string
     namespace: string
-  quota:
-    signUpQuotaConfig:
-      quota: integer
-      quotaDuration: string
-      startTime: string
-  signIn:
-    allowDuplicateEmails: boolean
-    anonymous:
-      enabled: boolean
-    email:
-      enabled: boolean
-      passwordRequired: boolean
-    phoneNumber:
-      enabled: boolean
-      testPhoneNumbers:
-        string: string
-  ```
+notification:
+  defaultLocale: string
+  sendEmail:
+    callbackUri: string
+    changeEmailTemplate:
+      body: string
+      bodyFormat: string
+      replyTo: string
+      senderDisplayName: string
+      senderLocalPart: string
+      subject: string
+    dnsInfo:
+      useCustomDomain: boolean
+    method: string
+    resetPasswordTemplate:
+      body: string
+      bodyFormat: string
+      replyTo: string
+      senderDisplayName: string
+      senderLocalPart: string
+      subject: string
+    revertSecondFactorAdditionTemplate:
+      body: string
+      bodyFormat: string
+      replyTo: string
+      senderDisplayName: string
+      senderLocalPart: string
+      subject: string
+    smtp:
+      host: string
+      password:
+        value: string
+        valueFrom:
+          secretKeyRef:
+            key: string
+            name: string
+      port: integer
+      securityMode: string
+      senderEmail: string
+      username: string
+    verifyEmailTemplate:
+      body: string
+      bodyFormat: string
+      replyTo: string
+      senderDisplayName: string
+      senderLocalPart: string
+      subject: string
+  sendSms:
+    useDeviceLocale: boolean
+projectRef:
+  external: string
+  name: string
+  namespace: string
+quota:
+  signUpQuotaConfig:
+    quota: integer
+    quotaDuration: string
+    startTime: string
+signIn:
+  allowDuplicateEmails: boolean
+  anonymous:
+    enabled: boolean
+  email:
+    enabled: boolean
+    passwordRequired: boolean
+  phoneNumber:
+    enabled: boolean
+    testPhoneNumbers:
+      string: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1057,51 +1057,51 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  client:
-    apiKey: string
-    firebaseSubdomain: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  notification:
-    sendEmail:
-      changeEmailTemplate:
-        customized: boolean
-      dnsInfo:
-        customDomain: string
-        customDomainState: string
-        domainVerificationRequestTime: string
-        pendingCustomDomain: string
-      resetPasswordTemplate:
-        customized: boolean
-      revertSecondFactorAdditionTemplate:
-        customized: boolean
-      verifyEmailTemplate:
-        customized: boolean
-    sendSms:
-      smsTemplate:
-        content: string
-  observedGeneration: integer
-  signIn:
-    email:
-      hashConfig:
-        algorithm: string
-        memoryCost: integer
-        rounds: integer
-        saltSeparator: string
-        signerKey: string
+```yaml
+client:
+  apiKey: string
+  firebaseSubdomain: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+notification:
+  sendEmail:
+    changeEmailTemplate:
+      customized: boolean
+    dnsInfo:
+      customDomain: string
+      customDomainState: string
+      domainVerificationRequestTime: string
+      pendingCustomDomain: string
+    resetPasswordTemplate:
+      customized: boolean
+    revertSecondFactorAdditionTemplate:
+      customized: boolean
+    verifyEmailTemplate:
+      customized: boolean
+  sendSms:
+    smsTemplate:
+      content: string
+observedGeneration: integer
+signIn:
+  email:
     hashConfig:
       algorithm: string
       memoryCost: integer
       rounds: integer
       saltSeparator: string
       signerKey: string
-  subtype: string
-  ```
+  hashConfig:
+    algorithm: string
+    memoryCost: integer
+    rounds: integer
+    saltSeparator: string
+    signerKey: string
+subtype: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1424,160 +1424,160 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
-  kind: IdentityPlatformConfig
-  metadata:
-    name: identityplatformconfig-sample
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    signIn:
-      email:
-        enabled: true
-        passwordRequired: true
-      phoneNumber:
-        enabled: true
-        testPhoneNumbers:
-          +1 555-555-5555: "000000"
-      anonymous:
-        enabled: true
-      allowDuplicateEmails: true
-    notification:
-      sendEmail:
-        method: "CUSTOM_SMTP"
-        smtp:
-          senderEmail: "magic-modules-guitar-testing@system.gserviceaccount.com"
-          host: "system.gserviceaccount.com"
-          port: 8080
-          username: "sample-username"
-          password:
-            value: "sample-password"
-          securityMode: "SSL"
-        resetPasswordTemplate:
-          senderLocalPart: "noreply"
-          subject: "Reset your password for %APP_NAME%"
-          senderDisplayName: "DCL Team"
-          body: "<p>Hello,</p>\n<p>Follow this link to reset your %APP_NAME% password\
-            \ for your %EMAIL% account.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If\
-            \ you didn’t ask to reset your password, you can ignore this email.</p>\n\
-            <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
-          bodyFormat: "PLAIN_TEXT"
-          replyTo: "noreply"
-        verifyEmailTemplate:
-          senderLocalPart: "noreply"
-          subject: "Verify your email for %APP_NAME%"
-          senderDisplayName: "DCL Team"
-          body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Follow this link to verify your email\
-            \ address.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If you didn’t ask\
-            \ to verify this address, you can ignore this email.</p>\n<p>Thanks,</p>\n\
-            <p>Your %APP_NAME% team</p>"
-          bodyFormat: "PLAIN_TEXT"
-          replyTo: "noreply"
-        changeEmailTemplate:
-          senderLocalPart: "noreply"
-          subject: "Your sign-in email was changed for %APP_NAME%"
-          senderDisplayName: "DCL Team"
-          body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your sign-in email for %APP_NAME%\
-            \ was changed to %NEW_EMAIL%.</p>\n<p>If you didn’t ask to change your email,\
-            \ follow this link to reset your sign-in email.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n\
-            <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
-          bodyFormat: "PLAIN_TEXT"
-          replyTo: "noreply"
-        callbackUri: "https://config-connector-sample.firebaseapp.com/__/auth/action"
-        dnsInfo:
-          useCustomDomain: true
-        revertSecondFactorAdditionTemplate:
-          senderLocalPart: "noreply"
-          subject: "You've added 2 step verification to your %APP_NAME% account."
-          senderDisplayName: "DCL Team"
-          body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been\
-            \ updated with a phone number %SECOND_FACTOR% for 2-step verification.</p>\n\
-            <p>If you didn't add this phone number for 2-step verification, click the\
-            \ link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n\
-            <p>Your %APP_NAME% team</p>"
-          bodyFormat: "PLAIN_TEXT"
-          replyTo: "noreply"
-      sendSms:
-        useDeviceLocale: true
-      defaultLocale: "en"
-    quota:
-      signUpQuotaConfig:
-        quota: 1
-        startTime: "2022-08-10T00:22:56.247547Z"
-        quotaDuration: "604800s"
-    monitoring:
-      requestLogging:
-        enabled: true
-    multiTenant:
-      allowTenants: true
-      defaultTenantLocationRef:
-        kind: Folder
-        name: "identityplatformconfig-dep"
-    authorizedDomains:
-    - "localhost"
-    - "config-connector-sample.firebaseapp.com"
-    subtype: "IDENTITY_PLATFORM"
-    client:
-      permissions:
-        disabledUserSignup: true
-        disabledUserDeletion: true
-    mfa:
-      state: "ENABLED"
-    blockingFunctions:
-      triggers:
-        beforeCreate:
-          functionUriRef:
-            name: "identityplatformconfig-dep"
-      forwardInboundCredentials:
-        idToken: true
-        accessToken: true
-        refereshToken: true
-  ---
-  apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
-  kind: CloudFunctionsFunction
-  metadata:
-    name: identityplatformconfig-dep
-  spec:
-    region: "us-west2"
-    runtime: "nodejs8"
-    availableMemoryMb: 128
-    sourceArchiveUrl: "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip"
-    timeout: "60s"
-    entryPoint: "helloGET"
-    ingressSettings: "ALLOW_INTERNAL_ONLY"
-    maxInstances: 10
-    httpsTrigger:
-      securityLevel: "SECURE_OPTIONAL"
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    name: identityplatformconfig-dep
-  spec:
-    displayName: Default Tenant Location
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
+kind: IdentityPlatformConfig
+metadata:
+  name: identityplatformconfig-sample
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  signIn:
+    email:
+      enabled: true
+      passwordRequired: true
+    phoneNumber:
+      enabled: true
+      testPhoneNumbers:
+        +1 555-555-5555: "000000"
+    anonymous:
+      enabled: true
+    allowDuplicateEmails: true
+  notification:
+    sendEmail:
+      method: "CUSTOM_SMTP"
+      smtp:
+        senderEmail: "magic-modules-guitar-testing@system.gserviceaccount.com"
+        host: "system.gserviceaccount.com"
+        port: 8080
+        username: "sample-username"
+        password:
+          value: "sample-password"
+        securityMode: "SSL"
+      resetPasswordTemplate:
+        senderLocalPart: "noreply"
+        subject: "Reset your password for %APP_NAME%"
+        senderDisplayName: "DCL Team"
+        body: "<p>Hello,</p>\n<p>Follow this link to reset your %APP_NAME% password\
+          \ for your %EMAIL% account.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If\
+          \ you didn’t ask to reset your password, you can ignore this email.</p>\n\
+          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "noreply"
+      verifyEmailTemplate:
+        senderLocalPart: "noreply"
+        subject: "Verify your email for %APP_NAME%"
+        senderDisplayName: "DCL Team"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Follow this link to verify your email\
+          \ address.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If you didn’t ask\
+          \ to verify this address, you can ignore this email.</p>\n<p>Thanks,</p>\n\
+          <p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "noreply"
+      changeEmailTemplate:
+        senderLocalPart: "noreply"
+        subject: "Your sign-in email was changed for %APP_NAME%"
+        senderDisplayName: "DCL Team"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your sign-in email for %APP_NAME%\
+          \ was changed to %NEW_EMAIL%.</p>\n<p>If you didn’t ask to change your email,\
+          \ follow this link to reset your sign-in email.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n\
+          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "noreply"
+      callbackUri: "https://config-connector-sample.firebaseapp.com/__/auth/action"
+      dnsInfo:
+        useCustomDomain: true
+      revertSecondFactorAdditionTemplate:
+        senderLocalPart: "noreply"
+        subject: "You've added 2 step verification to your %APP_NAME% account."
+        senderDisplayName: "DCL Team"
+        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been\
+          \ updated with a phone number %SECOND_FACTOR% for 2-step verification.</p>\n\
+          <p>If you didn't add this phone number for 2-step verification, click the\
+          \ link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n\
+          <p>Your %APP_NAME% team</p>"
+        bodyFormat: "PLAIN_TEXT"
+        replyTo: "noreply"
+    sendSms:
+      useDeviceLocale: true
+    defaultLocale: "en"
+  quota:
+    signUpQuotaConfig:
+      quota: 1
+      startTime: "2022-08-10T00:22:56.247547Z"
+      quotaDuration: "604800s"
+  monitoring:
+    requestLogging:
+      enabled: true
+  multiTenant:
+    allowTenants: true
+    defaultTenantLocationRef:
+      kind: Folder
+      name: "identityplatformconfig-dep"
+  authorizedDomains:
+  - "localhost"
+  - "config-connector-sample.firebaseapp.com"
+  subtype: "IDENTITY_PLATFORM"
+  client:
+    permissions:
+      disabledUserSignup: true
+      disabledUserDeletion: true
+  mfa:
+    state: "ENABLED"
+  blockingFunctions:
+    triggers:
+      beforeCreate:
+        functionUriRef:
+          name: "identityplatformconfig-dep"
+    forwardInboundCredentials:
+      idToken: true
+      accessToken: true
+      refereshToken: true
+---
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: identityplatformconfig-dep
+spec:
+  region: "us-west2"
+  runtime: "nodejs8"
+  availableMemoryMb: 128
+  sourceArchiveUrl: "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip"
+  timeout: "60s"
+  entryPoint: "helloGET"
+  ingressSettings: "ALLOW_INTERNAL_ONLY"
+  maxInstances: 10
+  httpsTrigger:
+    securityLevel: "SECURE_OPTIONAL"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  name: identityplatformconfig-dep
+spec:
+  displayName: Default Tenant Location
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+```
 
 
 {% endblock %}

@@ -87,73 +87,73 @@ use the name of a zone or region respectively.
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  diskEncryptionKey:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    kmsKeyServiceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    rawKey:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    sha256: string
-  imageRef:
+```yaml
+description: string
+diskEncryptionKey:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  interface: string
-  location: string
-  multiWriter: boolean
-  physicalBlockSizeBytes: integer
-  projectRef:
+  kmsKeyServiceAccountRef:
     external: string
     name: string
     namespace: string
-  provisionedIops: integer
-  replicaZones:
-  - string
-  resourceID: string
-  resourcePolicies:
-  - external: string
-    name: string
-    namespace: string
-  size: integer
-  snapshotRef:
+  rawKey:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  sha256: string
+imageRef:
+  external: string
+  name: string
+  namespace: string
+interface: string
+location: string
+multiWriter: boolean
+physicalBlockSizeBytes: integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+provisionedIops: integer
+replicaZones:
+- string
+resourceID: string
+resourcePolicies:
+- external: string
+  name: string
+  namespace: string
+size: integer
+snapshotRef:
+  external: string
+  name: string
+  namespace: string
+sourceImageEncryptionKey:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  sourceImageEncryptionKey:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    kmsKeyServiceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    rawKey: string
-    sha256: string
-  sourceSnapshotEncryptionKey:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    kmsKeyServiceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    rawKey: string
-    sha256: string
-  type: string
-  ```
+  kmsKeyServiceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  rawKey: string
+  sha256: string
+sourceSnapshotEncryptionKey:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+  kmsKeyServiceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  rawKey: string
+  sha256: string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -885,24 +885,24 @@ create the disk. Provide this when creating the disk.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  labelFingerprint: string
-  lastAttachTimestamp: string
-  lastDetachTimestamp: string
-  observedGeneration: integer
-  selfLink: string
-  sourceImageId: string
-  sourceSnapshotId: string
-  users:
-  - string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+labelFingerprint: string
+lastAttachTimestamp: string
+lastDetachTimestamp: string
+observedGeneration: integer
+selfLink: string
+sourceImageId: string
+sourceSnapshotId: string
+users:
+- string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1047,97 +1047,97 @@ project/zones/zone/instances/instance.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Regional Compute Disk
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computedisk-dep-regional
+spec:
+  location: us-west1-c
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computedisk-sample-regional
+  labels:
+    extra-gb: "100"
+spec:
+  description: A 600GB regional disk from a 500GB snapshot.
+  location: us-central1
+  replicaZones:
+    - "us-central1-a"
+    - "us-central1-f"
+  size: 600
+  physicalBlockSizeBytes: 16384
+  snapshotRef:
     name: computedisk-dep-regional
-  spec:
-    location: us-west1-c
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computedisk-sample-regional
-    labels:
-      extra-gb: "100"
-  spec:
-    description: A 600GB regional disk from a 500GB snapshot.
-    location: us-central1
-    replicaZones:
-      - "us-central1-a"
-      - "us-central1-f"
-    size: 600
-    physicalBlockSizeBytes: 16384
-    snapshotRef:
-      name: computedisk-dep-regional
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSnapshot
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSnapshot
+metadata:
+  name: computedisk-dep-regional
+spec:
+  sourceDiskRef:
     name: computedisk-dep-regional
-  spec:
-    sourceDiskRef:
-      name: computedisk-dep-regional
-    zone: us-west1-c
-  ```
+  zone: us-west1-c
+```
 
 ### Zonal Compute Disk
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computedisk-sample-zonal
-    labels:
-      label-one: "value-one"
-  spec:
-    description: a sample encrypted, blank disk
-    diskEncryptionKey:
-      rawKey:
-        valueFrom:
-          secretKeyRef:
-            name: computedisk-dep-zonal
-            key: sharedSecret
-    physicalBlockSizeBytes: 4096
-    size: 1
-    type: pd-ssd
-    location: us-west1-c
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: computedisk-dep-zonal
-  stringData:
-    sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computedisk-sample-zonal
+  labels:
+    label-one: "value-one"
+spec:
+  description: a sample encrypted, blank disk
+  diskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computedisk-dep-zonal
+          key: sharedSecret
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west1-c
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: computedisk-dep-zonal
+stringData:
+  sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+```
 
 
 {% endblock %}

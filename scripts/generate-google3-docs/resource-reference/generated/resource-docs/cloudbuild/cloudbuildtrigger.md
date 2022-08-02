@@ -72,168 +72,168 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  approvalConfig:
-    approvalRequired: boolean
-  build:
-    artifacts:
-      images:
-      - string
-      objects:
-        location: string
-        paths:
-        - string
-        timing:
-        - endTime: string
-          startTime: string
-    availableSecrets:
-      secretManager:
-      - env: string
-        versionRef:
-          external: string
-          name: string
-          namespace: string
+```yaml
+approvalConfig:
+  approvalRequired: boolean
+build:
+  artifacts:
     images:
     - string
-    logsBucketRef:
-      external: string
-      name: string
-      namespace: string
-    options:
-      diskSizeGb: integer
-      dynamicSubstitutions: boolean
-      env:
+    objects:
+      location: string
+      paths:
       - string
-      logStreamingOption: string
-      logging: string
-      machineType: string
-      requestedVerifyOption: string
-      secretEnv:
-      - string
-      sourceProvenanceHash:
-      - string
-      substitutionOption: string
-      volumes:
-      - name: string
-        path: string
-      workerPool: string
-    queueTtl: string
-    secret:
-    - kmsKeyRef:
+      timing:
+      - endTime: string
+        startTime: string
+  availableSecrets:
+    secretManager:
+    - env: string
+      versionRef:
         external: string
         name: string
         namespace: string
-      secretEnv:
-        string: string
-    source:
-      repoSource:
-        branchName: string
-        commitSha: string
-        dir: string
-        invertRegex: boolean
-        projectId: string
-        repoRef:
-          external: string
-          name: string
-          namespace: string
-        substitutions:
-          string: string
-        tagName: string
-      storageSource:
-        bucketRef:
-          external: string
-          name: string
-          namespace: string
-        generation: string
-        object: string
-    step:
-    - args:
-      - string
-      dir: string
-      entrypoint: string
-      env:
-      - string
-      id: string
-      name: string
-      secretEnv:
-      - string
-      timeout: string
-      timing: string
-      volumes:
-      - name: string
-        path: string
-      waitFor:
-      - string
-    substitutions:
-      string: string
-    tags:
-    - string
-    timeout: string
-  description: string
-  disabled: boolean
-  filename: string
-  filter: string
-  gitFileSource:
-    path: string
-    repoType: string
-    revision: string
-    uri: string
-  github:
-    name: string
-    owner: string
-    pullRequest:
-      branch: string
-      commentControl: string
-      invertRegex: boolean
-    push:
-      branch: string
-      invertRegex: boolean
-      tag: string
-  ignoredFiles:
+  images:
   - string
-  includeBuildLogs: string
-  includedFiles:
-  - string
-  pubsubConfig:
-    serviceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    state: string
-    subscription: string
-    topicRef:
-      external: string
-      name: string
-      namespace: string
-  serviceAccountRef:
+  logsBucketRef:
     external: string
     name: string
     namespace: string
-  sourceToBuild:
-    ref: string
-    repoType: string
-    uri: string
+  options:
+    diskSizeGb: integer
+    dynamicSubstitutions: boolean
+    env:
+    - string
+    logStreamingOption: string
+    logging: string
+    machineType: string
+    requestedVerifyOption: string
+    secretEnv:
+    - string
+    sourceProvenanceHash:
+    - string
+    substitutionOption: string
+    volumes:
+    - name: string
+      path: string
+    workerPool: string
+  queueTtl: string
+  secret:
+  - kmsKeyRef:
+      external: string
+      name: string
+      namespace: string
+    secretEnv:
+      string: string
+  source:
+    repoSource:
+      branchName: string
+      commitSha: string
+      dir: string
+      invertRegex: boolean
+      projectId: string
+      repoRef:
+        external: string
+        name: string
+        namespace: string
+      substitutions:
+        string: string
+      tagName: string
+    storageSource:
+      bucketRef:
+        external: string
+        name: string
+        namespace: string
+      generation: string
+      object: string
+  step:
+  - args:
+    - string
+    dir: string
+    entrypoint: string
+    env:
+    - string
+    id: string
+    name: string
+    secretEnv:
+    - string
+    timeout: string
+    timing: string
+    volumes:
+    - name: string
+      path: string
+    waitFor:
+    - string
   substitutions:
     string: string
   tags:
   - string
-  triggerTemplate:
-    branchName: string
-    commitSha: string
-    dir: string
+  timeout: string
+description: string
+disabled: boolean
+filename: string
+filter: string
+gitFileSource:
+  path: string
+  repoType: string
+  revision: string
+  uri: string
+github:
+  name: string
+  owner: string
+  pullRequest:
+    branch: string
+    commentControl: string
     invertRegex: boolean
-    repoRef:
-      external: string
-      name: string
-      namespace: string
-    tagName: string
-  webhookConfig:
-    secretRef:
-      external: string
-      name: string
-      namespace: string
-    state: string
-  ```
+  push:
+    branch: string
+    invertRegex: boolean
+    tag: string
+ignoredFiles:
+- string
+includeBuildLogs: string
+includedFiles:
+- string
+pubsubConfig:
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  state: string
+  subscription: string
+  topicRef:
+    external: string
+    name: string
+    namespace: string
+serviceAccountRef:
+  external: string
+  name: string
+  namespace: string
+sourceToBuild:
+  ref: string
+  repoType: string
+  uri: string
+substitutions:
+  string: string
+tags:
+- string
+triggerTemplate:
+  branchName: string
+  commitSha: string
+  dir: string
+  invertRegex: boolean
+  repoRef:
+    external: string
+    name: string
+    namespace: string
+  tagName: string
+webhookConfig:
+  secretRef:
+    external: string
+    name: string
+    namespace: string
+  state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2081,17 +2081,17 @@ Only populated on get requests.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  triggerId: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+triggerId: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2176,209 +2176,209 @@ Only populated on get requests.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Build Trigger For Cloud Source Repo
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
-  kind: CloudBuildTrigger
-  metadata:
-    name: cloudbuildtrigger-sample-cloudsourcerepo
-  spec:
-    description: Cloud Build Trigger for building the master branch of the referenced Cloud Source Repository.
-    disabled: false
-    triggerTemplate:
-      repoRef:
-        name: cloudbuildtrigger-dep-cloudsourcerepo
-      dir: "team-a/service-b"
-      branchName: master
-    ignoredFiles:
-      - "**/*.md"
-    includedFiles:
-      - "src/**"
-    substitutions:
-      "_SERVICE_NAME": "service-name"
-    build:
-      # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
-      # Cloud Build API when the build is created. More info:
-      # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
-      images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
-      tags: ["team-a", "service-b"]
-      timeout: 1800s
-      step:
-        - id: "download_zip"
-          name: gcr.io/cloud-builders/gsutil
-          args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
-          timeout: 300s
-        - id: "build_package"
-          name: gcr.io/cloud-builders/go
-          args: ["build", "my_package"]
-          dir: directory
-          env:
-            - "ENV1=one"
-            - "ENV2=two"
-          secretEnv:
-            - "SECRET_ENV1"
-          timeout: 300s
-        - id: "build_docker_image"
-          name: gcr.io/cloud-builders/docker
-          args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
-          timeout: 300s
-      availableSecrets:
-        secretManager:
-          - env: SECRET1
-            versionRef:
-              name: cloudbuildtrigger-dep-cloudsourcerepo
-  ---
-  apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-  kind: SecretManagerSecret
-  metadata:
-    name: cloudbuildtrigger-dep-cloudsourcerepo
-  spec:
-    replication:
-      automatic: true
-  ---
-  apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-  kind: SecretManagerSecretVersion
-  metadata:
-    name: cloudbuildtrigger-dep-cloudsourcerepo
-  spec:
-    enabled: true
-    secretData:
-      value: c2VjcmV0MQ==
-    secretRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: cloudbuildtrigger-sample-cloudsourcerepo
+spec:
+  description: Cloud Build Trigger for building the master branch of the referenced Cloud Source Repository.
+  disabled: false
+  triggerTemplate:
+    repoRef:
       name: cloudbuildtrigger-dep-cloudsourcerepo
-  ---
-  apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
-  kind: SourceRepoRepository
-  metadata:
+    dir: "team-a/service-b"
+    branchName: master
+  ignoredFiles:
+    - "**/*.md"
+  includedFiles:
+    - "src/**"
+  substitutions:
+    "_SERVICE_NAME": "service-name"
+  build:
+    # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
+    # Cloud Build API when the build is created. More info:
+    # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
+    images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
+    tags: ["team-a", "service-b"]
+    timeout: 1800s
+    step:
+      - id: "download_zip"
+        name: gcr.io/cloud-builders/gsutil
+        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+        timeout: 300s
+      - id: "build_package"
+        name: gcr.io/cloud-builders/go
+        args: ["build", "my_package"]
+        dir: directory
+        env:
+          - "ENV1=one"
+          - "ENV2=two"
+        secretEnv:
+          - "SECRET_ENV1"
+        timeout: 300s
+      - id: "build_docker_image"
+        name: gcr.io/cloud-builders/docker
+        args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
+        timeout: 300s
+    availableSecrets:
+      secretManager:
+        - env: SECRET1
+          versionRef:
+            name: cloudbuildtrigger-dep-cloudsourcerepo
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: cloudbuildtrigger-dep-cloudsourcerepo
+spec:
+  replication:
+    automatic: true
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: cloudbuildtrigger-dep-cloudsourcerepo
+spec:
+  enabled: true
+  secretData:
+    value: c2VjcmV0MQ==
+  secretRef:
     name: cloudbuildtrigger-dep-cloudsourcerepo
-  ```
+---
+apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
+kind: SourceRepoRepository
+metadata:
+  name: cloudbuildtrigger-dep-cloudsourcerepo
+```
 
 ### Build Trigger For GitHub Repo
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
-  kind: CloudBuildTrigger
-  metadata:
-    name: cloudbuildtrigger-sample-github
-  spec:
-    # Cloud Build Triggers for GitHub repositories require that you first connect
-    # your GCP project to your GitHub repository. More info:
-    # https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers
-    description: Cloud Build Trigger for building the master branch of the GitHub repository at github.com/owner_name/repo_name
-    disabled: false
-    github:
-      owner: owner_name
-      name: repo_name
-      push:
-        branch: master
-    ignoredFiles:
-      - "**/*.md"
-    includedFiles:
-      - "src/**"
-    substitutions:
-      "_SERVICE_NAME": "service-name"
-    build:
-      # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
-      # Cloud Build API when the build is created. More info:
-      # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
-      images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
-      tags: ["team-a", "service-b"]
-      timeout: 1800s
-      step:
-        - id: "download_zip"
-          name: gcr.io/cloud-builders/gsutil
-          args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
-          timeout: 300s
-        - id: "build_package"
-          name: gcr.io/cloud-builders/go
-          args: ["build", "my_package"]
-          dir: directory
-          env:
-            - "ENV1=one"
-            - "ENV2=two"
-          secretEnv:
-            - "SECRET_ENV1"
-          timeout: 300s
-        - id: "build_docker_image"
-          name: gcr.io/cloud-builders/docker
-          args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
-          timeout: 300s
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: cloudbuildtrigger-sample-github
+spec:
+  # Cloud Build Triggers for GitHub repositories require that you first connect
+  # your GCP project to your GitHub repository. More info:
+  # https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers
+  description: Cloud Build Trigger for building the master branch of the GitHub repository at github.com/owner_name/repo_name
+  disabled: false
+  github:
+    owner: owner_name
+    name: repo_name
+    push:
+      branch: master
+  ignoredFiles:
+    - "**/*.md"
+  includedFiles:
+    - "src/**"
+  substitutions:
+    "_SERVICE_NAME": "service-name"
+  build:
+    # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
+    # Cloud Build API when the build is created. More info:
+    # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
+    images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
+    tags: ["team-a", "service-b"]
+    timeout: 1800s
+    step:
+      - id: "download_zip"
+        name: gcr.io/cloud-builders/gsutil
+        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+        timeout: 300s
+      - id: "build_package"
+        name: gcr.io/cloud-builders/go
+        args: ["build", "my_package"]
+        dir: directory
+        env:
+          - "ENV1=one"
+          - "ENV2=two"
+        secretEnv:
+          - "SECRET_ENV1"
+        timeout: 300s
+      - id: "build_docker_image"
+        name: gcr.io/cloud-builders/docker
+        args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
+        timeout: 300s
+```
 
 ### Build Trigger With Template File
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
-  kind: CloudBuildTrigger
-  metadata:
-    name: cloudbuildtrigger-sample-withtemplatefile
-  spec:
-    description: Cloud Build Trigger with a build template file. Builds the master branch of the referenced Cloud Source Repository.
-    disabled: false
-    triggerTemplate:
-      repoRef:
-        name: cloudbuildtrigger-dep-withtemplatefile
-      dir: "team-a/service-b"
-      branchName: master
-    ignoredFiles:
-      - "**/*.md"
-    includedFiles:
-      - "src/**"
-    substitutions:
-      "_SERVICE_NAME": "service-name"
-    filename: "cloudbuild.yaml"
-    serviceAccountRef:
-      name: cbt-dep-withtemplatefile
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildTrigger
+metadata:
+  name: cloudbuildtrigger-sample-withtemplatefile
+spec:
+  description: Cloud Build Trigger with a build template file. Builds the master branch of the referenced Cloud Source Repository.
+  disabled: false
+  triggerTemplate:
+    repoRef:
+      name: cloudbuildtrigger-dep-withtemplatefile
+    dir: "team-a/service-b"
+    branchName: master
+  ignoredFiles:
+    - "**/*.md"
+  includedFiles:
+    - "src/**"
+  substitutions:
+    "_SERVICE_NAME": "service-name"
+  filename: "cloudbuild.yaml"
+  serviceAccountRef:
     name: cbt-dep-withtemplatefile
-  ---
-  apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
-  kind: SourceRepoRepository
-  metadata:
-    name: cloudbuildtrigger-dep-withtemplatefile
-  ```
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: cbt-dep-withtemplatefile
+---
+apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
+kind: SourceRepoRepository
+metadata:
+  name: cloudbuildtrigger-dep-withtemplatefile
+```
 
 
 {% endblock %}

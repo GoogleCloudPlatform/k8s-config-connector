@@ -90,32 +90,32 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  ipCidrRange: string
-  ipv6AccessType: string
-  logConfig:
-    aggregationInterval: string
-    filterExpr: string
-    flowSampling: float
-    metadata: string
-    metadataFields:
-    - string
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  privateIpGoogleAccess: boolean
-  privateIpv6GoogleAccess: string
-  purpose: string
-  region: string
-  resourceID: string
-  role: string
-  secondaryIpRange:
-  - ipCidrRange: string
-    rangeName: string
-  stackType: string
-  ```
+```yaml
+description: string
+ipCidrRange: string
+ipv6AccessType: string
+logConfig:
+  aggregationInterval: string
+  filterExpr: string
+  flowSampling: float
+  metadata: string
+  metadataFields:
+  - string
+networkRef:
+  external: string
+  name: string
+  namespace: string
+privateIpGoogleAccess: boolean
+privateIpv6GoogleAccess: string
+purpose: string
+region: string
+resourceID: string
+role: string
+secondaryIpRange:
+- ipCidrRange: string
+  rangeName: string
+stackType: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -421,21 +421,21 @@ If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IP
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  externalIpv6Prefix: string
-  fingerprint: string
-  gatewayAddress: string
-  ipv6CidrRange: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+externalIpv6Prefix: string
+fingerprint: string
+gatewayAddress: string
+ipv6CidrRange: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -549,47 +549,47 @@ outside this subnetwork.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computesubnetwork-sample
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    description: My subnet
-    privateIpGoogleAccess: false
-    networkRef:
-      name: computesubnetwork-dep
-    logConfig:
-      aggregationInterval: INTERVAL_10_MIN
-      flowSampling: 0.5
-      metadata: INCLUDE_ALL_METADATA
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computesubnetwork-sample
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  description: My subnet
+  privateIpGoogleAccess: false
+  networkRef:
     name: computesubnetwork-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ```
+  logConfig:
+    aggregationInterval: INTERVAL_10_MIN
+    flowSampling: 0.5
+    metadata: INCLUDE_ALL_METADATA
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computesubnetwork-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+```
 
 
 {% endblock %}

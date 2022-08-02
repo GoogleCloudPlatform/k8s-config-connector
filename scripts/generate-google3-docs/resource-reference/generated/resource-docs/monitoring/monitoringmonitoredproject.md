@@ -58,10 +58,10 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  metricsScope: string
-  resourceID: string
-  ```
+```yaml
+metricsScope: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -97,16 +97,16 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -184,39 +184,39 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringMonitoredProject
-  metadata:
-    name: mmp-sample-dep
-  spec:
-    # Replace ${PROJECT_ID?} with your project ID
-    metricsScope: "${PROJECT_ID?}"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    name: mmp-sample-dep
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    name: "Config Connector Sample"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringMonitoredProject
+metadata:
+  name: mmp-sample-dep
+spec:
+  # Replace ${PROJECT_ID?} with your project ID
+  metricsScope: "${PROJECT_ID?}"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: mmp-sample-dep
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  name: "Config Connector Sample"
+```
 
 
 {% endblock %}

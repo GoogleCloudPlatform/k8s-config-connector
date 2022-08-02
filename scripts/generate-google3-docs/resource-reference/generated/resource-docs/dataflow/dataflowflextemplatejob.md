@@ -82,11 +82,11 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
 
 ### Spec
 #### Schema
-  ```yaml
-  containerSpecGcsPath: string
-  parameters: {}
-  region: string
-  ```
+```yaml
+containerSpecGcsPath: string
+parameters: {}
+region: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -132,17 +132,17 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  jobId: string
-  observedGeneration: integer
-  state: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+jobId: string
+observedGeneration: integer
+state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -227,114 +227,114 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
 ## Sample YAML(s)
 
 ### Batch Dataflow Flex Template Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
-  kind: DataflowFlexTemplateJob
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/on-delete: "cancel"
-    name: dataflowflextemplatejob-sample-batch
-  spec:
-    region: us-central1
-    # This is a public, Google-maintained Dataflow Job flex template of a batch job
-    containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/File_Format_Conversion
-    parameters:
-      inputFileFormat: csv
-      outputFileFormat: avro
-      # This is a public, Google-maintained csv file expressly for this sample.
-      inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
-      # Replace ${PROJECT_ID?} with your project ID.
-      outputBucket: gs://${PROJECT_ID?}-dataflowflextemplatejob-dep-batch
-      # This is a public, Google-maintained Avro schema file expressly for this sample.
-      schema: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    name: ${PROJECT_ID?}-dataflowflextemplatejob-dep-batch
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowFlexTemplateJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/on-delete: "cancel"
+  name: dataflowflextemplatejob-sample-batch
+spec:
+  region: us-central1
+  # This is a public, Google-maintained Dataflow Job flex template of a batch job
+  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/File_Format_Conversion
+  parameters:
+    inputFileFormat: csv
+    outputFileFormat: avro
+    # This is a public, Google-maintained csv file expressly for this sample.
+    inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
+    # Replace ${PROJECT_ID?} with your project ID.
+    outputBucket: gs://${PROJECT_ID?}-dataflowflextemplatejob-dep-batch
+    # This is a public, Google-maintained Avro schema file expressly for this sample.
+    schema: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-dataflowflextemplatejob-dep-batch
+```
 
 ### Streaming Dataflow Flex Template Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
-  kind: DataflowFlexTemplateJob
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/on-delete: "drain"
-    name: dataflowflextemplatejob-sample-streaming
-  spec:
-    region: us-central1
-    # This is a public, Google-maintained Dataflow Job flex template of a streaming job
-    containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
-    parameters:
-      # This is a public, Google-maintained Avro schema file expressly for this sample.
-      schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
-      # Replace ${PROJECT_ID?} with your project ID.
-      inputSubscription: projects/${PROJECT_ID?}/subscriptions/dataflowflextemplatejob-dep-streaming
-      outputTopic: projects/${PROJECT_ID?}/topics/dataflowflextemplatejob-dep1-streaming
-      outputTableSpec: ${PROJECT_ID?}:dataflowflextemplatejobdepstreaming.dataflowflextemplatejobdepstreaming
-      createDisposition: CREATE_NEVER
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowFlexTemplateJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/on-delete: "drain"
+  name: dataflowflextemplatejob-sample-streaming
+spec:
+  region: us-central1
+  # This is a public, Google-maintained Dataflow Job flex template of a streaming job
+  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
+  parameters:
+    # This is a public, Google-maintained Avro schema file expressly for this sample.
+    schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
+    # Replace ${PROJECT_ID?} with your project ID.
+    inputSubscription: projects/${PROJECT_ID?}/subscriptions/dataflowflextemplatejob-dep-streaming
+    outputTopic: projects/${PROJECT_ID?}/topics/dataflowflextemplatejob-dep1-streaming
+    outputTableSpec: ${PROJECT_ID?}:dataflowflextemplatejobdepstreaming.dataflowflextemplatejobdepstreaming
+    createDisposition: CREATE_NEVER
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: dataflowflextemplatejobdepstreaming
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: dataflowflextemplatejobdepstreaming
+spec:
+  datasetRef:
     name: dataflowflextemplatejobdepstreaming
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: dataflowflextemplatejobdepstreaming
-  spec:
-    datasetRef:
-      name: dataflowflextemplatejobdepstreaming
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubSubscription
-  metadata:
-    name: dataflowflextemplatejob-dep-streaming
-  spec:
-    topicRef:
-      name: dataflowflextemplatejob-dep0-streaming
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: dataflowflextemplatejob-dep-streaming
+spec:
+  topicRef:
     name: dataflowflextemplatejob-dep0-streaming
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: dataflowflextemplatejob-dep1-streaming
-  ```
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: dataflowflextemplatejob-dep0-streaming
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: dataflowflextemplatejob-dep1-streaming
+```
 
 
 {% endblock %}

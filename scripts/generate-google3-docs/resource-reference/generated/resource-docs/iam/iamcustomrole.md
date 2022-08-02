@@ -75,14 +75,14 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  permissions:
-  - string
-  resourceID: string
-  stage: string
-  title: string
-  ```
+```yaml
+description: string
+permissions:
+- string
+resourceID: string
+stage: string
+title: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -158,17 +158,17 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  deleted: boolean
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+deleted: boolean
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -253,93 +253,93 @@
 ## Sample YAML(s)
 
 ### Organization Role
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMCustomRole
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with your organization ID
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-    name: iamcustomrolesampleorganization
-  spec:
-    title: Example Organization-Level Custom Role Created by Config Connector
-    description: This role only contains two permissions - publish and update
-    permissions:
-      - pubsub.topics.publish
-      - pubsub.topics.update
-    stage: GA
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMCustomRole
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with your organization ID
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: iamcustomrolesampleorganization
+spec:
+  title: Example Organization-Level Custom Role Created by Config Connector
+  description: This role only contains two permissions - publish and update
+  permissions:
+    - pubsub.topics.publish
+    - pubsub.topics.update
+  stage: GA
+```
 
 ### Project Role
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMCustomRole
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: iamcustomrolesampleproject
-  spec:
-    title: Example Project-Level Custom Role
-    description: This role only contains two permissions - publish and update
-    permissions:
-      - pubsub.topics.publish
-      - pubsub.topics.update
-    stage: GA
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-projectrole
-  spec:
-    member: serviceAccount:iamcustomrole-dep-project@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: projects/${PROJECT_ID?}/roles/iamcustomrolesampleproject
-    resourceRef:
-      kind: PubSubTopic
-      name: iamcustomrole-dep-project
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMCustomRole
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iamcustomrolesampleproject
+spec:
+  title: Example Project-Level Custom Role
+  description: This role only contains two permissions - publish and update
+  permissions:
+    - pubsub.topics.publish
+    - pubsub.topics.update
+  stage: GA
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-projectrole
+spec:
+  member: serviceAccount:iamcustomrole-dep-project@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: projects/${PROJECT_ID?}/roles/iamcustomrolesampleproject
+  resourceRef:
+    kind: PubSubTopic
     name: iamcustomrole-dep-project
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: iamcustomrole-dep-project
-  ```
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iamcustomrole-dep-project
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: iamcustomrole-dep-project
+```
 
 
 {% endblock %}

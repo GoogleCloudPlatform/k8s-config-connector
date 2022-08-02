@@ -59,87 +59,87 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  calendarPeriod: string
-  displayName: string
-  goal: float
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  rollingPeriod: string
-  serviceLevelIndicator:
-    basicSli:
-      availability: {}
-      latency:
-        experience: string
-        threshold: string
-      location:
-      - string
-      method:
-      - string
-      operationAvailability: {}
-      operationLatency:
-        experience: string
-        threshold: string
-      version:
-      - string
-    requestBased:
-      distributionCut:
-        distributionFilter: string
-        range:
-          max: float
-          min: float
-      goodTotalRatio:
-        badServiceFilter: string
-        goodServiceFilter: string
-        totalServiceFilter: string
-    windowsBased:
-      goodBadMetricFilter: string
-      goodTotalRatioThreshold:
-        basicSliPerformance:
-          availability: {}
-          latency:
-            experience: string
-            threshold: string
-          location:
-          - string
-          method:
-          - string
-          operationAvailability: {}
-          operationLatency:
-            experience: string
-            threshold: string
-          version:
-          - string
-        performance:
-          distributionCut:
-            distributionFilter: string
-            range:
-              max: float
-              min: float
-          goodTotalRatio:
-            badServiceFilter: string
-            goodServiceFilter: string
-            totalServiceFilter: string
-        threshold: float
-      metricMeanInRange:
-        range:
-          max: float
-          min: float
-        timeSeries: string
-      metricSumInRange:
-        range:
-          max: float
-          min: float
-        timeSeries: string
-      windowPeriod: string
-  serviceRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+calendarPeriod: string
+displayName: string
+goal: float
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+rollingPeriod: string
+serviceLevelIndicator:
+  basicSli:
+    availability: {}
+    latency:
+      experience: string
+      threshold: string
+    location:
+    - string
+    method:
+    - string
+    operationAvailability: {}
+    operationLatency:
+      experience: string
+      threshold: string
+    version:
+    - string
+  requestBased:
+    distributionCut:
+      distributionFilter: string
+      range:
+        max: float
+        min: float
+    goodTotalRatio:
+      badServiceFilter: string
+      goodServiceFilter: string
+      totalServiceFilter: string
+  windowsBased:
+    goodBadMetricFilter: string
+    goodTotalRatioThreshold:
+      basicSliPerformance:
+        availability: {}
+        latency:
+          experience: string
+          threshold: string
+        location:
+        - string
+        method:
+        - string
+        operationAvailability: {}
+        operationLatency:
+          experience: string
+          threshold: string
+        version:
+        - string
+      performance:
+        distributionCut:
+          distributionFilter: string
+          range:
+            max: float
+            min: float
+        goodTotalRatio:
+          badServiceFilter: string
+          goodServiceFilter: string
+          totalServiceFilter: string
+      threshold: float
+    metricMeanInRange:
+      range:
+        max: float
+        min: float
+      timeSeries: string
+    metricSumInRange:
+      range:
+        max: float
+        min: float
+      timeSeries: string
+    windowPeriod: string
+serviceRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -949,18 +949,18 @@ Allowed value: The Google Cloud resource name of a `MonitoringService` resource 
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  deleteTime: string
-  observedGeneration: integer
-  serviceManagementOwned: boolean
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+deleteTime: string
+observedGeneration: integer
+serviceManagementOwned: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -1052,457 +1052,457 @@ Allowed value: The Google Cloud resource name of a `MonitoringService` resource 
 ## Sample YAML(s)
 
 ### Request Based Distribution Cut
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-requestbaseddistributioncut
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-requestbaseddistributioncut
-    displayName: "A request based distribution cut filter"
-    goal: 0.9
-    rollingPeriod: "86400s"
-    serviceLevelIndicator:
-      requestBased:
-        distributionCut:
-          distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" \n resource.type=\"api\"  "
-          range:
-            min: 50
-            max: 100
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-requestbaseddistributioncut
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-requestbaseddistributioncut
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-requestbaseddistributioncut
+  displayName: "A request based distribution cut filter"
+  goal: 0.9
+  rollingPeriod: "86400s"
+  serviceLevelIndicator:
+    requestBased:
+      distributionCut:
+        distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" \n resource.type=\"api\"  "
+        range:
+          min: 50
+          max: 100
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-requestbaseddistributioncut
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Request Based Good Total Ratio
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-requestbasedgoodtotalratio
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
-    displayName: "A request based good total ratio filter"
-    goal: 0.9
-    rollingPeriod: "86400s"
-    serviceLevelIndicator:
-      requestBased:
-        goodTotalRatio:
-          goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-          badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-requestbasedgoodtotalratio
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
+  displayName: "A request based good total ratio filter"
+  goal: 0.9
+  rollingPeriod: "86400s"
+  serviceLevelIndicator:
+    requestBased:
+      goodTotalRatio:
+        goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+        badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Request Based Gtr Total Service Filter
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-requestbasedgtrtotalservicefilter
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-requestbasedgtrtotalservicefilter
-    displayName: "A request based good total ratio total service filter"
-    goal: 0.9
-    rollingPeriod: "86400s"
-    serviceLevelIndicator:
-      requestBased:
-        goodTotalRatio:
-          goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-          totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-requestbasedgtrtotalservicefilter
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-requestbasedgtrtotalservicefilter
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-requestbasedgtrtotalservicefilter
+  displayName: "A request based good total ratio total service filter"
+  goal: 0.9
+  rollingPeriod: "86400s"
+  serviceLevelIndicator:
+    requestBased:
+      goodTotalRatio:
+        goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+        totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-requestbasedgtrtotalservicefilter
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Good Bad Metric Filter
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowgoodbadmetric
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowgoodbadmetric
-    displayName: "A window based good bad metric slo"
-    goal: 0.9
-    calendarPeriod: DAY
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        goodBadMetricFilter: "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" \n resource.type=\"uptime_url\""
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowgoodbadmetric
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowgoodbadmetric
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowgoodbadmetric
+  displayName: "A window based good bad metric slo"
+  goal: 0.9
+  calendarPeriod: DAY
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      goodBadMetricFilter: "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" \n resource.type=\"uptime_url\""
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowgoodbadmetric
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Gtr Distribution Cut
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowbasedgtrdistributioncut
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut
-    displayName: "A window based good total ratio distribution cut filter"
-    goal: 0.9
-    calendarPeriod: "DAY"
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        goodTotalRatioThreshold:
-          threshold: 0.9
-          performance:
-            distributionCut:
-              distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" resource.type=\"api\"  "
-              range:
-                min: 50
-                max: 100
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowbasedgtrdistributioncut
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut
+  displayName: "A window based good total ratio distribution cut filter"
+  goal: 0.9
+  calendarPeriod: "DAY"
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      goodTotalRatioThreshold:
+        threshold: 0.9
+        performance:
+          distributionCut:
+            distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" resource.type=\"api\"  "
+            range:
+              min: 50
+              max: 100
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Gtr Performance Gtr
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtr
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtr
-    displayName: "A window based good total ratio performance filter"
-    goal: 0.9
-    calendarPeriod: "DAY"
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        goodTotalRatioThreshold:
-          threshold: 0.9
-          performance:
-            goodTotalRatio:
-              goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-              badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtr
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtr
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtr
+  displayName: "A window based good total ratio performance filter"
+  goal: 0.9
+  calendarPeriod: "DAY"
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      goodTotalRatioThreshold:
+        threshold: 0.9
+        performance:
+          goodTotalRatio:
+            goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+            badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtr
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Gtr Performance Gtr Total Service Filter
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtrtotalservicefilter
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtrtotalservicefilter
-    displayName: "A window based good total ratio performance filter"
-    goal: 0.9
-    calendarPeriod: "DAY"
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        goodTotalRatioThreshold:
-          threshold: 0.9
-          performance:
-            goodTotalRatio:
-              goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-              totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtrtotalservicefilter
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtrtotalservicefilter
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtrtotalservicefilter
+  displayName: "A window based good total ratio performance filter"
+  goal: 0.9
+  calendarPeriod: "DAY"
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      goodTotalRatioThreshold:
+        threshold: 0.9
+        performance:
+          goodTotalRatio:
+            goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+            totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtrtotalservicefilter
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Metric Mean Filter
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowbasedmetricmeanfilter
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowbasedmetricmeanfilter
-    displayName: "A window based metric mean filter"
-    goal: 0.9
-    rollingPeriod: "86400s"
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        metricMeanInRange:
-          timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
-          range:
-            min: 50
-            max: 100
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowbasedmetricmeanfilter
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowbasedmetricmeanfilter
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowbasedmetricmeanfilter
+  displayName: "A window based metric mean filter"
+  goal: 0.9
+  rollingPeriod: "86400s"
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      metricMeanInRange:
+        timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
+        range:
+          min: 50
+          max: 100
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowbasedmetricmeanfilter
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 ### Window Based Metric Sum Filter
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringServiceLevelObjective
-  metadata:
-    name: monitoringservicelevelobjective-sample-windowbasedmetricsum
-    labels:
-      test1: "value1"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    serviceRef:
-      external: monitoringservicelevelobjective-dep-windowbasedmetricsum
-    displayName: "A window based metric sum filter"
-    goal: 0.9
-    rollingPeriod: "86400s"
-    serviceLevelIndicator:
-      windowsBased:
-        windowPeriod: "60s"
-        metricSumInRange:
-          timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
-          range:
-            min: 50
-            max: 100
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringService
-  metadata:
-    name: monitoringservicelevelobjective-dep-windowbasedmetricsum
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    displayName: "A basic monitoring service."
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  name: monitoringservicelevelobjective-sample-windowbasedmetricsum
+  labels:
+    test1: "value1"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  serviceRef:
+    external: monitoringservicelevelobjective-dep-windowbasedmetricsum
+  displayName: "A window based metric sum filter"
+  goal: 0.9
+  rollingPeriod: "86400s"
+  serviceLevelIndicator:
+    windowsBased:
+      windowPeriod: "60s"
+      metricSumInRange:
+        timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
+        range:
+          min: 50
+          max: 100
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringService
+metadata:
+  name: monitoringservicelevelobjective-dep-windowbasedmetricsum
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
+```
 
 
 {% endblock %}

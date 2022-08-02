@@ -58,27 +58,27 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  displayName: string
-  labels:
-  - description: string
-    key: string
-    valueType: string
-  launchStage: string
-  metadata:
-    ingestDelay: string
-    launchStage: string
-    samplePeriod: string
-  metricKind: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  type: string
-  unit: string
+```yaml
+description: string
+displayName: string
+labels:
+- description: string
+  key: string
   valueType: string
-  ```
+launchStage: string
+metadata:
+  ingestDelay: string
+  launchStage: string
+  samplePeriod: string
+metricKind: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+type: string
+unit: string
+valueType: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -296,18 +296,18 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  monitoredResourceTypes:
-  - string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+monitoredResourceTypes:
+- string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -399,47 +399,47 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringMetricDescriptor
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringMetricDescriptor
+metadata:
+  name: monitoringmetricdescriptor-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  labels:
+  - key: system_stable
+    valueType: BOOL
+    description: True if the estimation system is stable.
+  - key: condition_summary
+    valueType: STRING
+    description: A description of the condition the market system is in.
+  launchStage: BETA
   metadata:
-    name: monitoringmetricdescriptor-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    labels:
-    - key: system_stable
-      valueType: BOOL
-      description: True if the estimation system is stable.
-    - key: condition_summary
-      valueType: STRING
-      description: A description of the condition the market system is in.
-    launchStage: BETA
-    metadata:
-      ingestDelay: 1000s
-      samplePeriod: 100s
-    metricKind: GAUGE
-    type: custom.googleapis.com/market/measurements/volume
-    unit: "{USD}/h"
-    valueType: DISTRIBUTION
-    description: Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.
-    displayName: Trading Volume Estimate
-  ```
+    ingestDelay: 1000s
+    samplePeriod: 100s
+  metricKind: GAUGE
+  type: custom.googleapis.com/market/measurements/volume
+  unit: "{USD}/h"
+  valueType: DISTRIBUTION
+  description: Tracks a combination of estimates of trade volume for a given resource, in $USD per hour.
+  displayName: Trading Volume Estimate
+```
 
 
 {% endblock %}

@@ -72,23 +72,23 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  interconnectAttachmentRef:
-    external: string
-    name: string
-    namespace: string
-  ipRange: string
-  region: string
-  resourceID: string
-  routerRef:
-    external: string
-    name: string
-    namespace: string
-  vpnTunnelRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+interconnectAttachmentRef:
+  external: string
+  name: string
+  namespace: string
+ipRange: string
+region: string
+resourceID: string
+routerRef:
+  external: string
+  name: string
+  namespace: string
+vpnTunnelRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -254,15 +254,15 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -333,159 +333,159 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterInterface
-  metadata:
-    name: computerouterinterface-sample
-  spec:
-    routerRef:
-      name: computerouterinterface-dep
-    region: us-central1
-    ipRange: "169.254.1.1/30"
-    vpnTunnelRef:
-      name: computerouterinterface-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterInterface
+metadata:
+  name: computerouterinterface-sample
+spec:
+  routerRef:
     name: computerouterinterface-dep
-    labels:
-      label-one: "value-one"
-  spec:
-    location: us-central1
-    description: "a test regional address"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeForwardingRule
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computerouterinterface-dep1
-  spec:
-    description: "A regional forwarding rule"
-    target:
-      targetVPNGatewayRef:
-        name: computerouterinterface-dep
-    ipProtocol: "ESP"
-    location: us-central1
-    ipAddress:
-      addressRef:
-        name: computerouterinterface-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeForwardingRule
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computerouterinterface-dep2
-  spec:
-    description: "A regional forwarding rule"
-    target:
-      targetVPNGatewayRef:
-        name: computerouterinterface-dep
-    ipProtocol: "UDP"
-    portRange: "500"
-    location: us-central1
-    ipAddress:
-      addressRef:
-        name: computerouterinterface-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeForwardingRule
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: computerouterinterface-dep3
-  spec:
-    description: "A regional forwarding rule"
-    target:
-      targetVPNGatewayRef:
-        name: computerouterinterface-dep
-    ipProtocol: "UDP"
-    portRange: "4500"
-    location: us-central1
-    ipAddress:
-      addressRef:
-        name: computerouterinterface-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+  region: us-central1
+  ipRange: "169.254.1.1/30"
+  vpnTunnelRef:
     name: computerouterinterface-dep
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouter
-  metadata:
-    name: computerouterinterface-dep
-  spec:
-    networkRef:
-      name: computerouterinterface-dep
-    description: example router description
-    region: us-central1
-    bgp:
-      asn: 64514
-      advertiseMode: CUSTOM
-      advertisedGroups:
-        - ALL_SUBNETS
-      advertisedIpRanges:
-        - range: "1.2.3.4"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeTargetVPNGateway
-  metadata:
-    name: computerouterinterface-dep
-  spec:
-    description: a test target vpn gateway
-    region: us-central1
-    networkRef:
-      name: computerouterinterface-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeVPNTunnel
-  metadata:
-    name: computerouterinterface-dep
-    labels:
-      foo: bar
-  spec:
-    peerIp: "15.0.0.120"
-    region: us-central1
-    sharedSecret:
-      valueFrom:
-        secretKeyRef:
-          name: computerouterinterface-dep
-          key: sharedSecret
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouterinterface-dep
+  labels:
+    label-one: "value-one"
+spec:
+  location: us-central1
+  description: "a test regional address"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep1
+spec:
+  description: "A regional forwarding rule"
+  target:
     targetVPNGatewayRef:
       name: computerouterinterface-dep
-    localTrafficSelector:
-     - "192.168.0.0/16"
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
+  ipProtocol: "ESP"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep2
+spec:
+  description: "A regional forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computerouterinterface-dep
+  ipProtocol: "UDP"
+  portRange: "500"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep3
+spec:
+  description: "A regional forwarding rule"
+  target:
+    targetVPNGatewayRef:
+      name: computerouterinterface-dep
+  ipProtocol: "UDP"
+  portRange: "4500"
+  location: us-central1
+  ipAddress:
+    addressRef:
+      name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouterinterface-dep
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouterinterface-dep
+spec:
+  networkRef:
     name: computerouterinterface-dep
-  stringData:
-    sharedSecret: "a secret message"
-  ```
+  description: example router description
+  region: us-central1
+  bgp:
+    asn: 64514
+    advertiseMode: CUSTOM
+    advertisedGroups:
+      - ALL_SUBNETS
+    advertisedIpRanges:
+      - range: "1.2.3.4"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetVPNGateway
+metadata:
+  name: computerouterinterface-dep
+spec:
+  description: a test target vpn gateway
+  region: us-central1
+  networkRef:
+    name: computerouterinterface-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeVPNTunnel
+metadata:
+  name: computerouterinterface-dep
+  labels:
+    foo: bar
+spec:
+  peerIp: "15.0.0.120"
+  region: us-central1
+  sharedSecret:
+    valueFrom:
+      secretKeyRef:
+        name: computerouterinterface-dep
+        key: sharedSecret
+  targetVPNGatewayRef:
+    name: computerouterinterface-dep
+  localTrafficSelector:
+   - "192.168.0.0/16"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: computerouterinterface-dep
+stringData:
+  sharedSecret: "a secret message"
+```
 
 
 {% endblock %}

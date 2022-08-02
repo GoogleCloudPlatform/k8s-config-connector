@@ -58,20 +58,20 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  displayName: string
-  filter: string
-  isCluster: boolean
-  parentRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+displayName: string
+filter: string
+isCluster: boolean
+parentRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -211,15 +211,15 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -290,39 +290,39 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringGroup
-  metadata:
-    name: monitoringgroup-sample
-  spec:
-    filter: resource.metadata.name=has_substring("test")
-    displayName: "MonitoringSubGroup"
-    parentRef:
-      name: monitoringgroup-dep
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringGroup
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringGroup
+metadata:
+  name: monitoringgroup-sample
+spec:
+  filter: resource.metadata.name=has_substring("test")
+  displayName: "MonitoringSubGroup"
+  parentRef:
     name: monitoringgroup-dep
-  spec:
-    filter: resource.metadata.region=europe-west2
-    displayName: "MonitoringGroup"
-  ```
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringGroup
+metadata:
+  name: monitoringgroup-dep
+spec:
+  filter: resource.metadata.region=europe-west2
+  displayName: "MonitoringGroup"
+```
 
 
 {% endblock %}

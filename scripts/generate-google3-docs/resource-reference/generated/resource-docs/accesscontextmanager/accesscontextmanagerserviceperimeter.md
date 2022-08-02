@@ -55,151 +55,151 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  accessPolicyRef:
-    external: string
+```yaml
+accessPolicyRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+perimeterType: string
+resourceID: string
+spec:
+  accessLevels:
+  - external: string
     name: string
     namespace: string
-  description: string
-  perimeterType: string
-  resourceID: string
-  spec:
-    accessLevels:
-    - external: string
+  egressPolicies:
+  - egressFrom:
+      identities:
+      - serviceAccountRef:
+          external: string
+          name: string
+          namespace: string
+        user: string
+      identityType: string
+    egressTo:
+      externalResources:
+      - string
+      operations:
+      - methodSelectors:
+        - method: string
+          permission: string
+        serviceName: string
+      resources:
+      - projectRef:
+          external: string
+          name: string
+          namespace: string
+  ingressPolicies:
+  - ingressFrom:
+      identities:
+      - serviceAccountRef:
+          external: string
+          name: string
+          namespace: string
+        user: string
+      identityType: string
+      sources:
+      - accessLevelRef:
+          external: string
+          name: string
+          namespace: string
+        projectRef:
+          external: string
+          name: string
+          namespace: string
+    ingressTo:
+      operations:
+      - methodSelectors:
+        - method: string
+          permission: string
+        serviceName: string
+      resources:
+      - projectRef:
+          external: string
+          name: string
+          namespace: string
+  resources:
+  - projectRef:
+      external: string
       name: string
       namespace: string
-    egressPolicies:
-    - egressFrom:
-        identities:
-        - serviceAccountRef:
-            external: string
-            name: string
-            namespace: string
-          user: string
-        identityType: string
-      egressTo:
-        externalResources:
-        - string
-        operations:
-        - methodSelectors:
-          - method: string
-            permission: string
-          serviceName: string
-        resources:
-        - projectRef:
-            external: string
-            name: string
-            namespace: string
-    ingressPolicies:
-    - ingressFrom:
-        identities:
-        - serviceAccountRef:
-            external: string
-            name: string
-            namespace: string
-          user: string
-        identityType: string
-        sources:
-        - accessLevelRef:
-            external: string
-            name: string
-            namespace: string
-          projectRef:
-            external: string
-            name: string
-            namespace: string
-      ingressTo:
-        operations:
-        - methodSelectors:
-          - method: string
-            permission: string
-          serviceName: string
-        resources:
-        - projectRef:
-            external: string
-            name: string
-            namespace: string
-    resources:
-    - projectRef:
-        external: string
-        name: string
-        namespace: string
-    restrictedServices:
+  restrictedServices:
+  - string
+  vpcAccessibleServices:
+    allowedServices:
     - string
-    vpcAccessibleServices:
-      allowedServices:
+    enableRestriction: boolean
+status:
+  accessLevels:
+  - external: string
+    name: string
+    namespace: string
+  egressPolicies:
+  - egressFrom:
+      identities:
+      - serviceAccountRef:
+          external: string
+          name: string
+          namespace: string
+        user: string
+      identityType: string
+    egressTo:
+      externalResources:
       - string
-      enableRestriction: boolean
-  status:
-    accessLevels:
-    - external: string
+      operations:
+      - methodSelectors:
+        - method: string
+          permission: string
+        serviceName: string
+      resources:
+      - projectRef:
+          external: string
+          name: string
+          namespace: string
+  ingressPolicies:
+  - ingressFrom:
+      identities:
+      - serviceAccountRef:
+          external: string
+          name: string
+          namespace: string
+        user: string
+      identityType: string
+      sources:
+      - accessLevelRef:
+          external: string
+          name: string
+          namespace: string
+        projectRef:
+          external: string
+          name: string
+          namespace: string
+    ingressTo:
+      operations:
+      - methodSelectors:
+        - method: string
+          permission: string
+        serviceName: string
+      resources:
+      - projectRef:
+          external: string
+          name: string
+          namespace: string
+  resources:
+  - projectRef:
+      external: string
       name: string
       namespace: string
-    egressPolicies:
-    - egressFrom:
-        identities:
-        - serviceAccountRef:
-            external: string
-            name: string
-            namespace: string
-          user: string
-        identityType: string
-      egressTo:
-        externalResources:
-        - string
-        operations:
-        - methodSelectors:
-          - method: string
-            permission: string
-          serviceName: string
-        resources:
-        - projectRef:
-            external: string
-            name: string
-            namespace: string
-    ingressPolicies:
-    - ingressFrom:
-        identities:
-        - serviceAccountRef:
-            external: string
-            name: string
-            namespace: string
-          user: string
-        identityType: string
-        sources:
-        - accessLevelRef:
-            external: string
-            name: string
-            namespace: string
-          projectRef:
-            external: string
-            name: string
-            namespace: string
-      ingressTo:
-        operations:
-        - methodSelectors:
-          - method: string
-            permission: string
-          serviceName: string
-        resources:
-        - projectRef:
-            external: string
-            name: string
-            namespace: string
-    resources:
-    - projectRef:
-        external: string
-        name: string
-        namespace: string
-    restrictedServices:
+  restrictedServices:
+  - string
+  vpcAccessibleServices:
+    allowedServices:
     - string
-    vpcAccessibleServices:
-      allowedServices:
-      - string
-      enableRestriction: boolean
-  title: string
-  useExplicitDryRunSpec: boolean
-  ```
+    enableRestriction: boolean
+title: string
+useExplicitDryRunSpec: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -2069,17 +2069,17 @@ bet set to True if any of the fields in the spec are set to non-default values.{
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2164,149 +2164,149 @@ bet set to True if any of the fields in the spec are set to non-default values.{
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-  kind: AccessContextManagerServicePerimeter
-  metadata:
-    name: serviceperimetersample
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerServicePerimeter
+metadata:
+  name: serviceperimetersample
+spec:
+  # Config for DRY-RUN
+  # To use this 'useExplicitDryRunSpec' must be set to 'true'
+  # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
+  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
   spec:
-    # Config for DRY-RUN
-    # To use this 'useExplicitDryRunSpec' must be set to 'true'
-    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-    # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
-    spec:
-      # List of Access Levels to be applied for this perimeter
-      accessLevels:
-      - name: serviceperimeterdep2
-      # List of projects to be included in this perimeter
-      resources:
-      - projectRef:
-          external: "projects/${PROJECT_NUMBER1}"
-      - projectRef:
-          external: "projects/${PROJECT_NUMBER2}"
-      # List of restricted services
-      restrictedServices:
+    # List of Access Levels to be applied for this perimeter
+    accessLevels:
+    - name: serviceperimeterdep2
+    # List of projects to be included in this perimeter
+    resources:
+    - projectRef:
+        external: "projects/${PROJECT_NUMBER1}"
+    - projectRef:
+        external: "projects/${PROJECT_NUMBER2}"
+    # List of restricted services
+    restrictedServices:
+    - "storage.googleapis.com"
+    # List of services that could be accessed from within the perimeter
+    vpcAccessibleServices:
+      allowedServices:
       - "storage.googleapis.com"
-      # List of services that could be accessed from within the perimeter
-      vpcAccessibleServices:
-        allowedServices:
-        - "storage.googleapis.com"
-        - "pubsub.googleapis.com"
-        enableRestriction: true
-      egressPolicies:
-      - egressFrom:
-          identities:
-          - name: serviceperimeterengressdep
-      - egressTo:
-          resources:
-          - projectRef:
-              external: "projects/${PROJECT_NUMBER1}"
-      ingressPolicies:
-      - ingressFrom:
-          identities:
-          - name: serviceperimeteringressdep
-          sources:
-          - accessLevelRef:
-              name: serviceperimeterdep2
-        ingressTo:
-          resources:
-          - projectRef:
-              external: "projects/${PROJECT_NUMBER2}"
-    # Config to ENFORCE
-    # Config items are repeated as above for DRY-RUN
-    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-    # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
-    status:
-      accessLevels:
-      - name: serviceperimeterdep2
-      resources:
-      - projectRef:
-          external: "projects/${PROJECT_NUMBER3}"
-      - projectRef:
-          external: "projects/${PROJECT_NUMBER4}"
-      restrictedServices:
+      - "pubsub.googleapis.com"
+      enableRestriction: true
+    egressPolicies:
+    - egressFrom:
+        identities:
+        - name: serviceperimeterengressdep
+    - egressTo:
+        resources:
+        - projectRef:
+            external: "projects/${PROJECT_NUMBER1}"
+    ingressPolicies:
+    - ingressFrom:
+        identities:
+        - name: serviceperimeteringressdep
+        sources:
+        - accessLevelRef:
+            name: serviceperimeterdep2
+      ingressTo:
+        resources:
+        - projectRef:
+            external: "projects/${PROJECT_NUMBER2}"
+  # Config to ENFORCE
+  # Config items are repeated as above for DRY-RUN
+  # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
+  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
+  status:
+    accessLevels:
+    - name: serviceperimeterdep2
+    resources:
+    - projectRef:
+        external: "projects/${PROJECT_NUMBER3}"
+    - projectRef:
+        external: "projects/${PROJECT_NUMBER4}"
+    restrictedServices:
+    - "bigquery.googleapis.com"
+    vpcAccessibleServices:
+      allowedServices:
       - "bigquery.googleapis.com"
-      vpcAccessibleServices:
-        allowedServices:
-        - "bigquery.googleapis.com"
-        - "logging.googleapis.com"
-        enableRestriction: true
-    title: Service Perimeter created by Config Connector
-    useExplicitDryRunSpec: true
-    accessPolicyRef:
-      # Using an already existing Access Policy.  Currently there is a limitation
-      # of only one Access Policy per Organisation.
-      # Use one of the two options below to select Access Policy
-      # 1. The dependent Access Policy Object created via Config Connector
-      # name: accesscontextmanagerserviceperimeterdep
-      # 2. Set the appropriate ACCESS_POLICY_NUMBER
-      external: accessPolicies/${ACCESS_POLICY_NUMBER}
-    description: A Service Perimeter Created by Config Connector
-    perimeterType: PERIMETER_TYPE_REGULAR
-  ---
-  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-  kind: AccessContextManagerAccessLevel
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
-    name: serviceperimeterdep1
-  spec:
-    accessPolicyRef:
-      # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
-      external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
-    title: Service Perimeter Dependency ACL1
-    basic:
-      conditions:
-        - devicePolicy:
-            requireCorpOwned: true
-  ---
-  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-  kind: AccessContextManagerAccessLevel
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
-    name: serviceperimeterdep2
-  spec:
-    accessPolicyRef:
-      # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
-      external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
-    title: Service Perimeter Dependency ACL2
-    basic:
-      conditions:
-        - devicePolicy:
-            requireCorpOwned: true
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
-    name: serviceperimeterengressdep
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
-    name: serviceperimeteringressdep
-  ```
+      - "logging.googleapis.com"
+      enableRestriction: true
+  title: Service Perimeter created by Config Connector
+  useExplicitDryRunSpec: true
+  accessPolicyRef:
+    # Using an already existing Access Policy.  Currently there is a limitation
+    # of only one Access Policy per Organisation.
+    # Use one of the two options below to select Access Policy
+    # 1. The dependent Access Policy Object created via Config Connector
+    # name: accesscontextmanagerserviceperimeterdep
+    # 2. Set the appropriate ACCESS_POLICY_NUMBER
+    external: accessPolicies/${ACCESS_POLICY_NUMBER}
+  description: A Service Perimeter Created by Config Connector
+  perimeterType: PERIMETER_TYPE_REGULAR
+---
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerAccessLevel
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: serviceperimeterdep1
+spec:
+  accessPolicyRef:
+    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
+    external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
+  title: Service Perimeter Dependency ACL1
+  basic:
+    conditions:
+      - devicePolicy:
+          requireCorpOwned: true
+---
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerAccessLevel
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: serviceperimeterdep2
+spec:
+  accessPolicyRef:
+    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
+    external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
+  title: Service Perimeter Dependency ACL2
+  basic:
+    conditions:
+      - devicePolicy:
+          requireCorpOwned: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: serviceperimeterengressdep
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: serviceperimeteringressdep
+```
 
 
 {% endblock %}

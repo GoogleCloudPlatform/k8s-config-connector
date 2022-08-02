@@ -75,41 +75,41 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  dnsName: string
-  dnssecConfig:
-    defaultKeySpecs:
-    - algorithm: string
-      keyLength: integer
-      keyType: string
-      kind: string
+```yaml
+description: string
+dnsName: string
+dnssecConfig:
+  defaultKeySpecs:
+  - algorithm: string
+    keyLength: integer
+    keyType: string
     kind: string
-    nonExistence: string
-    state: string
-  forwardingConfig:
-    targetNameServers:
-    - forwardingPath: string
-      ipv4Address: string
-  peeringConfig:
-    targetNetwork:
-      networkRef:
-        external: string
-        name: string
-        namespace: string
-  privateVisibilityConfig:
-    networks:
-    - networkRef:
-        external: string
-        name: string
-        namespace: string
-  resourceID: string
-  reverseLookup: boolean
-  serviceDirectoryConfig:
-    namespace:
-      namespaceUrl: string
-  visibility: string
-  ```
+  kind: string
+  nonExistence: string
+  state: string
+forwardingConfig:
+  targetNameServers:
+  - forwardingPath: string
+    ipv4Address: string
+peeringConfig:
+  targetNetwork:
+    networkRef:
+      external: string
+      name: string
+      namespace: string
+privateVisibilityConfig:
+  networks:
+  - networkRef:
+      external: string
+      name: string
+      namespace: string
+resourceID: string
+reverseLookup: boolean
+serviceDirectoryConfig:
+  namespace:
+    namespaceUrl: string
+visibility: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -511,19 +511,19 @@ while private zones are visible only to Virtual Private Cloud resources. Default
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTime: string
-  managedZoneId: integer
-  nameServers:
-  - string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTime: string
+managedZoneId: integer
+nameServers:
+- string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -624,43 +624,43 @@ defined by the server.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dns.cnrm.cloud.google.com/v1beta1
-  kind: DNSManagedZone
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: dnsmanagedzone-sample
-  spec:
-    description: "Example DNS zone"
-    dnsName: "cnrm-dns-example.com."
-    visibility: private
-    privateVisibilityConfig:
-      networks:
-        - networkRef:
-            name: dnsmanagedzone-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: dnsmanagedzone-dep
-  spec:
-    autoCreateSubnetworks: false
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  labels:
+    label-one: "value-one"
+  name: dnsmanagedzone-sample
+spec:
+  description: "Example DNS zone"
+  dnsName: "cnrm-dns-example.com."
+  visibility: private
+  privateVisibilityConfig:
+    networks:
+      - networkRef:
+          name: dnsmanagedzone-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: dnsmanagedzone-dep
+spec:
+  autoCreateSubnetworks: false
+```
 
 
 {% endblock %}

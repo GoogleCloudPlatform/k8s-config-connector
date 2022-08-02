@@ -69,16 +69,16 @@ metadata:
 
 ### Spec
 #### Schema
-  ```yaml
-  keyAlgorithm: string
-  privateKeyType: string
-  publicKeyData: string
-  publicKeyType: string
-  serviceAccountRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+keyAlgorithm: string
+privateKeyType: string
+publicKeyData: string
+publicKeyType: string
+serviceAccountRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -174,20 +174,20 @@ metadata:
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  name: string
-  observedGeneration: integer
-  privateKey: string
-  publicKey: string
-  validAfter: string
-  validBefore: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+name: string
+observedGeneration: integer
+privateKey: string
+publicKey: string
+validAfter: string
+validBefore: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -293,39 +293,39 @@ metadata:
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccountKey
-  metadata:
-    name: iamserviceaccountkey-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    publicKeyType: TYPE_X509_PEM_FILE
-    keyAlgorithm: KEY_ALG_RSA_2048
-    privateKeyType: TYPE_GOOGLE_CREDENTIALS_FILE
-    serviceAccountRef:
-      name: iamserviceaccountkey-dep
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccountKey
+metadata:
+  name: iamserviceaccountkey-sample
+  labels:
+    label-one: "value-one"
+spec:
+  publicKeyType: TYPE_X509_PEM_FILE
+  keyAlgorithm: KEY_ALG_RSA_2048
+  privateKeyType: TYPE_GOOGLE_CREDENTIALS_FILE
+  serviceAccountRef:
     name: iamserviceaccountkey-dep
-  ```
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iamserviceaccountkey-dep
+```
 
 
 {% endblock %}

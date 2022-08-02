@@ -72,22 +72,22 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  instances:
-  - external: string
-    name: string
-    namespace: string
-  namedPort:
-  - name: string
-    port: integer
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  zone: string
-  ```
+```yaml
+description: string
+instances:
+- external: string
+  name: string
+  namespace: string
+namedPort:
+- name: string
+  port: integer
+networkRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -265,17 +265,17 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  size: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+size: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -360,88 +360,88 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroup
-  metadata:
-    name: computeinstancegroup-sample
-  spec:
-    description: Compute instance group with two specified instances and named http and https ports.
-    instances:
-    - name: computeinstancegroup-dep1
-    - name: computeinstancegroup-dep2
-    namedPort:
-    - name: http
-      port: 8080
-    - name: https
-      port: 8443
-    zone: us-central1-a
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computeinstancegroup-dep1
-  spec:
-    zone: us-central1-a
-    instanceTemplateRef:
-      name: computeinstancegroup-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computeinstancegroup-dep2
-  spec:
-    zone: us-central1-a
-    instanceTemplateRef:
-      name: computeinstancegroup-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computeinstancegroup-sample
+spec:
+  description: Compute instance group with two specified instances and named http and https ports.
+  instances:
+  - name: computeinstancegroup-dep1
+  - name: computeinstancegroup-dep2
+  namedPort:
+  - name: http
+    port: 8080
+  - name: https
+    port: 8443
+  zone: us-central1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstancegroup-dep1
+spec:
+  zone: us-central1-a
+  instanceTemplateRef:
     name: computeinstancegroup-dep
-  spec:
-    machineType: n1-standard-1
-    disk:
-      - sourceImageRef:
-          external: debian-cloud/debian-9
-        boot: true
-    networkInterface:
-      - networkRef:
-          name: computeinstancegroup-dep
-        subnetworkRef:
-          name: computeinstancegroup-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstancegroup-dep2
+spec:
+  zone: us-central1-a
+  instanceTemplateRef:
     name: computeinstancegroup-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computeinstancegroup-dep
+spec:
+  machineType: n1-standard-1
+  disk:
+    - sourceImageRef:
+        external: debian-cloud/debian-9
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computeinstancegroup-dep
+      subnetworkRef:
+        name: computeinstancegroup-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstancegroup-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeinstancegroup-dep
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
     name: computeinstancegroup-dep
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    networkRef:
-      name: computeinstancegroup-dep
-  ```
+```
 
 
 {% endblock %}

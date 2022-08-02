@@ -75,26 +75,26 @@ Note: GKE Hub REST documentation is under construction.
 
 ### Spec
 #### Schema
-  ```yaml
-  authority:
-    issuer: string
-  description: string
-  endpoint:
-    gkeCluster:
-      resourceRef:
-        external: string
-        name: string
-        namespace: string
-    kubernetesResource:
-      membershipCrManifest: string
-      resourceOptions:
-        connectVersion: string
-        v1beta1Crd: boolean
-  externalId: string
-  infrastructureType: string
-  location: string
-  resourceID: string
-  ```
+```yaml
+authority:
+  issuer: string
+description: string
+endpoint:
+  gkeCluster:
+    resourceRef:
+      external: string
+      name: string
+      namespace: string
+  kubernetesResource:
+    membershipCrManifest: string
+    resourceOptions:
+      connectVersion: string
+      v1beta1Crd: boolean
+externalId: string
+infrastructureType: string
+location: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -292,40 +292,40 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverba
 
 ### Status
 #### Schema
-  ```yaml
-  authority:
-    identityProvider: string
-    workloadIdentityPool: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  deleteTime: string
-  endpoint:
-    kubernetesMetadata:
-      kubernetesApiServerVersion: string
-      memoryMb: integer
-      nodeCount: integer
-      nodeProviderId: string
-      updateTime: string
-      vcpuCount: integer
-    kubernetesResource:
-      connectResources:
-      - clusterScoped: boolean
-        manifest: string
-      membershipResources:
-      - clusterScoped: boolean
-        manifest: string
-  lastConnectionTime: string
-  observedGeneration: integer
-  state:
-    code: string
-  uniqueId: string
-  updateTime: string
-  ```
+```yaml
+authority:
+  identityProvider: string
+  workloadIdentityPool: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+deleteTime: string
+endpoint:
+  kubernetesMetadata:
+    kubernetesApiServerVersion: string
+    memoryMb: integer
+    nodeCount: integer
+    nodeProviderId: string
+    updateTime: string
+    vcpuCount: integer
+  kubernetesResource:
+    connectResources:
+    - clusterScoped: boolean
+      manifest: string
+    membershipResources:
+    - clusterScoped: boolean
+      manifest: string
+lastConnectionTime: string
+observedGeneration: integer
+state:
+  code: string
+uniqueId: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -585,50 +585,50 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverba
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
-  kind: GKEHubMembership
-  metadata:
-    labels:
-      label-one: value-one
-    name: gkehubmembership-sample
-  spec:
-    location: global
-    authority:
-      # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one. To use it, replace ${PROJECT_ID?} with your project ID.
-      issuer: https://container.googleapis.com/v1/projects/${PROJECT_ID?}/locations/us-central1-a/clusters/gkehubmembership-dep
-    description: A sample GKE Hub membership
-    endpoint:
-      gkeCluster:
-        resourceRef:
-          name: gkehubmembership-dep
-  ---
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    name: gkehubmembership-dep
-  spec:
-    location: us-central1-a
-    initialNodeCount: 1
-    workloadIdentityConfig:
-      # Workload Identity supports only a single namespace based on your project name.
-      # Replace ${PROJECT_ID?} below with your project ID.
-      workloadPool: ${PROJECT_ID?}.svc.id.goog
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  labels:
+    label-one: value-one
+  name: gkehubmembership-sample
+spec:
+  location: global
+  authority:
+    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one. To use it, replace ${PROJECT_ID?} with your project ID.
+    issuer: https://container.googleapis.com/v1/projects/${PROJECT_ID?}/locations/us-central1-a/clusters/gkehubmembership-dep
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkehubmembership-dep
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: gkehubmembership-dep
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    # Workload Identity supports only a single namespace based on your project name.
+    # Replace ${PROJECT_ID?} below with your project ID.
+    workloadPool: ${PROJECT_ID?}.svc.id.goog
+```
 
 
 {% endblock %}

@@ -524,27 +524,27 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Spec
 #### Schema
-  ```yaml
-  condition:
-    description: string
-    expression: string
-    title: string
-  member: string
-  memberFrom:
-    logSinkRef:
-      name: string
-      namespace: string
-    serviceAccountRef:
-      name: string
-      namespace: string
-  resourceRef:
-    apiVersion: string
-    external: string
-    kind: string
+```yaml
+condition:
+  description: string
+  expression: string
+  title: string
+member: string
+memberFrom:
+  logSinkRef:
     name: string
     namespace: string
-  role: string
-  ```
+  serviceAccountRef:
+    name: string
+    namespace: string
+resourceRef:
+  apiVersion: string
+  external: string
+  kind: string
+  name: string
+  namespace: string
+role: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -752,15 +752,15 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -831,262 +831,262 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 ## Sample YAML(s)
 
 ### External Organization Level Policy Member
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} and ${ORG_ID?} below with your desired project and
-  # organization IDs respectively.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-orglevel
-  spec:
-    member: serviceAccount:iampolicymember-dep-orglevel@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      kind: Organization
-      external: "${ORG_ID?}"
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: iampolicymember-dep-orglevel
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} and ${ORG_ID?} below with your desired project and
+# organization IDs respectively.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-orglevel
+spec:
+  member: serviceAccount:iampolicymember-dep-orglevel@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    kind: Organization
+    external: "${ORG_ID?}"
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iampolicymember-dep-orglevel
+```
 
 ### External Project Level Policy Member
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-projlevel
-  spec:
-    member: serviceAccount:iampolicymember-dep-projlevel@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      kind: Project
-      external: projects/${PROJECT_ID?}
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: iampolicymember-dep-projlevel
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-projlevel
+spec:
+  member: serviceAccount:iampolicymember-dep-projlevel@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iampolicymember-dep-projlevel
+```
 
 ### KMS Policy Member With Condition
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-condition
-  spec:
-    member: serviceAccount:iampolicymember-dep-condition@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: roles/cloudkms.admin
-    condition:
-      title: expires_after_2019_12_31
-      description: Expires at midnight of 2019-12-31
-      expression: request.time < timestamp("2020-01-01T00:00:00Z")
-    resourceRef:
-      kind: KMSKeyRing
-      name: iampolicymember-dep-condition
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-condition
+spec:
+  member: serviceAccount:iampolicymember-dep-condition@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: roles/cloudkms.admin
+  condition:
+    title: expires_after_2019_12_31
+    description: Expires at midnight of 2019-12-31
+    expression: request.time < timestamp("2020-01-01T00:00:00Z")
+  resourceRef:
+    kind: KMSKeyRing
     name: iampolicymember-dep-condition
-  ---
-  apiVersion: kms.cnrm.cloud.google.com/v1beta1
-  kind: KMSKeyRing
-  metadata:
-    name: iampolicymember-dep-condition
-  spec:
-    location: us-central1
-  ```
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iampolicymember-dep-condition
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: iampolicymember-dep-condition
+spec:
+  location: us-central1
+```
 
 ### Org Level IAM Custom Role Policy Member
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} and ${ORG_ID?} below with your desired project and
-  # organization IDs respectively.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-orgrole
-  spec:
-    member: serviceAccount:iampolicymember-dep-orgrole@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: organizations/${ORG_ID?}/roles/iampolicymemberdeporgrole
-    resourceRef:
-      kind: Project
-      external: projects/${PROJECT_ID?}
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMCustomRole
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with your organization ID
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-    name: iampolicymemberdeporgrole
-  spec:
-    title: Example Organization-Level Custom Role
-    description: This role only contains two permissions - publish and update
-    permissions:
-      - pubsub.topics.publish
-      - pubsub.topics.update
-    stage: GA
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: iampolicymember-dep-orgrole
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} and ${ORG_ID?} below with your desired project and
+# organization IDs respectively.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-orgrole
+spec:
+  member: serviceAccount:iampolicymember-dep-orgrole@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: organizations/${ORG_ID?}/roles/iampolicymemberdeporgrole
+  resourceRef:
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMCustomRole
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with your organization ID
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: iampolicymemberdeporgrole
+spec:
+  title: Example Organization-Level Custom Role
+  description: This role only contains two permissions - publish and update
+  permissions:
+    - pubsub.topics.publish
+    - pubsub.topics.update
+  stage: GA
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iampolicymember-dep-orgrole
+```
 
 ### Policy Member With Member Reference
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-memberref
-  spec:
-    memberFrom:
-      serviceAccountRef:
-        name: iampolicymember-dep-memberref
-    role: roles/editor
-    resourceRef:
-      kind: PubSubTopic
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-memberref
+spec:
+  memberFrom:
+    serviceAccountRef:
       name: iampolicymember-dep-memberref
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+  role: roles/editor
+  resourceRef:
+    kind: PubSubTopic
     name: iampolicymember-dep-memberref
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: iampolicymember-dep-memberref
-  ```
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iampolicymember-dep-memberref
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: iampolicymember-dep-memberref
+```
 
 ### Pubsub Admin Policy Member
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: iampolicymember-sample-pubsubadmin
-  spec:
-    member: serviceAccount:iampolicymember-dep-pubsub@${PROJECT_ID?}.iam.gserviceaccount.com
-    role: roles/editor
-    resourceRef:
-      kind: PubSubTopic
-      name: iampolicymember-dep-pubsubadmin
-  ---
-  # Replace ${PROJECT_ID?} below with your desired project ID.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    name: iampolicymember-dep-pubsub
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-pubsubadmin
+spec:
+  member: serviceAccount:iampolicymember-dep-pubsub@${PROJECT_ID?}.iam.gserviceaccount.com
+  role: roles/editor
+  resourceRef:
+    kind: PubSubTopic
     name: iampolicymember-dep-pubsubadmin
-  ```
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: iampolicymember-dep-pubsub
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: iampolicymember-dep-pubsubadmin
+```
 
 
 {% endblock %}

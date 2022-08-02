@@ -69,32 +69,32 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  billingAccountRef:
-    external: string
-    name: string
-    namespace: string
-  bucketRef:
-    external: string
-    name: string
-    namespace: string
-  description: string
-  filter: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  location: string
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+billingAccountRef:
+  external: string
+  name: string
+  namespace: string
+bucketRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+filter: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+location: string
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -354,17 +354,17 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -449,74 +449,74 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 ## Sample YAML(s)
 
 ### Organization Log View
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogView
-  metadata:
-    name: logginglogview-sample-organizationlogview
-  spec:
-    bucketRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}/locations/global/buckets/_Default"
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-organizationlogview
+spec:
+  bucketRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}/locations/global/buckets/_Default"
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+```
 
 ### Project Log View
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogView
-  metadata:
-    name: logginglogview-sample-projectlogview
-  spec:
-    bucketRef:
-      name: "logginglogview-dep-projectlogview"
-    description: "A project-level log view"
-    filter: "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND\
-      \ LOG_ID(\"stdout\")"
-  ---
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogBucket
-  metadata:
-    name: logginglogview-dep-projectlogview
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "global"
-    description: "A sample log bucket"
-    locked: false
-    retentionDays: 30
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-projectlogview
+spec:
+  bucketRef:
+    name: "logginglogview-dep-projectlogview"
+  description: "A project-level log view"
+  filter: "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND\
+    \ LOG_ID(\"stdout\")"
+---
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogview-dep-projectlogview
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  description: "A sample log bucket"
+  locked: false
+  retentionDays: 30
+```
 
 
 {% endblock %}

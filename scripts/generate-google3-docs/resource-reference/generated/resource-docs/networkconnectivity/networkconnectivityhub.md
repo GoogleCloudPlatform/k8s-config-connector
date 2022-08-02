@@ -58,14 +58,14 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+description: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -143,21 +143,21 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  routingVpcs:
-  - uri: string
-  state: string
-  uniqueId: string
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+routingVpcs:
+- uri: string
+state: string
+uniqueId: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -277,33 +277,33 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkConnectivityHub
-  metadata:
-    name: networkconnectivityhub-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    description: "A sample hub"
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivityHub
+metadata:
+  name: networkconnectivityhub-sample
+  labels:
+    label-one: "value-one"
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  description: "A sample hub"
+```
 
 
 {% endblock %}

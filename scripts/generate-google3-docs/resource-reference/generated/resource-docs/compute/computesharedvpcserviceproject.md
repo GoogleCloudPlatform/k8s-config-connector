@@ -72,12 +72,12 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+projectRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -133,15 +133,15 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -212,59 +212,59 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSharedVPCServiceProject
-  metadata:
-    annotations:
-      # Replace ${HOST_PROJECT_ID?} with the ID of a Shared VPC host project to associate.
-      cnrm.cloud.google.com/project-id: "${HOST_PROJECT_ID?}"
-    name: computesharedvpcserviceproject-sample
-  spec:
-    projectRef:
-      name: sharedvpc-service-project-dep
-  ---
-  # This resource will enable the project this namespace is bound to as a Shared
-  # VPC host. You should only create one of these resources per project. If you
-  # have multiple namespaces mapping to the same project, ensure that only one
-  # ComputeSharedVPCHostProject resource exists across these namespaces.
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSharedVPCHostProject
-  metadata:
-    annotations:
-      # Replace ${HOST_PROJECT_ID?} with the ID of the project that you want to enable as a Shared VPC host.
-      cnrm.cloud.google.com/project-id: "${HOST_PROJECT_ID?}"
-    name: computesharedvpchostproject-sample
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${FOLDER_ID?}" with the numeric ID for your folder
-      cnrm.cloud.google.com/folder-id: "${FOLDER_ID?}"
-    labels:
-      label-one: "value-one"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSharedVPCServiceProject
+metadata:
+  annotations:
+    # Replace ${HOST_PROJECT_ID?} with the ID of a Shared VPC host project to associate.
+    cnrm.cloud.google.com/project-id: "${HOST_PROJECT_ID?}"
+  name: computesharedvpcserviceproject-sample
+spec:
+  projectRef:
     name: sharedvpc-service-project-dep
-  spec:
-    name: Config Connector Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+---
+# This resource will enable the project this namespace is bound to as a Shared
+# VPC host. You should only create one of these resources per project. If you
+# have multiple namespaces mapping to the same project, ensure that only one
+# ComputeSharedVPCHostProject resource exists across these namespaces.
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSharedVPCHostProject
+metadata:
+  annotations:
+    # Replace ${HOST_PROJECT_ID?} with the ID of the project that you want to enable as a Shared VPC host.
+    cnrm.cloud.google.com/project-id: "${HOST_PROJECT_ID?}"
+  name: computesharedvpchostproject-sample
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${FOLDER_ID?}" with the numeric ID for your folder
+    cnrm.cloud.google.com/folder-id: "${FOLDER_ID?}"
+  labels:
+    label-one: "value-one"
+  name: sharedvpc-service-project-dep
+spec:
+  name: Config Connector Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 
 {% endblock %}

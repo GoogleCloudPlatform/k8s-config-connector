@@ -72,83 +72,83 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  resourceID: string
-  schedule:
-    repeatInterval: string
-    scheduleEndDate:
-      day: integer
-      month: integer
-      year: integer
-    scheduleStartDate:
-      day: integer
-      month: integer
-      year: integer
-    startTimeOfDay:
-      hours: integer
-      minutes: integer
-      nanos: integer
-      seconds: integer
-  status: string
-  transferSpec:
-    awsS3DataSource:
-      awsAccessKey:
-        accessKeyId:
-          value: string
-          valueFrom:
-            secretKeyRef:
-              key: string
-              name: string
-        secretAccessKey:
-          value: string
-          valueFrom:
-            secretKeyRef:
-              key: string
-              name: string
-      bucketName: string
-      roleArn: string
-    azureBlobStorageDataSource:
-      azureCredentials:
-        sasToken:
-          value: string
-          valueFrom:
-            secretKeyRef:
-              key: string
-              name: string
-      container: string
-      path: string
-      storageAccount: string
-    gcsDataSink:
-      bucketRef:
-        external: string
-        name: string
-        namespace: string
-      path: string
-    gcsDataSource:
-      bucketRef:
-        external: string
-        name: string
-        namespace: string
-      path: string
-    httpDataSource:
-      listUrl: string
-    objectConditions:
-      excludePrefixes:
-      - string
-      includePrefixes:
-      - string
-      maxTimeElapsedSinceLastModification: string
-      minTimeElapsedSinceLastModification: string
-    posixDataSink:
-      rootDirectory: string
-    posixDataSource:
-      rootDirectory: string
-    transferOptions:
-      deleteObjectsFromSourceAfterTransfer: boolean
-      deleteObjectsUniqueInSink: boolean
-      overwriteObjectsAlreadyExistingInSink: boolean
-  ```
+```yaml
+description: string
+resourceID: string
+schedule:
+  repeatInterval: string
+  scheduleEndDate:
+    day: integer
+    month: integer
+    year: integer
+  scheduleStartDate:
+    day: integer
+    month: integer
+    year: integer
+  startTimeOfDay:
+    hours: integer
+    minutes: integer
+    nanos: integer
+    seconds: integer
+status: string
+transferSpec:
+  awsS3DataSource:
+    awsAccessKey:
+      accessKeyId:
+        value: string
+        valueFrom:
+          secretKeyRef:
+            key: string
+            name: string
+      secretAccessKey:
+        value: string
+        valueFrom:
+          secretKeyRef:
+            key: string
+            name: string
+    bucketName: string
+    roleArn: string
+  azureBlobStorageDataSource:
+    azureCredentials:
+      sasToken:
+        value: string
+        valueFrom:
+          secretKeyRef:
+            key: string
+            name: string
+    container: string
+    path: string
+    storageAccount: string
+  gcsDataSink:
+    bucketRef:
+      external: string
+      name: string
+      namespace: string
+    path: string
+  gcsDataSource:
+    bucketRef:
+      external: string
+      name: string
+      namespace: string
+    path: string
+  httpDataSource:
+    listUrl: string
+  objectConditions:
+    excludePrefixes:
+    - string
+    includePrefixes:
+    - string
+    maxTimeElapsedSinceLastModification: string
+    minTimeElapsedSinceLastModification: string
+  posixDataSink:
+    rootDirectory: string
+  posixDataSource:
+    rootDirectory: string
+  transferOptions:
+    deleteObjectsFromSourceAfterTransfer: boolean
+    deleteObjectsUniqueInSink: boolean
+    overwriteObjectsAlreadyExistingInSink: boolean
+```
 
 <table class="properties responsive">
 <thead>
@@ -916,19 +916,19 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTime: string
-  deletionTime: string
-  lastModificationTime: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTime: string
+deletionTime: string
+lastModificationTime: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -1027,92 +1027,92 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: storagetransfer.cnrm.cloud.google.com/v1beta1
-  kind: StorageTransferJob
-  metadata:
-    name: storagetransferjob-sample
-  spec:
-    description: "Sample storage transfer job"
-    schedule:
-      startTimeOfDay:
-        seconds: 0
-        hours: 0
-        minutes: 0
-        nanos: 0
-      scheduleEndDate:
-        day: 31
-        month: 12
-        year: 9999
-      scheduleStartDate:
-        day: 28
-        month: 1
-        year: 2020
-    status: ENABLED
-    transferSpec:
-      gcsDataSink:
-        bucketRef:
-          name: ${PROJECT_ID?}-storagetransferjob-dep1
-      gcsDataSource:
-        bucketRef:
-          name: ${PROJECT_ID?}-storagetransferjob-dep2
-      objectConditions:
-        maxTimeElapsedSinceLastModification: 5s
-        minTimeElapsedSinceLastModification: 2s
-      transferOptions:
-        deleteObjectsUniqueInSink: false
-        overwriteObjectsAlreadyExistingInSink: true
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: storagetransferjob-dep1
-  spec:
-    # replace ${PROJECT_NUMBER?} with your project number
-    member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      kind: StorageBucket
-      name: ${PROJECT_ID?}-storagetransferjob-dep1
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: storagetransferjob-dep2
-  spec:
-    # replace ${PROJECT_NUMBER?} with your project number
-    member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      kind: StorageBucket
-      name: ${PROJECT_ID?}-storagetransferjob-dep2
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: storagetransfer.cnrm.cloud.google.com/v1beta1
+kind: StorageTransferJob
+metadata:
+  name: storagetransferjob-sample
+spec:
+  description: "Sample storage transfer job"
+  schedule:
+    startTimeOfDay:
+      seconds: 0
+      hours: 0
+      minutes: 0
+      nanos: 0
+    scheduleEndDate:
+      day: 31
+      month: 12
+      year: 9999
+    scheduleStartDate:
+      day: 28
+      month: 1
+      year: 2020
+  status: ENABLED
+  transferSpec:
+    gcsDataSink:
+      bucketRef:
+        name: ${PROJECT_ID?}-storagetransferjob-dep1
+    gcsDataSource:
+      bucketRef:
+        name: ${PROJECT_ID?}-storagetransferjob-dep2
+    objectConditions:
+      maxTimeElapsedSinceLastModification: 5s
+      minTimeElapsedSinceLastModification: 2s
+    transferOptions:
+      deleteObjectsUniqueInSink: false
+      overwriteObjectsAlreadyExistingInSink: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: storagetransferjob-dep1
+spec:
+  # replace ${PROJECT_NUMBER?} with your project number
+  member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    kind: StorageBucket
     name: ${PROJECT_ID?}-storagetransferjob-dep1
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: storagetransferjob-dep2
+spec:
+  # replace ${PROJECT_NUMBER?} with your project number
+  member: serviceAccount:project-${PROJECT_NUMBER?}@storage-transfer-service.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    kind: StorageBucket
     name: ${PROJECT_ID?}-storagetransferjob-dep2
-  ```
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-storagetransferjob-dep1
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-storagetransferjob-dep2
+```
 
 
 {% endblock %}

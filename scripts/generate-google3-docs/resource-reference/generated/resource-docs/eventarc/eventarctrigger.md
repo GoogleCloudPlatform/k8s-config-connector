@@ -61,53 +61,53 @@ Warning: Configuring a Cloud Function is not supported in EventarcTrigger as of 
 
 ### Spec
 #### Schema
-  ```yaml
-  destination:
-    cloudFunctionRef:
-      external: string
-      name: string
-      namespace: string
-    cloudRunService:
-      path: string
-      region: string
-      serviceRef:
-        external: string
-        name: string
-        namespace: string
-    gke:
-      clusterRef:
-        external: string
-        name: string
-        namespace: string
-      location: string
-      namespace: string
-      path: string
-      service: string
-    workflowRef:
-      external: string
-      name: string
-      namespace: string
-  location: string
-  matchingCriteria:
-  - attribute: string
-    operator: string
-    value: string
-  projectRef:
+```yaml
+destination:
+  cloudFunctionRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  serviceAccountRef:
+  cloudRunService:
+    path: string
+    region: string
+    serviceRef:
+      external: string
+      name: string
+      namespace: string
+  gke:
+    clusterRef:
+      external: string
+      name: string
+      namespace: string
+    location: string
+    namespace: string
+    path: string
+    service: string
+  workflowRef:
     external: string
     name: string
     namespace: string
-  transport:
-    pubsub:
-      topicRef:
-        external: string
-        name: string
-        namespace: string
-  ```
+location: string
+matchingCriteria:
+- attribute: string
+  operator: string
+  value: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+serviceAccountRef:
+  external: string
+  name: string
+  namespace: string
+transport:
+  pubsub:
+    topicRef:
+      external: string
+      name: string
+      namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -598,22 +598,22 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  etag: string
-  observedGeneration: integer
-  transport:
-    pubsub:
-      subscription: string
-  uid: string
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+etag: string
+observedGeneration: integer
+transport:
+  pubsub:
+    subscription: string
+uid: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -733,103 +733,103 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
-  kind: EventarcTrigger
-  metadata:
-    name: eventarctrigger-sample
-    labels:
-      foo1: bar1
-  spec:
-    location: us-central1
-    destination:
-      cloudRunService:
-        serviceRef:
-          external: eventarctrigger-dep
-        region: us-central1
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
+kind: EventarcTrigger
+metadata:
+  name: eventarctrigger-sample
+  labels:
+    foo1: bar1
+spec:
+  location: us-central1
+  destination:
+    cloudRunService:
+      serviceRef:
+        external: eventarctrigger-dep
+      region: us-central1
+  serviceAccountRef:
+    name: eventarctrigger-dep
+  transport:
+    pubsub:
+      topicRef:
+        name: eventarctrigger-dep
+  matchingCriteria:
+  - attribute: "type"
+    value: "google.cloud.pubsub.topic.v1.messagePublished"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: eventarctrigger-dep
+spec:
+  memberFrom:
     serviceAccountRef:
       name: eventarctrigger-dep
-    transport:
-      pubsub:
-        topicRef:
-          name: eventarctrigger-dep
-    matchingCriteria:
-    - attribute: "type"
-      value: "google.cloud.pubsub.topic.v1.messagePublished"
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: eventarctrigger-dep
-  spec:
-    memberFrom:
-      serviceAccountRef:
-        name: eventarctrigger-dep
-    role: roles/eventarc.admin
-    resourceRef:
-      kind: Project
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "${PROJECT_ID?}"
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      # Replace ${PROJECT_ID?} with your project ID
-      cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-    labels:
-      label-one: "value-one"
-    name: eventarctrigger-dep
-  spec:
-    displayName: ExampleGSA
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: eventarctrigger-dep
-  ---
-  apiVersion: run.cnrm.cloud.google.com/v1beta1
-  kind: RunService
-  metadata:
-    name: eventarctrigger-dep
-  spec:
-    ingress: "INGRESS_TRAFFIC_ALL"
-    launchStage: "GA"
-    location: us-central1
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    template:
-      containers:
-        - env:
-            - name: "FOO"
-              value: "BAR"
-          image: "gcr.io/cloudrun/hello"
-      scaling:
-        maxInstanceCount: 2
-    traffic:
-      - percent: 100
-        type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-  ```
+  role: roles/eventarc.admin
+  resourceRef:
+    kind: Project
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "${PROJECT_ID?}"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  labels:
+    label-one: "value-one"
+  name: eventarctrigger-dep
+spec:
+  displayName: ExampleGSA
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  labels:
+    label-one: "value-one"
+  name: eventarctrigger-dep
+---
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: eventarctrigger-dep
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: us-central1
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  template:
+    containers:
+      - env:
+          - name: "FOO"
+            value: "BAR"
+        image: "gcr.io/cloudrun/hello"
+    scaling:
+      maxInstanceCount: 2
+  traffic:
+    - percent: 100
+      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+```
 
 
 {% endblock %}

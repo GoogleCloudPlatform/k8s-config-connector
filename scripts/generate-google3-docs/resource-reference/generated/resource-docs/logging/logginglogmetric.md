@@ -63,44 +63,44 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  bucketOptions:
-    explicitBuckets:
-      bounds:
-      - float
-    exponentialBuckets:
-      growthFactor: float
-      numFiniteBuckets: integer
-      scale: float
-    linearBuckets:
-      numFiniteBuckets: integer
-      offset: float
-      width: float
-  description: string
-  disabled: boolean
-  filter: string
-  labelExtractors:
-    string: string
-  metricDescriptor:
-    displayName: string
-    labels:
-    - description: string
-      key: string
-      valueType: string
-    launchStage: string
-    metadata:
-      ingestDelay: string
-      samplePeriod: string
-    metricKind: string
-    unit: string
+```yaml
+bucketOptions:
+  explicitBuckets:
+    bounds:
+    - float
+  exponentialBuckets:
+    growthFactor: float
+    numFiniteBuckets: integer
+    scale: float
+  linearBuckets:
+    numFiniteBuckets: integer
+    offset: float
+    width: float
+description: string
+disabled: boolean
+filter: string
+labelExtractors:
+  string: string
+metricDescriptor:
+  displayName: string
+  labels:
+  - description: string
+    key: string
     valueType: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  valueExtractor: string
-  ```
+  launchStage: string
+  metadata:
+    ingestDelay: string
+    samplePeriod: string
+  metricKind: string
+  unit: string
+  valueType: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+valueExtractor: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -478,23 +478,23 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  metricDescriptor:
-    description: string
-    monitoredResourceTypes:
-    - string
-    name: string
-    type: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+metricDescriptor:
+  description: string
+  monitoredResourceTypes:
+  - string
+  name: string
+  type: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -621,160 +621,160 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Explicit Log Metric
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogMetric
-  metadata:
-    name: logginglogmetric-sample-explicitlogmetric
-  spec:
-    filter: "resource.type=gae_app AND severity<=ERROR"
-    metricDescriptor:
-      metricKind: "DELTA"
-      valueType: "DISTRIBUTION"
-    valueExtractor: "EXTRACT(jsonPayload.response)"
-    bucketOptions:
-      explicitBuckets:
-        bounds:
-        - 1.5
-        - 4.5
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-sample-explicitlogmetric
+spec:
+  filter: "resource.type=gae_app AND severity<=ERROR"
+  metricDescriptor:
+    metricKind: "DELTA"
+    valueType: "DISTRIBUTION"
+  valueExtractor: "EXTRACT(jsonPayload.response)"
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+      - 1.5
+      - 4.5
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+```
 
 ### Exponential Log Metric
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogMetric
-  metadata:
-    name: logginglogmetric-sample-exponentiallogmetric
-  spec:
-    filter: "resource.type=gae_app AND severity<=ERROR"
-    metricDescriptor:
-      metricKind: "DELTA"
-      valueType: "DISTRIBUTION"
-    valueExtractor: "EXTRACT(jsonPayload.request)"
-    bucketOptions:
-      exponentialBuckets:
-        numFiniteBuckets: 4
-        growthFactor: 2.5
-        scale: 0.5
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-sample-exponentiallogmetric
+spec:
+  filter: "resource.type=gae_app AND severity<=ERROR"
+  metricDescriptor:
+    metricKind: "DELTA"
+    valueType: "DISTRIBUTION"
+  valueExtractor: "EXTRACT(jsonPayload.request)"
+  bucketOptions:
+    exponentialBuckets:
+      numFiniteBuckets: 4
+      growthFactor: 2.5
+      scale: 0.5
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+```
 
 ### Int Log Metric
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogMetric
-  metadata:
-    name: logginglogmetric-sample-intlogmetric
-  spec:
-    filter: "resource.type=gae_app AND severity<=ERROR"
-    metricDescriptor:
-      metricKind: "DELTA"
-      valueType: "INT64"
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-sample-intlogmetric
+spec:
+  filter: "resource.type=gae_app AND severity<=ERROR"
+  metricDescriptor:
+    metricKind: "DELTA"
+    valueType: "INT64"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+```
 
 ### Linear Log Metric
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogMetric
-  metadata:
-    name: logginglogmetric-sample-linearlogmetric
-  spec:
-    description: "A sample log metric"
-    filter: "resource.type=gae_app AND severity<=ERROR"
-    disabled: false
-    metricDescriptor:
-      labels:
-      - key: "mass"
-        valueType: "STRING"
-        description: "amount of matter"
-      - key: "sku"
-        valueType: "INT64"
-        description: "identifying number for item"
-      metricKind: "DELTA"
-      valueType: "DISTRIBUTION"
-      unit: "bit"
-      displayName: "sample-descriptor"
-      metadata:
-        samplePeriod: "5s"
-        ingestDelay: "2s"
-      launchStage: "UNIMPLEMENTED"
-    valueExtractor: "EXTRACT(jsonPayload.request)"
-    labelExtractors:
-      mass: "EXTRACT(jsonPayload.request)"
-      sku: "EXTRACT(jsonPayload.id)"
-    bucketOptions:
-      linearBuckets:
-        numFiniteBuckets: 3
-        width: 3.5
-        offset: 1.5
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-sample-linearlogmetric
+spec:
+  description: "A sample log metric"
+  filter: "resource.type=gae_app AND severity<=ERROR"
+  disabled: false
+  metricDescriptor:
+    labels:
+    - key: "mass"
+      valueType: "STRING"
+      description: "amount of matter"
+    - key: "sku"
+      valueType: "INT64"
+      description: "identifying number for item"
+    metricKind: "DELTA"
+    valueType: "DISTRIBUTION"
+    unit: "bit"
+    displayName: "sample-descriptor"
+    metadata:
+      samplePeriod: "5s"
+      ingestDelay: "2s"
+    launchStage: "UNIMPLEMENTED"
+  valueExtractor: "EXTRACT(jsonPayload.request)"
+  labelExtractors:
+    mass: "EXTRACT(jsonPayload.request)"
+    sku: "EXTRACT(jsonPayload.id)"
+  bucketOptions:
+    linearBuckets:
+      numFiniteBuckets: 3
+      width: 3.5
+      offset: 1.5
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+```
 
 
 {% endblock %}

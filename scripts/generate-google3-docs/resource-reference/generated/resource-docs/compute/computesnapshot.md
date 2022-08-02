@@ -72,44 +72,44 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  resourceID: string
-  snapshotEncryptionKey:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    kmsKeyServiceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    rawKey:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    sha256: string
-  sourceDiskEncryptionKey:
-    kmsKeyServiceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    rawKey:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-  sourceDiskRef:
+```yaml
+description: string
+resourceID: string
+snapshotEncryptionKey:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  storageLocations:
-  - string
-  zone: string
-  ```
+  kmsKeyServiceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  rawKey:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  sha256: string
+sourceDiskEncryptionKey:
+  kmsKeyServiceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  rawKey:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+sourceDiskRef:
+  external: string
+  name: string
+  namespace: string
+storageLocations:
+- string
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -495,23 +495,23 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  diskSizeGb: integer
-  labelFingerprint: string
-  licenses:
-  - string
-  observedGeneration: integer
-  selfLink: string
-  snapshotId: integer
-  storageBytes: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+diskSizeGb: integer
+labelFingerprint: string
+licenses:
+- string
+observedGeneration: integer
+selfLink: string
+snapshotId: integer
+storageBytes: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -644,66 +644,66 @@ creation/deletion.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSnapshot
-  metadata:
-    name: computesnapshot-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    description: "ComputeSnapshot Sample"
-    zone: us-west1-c
-    sourceDiskRef:
-      name: computesnapshot-dep
-    snapshotEncryptionKey:
-      rawKey:
-        valueFrom:
-          secretKeyRef:
-            name: computesnapshot-dep
-            key: snapshotEncryptionKey
-    sourceDiskEncryptionKey:
-      rawKey:
-        valueFrom:
-          secretKeyRef:
-            name: computesnapshot-dep
-            key: sourceDiskEncryptionKey
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSnapshot
+metadata:
+  name: computesnapshot-sample
+  labels:
+    label-one: "value-one"
+spec:
+  description: "ComputeSnapshot Sample"
+  zone: us-west1-c
+  sourceDiskRef:
     name: computesnapshot-dep
-  spec:
-    location: us-west1-c
-    diskEncryptionKey:
-      rawKey:
-        valueFrom:
-          secretKeyRef:
-            name: computesnapshot-dep
-            key: sourceDiskEncryptionKey
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: computesnapshot-dep
-  stringData:
-    snapshotEncryptionKey: a2NjIGlzIGF3ZXNvbWUgeW91IHNob3VsZCB0cnkgaXQ=
-    sourceDiskEncryptionKey: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
-  ```
+  snapshotEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: snapshotEncryptionKey
+  sourceDiskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: sourceDiskEncryptionKey
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computesnapshot-dep
+spec:
+  location: us-west1-c
+  diskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computesnapshot-dep
+          key: sourceDiskEncryptionKey
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: computesnapshot-dep
+stringData:
+  snapshotEncryptionKey: a2NjIGlzIGF3ZXNvbWUgeW91IHNob3VsZCB0cnkgaXQ=
+  sourceDiskEncryptionKey: SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=
+```
 
 
 {% endblock %}

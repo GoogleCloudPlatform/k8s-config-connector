@@ -90,21 +90,21 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  databaseDialect: string
-  ddl:
-  - string
-  encryptionConfig:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-  instanceRef:
+```yaml
+databaseDialect: string
+ddl:
+- string
+encryptionConfig:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  ```
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -256,16 +256,16 @@ must exist in the same location as the Spanner Database.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  state: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -343,39 +343,39 @@ must exist in the same location as the Spanner Database.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: spanner.cnrm.cloud.google.com/v1beta1
-  kind: SpannerDatabase
-  metadata:
-    name: spannerdatabase-sample
-  spec:
-    instanceRef:
-      name: spannerdatabase-dep
-    ddl:
-    - "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
-  ---
-  apiVersion: spanner.cnrm.cloud.google.com/v1beta1
-  kind: SpannerInstance
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerDatabase
+metadata:
+  name: spannerdatabase-sample
+spec:
+  instanceRef:
     name: spannerdatabase-dep
-  spec:
-    config: regional-us-west1
-    displayName: Spanner Database Dependency
-  ```
+  ddl:
+  - "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
+---
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  name: spannerdatabase-dep
+spec:
+  config: regional-us-west1
+  displayName: Spanner Database Dependency
+```
 
 
 {% endblock %}

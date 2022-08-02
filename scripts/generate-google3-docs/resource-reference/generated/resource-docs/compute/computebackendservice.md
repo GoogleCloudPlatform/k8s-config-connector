@@ -81,150 +81,150 @@ the `spec.location` field. To manage a regional ComputeBackendService, use a reg
 
 ### Spec
 #### Schema
-  ```yaml
-  affinityCookieTtlSec: integer
-  backend:
-  - balancingMode: string
-    capacityScaler: float
-    description: string
-    failover: boolean
-    group:
-      instanceGroupRef:
-        external: string
-        name: string
-        namespace: string
-      networkEndpointGroupRef:
-        external: string
-        name: string
-        namespace: string
-    maxConnections: integer
-    maxConnectionsPerEndpoint: integer
-    maxConnectionsPerInstance: integer
-    maxRate: integer
-    maxRatePerEndpoint: float
-    maxRatePerInstance: float
-    maxUtilization: float
-  cdnPolicy:
-    cacheKeyPolicy:
-      includeHost: boolean
-      includeNamedCookies:
-      - string
-      includeProtocol: boolean
-      includeQueryString: boolean
-      queryStringBlacklist:
-      - string
-      queryStringWhitelist:
-      - string
-    cacheMode: string
-    clientTtl: integer
-    defaultTtl: integer
-    maxTtl: integer
-    negativeCaching: boolean
-    negativeCachingPolicy:
-    - code: integer
-      ttl: integer
-    serveWhileStale: integer
-    signedUrlCacheMaxAgeSec: integer
-  circuitBreakers:
-    connectTimeout:
-      nanos: integer
-      seconds: integer
-    maxConnections: integer
-    maxPendingRequests: integer
-    maxRequests: integer
-    maxRequestsPerConnection: integer
-    maxRetries: integer
-  connectionDrainingTimeoutSec: integer
-  connectionTrackingPolicy:
-    connectionPersistenceOnUnhealthyBackends: string
-    idleTimeoutSec: integer
-    trackingMode: string
-  consistentHash:
-    httpCookie:
-      name: string
-      path: string
-      ttl:
-        nanos: integer
-        seconds: integer
-    httpHeaderName: string
-    minimumRingSize: integer
-  customRequestHeaders:
-  - string
-  customResponseHeaders:
-  - string
+```yaml
+affinityCookieTtlSec: integer
+backend:
+- balancingMode: string
+  capacityScaler: float
   description: string
-  enableCdn: boolean
-  failoverPolicy:
-    disableConnectionDrainOnFailover: boolean
-    dropTrafficIfUnhealthy: boolean
-    failoverRatio: float
-  healthChecks:
-  - healthCheckRef:
+  failover: boolean
+  group:
+    instanceGroupRef:
       external: string
       name: string
       namespace: string
-    httpHealthCheckRef:
+    networkEndpointGroupRef:
       external: string
       name: string
       namespace: string
-  iap:
-    oauth2ClientId: string
-    oauth2ClientIdRef:
-      external: string
-      name: string
-      namespace: string
-    oauth2ClientSecret:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    oauth2ClientSecretSha256: string
-  loadBalancingScheme: string
-  localityLbPolicy: string
-  location: string
-  logConfig:
-    enable: boolean
-    sampleRate: float
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  outlierDetection:
-    baseEjectionTime:
-      nanos: integer
-      seconds: integer
-    consecutiveErrors: integer
-    consecutiveGatewayFailure: integer
-    enforcingConsecutiveErrors: integer
-    enforcingConsecutiveGatewayFailure: integer
-    enforcingSuccessRate: integer
-    interval:
-      nanos: integer
-      seconds: integer
-    maxEjectionPercent: integer
-    successRateMinimumHosts: integer
-    successRateRequestVolume: integer
-    successRateStdevFactor: integer
-  portName: string
-  protocol: string
-  resourceID: string
-  securityPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  securitySettings:
-    clientTLSPolicyRef:
-      external: string
-      name: string
-      namespace: string
-    subjectAltNames:
+  maxConnections: integer
+  maxConnectionsPerEndpoint: integer
+  maxConnectionsPerInstance: integer
+  maxRate: integer
+  maxRatePerEndpoint: float
+  maxRatePerInstance: float
+  maxUtilization: float
+cdnPolicy:
+  cacheKeyPolicy:
+    includeHost: boolean
+    includeNamedCookies:
     - string
-  sessionAffinity: string
-  subsetting:
-    policy: string
-  timeoutSec: integer
-  ```
+    includeProtocol: boolean
+    includeQueryString: boolean
+    queryStringBlacklist:
+    - string
+    queryStringWhitelist:
+    - string
+  cacheMode: string
+  clientTtl: integer
+  defaultTtl: integer
+  maxTtl: integer
+  negativeCaching: boolean
+  negativeCachingPolicy:
+  - code: integer
+    ttl: integer
+  serveWhileStale: integer
+  signedUrlCacheMaxAgeSec: integer
+circuitBreakers:
+  connectTimeout:
+    nanos: integer
+    seconds: integer
+  maxConnections: integer
+  maxPendingRequests: integer
+  maxRequests: integer
+  maxRequestsPerConnection: integer
+  maxRetries: integer
+connectionDrainingTimeoutSec: integer
+connectionTrackingPolicy:
+  connectionPersistenceOnUnhealthyBackends: string
+  idleTimeoutSec: integer
+  trackingMode: string
+consistentHash:
+  httpCookie:
+    name: string
+    path: string
+    ttl:
+      nanos: integer
+      seconds: integer
+  httpHeaderName: string
+  minimumRingSize: integer
+customRequestHeaders:
+- string
+customResponseHeaders:
+- string
+description: string
+enableCdn: boolean
+failoverPolicy:
+  disableConnectionDrainOnFailover: boolean
+  dropTrafficIfUnhealthy: boolean
+  failoverRatio: float
+healthChecks:
+- healthCheckRef:
+    external: string
+    name: string
+    namespace: string
+  httpHealthCheckRef:
+    external: string
+    name: string
+    namespace: string
+iap:
+  oauth2ClientId: string
+  oauth2ClientIdRef:
+    external: string
+    name: string
+    namespace: string
+  oauth2ClientSecret:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  oauth2ClientSecretSha256: string
+loadBalancingScheme: string
+localityLbPolicy: string
+location: string
+logConfig:
+  enable: boolean
+  sampleRate: float
+networkRef:
+  external: string
+  name: string
+  namespace: string
+outlierDetection:
+  baseEjectionTime:
+    nanos: integer
+    seconds: integer
+  consecutiveErrors: integer
+  consecutiveGatewayFailure: integer
+  enforcingConsecutiveErrors: integer
+  enforcingConsecutiveGatewayFailure: integer
+  enforcingSuccessRate: integer
+  interval:
+    nanos: integer
+    seconds: integer
+  maxEjectionPercent: integer
+  successRateMinimumHosts: integer
+  successRateRequestVolume: integer
+  successRateStdevFactor: integer
+portName: string
+protocol: string
+resourceID: string
+securityPolicyRef:
+  external: string
+  name: string
+  namespace: string
+securitySettings:
+  clientTLSPolicyRef:
+    external: string
+    name: string
+    namespace: string
+  subjectAltNames:
+  - string
+sessionAffinity: string
+subsetting:
+  policy: string
+timeoutSec: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -1964,18 +1964,18 @@ failed request. Default is 30 seconds. Valid range is [1, 86400].{% endverbatim 
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  fingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+fingerprint: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2068,334 +2068,334 @@ object. This field is used in optimistic locking.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### External Load Balancing Backend Service
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computebackendservice-sample-externalloadbalancing
-  spec:
-    description: External backend service with cookie-based session affinity.
-    portName: cookie-cloud
-    timeoutSec: 30
-    healthChecks:
-    - healthCheckRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample-externalloadbalancing
+spec:
+  description: External backend service with cookie-based session affinity.
+  portName: cookie-cloud
+  timeoutSec: 30
+  healthChecks:
+  - healthCheckRef:
+      name: computebackendservice-dep-externalloadbalancing
+  loadBalancingScheme: EXTERNAL
+  location: global
+  protocol: HTTPS
+  affinityCookieTtlSec: 360
+  connectionDrainingTimeoutSec: 60
+  securityPolicyRef:
+    name: computebackendservice-dep-externalloadbalancing
+  sessionAffinity: GENERATED_COOKIE
+  customRequestHeaders:
+  - "Trailer: custom-trailer"
+  logConfig:
+    enable: true
+    sampleRate: 0.5
+  backend:
+  - balancingMode: RATE
+    capacityScaler: 1
+    description: A network endpoint group serving this backend with all its available capacity, as calculated by number of simultaneous connections.
+    maxRatePerEndpoint: 10
+    group:
+      networkEndpointGroupRef:
         name: computebackendservice-dep-externalloadbalancing
-    loadBalancingScheme: EXTERNAL
-    location: global
-    protocol: HTTPS
-    affinityCookieTtlSec: 360
-    connectionDrainingTimeoutSec: 60
-    securityPolicyRef:
-      name: computebackendservice-dep-externalloadbalancing
-    sessionAffinity: GENERATED_COOKIE
-    customRequestHeaders:
-    - "Trailer: custom-trailer"
-    logConfig:
-      enable: true
-      sampleRate: 0.5
-    backend:
-    - balancingMode: RATE
-      capacityScaler: 1
-      description: A network endpoint group serving this backend with all its available capacity, as calculated by number of simultaneous connections.
-      maxRatePerEndpoint: 10
-      group:
-        networkEndpointGroupRef:
-          name: computebackendservice-dep-externalloadbalancing
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  httpsHealthCheck:
+    port: 443
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  namedPort:
+  - name: cookie-cloud
+    port: 8444
+  zone: us-central1-a
+  networkRef:
     name: computebackendservice-dep-externalloadbalancing
-  spec:
-    httpsHealthCheck:
-      port: 443
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroup
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  routingMode: GLOBAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetworkEndpointGroup
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  networkRef:
     name: computebackendservice-dep-externalloadbalancing
-  spec:
-    namedPort:
-    - name: cookie-cloud
-      port: 8444
-    zone: us-central1-a
-    networkRef:
-      name: computebackendservice-dep-externalloadbalancing
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+  subnetworkRef:
     name: computebackendservice-dep-externalloadbalancing
-  spec:
-    routingMode: GLOBAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetworkEndpointGroup
-  metadata:
+  location: us-west1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  rule:
+  - action: deny(403)
+    priority: 2147483647
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - "*"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computebackendservice-dep-externalloadbalancing
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-west1
+  networkRef:
     name: computebackendservice-dep-externalloadbalancing
-  spec:
-    networkRef:
-      name: computebackendservice-dep-externalloadbalancing
-    subnetworkRef:
-      name: computebackendservice-dep-externalloadbalancing
-    location: us-west1-a
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSecurityPolicy
-  metadata:
-    name: computebackendservice-dep-externalloadbalancing
-  spec:
-    rule:
-    - action: deny(403)
-      priority: 2147483647
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - "*"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computebackendservice-dep-externalloadbalancing
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-west1
-    networkRef:
-      name: computebackendservice-dep-externalloadbalancing
-  ```
+```
 
 ### Internal Managed Load Balancing Backend Service
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computebackendservice-sample-internalmanagedloadbalancing
-  spec:
-    description: Internal managed backend service with Maglev session affinity.
-    localityLbPolicy: MAGLEV
-    timeoutSec: 86400
-    consistentHash:
-      httpHeaderName: "Hash string"
-    healthChecks:
-    - healthCheckRef:
-        name: computebackendservice-dep-internalmanagedloadbalancing
-    loadBalancingScheme: INTERNAL_MANAGED
-    location: us-east1
-    protocol: HTTP
-    connectionDrainingTimeoutSec: 10
-    sessionAffinity: HEADER_FIELD
-    circuitBreakers:
-      connectTimeout:
-        nanos: 999999999
-        seconds: 0
-      maxConnections: 1024
-      maxPendingRequests: 1024
-      maxRequests: 1024
-      maxRequestsPerConnection: 1
-      maxRetries: 3
-    logConfig:
-      enable: false
-    outlierDetection:
-      consecutiveGatewayFailure: 5
-      enforcingConsecutiveErrors: 100
-      enforcingSuccessRate: 100
-      successRateMinimumHosts: 5
-      successRateRequestVolume: 100
-      baseEjectionTime:
-        nanos: 999999999
-        seconds: 29
-      consecutiveErrors: 5
-      enforcingConsecutiveGatewayFailure: 0
-      interval:
-        nanos: 999999999
-        seconds: 9
-      maxEjectionPercent: 10
-      successRateStdevFactor: 1900
-    backend:
-    - balancingMode: RATE
-      capacityScaler: 0.9
-      description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
-      maxRate: 10000
-      group:
-        instanceGroupRef:
-          name: computebackendservice-dep-internalmanagedloadbalancing
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computebackendservice-dep-internalmanagedloadbalancing
-  spec:
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroup
-  metadata:
-    name: computebackendservice-dep-internalmanagedloadbalancing
-  spec:
-    zone: us-east1-c
-    networkRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample-internalmanagedloadbalancing
+spec:
+  description: Internal managed backend service with Maglev session affinity.
+  localityLbPolicy: MAGLEV
+  timeoutSec: 86400
+  consistentHash:
+    httpHeaderName: "Hash string"
+  healthChecks:
+  - healthCheckRef:
       name: computebackendservice-dep-internalmanagedloadbalancing
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-east1
+  protocol: HTTP
+  connectionDrainingTimeoutSec: 10
+  sessionAffinity: HEADER_FIELD
+  circuitBreakers:
+    connectTimeout:
+      nanos: 999999999
+      seconds: 0
+    maxConnections: 1024
+    maxPendingRequests: 1024
+    maxRequests: 1024
+    maxRequestsPerConnection: 1
+    maxRetries: 3
+  logConfig:
+    enable: false
+  outlierDetection:
+    consecutiveGatewayFailure: 5
+    enforcingConsecutiveErrors: 100
+    enforcingSuccessRate: 100
+    successRateMinimumHosts: 5
+    successRateRequestVolume: 100
+    baseEjectionTime:
+      nanos: 999999999
+      seconds: 29
+    consecutiveErrors: 5
+    enforcingConsecutiveGatewayFailure: 0
+    interval:
+      nanos: 999999999
+      seconds: 9
+    maxEjectionPercent: 10
+    successRateStdevFactor: 1900
+  backend:
+  - balancingMode: RATE
+    capacityScaler: 0.9
+    description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
+    maxRate: 10000
+    group:
+      instanceGroupRef:
+        name: computebackendservice-dep-internalmanagedloadbalancing
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computebackendservice-dep-internalmanagedloadbalancing
+spec:
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computebackendservice-dep-internalmanagedloadbalancing
+spec:
+  zone: us-east1-c
+  networkRef:
     name: computebackendservice-dep-internalmanagedloadbalancing
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computebackendservice-dep-internalmanagedloadbalancing
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+```
 
 ### Oauth2clientid Backend Service
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computebackendservice-sample-oauth2clientid
-  spec:
-    description: Internal managed backend service with Maglev session affinity.
-    localityLbPolicy: MAGLEV
-    timeoutSec: 86400
-    consistentHash:
-      httpHeaderName: "Hash string"
-    healthChecks:
-    - healthCheckRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-sample-oauth2clientid
+spec:
+  description: Internal managed backend service with Maglev session affinity.
+  localityLbPolicy: MAGLEV
+  timeoutSec: 86400
+  consistentHash:
+    httpHeaderName: "Hash string"
+  healthChecks:
+  - healthCheckRef:
+      name: computebackendservice-dep-oauth2clientid
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-east1
+  protocol: HTTP
+  connectionDrainingTimeoutSec: 10
+  sessionAffinity: HEADER_FIELD
+  circuitBreakers:
+    connectTimeout:
+      nanos: 999999999
+      seconds: 0
+    maxConnections: 1024
+    maxPendingRequests: 1024
+    maxRequests: 1024
+    maxRequestsPerConnection: 1
+    maxRetries: 3
+  logConfig:
+    enable: false
+  outlierDetection:
+    consecutiveGatewayFailure: 5
+    enforcingConsecutiveErrors: 100
+    enforcingSuccessRate: 100
+    successRateMinimumHosts: 5
+    successRateRequestVolume: 100
+    baseEjectionTime:
+      nanos: 999999999
+      seconds: 29
+    consecutiveErrors: 5
+    enforcingConsecutiveGatewayFailure: 0
+    interval:
+      nanos: 999999999
+      seconds: 9
+    maxEjectionPercent: 10
+    successRateStdevFactor: 1900
+  backend:
+  - balancingMode: RATE
+    capacityScaler: 0.9
+    description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
+    maxRate: 10000
+    group:
+      instanceGroupRef:
         name: computebackendservice-dep-oauth2clientid
-    loadBalancingScheme: INTERNAL_MANAGED
-    location: us-east1
-    protocol: HTTP
-    connectionDrainingTimeoutSec: 10
-    sessionAffinity: HEADER_FIELD
-    circuitBreakers:
-      connectTimeout:
-        nanos: 999999999
-        seconds: 0
-      maxConnections: 1024
-      maxPendingRequests: 1024
-      maxRequests: 1024
-      maxRequestsPerConnection: 1
-      maxRetries: 3
-    logConfig:
-      enable: false
-    outlierDetection:
-      consecutiveGatewayFailure: 5
-      enforcingConsecutiveErrors: 100
-      enforcingSuccessRate: 100
-      successRateMinimumHosts: 5
-      successRateRequestVolume: 100
-      baseEjectionTime:
-        nanos: 999999999
-        seconds: 29
-      consecutiveErrors: 5
-      enforcingConsecutiveGatewayFailure: 0
-      interval:
-        nanos: 999999999
-        seconds: 9
-      maxEjectionPercent: 10
-      successRateStdevFactor: 1900
-    backend:
-    - balancingMode: RATE
-      capacityScaler: 0.9
-      description: An instance group serving this backend with 90% of its capacity, as calculated by requests per second.
-      maxRate: 10000
-      group:
-        instanceGroupRef:
-          name: computebackendservice-dep-oauth2clientid
-    iap:
-      oauth2ClientIdRef:
-        external: computebackendservice-dep-oauth2clientid
-      oauth2ClientSecret:
-        value: "test-secret-value"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
+  iap:
+    oauth2ClientIdRef:
+      external: computebackendservice-dep-oauth2clientid
+    oauth2ClientSecret:
+      value: "test-secret-value"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computebackendservice-dep-oauth2clientid
+spec:
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computebackendservice-dep-oauth2clientid
+spec:
+  zone: us-east1-c
+  networkRef:
     name: computebackendservice-dep-oauth2clientid
-  spec:
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroup
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computebackendservice-dep-oauth2clientid
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
+kind: IAPBrand
+metadata:
+  name: computebackendservice-dep-oauth2clientid
+spec:
+  applicationTitle: "test brand"
+  supportEmail: "support@example.com"
+---
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
+kind: IAPIdentityAwareProxyClient
+metadata:
+  name: computebackendservice-dep-oauth2clientid
+spec:
+  displayName: "Test Client"
+  brandRef:
     name: computebackendservice-dep-oauth2clientid
-  spec:
-    zone: us-east1-c
-    networkRef:
-      name: computebackendservice-dep-oauth2clientid
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computebackendservice-dep-oauth2clientid
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: iap.cnrm.cloud.google.com/v1beta1
-  kind: IAPBrand
-  metadata:
-    name: computebackendservice-dep-oauth2clientid
-  spec:
-    applicationTitle: "test brand"
-    supportEmail: "support@example.com"
-  ---
-  apiVersion: iap.cnrm.cloud.google.com/v1beta1
-  kind: IAPIdentityAwareProxyClient
-  metadata:
-    name: computebackendservice-dep-oauth2clientid
-  spec:
-    displayName: "Test Client"
-    brandRef:
-      name: computebackendservice-dep-oauth2clientid
-  ```
+```
 
 
 {% endblock %}

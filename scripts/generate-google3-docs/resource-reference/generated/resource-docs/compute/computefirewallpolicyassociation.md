@@ -59,18 +59,18 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  attachmentTargetRef:
-    external: string
-    kind: string
-    name: string
-    namespace: string
-  firewallPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+attachmentTargetRef:
+  external: string
+  kind: string
+  name: string
+  namespace: string
+firewallPolicyRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -193,16 +193,16 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  shortName: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+shortName: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -280,98 +280,98 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
 ## Sample YAML(s)
 
 ### Association With Folder Attachment Target
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicyAssociation
-  metadata:
-    name: firewallpolicyassociation-sample-folder
-  spec:
-    attachmentTargetRef:
-      kind: Folder
-      name: firewallpolicyassociation-dep-folder
-    firewallPolicyRef:
-      name: firewallpolicyassociation-dep-folder
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicy
-  metadata:
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyAssociation
+metadata:
+  name: firewallpolicyassociation-sample-folder
+spec:
+  attachmentTargetRef:
+    kind: Folder
     name: firewallpolicyassociation-dep-folder
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    # ComputeFirewallPolicy shortNames must be unique in the organization in
-    # which the firewall policy is created
-    shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-folder
-    description: "A basic organization firewall policy"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    labels:
-      label-one: "value-one"
+  firewallPolicyRef:
     name: firewallpolicyassociation-dep-folder
-  spec:
-    displayName: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID of the parent organization
-      external: "${ORG_ID?}"
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  name: firewallpolicyassociation-dep-folder
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  # ComputeFirewallPolicy shortNames must be unique in the organization in
+  # which the firewall policy is created
+  shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-folder
+  description: "A basic organization firewall policy"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  labels:
+    label-one: "value-one"
+  name: firewallpolicyassociation-dep-folder
+spec:
+  displayName: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    external: "${ORG_ID?}"
+```
 
 ### Association With Organization Attachment Target
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicyAssociation
-  metadata:
-    name: firewallpolicyassociation-sample-org
-  spec:
-    attachmentTargetRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    firewallPolicyRef:
-      name: firewallpolicyassociation-dep-org
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeFirewallPolicy
-  metadata:
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyAssociation
+metadata:
+  name: firewallpolicyassociation-sample-org
+spec:
+  attachmentTargetRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  firewallPolicyRef:
     name: firewallpolicyassociation-dep-org
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    # ComputeFirewallPolicy shortNames must be unique in the organization in
-    # which the firewall policy is created
-    shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-org
-    description: "A basic organization firewall policy"
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  name: firewallpolicyassociation-dep-org
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  # ComputeFirewallPolicy shortNames must be unique in the organization in
+  # which the firewall policy is created
+  shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-org
+  description: "A basic organization firewall policy"
+```
 
 
 {% endblock %}

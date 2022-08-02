@@ -61,56 +61,56 @@ Note: GKE Hub REST documentation is under construction.
 
 ### Spec
 #### Schema
-  ```yaml
-  configmanagement:
-    binauthz:
-      enabled: boolean
-    configSync:
-      git:
-        gcpServiceAccountRef:
-          external: string
-          name: string
-          namespace: string
-        httpsProxy: string
-        policyDir: string
-        secretType: string
-        syncBranch: string
-        syncRepo: string
-        syncRev: string
-        syncWaitSecs: string
-      preventDrift: boolean
-      sourceFormat: string
-    hierarchyController:
-      enableHierarchicalResourceQuota: boolean
-      enablePodTreeLabels: boolean
-      enabled: boolean
-    policyController:
-      auditIntervalSeconds: string
-      enabled: boolean
-      exemptableNamespaces:
+```yaml
+configmanagement:
+  binauthz:
+    enabled: boolean
+  configSync:
+    git:
+      gcpServiceAccountRef:
+        external: string
+        name: string
+        namespace: string
+      httpsProxy: string
+      policyDir: string
+      secretType: string
+      syncBranch: string
+      syncRepo: string
+      syncRev: string
+      syncWaitSecs: string
+    preventDrift: boolean
+    sourceFormat: string
+  hierarchyController:
+    enableHierarchicalResourceQuota: boolean
+    enablePodTreeLabels: boolean
+    enabled: boolean
+  policyController:
+    auditIntervalSeconds: string
+    enabled: boolean
+    exemptableNamespaces:
+    - string
+    logDeniesEnabled: boolean
+    monitoring:
+      backends:
       - string
-      logDeniesEnabled: boolean
-      monitoring:
-        backends:
-        - string
-      mutationEnabled: boolean
-      referentialRulesEnabled: boolean
-      templateLibraryInstalled: boolean
-    version: string
-  featureRef:
-    external: string
-    name: string
-    namespace: string
-  location: string
-  membershipRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+    mutationEnabled: boolean
+    referentialRulesEnabled: boolean
+    templateLibraryInstalled: boolean
+  version: string
+featureRef:
+  external: string
+  name: string
+  namespace: string
+location: string
+membershipRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -614,15 +614,15 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -693,142 +693,142 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
-  kind: GKEHubFeatureMembership
-  metadata:
-    name: gkehubfeaturemembership-sample
-  spec:
-    projectRef:
-      name: gkehubfeaturemembership-dep
-    location: global
-    membershipRef:
-      name: gkehubfeaturemembership-dep
-    featureRef:
-      name: gkehubfeaturemembership-dep
-    configmanagement:
-      configSync:
-        sourceFormat: unstructured
-        git:
-          syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
-          syncBranch: "master"
-          policyDir: "config-connector"
-          syncWaitSecs: "20"
-          syncRev: "HEAD"
-      policyController:
-        enabled: true
-        exemptableNamespaces:
-          - "test-namespace"
-        referentialRulesEnabled: true
-        logDeniesEnabled: true
-        templateLibraryInstalled: true
-        auditIntervalSeconds: "20"
-      binauthz:
-        enabled: true
-      hierarchyController:
-        enabled: true
-        enablePodTreeLabels: true
-        enableHierarchicalResourceQuota: true
-  ---
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-sample
+spec:
+  projectRef:
     name: gkehubfeaturemembership-dep
-  spec:
-    location: us-central1-a
-    initialNodeCount: 1
-    workloadIdentityConfig:
-      # Workload Identity supports only a single namespace based on your project name.
-      workloadPool: gkehubfeaturemembership-dep.svc.id.goog
-  ---
-  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
-  kind: GKEHubFeature
-  metadata:
+  location: global
+  membershipRef:
     name: gkehubfeaturemembership-dep
-  spec:
-    projectRef:
-      name: gkehubfeaturemembership-dep
-    location: global
-    # The resourceID must be "configmanagement" if you want to use Anthos config
-    # management feature.
-    resourceID: configmanagement
-  ---
-  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
-  kind: GKEHubMembership
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+  featureRef:
     name: gkehubfeaturemembership-dep
-  spec:
-    location: global
-    authority:
-      # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
-      issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep/locations/us-central1-a/clusters/gkehubfeaturemembership-dep
-    description: A sample GKE Hub membership
-    endpoint:
-      gkeCluster:
-        resourceRef:
-          name: gkehubfeaturemembership-dep
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
+  configmanagement:
+    configSync:
+      sourceFormat: unstructured
+      git:
+        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
+        syncBranch: "master"
+        policyDir: "config-connector"
+        syncWaitSecs: "20"
+        syncRev: "HEAD"
+    policyController:
+      enabled: true
+      exemptableNamespaces:
+        - "test-namespace"
+      referentialRulesEnabled: true
+      logDeniesEnabled: true
+      templateLibraryInstalled: true
+      auditIntervalSeconds: "20"
+    binauthz:
+      enabled: true
+    hierarchyController:
+      enabled: true
+      enablePodTreeLabels: true
+      enableHierarchicalResourceQuota: true
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+  name: gkehubfeaturemembership-dep
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    # Workload Identity supports only a single namespace based on your project name.
+    workloadPool: gkehubfeaturemembership-dep.svc.id.goog
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeaturemembership-dep
+spec:
+  projectRef:
     name: gkehubfeaturemembership-dep
-  spec:
-    name: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: gkehubfeaturemembership-dep-1
-  spec:
-    resourceID: container.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: gkehubfeaturemembership-dep-2
-  spec:
-    resourceID: gkehub.googleapis.com
-  ---
-  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-  kind: Service
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-      cnrm.cloud.google.com/disable-dependent-services: "false"
-    name: gkehubfeaturemembership-dep-3
-  spec:
-    resourceID: anthosconfigmanagement.googleapis.com
-  ```
+  location: global
+  # The resourceID must be "configmanagement" if you want to use Anthos config
+  # management feature.
+  resourceID: configmanagement
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+  name: gkehubfeaturemembership-dep
+spec:
+  location: global
+  authority:
+    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
+    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep/locations/us-central1-a/clusters/gkehubfeaturemembership-dep
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkehubfeaturemembership-dep
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: gkehubfeaturemembership-dep
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeaturemembership-dep-1
+spec:
+  resourceID: container.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeaturemembership-dep-2
+spec:
+  resourceID: gkehub.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeaturemembership-dep-3
+spec:
+  resourceID: anthosconfigmanagement.googleapis.com
+```
 
 
 {% endblock %}

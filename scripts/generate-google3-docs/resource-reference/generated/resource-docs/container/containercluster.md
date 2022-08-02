@@ -81,232 +81,232 @@ removes the default node pool created during cluster creation.
 
 ### Spec
 #### Schema
-  ```yaml
-  addonsConfig:
-    cloudrunConfig:
-      disabled: boolean
-      loadBalancerType: string
-    configConnectorConfig:
-      enabled: boolean
-    dnsCacheConfig:
-      enabled: boolean
-    gcePersistentDiskCsiDriverConfig:
-      enabled: boolean
-    gcpFilestoreCsiDriverConfig:
-      enabled: boolean
-    gkeBackupAgentConfig:
-      enabled: boolean
-    horizontalPodAutoscaling:
-      disabled: boolean
-    httpLoadBalancing:
-      disabled: boolean
-    istioConfig:
-      auth: string
-      disabled: boolean
-    kalmConfig:
-      enabled: boolean
-    networkPolicyConfig:
-      disabled: boolean
-  authenticatorGroupsConfig:
-    securityGroup: string
-  clusterAutoscaling:
-    autoProvisioningDefaults:
-      imageType: string
-      minCpuPlatform: string
-      oauthScopes:
-      - string
-      serviceAccountRef:
-        external: string
-        name: string
-        namespace: string
-    autoscalingProfile: string
-    enabled: boolean
-    resourceLimits:
-    - maximum: integer
-      minimum: integer
-      resourceType: string
-  clusterIpv4Cidr: string
-  clusterTelemetry:
-    type: string
-  confidentialNodes:
-    enabled: boolean
-  databaseEncryption:
-    keyName: string
-    state: string
-  datapathProvider: string
-  defaultMaxPodsPerNode: integer
-  defaultSnatStatus:
+```yaml
+addonsConfig:
+  cloudrunConfig:
     disabled: boolean
-  description: string
-  dnsConfig:
-    clusterDns: string
-    clusterDnsDomain: string
-    clusterDnsScope: string
-  enableAutopilot: boolean
-  enableBinaryAuthorization: boolean
-  enableIntranodeVisibility: boolean
-  enableKubernetesAlpha: boolean
-  enableL4IlbSubsetting: boolean
-  enableLegacyAbac: boolean
-  enableShieldedNodes: boolean
-  enableTpu: boolean
-  identityServiceConfig:
+    loadBalancerType: string
+  configConnectorConfig:
     enabled: boolean
-  initialNodeCount: integer
-  ipAllocationPolicy:
-    clusterIpv4CidrBlock: string
-    clusterSecondaryRangeName: string
-    servicesIpv4CidrBlock: string
-    servicesSecondaryRangeName: string
-  location: string
-  loggingConfig:
-    enableComponents:
-    - string
-  loggingService: string
-  maintenancePolicy:
-    dailyMaintenanceWindow:
-      duration: string
-      startTime: string
-    maintenanceExclusion:
-    - endTime: string
-      exclusionName: string
-      exclusionOptions:
-        scope: string
-      startTime: string
-    recurringWindow:
-      endTime: string
-      recurrence: string
-      startTime: string
-  masterAuth:
-    clientCertificate: string
-    clientCertificateConfig:
-      issueClientCertificate: boolean
-    clientKey: string
-    clusterCaCertificate: string
-    password:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    username: string
-  masterAuthorizedNetworksConfig:
-    cidrBlocks:
-    - cidrBlock: string
-      displayName: string
-  minMasterVersion: string
-  monitoringConfig:
-    enableComponents:
-    - string
-    managedPrometheus:
-      enabled: boolean
-  monitoringService: string
-  networkPolicy:
+  dnsCacheConfig:
     enabled: boolean
-    provider: string
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  networkingMode: string
-  nodeConfig:
-    bootDiskKMSCryptoKeyRef:
-      external: string
-      name: string
-      namespace: string
-    diskSizeGb: integer
-    diskType: string
-    ephemeralStorageConfig:
-      localSsdCount: integer
-    gcfsConfig:
-      enabled: boolean
-    guestAccelerator:
-    - count: integer
-      gpuPartitionSize: string
-      type: string
-    gvnic:
-      enabled: boolean
+  gcePersistentDiskCsiDriverConfig:
+    enabled: boolean
+  gcpFilestoreCsiDriverConfig:
+    enabled: boolean
+  gkeBackupAgentConfig:
+    enabled: boolean
+  horizontalPodAutoscaling:
+    disabled: boolean
+  httpLoadBalancing:
+    disabled: boolean
+  istioConfig:
+    auth: string
+    disabled: boolean
+  kalmConfig:
+    enabled: boolean
+  networkPolicyConfig:
+    disabled: boolean
+authenticatorGroupsConfig:
+  securityGroup: string
+clusterAutoscaling:
+  autoProvisioningDefaults:
     imageType: string
-    kubeletConfig:
-      cpuCfsQuota: boolean
-      cpuCfsQuotaPeriod: string
-      cpuManagerPolicy: string
-    labels:
-      string: string
-    linuxNodeConfig:
-      sysctls:
-        string: string
-    localSsdCount: integer
-    machineType: string
-    metadata:
-      string: string
     minCpuPlatform: string
-    nodeGroupRef:
-      external: string
-      name: string
-      namespace: string
     oauthScopes:
     - string
-    preemptible: boolean
-    sandboxConfig:
-      sandboxType: string
     serviceAccountRef:
       external: string
       name: string
       namespace: string
-    shieldedInstanceConfig:
-      enableIntegrityMonitoring: boolean
-      enableSecureBoot: boolean
-    spot: boolean
-    tags:
-    - string
-    taint:
-    - effect: string
-      key: string
-      value: string
-    workloadMetadataConfig:
-      mode: string
-      nodeMetadata: string
-  nodeLocations:
+  autoscalingProfile: string
+  enabled: boolean
+  resourceLimits:
+  - maximum: integer
+    minimum: integer
+    resourceType: string
+clusterIpv4Cidr: string
+clusterTelemetry:
+  type: string
+confidentialNodes:
+  enabled: boolean
+databaseEncryption:
+  keyName: string
+  state: string
+datapathProvider: string
+defaultMaxPodsPerNode: integer
+defaultSnatStatus:
+  disabled: boolean
+description: string
+dnsConfig:
+  clusterDns: string
+  clusterDnsDomain: string
+  clusterDnsScope: string
+enableAutopilot: boolean
+enableBinaryAuthorization: boolean
+enableIntranodeVisibility: boolean
+enableKubernetesAlpha: boolean
+enableL4IlbSubsetting: boolean
+enableLegacyAbac: boolean
+enableShieldedNodes: boolean
+enableTpu: boolean
+identityServiceConfig:
+  enabled: boolean
+initialNodeCount: integer
+ipAllocationPolicy:
+  clusterIpv4CidrBlock: string
+  clusterSecondaryRangeName: string
+  servicesIpv4CidrBlock: string
+  servicesSecondaryRangeName: string
+location: string
+loggingConfig:
+  enableComponents:
   - string
-  nodeVersion: string
-  notificationConfig:
-    pubsub:
-      enabled: boolean
-      topicRef:
-        external: string
+loggingService: string
+maintenancePolicy:
+  dailyMaintenanceWindow:
+    duration: string
+    startTime: string
+  maintenanceExclusion:
+  - endTime: string
+    exclusionName: string
+    exclusionOptions:
+      scope: string
+    startTime: string
+  recurringWindow:
+    endTime: string
+    recurrence: string
+    startTime: string
+masterAuth:
+  clientCertificate: string
+  clientCertificateConfig:
+    issueClientCertificate: boolean
+  clientKey: string
+  clusterCaCertificate: string
+  password:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
         name: string
-        namespace: string
-  podSecurityPolicyConfig:
+  username: string
+masterAuthorizedNetworksConfig:
+  cidrBlocks:
+  - cidrBlock: string
+    displayName: string
+minMasterVersion: string
+monitoringConfig:
+  enableComponents:
+  - string
+  managedPrometheus:
     enabled: boolean
-  privateClusterConfig:
-    enablePrivateEndpoint: boolean
-    enablePrivateNodes: boolean
-    masterGlobalAccessConfig:
-      enabled: boolean
-    masterIpv4CidrBlock: string
-    peeringName: string
-    privateEndpoint: string
-    publicEndpoint: string
-  privateIpv6GoogleAccess: string
-  releaseChannel:
-    channel: string
-  resourceID: string
-  resourceUsageExportConfig:
-    bigqueryDestination:
-      datasetId: string
-    enableNetworkEgressMetering: boolean
-    enableResourceConsumptionMetering: boolean
-  subnetworkRef:
+monitoringService: string
+networkPolicy:
+  enabled: boolean
+  provider: string
+networkRef:
+  external: string
+  name: string
+  namespace: string
+networkingMode: string
+nodeConfig:
+  bootDiskKMSCryptoKeyRef:
     external: string
     name: string
     namespace: string
-  verticalPodAutoscaling:
+  diskSizeGb: integer
+  diskType: string
+  ephemeralStorageConfig:
+    localSsdCount: integer
+  gcfsConfig:
     enabled: boolean
-  workloadIdentityConfig:
-    identityNamespace: string
-    workloadPool: string
-  ```
+  guestAccelerator:
+  - count: integer
+    gpuPartitionSize: string
+    type: string
+  gvnic:
+    enabled: boolean
+  imageType: string
+  kubeletConfig:
+    cpuCfsQuota: boolean
+    cpuCfsQuotaPeriod: string
+    cpuManagerPolicy: string
+  labels:
+    string: string
+  linuxNodeConfig:
+    sysctls:
+      string: string
+  localSsdCount: integer
+  machineType: string
+  metadata:
+    string: string
+  minCpuPlatform: string
+  nodeGroupRef:
+    external: string
+    name: string
+    namespace: string
+  oauthScopes:
+  - string
+  preemptible: boolean
+  sandboxConfig:
+    sandboxType: string
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: boolean
+    enableSecureBoot: boolean
+  spot: boolean
+  tags:
+  - string
+  taint:
+  - effect: string
+    key: string
+    value: string
+  workloadMetadataConfig:
+    mode: string
+    nodeMetadata: string
+nodeLocations:
+- string
+nodeVersion: string
+notificationConfig:
+  pubsub:
+    enabled: boolean
+    topicRef:
+      external: string
+      name: string
+      namespace: string
+podSecurityPolicyConfig:
+  enabled: boolean
+privateClusterConfig:
+  enablePrivateEndpoint: boolean
+  enablePrivateNodes: boolean
+  masterGlobalAccessConfig:
+    enabled: boolean
+  masterIpv4CidrBlock: string
+  peeringName: string
+  privateEndpoint: string
+  publicEndpoint: string
+privateIpv6GoogleAccess: string
+releaseChannel:
+  channel: string
+resourceID: string
+resourceUsageExportConfig:
+  bigqueryDestination:
+    datasetId: string
+  enableNetworkEgressMetering: boolean
+  enableResourceConsumptionMetering: boolean
+subnetworkRef:
+  external: string
+  name: string
+  namespace: string
+verticalPodAutoscaling:
+  enabled: boolean
+workloadIdentityConfig:
+  identityNamespace: string
+  workloadPool: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2591,22 +2591,22 @@ Enables workload identity.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  endpoint: string
-  labelFingerprint: string
-  masterVersion: string
-  observedGeneration: integer
-  operation: string
-  selfLink: string
-  servicesIpv4Cidr: string
-  tpuIpv4CidrBlock: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+endpoint: string
+labelFingerprint: string
+masterVersion: string
+observedGeneration: integer
+operation: string
+selfLink: string
+servicesIpv4Cidr: string
+tpuIpv4CidrBlock: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2726,197 +2726,197 @@ Enables workload identity.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Autopilot Cluster
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    name: containercluster-sample-autopilot
-  spec:
-    description: An autopilot cluster.
-    enableAutopilot: true
-    location: us-west1
-    releaseChannel:
-      channel: REGULAR
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-sample-autopilot
+spec:
+  description: An autopilot cluster.
+  enableAutopilot: true
+  location: us-west1
+  releaseChannel:
+    channel: REGULAR
+```
 
 ### Routes Based Container Cluster
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    labels:
-      availability: dev
-      target-audience: development
-    name: containercluster-sample-routesbased
-  spec:
-    description: A routes-based cluster confined to one zone configured for development.
-    location: us-central1-a
-    initialNodeCount: 1
-    networkingMode: ROUTES
-    clusterIpv4Cidr: 10.96.0.0/14
-    masterAuthorizedNetworksConfig:
-      cidrBlocks:
-        - displayName: Trusted external network
-          cidrBlock: 10.2.0.0/16
-    addonsConfig:
-      gcePersistentDiskCsiDriverConfig:
-        enabled: true
-      kalmConfig:
-        enabled: true
-      horizontalPodAutoscaling:
-        disabled: true
-      httpLoadBalancing:
-        disabled: false
-    loggingConfig:
-      enableComponents:
-        - "SYSTEM_COMPONENTS"
-        - "WORKLOADS"
-    monitoringConfig:
-      enableComponents:
-        - "SYSTEM_COMPONENTS"
-    workloadIdentityConfig:
-      # Replace ${PROJECT_ID?} with your project ID.
-      workloadPool: "${PROJECT_ID?}.svc.id.goog"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  labels:
+    availability: dev
+    target-audience: development
+  name: containercluster-sample-routesbased
+spec:
+  description: A routes-based cluster confined to one zone configured for development.
+  location: us-central1-a
+  initialNodeCount: 1
+  networkingMode: ROUTES
+  clusterIpv4Cidr: 10.96.0.0/14
+  masterAuthorizedNetworksConfig:
+    cidrBlocks:
+      - displayName: Trusted external network
+        cidrBlock: 10.2.0.0/16
+  addonsConfig:
+    gcePersistentDiskCsiDriverConfig:
+      enabled: true
+    kalmConfig:
+      enabled: true
+    horizontalPodAutoscaling:
+      disabled: true
+    httpLoadBalancing:
+      disabled: false
+  loggingConfig:
+    enableComponents:
+      - "SYSTEM_COMPONENTS"
+      - "WORKLOADS"
+  monitoringConfig:
+    enableComponents:
+      - "SYSTEM_COMPONENTS"
+  workloadIdentityConfig:
+    # Replace ${PROJECT_ID?} with your project ID.
+    workloadPool: "${PROJECT_ID?}.svc.id.goog"
+```
 
 ### Vpc Native Container Cluster
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    labels:
-      availability: high
-      target-audience: production
-    name: containercluster-sample-vpcnative
-  spec:
-    description: A large regional VPC-native cluster set up with special networking considerations.
-    location: us-central1
-    initialNodeCount: 1
-    defaultMaxPodsPerNode: 16
-    nodeLocations:
-      - us-central1-a
-      - us-central1-b
-      - us-central1-c
-      - us-central1-f
-    workloadIdentityConfig:
-      # Workload Identity supports only a single namespace based on your project name.
-      # Replace ${PROJECT_ID?} below with your project ID.
-      workloadPool: ${PROJECT_ID?}.svc.id.goog
-    networkingMode: VPC_NATIVE
-    networkRef:
-      name: containercluster-dep-vpcnative
-    subnetworkRef:
-      name: containercluster-dep-vpcnative
-    ipAllocationPolicy:
-      servicesSecondaryRangeName: servicesrange
-      clusterSecondaryRangeName: clusterrange
-    clusterAutoscaling:
-      enabled: true
-      autoscalingProfile: BALANCED
-      resourceLimits:
-      - resourceType: cpu
-        maximum: 100
-        minimum: 10
-      - resourceType: memory
-        maximum: 1000
-        minimum: 100
-    maintenancePolicy:
-      dailyMaintenanceWindow:
-        startTime: 00:00
-    releaseChannel:
-      channel: STABLE
-    notificationConfig:
-      pubsub:
-        enabled: true
-        topicRef:
-          name: containercluster-dep-vpcnative
-    enableBinaryAuthorization: true
-    enableIntranodeVisibility: true
-    enableShieldedNodes: true
-    addonsConfig:
-      networkPolicyConfig:
-        disabled: false
-      dnsCacheConfig:
-        enabled: true
-      configConnectorConfig:
-        enabled: true
-    networkPolicy:
-      enabled: true
-    podSecurityPolicyConfig:
-      enabled: true
-    verticalPodAutoscaling:
-      enabled: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  labels:
+    availability: high
+    target-audience: production
+  name: containercluster-sample-vpcnative
+spec:
+  description: A large regional VPC-native cluster set up with special networking considerations.
+  location: us-central1
+  initialNodeCount: 1
+  defaultMaxPodsPerNode: 16
+  nodeLocations:
+    - us-central1-a
+    - us-central1-b
+    - us-central1-c
+    - us-central1-f
+  workloadIdentityConfig:
+    # Workload Identity supports only a single namespace based on your project name.
+    # Replace ${PROJECT_ID?} below with your project ID.
+    workloadPool: ${PROJECT_ID?}.svc.id.goog
+  networkingMode: VPC_NATIVE
+  networkRef:
     name: containercluster-dep-vpcnative
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
+  subnetworkRef:
     name: containercluster-dep-vpcnative
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    networkRef:
-      name: containercluster-dep-vpcnative
-    secondaryIpRange:
-    - rangeName: servicesrange
-      ipCidrRange: 10.3.0.0/16
-    - rangeName: clusterrange
-      ipCidrRange: 10.4.0.0/16
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
+  ipAllocationPolicy:
+    servicesSecondaryRangeName: servicesrange
+    clusterSecondaryRangeName: clusterrange
+  clusterAutoscaling:
+    enabled: true
+    autoscalingProfile: BALANCED
+    resourceLimits:
+    - resourceType: cpu
+      maximum: 100
+      minimum: 10
+    - resourceType: memory
+      maximum: 1000
+      minimum: 100
+  maintenancePolicy:
+    dailyMaintenanceWindow:
+      startTime: 00:00
+  releaseChannel:
+    channel: STABLE
+  notificationConfig:
+    pubsub:
+      enabled: true
+      topicRef:
+        name: containercluster-dep-vpcnative
+  enableBinaryAuthorization: true
+  enableIntranodeVisibility: true
+  enableShieldedNodes: true
+  addonsConfig:
+    networkPolicyConfig:
+      disabled: false
+    dnsCacheConfig:
+      enabled: true
+    configConnectorConfig:
+      enabled: true
+  networkPolicy:
+    enabled: true
+  podSecurityPolicyConfig:
+    enabled: true
+  verticalPodAutoscaling:
+    enabled: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: containercluster-dep-vpcnative
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: containercluster-dep-vpcnative
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
     name: containercluster-dep-vpcnative
-  ```
+  secondaryIpRange:
+  - rangeName: servicesrange
+    ipCidrRange: 10.3.0.0/16
+  - rangeName: clusterrange
+    ipCidrRange: 10.4.0.0/16
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: containercluster-dep-vpcnative
+```
 
 
 {% endblock %}

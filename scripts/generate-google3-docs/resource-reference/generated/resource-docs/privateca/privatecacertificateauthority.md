@@ -58,90 +58,90 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  caPoolRef:
-    external: string
-    name: string
-    namespace: string
-  config:
-    subjectConfig:
-      subject:
-        commonName: string
-        countryCode: string
-        locality: string
-        organization: string
-        organizationalUnit: string
-        postalCode: string
-        province: string
-        streetAddress: string
-      subjectAltName:
-        customSans:
-        - critical: boolean
-          objectId:
-            objectIdPath:
-            - integer
-          value: string
-        dnsNames:
-        - string
-        emailAddresses:
-        - string
-        ipAddresses:
-        - string
-        uris:
-        - string
-    x509Config:
-      additionalExtensions:
+```yaml
+caPoolRef:
+  external: string
+  name: string
+  namespace: string
+config:
+  subjectConfig:
+    subject:
+      commonName: string
+      countryCode: string
+      locality: string
+      organization: string
+      organizationalUnit: string
+      postalCode: string
+      province: string
+      streetAddress: string
+    subjectAltName:
+      customSans:
       - critical: boolean
         objectId:
           objectIdPath:
           - integer
         value: string
-      caOptions:
-        isCa: boolean
-        maxIssuerPathLength: integer
-      keyUsage:
-        baseKeyUsage:
-          certSign: boolean
-          contentCommitment: boolean
-          crlSign: boolean
-          dataEncipherment: boolean
-          decipherOnly: boolean
-          digitalSignature: boolean
-          encipherOnly: boolean
-          keyAgreement: boolean
-          keyEncipherment: boolean
-        extendedKeyUsage:
-          clientAuth: boolean
-          codeSigning: boolean
-          emailProtection: boolean
-          ocspSigning: boolean
-          serverAuth: boolean
-          timeStamping: boolean
-        unknownExtendedKeyUsages:
-        - objectIdPath:
-          - integer
-      policyIds:
+      dnsNames:
+      - string
+      emailAddresses:
+      - string
+      ipAddresses:
+      - string
+      uris:
+      - string
+  x509Config:
+    additionalExtensions:
+    - critical: boolean
+      objectId:
+        objectIdPath:
+        - integer
+      value: string
+    caOptions:
+      isCa: boolean
+      maxIssuerPathLength: integer
+    keyUsage:
+      baseKeyUsage:
+        certSign: boolean
+        contentCommitment: boolean
+        crlSign: boolean
+        dataEncipherment: boolean
+        decipherOnly: boolean
+        digitalSignature: boolean
+        encipherOnly: boolean
+        keyAgreement: boolean
+        keyEncipherment: boolean
+      extendedKeyUsage:
+        clientAuth: boolean
+        codeSigning: boolean
+        emailProtection: boolean
+        ocspSigning: boolean
+        serverAuth: boolean
+        timeStamping: boolean
+      unknownExtendedKeyUsages:
       - objectIdPath:
         - integer
-  gcsBucketRef:
+    policyIds:
+    - objectIdPath:
+      - integer
+gcsBucketRef:
+  external: string
+  name: string
+  namespace: string
+keySpec:
+  algorithm: string
+  cloudKmsKeyVersionRef:
     external: string
     name: string
     namespace: string
-  keySpec:
-    algorithm: string
-    cloudKmsKeyVersionRef:
-      external: string
-      name: string
-      namespace: string
-  lifetime: string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  type: string
-  ```
+lifetime: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1026,118 +1026,118 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  accessUrls:
-    caCertificateAccessUrl: string
-    crlAccessUrls:
-    - string
-  caCertificateDescriptions:
-  - aiaIssuingCertificateUrls:
-    - string
-    authorityKeyId:
-      keyId: string
-    certFingerprint:
-      sha256Hash: string
-    crlDistributionPoints:
-    - string
-    publicKey:
-      format: string
-      key: string
-    subjectDescription:
-      hexSerialNumber: string
-      lifetime: string
-      notAfterTime: string
-      notBeforeTime: string
-      subject:
-        commonName: string
-        countryCode: string
-        locality: string
-        organization: string
-        organizationalUnit: string
-        postalCode: string
-        province: string
-        streetAddress: string
-      subjectAltName:
-        customSans:
-        - critical: boolean
-          objectId:
-            objectIdPath:
-            - integer
-          value: string
-        dnsNames:
-        - string
-        emailAddresses:
-        - string
-        ipAddresses:
-        - string
-        uris:
-        - string
-    subjectKeyId:
-      keyId: string
-    x509Description:
-      additionalExtensions:
+```yaml
+accessUrls:
+  caCertificateAccessUrl: string
+  crlAccessUrls:
+  - string
+caCertificateDescriptions:
+- aiaIssuingCertificateUrls:
+  - string
+  authorityKeyId:
+    keyId: string
+  certFingerprint:
+    sha256Hash: string
+  crlDistributionPoints:
+  - string
+  publicKey:
+    format: string
+    key: string
+  subjectDescription:
+    hexSerialNumber: string
+    lifetime: string
+    notAfterTime: string
+    notBeforeTime: string
+    subject:
+      commonName: string
+      countryCode: string
+      locality: string
+      organization: string
+      organizationalUnit: string
+      postalCode: string
+      province: string
+      streetAddress: string
+    subjectAltName:
+      customSans:
       - critical: boolean
         objectId:
           objectIdPath:
           - integer
         value: string
-      aiaOcspServers:
+      dnsNames:
       - string
-      caOptions:
-        isCa: boolean
-        maxIssuerPathLength: integer
-      keyUsage:
-        baseKeyUsage:
-          certSign: boolean
-          contentCommitment: boolean
-          crlSign: boolean
-          dataEncipherment: boolean
-          decipherOnly: boolean
-          digitalSignature: boolean
-          encipherOnly: boolean
-          keyAgreement: boolean
-          keyEncipherment: boolean
-        extendedKeyUsage:
-          clientAuth: boolean
-          codeSigning: boolean
-          emailProtection: boolean
-          ocspSigning: boolean
-          serverAuth: boolean
-          timeStamping: boolean
-        unknownExtendedKeyUsages:
-        - objectIdPath:
-          - integer
-      policyIds:
+      emailAddresses:
+      - string
+      ipAddresses:
+      - string
+      uris:
+      - string
+  subjectKeyId:
+    keyId: string
+  x509Description:
+    additionalExtensions:
+    - critical: boolean
+      objectId:
+        objectIdPath:
+        - integer
+      value: string
+    aiaOcspServers:
+    - string
+    caOptions:
+      isCa: boolean
+      maxIssuerPathLength: integer
+    keyUsage:
+      baseKeyUsage:
+        certSign: boolean
+        contentCommitment: boolean
+        crlSign: boolean
+        dataEncipherment: boolean
+        decipherOnly: boolean
+        digitalSignature: boolean
+        encipherOnly: boolean
+        keyAgreement: boolean
+        keyEncipherment: boolean
+      extendedKeyUsage:
+        clientAuth: boolean
+        codeSigning: boolean
+        emailProtection: boolean
+        ocspSigning: boolean
+        serverAuth: boolean
+        timeStamping: boolean
+      unknownExtendedKeyUsages:
       - objectIdPath:
         - integer
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  config:
-    publicKey:
-      format: string
-      key: string
-    x509Config:
-      aiaOcspServers:
-      - string
-  createTime: string
-  deleteTime: string
-  expireTime: string
-  observedGeneration: integer
-  pemCaCertificates:
-  - string
-  state: string
-  subordinateConfig:
-    certificateAuthority: string
-    pemIssuerChain:
-      pemCertificates:
-      - string
-  tier: string
-  updateTime: string
-  ```
+    policyIds:
+    - objectIdPath:
+      - integer
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+config:
+  publicKey:
+    format: string
+    key: string
+  x509Config:
+    aiaOcspServers:
+    - string
+createTime: string
+deleteTime: string
+expireTime: string
+observedGeneration: integer
+pemCaCertificates:
+- string
+state: string
+subordinateConfig:
+  certificateAuthority: string
+  pemIssuerChain:
+    pemCertificates:
+    - string
+tier: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1964,140 +1964,140 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
-  kind: PrivateCACertificateAuthority
-  metadata:
-    labels:
-      label-two: "value-two"
-    name: privatecacertificateauthority-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    location: "us-central1"
-    type: SELF_SIGNED
-    caPoolRef:
-      name: privatecacertificateauthority-dep
-    lifetime: 86400s
-    config:
-      subjectConfig:
-        subject:
-          organization: Example
-          common-name: my-certificate-authority
-        subjectAltName:
-          dnsNames:
-          - example.com
-      x509Config:
-        caOptions:
-          isCa: true
-        keyUsage:
-          baseKeyUsage:
-            certSign: true
-            crlSign: true
-        extendedKeyUsage:
-          serverAuth: true
-    keySpec:
-      algorithm: RSA_PKCS1_4096_SHA256
-  ---
-  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
-  kind: PrivateCACAPool
-  metadata:
-    labels:
-      label-two: "value-two"
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateAuthority
+metadata:
+  labels:
+    label-two: "value-two"
+  name: privatecacertificateauthority-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  location: "us-central1"
+  type: SELF_SIGNED
+  caPoolRef:
     name: privatecacertificateauthority-dep
-    # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
-    # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
-    # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
-    # itself, we abandon this resource on deletion.
-    annotations:
-      cnrm.cloud.google.com/deletion-policy: "abandon"
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID.
-      external: projects/${PROJECT_ID?}
-    location: "us-central1"
-    tier: ENTERPRISE
-    issuancePolicy:
-      allowedKeyTypes:
-      - rsa:
-          minModulusSize: 64
-          maxModulusSize: 128
-      - ellipticCurve:
-          signatureAlgorithm: ECDSA_P384
-      maximumLifetime: 43200s
-      allowedIssuanceModes:
-        allowCsrBasedIssuance: true
-        allowConfigBasedIssuance: false
-      baselineValues:
-        keyUsage:
-          baseKeyUsage:
-            digitalSignature: false
-            contentCommitment: false
-            keyEncipherment: false
-            dataEncipherment: false
-            keyAgreement: false
-            certSign: false
-            crlSign: false
-            encipherOnly: false
-            decipherOnly: false
-          extendedKeyUsage:
-            serverAuth: false
-            clientAuth: false
-            codeSigning: false
-            emailProtection: false
-            timeStamping: false
-            ocspSigning: false
-          unknownExtendedKeyUsages:
-          - objectIdPath:
-            - 1
-            - 7
-        caOptions:
-          isCa: false
-          maxIssuerPathLength: 7
-        policyIds:
+  lifetime: 86400s
+  config:
+    subjectConfig:
+      subject:
+        organization: Example
+        common-name: my-certificate-authority
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Config:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+      extendedKeyUsage:
+        serverAuth: true
+  keySpec:
+    algorithm: RSA_PKCS1_4096_SHA256
+---
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  labels:
+    label-two: "value-two"
+  name: privatecacertificateauthority-dep
+  # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
+  # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
+  # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
+  # itself, we abandon this resource on deletion.
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  location: "us-central1"
+  tier: ENTERPRISE
+  issuancePolicy:
+    allowedKeyTypes:
+    - rsa:
+        minModulusSize: 64
+        maxModulusSize: 128
+    - ellipticCurve:
+        signatureAlgorithm: ECDSA_P384
+    maximumLifetime: 43200s
+    allowedIssuanceModes:
+      allowCsrBasedIssuance: true
+      allowConfigBasedIssuance: false
+    baselineValues:
+      keyUsage:
+        baseKeyUsage:
+          digitalSignature: false
+          contentCommitment: false
+          keyEncipherment: false
+          dataEncipherment: false
+          keyAgreement: false
+          certSign: false
+          crlSign: false
+          encipherOnly: false
+          decipherOnly: false
+        extendedKeyUsage:
+          serverAuth: false
+          clientAuth: false
+          codeSigning: false
+          emailProtection: false
+          timeStamping: false
+          ocspSigning: false
+        unknownExtendedKeyUsages:
         - objectIdPath:
           - 1
           - 7
-        aiaOcspServers:
-        - string
-        additionalExtensions:
-        - objectId:
-            objectIdPath:
-            - 1
-            - 7
-          critical: false
-          value: c3RyaW5nCg==
-      identityConstraints:
-        celExpression:
-          title: Sample expression
-          description: Always false
-          expression: 'false'
-          location: devops.ca_pool.json
-        allowSubjectPassthrough: false
-        allowSubjectAltNamesPassthrough: false
-      passthroughExtensions:
-        knownExtensions:
-        - BASE_KEY_USAGE
-        additionalExtensions:
-        - objectIdPath:
+      caOptions:
+        isCa: false
+        maxIssuerPathLength: 7
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 7
+      aiaOcspServers:
+      - string
+      additionalExtensions:
+      - objectId:
+          objectIdPath:
           - 1
           - 7
-  ```
+        critical: false
+        value: c3RyaW5nCg==
+    identityConstraints:
+      celExpression:
+        title: Sample expression
+        description: Always false
+        expression: 'false'
+        location: devops.ca_pool.json
+      allowSubjectPassthrough: false
+      allowSubjectAltNamesPassthrough: false
+    passthroughExtensions:
+      knownExtensions:
+      - BASE_KEY_USAGE
+      additionalExtensions:
+      - objectIdPath:
+        - 1
+        - 7
+```
 
 
 {% endblock %}

@@ -72,94 +72,94 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  autoscaling:
-    maxNodeCount: integer
-    minNodeCount: integer
-  clusterRef:
+```yaml
+autoscaling:
+  maxNodeCount: integer
+  minNodeCount: integer
+clusterRef:
+  external: string
+  name: string
+  namespace: string
+initialNodeCount: integer
+location: string
+management:
+  autoRepair: boolean
+  autoUpgrade: boolean
+maxPodsPerNode: integer
+namePrefix: string
+networkConfig:
+  createPodRange: boolean
+  podIpv4CidrBlock: string
+  podRange: string
+nodeConfig:
+  bootDiskKMSCryptoKeyRef:
     external: string
     name: string
     namespace: string
-  initialNodeCount: integer
-  location: string
-  management:
-    autoRepair: boolean
-    autoUpgrade: boolean
-  maxPodsPerNode: integer
-  namePrefix: string
-  networkConfig:
-    createPodRange: boolean
-    podIpv4CidrBlock: string
-    podRange: string
-  nodeConfig:
-    bootDiskKMSCryptoKeyRef:
-      external: string
-      name: string
-      namespace: string
-    diskSizeGb: integer
-    diskType: string
-    ephemeralStorageConfig:
-      localSsdCount: integer
-    gcfsConfig:
-      enabled: boolean
-    guestAccelerator:
-    - count: integer
-      gpuPartitionSize: string
-      type: string
-    gvnic:
-      enabled: boolean
-    imageType: string
-    kubeletConfig:
-      cpuCfsQuota: boolean
-      cpuCfsQuotaPeriod: string
-      cpuManagerPolicy: string
-    labels:
-      string: string
-    linuxNodeConfig:
-      sysctls:
-        string: string
+  diskSizeGb: integer
+  diskType: string
+  ephemeralStorageConfig:
     localSsdCount: integer
-    machineType: string
-    metadata:
-      string: string
-    minCpuPlatform: string
-    nodeGroupRef:
-      external: string
-      name: string
-      namespace: string
-    oauthScopes:
-    - string
-    preemptible: boolean
-    sandboxConfig:
-      sandboxType: string
-    serviceAccountRef:
-      external: string
-      name: string
-      namespace: string
-    shieldedInstanceConfig:
-      enableIntegrityMonitoring: boolean
-      enableSecureBoot: boolean
-    spot: boolean
-    tags:
-    - string
-    taint:
-    - effect: string
-      key: string
-      value: string
-    workloadMetadataConfig:
-      mode: string
-      nodeMetadata: string
-  nodeCount: integer
-  nodeLocations:
-  - string
-  placementPolicy:
+  gcfsConfig:
+    enabled: boolean
+  guestAccelerator:
+  - count: integer
+    gpuPartitionSize: string
     type: string
-  resourceID: string
-  upgradeSettings:
-    maxSurge: integer
-    maxUnavailable: integer
-  version: string
-  ```
+  gvnic:
+    enabled: boolean
+  imageType: string
+  kubeletConfig:
+    cpuCfsQuota: boolean
+    cpuCfsQuotaPeriod: string
+    cpuManagerPolicy: string
+  labels:
+    string: string
+  linuxNodeConfig:
+    sysctls:
+      string: string
+  localSsdCount: integer
+  machineType: string
+  metadata:
+    string: string
+  minCpuPlatform: string
+  nodeGroupRef:
+    external: string
+    name: string
+    namespace: string
+  oauthScopes:
+  - string
+  preemptible: boolean
+  sandboxConfig:
+    sandboxType: string
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: boolean
+    enableSecureBoot: boolean
+  spot: boolean
+  tags:
+  - string
+  taint:
+  - effect: string
+    key: string
+    value: string
+  workloadMetadataConfig:
+    mode: string
+    nodeMetadata: string
+nodeCount: integer
+nodeLocations:
+- string
+placementPolicy:
+  type: string
+resourceID: string
+upgradeSettings:
+  maxSurge: integer
+  maxUnavailable: integer
+version: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1029,20 +1029,20 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  instanceGroupUrls:
-  - string
-  managedInstanceGroupUrls:
-  - string
-  observedGeneration: integer
-  operation: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+instanceGroupUrls:
+- string
+managedInstanceGroupUrls:
+- string
+observedGeneration: integer
+operation: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1148,128 +1148,128 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Basic Node Pool
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerNodePool
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: containernodepool-sample-basic
-  spec:
-    location: us-east1-c
-    autoscaling:
-      minNodeCount: 1
-      maxNodeCount: 3
-    nodeConfig:
-      machineType: n1-standard-1
-      diskSizeGb: 100
-      diskType: pd-standard
-      tags:
-        - tagone
-        - tagtwo
-      preemptible: false
-      minCpuPlatform: "Intel Haswell"
-      oauthScopes:
-        - "https://www.googleapis.com/auth/logging.write"
-        - "https://www.googleapis.com/auth/monitoring"
-      guestAccelerator:
-        - type: "nvidia-tesla-k80"
-          count: 1
-      metadata:
-        disable-legacy-endpoints: "true"
-    management:
-      autoRepair: true
-      autoUpgrade: true
-    clusterRef:
-      name: containernodepool-dep-basic
-  ---
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/remove-default-node-pool: "true"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerNodePool
+metadata:
+  labels:
+    label-one: "value-one"
+  name: containernodepool-sample-basic
+spec:
+  location: us-east1-c
+  autoscaling:
+    minNodeCount: 1
+    maxNodeCount: 3
+  nodeConfig:
+    machineType: n1-standard-1
+    diskSizeGb: 100
+    diskType: pd-standard
+    tags:
+      - tagone
+      - tagtwo
+    preemptible: false
+    minCpuPlatform: "Intel Haswell"
+    oauthScopes:
+      - "https://www.googleapis.com/auth/logging.write"
+      - "https://www.googleapis.com/auth/monitoring"
+    guestAccelerator:
+      - type: "nvidia-tesla-k80"
+        count: 1
+    metadata:
+      disable-legacy-endpoints: "true"
+  management:
+    autoRepair: true
+    autoUpgrade: true
+  clusterRef:
     name: containernodepool-dep-basic
-  spec:
-    location: us-east1-c
-    initialNodeCount: 1
-  ```
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+  name: containernodepool-dep-basic
+spec:
+  location: us-east1-c
+  initialNodeCount: 1
+```
 
 ### Sole Tenant Node Pool
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerNodePool
-  metadata:
-    name: containernodepool-sample-soletenancy
-  spec:
-    location: us-central1-b
-    autoscaling:
-      minNodeCount: 1
-      maxNodeCount: 3
-    nodeConfig:
-      machineType: n1-standard-2
-      nodeGroupRef:
-        name: containernodepool-dep-soletenancy
-    clusterRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerNodePool
+metadata:
+  name: containernodepool-sample-soletenancy
+spec:
+  location: us-central1-b
+  autoscaling:
+    minNodeCount: 1
+    maxNodeCount: 3
+  nodeConfig:
+    machineType: n1-standard-2
+    nodeGroupRef:
       name: containernodepool-dep-soletenancy
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeGroup
-  metadata:
+  clusterRef:
     name: containernodepool-dep-soletenancy
-  spec:
-    description: A single sole-tenant node in the us-central1-b zone.
-    size: 1
-    nodeTemplateRef:
-      name: containernodepool-dep-soletenancy
-    zone: us-central1-b
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeTemplate
-  metadata:
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  name: containernodepool-dep-soletenancy
+spec:
+  description: A single sole-tenant node in the us-central1-b zone.
+  size: 1
+  nodeTemplateRef:
     name: containernodepool-dep-soletenancy
-  spec:
-    region: us-central1
-    nodeType: n1-node-96-624
-  ---
-  apiVersion: container.cnrm.cloud.google.com/v1beta1
-  kind: ContainerCluster
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/remove-default-node-pool: "true"
-    name: containernodepool-dep-soletenancy
-  spec:
-    description: A cluster using the Compute Engine sole-tenant node.
-    location: us-central1-b
-    initialNodeCount: 1
-  ```
+  zone: us-central1-b
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: containernodepool-dep-soletenancy
+spec:
+  region: us-central1
+  nodeType: n1-node-96-624
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+  name: containernodepool-dep-soletenancy
+spec:
+  description: A cluster using the Compute Engine sole-tenant node.
+  location: us-central1-b
+  initialNodeCount: 1
+```
 
 
 {% endblock %}

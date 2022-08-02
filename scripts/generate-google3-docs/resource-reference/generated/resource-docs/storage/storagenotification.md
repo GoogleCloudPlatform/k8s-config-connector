@@ -58,23 +58,23 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  bucketRef:
-    external: string
-    name: string
-    namespace: string
-  customAttributes:
-    string: string
-  eventTypes:
-  - string
-  objectNamePrefix: string
-  payloadFormat: string
-  resourceID: string
-  topicRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+bucketRef:
+  external: string
+  name: string
+  namespace: string
+customAttributes:
+  string: string
+eventTypes:
+- string
+objectNamePrefix: string
+payloadFormat: string
+resourceID: string
+topicRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -230,17 +230,17 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  notificationId: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+notificationId: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -325,59 +325,59 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageNotification
-  metadata:
-    name: storagenotification-sample
-  spec:
-    bucketRef:
-      name: ${PROJECT_ID?}-storagenotification-dep
-    payloadFormat: JSON_API_V1
-    topicRef:
-      name: storagenotification-dep
-    eventTypes:
-      - "OBJECT_ARCHIVE"
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: storagenotification-dep
-  spec:
-    # replace ${PROJECT_NUMBER?} with your project name
-    member: serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com
-    role: roles/pubsub.publisher
-    resourceRef:
-      kind: PubSubTopic
-      name: storagenotification-dep
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: storagenotification-dep
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageNotification
+metadata:
+  name: storagenotification-sample
+spec:
+  bucketRef:
     name: ${PROJECT_ID?}-storagenotification-dep
-  ```
+  payloadFormat: JSON_API_V1
+  topicRef:
+    name: storagenotification-dep
+  eventTypes:
+    - "OBJECT_ARCHIVE"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: storagenotification-dep
+spec:
+  # replace ${PROJECT_NUMBER?} with your project name
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gs-project-accounts.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+  resourceRef:
+    kind: PubSubTopic
+    name: storagenotification-dep
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  labels:
+    label-one: "value-one"
+  name: storagenotification-dep
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-storagenotification-dep
+```
 
 
 {% endblock %}

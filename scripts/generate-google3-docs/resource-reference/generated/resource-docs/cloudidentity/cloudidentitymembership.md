@@ -59,26 +59,26 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  groupRef:
-    external: string
-    name: string
-    namespace: string
-  memberKey:
-    id: string
-    namespace: string
-  preferredMemberKey:
-    id: string
-    namespace: string
-  resourceID: string
-  roles:
-  - expiryDetail:
-      expireTime: string
-    name: string
-    restrictionEvaluations:
-      memberRestrictionEvaluation:
-        state: string
-  ```
+```yaml
+groupRef:
+  external: string
+  name: string
+  namespace: string
+memberKey:
+  id: string
+  namespace: string
+preferredMemberKey:
+  id: string
+  namespace: string
+resourceID: string
+roles:
+- expiryDetail:
+    expireTime: string
+  name: string
+  restrictionEvaluations:
+    memberRestrictionEvaluation:
+      state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -286,23 +286,23 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  deliverySetting: string
-  displayName:
-    familyName: string
-    fullName: string
-    givenName: string
-  observedGeneration: integer
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
   type: string
-  updateTime: string
-  ```
+createTime: string
+deliverySetting: string
+displayName:
+  familyName: string
+  fullName: string
+  givenName: string
+observedGeneration: integer
+type: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -429,91 +429,91 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
 ## Sample YAML(s)
 
 ### Membership With Expiration Date
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-  kind: CloudIdentityMembership
-  metadata:
-    name: cloudidentitymembership-sample-expirationdate
-  spec:
-    groupRef:
-      name: cloudidentitymembership-dep-expirationdate
-    preferredMemberKey:
-      id: test-member@example.com
-    roles:
-    - name: MEMBER
-      expiryDetail:
-        expireTime: 2222-10-02T15:01:23Z
-  ---
-  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-  kind: CloudIdentityGroup
-  metadata:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityMembership
+metadata:
+  name: cloudidentitymembership-sample-expirationdate
+spec:
+  groupRef:
     name: cloudidentitymembership-dep-expirationdate
-  spec:
-    displayName: Cloud Identity Group Name
-    description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
-    groupKey:
-      id: example.com
-    parent: customers/C00qzcxfe
-    labels:
-      cloudidentity.googleapis.com/groups.discussion_forum: ""
-  ```
+  preferredMemberKey:
+    id: test-member@example.com
+  roles:
+  - name: MEMBER
+    expiryDetail:
+      expireTime: 2222-10-02T15:01:23Z
+---
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityGroup
+metadata:
+  name: cloudidentitymembership-dep-expirationdate
+spec:
+  displayName: Cloud Identity Group Name
+  description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
+  groupKey:
+    id: example.com
+  parent: customers/C00qzcxfe
+  labels:
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
+```
 
 ### Membership With Manager Role
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-  kind: CloudIdentityMembership
-  metadata:
-    name: cloudidentitymembership-sample-managerrole
-  spec:
-    groupRef:
-      name: cloudidentitymembership-dep-managerrole
-    preferredMemberKey:
-      id: test-member@example.com
-    roles:
-    - name: MEMBER
-    - name: MANAGER
-  ---
-  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-  kind: CloudIdentityGroup
-  metadata:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityMembership
+metadata:
+  name: cloudidentitymembership-sample-managerrole
+spec:
+  groupRef:
     name: cloudidentitymembership-dep-managerrole
-  spec:
-    displayName: Cloud Identity Group Name
-    description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
-    groupKey:
-      id: example.com
-    parent: customers/C00qzcxfe
-    labels:
-      cloudidentity.googleapis.com/groups.discussion_forum: ""
-  ```
+  preferredMemberKey:
+    id: test-member@example.com
+  roles:
+  - name: MEMBER
+  - name: MANAGER
+---
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityGroup
+metadata:
+  name: cloudidentitymembership-dep-managerrole
+spec:
+  displayName: Cloud Identity Group Name
+  description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
+  groupKey:
+    id: example.com
+  parent: customers/C00qzcxfe
+  labels:
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
+```
 
 
 {% endblock %}

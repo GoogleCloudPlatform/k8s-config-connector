@@ -569,28 +569,28 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Spec
 #### Schema
-  ```yaml
-  auditConfigs:
-  - auditLogConfigs:
-    - exemptedMembers:
-      - string
-      logType: string
-    service: string
-  bindings:
-  - condition:
-      description: string
-      expression: string
-      title: string
-    members:
+```yaml
+auditConfigs:
+- auditLogConfigs:
+  - exemptedMembers:
     - string
-    role: string
-  resourceRef:
-    apiVersion: string
-    external: string
-    kind: string
-    name: string
-    namespace: string
-  ```
+    logType: string
+  service: string
+bindings:
+- condition:
+    description: string
+    expression: string
+    title: string
+  members:
+  - string
+  role: string
+resourceRef:
+  apiVersion: string
+  external: string
+  kind: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -838,15 +838,15 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -917,282 +917,282 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 ## Sample YAML(s)
 
 ### External Project Level Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # **WARNING**: The policy here represents the full declarative intent for the
-  # referenced project. It will fully overwrite the existing policy on the
-  # project.
-  #
-  # If you want finer-grained control over a project's IAM bindings, use
-  # IAMPolicyMember. If you want finer-grained control over audit configs, use
-  # IAMAuditConfig.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicy
-  metadata:
-    name: iampolicy-sample-external-project
-  spec:
-    resourceRef:
-      kind: Project
-      external: projects/iampolicy-dep-external-project
-    bindings:
-      - members:
-          # Replace ${GSA_EMAIL?} with the Config Connector service account's
-          # email address. This ensures that the Config Connector service account
-          # can continue to manage the referenced project.
-          - serviceAccount:${GSA_EMAIL?}
-        role: roles/owner
-      - members:
-          - serviceAccount:iampolicy-dep-external-project@iampolicy-dep-external-project.iam.gserviceaccount.com
-        role: roles/storage.admin
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: iampolicy-dep-external-project
-    name: iampolicy-dep-external-project
-  ---
-  # Creates a Project resource to demonstrate how an IAMPolicy can reference a
-  # Project using `external`.
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-      cnrm.cloud.google.com/auto-create-network: "false"
-    name: iampolicy-dep-external-project
-  spec:
-    name: Config Connector Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# **WARNING**: The policy here represents the full declarative intent for the
+# referenced project. It will fully overwrite the existing policy on the
+# project.
+#
+# If you want finer-grained control over a project's IAM bindings, use
+# IAMPolicyMember. If you want finer-grained control over audit configs, use
+# IAMAuditConfig.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-sample-external-project
+spec:
+  resourceRef:
+    kind: Project
+    external: projects/iampolicy-dep-external-project
+  bindings:
+    - members:
+        # Replace ${GSA_EMAIL?} with the Config Connector service account's
+        # email address. This ensures that the Config Connector service account
+        # can continue to manage the referenced project.
+        - serviceAccount:${GSA_EMAIL?}
+      role: roles/owner
+    - members:
+        - serviceAccount:iampolicy-dep-external-project@iampolicy-dep-external-project.iam.gserviceaccount.com
+      role: roles/storage.admin
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: iampolicy-dep-external-project
+  name: iampolicy-dep-external-project
+---
+# Creates a Project resource to demonstrate how an IAMPolicy can reference a
+# Project using `external`.
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: iampolicy-dep-external-project
+spec:
+  name: Config Connector Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 ### KMS Policy With Condition
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicy
-  metadata:
-    labels:
-      label-one: value-one
-    name: iampolicy-sample-condition
-  spec:
-    resourceRef:
-      kind: KMSKeyRing
-      name: iampolicy-dep-condition
-    bindings:
-      - role: roles/cloudkms.admin
-        condition:
-          title: expires_after_2019_12_31
-          description: Expires at midnight of 2019-12-31
-          expression: request.time < timestamp("2020-01-01T00:00:00Z")
-        members:
-          # replace ${PROJECT_ID?} with your project name
-          - serviceAccount:iampolicy-dep-condition@${PROJECT_ID?}.iam.gserviceaccount.com
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  labels:
+    label-one: value-one
+  name: iampolicy-sample-condition
+spec:
+  resourceRef:
+    kind: KMSKeyRing
     name: iampolicy-dep-condition
-  ---
-  apiVersion: kms.cnrm.cloud.google.com/v1beta1
-  kind: KMSKeyRing
-  metadata:
-    name: iampolicy-dep-condition
-  spec:
-    location: us-central1
-  ```
+  bindings:
+    - role: roles/cloudkms.admin
+      condition:
+        title: expires_after_2019_12_31
+        description: Expires at midnight of 2019-12-31
+        expression: request.time < timestamp("2020-01-01T00:00:00Z")
+      members:
+        # replace ${PROJECT_ID?} with your project name
+        - serviceAccount:iampolicy-dep-condition@${PROJECT_ID?}.iam.gserviceaccount.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iampolicy-dep-condition
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: iampolicy-dep-condition
+spec:
+  location: us-central1
+```
 
 ### Project Level Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  # **WARNING**: The policy here represents the full declarative intent for the
-  # referenced project. It will fully overwrite the existing policy on the
-  # project.
-  #
-  # If you want finer-grained control over a project's IAM bindings, use
-  # IAMPolicyMember. If you want finer-grained control over audit configs, use
-  # IAMAuditConfig.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicy
-  metadata:
-    name: iampolicy-sample-project
-  spec:
-    resourceRef:
-      kind: Project
-      name: iampolicy-dep-project
-    bindings:
-      - members:
-          # Replace ${GSA_EMAIL?} with the Config Connector service account's
-          # email address. This ensures that the Config Connector service account
-          # can continue to manage the referenced project.
-          - serviceAccount:${GSA_EMAIL?}
-        role: roles/owner
-      - members:
-          - serviceAccount:iampolicy-dep-project@iampolicy-dep-project.iam.gserviceaccount.com
-        role: roles/storage.admin
-    auditConfigs:
-      - service: allServices
-        auditLogConfigs:
-          - logType: DATA_WRITE
-          - logType: DATA_READ
-            exemptedMembers:
-              - serviceAccount:iampolicy-dep-project@iampolicy-dep-project.iam.gserviceaccount.com
-      - service: compute.googleapis.com
-        auditLogConfigs:
-          - logType: ADMIN_READ
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/project-id: iampolicy-dep-project
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# **WARNING**: The policy here represents the full declarative intent for the
+# referenced project. It will fully overwrite the existing policy on the
+# project.
+#
+# If you want finer-grained control over a project's IAM bindings, use
+# IAMPolicyMember. If you want finer-grained control over audit configs, use
+# IAMAuditConfig.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-sample-project
+spec:
+  resourceRef:
+    kind: Project
     name: iampolicy-dep-project
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-      cnrm.cloud.google.com/auto-create-network: "false"
-    name: iampolicy-dep-project
-  spec:
-    name: Config Connector Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+  bindings:
+    - members:
+        # Replace ${GSA_EMAIL?} with the Config Connector service account's
+        # email address. This ensures that the Config Connector service account
+        # can continue to manage the referenced project.
+        - serviceAccount:${GSA_EMAIL?}
+      role: roles/owner
+    - members:
+        - serviceAccount:iampolicy-dep-project@iampolicy-dep-project.iam.gserviceaccount.com
+      role: roles/storage.admin
+  auditConfigs:
+    - service: allServices
+      auditLogConfigs:
+        - logType: DATA_WRITE
+        - logType: DATA_READ
+          exemptedMembers:
+            - serviceAccount:iampolicy-dep-project@iampolicy-dep-project.iam.gserviceaccount.com
+    - service: compute.googleapis.com
+      auditLogConfigs:
+        - logType: ADMIN_READ
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: iampolicy-dep-project
+  name: iampolicy-dep-project
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: iampolicy-dep-project
+spec:
+  name: Config Connector Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 ### Pubsub Admin Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicy
-  metadata:
-    labels:
-      label-one: value-one
-    name: iampolicy-sample-pubsubadmin
-  spec:
-    resourceRef:
-      kind: PubSubTopic
-      name: iampolicy-dep-pubsubadmin
-    bindings:
-      - role: roles/editor
-        members:
-          # replace ${PROJECT_ID?} with your project name
-          - serviceAccount:iampolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  labels:
+    label-one: value-one
+  name: iampolicy-sample-pubsubadmin
+spec:
+  resourceRef:
+    kind: PubSubTopic
     name: iampolicy-dep-pubsubadmin
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: iampolicy-dep-pubsubadmin
-  ```
+  bindings:
+    - role: roles/editor
+      members:
+        # replace ${PROJECT_ID?} with your project name
+        - serviceAccount:iampolicy-dep-pubsubadmin@${PROJECT_ID?}.iam.gserviceaccount.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iampolicy-dep-pubsubadmin
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: iampolicy-dep-pubsubadmin
+```
 
 ### Workload Identity Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicy
-  metadata:
-    name: iampolicy-sample-workloadidentity
-  spec:
-    resourceRef:
-      kind: IAMServiceAccount
-      name: iampolicy-dep-workloadidentity
-    bindings:
-      - role: roles/iam.workloadIdentityUser
-        members:
-          # replace ${PROJECT_ID} with your project name
-          - serviceAccount:${PROJECT_ID?}.svc.id.goog[default/iampolicy-dep-workloadidentity]
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-sample-workloadidentity
+spec:
+  resourceRef:
+    kind: IAMServiceAccount
     name: iampolicy-dep-workloadidentity
-  spec:
-    displayName: Example Service Account
-  ---
-  apiVersion: v1
-  kind: ServiceAccount
-  metadata:
-    name: iampolicy-dep-workloadidentity
-    annotations:
-      # replace ${PROJECT_ID?} with your project name
-      iam.gke.io/gcp-service-account: iampolicy-dep-workloadidentity@${PROJECT_ID?}.iam.gserviceaccount.com
-  ```
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        # replace ${PROJECT_ID} with your project name
+        - serviceAccount:${PROJECT_ID?}.svc.id.goog[default/iampolicy-dep-workloadidentity]
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iampolicy-dep-workloadidentity
+spec:
+  displayName: Example Service Account
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: iampolicy-dep-workloadidentity
+  annotations:
+    # replace ${PROJECT_ID?} with your project name
+    iam.gke.io/gcp-service-account: iampolicy-dep-workloadidentity@${PROJECT_ID?}.iam.gserviceaccount.com
+```
 
 
 {% endblock %}

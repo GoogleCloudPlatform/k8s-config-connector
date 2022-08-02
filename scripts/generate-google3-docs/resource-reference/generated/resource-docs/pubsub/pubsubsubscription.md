@@ -90,37 +90,37 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  ackDeadlineSeconds: integer
-  deadLetterPolicy:
-    deadLetterTopicRef:
-      external: string
-      name: string
-      namespace: string
-    maxDeliveryAttempts: integer
-  enableExactlyOnceDelivery: boolean
-  enableMessageOrdering: boolean
-  expirationPolicy:
-    ttl: string
-  filter: string
-  messageRetentionDuration: string
-  pushConfig:
-    attributes:
-      string: string
-    oidcToken:
-      audience: string
-      serviceAccountEmail: string
-    pushEndpoint: string
-  resourceID: string
-  retainAckedMessages: boolean
-  retryPolicy:
-    maximumBackoff: string
-    minimumBackoff: string
-  topicRef:
+```yaml
+ackDeadlineSeconds: integer
+deadLetterPolicy:
+  deadLetterTopicRef:
     external: string
     name: string
     namespace: string
-  ```
+  maxDeliveryAttempts: integer
+enableExactlyOnceDelivery: boolean
+enableMessageOrdering: boolean
+expirationPolicy:
+  ttl: string
+filter: string
+messageRetentionDuration: string
+pushConfig:
+  attributes:
+    string: string
+  oidcToken:
+    audience: string
+    serviceAccountEmail: string
+  pushEndpoint: string
+resourceID: string
+retainAckedMessages: boolean
+retryPolicy:
+  maximumBackoff: string
+  minimumBackoff: string
+topicRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -527,15 +527,15 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -606,47 +606,47 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubSubscription
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: pubsubsubscription-sample
-  spec:
-    ackDeadlineSeconds: 15
-    messageRetentionDuration: 86400s
-    retainAckedMessages: false
-    topicRef:
-      name: pubsubsubscription-dep
-    deadLetterPolicy:
-      deadLetterTopicRef:
-        name: pubsubsubscription-dep2
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  labels:
+    label-one: "value-one"
+  name: pubsubsubscription-sample
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
     name: pubsubsubscription-dep
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: pubsubsubscription-dep2
-  ```
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubsubscription-dep2
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubsubscription-dep
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubsubscription-dep2
+```
 
 
 {% endblock %}

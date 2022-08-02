@@ -80,148 +80,148 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  config:
-    autoscalingConfig:
-      policyRef:
-        external: string
-        name: string
-        namespace: string
-    encryptionConfig:
-      gcePdKmsKeyRef:
-        external: string
-        name: string
-        namespace: string
-    endpointConfig:
-      enableHttpPortAccess: boolean
-    gceClusterConfig:
-      internalIPOnly: boolean
-      metadata:
-        string: string
-      networkRef:
-        external: string
-        name: string
-        namespace: string
-      nodeGroupAffinity:
-        nodeGroupRef:
-          external: string
-          name: string
-          namespace: string
-      privateIPv6GoogleAccess: string
-      reservationAffinity:
-        consumeReservationType: string
-        key: string
-        values:
-        - string
-      serviceAccountRef:
-        external: string
-        name: string
-        namespace: string
-      serviceAccountScopes:
-      - string
-      subnetworkRef:
-        external: string
-        name: string
-        namespace: string
-      tags:
-      - string
-      zone: string
-    initializationActions:
-    - executableFile: string
-      executionTimeout: string
-    lifecycleConfig:
-      autoDeleteTime: string
-      autoDeleteTtl: string
-      idleDeleteTtl: string
-    masterConfig:
-      accelerators:
-      - acceleratorCount: integer
-        acceleratorType: string
-      diskConfig:
-        bootDiskSizeGb: integer
-        bootDiskType: string
-        numLocalSsds: integer
-      imageRef:
-        external: string
-        name: string
-        namespace: string
-      machineType: string
-      minCpuPlatform: string
-      numInstances: integer
-      preemptibility: string
-    secondaryWorkerConfig:
-      accelerators:
-      - acceleratorCount: integer
-        acceleratorType: string
-      diskConfig:
-        bootDiskSizeGb: integer
-        bootDiskType: string
-        numLocalSsds: integer
-      imageRef:
-        external: string
-        name: string
-        namespace: string
-      machineType: string
-      minCpuPlatform: string
-      numInstances: integer
-      preemptibility: string
-    securityConfig:
-      kerberosConfig:
-        crossRealmTrustAdminServer: string
-        crossRealmTrustKdc: string
-        crossRealmTrustRealm: string
-        crossRealmTrustSharedPassword: string
-        enableKerberos: boolean
-        kdcDbKey: string
-        keyPassword: string
-        keystore: string
-        keystorePassword: string
-        kmsKeyRef:
-          external: string
-          name: string
-          namespace: string
-        realm: string
-        rootPrincipalPassword: string
-        tgtLifetimeHours: integer
-        truststore: string
-        truststorePassword: string
-    softwareConfig:
-      imageVersion: string
-      optionalComponents:
-      - string
-      properties:
-        string: string
-    stagingBucketRef:
+```yaml
+config:
+  autoscalingConfig:
+    policyRef:
       external: string
       name: string
       namespace: string
-    tempBucketRef:
+  encryptionConfig:
+    gcePdKmsKeyRef:
       external: string
       name: string
       namespace: string
-    workerConfig:
-      accelerators:
-      - acceleratorCount: integer
-        acceleratorType: string
-      diskConfig:
-        bootDiskSizeGb: integer
-        bootDiskType: string
-        numLocalSsds: integer
-      imageRef:
+  endpointConfig:
+    enableHttpPortAccess: boolean
+  gceClusterConfig:
+    internalIPOnly: boolean
+    metadata:
+      string: string
+    networkRef:
+      external: string
+      name: string
+      namespace: string
+    nodeGroupAffinity:
+      nodeGroupRef:
         external: string
         name: string
         namespace: string
-      machineType: string
-      minCpuPlatform: string
-      numInstances: integer
-      preemptibility: string
-  location: string
-  projectRef:
+    privateIPv6GoogleAccess: string
+    reservationAffinity:
+      consumeReservationType: string
+      key: string
+      values:
+      - string
+    serviceAccountRef:
+      external: string
+      name: string
+      namespace: string
+    serviceAccountScopes:
+    - string
+    subnetworkRef:
+      external: string
+      name: string
+      namespace: string
+    tags:
+    - string
+    zone: string
+  initializationActions:
+  - executableFile: string
+    executionTimeout: string
+  lifecycleConfig:
+    autoDeleteTime: string
+    autoDeleteTtl: string
+    idleDeleteTtl: string
+  masterConfig:
+    accelerators:
+    - acceleratorCount: integer
+      acceleratorType: string
+    diskConfig:
+      bootDiskSizeGb: integer
+      bootDiskType: string
+      numLocalSsds: integer
+    imageRef:
+      external: string
+      name: string
+      namespace: string
+    machineType: string
+    minCpuPlatform: string
+    numInstances: integer
+    preemptibility: string
+  secondaryWorkerConfig:
+    accelerators:
+    - acceleratorCount: integer
+      acceleratorType: string
+    diskConfig:
+      bootDiskSizeGb: integer
+      bootDiskType: string
+      numLocalSsds: integer
+    imageRef:
+      external: string
+      name: string
+      namespace: string
+    machineType: string
+    minCpuPlatform: string
+    numInstances: integer
+    preemptibility: string
+  securityConfig:
+    kerberosConfig:
+      crossRealmTrustAdminServer: string
+      crossRealmTrustKdc: string
+      crossRealmTrustRealm: string
+      crossRealmTrustSharedPassword: string
+      enableKerberos: boolean
+      kdcDbKey: string
+      keyPassword: string
+      keystore: string
+      keystorePassword: string
+      kmsKeyRef:
+        external: string
+        name: string
+        namespace: string
+      realm: string
+      rootPrincipalPassword: string
+      tgtLifetimeHours: integer
+      truststore: string
+      truststorePassword: string
+  softwareConfig:
+    imageVersion: string
+    optionalComponents:
+    - string
+    properties:
+      string: string
+  stagingBucketRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  ```
+  tempBucketRef:
+    external: string
+    name: string
+    namespace: string
+  workerConfig:
+    accelerators:
+    - acceleratorCount: integer
+      acceleratorType: string
+    diskConfig:
+      bootDiskSizeGb: integer
+      bootDiskType: string
+      numLocalSsds: integer
+    imageRef:
+      external: string
+      name: string
+      namespace: string
+    machineType: string
+    minCpuPlatform: string
+    numInstances: integer
+    preemptibility: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1685,58 +1685,58 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  clusterUuid: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  config:
-    endpointConfig:
-      httpPorts:
-        string: string
-    lifecycleConfig:
-      idleStartTime: string
-    masterConfig:
-      instanceNames:
-      - string
-      isPreemptible: boolean
-      managedGroupConfig:
-        instanceGroupManagerName: string
-        instanceTemplateName: string
-    secondaryWorkerConfig:
-      instanceNames:
-      - string
-      isPreemptible: boolean
-      managedGroupConfig:
-        instanceGroupManagerName: string
-        instanceTemplateName: string
-    workerConfig:
-      instanceNames:
-      - string
-      isPreemptible: boolean
-      managedGroupConfig:
-        instanceGroupManagerName: string
-        instanceTemplateName: string
-  metrics:
-    hdfsMetrics:
+```yaml
+clusterUuid: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+config:
+  endpointConfig:
+    httpPorts:
       string: string
-    yarnMetrics:
-      string: string
-  observedGeneration: integer
-  status:
-    detail: string
-    state: string
-    stateStartTime: string
-    substate: string
-  statusHistory:
-  - detail: string
-    state: string
-    stateStartTime: string
-    substate: string
-  ```
+  lifecycleConfig:
+    idleStartTime: string
+  masterConfig:
+    instanceNames:
+    - string
+    isPreemptible: boolean
+    managedGroupConfig:
+      instanceGroupManagerName: string
+      instanceTemplateName: string
+  secondaryWorkerConfig:
+    instanceNames:
+    - string
+    isPreemptible: boolean
+    managedGroupConfig:
+      instanceGroupManagerName: string
+      instanceTemplateName: string
+  workerConfig:
+    instanceNames:
+    - string
+    isPreemptible: boolean
+    managedGroupConfig:
+      instanceGroupManagerName: string
+      instanceTemplateName: string
+metrics:
+  hdfsMetrics:
+    string: string
+  yarnMetrics:
+    string: string
+observedGeneration: integer
+status:
+  detail: string
+  state: string
+  stateStartTime: string
+  substate: string
+statusHistory:
+- detail: string
+  state: string
+  stateStartTime: string
+  substate: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -2094,89 +2094,89 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
-  kind: DataprocCluster
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
-    name: dataproccluster-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    location: "us-central1"
-    config:
-      autoscalingConfig:
-        policyRef:
-          name: dataproccluster-dep
-      stagingBucketRef:
-        name: dataproccluster-dep-staging
-      masterConfig:
-        diskConfig:
-          bootDiskSizeGb: 30
-          bootDiskType: pd-standard
-        machineType: "n2-standard-2"
-        numInstances: 1
-      workerConfig:
-        numInstances: 2
-        machineType: "n2-standard-2"
-        diskConfig:
-          bootDiskSizeGb: 30
-          numLocalSsds: 1
-      softwareConfig:
-        imageVersion: "2.0.39-debian10"
-      gceClusterConfig:
-        tags:
-        - "foo"
-        - "bar"
-      initializationActions:
-      - executableFile: "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh"
-        executionTimeout: "500s"
-  ---
-  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
-  kind: DataprocAutoscalingPolicy
-  metadata:
-    annotations:
-    name: dataproccluster-dep
-  spec:
-    location: "us-central1"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
+  name: dataproccluster-sample
+  labels:
+    label-one: "value-one"
+spec:
+  location: "us-central1"
+  config:
+    autoscalingConfig:
+      policyRef:
+        name: dataproccluster-dep
+    stagingBucketRef:
+      name: dataproccluster-dep-staging
+    masterConfig:
+      diskConfig:
+        bootDiskSizeGb: 30
+        bootDiskType: pd-standard
+      machineType: "n2-standard-2"
+      numInstances: 1
     workerConfig:
-      maxInstances: 5
-    secondaryWorkerConfig:
-      maxInstances: 2
-    basicAlgorithm:
-      yarnConfig:
-        gracefulDecommissionTimeout: "30s"
-        scaleDownFactor: 0.5
-        scaleUpFactor: 0.5
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/force-destroy: "true"
-    labels:
-      label-one: "value-one"
-    name: dataproccluster-dep-staging
-  spec:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    resourceID: ${PROJECT_ID?}-dataproccluster-dep-staging
-    bucketPolicyOnly: true
-  ```
+      numInstances: 2
+      machineType: "n2-standard-2"
+      diskConfig:
+        bootDiskSizeGb: 30
+        numLocalSsds: 1
+    softwareConfig:
+      imageVersion: "2.0.39-debian10"
+    gceClusterConfig:
+      tags:
+      - "foo"
+      - "bar"
+    initializationActions:
+    - executableFile: "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh"
+      executionTimeout: "500s"
+---
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocAutoscalingPolicy
+metadata:
+  annotations:
+  name: dataproccluster-dep
+spec:
+  location: "us-central1"
+  workerConfig:
+    maxInstances: 5
+  secondaryWorkerConfig:
+    maxInstances: 2
+  basicAlgorithm:
+    yarnConfig:
+      gracefulDecommissionTimeout: "30s"
+      scaleDownFactor: 0.5
+      scaleUpFactor: 0.5
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+  labels:
+    label-one: "value-one"
+  name: dataproccluster-dep-staging
+spec:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  resourceID: ${PROJECT_ID?}-dataproccluster-dep-staging
+  bucketPolicyOnly: true
+```
 
 
 {% endblock %}

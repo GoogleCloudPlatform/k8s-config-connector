@@ -58,40 +58,40 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  fileShares:
-  - capacityGb: integer
-    name: string
-    nfsExportOptions:
-    - accessMode: string
-      anonGid: integer
-      anonUid: integer
-      ipRanges:
-      - string
-      squashMode: string
-    sourceBackupRef:
-      external: string
-      name: string
-      namespace: string
-  location: string
-  networks:
-  - ipAddresses:
+```yaml
+description: string
+fileShares:
+- capacityGb: integer
+  name: string
+  nfsExportOptions:
+  - accessMode: string
+    anonGid: integer
+    anonUid: integer
+    ipRanges:
     - string
-    modes:
-    - string
-    networkRef:
-      external: string
-      name: string
-      namespace: string
-    reservedIPRange: string
-  projectRef:
+    squashMode: string
+  sourceBackupRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  tier: string
-  ```
+location: string
+networks:
+- ipAddresses:
+  - string
+  modes:
+  - string
+  networkRef:
+    external: string
+    name: string
+    namespace: string
+  reservedIPRange: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+tier: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -463,19 +463,19 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  etag: string
-  observedGeneration: integer
-  state: string
-  statusMessage: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+etag: string
+observedGeneration: integer
+state: string
+statusMessage: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -574,56 +574,56 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: filestore.cnrm.cloud.google.com/v1beta1
-  kind: FilestoreInstance
-  metadata:
-    name: filestoreinstance-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    description: "A sample filestore instance"
-    fileShares:
-      - capacityGb: 4800
-        name: my_share
-        nfsExportOptions:
-          - accessMode: READ_WRITE
-            anonGid: 65534
-            anonUid: 65534
-            ipRanges:
-              - 172.217.14.238
-            squashMode: ROOT_SQUASH
-    location: us-central1-c
-    networks:
-      - networkRef:
-          name: filestoreinstance-dep
-        modes:
-          - MODE_IPV4
-        reservedIPRange: 10.0.0.0/29
-    tier: PREMIUM
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: filestoreinstance-dep
-  spec:
-    autoCreateSubnetworks: false
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreInstance
+metadata:
+  name: filestoreinstance-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  description: "A sample filestore instance"
+  fileShares:
+    - capacityGb: 4800
+      name: my_share
+      nfsExportOptions:
+        - accessMode: READ_WRITE
+          anonGid: 65534
+          anonUid: 65534
+          ipRanges:
+            - 172.217.14.238
+          squashMode: ROOT_SQUASH
+  location: us-central1-c
+  networks:
+    - networkRef:
+        name: filestoreinstance-dep
+      modes:
+        - MODE_IPV4
+      reservedIPRange: 10.0.0.0/29
+  tier: PREMIUM
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: filestoreinstance-dep
+spec:
+  autoCreateSubnetworks: false
+```
 
 
 {% endblock %}

@@ -72,16 +72,16 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  location: string
-  proxyBind: boolean
-  resourceID: string
-  urlMapRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+description: string
+location: string
+proxyBind: boolean
+resourceID: string
+urlMapRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -179,18 +179,18 @@ from URL to the BackendService.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  observedGeneration: integer
-  proxyId: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+observedGeneration: integer
+proxyId: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -282,61 +282,61 @@ from URL to the BackendService.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeTargetHTTPProxy
-  metadata:
-    name: computetargethttpproxy-sample
-  spec:
-    description: "A sample proxy"
-    urlMapRef:
-      name: computetargethttpproxy-dep
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: computetargethttpproxy-sample
+spec:
+  description: "A sample proxy"
+  urlMapRef:
     name: computetargethttpproxy-dep
-  spec:
-    healthChecks:
-      - healthCheckRef:
-          name: computetargethttpproxy-dep
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computetargethttpproxy-dep
-  spec:
-    checkIntervalSec: 10
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeURLMap
-  metadata:
-    name: computetargethttpproxy-dep
-  spec:
-    defaultService:
-      backendServiceRef:
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computetargethttpproxy-dep
+spec:
+  healthChecks:
+    - healthCheckRef:
         name: computetargethttpproxy-dep
-    location: global
-  ```
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computetargethttpproxy-dep
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computetargethttpproxy-dep
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computetargethttpproxy-dep
+  location: global
+```
 
 
 {% endblock %}

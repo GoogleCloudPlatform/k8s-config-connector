@@ -72,100 +72,100 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  attestation:
-    hint:
-      humanReadableName: string
-  build:
-    builderVersion: string
-  deployment:
-    resourceUri:
+```yaml
+attestation:
+  hint:
+    humanReadableName: string
+build:
+  builderVersion: string
+deployment:
+  resourceUri:
+  - string
+discovery:
+  analysisKind: string
+expirationTime: string
+image:
+  fingerprint:
+    v1Name: string
+    v2Blob:
     - string
-  discovery:
-    analysisKind: string
-  expirationTime: string
-  image:
-    fingerprint:
-      v1Name: string
-      v2Blob:
-      - string
-    resourceUrl: string
-  longDescription: string
-  package:
-    distribution:
-    - architecture: string
-      cpeUri: string
-      description: string
-      latestVersion:
-        epoch: integer
-        fullName: string
-        kind: string
-        name: string
-        revision: string
-      maintainer: string
+  resourceUrl: string
+longDescription: string
+package:
+  distribution:
+  - architecture: string
+    cpeUri: string
+    description: string
+    latestVersion:
+      epoch: integer
+      fullName: string
+      kind: string
+      name: string
+      revision: string
+    maintainer: string
+    url: string
+  name: string
+relatedNoteNames:
+- external: string
+  name: string
+  namespace: string
+relatedUrl:
+- label: string
+  url: string
+resourceID: string
+shortDescription: string
+vulnerability:
+  cvssScore: float
+  cvssV3:
+    attackComplexity: string
+    attackVector: string
+    availabilityImpact: string
+    baseScore: float
+    confidentialityImpact: string
+    exploitabilityScore: float
+    impactScore: float
+    integrityImpact: string
+    privilegesRequired: string
+    scope: string
+    userInteraction: string
+  details:
+  - affectedCpeUri: string
+    affectedPackage: string
+    affectedVersionEnd:
+      epoch: integer
+      fullName: string
+      kind: string
+      name: string
+      revision: string
+    affectedVersionStart:
+      epoch: integer
+      fullName: string
+      kind: string
+      name: string
+      revision: string
+    description: string
+    fixedCpeUri: string
+    fixedPackage: string
+    fixedVersion:
+      epoch: integer
+      fullName: string
+      kind: string
+      name: string
+      revision: string
+    isObsolete: boolean
+    packageType: string
+    severityName: string
+    sourceUpdateTime: string
+  severity: string
+  sourceUpdateTime: string
+  windowsDetails:
+  - cpeUri: string
+    description: string
+    fixingKbs:
+    - name: string
       url: string
     name: string
-  relatedNoteNames:
-  - external: string
-    name: string
-    namespace: string
-  relatedUrl:
-  - label: string
-    url: string
-  resourceID: string
-  shortDescription: string
-  vulnerability:
-    cvssScore: float
-    cvssV3:
-      attackComplexity: string
-      attackVector: string
-      availabilityImpact: string
-      baseScore: float
-      confidentialityImpact: string
-      exploitabilityScore: float
-      impactScore: float
-      integrityImpact: string
-      privilegesRequired: string
-      scope: string
-      userInteraction: string
-    details:
-    - affectedCpeUri: string
-      affectedPackage: string
-      affectedVersionEnd:
-        epoch: integer
-        fullName: string
-        kind: string
-        name: string
-        revision: string
-      affectedVersionStart:
-        epoch: integer
-        fullName: string
-        kind: string
-        name: string
-        revision: string
-      description: string
-      fixedCpeUri: string
-      fixedPackage: string
-      fixedVersion:
-        epoch: integer
-        fullName: string
-        kind: string
-        name: string
-        revision: string
-      isObsolete: boolean
-      packageType: string
-      severityName: string
-      sourceUpdateTime: string
-    severity: string
-    sourceUpdateTime: string
-    windowsDetails:
-    - cpeUri: string
-      description: string
-      fixingKbs:
-      - name: string
-        url: string
-      name: string
-  ```
+```
 
 <table class="properties responsive">
 <thead>
@@ -1163,20 +1163,20 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  image:
-    fingerprint:
-      v2Name: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+image:
+  fingerprint:
+    v2Name: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1282,37 +1282,37 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
-  kind: ContainerAnalysisNote
-  metadata:
-    name: containeranalysisnote-sample
-  spec:
-    shortDescription: "short description"
-    longDescription: "long description"
-    relatedUrl:
-    - url: "some.url"
-      label: "test"
-    - url: "google.com"
-      label: "google"
-    attestation:
-      hint:
-        humanReadableName: "Attestor Note"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
+kind: ContainerAnalysisNote
+metadata:
+  name: containeranalysisnote-sample
+spec:
+  shortDescription: "short description"
+  longDescription: "long description"
+  relatedUrl:
+  - url: "some.url"
+    label: "test"
+  - url: "google.com"
+    label: "google"
+  attestation:
+    hint:
+      humanReadableName: "Attestor Note"
+```
 
 
 {% endblock %}

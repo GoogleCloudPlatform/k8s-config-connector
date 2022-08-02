@@ -73,29 +73,29 @@ one of `projectRef`, `folderRef`, `organizationRef`, or `billingAccountRef`.
 
 ### Spec
 #### Schema
-  ```yaml
-  billingAccountRef:
-    external: string
-    name: string
-    namespace: string
-  description: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  location: string
-  locked: boolean
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  retentionDays: integer
-  ```
+```yaml
+billingAccountRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+location: string
+locked: boolean
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+retentionDays: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -323,18 +323,18 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  lifecycleState: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+lifecycleState: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -426,130 +426,130 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 ## Sample YAML(s)
 
 ### Billing Account Log Bucket
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogBucket
-  metadata:
-    name: logginglogbucket-sample-billingaccountlogbucket
-  spec:
-    # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-    resourceID: "_Default"
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-    location: "global"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-sample-billingaccountlogbucket
+spec:
+  # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
+  resourceID: "_Default"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+  location: "global"
+```
 
 ### Folder Log Bucket
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogBucket
-  metadata:
-    name: logginglogbucket-sample-folderlogbucket
-  spec:
-    # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-    resourceID: "_Required"
-    folderRef:
-      name: "logginglogbucket-dep-folderlogbucket"
-    location: "global"
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
-    name: logginglogbucket-dep-folderlogbucket
-  spec:
-    displayName: Folder Log Bucket Sample
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-sample-folderlogbucket
+spec:
+  # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
+  resourceID: "_Required"
+  folderRef:
+    name: "logginglogbucket-dep-folderlogbucket"
+  location: "global"
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: logginglogbucket-dep-folderlogbucket
+spec:
+  displayName: Folder Log Bucket Sample
+```
 
 ### Organization Log Bucket
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogBucket
-  metadata:
-    name: logginglogbucket-sample-organizationlogbucket
-  spec:
-    # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-    resourceID: "_Default"
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "organizations/${ORG_ID?}"
-    location: "global"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-sample-organizationlogbucket
+spec:
+  # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
+  resourceID: "_Default"
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  location: "global"
+```
 
 ### Project Log Bucket
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: logging.cnrm.cloud.google.com/v1beta1
-  kind: LoggingLogBucket
-  metadata:
-    name: logginglogbucket-sample-projectlogbucket
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "global"
-    description: "A sample log bucket"
-    locked: false
-    retentionDays: 30
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-sample-projectlogbucket
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  description: "A sample log bucket"
+  locked: false
+  retentionDays: 30
+```
 
 
 {% endblock %}

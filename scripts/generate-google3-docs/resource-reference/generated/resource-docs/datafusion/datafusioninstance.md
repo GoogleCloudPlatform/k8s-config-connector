@@ -72,30 +72,30 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  dataprocServiceAccountRef:
+```yaml
+dataprocServiceAccountRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+displayName: string
+enableStackdriverLogging: boolean
+enableStackdriverMonitoring: boolean
+location: string
+networkConfig:
+  ipAllocation: string
+  networkRef:
     external: string
     name: string
     namespace: string
-  description: string
-  displayName: string
-  enableStackdriverLogging: boolean
-  enableStackdriverMonitoring: boolean
-  location: string
-  networkConfig:
-    ipAllocation: string
-    networkRef:
-      external: string
-      name: string
-      namespace: string
-  options:
-    string: string
-  privateInstance: boolean
-  resourceID: string
-  type: string
-  version: string
-  zone: string
-  ```
+options:
+  string: string
+privateInstance: boolean
+resourceID: string
+type: string
+version: string
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -325,29 +325,29 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
 
 ### Status
 #### Schema
-  ```yaml
-  apiEndpoint: string
-  availableVersion:
-  - availableFeatures:
-    - string
-    defaultVersion: boolean
-    versionNumber: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  gcsBucket: string
-  observedGeneration: integer
-  p4ServiceAccount: string
-  serviceEndpoint: string
-  state: string
-  stateMessage: string
-  tenantProjectId: string
-  updateTime: string
-  ```
+```yaml
+apiEndpoint: string
+availableVersion:
+- availableFeatures:
+  - string
+  defaultVersion: boolean
+  versionNumber: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+gcsBucket: string
+observedGeneration: integer
+p4ServiceAccount: string
+serviceEndpoint: string
+state: string
+stateMessage: string
+tenantProjectId: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -523,57 +523,57 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: datafusion.cnrm.cloud.google.com/v1beta1
-  kind: DataFusionInstance
-  metadata:
-    labels:
-      label-one: value-one
-    name: datafusioninstance-sample
-  spec:
-    description: A sample DataFusion instance.
-    displayName: Sample DataFusion Instance
-    location: us-central1
-    type: BASIC
-    enableStackdriverMonitoring: true
-    enableStackdriverLogging: true
-    privateInstance: true
-    networkConfig:
-      networkRef:
-        name: datafusioninstance-dep
-      ipAllocation: 10.89.48.0/22
-    dataprocServiceAccountRef:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: datafusion.cnrm.cloud.google.com/v1beta1
+kind: DataFusionInstance
+metadata:
+  labels:
+    label-one: value-one
+  name: datafusioninstance-sample
+spec:
+  description: A sample DataFusion instance.
+  displayName: Sample DataFusion Instance
+  location: us-central1
+  type: BASIC
+  enableStackdriverMonitoring: true
+  enableStackdriverLogging: true
+  privateInstance: true
+  networkConfig:
+    networkRef:
       name: datafusioninstance-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+    ipAllocation: 10.89.48.0/22
+  dataprocServiceAccountRef:
     name: datafusioninstance-dep
-  spec:
-    routingMode: GLOBAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    name: datafusioninstance-dep
-  spec:
-    displayName: DataFusionInstance Service Account
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: datafusioninstance-dep
+spec:
+  routingMode: GLOBAL
+  autoCreateSubnetworks: false
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: datafusioninstance-dep
+spec:
+  displayName: DataFusionInstance Service Account
+```
 
 
 {% endblock %}

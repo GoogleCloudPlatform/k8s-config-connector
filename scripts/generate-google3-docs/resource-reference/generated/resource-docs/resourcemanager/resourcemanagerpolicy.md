@@ -63,37 +63,37 @@ one of `projectRef`, `folderRef`, or `organizationRef`.
 
 ### Spec
 #### Schema
-  ```yaml
-  booleanPolicy:
-    enforced: boolean
-  constraint: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  listPolicy:
-    allow:
-      all: boolean
-      values:
-      - string
-    deny:
-      all: boolean
-      values:
-      - string
-    inheritFromParent: boolean
-    suggestedValue: string
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  restorePolicy:
-    default: boolean
-  version: integer
-  ```
+```yaml
+booleanPolicy:
+  enforced: boolean
+constraint: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+listPolicy:
+  allow:
+    all: boolean
+    values:
+    - string
+  deny:
+    all: boolean
+    values:
+    - string
+  inheritFromParent: boolean
+  suggestedValue: string
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+restorePolicy:
+  default: boolean
+version: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -404,17 +404,17 @@ projectRef, folderRef, or organizationRef may be specified.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  etag: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+etag: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -499,112 +499,112 @@ projectRef, folderRef, or organizationRef may be specified.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Organization Policy For Folder
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: ResourceManagerPolicy
-  metadata:
-    name: resourcemanagerpolicy-sample-folder
-  spec:
-    folderRef:
-      name: resourcemanagerpolicy-dep-folder
-    constraint: "constraints/compute.disableSerialPortAccess"
-    booleanPolicy:
-      enforced: true
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerPolicy
+metadata:
+  name: resourcemanagerpolicy-sample-folder
+spec:
+  folderRef:
     name: resourcemanagerpolicy-dep-folder
-  spec:
-    displayName: Organization Policy Sample
-  ```
+  constraint: "constraints/compute.disableSerialPortAccess"
+  booleanPolicy:
+    enforced: true
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: resourcemanagerpolicy-dep-folder
+spec:
+  displayName: Organization Policy Sample
+```
 
 ### Organization Policy For Organization
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: ResourceManagerPolicy
-  metadata:
-    name: resourcemanagerpolicy-sample-org
-  spec:
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      external: "${ORG_ID?}"
-    constraint: "constraints/compute.disableSerialPortAccess"
-    booleanPolicy:
-      enforced: true
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerPolicy
+metadata:
+  name: resourcemanagerpolicy-sample-org
+spec:
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  constraint: "constraints/compute.disableSerialPortAccess"
+  booleanPolicy:
+    enforced: true
+```
 
 ### Organization Policy For Project
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: ResourceManagerPolicy
-  metadata:
-    name: resourcemanagerpolicy-sample-proj
-  spec:
-    projectRef:
-      name: resourcemanagerpolicy-dep-proj
-    constraint: "constraints/compute.disableSerialPortAccess"
-    booleanPolicy:
-      enforced: true
-  ---
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Project
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your folder
-      cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: ResourceManagerPolicy
+metadata:
+  name: resourcemanagerpolicy-sample-proj
+spec:
+  projectRef:
     name: resourcemanagerpolicy-dep-proj
-  spec:
-    name: Org Policy Sample
-    billingAccountRef:
-      # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-      external: "${BILLING_ACCOUNT_ID?}"
-  ```
+  constraint: "constraints/compute.disableSerialPortAccess"
+  booleanPolicy:
+    enforced: true
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your folder
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+  name: resourcemanagerpolicy-dep-proj
+spec:
+  name: Org Policy Sample
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+```
 
 
 {% endblock %}

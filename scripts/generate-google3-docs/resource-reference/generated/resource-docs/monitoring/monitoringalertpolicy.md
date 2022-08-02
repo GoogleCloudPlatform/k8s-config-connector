@@ -72,69 +72,69 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  alertStrategy:
-    autoClose: string
-    notificationRateLimit:
-      period: string
-  combiner: string
-  conditions:
-  - conditionAbsent:
-      aggregations:
-      - alignmentPeriod: string
-        crossSeriesReducer: string
-        groupByFields:
-        - string
-        perSeriesAligner: string
-      duration: string
-      filter: string
-      trigger:
-        count: integer
-        percent: float
-    conditionMatchedLog:
-      filter: string
-      labelExtractors:
-        string: string
-    conditionMonitoringQueryLanguage:
-      duration: string
-      query: string
-      trigger:
-        count: integer
-        percent: float
-    conditionThreshold:
-      aggregations:
-      - alignmentPeriod: string
-        crossSeriesReducer: string
-        groupByFields:
-        - string
-        perSeriesAligner: string
-      comparison: string
-      denominatorAggregations:
-      - alignmentPeriod: string
-        crossSeriesReducer: string
-        groupByFields:
-        - string
-        perSeriesAligner: string
-      denominatorFilter: string
-      duration: string
-      filter: string
-      thresholdValue: float
-      trigger:
-        count: integer
-        percent: float
-    displayName: string
-    name: string
+```yaml
+alertStrategy:
+  autoClose: string
+  notificationRateLimit:
+    period: string
+combiner: string
+conditions:
+- conditionAbsent:
+    aggregations:
+    - alignmentPeriod: string
+      crossSeriesReducer: string
+      groupByFields:
+      - string
+      perSeriesAligner: string
+    duration: string
+    filter: string
+    trigger:
+      count: integer
+      percent: float
+  conditionMatchedLog:
+    filter: string
+    labelExtractors:
+      string: string
+  conditionMonitoringQueryLanguage:
+    duration: string
+    query: string
+    trigger:
+      count: integer
+      percent: float
+  conditionThreshold:
+    aggregations:
+    - alignmentPeriod: string
+      crossSeriesReducer: string
+      groupByFields:
+      - string
+      perSeriesAligner: string
+    comparison: string
+    denominatorAggregations:
+    - alignmentPeriod: string
+      crossSeriesReducer: string
+      groupByFields:
+      - string
+      perSeriesAligner: string
+    denominatorFilter: string
+    duration: string
+    filter: string
+    thresholdValue: float
+    trigger:
+      count: integer
+      percent: float
   displayName: string
-  documentation:
-    content: string
-    mimeType: string
-  enabled: boolean
-  notificationChannels:
-  - external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+  name: string
+displayName: string
+documentation:
+  content: string
+  mimeType: string
+enabled: boolean
+notificationChannels:
+- external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1185,19 +1185,19 @@ whichever is smaller.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationRecord:
-  - mutateTime: string
-    mutatedBy: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationRecord:
+- mutateTime: string
+  mutatedBy: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -1306,225 +1306,225 @@ Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID].{% endverba
 ## Sample YAML(s)
 
 ### Instance Performance Alert Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringAlertPolicy
-  metadata:
-    labels:
-      checking: instance-performance-bug
-      oncall-treatment: urgent-meltdown
-    name: monitoringalertpolicy-sample-instanceperformance
-  spec:
-    displayName: Sample Computing Instance Performance Alert Policy
-    enabled: true
-    notificationChannels:
-      - name: monitoringalertpolicy-dep-instanceperformance
-    combiner: AND_WITH_MATCHING_RESOURCE
-    conditions:
-    - displayName: CPU usage is extremely high
-      conditionThreshold:
-        filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
-        aggregations:
-        - perSeriesAligner: ALIGN_MAX
-          alignmentPeriod: 60s
-          crossSeriesReducer: REDUCE_MEAN
-          groupByFields:
-          - project
-          - resource.label.instance_id
-          - resource.label.zone
-        comparison: COMPARISON_GT
-        thresholdValue: 0.9
-        duration: 900s
-        trigger:
-          count: 1
-    - displayName: CPU usage is increasing at a high rate
-      conditionThreshold:
-        filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
-        aggregations:
-        - alignmentPeriod: 900s
-          perSeriesAligner: ALIGN_PERCENT_CHANGE
-        comparison: COMPARISON_GT
-        thresholdValue: 0.5
-        duration: 180s
-        trigger:
-          count: 1
-    - displayName: Process 'nginx' is not running
-      conditionThreshold:
-        filter: select_process_count("has_substring(\"nginx\")", "www") AND resource.type="gce_instance"
-        comparison: COMPARISON_LT
-        thresholdValue: 1
-        duration: 300s
-    documentation:
-      content: |-
-        This sample is an amalgamation of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
-  
-        Combiner AND_WITH_MATCHING_RESOURCE
-        While more general policies will use an OR combiner, triggering an incident when any of their conditions are met, AND combiners only trigger when all of their conditions are met, allowing for specification of very specific circumstances.
-        AND_WITH_MATCHING_RESOURCE combiners go one step further and only trigger when all conditions are met for the same resource, in this case, a GCE instance.
-  
-        Metric-threshold condition
-        The first condition in this policy, "CPU usage is extremely high", tests average CPU usage in a group of VMs.
-  
-        Rate-of-change condition
-        The second condition in this policy, "CPU usage is increasing at a high rate" tests if the rate of CPU utilization is increasing rapidly.
-  
-        Process-health condition
-        The third condition in this policy, "Process 'nginx' is not running", tests if there is no process matching the string nginx and running as user www available for more than 5 minutes.
-  
-        All together, this policy would monitor for a situation where the lack of an 'nginx' process caused a spike in CPU usage in the same instance and elevated CPU usage across all instances in its group.
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    name: monitoringalertpolicy-dep-instanceperformance
-  spec:
-    type: sms
-    labels:
-      number: "12025550196"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  labels:
+    checking: instance-performance-bug
+    oncall-treatment: urgent-meltdown
+  name: monitoringalertpolicy-sample-instanceperformance
+spec:
+  displayName: Sample Computing Instance Performance Alert Policy
+  enabled: true
+  notificationChannels:
+    - name: monitoringalertpolicy-dep-instanceperformance
+  combiner: AND_WITH_MATCHING_RESOURCE
+  conditions:
+  - displayName: CPU usage is extremely high
+    conditionThreshold:
+      filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+      aggregations:
+      - perSeriesAligner: ALIGN_MAX
+        alignmentPeriod: 60s
+        crossSeriesReducer: REDUCE_MEAN
+        groupByFields:
+        - project
+        - resource.label.instance_id
+        - resource.label.zone
+      comparison: COMPARISON_GT
+      thresholdValue: 0.9
+      duration: 900s
+      trigger:
+        count: 1
+  - displayName: CPU usage is increasing at a high rate
+    conditionThreshold:
+      filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+      aggregations:
+      - alignmentPeriod: 900s
+        perSeriesAligner: ALIGN_PERCENT_CHANGE
+      comparison: COMPARISON_GT
+      thresholdValue: 0.5
+      duration: 180s
+      trigger:
+        count: 1
+  - displayName: Process 'nginx' is not running
+    conditionThreshold:
+      filter: select_process_count("has_substring(\"nginx\")", "www") AND resource.type="gce_instance"
+      comparison: COMPARISON_LT
+      thresholdValue: 1
+      duration: 300s
+  documentation:
+    content: |-
+      This sample is an amalgamation of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
+
+      Combiner AND_WITH_MATCHING_RESOURCE
+      While more general policies will use an OR combiner, triggering an incident when any of their conditions are met, AND combiners only trigger when all of their conditions are met, allowing for specification of very specific circumstances.
+      AND_WITH_MATCHING_RESOURCE combiners go one step further and only trigger when all conditions are met for the same resource, in this case, a GCE instance.
+
+      Metric-threshold condition
+      The first condition in this policy, "CPU usage is extremely high", tests average CPU usage in a group of VMs.
+
+      Rate-of-change condition
+      The second condition in this policy, "CPU usage is increasing at a high rate" tests if the rate of CPU utilization is increasing rapidly.
+
+      Process-health condition
+      The third condition in this policy, "Process 'nginx' is not running", tests if there is no process matching the string nginx and running as user www available for more than 5 minutes.
+
+      All together, this policy would monitor for a situation where the lack of an 'nginx' process caused a spike in CPU usage in the same instance and elevated CPU usage across all instances in its group.
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: monitoringalertpolicy-dep-instanceperformance
+spec:
+  type: sms
+  labels:
+    number: "12025550196"
+```
 
 ### Network Connectivity Alert Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringAlertPolicy
-  metadata:
-    labels:
-      checking: website-health
-      oncall-treatment: stay-aware
-    name: monitoringalertpolicy-sample-networkconnectivity
-  spec:
-    displayName: Sample Website Aetwork Connectivity Alert Policy
-    enabled: true
-    notificationChannels:
-      - name: monitoringalertpolicy-dep1-networkconnectivity
-      - name: monitoringalertpolicy-dep2-networkconnectivity
-    combiner: OR
-    conditions:
-    - displayName: Failure of uptime check_id uptime-check-for-google-cloud-site
-      conditionThreshold:
-        filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
-        aggregations:
-        - perSeriesAligner: ALIGN_NEXT_OLDER
-          alignmentPeriod: 1200s
-          crossSeriesReducer: REDUCE_COUNT_FALSE
-          groupByFields:
-          - resource.label.*
-        comparison: COMPARISON_GT
-        thresholdValue: 1
-        duration: 600s
-        trigger:
-          count: 1
-    - displayName: SSL Certificate for google-cloud-site expiring soon
-      conditionThreshold:
-        filter: metric.type="monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
-        aggregations:
-        - alignmentPeriod: 1200s
-          perSeriesAligner: ALIGN_NEXT_OLDER
-          crossSeriesReducer: REDUCE_MEAN
-          groupByFields:
-          - resource.label.*
-        comparison: COMPARISON_LT
-        thresholdValue: 15
-        duration: 600s
-        trigger:
-          count: 1
-    - displayName: Uptime check running
-      conditionAbsent:
-        filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
-        duration: 3900s
-    - displayName: Ratio of HTTP 500s error-response counts to all HTTP response counts
-      conditionThreshold:
-        filter: metric.label.response_code>="500" AND metric.label.response_code<"600" AND metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
-        aggregations:
-        - alignmentPeriod: 300s
-          perSeriesAligner: ALIGN_DELTA
-          crossSeriesReducer: REDUCE_SUM
-          groupByFields:
-          - project
-          - resource.label.module_id
-          - resource.label.version_id
-        denominatorFilter: metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
-        denominatorAggregations:
-        - alignmentPeriod: 300s
-          perSeriesAligner: ALIGN_DELTA
-          crossSeriesReducer: REDUCE_SUM
-          groupByFields:
-          - project
-          - resource.label.module_id
-          - resource.label.version_id
-        comparison: COMPARISON_GT
-        thresholdValue: 0.5
-        duration: 0s
-        trigger:
-          count: 1
-    documentation:
-      content: |-
-        This sample is a synthesis of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
-  
-        Combiner OR
-        OR combiner policies will trigger an incident when any of their conditions are met. They should be considered the default for most purposes.
-  
-        Uptime-check conditions
-        The first three conditions in this policy involve an uptime check with the ID 'uptime-check-for-google-cloud-site'.
-  
-        The first condition, "Failure of uptime check_id uptime-check-for-google-cloud-site", tests if the uptime check fails.
-        The second condition, "SSL Certificate for google-cloud-site expiring soon", tests if the SSL certificate on the Google Cloud site will expire in under 15 days.
-  
-        Metric-absence condition
-        The third condition in this policy, "Uptime check running" tests if the aforementioned uptime check is not written to for a period of approximately an hour.
-        Note that unlike all the conditions so far, the condition used here is conditionAbsent, because the test is for the lack of a metric.
-  
-        Metric ratio
-        The fourth and last condition in this policy, "Ratio of HTTP 500s error-response counts to all HTTP response counts", tests that 5XX error codes do not make up more than half of all HTTP responses. It targets a different set of metrics through appengine.
-        
-        All together, this policy would monitor for a situation where any of the above conditions threatened the health of the website.
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    name: monitoringalertpolicy-dep1-networkconnectivity
-  spec:
-    type: sms
-    labels:
-      number: "12025550196"
-  ---
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    name: monitoringalertpolicy-dep2-networkconnectivity
-  spec:
-    type: email
-    labels:
-      email_address: dev@example.com
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  labels:
+    checking: website-health
+    oncall-treatment: stay-aware
+  name: monitoringalertpolicy-sample-networkconnectivity
+spec:
+  displayName: Sample Website Aetwork Connectivity Alert Policy
+  enabled: true
+  notificationChannels:
+    - name: monitoringalertpolicy-dep1-networkconnectivity
+    - name: monitoringalertpolicy-dep2-networkconnectivity
+  combiner: OR
+  conditions:
+  - displayName: Failure of uptime check_id uptime-check-for-google-cloud-site
+    conditionThreshold:
+      filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      aggregations:
+      - perSeriesAligner: ALIGN_NEXT_OLDER
+        alignmentPeriod: 1200s
+        crossSeriesReducer: REDUCE_COUNT_FALSE
+        groupByFields:
+        - resource.label.*
+      comparison: COMPARISON_GT
+      thresholdValue: 1
+      duration: 600s
+      trigger:
+        count: 1
+  - displayName: SSL Certificate for google-cloud-site expiring soon
+    conditionThreshold:
+      filter: metric.type="monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      aggregations:
+      - alignmentPeriod: 1200s
+        perSeriesAligner: ALIGN_NEXT_OLDER
+        crossSeriesReducer: REDUCE_MEAN
+        groupByFields:
+        - resource.label.*
+      comparison: COMPARISON_LT
+      thresholdValue: 15
+      duration: 600s
+      trigger:
+        count: 1
+  - displayName: Uptime check running
+    conditionAbsent:
+      filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      duration: 3900s
+  - displayName: Ratio of HTTP 500s error-response counts to all HTTP response counts
+    conditionThreshold:
+      filter: metric.label.response_code>="500" AND metric.label.response_code<"600" AND metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
+      aggregations:
+      - alignmentPeriod: 300s
+        perSeriesAligner: ALIGN_DELTA
+        crossSeriesReducer: REDUCE_SUM
+        groupByFields:
+        - project
+        - resource.label.module_id
+        - resource.label.version_id
+      denominatorFilter: metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
+      denominatorAggregations:
+      - alignmentPeriod: 300s
+        perSeriesAligner: ALIGN_DELTA
+        crossSeriesReducer: REDUCE_SUM
+        groupByFields:
+        - project
+        - resource.label.module_id
+        - resource.label.version_id
+      comparison: COMPARISON_GT
+      thresholdValue: 0.5
+      duration: 0s
+      trigger:
+        count: 1
+  documentation:
+    content: |-
+      This sample is a synthesis of policy samples found at https://cloud.google.com/monitoring/alerts/policies-in-json. It is meant to give an idea of what is possible rather than be a completely realistic alerting policy in and of itself.
+
+      Combiner OR
+      OR combiner policies will trigger an incident when any of their conditions are met. They should be considered the default for most purposes.
+
+      Uptime-check conditions
+      The first three conditions in this policy involve an uptime check with the ID 'uptime-check-for-google-cloud-site'.
+
+      The first condition, "Failure of uptime check_id uptime-check-for-google-cloud-site", tests if the uptime check fails.
+      The second condition, "SSL Certificate for google-cloud-site expiring soon", tests if the SSL certificate on the Google Cloud site will expire in under 15 days.
+
+      Metric-absence condition
+      The third condition in this policy, "Uptime check running" tests if the aforementioned uptime check is not written to for a period of approximately an hour.
+      Note that unlike all the conditions so far, the condition used here is conditionAbsent, because the test is for the lack of a metric.
+
+      Metric ratio
+      The fourth and last condition in this policy, "Ratio of HTTP 500s error-response counts to all HTTP response counts", tests that 5XX error codes do not make up more than half of all HTTP responses. It targets a different set of metrics through appengine.
+      
+      All together, this policy would monitor for a situation where any of the above conditions threatened the health of the website.
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: monitoringalertpolicy-dep1-networkconnectivity
+spec:
+  type: sms
+  labels:
+    number: "12025550196"
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: monitoringalertpolicy-dep2-networkconnectivity
+spec:
+  type: email
+  labels:
+    email_address: dev@example.com
+```
 
 
 {% endblock %}

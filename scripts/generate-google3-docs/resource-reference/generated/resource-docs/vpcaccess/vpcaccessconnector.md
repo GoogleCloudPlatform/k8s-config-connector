@@ -58,15 +58,25 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  ipCidrRange: string
-  location: string
-  machineType: string
-  maxInstances: integer
-  maxThroughput: integer
-  minInstances: integer
-  minThroughput: integer
-  networkRef:
+```yaml
+ipCidrRange: string
+location: string
+machineType: string
+maxInstances: integer
+maxThroughput: integer
+minInstances: integer
+minThroughput: integer
+networkRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+subnet:
+  nameRef:
     external: string
     name: string
     namespace: string
@@ -74,17 +84,7 @@
     external: string
     name: string
     namespace: string
-  resourceID: string
-  subnet:
-    nameRef:
-      external: string
-      name: string
-      namespace: string
-    projectRef:
-      external: string
-      name: string
-      namespace: string
-  ```
+```
 
 <table class="properties responsive">
 <thead>
@@ -358,18 +358,18 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  connectedProjects:
-  - string
-  observedGeneration: integer
-  state: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+connectedProjects:
+- string
+observedGeneration: integer
+state: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -461,96 +461,96 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Cidr Connector
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
-  kind: VPCAccessConnector
-  metadata:
-    name: connector-sample-cidr
-  spec:
-    location: "us-central1"
-    networkRef:
-      name: connector-dep-cidr
-    ipCidrRange: "10.132.0.0/28"
-    minThroughput: 300
-    maxThroughput: 400
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+kind: VPCAccessConnector
+metadata:
+  name: connector-sample-cidr
+spec:
+  location: "us-central1"
+  networkRef:
     name: connector-dep-cidr
-  spec:
-    autoCreateSubnetworks: false
-  ```
+  ipCidrRange: "10.132.0.0/28"
+  minThroughput: 300
+  maxThroughput: 400
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: connector-dep-cidr
+spec:
+  autoCreateSubnetworks: false
+```
 
 ### Subnet Connector
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
-  kind: VPCAccessConnector
-  metadata:
-    name: connector-sample-subnet
-  spec:
-    location: "us-central1"
-    machineType: "e2-micro"
-    minInstances: 2
-    maxInstances: 3
-    subnet:
-      nameRef:
-        name: connector-dep-subnet
-      projectRef:
-        # Replace ${PROJECT_ID?} with your project ID.
-        external: "projects/${PROJECT_ID?}"
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: connector-dep-subnet
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: connector-dep-subnet
-  spec:
-    ipCidrRange: "10.2.0.0/28"
-    region: "us-west2"
-    networkRef:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+kind: VPCAccessConnector
+metadata:
+  name: connector-sample-subnet
+spec:
+  location: "us-central1"
+  machineType: "e2-micro"
+  minInstances: 2
+  maxInstances: 3
+  subnet:
+    nameRef:
       name: connector-dep-subnet
-  ```
+    projectRef:
+      # Replace ${PROJECT_ID?} with your project ID.
+      external: "projects/${PROJECT_ID?}"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: connector-dep-subnet
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: connector-dep-subnet
+spec:
+  ipCidrRange: "10.2.0.0/28"
+  region: "us-west2"
+  networkRef:
+    name: connector-dep-subnet
+```
 
 
 {% endblock %}

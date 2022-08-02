@@ -58,20 +58,20 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  enabled: boolean
-  resourceID: string
-  secretData:
-    value: string
-    valueFrom:
-      secretKeyRef:
-        key: string
-        name: string
-  secretRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+```yaml
+enabled: boolean
+resourceID: string
+secretData:
+  value: string
+  valueFrom:
+    secretKeyRef:
+      key: string
+      name: string
+secretRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -209,18 +209,18 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  destroyTime: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+destroyTime: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -313,50 +313,50 @@
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-  kind: SecretManagerSecretVersion
-  metadata:
-    name: secretmanagersecretversion-sample
-  spec:
-    enabled: true
-    secretData:
-      valueFrom:
-        secretKeyRef:
-          key: secretData
-          name: secretmanagersecretversion-dep
-    secretRef:
-      name: secretmanagersecretversion-dep
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: secretmanagersecretversion-sample
+spec:
+  enabled: true
+  secretData:
+    valueFrom:
+      secretKeyRef:
+        key: secretData
+        name: secretmanagersecretversion-dep
+  secretRef:
     name: secretmanagersecretversion-dep
-  data:
-    secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
-  ---
-  apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-  kind: SecretManagerSecret
-  metadata:
-    name: secretmanagersecretversion-dep
-  spec:
-    replication:
-      automatic: true
-  ```
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secretmanagersecretversion-dep
+data:
+  secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: secretmanagersecretversion-dep
+spec:
+  replication:
+    automatic: true
+```
 
 
 {% endblock %}

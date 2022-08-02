@@ -72,48 +72,48 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  adaptiveProtectionConfig:
-    layer7DdosDefenseConfig:
-      enable: boolean
-      ruleVisibility: string
-  advancedOptionsConfig:
-    jsonParsing: string
-    logLevel: string
+```yaml
+adaptiveProtectionConfig:
+  layer7DdosDefenseConfig:
+    enable: boolean
+    ruleVisibility: string
+advancedOptionsConfig:
+  jsonParsing: string
+  logLevel: string
+description: string
+resourceID: string
+rule:
+- action: string
   description: string
-  resourceID: string
-  rule:
-  - action: string
-    description: string
-    match:
-      config:
-        srcIpRanges:
-        - string
-      expr:
-        expression: string
-      versionedExpr: string
-    preview: boolean
-    priority: integer
-    rateLimitOptions:
-      banDurationSec: integer
-      banThreshold:
-        count: integer
-        intervalSec: integer
-      conformAction: string
-      enforceOnKey: string
-      enforceOnKeyName: string
-      exceedAction: string
-      exceedRedirectOptions:
-        target: string
-        type: string
-      rateLimitThreshold:
-        count: integer
-        intervalSec: integer
-    redirectOptions:
+  match:
+    config:
+      srcIpRanges:
+      - string
+    expr:
+      expression: string
+    versionedExpr: string
+  preview: boolean
+  priority: integer
+  rateLimitOptions:
+    banDurationSec: integer
+    banThreshold:
+      count: integer
+      intervalSec: integer
+    conformAction: string
+    enforceOnKey: string
+    enforceOnKeyName: string
+    exceedAction: string
+    exceedRedirectOptions:
       target: string
       type: string
-  type: string
-  ```
+    rateLimitThreshold:
+      count: integer
+      intervalSec: integer
+  redirectOptions:
+    target: string
+    type: string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -541,17 +541,17 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  fingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+fingerprint: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -636,108 +636,108 @@
 ## Sample YAML(s)
 
 ### Lockdown Security Policy With Test
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSecurityPolicy
-  metadata:
-    name: computesecuritypolicy-sample-lockdownwithtest
-  spec:
-    description: A policy designed to completely lock down network access while testing the effect of opening ports over a few select ranges.
-    rule:
-    - action: deny(403)
-      priority: 2147483647
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - "*"
-      description: Rule matching all IPs with priority 2147483647, set to deny.
-    - action: allow
-      preview: true
-      priority: 1000000000
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - 16.0.0.0/4
-          - 115.128.0.0/9
-          - 62.48.212.0/24
-      description: Tests opening listed IP ranges. Logs sent to Stackdriver.
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computesecuritypolicy-sample-lockdownwithtest
+spec:
+  description: A policy designed to completely lock down network access while testing the effect of opening ports over a few select ranges.
+  rule:
+  - action: deny(403)
+    priority: 2147483647
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - "*"
+    description: Rule matching all IPs with priority 2147483647, set to deny.
+  - action: allow
+    preview: true
+    priority: 1000000000
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 16.0.0.0/4
+        - 115.128.0.0/9
+        - 62.48.212.0/24
+    description: Tests opening listed IP ranges. Logs sent to Stackdriver.
+```
 
 ### Multirule Security Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSecurityPolicy
-  metadata:
-    name: computesecuritypolicy-sample-multirule
-  spec:
-    description: A generally permissive policy that locks out a large block of untrusted IPs, except for some allowed trusted IP ranges within them, and never allows IPs from a denylist.
-    rule:
-    - action: allow
-      priority: 2147483647
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - "*"
-      description: This rule must be included in any rule array. Action can change.
-    - action: deny(502)
-      priority: 111111111
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - 60.0.0.0/6
-      description: Untrusted range. Block IPs and return 502.
-    - action: allow
-      priority: 555
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - 63.0.0.0/8
-          - 61.128.0.0/10
-      description: Even though they're in an untrusted block, these ranges are OK.
-    - action: deny(403)
-      priority: 0
-      match:
-        versionedExpr: SRC_IPS_V1
-        config:
-          srcIpRanges:
-          - 145.4.56.4/30
-          - 63.63.63.63/32
-          - 4.5.4.0/24
-      description: Never allow these denylisted IP ranges.
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computesecuritypolicy-sample-multirule
+spec:
+  description: A generally permissive policy that locks out a large block of untrusted IPs, except for some allowed trusted IP ranges within them, and never allows IPs from a denylist.
+  rule:
+  - action: allow
+    priority: 2147483647
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - "*"
+    description: This rule must be included in any rule array. Action can change.
+  - action: deny(502)
+    priority: 111111111
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 60.0.0.0/6
+    description: Untrusted range. Block IPs and return 502.
+  - action: allow
+    priority: 555
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 63.0.0.0/8
+        - 61.128.0.0/10
+    description: Even though they're in an untrusted block, these ranges are OK.
+  - action: deny(403)
+    priority: 0
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges:
+        - 145.4.56.4/30
+        - 63.63.63.63/32
+        - 4.5.4.0/24
+    description: Never allow these denylisted IP ranges.
+```
 
 
 {% endblock %}

@@ -72,8 +72,106 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  defaultRouteAction:
+```yaml
+defaultRouteAction:
+  corsPolicy:
+    allowCredentials: boolean
+    allowHeaders:
+    - string
+    allowMethods:
+    - string
+    allowOriginRegexes:
+    - string
+    allowOrigins:
+    - string
+    disabled: boolean
+    exposeHeaders:
+    - string
+    maxAge: integer
+  faultInjectionPolicy:
+    abort:
+      httpStatus: integer
+      percentage: float
+    delay:
+      fixedDelay:
+        nanos: integer
+        seconds: string
+      percentage: float
+  requestMirrorPolicy:
+    backendServiceRef:
+      external: string
+      name: string
+      namespace: string
+  retryPolicy:
+    numRetries: integer
+    perTryTimeout:
+      nanos: integer
+      seconds: string
+    retryConditions:
+    - string
+  timeout:
+    nanos: integer
+    seconds: string
+  urlRewrite:
+    hostRewrite: string
+    pathPrefixRewrite: string
+  weightedBackendServices:
+  - backendServiceRef:
+      external: string
+      name: string
+      namespace: string
+    headerAction:
+      requestHeadersToAdd:
+      - headerName: string
+        headerValue: string
+        replace: boolean
+      requestHeadersToRemove:
+      - string
+      responseHeadersToAdd:
+      - headerName: string
+        headerValue: string
+        replace: boolean
+      responseHeadersToRemove:
+      - string
+    weight: integer
+defaultService:
+  backendBucketRef:
+    external: string
+    name: string
+    namespace: string
+  backendServiceRef:
+    external: string
+    name: string
+    namespace: string
+defaultUrlRedirect:
+  hostRedirect: string
+  httpsRedirect: boolean
+  pathRedirect: string
+  prefixRedirect: string
+  redirectResponseCode: string
+  stripQuery: boolean
+description: string
+headerAction:
+  requestHeadersToAdd:
+  - headerName: string
+    headerValue: string
+    replace: boolean
+  requestHeadersToRemove:
+  - string
+  responseHeadersToAdd:
+  - headerName: string
+    headerValue: string
+    replace: boolean
+  responseHeadersToRemove:
+  - string
+hostRule:
+- description: string
+  hosts:
+  - string
+  pathMatcher: string
+location: string
+pathMatcher:
+- defaultRouteAction:
     corsPolicy:
       allowCredentials: boolean
       allowHeaders:
@@ -164,14 +262,11 @@
       replace: boolean
     responseHeadersToRemove:
     - string
-  hostRule:
-  - description: string
-    hosts:
+  name: string
+  pathRule:
+  - paths:
     - string
-    pathMatcher: string
-  location: string
-  pathMatcher:
-  - defaultRouteAction:
+    routeAction:
       corsPolicy:
         allowCredentials: boolean
         allowHeaders:
@@ -232,7 +327,7 @@
           responseHeadersToRemove:
           - string
         weight: integer
-    defaultService:
+    service:
       backendBucketRef:
         external: string
         name: string
@@ -241,15 +336,15 @@
         external: string
         name: string
         namespace: string
-    defaultUrlRedirect:
+    urlRedirect:
       hostRedirect: string
       httpsRedirect: boolean
       pathRedirect: string
       prefixRedirect: string
       redirectResponseCode: string
       stripQuery: boolean
-    description: string
-    headerAction:
+  routeRules:
+  - headerAction:
       requestHeadersToAdd:
       - headerName: string
         headerValue: string
@@ -262,212 +357,117 @@
         replace: boolean
       responseHeadersToRemove:
       - string
-    name: string
-    pathRule:
-    - paths:
-      - string
-      routeAction:
-        corsPolicy:
-          allowCredentials: boolean
-          allowHeaders:
-          - string
-          allowMethods:
-          - string
-          allowOriginRegexes:
-          - string
-          allowOrigins:
-          - string
-          disabled: boolean
-          exposeHeaders:
-          - string
-          maxAge: integer
-        faultInjectionPolicy:
-          abort:
-            httpStatus: integer
-            percentage: float
-          delay:
-            fixedDelay:
-              nanos: integer
-              seconds: string
-            percentage: float
-        requestMirrorPolicy:
-          backendServiceRef:
-            external: string
-            name: string
-            namespace: string
-        retryPolicy:
-          numRetries: integer
-          perTryTimeout:
+    matchRules:
+    - fullPathMatch: string
+      headerMatches:
+      - exactMatch: string
+        headerName: string
+        invertMatch: boolean
+        prefixMatch: string
+        presentMatch: boolean
+        rangeMatch:
+          rangeEnd: integer
+          rangeStart: integer
+        regexMatch: string
+        suffixMatch: string
+      ignoreCase: boolean
+      metadataFilters:
+      - filterLabels:
+        - name: string
+          value: string
+        filterMatchCriteria: string
+      prefixMatch: string
+      queryParameterMatches:
+      - exactMatch: string
+        name: string
+        presentMatch: boolean
+        regexMatch: string
+      regexMatch: string
+    priority: integer
+    routeAction:
+      corsPolicy:
+        allowCredentials: boolean
+        allowHeaders:
+        - string
+        allowMethods:
+        - string
+        allowOriginRegexes:
+        - string
+        allowOrigins:
+        - string
+        disabled: boolean
+        exposeHeaders:
+        - string
+        maxAge: integer
+      faultInjectionPolicy:
+        abort:
+          httpStatus: integer
+          percentage: float
+        delay:
+          fixedDelay:
             nanos: integer
             seconds: string
-          retryConditions:
-          - string
-        timeout:
-          nanos: integer
-          seconds: string
-        urlRewrite:
-          hostRewrite: string
-          pathPrefixRewrite: string
-        weightedBackendServices:
-        - backendServiceRef:
-            external: string
-            name: string
-            namespace: string
-          headerAction:
-            requestHeadersToAdd:
-            - headerName: string
-              headerValue: string
-              replace: boolean
-            requestHeadersToRemove:
-            - string
-            responseHeadersToAdd:
-            - headerName: string
-              headerValue: string
-              replace: boolean
-            responseHeadersToRemove:
-            - string
-          weight: integer
-      service:
-        backendBucketRef:
-          external: string
-          name: string
-          namespace: string
+          percentage: float
+      requestMirrorPolicy:
         backendServiceRef:
           external: string
           name: string
           namespace: string
-      urlRedirect:
-        hostRedirect: string
-        httpsRedirect: boolean
-        pathRedirect: string
-        prefixRedirect: string
-        redirectResponseCode: string
-        stripQuery: boolean
-    routeRules:
-    - headerAction:
-        requestHeadersToAdd:
-        - headerName: string
-          headerValue: string
-          replace: boolean
-        requestHeadersToRemove:
-        - string
-        responseHeadersToAdd:
-        - headerName: string
-          headerValue: string
-          replace: boolean
-        responseHeadersToRemove:
-        - string
-      matchRules:
-      - fullPathMatch: string
-        headerMatches:
-        - exactMatch: string
-          headerName: string
-          invertMatch: boolean
-          prefixMatch: string
-          presentMatch: boolean
-          rangeMatch:
-            rangeEnd: integer
-            rangeStart: integer
-          regexMatch: string
-          suffixMatch: string
-        ignoreCase: boolean
-        metadataFilters:
-        - filterLabels:
-          - name: string
-            value: string
-          filterMatchCriteria: string
-        prefixMatch: string
-        queryParameterMatches:
-        - exactMatch: string
-          name: string
-          presentMatch: boolean
-          regexMatch: string
-        regexMatch: string
-      priority: integer
-      routeAction:
-        corsPolicy:
-          allowCredentials: boolean
-          allowHeaders:
-          - string
-          allowMethods:
-          - string
-          allowOriginRegexes:
-          - string
-          allowOrigins:
-          - string
-          disabled: boolean
-          exposeHeaders:
-          - string
-          maxAge: integer
-        faultInjectionPolicy:
-          abort:
-            httpStatus: integer
-            percentage: float
-          delay:
-            fixedDelay:
-              nanos: integer
-              seconds: string
-            percentage: float
-        requestMirrorPolicy:
-          backendServiceRef:
-            external: string
-            name: string
-            namespace: string
-        retryPolicy:
-          numRetries: integer
-          perTryTimeout:
-            nanos: integer
-            seconds: string
-          retryConditions:
-          - string
-        timeout:
+      retryPolicy:
+        numRetries: integer
+        perTryTimeout:
           nanos: integer
           seconds: string
-        urlRewrite:
-          hostRewrite: string
-          pathPrefixRewrite: string
-        weightedBackendServices:
-        - backendServiceRef:
-            external: string
-            name: string
-            namespace: string
-          headerAction:
-            requestHeadersToAdd:
-            - headerName: string
-              headerValue: string
-              replace: boolean
-            requestHeadersToRemove:
-            - string
-            responseHeadersToAdd:
-            - headerName: string
-              headerValue: string
-              replace: boolean
-            responseHeadersToRemove:
-            - string
-          weight: integer
-      service: string
-      urlRedirect:
-        hostRedirect: string
-        httpsRedirect: boolean
-        pathRedirect: string
-        prefixRedirect: string
-        redirectResponseCode: string
-        stripQuery: boolean
-  resourceID: string
-  test:
-  - description: string
-    host: string
-    path: string
-    service:
-      backendBucketRef:
-        external: string
-        name: string
-        namespace: string
-      backendServiceRef:
-        external: string
-        name: string
-        namespace: string
-  ```
+        retryConditions:
+        - string
+      timeout:
+        nanos: integer
+        seconds: string
+      urlRewrite:
+        hostRewrite: string
+        pathPrefixRewrite: string
+      weightedBackendServices:
+      - backendServiceRef:
+          external: string
+          name: string
+          namespace: string
+        headerAction:
+          requestHeadersToAdd:
+          - headerName: string
+            headerValue: string
+            replace: boolean
+          requestHeadersToRemove:
+          - string
+          responseHeadersToAdd:
+          - headerName: string
+            headerValue: string
+            replace: boolean
+          responseHeadersToRemove:
+          - string
+        weight: integer
+    service: string
+    urlRedirect:
+      hostRedirect: string
+      httpsRedirect: boolean
+      pathRedirect: string
+      prefixRedirect: string
+      redirectResponseCode: string
+      stripQuery: boolean
+resourceID: string
+test:
+- description: string
+  host: string
+  path: string
+  service:
+    backendBucketRef:
+      external: string
+      name: string
+      namespace: string
+    backendServiceRef:
+      external: string
+      name: string
+      namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -5334,19 +5334,19 @@ service.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  fingerprint: string
-  mapId: integer
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+fingerprint: string
+mapId: integer
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -5446,226 +5446,226 @@ updates of this resource.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Global Compute Url Map
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeURLMap
-  metadata:
-    name: computeurlmap-sample
-  spec:
-    location: global
-    defaultService:
-      backendServiceRef:
-        name: computeurlmap-dep1
-    pathMatcher:
-      - name: allpaths
-        defaultService:
-          backendServiceRef:
-            name: computeurlmap-dep2
-        pathRule:
-          - paths: ["/home"]
-            service:
-              backendServiceRef:
-                name: computeurlmap-dep3
-          - paths: ["/foo"]
-            service:
-              backendBucketRef:
-                name: computeurlmap-dep
-    hostRule:
-      - hosts: ["example.com"]
-        pathMatcher: allpaths
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendBucket
-  metadata:
-    name: computeurlmap-dep
-  spec:
-    bucketRef:
-      name: ${PROJECT_ID?}-computeurl-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computeurlmap-dep1
-  spec:
-    healthChecks:
-      - healthCheckRef:
-          name: computeurlmap-dep
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computeurlmap-dep2
-  spec:
-    healthChecks:
-      - healthCheckRef:
-          name: computeurlmap-dep
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computeurlmap-dep3
-  spec:
-    healthChecks:
-      - healthCheckRef:
-          name: computeurlmap-dep
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computeurlmap-dep
-  spec:
-    checkIntervalSec: 10
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-sample
+spec:
+  location: global
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-dep1
+  pathMatcher:
+    - name: allpaths
+      defaultService:
+        backendServiceRef:
+          name: computeurlmap-dep2
+      pathRule:
+        - paths: ["/home"]
+          service:
+            backendServiceRef:
+              name: computeurlmap-dep3
+        - paths: ["/foo"]
+          service:
+            backendBucketRef:
+              name: computeurlmap-dep
+  hostRule:
+    - hosts: ["example.com"]
+      pathMatcher: allpaths
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendBucket
+metadata:
+  name: computeurlmap-dep
+spec:
+  bucketRef:
     name: ${PROJECT_ID?}-computeurl-dep
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-dep1
+spec:
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-dep2
+spec:
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-dep3
+spec:
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computeurlmap-dep
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-computeurl-dep
+```
 
 ### Regional Compute Url Map L7 Ilb Path
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeURLMap
-  metadata:
-    name: computeurlmap-sample
-  spec:
-    description: "Regional ComputeURLMap L7 Ilb Path"
-    location: us-central1
-    defaultService:
-      backendServiceRef:
-        name: computeurlmap-dep
-    hostRule:
-      - hosts:
-          - "mysite.com"
-        pathMatcher: "allpaths"
-    pathMatcher:
-      - name: "allpaths"
-        defaultService:
-          backendServiceRef:
-            name: computeurlmap-dep
-        pathRule:
-          - paths:
-              - "/home"
-            routeAction:
-              corsPolicy:
-                allowCredentials: true
-                allowHeaders:
-                  - "Allowed content"
-                allowMethods:
-                  - "GET"
-                allowOrigins:
-                  - "Allowed origin"
-                exposeHeaders:
-                  - "Exposed header"
-                maxAge: 30
-                disabled: false
-              faultInjectionPolicy:
-                abort:
-                  httpStatus: 234
-                  percentage: 5.6
-                delay:
-                  fixedDelay:
-                    seconds: "0"
-                    nanos: 50000
-                  percentage: 7.8
-              requestMirrorPolicy:
-                backendServiceRef:
-                  name: computeurlmap-dep
-              retryPolicy:
-                numRetries: 4
-                retryTimeout:
-                  seconds: "30"
-                retryConditions:
-                  - "5xx"
-                  - "deadline-exceeded"
-              timeout:
-                seconds: "20"
-                nanos: 750000000
-              urlRewrite:
-                hostRewrite: "A replacement header"
-                pathPrefixRewrite: "A replacement path"
-              weightedBackendServices:
-                - backendServiceRef:
-                    name: computeurlmap-dep
-                  weight: 400
-                  headerAction:
-                    requestHeadersToRemove:
-                      - "RemoveMe"
-                    requestHeadersToAdd:
-                      - headerName: "AddMe"
-                        headerValue: "MyValue"
-                        replace: true
-                    responseHeadersToRemove:
-                      - "RemoveMe"
-                    responseHeadersToAdd:
-                      - headerName: "AddMe"
-                        headerValue: "MyValue"
-                        replace: false
-    test:
-      - service:
-          backendServiceRef:
-            name: computeurlmap-dep
-        host: "hi.com"
-        path: "/home"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
-    name: computeurlmap-dep
-  spec:
-    location: us-central1
-    healthChecks:
-      - healthCheckRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-sample
+spec:
+  description: "Regional ComputeURLMap L7 Ilb Path"
+  location: us-central1
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-dep
+  hostRule:
+    - hosts:
+        - "mysite.com"
+      pathMatcher: "allpaths"
+  pathMatcher:
+    - name: "allpaths"
+      defaultService:
+        backendServiceRef:
           name: computeurlmap-dep
-    protocol: "HTTP"
-    timeoutSec: 10
-    loadBalancingScheme: "INTERNAL_MANAGED"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computeurlmap-dep
-  spec:
-    checkIntervalSec: 10
-    httpHealthCheck:
-      port: 80
-    location: us-central1
-  ```
+      pathRule:
+        - paths:
+            - "/home"
+          routeAction:
+            corsPolicy:
+              allowCredentials: true
+              allowHeaders:
+                - "Allowed content"
+              allowMethods:
+                - "GET"
+              allowOrigins:
+                - "Allowed origin"
+              exposeHeaders:
+                - "Exposed header"
+              maxAge: 30
+              disabled: false
+            faultInjectionPolicy:
+              abort:
+                httpStatus: 234
+                percentage: 5.6
+              delay:
+                fixedDelay:
+                  seconds: "0"
+                  nanos: 50000
+                percentage: 7.8
+            requestMirrorPolicy:
+              backendServiceRef:
+                name: computeurlmap-dep
+            retryPolicy:
+              numRetries: 4
+              retryTimeout:
+                seconds: "30"
+              retryConditions:
+                - "5xx"
+                - "deadline-exceeded"
+            timeout:
+              seconds: "20"
+              nanos: 750000000
+            urlRewrite:
+              hostRewrite: "A replacement header"
+              pathPrefixRewrite: "A replacement path"
+            weightedBackendServices:
+              - backendServiceRef:
+                  name: computeurlmap-dep
+                weight: 400
+                headerAction:
+                  requestHeadersToRemove:
+                    - "RemoveMe"
+                  requestHeadersToAdd:
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
+                      replace: true
+                  responseHeadersToRemove:
+                    - "RemoveMe"
+                  responseHeadersToAdd:
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
+                      replace: false
+  test:
+    - service:
+        backendServiceRef:
+          name: computeurlmap-dep
+      host: "hi.com"
+      path: "/home"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-dep
+spec:
+  location: us-central1
+  healthChecks:
+    - healthCheckRef:
+        name: computeurlmap-dep
+  protocol: "HTTP"
+  timeoutSec: 10
+  loadBalancingScheme: "INTERNAL_MANAGED"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computeurlmap-dep
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: us-central1
+```
 
 
 {% endblock %}

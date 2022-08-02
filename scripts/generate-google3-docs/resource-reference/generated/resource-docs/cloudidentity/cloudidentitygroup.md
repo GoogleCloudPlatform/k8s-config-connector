@@ -58,18 +58,18 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  displayName: string
-  groupKey:
-    id: string
-    namespace: string
-  initialGroupConfig: string
-  labels:
-    string: string
-  parent: string
-  resourceID: string
-  ```
+```yaml
+description: string
+displayName: string
+groupKey:
+  id: string
+  namespace: string
+initialGroupConfig: string
+labels:
+  string: string
+parent: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -203,18 +203,18 @@ groups or customers/{customer_id} for Google Groups.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  name: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+name: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -307,34 +307,34 @@ is the unique ID assigned to the Group.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-  kind: CloudIdentityGroup
-  metadata:
-    name: cloudidentitygroup-sample
-  spec:
-    displayName: Cloud Identity Group Name
-    description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
-    groupKey:
-      id: example.com
-    parent: customers/C00qzcxfe
-    labels:
-      cloudidentity.googleapis.com/groups.discussion_forum: ""
-  ```
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityGroup
+metadata:
+  name: cloudidentitygroup-sample
+spec:
+  displayName: Cloud Identity Group Name
+  description: This is a test CloudIdentityGroup. It should be modified before use as a sample.
+  groupKey:
+    id: example.com
+  parent: customers/C00qzcxfe
+  labels:
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
+```
 
 
 {% endblock %}

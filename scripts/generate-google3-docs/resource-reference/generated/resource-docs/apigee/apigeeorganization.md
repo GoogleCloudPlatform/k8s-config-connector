@@ -63,32 +63,32 @@ organizations
 
 ### Spec
 #### Schema
-  ```yaml
-  addonsConfig:
-    advancedApiOpsConfig:
-      enabled: boolean
-    monetizationConfig:
-      enabled: boolean
-  analyticsRegion: string
-  authorizedNetworkRef:
-    external: string
-    name: string
-    namespace: string
-  description: string
-  displayName: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  properties:
-    string: string
-  resourceID: string
-  runtimeDatabaseEncryptionKeyRef:
-    external: string
-    name: string
-    namespace: string
-  runtimeType: string
-  ```
+```yaml
+addonsConfig:
+  advancedApiOpsConfig:
+    enabled: boolean
+  monetizationConfig:
+    enabled: boolean
+analyticsRegion: string
+authorizedNetworkRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+displayName: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+properties:
+  string: string
+resourceID: string
+runtimeDatabaseEncryptionKeyRef:
+  external: string
+  name: string
+  namespace: string
+runtimeType: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -340,25 +340,25 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
 
 ### Status
 #### Schema
-  ```yaml
-  billingType: string
-  caCertificate: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createdAt: integer
-  environments:
-  - string
-  expiresAt: integer
-  lastModifiedAt: integer
-  observedGeneration: integer
-  projectId: string
-  state: string
-  subscriptionType: string
-  ```
+```yaml
+billingType: string
+caCertificate: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createdAt: integer
+environments:
+- string
+expiresAt: integer
+lastModifiedAt: integer
+observedGeneration: integer
+projectId: string
+state: string
+subscriptionType: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -499,54 +499,54 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: apigee.cnrm.cloud.google.com/v1beta1
-  kind: ApigeeOrganization
-  metadata:
-    name: apigeeorganization-sample
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    displayName: "basic-organization"
-    description: "A sample organization"
-    properties:
-      features.mart.connect.enabled: "false"
-      features.hybrid.enabled: "true"
-    analyticsRegion: "us-west1"
-    authorizedNetworkRef:
-      name: "apigeeorganization-dep"
-    runtimeType: "CLOUD"
-    addonsConfig:
-      advancedApiOpsConfig:
-        enabled: true
-      integrationConfig:
-        enabled: false
-      monetizationConfig:
-        enabled: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeOrganization
+metadata:
+  name: apigeeorganization-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  displayName: "basic-organization"
+  description: "A sample organization"
+  properties:
+    features.mart.connect.enabled: "false"
+    features.hybrid.enabled: "true"
+  analyticsRegion: "us-west1"
+  authorizedNetworkRef:
     name: "apigeeorganization-dep"
-  spec:
-    autoCreateSubnetworks: false
-    description: A sample authorized network for an apigee organization
-  ```
+  runtimeType: "CLOUD"
+  addonsConfig:
+    advancedApiOpsConfig:
+      enabled: true
+    integrationConfig:
+      enabled: false
+    monetizationConfig:
+      enabled: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: "apigeeorganization-dep"
+spec:
+  autoCreateSubnetworks: false
+  description: A sample authorized network for an apigee organization
+```
 
 
 {% endblock %}

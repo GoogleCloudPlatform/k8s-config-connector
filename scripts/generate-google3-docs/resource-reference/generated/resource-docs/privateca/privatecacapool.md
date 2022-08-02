@@ -62,79 +62,79 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  issuancePolicy:
-    allowedIssuanceModes:
-      allowConfigBasedIssuance: boolean
-      allowCsrBasedIssuance: boolean
-    allowedKeyTypes:
-    - ellipticCurve:
-        signatureAlgorithm: string
-      rsa:
-        maxModulusSize: integer
-        minModulusSize: integer
-    baselineValues:
-      additionalExtensions:
-      - critical: boolean
-        objectId:
-          objectIdPath:
-          - integer
-        value: string
-      aiaOcspServers:
-      - string
-      caOptions:
-        isCa: boolean
-        maxIssuerPathLength: integer
-      keyUsage:
-        baseKeyUsage:
-          certSign: boolean
-          contentCommitment: boolean
-          crlSign: boolean
-          dataEncipherment: boolean
-          decipherOnly: boolean
-          digitalSignature: boolean
-          encipherOnly: boolean
-          keyAgreement: boolean
-          keyEncipherment: boolean
-        extendedKeyUsage:
-          clientAuth: boolean
-          codeSigning: boolean
-          emailProtection: boolean
-          ocspSigning: boolean
-          serverAuth: boolean
-          timeStamping: boolean
-        unknownExtendedKeyUsages:
-        - objectIdPath:
-          - integer
-      policyIds:
+```yaml
+issuancePolicy:
+  allowedIssuanceModes:
+    allowConfigBasedIssuance: boolean
+    allowCsrBasedIssuance: boolean
+  allowedKeyTypes:
+  - ellipticCurve:
+      signatureAlgorithm: string
+    rsa:
+      maxModulusSize: integer
+      minModulusSize: integer
+  baselineValues:
+    additionalExtensions:
+    - critical: boolean
+      objectId:
+        objectIdPath:
+        - integer
+      value: string
+    aiaOcspServers:
+    - string
+    caOptions:
+      isCa: boolean
+      maxIssuerPathLength: integer
+    keyUsage:
+      baseKeyUsage:
+        certSign: boolean
+        contentCommitment: boolean
+        crlSign: boolean
+        dataEncipherment: boolean
+        decipherOnly: boolean
+        digitalSignature: boolean
+        encipherOnly: boolean
+        keyAgreement: boolean
+        keyEncipherment: boolean
+      extendedKeyUsage:
+        clientAuth: boolean
+        codeSigning: boolean
+        emailProtection: boolean
+        ocspSigning: boolean
+        serverAuth: boolean
+        timeStamping: boolean
+      unknownExtendedKeyUsages:
       - objectIdPath:
         - integer
-    identityConstraints:
-      allowSubjectAltNamesPassthrough: boolean
-      allowSubjectPassthrough: boolean
-      celExpression:
-        description: string
-        expression: string
-        location: string
-        title: string
-    maximumLifetime: string
-    passthroughExtensions:
-      additionalExtensions:
-      - objectIdPath:
-        - integer
-      knownExtensions:
-      - string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  publishingOptions:
-    publishCaCert: boolean
-    publishCrl: boolean
-  resourceID: string
-  tier: string
-  ```
+    policyIds:
+    - objectIdPath:
+      - integer
+  identityConstraints:
+    allowSubjectAltNamesPassthrough: boolean
+    allowSubjectPassthrough: boolean
+    celExpression:
+      description: string
+      expression: string
+      location: string
+      title: string
+  maximumLifetime: string
+  passthroughExtensions:
+    additionalExtensions:
+    - objectIdPath:
+      - integer
+    knownExtensions:
+    - string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+publishingOptions:
+  publishCaCert: boolean
+  publishCrl: boolean
+resourceID: string
+tier: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -914,15 +914,15 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -993,98 +993,98 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
-  kind: PrivateCACAPool
-  metadata:
-    labels:
-      label-two: "value-two"
-    name: privatecacapool-sample
-  spec:
-    projectRef:
-      external: projects/${PROJECT_ID?}
-    location: "us-central1"
-    tier: ENTERPRISE
-    issuancePolicy:
-      allowedKeyTypes:
-      - rsa:
-          minModulusSize: 64
-          maxModulusSize: 128
-      - ellipticCurve:
-          signatureAlgorithm: ECDSA_P384
-      maximumLifetime: 43200s
-      allowedIssuanceModes:
-        allowCsrBasedIssuance: true
-        allowConfigBasedIssuance: false
-      baselineValues:
-        keyUsage:
-          baseKeyUsage:
-            digitalSignature: false
-            contentCommitment: false
-            keyEncipherment: false
-            dataEncipherment: false
-            keyAgreement: false
-            certSign: false
-            crlSign: false
-            encipherOnly: false
-            decipherOnly: false
-          extendedKeyUsage:
-            serverAuth: false
-            clientAuth: false
-            codeSigning: false
-            emailProtection: false
-            timeStamping: false
-            ocspSigning: false
-          unknownExtendedKeyUsages:
-          - objectIdPath:
-            - 1
-            - 7
-        caOptions:
-          isCa: false
-          maxIssuerPathLength: 7
-        policyIds:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  labels:
+    label-two: "value-two"
+  name: privatecacapool-sample
+spec:
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  location: "us-central1"
+  tier: ENTERPRISE
+  issuancePolicy:
+    allowedKeyTypes:
+    - rsa:
+        minModulusSize: 64
+        maxModulusSize: 128
+    - ellipticCurve:
+        signatureAlgorithm: ECDSA_P384
+    maximumLifetime: 43200s
+    allowedIssuanceModes:
+      allowCsrBasedIssuance: true
+      allowConfigBasedIssuance: false
+    baselineValues:
+      keyUsage:
+        baseKeyUsage:
+          digitalSignature: false
+          contentCommitment: false
+          keyEncipherment: false
+          dataEncipherment: false
+          keyAgreement: false
+          certSign: false
+          crlSign: false
+          encipherOnly: false
+          decipherOnly: false
+        extendedKeyUsage:
+          serverAuth: false
+          clientAuth: false
+          codeSigning: false
+          emailProtection: false
+          timeStamping: false
+          ocspSigning: false
+        unknownExtendedKeyUsages:
         - objectIdPath:
           - 1
           - 7
-        aiaOcspServers:
-        - string
-        additionalExtensions:
-        - objectId:
-            objectIdPath:
-            - 1
-            - 7
-          critical: false
-          value: c3RyaW5nCg==
-      identityConstraints:
-        celExpression:
-          title: Sample expression
-          description: Always false
-          expression: 'false'
-          location: devops.ca_pool.json
-        allowSubjectPassthrough: false
-        allowSubjectAltNamesPassthrough: false
-      passthroughExtensions:
-        knownExtensions:
-        - BASE_KEY_USAGE
-        additionalExtensions:
-        - objectIdPath:
+      caOptions:
+        isCa: false
+        maxIssuerPathLength: 7
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 7
+      aiaOcspServers:
+      - string
+      additionalExtensions:
+      - objectId:
+          objectIdPath:
           - 1
           - 7
-  ```
+        critical: false
+        value: c3RyaW5nCg==
+    identityConstraints:
+      celExpression:
+        title: Sample expression
+        description: Always false
+        expression: 'false'
+        location: devops.ca_pool.json
+      allowSubjectPassthrough: false
+      allowSubjectAltNamesPassthrough: false
+    passthroughExtensions:
+      knownExtensions:
+      - BASE_KEY_USAGE
+      additionalExtensions:
+      - objectIdPath:
+        - 1
+        - 7
+```
 
 
 {% endblock %}

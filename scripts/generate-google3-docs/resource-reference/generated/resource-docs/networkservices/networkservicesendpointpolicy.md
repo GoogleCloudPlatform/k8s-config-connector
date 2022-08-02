@@ -58,37 +58,37 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  authorizationPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  clientTlsPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  description: string
-  endpointMatcher:
-    metadataLabelMatcher:
-      metadataLabelMatchCriteria: string
-      metadataLabels:
-      - labelName: string
-        labelValue: string
-  location: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  serverTlsPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  trafficPortSelector:
-    ports:
-    - string
-  type: string
-  ```
+```yaml
+authorizationPolicyRef:
+  external: string
+  name: string
+  namespace: string
+clientTlsPolicyRef:
+  external: string
+  name: string
+  namespace: string
+description: string
+endpointMatcher:
+  metadataLabelMatcher:
+    metadataLabelMatchCriteria: string
+    metadataLabels:
+    - labelName: string
+      labelValue: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+serverTlsPolicyRef:
+  external: string
+  name: string
+  namespace: string
+trafficPortSelector:
+  ports:
+  - string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -414,17 +414,17 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -509,124 +509,124 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
-  kind: NetworkServicesEndpointPolicy
-  metadata:
-    labels:
-      key-one: value-one
-    name: networkservicesendpointpolicy-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: global
-    type: SIDECAR_PROXY
-    authorizationPolicyRef:
-      name: networksecurityauthorizationpolicy-sample
-    endpointMatcher:
-      metadataLabelMatcher:
-        metadataLabelMatchCriteria: MATCH_ANY
-        metadataLabels:
-        - labelName: "filter-test"
-          labelValue: "true"
-    trafficPortSelector:
-      ports:
-      - "6767"
-    description: "A sample endpoint policy"
-    serverTlsPolicyRef:
-      name: networksecurityservertlspolicy-sample
-    clientTlsPolicyRef:
-      name: networksecurityclienttlspolicy-sample
-  ---
-  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkSecurityAuthorizationPolicy
-  metadata:
-    labels:
-      key-one: value-one
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesEndpointPolicy
+metadata:
+  labels:
+    key-one: value-one
+  name: networkservicesendpointpolicy-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: global
+  type: SIDECAR_PROXY
+  authorizationPolicyRef:
     name: networksecurityauthorizationpolicy-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: global
-    action: ALLOW
-    description: Test Authorization Policy
-    rules:
-    - sources:
-      - ipBlocks:
-        - "1.2.3.4"
-        principals:
-        - "*"
-      destinations:
-      - hosts:
-        - "demo-service"
-        ports:
-        - 8080
-        methods:
-        - "POST"
-    - sources:
-      - ipBlocks:
-        - "1.2.3.5"
-        principals:
-        - "*"
-      destinations:
-      - hosts:
-        - "test-service"
-        ports:
-        - 8081
-        methods:
-        - "GET"
-  ---
-  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkSecurityClientTLSPolicy
-  metadata:
+  endpointMatcher:
+    metadataLabelMatcher:
+      metadataLabelMatchCriteria: MATCH_ANY
+      metadataLabels:
+      - labelName: "filter-test"
+        labelValue: "true"
+  trafficPortSelector:
+    ports:
+    - "6767"
+  description: "A sample endpoint policy"
+  serverTlsPolicyRef:
+    name: networksecurityservertlspolicy-sample
+  clientTlsPolicyRef:
     name: networksecurityclienttlspolicy-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    description: Sample global client TLS policy
-    location: global
-    sni: example.com
-    clientCertificate:
-      certificateProviderInstance:
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  labels:
+    key-one: value-one
+  name: networksecurityauthorizationpolicy-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: global
+  action: ALLOW
+  description: Test Authorization Policy
+  rules:
+  - sources:
+    - ipBlocks:
+      - "1.2.3.4"
+      principals:
+      - "*"
+    destinations:
+    - hosts:
+      - "demo-service"
+      ports:
+      - 8080
+      methods:
+      - "POST"
+  - sources:
+    - ipBlocks:
+      - "1.2.3.5"
+      principals:
+      - "*"
+    destinations:
+    - hosts:
+      - "test-service"
+      ports:
+      - 8081
+      methods:
+      - "GET"
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityClientTLSPolicy
+metadata:
+  name: networksecurityclienttlspolicy-sample
+  labels:
+    label-one: "value-one"
+spec:
+  description: Sample global client TLS policy
+  location: global
+  sni: example.com
+  clientCertificate:
+    certificateProviderInstance:
+      pluginInstance: google_cloud_private_spiffe
+  serverValidationCa:
+    - certificateProviderInstance:
         pluginInstance: google_cloud_private_spiffe
-    serverValidationCa:
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityServerTLSPolicy
+metadata:
+  name: networksecurityservertlspolicy-sample
+  labels:
+    label-one: "value-one"
+spec:
+  description: Sample global server TLS policy
+  location: global
+  allowOpen: true
+  serverCertificate:
+    certificateProviderInstance:
+      pluginInstance: google_cloud_private_spiffe
+  mtlsPolicy:
+    clientValidationCa:
       - certificateProviderInstance:
           pluginInstance: google_cloud_private_spiffe
-  ---
-  apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkSecurityServerTLSPolicy
-  metadata:
-    name: networksecurityservertlspolicy-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    description: Sample global server TLS policy
-    location: global
-    allowOpen: true
-    serverCertificate:
-      certificateProviderInstance:
-        pluginInstance: google_cloud_private_spiffe
-    mtlsPolicy:
-      clientValidationCa:
-        - certificateProviderInstance:
-            pluginInstance: google_cloud_private_spiffe
-  ```
+```
 
 
 {% endblock %}

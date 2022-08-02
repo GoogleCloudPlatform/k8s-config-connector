@@ -76,13 +76,13 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  namespaceRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+namespaceRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -148,16 +148,16 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -236,40 +236,40 @@ format 'projects/*/locations/*/namespaces/*/services/*'.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
-  kind: ServiceDirectoryService
-  metadata:
-    name: servicedirectoryservice-sample
-    labels:
-      label-one: value-one
-  spec:
-    namespaceRef:
-      name: servicedirectoryservice-dep
-  ---
-  apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
-  kind: ServiceDirectoryNamespace
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryService
+metadata:
+  name: servicedirectoryservice-sample
+  labels:
+    label-one: value-one
+spec:
+  namespaceRef:
     name: servicedirectoryservice-dep
-  spec:
-    location: us-central1
-    projectRef:
-      external: ${PROJECT_ID?}
-  ```
+---
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
+metadata:
+  name: servicedirectoryservice-dep
+spec:
+  location: us-central1
+  projectRef:
+    external: ${PROJECT_ID?}
+```
 
 
 {% endblock %}

@@ -68,44 +68,44 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  groupPlacementPolicy:
-    availabilityDomainCount: integer
-    collocation: string
-    vmCount: integer
-  instanceSchedulePolicy:
-    expirationTime: string
-    startTime: string
-    timeZone: string
-    vmStartSchedule:
-      schedule: string
-    vmStopSchedule:
-      schedule: string
-  region: string
-  resourceID: string
-  snapshotSchedulePolicy:
-    retentionPolicy:
-      maxRetentionDays: integer
-      onSourceDiskDelete: string
-    schedule:
-      dailySchedule:
-        daysInCycle: integer
+```yaml
+description: string
+groupPlacementPolicy:
+  availabilityDomainCount: integer
+  collocation: string
+  vmCount: integer
+instanceSchedulePolicy:
+  expirationTime: string
+  startTime: string
+  timeZone: string
+  vmStartSchedule:
+    schedule: string
+  vmStopSchedule:
+    schedule: string
+region: string
+resourceID: string
+snapshotSchedulePolicy:
+  retentionPolicy:
+    maxRetentionDays: integer
+    onSourceDiskDelete: string
+  schedule:
+    dailySchedule:
+      daysInCycle: integer
+      startTime: string
+    hourlySchedule:
+      hoursInCycle: integer
+      startTime: string
+    weeklySchedule:
+      dayOfWeeks:
+      - day: string
         startTime: string
-      hourlySchedule:
-        hoursInCycle: integer
-        startTime: string
-      weeklySchedule:
-        dayOfWeeks:
-        - day: string
-          startTime: string
-    snapshotProperties:
-      guestFlush: boolean
-      labels:
-        string: string
-      storageLocations:
-      - string
-  ```
+  snapshotProperties:
+    guestFlush: boolean
+    labels:
+      string: string
+    storageLocations:
+    - string
+```
 
 <table class="properties responsive">
 <thead>
@@ -498,16 +498,16 @@ It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverb
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -585,122 +585,122 @@ It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverb
 ## Sample YAML(s)
 
 ### Daily Resource Policy Schedule
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeResourcePolicy
-  metadata:
-    name: computeresourcepolicy-sample-dailyschedule
-  spec:
-    region: us-central1
-    snapshotSchedulePolicy:
-      schedule:
-        dailySchedule:
-          daysInCycle: 1
-          startTime: "00:00"
-      retentionPolicy:
-        maxRetentionDays: 8
-        onSourceDiskDelete: KEEP_AUTO_SNAPSHOTS
-      snapshotProperties:
-        storageLocations:
-        - us-central1
-        guestFlush: true
-        labels:
-          autodeleted: "false"
-          interval: "daily"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeResourcePolicy
+metadata:
+  name: computeresourcepolicy-sample-dailyschedule
+spec:
+  region: us-central1
+  snapshotSchedulePolicy:
+    schedule:
+      dailySchedule:
+        daysInCycle: 1
+        startTime: "00:00"
+    retentionPolicy:
+      maxRetentionDays: 8
+      onSourceDiskDelete: KEEP_AUTO_SNAPSHOTS
+    snapshotProperties:
+      storageLocations:
+      - us-central1
+      guestFlush: true
+      labels:
+        autodeleted: "false"
+        interval: "daily"
+```
 
 ### Hourly Resource Policy Schedule
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeResourcePolicy
-  metadata:
-    name: computeresourcepolicy-sample-hourlyschedule
-  spec:
-    region: us-central1
-    snapshotSchedulePolicy:
-      schedule:
-        hourlySchedule:
-          hoursInCycle: 4
-          startTime: "13:00"
-      retentionPolicy:
-        maxRetentionDays: 2
-        onSourceDiskDelete: APPLY_RETENTION_POLICY
-      snapshotProperties:
-        labels:
-          autodeleted: "true"
-          interval: "hourly"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeResourcePolicy
+metadata:
+  name: computeresourcepolicy-sample-hourlyschedule
+spec:
+  region: us-central1
+  snapshotSchedulePolicy:
+    schedule:
+      hourlySchedule:
+        hoursInCycle: 4
+        startTime: "13:00"
+    retentionPolicy:
+      maxRetentionDays: 2
+      onSourceDiskDelete: APPLY_RETENTION_POLICY
+    snapshotProperties:
+      labels:
+        autodeleted: "true"
+        interval: "hourly"
+```
 
 ### Weekly Resource Policy Schedule
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeResourcePolicy
-  metadata:
-    name: computeresourcepolicy-sample-weeklyschedule
-  spec:
-    region: us-central1
-    snapshotSchedulePolicy:
-      schedule:
-        weeklySchedule:
-          dayOfWeeks:
-          - startTime: "08:00"
-            day: MONDAY
-          - startTime: "15:00"
-            day: WEDNESDAY
-          - startTime: "23:00"
-            day: FRIDAY
-      retentionPolicy:
-        maxRetentionDays: 12
-      snapshotProperties:
-        storageLocations:
-        - us
-        guestFlush: false
-        labels:
-          autodeleted: "false"
-          interval: "weekly"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeResourcePolicy
+metadata:
+  name: computeresourcepolicy-sample-weeklyschedule
+spec:
+  region: us-central1
+  snapshotSchedulePolicy:
+    schedule:
+      weeklySchedule:
+        dayOfWeeks:
+        - startTime: "08:00"
+          day: MONDAY
+        - startTime: "15:00"
+          day: WEDNESDAY
+        - startTime: "23:00"
+          day: FRIDAY
+    retentionPolicy:
+      maxRetentionDays: 12
+    snapshotProperties:
+      storageLocations:
+      - us
+      guestFlush: false
+      labels:
+        autodeleted: "false"
+        interval: "weekly"
+```
 
 
 {% endblock %}

@@ -62,65 +62,65 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  identityConstraints:
-    allowSubjectAltNamesPassthrough: boolean
-    allowSubjectPassthrough: boolean
-    celExpression:
-      description: string
-      expression: string
-      location: string
-      title: string
-  location: string
-  passthroughExtensions:
-    additionalExtensions:
+```yaml
+description: string
+identityConstraints:
+  allowSubjectAltNamesPassthrough: boolean
+  allowSubjectPassthrough: boolean
+  celExpression:
+    description: string
+    expression: string
+    location: string
+    title: string
+location: string
+passthroughExtensions:
+  additionalExtensions:
+  - objectIdPath:
+    - integer
+  knownExtensions:
+  - string
+predefinedValues:
+  additionalExtensions:
+  - critical: boolean
+    objectId:
+      objectIdPath:
+      - integer
+    value: string
+  aiaOcspServers:
+  - string
+  caOptions:
+    isCa: boolean
+    maxIssuerPathLength: integer
+  keyUsage:
+    baseKeyUsage:
+      certSign: boolean
+      contentCommitment: boolean
+      crlSign: boolean
+      dataEncipherment: boolean
+      decipherOnly: boolean
+      digitalSignature: boolean
+      encipherOnly: boolean
+      keyAgreement: boolean
+      keyEncipherment: boolean
+    extendedKeyUsage:
+      clientAuth: boolean
+      codeSigning: boolean
+      emailProtection: boolean
+      ocspSigning: boolean
+      serverAuth: boolean
+      timeStamping: boolean
+    unknownExtendedKeyUsages:
     - objectIdPath:
       - integer
-    knownExtensions:
-    - string
-  predefinedValues:
-    additionalExtensions:
-    - critical: boolean
-      objectId:
-        objectIdPath:
-        - integer
-      value: string
-    aiaOcspServers:
-    - string
-    caOptions:
-      isCa: boolean
-      maxIssuerPathLength: integer
-    keyUsage:
-      baseKeyUsage:
-        certSign: boolean
-        contentCommitment: boolean
-        crlSign: boolean
-        dataEncipherment: boolean
-        decipherOnly: boolean
-        digitalSignature: boolean
-        encipherOnly: boolean
-        keyAgreement: boolean
-        keyEncipherment: boolean
-      extendedKeyUsage:
-        clientAuth: boolean
-        codeSigning: boolean
-        emailProtection: boolean
-        ocspSigning: boolean
-        serverAuth: boolean
-        timeStamping: boolean
-      unknownExtendedKeyUsages:
-      - objectIdPath:
-        - integer
-    policyIds:
-    - objectIdPath:
-      - integer
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+  policyIds:
+  - objectIdPath:
+    - integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -750,17 +750,17 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -845,88 +845,88 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
-  kind: PrivateCACertificateTemplate
-  metadata:
-    labels:
-      label-two: "value-two"
-    name: privatecacertificatetemplate-sample
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: "us-central1"
-    predefinedValues:
-      keyUsage:
-        baseKeyUsage:
-          digitalSignature: true
-          contentCommitment: true
-          keyEncipherment: true
-          dataEncipherment: true
-          keyAgreement: true
-          certSign: false
-          crlSign: false
-          encipherOnly: true
-          decipherOnly: true
-        extendedKeyUsage:
-          serverAuth: true
-          clientAuth: true
-          codeSigning: true
-          emailProtection: true
-          timeStamping: true
-          ocspSigning: true
-        unknownExtendedKeyUsages:
-        - objectIdPath:
-          - 1
-          - 6
-      caOptions:
-        isCa: false
-        maxIssuerPathLength: 6
-      policyIds:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateTemplate
+metadata:
+  labels:
+    label-two: "value-two"
+  name: privatecacertificatetemplate-sample
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: "us-central1"
+  predefinedValues:
+    keyUsage:
+      baseKeyUsage:
+        digitalSignature: true
+        contentCommitment: true
+        keyEncipherment: true
+        dataEncipherment: true
+        keyAgreement: true
+        certSign: false
+        crlSign: false
+        encipherOnly: true
+        decipherOnly: true
+      extendedKeyUsage:
+        serverAuth: true
+        clientAuth: true
+        codeSigning: true
+        emailProtection: true
+        timeStamping: true
+        ocspSigning: true
+      unknownExtendedKeyUsages:
       - objectIdPath:
         - 1
         - 6
-      aiaOcspServers:
-      - string
-      additionalExtensions:
-      - objectId:
-          objectIdPath:
-          - 1
-          - 6
-        critical: true
-        value: c3RyaW5nCg==
-    identityConstraints:
-      celExpression:
-        title: Sample expression
-        description: Always true
-        expression: 'true'
-        location: any.file.anywhere
-      allowSubjectPassthrough: true
-      allowSubjectAltNamesPassthrough: true
-    passthroughExtensions:
-      knownExtensions:
-      - EXTENDED_KEY_USAGE
-      additionalExtensions:
-      - objectIdPath:
+    caOptions:
+      isCa: false
+      maxIssuerPathLength: 6
+    policyIds:
+    - objectIdPath:
+      - 1
+      - 6
+    aiaOcspServers:
+    - string
+    additionalExtensions:
+    - objectId:
+        objectIdPath:
         - 1
         - 6
-    description: An basic sample certificate template
-  ```
+      critical: true
+      value: c3RyaW5nCg==
+  identityConstraints:
+    celExpression:
+      title: Sample expression
+      description: Always true
+      expression: 'true'
+      location: any.file.anywhere
+    allowSubjectPassthrough: true
+    allowSubjectAltNamesPassthrough: true
+  passthroughExtensions:
+    knownExtensions:
+    - EXTENDED_KEY_USAGE
+    additionalExtensions:
+    - objectIdPath:
+      - 1
+      - 6
+  description: An basic sample certificate template
+```
 
 
 {% endblock %}

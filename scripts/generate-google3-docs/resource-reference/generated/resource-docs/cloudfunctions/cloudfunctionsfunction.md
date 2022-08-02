@@ -80,46 +80,46 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  availableMemoryMb: integer
-  description: string
-  entryPoint: string
-  environmentVariables:
-    string: string
-  eventTrigger:
-    eventType: string
-    failurePolicy: boolean
-    resourceRef:
-      external: string
-      kind: string
-      name: string
-      namespace: string
-    service: string
-  httpsTrigger:
-    securityLevel: string
-  ingressSettings: string
-  maxInstances: integer
-  projectRef:
+```yaml
+availableMemoryMb: integer
+description: string
+entryPoint: string
+environmentVariables:
+  string: string
+eventTrigger:
+  eventType: string
+  failurePolicy: boolean
+  resourceRef:
     external: string
+    kind: string
     name: string
     namespace: string
-  region: string
-  resourceID: string
-  runtime: string
-  serviceAccountRef:
-    external: string
-    name: string
-    namespace: string
-  sourceArchiveUrl: string
-  sourceRepository:
-    url: string
-  timeout: string
-  vpcConnectorEgressSettings: string
-  vpcConnectorRef:
-    external: string
-    name: string
-    namespace: string
-  ```
+  service: string
+httpsTrigger:
+  securityLevel: string
+ingressSettings: string
+maxInstances: integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+region: string
+resourceID: string
+runtime: string
+serviceAccountRef:
+  external: string
+  name: string
+  namespace: string
+sourceArchiveUrl: string
+sourceRepository:
+  url: string
+timeout: string
+vpcConnectorEgressSettings: string
+vpcConnectorRef:
+  external: string
+  name: string
+  namespace: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -583,22 +583,22 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  httpsTrigger:
-    url: string
-  observedGeneration: integer
-  sourceRepository:
-    deployedUrl: string
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
   status: string
-  updateTime: string
-  versionId: integer
-  ```
+  type: string
+httpsTrigger:
+  url: string
+observedGeneration: integer
+sourceRepository:
+  deployedUrl: string
+status: string
+updateTime: string
+versionId: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -721,167 +721,167 @@ results in a new version of a function being created.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Eventtrigger With Pubsubtopic
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
-  kind: CloudFunctionsFunction
-  metadata:
-    name: cloudfunctionsfunction-sample-pubsubtopic
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    description: "A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector"
-    region: "us-west2"
-    runtime: "nodejs8"
-    availableMemoryMb: 128
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: cloudfunctionsfunction-sample-pubsubtopic
+spec:
+  projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    serviceAccountEmail: "${PROJECT_ID?}@appspot.gserviceaccount.com"
-    # Replace ${REPO_URL?} with your cloud source repository url
-    # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
-    sourceRepository:
-      url: "${REPO_URL?}"
-    timeout: "60s"
-    entryPoint: "helloGET"
-    ingressSettings: "ALLOW_INTERNAL_ONLY"
-    environmentVariables:
-      TEST_ENV_VARIABLE: "test-env-variable-value"
-    maxInstances: 10
-    vpcConnectorRef:
-      name: "function-dep-trigger"
-    vpcConnectorEgressSettings: "PRIVATE_RANGES_ONLY"
-    eventTrigger:
-      eventType: "providers/cloud.pubsub/eventTypes/topic.publish"
-      resourceRef:
-        name: "cloudfunctionsfunction-dep-pubsubtopic"
-        kind: "PubSubTopic"
-      failurePolicy: true
-      service: "pubsub.googleapis.com"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+    external: "projects/${PROJECT_ID?}"
+  description: "A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector"
+  region: "us-west2"
+  runtime: "nodejs8"
+  availableMemoryMb: 128
+  # Replace ${PROJECT_ID?} with your project ID
+  serviceAccountEmail: "${PROJECT_ID?}@appspot.gserviceaccount.com"
+  # Replace ${REPO_URL?} with your cloud source repository url
+  # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
+  sourceRepository:
+    url: "${REPO_URL?}"
+  timeout: "60s"
+  entryPoint: "helloGET"
+  ingressSettings: "ALLOW_INTERNAL_ONLY"
+  environmentVariables:
+    TEST_ENV_VARIABLE: "test-env-variable-value"
+  maxInstances: 10
+  vpcConnectorRef:
+    name: "function-dep-trigger"
+  vpcConnectorEgressSettings: "PRIVATE_RANGES_ONLY"
+  eventTrigger:
+    eventType: "providers/cloud.pubsub/eventTypes/topic.publish"
+    resourceRef:
+      name: "cloudfunctionsfunction-dep-pubsubtopic"
+      kind: "PubSubTopic"
+    failurePolicy: true
+    service: "pubsub.googleapis.com"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: cloudfunctionsfunction-dep-pubsubtopic
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: cloudfunctionsfunction-dep-pubsubtopic
+---
+apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+kind: VPCAccessConnector
+metadata:
+  name: function-dep-trigger
+spec:
+  location: "us-west2"
+  networkRef:
     name: cloudfunctionsfunction-dep-pubsubtopic
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-  kind: PubSubTopic
-  metadata:
-    name: cloudfunctionsfunction-dep-pubsubtopic
-  ---
-  apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
-  kind: VPCAccessConnector
-  metadata:
-    name: function-dep-trigger
-  spec:
-    location: "us-west2"
-    networkRef:
-      name: cloudfunctionsfunction-dep-pubsubtopic
-    ipCidrRange: "10.5.0.0/28"
-    minThroughput: 300
-    maxThroughput: 400
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-  ```
+  ipCidrRange: "10.5.0.0/28"
+  minThroughput: 300
+  maxThroughput: 400
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+```
 
 ### Eventtrigger With Storagebucket
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
-  kind: CloudFunctionsFunction
-  metadata:
-    name: cloudfunctionsfunction-sample-bucket
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    description: "A sample cloud function with an event trigger from StorageBucket"
-    region: "us-west2"
-    runtime: "nodejs8"
-    sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-    entryPoint: "helloGET"
-    eventTrigger:
-      eventType: "providers/cloud.storage/eventTypes/object.change"
-      resourceRef:
-        name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
-        kind: StorageBucket
-      failurePolicy: true
-      service: "storage.googleapis.com"
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
-  spec:
-    lifecycleRule:
-      - action:
-          type: Delete
-        condition:
-          age: 7
-    versioning:
-      enabled: true
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: cloudfunctionsfunction-sample-bucket
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  description: "A sample cloud function with an event trigger from StorageBucket"
+  region: "us-west2"
+  runtime: "nodejs8"
+  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
+  entryPoint: "helloGET"
+  eventTrigger:
+    eventType: "providers/cloud.storage/eventTypes/object.change"
+    resourceRef:
+      name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
+      kind: StorageBucket
+    failurePolicy: true
+    service: "storage.googleapis.com"
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
+spec:
+  lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 7
+  versioning:
+    enabled: true
+```
 
 ### Httpstrigger
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
-  kind: CloudFunctionsFunction
-  metadata:
-    name: cloudfunctionsfunction-sample-httpstrigger
-  spec:
-    projectRef:
-      # Replace ${PROJECT_ID?} with your project ID
-      external: "projects/${PROJECT_ID?}"
-    region: "us-west2"
-    runtime: "nodejs8"
-    sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-    entryPoint: "helloGET"
-    httpsTrigger:
-      securityLevel: "SECURE_OPTIONAL"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: cloudfunctionsfunction-sample-httpstrigger
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "projects/${PROJECT_ID?}"
+  region: "us-west2"
+  runtime: "nodejs8"
+  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
+  entryPoint: "helloGET"
+  httpsTrigger:
+    securityLevel: "SECURE_OPTIONAL"
+```
 
 
 {% endblock %}

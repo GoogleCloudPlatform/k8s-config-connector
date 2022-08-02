@@ -93,150 +93,150 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  advancedMachineFeatures:
-    enableNestedVirtualization: boolean
-    threadsPerCore: integer
-  attachedDisk:
-  - deviceName: string
-    diskEncryptionKeyRaw:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    diskEncryptionKeySha256: string
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    mode: string
-    sourceDiskRef:
-      external: string
-      name: string
-      namespace: string
-  bootDisk:
-    autoDelete: boolean
-    deviceName: string
-    diskEncryptionKeyRaw:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    diskEncryptionKeySha256: string
-    initializeParams:
-      labels: {}
-      size: integer
-      sourceImageRef:
-        external: string
+```yaml
+advancedMachineFeatures:
+  enableNestedVirtualization: boolean
+  threadsPerCore: integer
+attachedDisk:
+- deviceName: string
+  diskEncryptionKeyRaw:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
         name: string
-        namespace: string
-      type: string
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-    mode: string
-    sourceDiskRef:
-      external: string
-      name: string
-      namespace: string
-  canIpForward: boolean
-  confidentialInstanceConfig:
-    enableConfidentialCompute: boolean
-  deletionProtection: boolean
-  description: string
-  desiredStatus: string
-  enableDisplay: boolean
-  guestAccelerator:
-  - count: integer
-    type: string
-  hostname: string
-  instanceTemplateRef:
+  diskEncryptionKeySha256: string
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  machineType: string
-  metadata:
-  - key: string
-    value: string
-  metadataStartupScript: string
-  minCpuPlatform: string
-  networkInterface:
-  - accessConfig:
-    - natIpRef:
-        external: string
-        name: string
-        namespace: string
-      networkTier: string
-      publicPtrDomainName: string
-    aliasIpRange:
-    - ipCidrRange: string
-      subnetworkRangeName: string
-    ipv6AccessConfig:
-    - externalIpv6: string
-      externalIpv6PrefixLength: string
-      networkTier: string
-      publicPtrDomainName: string
-    ipv6AccessType: string
-    name: string
-    networkIp: string
-    networkIpRef:
-      external: string
-      kind: string
-      name: string
-      namespace: string
-    networkRef:
-      external: string
-      name: string
-      namespace: string
-    nicType: string
-    queueCount: integer
-    stackType: string
-    subnetworkProject: string
-    subnetworkRef:
-      external: string
-      name: string
-      namespace: string
-  networkPerformanceConfig:
-    totalEgressBandwidthTier: string
-  reservationAffinity:
-    specificReservation:
-      key: string
-      values:
-      - string
-    type: string
-  resourceID: string
-  resourcePolicies:
-  - external: string
+  mode: string
+  sourceDiskRef:
+    external: string
     name: string
     namespace: string
-  scheduling:
-    automaticRestart: boolean
-    minNodeCpus: integer
-    nodeAffinities:
-    - value: {}
-    onHostMaintenance: string
-    preemptible: boolean
-    provisioningModel: string
-  scratchDisk:
-  - interface: string
-  serviceAccount:
-    scopes:
-    - string
-    serviceAccountRef:
+bootDisk:
+  autoDelete: boolean
+  deviceName: string
+  diskEncryptionKeyRaw:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  diskEncryptionKeySha256: string
+  initializeParams:
+    labels: {}
+    size: integer
+    sourceImageRef:
       external: string
       name: string
       namespace: string
-  shieldedInstanceConfig:
-    enableIntegrityMonitoring: boolean
-    enableSecureBoot: boolean
-    enableVtpm: boolean
-  tags:
+    type: string
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+  mode: string
+  sourceDiskRef:
+    external: string
+    name: string
+    namespace: string
+canIpForward: boolean
+confidentialInstanceConfig:
+  enableConfidentialCompute: boolean
+deletionProtection: boolean
+description: string
+desiredStatus: string
+enableDisplay: boolean
+guestAccelerator:
+- count: integer
+  type: string
+hostname: string
+instanceTemplateRef:
+  external: string
+  name: string
+  namespace: string
+machineType: string
+metadata:
+- key: string
+  value: string
+metadataStartupScript: string
+minCpuPlatform: string
+networkInterface:
+- accessConfig:
+  - natIpRef:
+      external: string
+      name: string
+      namespace: string
+    networkTier: string
+    publicPtrDomainName: string
+  aliasIpRange:
+  - ipCidrRange: string
+    subnetworkRangeName: string
+  ipv6AccessConfig:
+  - externalIpv6: string
+    externalIpv6PrefixLength: string
+    networkTier: string
+    publicPtrDomainName: string
+  ipv6AccessType: string
+  name: string
+  networkIp: string
+  networkIpRef:
+    external: string
+    kind: string
+    name: string
+    namespace: string
+  networkRef:
+    external: string
+    name: string
+    namespace: string
+  nicType: string
+  queueCount: integer
+  stackType: string
+  subnetworkProject: string
+  subnetworkRef:
+    external: string
+    name: string
+    namespace: string
+networkPerformanceConfig:
+  totalEgressBandwidthTier: string
+reservationAffinity:
+  specificReservation:
+    key: string
+    values:
+    - string
+  type: string
+resourceID: string
+resourcePolicies:
+- external: string
+  name: string
+  namespace: string
+scheduling:
+  automaticRestart: boolean
+  minNodeCpus: integer
+  nodeAffinities:
+  - value: {}
+  onHostMaintenance: string
+  preemptible: boolean
+  provisioningModel: string
+scratchDisk:
+- interface: string
+serviceAccount:
+  scopes:
   - string
-  zone: string
-  ```
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
+shieldedInstanceConfig:
+  enableIntegrityMonitoring: boolean
+  enableSecureBoot: boolean
+  enableVtpm: boolean
+tags:
+- string
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1774,22 +1774,22 @@
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  cpuPlatform: string
-  currentStatus: string
-  instanceId: string
-  labelFingerprint: string
-  metadataFingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  tagsFingerprint: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+cpuPlatform: string
+currentStatus: string
+instanceId: string
+labelFingerprint: string
+metadataFingerprint: string
+observedGeneration: integer
+selfLink: string
+tagsFingerprint: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1909,403 +1909,403 @@
 ## Sample YAML(s)
 
 ### Cloud Machine Instance
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "true"
-    name: computeinstance-sample-cloudmachine
-    labels:
-      created-from: "image"
-      network-type: "subnetwork"
-  spec:
-    machineType: n1-standard-1
-    zone: us-west1-a
-    bootDisk:
-      initializeParams:
-        size: 24
-        type: pd-ssd
-        sourceImageRef:
-          external: debian-cloud/debian-9
-    networkInterface:
-      - subnetworkRef:
-          name: computeinstance-dep-cloudmachine
-        aliasIpRange:
-          - ipCidrRange: /24
-            subnetworkRangeName: cloudrange
-    attachedDisk:
-      - sourceDiskRef:
-          name: computeinstance-dep1-cloudmachine
-        mode: READ_ONLY
-        deviceName: proxycontroldisk
-        diskEncryptionKeyRaw:
-          valueFrom:
-            secretKeyRef:
-              name: computeinstance-dep-cloudmachine
-              key: diskEncryptionKey
-      - sourceDiskRef:
-          name: computeinstance-dep2-cloudmachine
-        mode: READ_WRITE
-        deviceName: persistentdisk
-    minCpuPlatform: "Intel Skylake"
-    serviceAccount:
-      serviceAccountRef:
-        name: inst-dep-cloudmachine
-      scopes:
-      - compute-rw
-      - logging-write
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computeinstance-dep1-cloudmachine
-  spec:
-    description: a sample encrypted, blank disk
-    physicalBlockSizeBytes: 4096
-    size: 1
-    type: pd-ssd
-    location: us-west1-a
-    diskEncryptionKey:
-      rawKey:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  name: computeinstance-sample-cloudmachine
+  labels:
+    created-from: "image"
+    network-type: "subnetwork"
+spec:
+  machineType: n1-standard-1
+  zone: us-west1-a
+  bootDisk:
+    initializeParams:
+      size: 24
+      type: pd-ssd
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+    - subnetworkRef:
+        name: computeinstance-dep-cloudmachine
+      aliasIpRange:
+        - ipCidrRange: /24
+          subnetworkRangeName: cloudrange
+  attachedDisk:
+    - sourceDiskRef:
+        name: computeinstance-dep1-cloudmachine
+      mode: READ_ONLY
+      deviceName: proxycontroldisk
+      diskEncryptionKeyRaw:
         valueFrom:
           secretKeyRef:
             name: computeinstance-dep-cloudmachine
             key: diskEncryptionKey
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computeinstance-dep2-cloudmachine
-  spec:
-    size: 1
-    type: pd-ssd
-    location: us-west1-a
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+    - sourceDiskRef:
+        name: computeinstance-dep2-cloudmachine
+      mode: READ_WRITE
+      deviceName: persistentdisk
+  minCpuPlatform: "Intel Skylake"
+  serviceAccount:
+    serviceAccountRef:
+      name: inst-dep-cloudmachine
+    scopes:
+    - compute-rw
+    - logging-write
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep1-cloudmachine
+spec:
+  description: a sample encrypted, blank disk
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west1-a
+  diskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computeinstance-dep-cloudmachine
+          key: diskEncryptionKey
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep2-cloudmachine
+spec:
+  size: 1
+  type: pd-ssd
+  location: us-west1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstance-dep-cloudmachine
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeinstance-dep-cloudmachine
+spec:
+  networkRef:
     name: computeinstance-dep-cloudmachine
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computeinstance-dep-cloudmachine
-  spec:
-    networkRef:
-      name: computeinstance-dep-cloudmachine
-    ipCidrRange: 10.2.0.0/16
-    region: us-west1
-    secondaryIpRange:
-      - rangeName: cloudrange
-        ipCidrRange: 10.3.16.0/20
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    name: inst-dep-cloudmachine
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: computeinstance-dep-cloudmachine
-  stringData:
-    diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
-  ```
+  ipCidrRange: 10.2.0.0/16
+  region: us-west1
+  secondaryIpRange:
+    - rangeName: cloudrange
+      ipCidrRange: 10.3.16.0/20
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: inst-dep-cloudmachine
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: computeinstance-dep-cloudmachine
+stringData:
+  diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+```
 
 ### Instance From Template
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "false"
-    name: computeinstance-sample-fromtemplate
-    labels:
-      created-from: "template"
-      override-type: "largermachine"
-  spec:
-    machineType: n1-standard-2
-    instanceTemplateRef:
-      name: computeinstance-dep-fromtemplate
-    zone: us-west1-c
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "false"
+  name: computeinstance-sample-fromtemplate
+  labels:
+    created-from: "template"
+    override-type: "largermachine"
+spec:
+  machineType: n1-standard-2
+  instanceTemplateRef:
     name: computeinstance-dep-fromtemplate
-  spec:
-    physicalBlockSizeBytes: 4096
-    size: 1
-    type: pd-ssd
-    location: us-west1-c
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
-    name: computeinstance-dep-fromtemplate
-  spec:
-    machineType: n1-standard-1
-    region: us-west1
-    disk:
-      - sourceDiskRef:
-          name: computeinstance-dep-fromtemplate
-        boot: true
-    networkInterface:
-      - networkRef:
-          name: computeinstance-dep-fromtemplate
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computeinstance-dep-fromtemplate
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: true
-  ```
+  zone: us-west1-c
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep-fromtemplate
+spec:
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west1-c
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computeinstance-dep-fromtemplate
+spec:
+  machineType: n1-standard-1
+  region: us-west1
+  disk:
+    - sourceDiskRef:
+        name: computeinstance-dep-fromtemplate
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computeinstance-dep-fromtemplate
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstance-dep-fromtemplate
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: true
+```
 
 ### Instance With Networkipref
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  name: computeinstance-sample-networkipref
+  labels:
+    label-one: "value-one"
+spec:
+  description: an basic instance example
+  machineType: n1-standard-1
+  zone: us-west1-a
+  bootDisk:
+    sourceDiskRef:
+      name: computeinstance-dep1-networkipref
+    autoDelete: false
+  attachedDisk:
+  - sourceDiskRef:
+      name: computeinstance-dep2-networkipref
+  serviceAccount:
+    serviceAccountRef:
+      name: inst-dep-networkipref
+    scopes:
+    - cloud-platform
+  networkInterface:
+  - networkRef:
+      name: computeinstance-dep-networkipref
+    networkIpRef:
+      kind: ComputeAddress
+      name: computeinstance-dep-networkipref
+  metadataStartupScript: "echo hi > /test.txt"
   metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "true"
-    name: computeinstance-sample-networkipref
-    labels:
-      label-one: "value-one"
-  spec:
-    description: an basic instance example
-    machineType: n1-standard-1
-    zone: us-west1-a
-    bootDisk:
-      sourceDiskRef:
-        name: computeinstance-dep1-networkipref
-      autoDelete: false
-    attachedDisk:
-    - sourceDiskRef:
-        name: computeinstance-dep2-networkipref
-    serviceAccount:
-      serviceAccountRef:
-        name: inst-dep-networkipref
-      scopes:
-      - cloud-platform
-    networkInterface:
-    - networkRef:
-        name: computeinstance-dep-networkipref
-      networkIpRef:
-        kind: ComputeAddress
-        name: computeinstance-dep-networkipref
-    metadataStartupScript: "echo hi > /test.txt"
-    metadata:
-    - key: foo
-      value: bar
-    - key: bar
-      value: baz
-    scheduling:
-      preemptible: true
-      automaticRestart: false
-      onHostMaintenance: TERMINATE
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
-    name: computeinstance-dep-networkipref
-  spec:
-    description: a external address for the test compute instance
-    location: us-west1
-    addressType: INTERNAL
-    purpose: GCE_ENDPOINT
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computeinstance-dep1-networkipref
-  spec:
-    location: us-west1-a
-    imageRef:
-      external: debian-cloud/debian-9
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computeinstance-dep2-networkipref
-  spec:
-    description: "an attached disk for Compute Instance"
-    location: us-west1-a
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computeinstance-dep-networkipref
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: true
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    name: inst-dep-networkipref
-  ```
+  - key: foo
+    value: bar
+  - key: bar
+    value: baz
+  scheduling:
+    preemptible: true
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeinstance-dep-networkipref
+spec:
+  description: a external address for the test compute instance
+  location: us-west1
+  addressType: INTERNAL
+  purpose: GCE_ENDPOINT
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep1-networkipref
+spec:
+  location: us-west1-a
+  imageRef:
+    external: debian-cloud/debian-9
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep2-networkipref
+spec:
+  description: "an attached disk for Compute Instance"
+  location: us-west1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstance-dep-networkipref
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: inst-dep-networkipref
+```
 
 ### Network Worker Instance
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "false"
-    name: computeinstance-sample-networkworker
-    labels:
-      created-from: "disk"
-      network-type: "global"
-  spec:
-    machineType: n1-standard-1
-    zone: us-west2-a
-    bootDisk:
-      sourceDiskRef:
-        name: computeinstance-dep-networkworker
-      autoDelete: false
-      deviceName: proxycontroldisk
-      mode: READ_ONLY
-      diskEncryptionKeyRaw:
-        valueFrom:
-          secretKeyRef:
-            name: computeinstance-dep-networkworker
-            key: diskEncryptionKey
-    networkInterface:
-      - networkRef:
-          name: computeinstance-dep-networkworker
-        subnetworkRef:
-          name: computeinstance-dep-networkworker
-        networkIp: "10.2.0.4"
-        accessConfig:
-          - natIpRef:
-              name: computeinstance-dep-networkworker
-    scratchDisk:
-      - interface: SCSI
-      - interface: NVME
-    scheduling:
-      preemptible: true
-      automaticRestart: false
-      onHostMaintenance: TERMINATE
-    canIpForward: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
-    name: computeinstance-dep-networkworker
-  spec:
-    description: a sample external address
-    location: us-west2
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeDisk
-  metadata:
-    name: computeinstance-dep-networkworker
-  spec:
-    description: a sample encrypted, blank disk
-    physicalBlockSizeBytes: 4096
-    size: 1
-    type: pd-ssd
-    location: us-west2-a
-    diskEncryptionKey:
-      rawKey:
-        valueFrom:
-          secretKeyRef:
-            name: computeinstance-dep-networkworker
-            key: diskEncryptionKey
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computeinstance-dep-networkworker
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computeinstance-dep-networkworker
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-west2
-    description: a sample subnetwork
-    privateIpGoogleAccess: false
-    networkRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "false"
+  name: computeinstance-sample-networkworker
+  labels:
+    created-from: "disk"
+    network-type: "global"
+spec:
+  machineType: n1-standard-1
+  zone: us-west2-a
+  bootDisk:
+    sourceDiskRef:
       name: computeinstance-dep-networkworker
-    logConfig:
-      aggregationInterval: INTERVAL_10_MIN
-      flowSampling: 0.5
-      metadata: INCLUDE_ALL_METADATA
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
+    autoDelete: false
+    deviceName: proxycontroldisk
+    mode: READ_ONLY
+    diskEncryptionKeyRaw:
+      valueFrom:
+        secretKeyRef:
+          name: computeinstance-dep-networkworker
+          key: diskEncryptionKey
+  networkInterface:
+    - networkRef:
+        name: computeinstance-dep-networkworker
+      subnetworkRef:
+        name: computeinstance-dep-networkworker
+      networkIp: "10.2.0.4"
+      accessConfig:
+        - natIpRef:
+            name: computeinstance-dep-networkworker
+  scratchDisk:
+    - interface: SCSI
+    - interface: NVME
+  scheduling:
+    preemptible: true
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+  canIpForward: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  description: a sample external address
+  location: us-west2
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  description: a sample encrypted, blank disk
+  physicalBlockSizeBytes: 4096
+  size: 1
+  type: pd-ssd
+  location: us-west2-a
+  diskEncryptionKey:
+    rawKey:
+      valueFrom:
+        secretKeyRef:
+          name: computeinstance-dep-networkworker
+          key: diskEncryptionKey
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeinstance-dep-networkworker
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-west2
+  description: a sample subnetwork
+  privateIpGoogleAccess: false
+  networkRef:
     name: computeinstance-dep-networkworker
-  stringData:
-    diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
-  ```
+  logConfig:
+    aggregationInterval: INTERVAL_10_MIN
+    flowSampling: 0.5
+    metadata: INCLUDE_ALL_METADATA
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: computeinstance-dep-networkworker
+stringData:
+  diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+```
 
 
 {% endblock %}

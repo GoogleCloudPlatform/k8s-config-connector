@@ -58,296 +58,296 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  dagTimeout: string
-  jobs:
-  - hadoopJob:
-      archiveUris:
+```yaml
+dagTimeout: string
+jobs:
+- hadoopJob:
+    archiveUris:
+    - string
+    args:
+    - string
+    fileUris:
+    - string
+    jarFileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    mainClass: string
+    mainJarFileUri: string
+    properties:
+      string: string
+  hiveJob:
+    continueOnFailure: boolean
+    jarFileUris:
+    - string
+    properties:
+      string: string
+    queryFileUri: string
+    queryList:
+      queries:
       - string
-      args:
+    scriptVariables:
+      string: string
+  labels:
+    string: string
+  pigJob:
+    continueOnFailure: boolean
+    jarFileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    properties:
+      string: string
+    queryFileUri: string
+    queryList:
+      queries:
       - string
-      fileUris:
+    scriptVariables:
+      string: string
+  prerequisiteStepIds:
+  - string
+  prestoJob:
+    clientTags:
+    - string
+    continueOnFailure: boolean
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    outputFormat: string
+    properties:
+      string: string
+    queryFileUri: string
+    queryList:
+      queries:
       - string
-      jarFileUris:
+  pysparkJob:
+    archiveUris:
+    - string
+    args:
+    - string
+    fileUris:
+    - string
+    jarFileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    mainPythonFileUri: string
+    properties:
+      string: string
+    pythonFileUris:
+    - string
+  scheduling:
+    maxFailuresPerHour: integer
+    maxFailuresTotal: integer
+  sparkJob:
+    archiveUris:
+    - string
+    args:
+    - string
+    fileUris:
+    - string
+    jarFileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    mainClass: string
+    mainJarFileUri: string
+    properties:
+      string: string
+  sparkRJob:
+    archiveUris:
+    - string
+    args:
+    - string
+    fileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    mainRFileUri: string
+    properties:
+      string: string
+  sparkSqlJob:
+    jarFileUris:
+    - string
+    loggingConfig:
+      driverLogLevels:
+        string: string
+    properties:
+      string: string
+    queryFileUri: string
+    queryList:
+      queries:
       - string
-      loggingConfig:
-        driverLogLevels:
+    scriptVariables:
+      string: string
+  stepId: string
+location: string
+parameters:
+- description: string
+  fields:
+  - string
+  name: string
+  validation:
+    regex:
+      regexes:
+      - string
+    values:
+      values:
+      - string
+placement:
+  clusterSelector:
+    clusterLabels:
+      string: string
+    zone: string
+  managedCluster:
+    clusterName: string
+    config:
+      autoscalingConfig:
+        policyRef:
+          external: string
+          name: string
+          namespace: string
+      encryptionConfig:
+        gcePdKmsKeyRef:
+          external: string
+          name: string
+          namespace: string
+      endpointConfig:
+        enableHttpPortAccess: boolean
+      gceClusterConfig:
+        internalIPOnly: boolean
+        metadata:
           string: string
-      mainClass: string
-      mainJarFileUri: string
-      properties:
-        string: string
-    hiveJob:
-      continueOnFailure: boolean
-      jarFileUris:
-      - string
-      properties:
-        string: string
-      queryFileUri: string
-      queryList:
-        queries:
+        networkRef:
+          external: string
+          name: string
+          namespace: string
+        nodeGroupAffinity:
+          nodeGroupRef:
+            external: string
+            name: string
+            namespace: string
+        privateIPv6GoogleAccess: string
+        reservationAffinity:
+          consumeReservationType: string
+          key: string
+          values:
+          - string
+        serviceAccountRef:
+          external: string
+          name: string
+          namespace: string
+        serviceAccountScopes:
         - string
-      scriptVariables:
-        string: string
+        subnetworkRef:
+          external: string
+          name: string
+          namespace: string
+        tags:
+        - string
+        zone: string
+      initializationActions:
+      - executableFile: string
+        executionTimeout: string
+      lifecycleConfig:
+        autoDeleteTime: string
+        autoDeleteTtl: string
+        idleDeleteTtl: string
+      masterConfig:
+        accelerators:
+        - acceleratorCount: integer
+          acceleratorType: string
+        diskConfig:
+          bootDiskSizeGb: integer
+          bootDiskType: string
+          numLocalSsds: integer
+        imageRef:
+          external: string
+          name: string
+          namespace: string
+        machineType: string
+        minCpuPlatform: string
+        numInstances: integer
+        preemptibility: string
+      secondaryWorkerConfig:
+        accelerators:
+        - acceleratorCount: integer
+          acceleratorType: string
+        diskConfig:
+          bootDiskSizeGb: integer
+          bootDiskType: string
+          numLocalSsds: integer
+        imageRef:
+          external: string
+          name: string
+          namespace: string
+        machineType: string
+        minCpuPlatform: string
+        numInstances: integer
+        preemptibility: string
+      securityConfig:
+        kerberosConfig:
+          crossRealmTrustAdminServer: string
+          crossRealmTrustKdc: string
+          crossRealmTrustRealm: string
+          crossRealmTrustSharedPassword: string
+          enableKerberos: boolean
+          kdcDbKey: string
+          keyPassword: string
+          keystore: string
+          keystorePassword: string
+          kmsKeyRef:
+            external: string
+            name: string
+            namespace: string
+          realm: string
+          rootPrincipalPassword: string
+          tgtLifetimeHours: integer
+          truststore: string
+          truststorePassword: string
+      softwareConfig:
+        imageVersion: string
+        optionalComponents:
+        - string
+        properties:
+          string: string
+      stagingBucketRef:
+        external: string
+        name: string
+        namespace: string
+      tempBucketRef:
+        external: string
+        name: string
+        namespace: string
+      workerConfig:
+        accelerators:
+        - acceleratorCount: integer
+          acceleratorType: string
+        diskConfig:
+          bootDiskSizeGb: integer
+          bootDiskType: string
+          numLocalSsds: integer
+        imageRef:
+          external: string
+          name: string
+          namespace: string
+        machineType: string
+        minCpuPlatform: string
+        numInstances: integer
+        preemptibility: string
     labels:
       string: string
-    pigJob:
-      continueOnFailure: boolean
-      jarFileUris:
-      - string
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      properties:
-        string: string
-      queryFileUri: string
-      queryList:
-        queries:
-        - string
-      scriptVariables:
-        string: string
-    prerequisiteStepIds:
-    - string
-    prestoJob:
-      clientTags:
-      - string
-      continueOnFailure: boolean
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      outputFormat: string
-      properties:
-        string: string
-      queryFileUri: string
-      queryList:
-        queries:
-        - string
-    pysparkJob:
-      archiveUris:
-      - string
-      args:
-      - string
-      fileUris:
-      - string
-      jarFileUris:
-      - string
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      mainPythonFileUri: string
-      properties:
-        string: string
-      pythonFileUris:
-      - string
-    scheduling:
-      maxFailuresPerHour: integer
-      maxFailuresTotal: integer
-    sparkJob:
-      archiveUris:
-      - string
-      args:
-      - string
-      fileUris:
-      - string
-      jarFileUris:
-      - string
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      mainClass: string
-      mainJarFileUri: string
-      properties:
-        string: string
-    sparkRJob:
-      archiveUris:
-      - string
-      args:
-      - string
-      fileUris:
-      - string
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      mainRFileUri: string
-      properties:
-        string: string
-    sparkSqlJob:
-      jarFileUris:
-      - string
-      loggingConfig:
-        driverLogLevels:
-          string: string
-      properties:
-        string: string
-      queryFileUri: string
-      queryList:
-        queries:
-        - string
-      scriptVariables:
-        string: string
-    stepId: string
-  location: string
-  parameters:
-  - description: string
-    fields:
-    - string
-    name: string
-    validation:
-      regex:
-        regexes:
-        - string
-      values:
-        values:
-        - string
-  placement:
-    clusterSelector:
-      clusterLabels:
-        string: string
-      zone: string
-    managedCluster:
-      clusterName: string
-      config:
-        autoscalingConfig:
-          policyRef:
-            external: string
-            name: string
-            namespace: string
-        encryptionConfig:
-          gcePdKmsKeyRef:
-            external: string
-            name: string
-            namespace: string
-        endpointConfig:
-          enableHttpPortAccess: boolean
-        gceClusterConfig:
-          internalIPOnly: boolean
-          metadata:
-            string: string
-          networkRef:
-            external: string
-            name: string
-            namespace: string
-          nodeGroupAffinity:
-            nodeGroupRef:
-              external: string
-              name: string
-              namespace: string
-          privateIPv6GoogleAccess: string
-          reservationAffinity:
-            consumeReservationType: string
-            key: string
-            values:
-            - string
-          serviceAccountRef:
-            external: string
-            name: string
-            namespace: string
-          serviceAccountScopes:
-          - string
-          subnetworkRef:
-            external: string
-            name: string
-            namespace: string
-          tags:
-          - string
-          zone: string
-        initializationActions:
-        - executableFile: string
-          executionTimeout: string
-        lifecycleConfig:
-          autoDeleteTime: string
-          autoDeleteTtl: string
-          idleDeleteTtl: string
-        masterConfig:
-          accelerators:
-          - acceleratorCount: integer
-            acceleratorType: string
-          diskConfig:
-            bootDiskSizeGb: integer
-            bootDiskType: string
-            numLocalSsds: integer
-          imageRef:
-            external: string
-            name: string
-            namespace: string
-          machineType: string
-          minCpuPlatform: string
-          numInstances: integer
-          preemptibility: string
-        secondaryWorkerConfig:
-          accelerators:
-          - acceleratorCount: integer
-            acceleratorType: string
-          diskConfig:
-            bootDiskSizeGb: integer
-            bootDiskType: string
-            numLocalSsds: integer
-          imageRef:
-            external: string
-            name: string
-            namespace: string
-          machineType: string
-          minCpuPlatform: string
-          numInstances: integer
-          preemptibility: string
-        securityConfig:
-          kerberosConfig:
-            crossRealmTrustAdminServer: string
-            crossRealmTrustKdc: string
-            crossRealmTrustRealm: string
-            crossRealmTrustSharedPassword: string
-            enableKerberos: boolean
-            kdcDbKey: string
-            keyPassword: string
-            keystore: string
-            keystorePassword: string
-            kmsKeyRef:
-              external: string
-              name: string
-              namespace: string
-            realm: string
-            rootPrincipalPassword: string
-            tgtLifetimeHours: integer
-            truststore: string
-            truststorePassword: string
-        softwareConfig:
-          imageVersion: string
-          optionalComponents:
-          - string
-          properties:
-            string: string
-        stagingBucketRef:
-          external: string
-          name: string
-          namespace: string
-        tempBucketRef:
-          external: string
-          name: string
-          namespace: string
-        workerConfig:
-          accelerators:
-          - acceleratorCount: integer
-            acceleratorType: string
-          diskConfig:
-            bootDiskSizeGb: integer
-            bootDiskType: string
-            numLocalSsds: integer
-          imageRef:
-            external: string
-            name: string
-            namespace: string
-          machineType: string
-          minCpuPlatform: string
-          numInstances: integer
-          preemptibility: string
-      labels:
-        string: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -3101,47 +3101,47 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  placement:
-    managedCluster:
-      config:
-        endpointConfig:
-          httpPorts:
-            string: string
-        lifecycleConfig:
-          idleStartTime: string
-        masterConfig:
-          instanceNames:
-          - string
-          isPreemptible: boolean
-          managedGroupConfig:
-            instanceGroupManagerName: string
-            instanceTemplateName: string
-        secondaryWorkerConfig:
-          instanceNames:
-          - string
-          isPreemptible: boolean
-          managedGroupConfig:
-            instanceGroupManagerName: string
-            instanceTemplateName: string
-        workerConfig:
-          instanceNames:
-          - string
-          isPreemptible: boolean
-          managedGroupConfig:
-            instanceGroupManagerName: string
-            instanceTemplateName: string
-  updateTime: string
-  version: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+placement:
+  managedCluster:
+    config:
+      endpointConfig:
+        httpPorts:
+          string: string
+      lifecycleConfig:
+        idleStartTime: string
+      masterConfig:
+        instanceNames:
+        - string
+        isPreemptible: boolean
+        managedGroupConfig:
+          instanceGroupManagerName: string
+          instanceTemplateName: string
+      secondaryWorkerConfig:
+        instanceNames:
+        - string
+        isPreemptible: boolean
+        managedGroupConfig:
+          instanceGroupManagerName: string
+          instanceTemplateName: string
+      workerConfig:
+        instanceNames:
+        - string
+        isPreemptible: boolean
+        managedGroupConfig:
+          instanceGroupManagerName: string
+          instanceTemplateName: string
+updateTime: string
+version: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -3429,80 +3429,80 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
-  kind: DataprocWorkflowTemplate
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: dataprocworkflowtemplate-sample
-  spec:
-    location: "us-central1"
-    placement:
-      managedCluster:
-        clusterName: "test-cluster"
-        config:
-          autoscalingConfig:
-            policyRef:
-              name: dataprocworkflowtemplate-dep
-          masterConfig:
-            diskConfig:
-              bootDiskSizeGb: 30
-              bootDiskType: pd-standard
-            machineType: "n2-standard-8"
-            numInstances: 1
-          workerConfig:
-            numInstances: 2
-            machineType: "n2-standard-8"
-            diskConfig:
-              bootDiskSizeGb: 30
-              numLocalSsds: 1
-          softwareConfig:
-            imageVersion: "2.0.39-debian10"
-          gceClusterConfig:
-            tags:
-            - "foo"
-            - "bar"
-    jobs:
-    - stepId: "someJob"
-      sparkJob:
-        mainClass: "SomeClass"
-    - stepId: "otherJob"
-      prerequisiteStepIds:
-      - "someJob"
-      prestoJob:
-        queryFileUri: "someUri"
-  ---
-  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
-  kind: DataprocAutoscalingPolicy
-  metadata:
-    name: dataprocworkflowtemplate-dep
-  spec:
-    location: "us-central1"
-    workerConfig:
-      maxInstances: 5
-    secondaryWorkerConfig:
-      maxInstances: 2
-    basicAlgorithm:
-      yarnConfig:
-        gracefulDecommissionTimeout: "30s"
-        scaleDownFactor: 0.5
-        scaleUpFactor: 1
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocWorkflowTemplate
+metadata:
+  labels:
+    label-one: "value-one"
+  name: dataprocworkflowtemplate-sample
+spec:
+  location: "us-central1"
+  placement:
+    managedCluster:
+      clusterName: "test-cluster"
+      config:
+        autoscalingConfig:
+          policyRef:
+            name: dataprocworkflowtemplate-dep
+        masterConfig:
+          diskConfig:
+            bootDiskSizeGb: 30
+            bootDiskType: pd-standard
+          machineType: "n2-standard-8"
+          numInstances: 1
+        workerConfig:
+          numInstances: 2
+          machineType: "n2-standard-8"
+          diskConfig:
+            bootDiskSizeGb: 30
+            numLocalSsds: 1
+        softwareConfig:
+          imageVersion: "2.0.39-debian10"
+        gceClusterConfig:
+          tags:
+          - "foo"
+          - "bar"
+  jobs:
+  - stepId: "someJob"
+    sparkJob:
+      mainClass: "SomeClass"
+  - stepId: "otherJob"
+    prerequisiteStepIds:
+    - "someJob"
+    prestoJob:
+      queryFileUri: "someUri"
+---
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocAutoscalingPolicy
+metadata:
+  name: dataprocworkflowtemplate-dep
+spec:
+  location: "us-central1"
+  workerConfig:
+    maxInstances: 5
+  secondaryWorkerConfig:
+    maxInstances: 2
+  basicAlgorithm:
+    yarnConfig:
+      gracefulDecommissionTimeout: "30s"
+      scaleDownFactor: 0.5
+      scaleUpFactor: 1
+```
 
 
 {% endblock %}

@@ -58,65 +58,34 @@
 
 ### Spec
 #### Schema
-  ```yaml
+```yaml
+description: string
+instanceFilter:
+  all: boolean
+  exclusionLabels:
+  - labels:
+      string: string
+  inclusionLabels:
+  - labels:
+      string: string
+  inventories:
+  - osShortName: string
+    osVersion: string
+location: string
+osPolicies:
+- allowNoResourceGroupMatch: boolean
   description: string
-  instanceFilter:
-    all: boolean
-    exclusionLabels:
-    - labels:
-        string: string
-    inclusionLabels:
-    - labels:
-        string: string
-    inventories:
+  id: string
+  mode: string
+  resourceGroups:
+  - inventoryFilters:
     - osShortName: string
       osVersion: string
-  location: string
-  osPolicies:
-  - allowNoResourceGroupMatch: boolean
-    description: string
-    id: string
-    mode: string
-    resourceGroups:
-    - inventoryFilters:
-      - osShortName: string
-        osVersion: string
-      resources:
-      - exec:
-          enforce:
-            args:
-            - string
-            file:
-              allowInsecure: boolean
-              gcs:
-                bucket: string
-                generation: integer
-                object: string
-              localPath: string
-              remote:
-                sha256Checksum: string
-                uri: string
-            interpreter: string
-            outputFilePath: string
-            script: string
-          validate:
-            args:
-            - string
-            file:
-              allowInsecure: boolean
-              gcs:
-                bucket: string
-                generation: integer
-                object: string
-              localPath: string
-              remote:
-                sha256Checksum: string
-                uri: string
-            interpreter: string
-            outputFilePath: string
-            script: string
-        file:
-          content: string
+    resources:
+    - exec:
+        enforce:
+          args:
+          - string
           file:
             allowInsecure: boolean
             gcs:
@@ -127,91 +96,122 @@
             remote:
               sha256Checksum: string
               uri: string
-          path: string
-          permissions: string
-          state: string
-        id: string
-        pkg:
-          apt:
-            name: string
-          deb:
-            pullDeps: boolean
-            source:
-              allowInsecure: boolean
-              gcs:
-                bucket: string
-                generation: integer
-                object: string
-              localPath: string
-              remote:
-                sha256Checksum: string
-                uri: string
-          desiredState: string
-          googet:
-            name: string
-          msi:
-            properties:
-            - string
-            source:
-              allowInsecure: boolean
-              gcs:
-                bucket: string
-                generation: integer
-                object: string
-              localPath: string
-              remote:
-                sha256Checksum: string
-                uri: string
-          rpm:
-            pullDeps: boolean
-            source:
-              allowInsecure: boolean
-              gcs:
-                bucket: string
-                generation: integer
-                object: string
-              localPath: string
-              remote:
-                sha256Checksum: string
-                uri: string
-          yum:
-            name: string
-          zypper:
-            name: string
-        repository:
-          apt:
-            archiveType: string
-            components:
-            - string
-            distribution: string
-            gpgKey: string
+          interpreter: string
+          outputFilePath: string
+          script: string
+        validate:
+          args:
+          - string
+          file:
+            allowInsecure: boolean
+            gcs:
+              bucket: string
+              generation: integer
+              object: string
+            localPath: string
+            remote:
+              sha256Checksum: string
+              uri: string
+          interpreter: string
+          outputFilePath: string
+          script: string
+      file:
+        content: string
+        file:
+          allowInsecure: boolean
+          gcs:
+            bucket: string
+            generation: integer
+            object: string
+          localPath: string
+          remote:
+            sha256Checksum: string
             uri: string
-          goo:
-            name: string
-            url: string
-          yum:
-            baseUrl: string
-            displayName: string
-            gpgKeys:
-            - string
-            id: string
-          zypper:
-            baseUrl: string
-            displayName: string
-            gpgKeys:
-            - string
-            id: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  rollout:
-    disruptionBudget:
-      fixed: integer
-      percent: integer
-    minWaitDuration: string
-  ```
+        path: string
+        permissions: string
+        state: string
+      id: string
+      pkg:
+        apt:
+          name: string
+        deb:
+          pullDeps: boolean
+          source:
+            allowInsecure: boolean
+            gcs:
+              bucket: string
+              generation: integer
+              object: string
+            localPath: string
+            remote:
+              sha256Checksum: string
+              uri: string
+        desiredState: string
+        googet:
+          name: string
+        msi:
+          properties:
+          - string
+          source:
+            allowInsecure: boolean
+            gcs:
+              bucket: string
+              generation: integer
+              object: string
+            localPath: string
+            remote:
+              sha256Checksum: string
+              uri: string
+        rpm:
+          pullDeps: boolean
+          source:
+            allowInsecure: boolean
+            gcs:
+              bucket: string
+              generation: integer
+              object: string
+            localPath: string
+            remote:
+              sha256Checksum: string
+              uri: string
+        yum:
+          name: string
+        zypper:
+          name: string
+      repository:
+        apt:
+          archiveType: string
+          components:
+          - string
+          distribution: string
+          gpgKey: string
+          uri: string
+        goo:
+          name: string
+          url: string
+        yum:
+          baseUrl: string
+          displayName: string
+          gpgKeys:
+          - string
+          id: string
+        zypper:
+          baseUrl: string
+          displayName: string
+          gpgKeys:
+          - string
+          id: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+rollout:
+  disruptionBudget:
+    fixed: integer
+    percent: integer
+  minWaitDuration: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1801,23 +1801,23 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  baseline: boolean
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  deleted: boolean
-  etag: string
-  observedGeneration: integer
-  reconciling: boolean
-  revisionCreateTime: string
-  revisionId: string
-  rolloutState: string
-  uid: string
-  ```
+```yaml
+baseline: boolean
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+deleted: boolean
+etag: string
+observedGeneration: integer
+reconciling: boolean
+revisionCreateTime: string
+revisionId: string
+rolloutState: string
+uid: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1944,335 +1944,335 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Fixed Os Policy Assignment
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
-  kind: OSConfigOSPolicyAssignment
-  metadata:
-    name: osconfigospolicyassignment-sample-fixedospolicyassignment
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: "us-west2-a"
-    description: "A test os policy assignment"
-    osPolicies:
-    - id: "policy"
-      description: "A test os policy"
-      mode: "VALIDATION"
-      resourceGroups:
-      - inventoryFilters:
-        - osShortName: "centos"
-          osVersion: "8.*"
-        resources:
-        - id: "apt"
-          pkg:
-            desiredState: "INSTALLED"
-            apt:
-              name: "bazel"
-        - id: "deb1"
-          pkg:
-            desiredState: "INSTALLED"
-            deb:
-              source:
-                localPath: "$HOME/package.deb"
-        - id: "deb2"
-          pkg:
-            desiredState: "INSTALLED"
-            deb:
-              pullDeps: true
-              source:
-                allowInsecure: true
-                remote:
-                  uri: "ftp.us.debian.org/debian/package.deb"
-                  sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-        - id: "deb3"
-          pkg:
-            desiredState: "INSTALLED"
-            deb:
-              pullDeps: true
-              source:
-                gcs:
-                  bucket: "test-bucket"
-                  object: "test-object"
-                  generation: 1
-        - id: "yum"
-          pkg:
-            desiredState: "INSTALLED"
-            yum:
-              name: "gstreamer-plugins-base-devel.x86_64"
-        - id: "zypper"
-          pkg:
-            desiredState: "INSTALLED"
-            zypper:
-              name: "gcc"
-        - id: "rpm1"
-          pkg:
-            desiredState: "INSTALLED"
-            rpm:
-              pullDeps: true
-              source:
-                localPath: "$HOME/package.rpm"
-        - id: "rpm2"
-          pkg:
-            desiredState: "INSTALLED"
-            rpm:
-              source:
-                allowInsecure: true
-                remote:
-                  uri: "https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm"
-                  sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-        - id: "rpm3"
-          pkg:
-            desiredState: "INSTALLED"
-            rpm:
-              source:
-                gcs:
-                  bucket: "test-bucket"
-                  object: "test-object"
-                  generation: 1
-      - resources:
-        - id: "apt-to-deb"
-          pkg:
-            desiredState: "INSTALLED"
-            apt:
-              name: "bazel"
-        - id: "deb-local-path-to-gcs"
-          pkg:
-            desiredState: "INSTALLED"
-            deb:
-              source:
-                localPath: "$HOME/package.deb"
-        - id: "googet"
-          pkg:
-            desiredState: "INSTALLED"
-            googet:
-              name: "gcc"
-        - id: "msi1"
-          pkg:
-            desiredState: "INSTALLED"
-            msi:
-              source:
-                localPath: "$HOME/package.msi"
-              properties:
-              - "REBOOT=ReallySuppress"
-        - id: "msi2"
-          pkg:
-            desiredState: "INSTALLED"
-            msi:
-              source:
-                allowInsecure: true
-                remote:
-                  uri: "https://remote.uri.com/package.msi"
-                  sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-        - id: "msi3"
-          pkg:
-            desiredState: "INSTALLED"
-            msi:
-              source:
-                gcs:
-                  bucket: "test-bucket"
-                  object: "test-object"
-                  generation: 1
-      allowNoResourceGroupMatch: false
-    instanceFilter:
-      all: false
-      inclusionLabels:
-      - labels:
-          label-one: "value-one"
-      exclusionLabels:
-      - labels:
-          label-two: "value-two"
-      inventories:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
+kind: OSConfigOSPolicyAssignment
+metadata:
+  name: osconfigospolicyassignment-sample-fixedospolicyassignment
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: "us-west2-a"
+  description: "A test os policy assignment"
+  osPolicies:
+  - id: "policy"
+    description: "A test os policy"
+    mode: "VALIDATION"
+    resourceGroups:
+    - inventoryFilters:
       - osShortName: "centos"
         osVersion: "8.*"
-    rollout:
-      disruptionBudget:
-        fixed: 1
-      minWaitDuration: "3.5s"
-  ```
-
-### Percent Os Policy Assignment
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
-  kind: OSConfigOSPolicyAssignment
-  metadata:
-    name: osconfigospolicyassignment-sample-percentospolicyassignment
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: "us-west2-a"
-    description: "A test os policy assignment"
-    osPolicies:
-    - id: "policy"
-      mode: "VALIDATION"
-      resourceGroups:
-      - resources:
-        - id: "apt-to-yum"
-          repository:
-            apt:
-              archiveType: "DEB"
-              uri: "https://atl.mirrors.clouvider.net/debian"
-              distribution: "debian"
-              components:
-              - "doc"
-              gpgKey: ".gnupg/pubring.kbx"
-        - id: "yum"
-          repository:
-            yum:
-              id: "yum"
-              displayName: "yum"
-              baseUrl: "http://centos.s.uw.edu/centos/"
-              gpgKeys:
-              - "RPM-GPG-KEY-CentOS-7"
-        - id: "zypper"
-          repository:
-            zypper:
-              id: "zypper"
-              displayName: "zypper"
-              baseUrl: "http://mirror.dal10.us.leaseweb.net/opensuse"
-              gpgKeys:
-              - "sample-key-uri"
-        - id: "goo"
-          repository:
-            goo:
-              name: "goo"
-              url: "https://foo.com/googet/bar"
-        - id: "exec1"
-          exec:
-            validate:
-              args:
-              - "arg1"
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                localPath: "$HOME/script.sh"
-            enforce:
-              args:
-              - "arg1"
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                allowInsecure: true
-                remote:
-                  uri: "https://www.example.com/script.sh"
-                  sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
-        - id: "exec2"
-          exec:
-            validate:
-              args:
-              - "arg1"
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                allowInsecure: true
-                remote:
-                  uri: "https://www.example.com/script.sh"
-                  sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
-            enforce:
-              args:
-              - "arg1"
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                localPath: "$HOME/script.sh"
-        - id: "exec3"
-          exec:
-            validate:
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                allowInsecure: true
-                gcs:
-                  bucket: "test-bucket"
-                  object: "test-object"
-                  generation: 1
-            enforce:
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              script: "pwd"
-        - id: "exec4"
-          exec:
-            validate:
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              script: "pwd"
-            enforce:
-              interpreter: "SHELL"
-              outputFilePath: "$HOME/out"
-              file:
-                allowInsecure: true
-                gcs:
-                  bucket: "test-bucket"
-                  object: "test-object"
-                  generation: 1
-        - id: "file1"
-          file:
-            path: "$HOME/file"
-            state: "PRESENT"
-            file:
-              localPath: "$HOME/file"
-      - resources:
-        - id: "file2"
-          file:
-            path: "$HOME/file"
-            state: "PRESENT"
-            permissions: "755"
-            file:
+      resources:
+      - id: "apt"
+        pkg:
+          desiredState: "INSTALLED"
+          apt:
+            name: "bazel"
+      - id: "deb1"
+        pkg:
+          desiredState: "INSTALLED"
+          deb:
+            source:
+              localPath: "$HOME/package.deb"
+      - id: "deb2"
+        pkg:
+          desiredState: "INSTALLED"
+          deb:
+            pullDeps: true
+            source:
               allowInsecure: true
               remote:
-                uri: "https://www.example.com/file"
-                sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
-        - id: "file3"
-          file:
-            path: "$HOME/file"
-            state: "PRESENT"
-            file:
+                uri: "ftp.us.debian.org/debian/package.deb"
+                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+      - id: "deb3"
+        pkg:
+          desiredState: "INSTALLED"
+          deb:
+            pullDeps: true
+            source:
               gcs:
                 bucket: "test-bucket"
                 object: "test-object"
                 generation: 1
-        - id: "file4"
+      - id: "yum"
+        pkg:
+          desiredState: "INSTALLED"
+          yum:
+            name: "gstreamer-plugins-base-devel.x86_64"
+      - id: "zypper"
+        pkg:
+          desiredState: "INSTALLED"
+          zypper:
+            name: "gcc"
+      - id: "rpm1"
+        pkg:
+          desiredState: "INSTALLED"
+          rpm:
+            pullDeps: true
+            source:
+              localPath: "$HOME/package.rpm"
+      - id: "rpm2"
+        pkg:
+          desiredState: "INSTALLED"
+          rpm:
+            source:
+              allowInsecure: true
+              remote:
+                uri: "https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm"
+                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+      - id: "rpm3"
+        pkg:
+          desiredState: "INSTALLED"
+          rpm:
+            source:
+              gcs:
+                bucket: "test-bucket"
+                object: "test-object"
+                generation: 1
+    - resources:
+      - id: "apt-to-deb"
+        pkg:
+          desiredState: "INSTALLED"
+          apt:
+            name: "bazel"
+      - id: "deb-local-path-to-gcs"
+        pkg:
+          desiredState: "INSTALLED"
+          deb:
+            source:
+              localPath: "$HOME/package.deb"
+      - id: "googet"
+        pkg:
+          desiredState: "INSTALLED"
+          googet:
+            name: "gcc"
+      - id: "msi1"
+        pkg:
+          desiredState: "INSTALLED"
+          msi:
+            source:
+              localPath: "$HOME/package.msi"
+            properties:
+            - "REBOOT=ReallySuppress"
+      - id: "msi2"
+        pkg:
+          desiredState: "INSTALLED"
+          msi:
+            source:
+              allowInsecure: true
+              remote:
+                uri: "https://remote.uri.com/package.msi"
+                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+              sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+      - id: "msi3"
+        pkg:
+          desiredState: "INSTALLED"
+          msi:
+            source:
+              gcs:
+                bucket: "test-bucket"
+                object: "test-object"
+                generation: 1
+    allowNoResourceGroupMatch: false
+  instanceFilter:
+    all: false
+    inclusionLabels:
+    - labels:
+        label-one: "value-one"
+    exclusionLabels:
+    - labels:
+        label-two: "value-two"
+    inventories:
+    - osShortName: "centos"
+      osVersion: "8.*"
+  rollout:
+    disruptionBudget:
+      fixed: 1
+    minWaitDuration: "3.5s"
+```
+
+### Percent Os Policy Assignment
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
+kind: OSConfigOSPolicyAssignment
+metadata:
+  name: osconfigospolicyassignment-sample-percentospolicyassignment
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: "us-west2-a"
+  description: "A test os policy assignment"
+  osPolicies:
+  - id: "policy"
+    mode: "VALIDATION"
+    resourceGroups:
+    - resources:
+      - id: "apt-to-yum"
+        repository:
+          apt:
+            archiveType: "DEB"
+            uri: "https://atl.mirrors.clouvider.net/debian"
+            distribution: "debian"
+            components:
+            - "doc"
+            gpgKey: ".gnupg/pubring.kbx"
+      - id: "yum"
+        repository:
+          yum:
+            id: "yum"
+            displayName: "yum"
+            baseUrl: "http://centos.s.uw.edu/centos/"
+            gpgKeys:
+            - "RPM-GPG-KEY-CentOS-7"
+      - id: "zypper"
+        repository:
+          zypper:
+            id: "zypper"
+            displayName: "zypper"
+            baseUrl: "http://mirror.dal10.us.leaseweb.net/opensuse"
+            gpgKeys:
+            - "sample-key-uri"
+      - id: "goo"
+        repository:
+          goo:
+            name: "goo"
+            url: "https://foo.com/googet/bar"
+      - id: "exec1"
+        exec:
+          validate:
+            args:
+            - "arg1"
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              localPath: "$HOME/script.sh"
+          enforce:
+            args:
+            - "arg1"
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              allowInsecure: true
+              remote:
+                uri: "https://www.example.com/script.sh"
+                sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+      - id: "exec2"
+        exec:
+          validate:
+            args:
+            - "arg1"
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              allowInsecure: true
+              remote:
+                uri: "https://www.example.com/script.sh"
+                sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+          enforce:
+            args:
+            - "arg1"
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              localPath: "$HOME/script.sh"
+      - id: "exec3"
+        exec:
+          validate:
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              allowInsecure: true
+              gcs:
+                bucket: "test-bucket"
+                object: "test-object"
+                generation: 1
+          enforce:
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            script: "pwd"
+      - id: "exec4"
+        exec:
+          validate:
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            script: "pwd"
+          enforce:
+            interpreter: "SHELL"
+            outputFilePath: "$HOME/out"
+            file:
+              allowInsecure: true
+              gcs:
+                bucket: "test-bucket"
+                object: "test-object"
+                generation: 1
+      - id: "file1"
+        file:
+          path: "$HOME/file"
+          state: "PRESENT"
           file:
-            path: "$HOME/file"
-            state: "PRESENT"
-            content: "sample-content"
-    instanceFilter:
-      all: true
-    rollout:
-      disruptionBudget:
-        percent: 1
-      minWaitDuration: "3.5s"
-  ```
+            localPath: "$HOME/file"
+    - resources:
+      - id: "file2"
+        file:
+          path: "$HOME/file"
+          state: "PRESENT"
+          permissions: "755"
+          file:
+            allowInsecure: true
+            remote:
+              uri: "https://www.example.com/file"
+              sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+      - id: "file3"
+        file:
+          path: "$HOME/file"
+          state: "PRESENT"
+          file:
+            gcs:
+              bucket: "test-bucket"
+              object: "test-object"
+              generation: 1
+      - id: "file4"
+        file:
+          path: "$HOME/file"
+          state: "PRESENT"
+          content: "sample-content"
+  instanceFilter:
+    all: true
+  rollout:
+    disruptionBudget:
+      percent: 1
+    minWaitDuration: "3.5s"
+```
 
 
 {% endblock %}

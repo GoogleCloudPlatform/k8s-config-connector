@@ -72,115 +72,115 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  copy:
-    createDisposition: string
-    destinationEncryptionConfiguration:
-      kmsKeyRef:
-        external: string
-        name: string
-        namespace: string
-      kmsKeyVersion: string
-    destinationTable:
-      tableRef:
-        external: string
-        name: string
-        namespace: string
-    sourceTables:
-    - tableRef:
-        external: string
-        name: string
-        namespace: string
-    writeDisposition: string
-  extract:
-    compression: string
-    destinationFormat: string
-    destinationUris:
-    - string
-    fieldDelimiter: string
-    printHeader: boolean
-    sourceTable:
-      tableRef:
-        external: string
-        name: string
-        namespace: string
-    useAvroLogicalTypes: boolean
-  jobTimeoutMs: string
-  load:
-    allowJaggedRows: boolean
-    allowQuotedNewlines: boolean
-    autodetect: boolean
-    createDisposition: string
-    destinationEncryptionConfiguration:
-      kmsKeyRef:
-        external: string
-        name: string
-        namespace: string
-      kmsKeyVersion: string
-    destinationTable:
-      tableRef:
-        external: string
-        name: string
-        namespace: string
-    encoding: string
-    fieldDelimiter: string
-    ignoreUnknownValues: boolean
-    maxBadRecords: integer
-    nullMarker: string
-    projectionFields:
-    - string
-    quote: string
-    schemaUpdateOptions:
-    - string
-    skipLeadingRows: integer
-    sourceFormat: string
-    sourceUris:
-    - string
-    timePartitioning:
-      expirationMs: string
-      field: string
-      type: string
-    writeDisposition: string
-  location: string
-  query:
-    allowLargeResults: boolean
-    createDisposition: string
-    defaultDataset:
-      datasetRef:
-        external: string
-        name: string
-        namespace: string
-    destinationEncryptionConfiguration:
-      kmsKeyRef:
-        external: string
-        name: string
-        namespace: string
-      kmsKeyVersion: string
-    destinationTable:
-      tableRef:
-        external: string
-        name: string
-        namespace: string
-    flattenResults: boolean
-    maximumBillingTier: integer
-    maximumBytesBilled: string
-    parameterMode: string
-    priority: string
-    query: string
-    schemaUpdateOptions:
-    - string
-    scriptOptions:
-      keyResultStatement: string
-      statementByteBudget: string
-      statementTimeoutMs: string
-    useLegacySql: boolean
-    useQueryCache: boolean
-    userDefinedFunctionResources:
-    - inlineCode: string
-      resourceUri: string
-    writeDisposition: string
-  resourceID: string
-  ```
+```yaml
+copy:
+  createDisposition: string
+  destinationEncryptionConfiguration:
+    kmsKeyRef:
+      external: string
+      name: string
+      namespace: string
+    kmsKeyVersion: string
+  destinationTable:
+    tableRef:
+      external: string
+      name: string
+      namespace: string
+  sourceTables:
+  - tableRef:
+      external: string
+      name: string
+      namespace: string
+  writeDisposition: string
+extract:
+  compression: string
+  destinationFormat: string
+  destinationUris:
+  - string
+  fieldDelimiter: string
+  printHeader: boolean
+  sourceTable:
+    tableRef:
+      external: string
+      name: string
+      namespace: string
+  useAvroLogicalTypes: boolean
+jobTimeoutMs: string
+load:
+  allowJaggedRows: boolean
+  allowQuotedNewlines: boolean
+  autodetect: boolean
+  createDisposition: string
+  destinationEncryptionConfiguration:
+    kmsKeyRef:
+      external: string
+      name: string
+      namespace: string
+    kmsKeyVersion: string
+  destinationTable:
+    tableRef:
+      external: string
+      name: string
+      namespace: string
+  encoding: string
+  fieldDelimiter: string
+  ignoreUnknownValues: boolean
+  maxBadRecords: integer
+  nullMarker: string
+  projectionFields:
+  - string
+  quote: string
+  schemaUpdateOptions:
+  - string
+  skipLeadingRows: integer
+  sourceFormat: string
+  sourceUris:
+  - string
+  timePartitioning:
+    expirationMs: string
+    field: string
+    type: string
+  writeDisposition: string
+location: string
+query:
+  allowLargeResults: boolean
+  createDisposition: string
+  defaultDataset:
+    datasetRef:
+      external: string
+      name: string
+      namespace: string
+  destinationEncryptionConfiguration:
+    kmsKeyRef:
+      external: string
+      name: string
+      namespace: string
+    kmsKeyVersion: string
+  destinationTable:
+    tableRef:
+      external: string
+      name: string
+      namespace: string
+  flattenResults: boolean
+  maximumBillingTier: integer
+  maximumBytesBilled: string
+  parameterMode: string
+  priority: string
+  query: string
+  schemaUpdateOptions:
+  - string
+  scriptOptions:
+    keyResultStatement: string
+    statementByteBudget: string
+    statementTimeoutMs: string
+  useLegacySql: boolean
+  useQueryCache: boolean
+  userDefinedFunctionResources:
+  - inlineCode: string
+    resourceUri: string
+  writeDisposition: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1388,27 +1388,27 @@ Creation, truncation and append actions occur as one atomic update upon job comp
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+jobType: string
+observedGeneration: integer
+status:
+- errorResult:
+  - location: string
     message: string
     reason: string
-    status: string
-    type: string
-  jobType: string
-  observedGeneration: integer
-  status:
-  - errorResult:
-    - location: string
-      message: string
-      reason: string
-    errors:
-    - location: string
-      message: string
-      reason: string
-    state: string
-  userEmail: string
-  ```
+  errors:
+  - location: string
+    message: string
+    reason: string
+  state: string
+userEmail: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1586,410 +1586,410 @@ not necessarily mean that the job has not completed or was unsuccessful.{% endve
 ## Sample YAML(s)
 
 ### Copy BigQuery Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryJob
-  metadata:
-    labels:
-      label-one: "value-one"
-    # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
-    # if you want to create a new job, otherwise Config Connector will try to
-    # acquire the job with the given name.
-    name: bigqueryjob-sample-copy
-  spec:
-    location: "US"
-    jobTimeoutMs: "600000"
-    copy:
-      sourceTables:
-        - tableRef:
-            name: bigqueryjobdep1copy
-        - tableRef:
-            name: bigqueryjobdep2copy
-      destinationTable:
-        tableRef:
-          name: bigqueryjobdep3copy
-      destinationEncryptionConfiguration:
-        kmsKeyRef:
-          name: bigqueryjob-dep-copy
-      writeDisposition: "WRITE_APPEND"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    name: bigqueryjobdep1copy
-  spec:
-    friendlyName: bigqueryjob-dep1-copy
-    description: "Source BigQueryDataset 1"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    name: bigqueryjobdep2copy
-  spec:
-    friendlyName: bigqueryjob-dep2-copy
-    description: "Source BigQueryDataset 2"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    name: bigqueryjobdep3copy
-  spec:
-    friendlyName: bigqueryjob-dep3-copy
-    description: "Destination BigQueryDataset"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdep1copy
-  spec:
-    friendlyName: bigqueryjob-dep1-copy
-    description: "Source BigQueryTable 1"
-    datasetRef:
-      name: bigqueryjobdep1copy
-    schema: |
-      [
-        {
-          "name": "name",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "post_abbr",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "date",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        }
-      ]
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdep2copy
-  spec:
-    friendlyName: bigqueryjob-dep2-copy
-    description: "Source BigQueryTable 2"
-    datasetRef:
-      name: bigqueryjobdep2copy
-    schema: |
-      [
-        {
-          "name": "name",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "post_abbr",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "date",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        }
-      ]
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdep3copy
-  spec:
-    friendlyName: bigqueryjob-dep3-copy
-    description: "Destination BigQueryTable"
-    datasetRef:
-      name: bigqueryjobdep3copy
-    schema: |
-      [
-        {
-          "name": "name",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "post_abbr",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "date",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        }
-      ]
-    encryptionConfiguration:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryJob
+metadata:
+  labels:
+    label-one: "value-one"
+  # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
+  # if you want to create a new job, otherwise Config Connector will try to
+  # acquire the job with the given name.
+  name: bigqueryjob-sample-copy
+spec:
+  location: "US"
+  jobTimeoutMs: "600000"
+  copy:
+    sourceTables:
+      - tableRef:
+          name: bigqueryjobdep1copy
+      - tableRef:
+          name: bigqueryjobdep2copy
+    destinationTable:
+      tableRef:
+        name: bigqueryjobdep3copy
+    destinationEncryptionConfiguration:
       kmsKeyRef:
         name: bigqueryjob-dep-copy
-  ---
-  # Replace ${PROJECT_ID?} below with your project ID and ${PROJECT_NUMBER?} with
-  # your project number.
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    name: bigqueryjob-dep-copy
-  spec:
-    member: serviceAccount:bq-${PROJECT_NUMBER?}@bigquery-encryption.iam.gserviceaccount.com
-    role: roles/cloudkms.cryptoKeyEncrypterDecrypter
-    resourceRef:
-      kind: Project
-      external: projects/${PROJECT_ID?}
-  ---
-  apiVersion: kms.cnrm.cloud.google.com/v1beta1
-  kind: KMSCryptoKey
-  metadata:
-    name: bigqueryjob-dep-copy
-  spec:
-    keyRingRef:
+    writeDisposition: "WRITE_APPEND"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep1copy
+spec:
+  friendlyName: bigqueryjob-dep1-copy
+  description: "Source BigQueryDataset 1"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep2copy
+spec:
+  friendlyName: bigqueryjob-dep2-copy
+  description: "Source BigQueryDataset 2"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep3copy
+spec:
+  friendlyName: bigqueryjob-dep3-copy
+  description: "Destination BigQueryDataset"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdep1copy
+spec:
+  friendlyName: bigqueryjob-dep1-copy
+  description: "Source BigQueryTable 1"
+  datasetRef:
+    name: bigqueryjobdep1copy
+  schema: |
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      }
+    ]
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdep2copy
+spec:
+  friendlyName: bigqueryjob-dep2-copy
+  description: "Source BigQueryTable 2"
+  datasetRef:
+    name: bigqueryjobdep2copy
+  schema: |
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      }
+    ]
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdep3copy
+spec:
+  friendlyName: bigqueryjob-dep3-copy
+  description: "Destination BigQueryTable"
+  datasetRef:
+    name: bigqueryjobdep3copy
+  schema: |
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      }
+    ]
+  encryptionConfiguration:
+    kmsKeyRef:
       name: bigqueryjob-dep-copy
-  ---
-  apiVersion: kms.cnrm.cloud.google.com/v1beta1
-  kind: KMSKeyRing
-  metadata:
+---
+# Replace ${PROJECT_ID?} below with your project ID and ${PROJECT_NUMBER?} with
+# your project number.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: bigqueryjob-dep-copy
+spec:
+  member: serviceAccount:bq-${PROJECT_NUMBER?}@bigquery-encryption.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: bigqueryjob-dep-copy
+spec:
+  keyRingRef:
     name: bigqueryjob-dep-copy
-  spec:
-    location: global
-  ```
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: bigqueryjob-dep-copy
+spec:
+  location: global
+```
 
 ### Extract BigQuery Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryJob
-  metadata:
-    labels:
-      label-one: "value-one"
-    # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
-    # if you want to create a new job, otherwise Config Connector will try to
-    # acquire the job with the given name.
-    name: bigqueryjob-sample-extract
-  spec:
-    location: "US"
-    jobTimeoutMs: "600000"
-    extract:
-      sourceTable:
-        tableRef:
-          name: bigqueryjobdepextract
-      destinationUris:
-        - "gs://${PROJECT_ID?}-bigqueryjob-dep-extract/extract"
-      destinationFormat: "CSV"
-      compression: "GZIP"
-      printHeader: true
-      fieldDelimiter: ","
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryJob
+metadata:
+  labels:
+    label-one: "value-one"
+  # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
+  # if you want to create a new job, otherwise Config Connector will try to
+  # acquire the job with the given name.
+  name: bigqueryjob-sample-extract
+spec:
+  location: "US"
+  jobTimeoutMs: "600000"
+  extract:
+    sourceTable:
+      tableRef:
+        name: bigqueryjobdepextract
+    destinationUris:
+      - "gs://${PROJECT_ID?}-bigqueryjob-dep-extract/extract"
+    destinationFormat: "CSV"
+    compression: "GZIP"
+    printHeader: true
+    fieldDelimiter: ","
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdepextract
+spec:
+  friendlyName: bigqueryjob-dep-extract
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdepextract
+spec:
+  friendlyName: bigqueryjob-dep-extract
+  datasetRef:
     name: bigqueryjobdepextract
-  spec:
-    friendlyName: bigqueryjob-dep-extract
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdepextract
-  spec:
-    friendlyName: bigqueryjob-dep-extract
-    datasetRef:
-      name: bigqueryjobdepextract
-    schema: |
-      [
-        {
-          "name": "name",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "post_abbr",
-          "type": "STRING",
-          "mode": "NULLABLE"
-        },
-        {
-          "name": "date",
-          "type": "DATE",
-          "mode": "NULLABLE"
-        }
-      ]
-  ---
-  apiVersion: storage.cnrm.cloud.google.com/v1beta1
-  kind: StorageBucket
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/force-destroy: "true"
-    # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
-    name: ${PROJECT_ID?}-bigqueryjob-dep-extract
-  ```
+  schema: |
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
+      }
+    ]
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+  # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
+  name: ${PROJECT_ID?}-bigqueryjob-dep-extract
+```
 
 ### Load BigQuery Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryJob
-  metadata:
-    labels:
-      label-one: "value-one"
-    # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
-    # if you want to create a new job, otherwise Config Connector will try to
-    # acquire the job with the given name.
-    name: bigqueryjob-sample-load
-  spec:
-    location: "US"
-    jobTimeoutMs: "600000"
-    load:
-      sourceUris:
-        - "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
-      destinationTable:
-        tableRef:
-          name: bigqueryjobdepload
-      sourceFormat: "CSV"
-      encoding: "UTF-8"
-      fieldDelimiter: ","
-      quote: '"'
-      allowQuotedNewlines: false
-      maxBadRecords: 0
-      allowJaggedRows: false
-      ignoreUnknownValues: false
-      skipLeadingRows: 1
-      autodetect: true
-      writeDisposition: "WRITE_APPEND"
-      schemaUpdateOptions:
-        - "ALLOW_FIELD_ADDITION"
-        - "ALLOW_FIELD_RELAXATION"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryJob
+metadata:
+  labels:
+    label-one: "value-one"
+  # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
+  # if you want to create a new job, otherwise Config Connector will try to
+  # acquire the job with the given name.
+  name: bigqueryjob-sample-load
+spec:
+  location: "US"
+  jobTimeoutMs: "600000"
+  load:
+    sourceUris:
+      - "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+    destinationTable:
+      tableRef:
+        name: bigqueryjobdepload
+    sourceFormat: "CSV"
+    encoding: "UTF-8"
+    fieldDelimiter: ","
+    quote: '"'
+    allowQuotedNewlines: false
+    maxBadRecords: 0
+    allowJaggedRows: false
+    ignoreUnknownValues: false
+    skipLeadingRows: 1
+    autodetect: true
+    writeDisposition: "WRITE_APPEND"
+    schemaUpdateOptions:
+      - "ALLOW_FIELD_ADDITION"
+      - "ALLOW_FIELD_RELAXATION"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdepload
+spec:
+  friendlyName: bigqueryjob-dep-load
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdepload
+spec:
+  friendlyName: bigqueryjob-dep-load
+  datasetRef:
     name: bigqueryjobdepload
-  spec:
-    friendlyName: bigqueryjob-dep-load
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdepload
-  spec:
-    friendlyName: bigqueryjob-dep-load
-    datasetRef:
-      name: bigqueryjobdepload
-  ```
+```
 
 ### Query BigQuery Job
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryJob
-  metadata:
-    labels:
-      label-one: "value-one"
-    # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
-    # if you want to create a new job, otherwise Config Connector will try to
-    # acquire the job with the given name.
-    name: bigqueryjob-sample-query
-  spec:
-    location: "US"
-    jobTimeoutMs: "600000"
-    query:
-      query: "SELECT state FROM [lookerdata:cdc.project_tycho_reports]"
-      useLegacySql: true
-      defaultDataset:
-        datasetRef:
-          name: bigqueryjobdep1query
-      destinationTable:
-        tableRef:
-          name: bigqueryjobdepquery
-      allowLargeResults: true
-      flattenResults: true
-      useQueryCache: true
-      priority: "INTERACTIVE"
-      writeDisposition: "WRITE_APPEND"
-      schemaUpdateOptions:
-        - "ALLOW_FIELD_ADDITION"
-        - "ALLOW_FIELD_RELAXATION"
-      scriptOptions:
-        statementTimeoutMs: "300000"
-        keyResultStatement: "LAST"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    name: bigqueryjobdep1query
-  spec:
-    friendlyName: bigqueryjob-dep1-query
-    description: "Default Source BigQueryDataset"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryJob
+metadata:
+  labels:
+    label-one: "value-one"
+  # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
+  # if you want to create a new job, otherwise Config Connector will try to
+  # acquire the job with the given name.
+  name: bigqueryjob-sample-query
+spec:
+  location: "US"
+  jobTimeoutMs: "600000"
+  query:
+    query: "SELECT state FROM [lookerdata:cdc.project_tycho_reports]"
+    useLegacySql: true
+    defaultDataset:
+      datasetRef:
+        name: bigqueryjobdep1query
+    destinationTable:
+      tableRef:
+        name: bigqueryjobdepquery
+    allowLargeResults: true
+    flattenResults: true
+    useQueryCache: true
+    priority: "INTERACTIVE"
+    writeDisposition: "WRITE_APPEND"
+    schemaUpdateOptions:
+      - "ALLOW_FIELD_ADDITION"
+      - "ALLOW_FIELD_RELAXATION"
+    scriptOptions:
+      statementTimeoutMs: "300000"
+      keyResultStatement: "LAST"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep1query
+spec:
+  friendlyName: bigqueryjob-dep1-query
+  description: "Default Source BigQueryDataset"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryjobdep2query
+spec:
+  friendlyName: bigqueryjob-dep2-query
+  description: "Destination BigQueryDataset"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigqueryjobdepquery
+spec:
+  friendlyName: bigqueryjob-dep-query
+  description: "Destination BigQueryTable"
+  datasetRef:
     name: bigqueryjobdep2query
-  spec:
-    friendlyName: bigqueryjob-dep2-query
-    description: "Destination BigQueryDataset"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: bigqueryjobdepquery
-  spec:
-    friendlyName: bigqueryjob-dep-query
-    description: "Destination BigQueryTable"
-    datasetRef:
-      name: bigqueryjobdep2query
-  ```
+```
 
 
 {% endblock %}

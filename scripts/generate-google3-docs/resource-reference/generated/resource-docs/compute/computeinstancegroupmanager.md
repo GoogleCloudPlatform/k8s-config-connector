@@ -58,74 +58,74 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  autoHealingPolicies:
-  - healthCheckRef:
-      external: string
-      name: string
-      namespace: string
-    initialDelaySec: integer
-  baseInstanceName: string
-  description: string
-  distributionPolicy:
-    targetShape: string
-    zones:
-    - zone: string
-  failoverAction: string
-  instanceTemplateRef:
+```yaml
+autoHealingPolicies:
+- healthCheckRef:
     external: string
     name: string
     namespace: string
-  location: string
-  namedPorts:
-  - name: string
-    port: integer
-  projectRef:
+  initialDelaySec: integer
+baseInstanceName: string
+description: string
+distributionPolicy:
+  targetShape: string
+  zones:
+  - zone: string
+failoverAction: string
+instanceTemplateRef:
+  external: string
+  name: string
+  namespace: string
+location: string
+namedPorts:
+- name: string
+  port: integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+serviceAccountRef:
+  external: string
+  name: string
+  namespace: string
+statefulPolicy:
+  preservedState:
+    disks:
+      string: object
+    externalIps:
+      string: object
+    internalIps:
+      string: object
+targetPools:
+- external: string
+  name: string
+  namespace: string
+targetSize: integer
+updatePolicy:
+  instanceRedistributionType: string
+  maxSurge:
+    fixed: integer
+    percent: integer
+  maxUnavailable:
+    fixed: integer
+    percent: integer
+  minReadySec: integer
+  minimalAction: string
+  mostDisruptiveAllowedAction: string
+  replacementMethod: string
+  type: string
+versions:
+- instanceTemplateRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  serviceAccountRef:
-    external: string
-    name: string
-    namespace: string
-  statefulPolicy:
-    preservedState:
-      disks:
-        string: object
-      externalIps:
-        string: object
-      internalIps:
-        string: object
-  targetPools:
-  - external: string
-    name: string
-    namespace: string
-  targetSize: integer
-  updatePolicy:
-    instanceRedistributionType: string
-    maxSurge:
-      fixed: integer
-      percent: integer
-    maxUnavailable:
-      fixed: integer
-      percent: integer
-    minReadySec: integer
-    minimalAction: string
-    mostDisruptiveAllowedAction: string
-    replacementMethod: string
-    type: string
-  versions:
-  - instanceTemplateRef:
-      external: string
-      name: string
-      namespace: string
-    name: string
-    targetSize:
-      calculated: integer
-      fixed: integer
-      percent: integer
-  ```
+  name: string
+  targetSize:
+    calculated: integer
+    fixed: integer
+    percent: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -831,47 +831,47 @@ Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.{% e
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  currentActions:
-    abandoning: integer
-    creating: integer
-    creatingWithoutRetries: integer
-    deleting: integer
-    none: integer
-    recreating: integer
-    refreshing: integer
-    restarting: integer
-    verifying: integer
-  fingerprint: string
-  id: integer
-  instanceGroup: string
-  observedGeneration: integer
-  region: string
-  selfLink: string
-  status:
-    autoscaler: string
-    isStable: boolean
-    stateful:
-      hasStatefulConfig: boolean
-      isStateful: boolean
-      perInstanceConfigs:
-        allEffective: boolean
-    versionTarget:
-      isReached: boolean
-  updatePolicy:
-    maxSurge:
-      calculated: integer
-    maxUnavailable:
-      calculated: integer
-  zone: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+currentActions:
+  abandoning: integer
+  creating: integer
+  creatingWithoutRetries: integer
+  deleting: integer
+  none: integer
+  recreating: integer
+  refreshing: integer
+  restarting: integer
+  verifying: integer
+fingerprint: string
+id: integer
+instanceGroup: string
+observedGeneration: integer
+region: string
+selfLink: string
+status:
+  autoscaler: string
+  isStable: boolean
+  stateful:
+    hasStatefulConfig: boolean
+    isStateful: boolean
+    perInstanceConfigs:
+      allEffective: boolean
+  versionTarget:
+    isReached: boolean
+updatePolicy:
+  maxSurge:
+    calculated: integer
+  maxUnavailable:
+    calculated: integer
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -1166,191 +1166,191 @@ Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.{% e
 ## Sample YAML(s)
 
 ### Regional Compute Instance Group Manager
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroupManager
-  metadata:
-    name: computeinstancegroupmanager-sample-regional
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: us-central1
-    baseInstanceName: app
-    autoHealingPolicies:
-      - healthCheckRef:
-          name: computeinstancegroupmanager-dep-regional
-        initialDelaySec: 300
-    targetSize: 3
-    instanceTemplateRef:
-      name: computeinstancegroupmanager-dep-regional
-    updatePolicy:
-      instanceRedistributionType: PROACTIVE
-      minimalAction: RESTART
-      maxSurge:
-        fixed: 3
-      maxUnavailable:
-        fixed: 3
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computeinstancegroupmanager-dep-regional
-  spec:
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
-    name: computeinstancegroupmanager-dep-regional
-  spec:
-    machineType: n1-standard-1
-    disk:
-    - sourceImageRef:
-        external: debian-cloud/debian-9
-      boot: true
-    networkInterface:
-    - networkRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroupManager
+metadata:
+  name: computeinstancegroupmanager-sample-regional
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: us-central1
+  baseInstanceName: app
+  autoHealingPolicies:
+    - healthCheckRef:
         name: computeinstancegroupmanager-dep-regional
-      subnetworkRef:
-        name: computeinstancegroupmanager-dep-regional
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+      initialDelaySec: 300
+  targetSize: 3
+  instanceTemplateRef:
     name: computeinstancegroupmanager-dep-regional
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computeinstancegroupmanager-dep-regional
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    privateIpGoogleAccess: false
-    networkRef:
+  updatePolicy:
+    instanceRedistributionType: PROACTIVE
+    minimalAction: RESTART
+    maxSurge:
+      fixed: 3
+    maxUnavailable:
+      fixed: 3
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computeinstancegroupmanager-dep-regional
+spec:
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computeinstancegroupmanager-dep-regional
+spec:
+  machineType: n1-standard-1
+  disk:
+  - sourceImageRef:
+      external: debian-cloud/debian-9
+    boot: true
+  networkInterface:
+  - networkRef:
       name: computeinstancegroupmanager-dep-regional
-  ```
+    subnetworkRef:
+      name: computeinstancegroupmanager-dep-regional
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstancegroupmanager-dep-regional
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeinstancegroupmanager-dep-regional
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  privateIpGoogleAccess: false
+  networkRef:
+    name: computeinstancegroupmanager-dep-regional
+```
 
 ### Zonal Compute Instance Group Manager
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceGroupManager
-  metadata:
-    name: computeinstancegroupmanager-sample-zonal
-  spec:
-    projectRef:
-       # Replace ${PROJECT_ID?} with your project ID
-       external: "projects/${PROJECT_ID?}"
-    location: us-central1-a
-    baseInstanceName: app
-    autoHealingPolicies:
-      - healthCheckRef:
-          name: computeinstancegroupmanager-dep-zonal
-        initialDelaySec: 300
-    targetSize: 3
-    instanceTemplateRef:
-      name: computeinstancegroupmanager-dep-zonal
-    updatePolicy:
-      minimalAction: RESTART
-      maxSurge:
-        fixed: 3
-      maxUnavailable:
-        fixed: 3
-    statefulPolicy:
-      preservedState:
-        disks:
-          disk-a:
-            autoDelete: "ON_PERMANENT_INSTANCE_DELETION"
-          disk-b:
-            autoDelete: "NEVER"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeHealthCheck
-  metadata:
-    name: computeinstancegroupmanager-dep-zonal
-  spec:
-    httpHealthCheck:
-      port: 80
-    location: global
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstanceTemplate
-  metadata:
-    name: computeinstancegroupmanager-dep-zonal
-  spec:
-    machineType: n1-standard-1
-    disk:
-    - sourceImageRef:
-        external: debian-cloud/debian-9
-      boot: true
-    - deviceName: disk-a
-      sourceImageRef:
-        external: debian-cloud/debian-9
-      autoDelete: true
-      boot: false
-    - deviceName: disk-b
-      sourceImageRef:
-        external: debian-cloud/debian-9
-      boot: false
-    networkInterface:
-    - networkRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroupManager
+metadata:
+  name: computeinstancegroupmanager-sample-zonal
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: us-central1-a
+  baseInstanceName: app
+  autoHealingPolicies:
+    - healthCheckRef:
         name: computeinstancegroupmanager-dep-zonal
-      subnetworkRef:
-        name: computeinstancegroupmanager-dep-zonal
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
+      initialDelaySec: 300
+  targetSize: 3
+  instanceTemplateRef:
     name: computeinstancegroupmanager-dep-zonal
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computeinstancegroupmanager-dep-zonal
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    privateIpGoogleAccess: false
-    networkRef:
+  updatePolicy:
+    minimalAction: RESTART
+    maxSurge:
+      fixed: 3
+    maxUnavailable:
+      fixed: 3
+  statefulPolicy:
+    preservedState:
+      disks:
+        disk-a:
+          autoDelete: "ON_PERMANENT_INSTANCE_DELETION"
+        disk-b:
+          autoDelete: "NEVER"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computeinstancegroupmanager-dep-zonal
+spec:
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: computeinstancegroupmanager-dep-zonal
+spec:
+  machineType: n1-standard-1
+  disk:
+  - sourceImageRef:
+      external: debian-cloud/debian-9
+    boot: true
+  - deviceName: disk-a
+    sourceImageRef:
+      external: debian-cloud/debian-9
+    autoDelete: true
+    boot: false
+  - deviceName: disk-b
+    sourceImageRef:
+      external: debian-cloud/debian-9
+    boot: false
+  networkInterface:
+  - networkRef:
       name: computeinstancegroupmanager-dep-zonal
-  ```
+    subnetworkRef:
+      name: computeinstancegroupmanager-dep-zonal
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeinstancegroupmanager-dep-zonal
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeinstancegroupmanager-dep-zonal
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  privateIpGoogleAccess: false
+  networkRef:
+    name: computeinstancegroupmanager-dep-zonal
+```
 
 
 {% endblock %}

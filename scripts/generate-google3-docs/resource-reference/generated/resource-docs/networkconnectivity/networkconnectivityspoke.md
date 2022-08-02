@@ -58,39 +58,39 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  hubRef:
-    external: string
+```yaml
+description: string
+hubRef:
+  external: string
+  name: string
+  namespace: string
+linkedInterconnectAttachments:
+  siteToSiteDataTransfer: boolean
+  uris:
+  - external: string
     name: string
     namespace: string
-  linkedInterconnectAttachments:
-    siteToSiteDataTransfer: boolean
-    uris:
-    - external: string
+linkedRouterApplianceInstances:
+  instances:
+  - ipAddress: string
+    virtualMachineRef:
+      external: string
       name: string
       namespace: string
-  linkedRouterApplianceInstances:
-    instances:
-    - ipAddress: string
-      virtualMachineRef:
-        external: string
-        name: string
-        namespace: string
-    siteToSiteDataTransfer: boolean
-  linkedVpnTunnels:
-    siteToSiteDataTransfer: boolean
-    uris:
-    - external: string
-      name: string
-      namespace: string
-  location: string
-  projectRef:
-    external: string
+  siteToSiteDataTransfer: boolean
+linkedVpnTunnels:
+  siteToSiteDataTransfer: boolean
+  uris:
+  - external: string
     name: string
     namespace: string
-  resourceID: string
-  ```
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -454,19 +454,19 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  observedGeneration: integer
-  state: string
-  uniqueId: string
-  updateTime: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+observedGeneration: integer
+state: string
+uniqueId: string
+updateTime: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -565,93 +565,93 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkConnectivitySpoke
-  metadata:
-    name: networkconnectivityspoke-sample
-    labels:
-      label-one: "value-one"
-  spec:
-    location: us-central1
-    description: "A sample spoke with a linked router appliance instance"
-    hubRef:
-      name: networkconnectivityspoke-dep
-    linkedRouterApplianceInstances:
-      instances:
-        - virtualMachineRef:
-            name: networkconnectivityspoke-dep
-          ipAddress: "10.0.0.2"
-      siteToSiteDataTransfer: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "true"
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivitySpoke
+metadata:
+  name: networkconnectivityspoke-sample
+  labels:
+    label-one: "value-one"
+spec:
+  location: us-central1
+  description: "A sample spoke with a linked router appliance instance"
+  hubRef:
     name: networkconnectivityspoke-dep
-    labels:
-      created-from: "image"
-      network-type: "subnetwork"
-  spec:
-    machineType: n1-standard-1
-    zone: us-central1-a
-    bootDisk:
-      initializeParams:
-        sourceImageRef:
-          external: debian-cloud/debian-9
-    networkInterface:
-      - subnetworkRef:
+  linkedRouterApplianceInstances:
+    instances:
+      - virtualMachineRef:
           name: networkconnectivityspoke-dep
-        networkIp: "10.0.0.2"
-        accessConfigs:
-          - networkTier: "PREMIUM"
-    canIpForward: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+        ipAddress: "10.0.0.2"
+    siteToSiteDataTransfer: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  name: networkconnectivityspoke-dep
+  labels:
+    created-from: "image"
+    network-type: "subnetwork"
+spec:
+  machineType: n1-standard-1
+  zone: us-central1-a
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+    - subnetworkRef:
+        name: networkconnectivityspoke-dep
+      networkIp: "10.0.0.2"
+      accessConfigs:
+        - networkTier: "PREMIUM"
+  canIpForward: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: networkconnectivityspoke-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: networkconnectivityspoke-dep
+spec:
+  ipCidrRange: 10.0.0.0/28
+  region: us-central1
+  networkRef:
     name: networkconnectivityspoke-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: networkconnectivityspoke-dep
-  spec:
-    ipCidrRange: 10.0.0.0/28
-    region: us-central1
-    networkRef:
-      name: networkconnectivityspoke-dep
-  ---
-  apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
-  kind: NetworkConnectivityHub
-  metadata:
-    name: networkconnectivityspoke-dep
-    labels:
-      label-one: "value-one"
-  spec:
-    description: "A sample hub"
-  ```
+---
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivityHub
+metadata:
+  name: networkconnectivityspoke-dep
+  labels:
+    label-one: "value-one"
+spec:
+  description: "A sample hub"
+```
 
 
 {% endblock %}

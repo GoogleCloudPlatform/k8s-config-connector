@@ -87,39 +87,39 @@ list of basic roles with equivalent predefined roles at
 
 ### Spec
 #### Schema
-  ```yaml
-  access:
-  - dataset:
-      dataset:
-        datasetId: string
-        projectId: string
-      targetTypes:
-      - string
-    domain: string
-    groupByEmail: string
-    role: string
-    specialGroup: string
-    userByEmail: string
-    view:
+```yaml
+access:
+- dataset:
+    dataset:
       datasetId: string
       projectId: string
-      tableId: string
-  defaultEncryptionConfiguration:
-    kmsKeyRef:
-      external: string
-      name: string
-      namespace: string
-  defaultPartitionExpirationMs: integer
-  defaultTableExpirationMs: integer
-  description: string
-  friendlyName: string
-  location: string
-  projectRef:
+    targetTypes:
+    - string
+  domain: string
+  groupByEmail: string
+  role: string
+  specialGroup: string
+  userByEmail: string
+  view:
+    datasetId: string
+    projectId: string
+    tableId: string
+defaultEncryptionConfiguration:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  ```
+defaultPartitionExpirationMs: integer
+defaultTableExpirationMs: integer
+description: string
+friendlyName: string
+location: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -523,19 +523,19 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTime: integer
-  etag: string
-  lastModifiedTime: integer
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTime: integer
+etag: string
+lastModifiedTime: integer
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -636,50 +636,50 @@ milliseconds since the epoch.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/delete-contents-on-destroy: "false"
-    name: bigquerydatasetsample
-  spec:
-    defaultTableExpirationMs: 3600000
-    description: "BigQuery Dataset Sample"
-    friendlyName: bigquerydataset-sample
-    location: US
-    access:
-      - role: OWNER
-        # Replace ${PROJECT_ID?} with the ID of the project where your service
-        # account lives.
-        userByEmail: bigquerydataset-dep@${PROJECT_ID?}.iam.gserviceaccount.com
-      - role: WRITER
-        specialGroup: projectWriters
-      - role: READER
-        domain: google.com
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMServiceAccount
-  metadata:
-    annotations:
-      # Replace ${PROJECT_ID?} with your project ID.
-      cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
-    name: bigquerydataset-dep
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  name: bigquerydatasetsample
+spec:
+  defaultTableExpirationMs: 3600000
+  description: "BigQuery Dataset Sample"
+  friendlyName: bigquerydataset-sample
+  location: US
+  access:
+    - role: OWNER
+      # Replace ${PROJECT_ID?} with the ID of the project where your service
+      # account lives.
+      userByEmail: bigquerydataset-dep@${PROJECT_ID?}.iam.gserviceaccount.com
+    - role: WRITER
+      specialGroup: projectWriters
+    - role: READER
+      domain: google.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID.
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
+  name: bigquerydataset-dep
+```
 
 
 {% endblock %}

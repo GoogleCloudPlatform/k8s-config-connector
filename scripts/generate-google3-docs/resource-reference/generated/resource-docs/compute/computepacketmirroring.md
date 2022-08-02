@@ -58,48 +58,48 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  collectorIlb:
-    urlRef:
-      external: string
-      name: string
-      namespace: string
-  description: string
-  enable: string
-  filter:
-    cidrRanges:
-    - string
-    direction: string
-    ipProtocols:
-    - string
-  location: string
-  mirroredResources:
-    instances:
-    - canonicalUrl: string
-      urlRef:
-        external: string
-        name: string
-        namespace: string
-    subnetworks:
-    - canonicalUrl: string
-      urlRef:
-        external: string
-        name: string
-        namespace: string
-    tags:
-    - string
-  network:
-    urlRef:
-      external: string
-      name: string
-      namespace: string
-  priority: integer
-  projectRef:
+```yaml
+collectorIlb:
+  urlRef:
     external: string
     name: string
     namespace: string
-  resourceID: string
-  ```
+description: string
+enable: string
+filter:
+  cidrRanges:
+  - string
+  direction: string
+  ipProtocols:
+  - string
+location: string
+mirroredResources:
+  instances:
+  - canonicalUrl: string
+    urlRef:
+      external: string
+      name: string
+      namespace: string
+  subnetworks:
+  - canonicalUrl: string
+    urlRef:
+      external: string
+      name: string
+      namespace: string
+  tags:
+  - string
+network:
+  urlRef:
+    external: string
+    name: string
+    namespace: string
+priority: integer
+projectRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -545,22 +545,22 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 
 ### Status
 #### Schema
-  ```yaml
-  collectorIlb:
-    canonicalUrl: string
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  id: integer
-  network:
-    canonicalUrl: string
-  observedGeneration: integer
-  region: string
-  selfLink: string
-  ```
+```yaml
+collectorIlb:
+  canonicalUrl: string
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+id: integer
+network:
+  canonicalUrl: string
+observedGeneration: integer
+region: string
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -680,118 +680,118 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2021 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputePacketMirroring
-  metadata:
-    name: computepacketmirroring-sample
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project id
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    description: "A sample packet mirroring"
-    network:
-      urlRef:
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputePacketMirroring
+metadata:
+  name: computepacketmirroring-sample
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project id
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  description: "A sample packet mirroring"
+  network:
+    urlRef:
+      name: computepacketmirroring-dep
+  priority: 1000
+  collectorIlb:
+    urlRef:
+      name: computepacketmirroring-dep
+  mirroredResources:
+    subnetworks:
+    - urlRef:
         name: computepacketmirroring-dep
-    priority: 1000
-    collectorIlb:
-      urlRef:
+    instances:
+    - urlRef:
         name: computepacketmirroring-dep
-    mirroredResources:
-      subnetworks:
-      - urlRef:
-          name: computepacketmirroring-dep
-      instances:
-      - urlRef:
-          name: computepacketmirroring-dep
-      tags:
-      - "tag-one"
-    filter:
-      cidrRanges:
-      - "192.168.0.0/23"
-      ipProtocols:
-      - "tcp"
-      direction: "BOTH"
-    enable: "TRUE"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeBackendService
-  metadata:
+    tags:
+    - "tag-one"
+  filter:
+    cidrRanges:
+    - "192.168.0.0/23"
+    ipProtocols:
+    - "tcp"
+    direction: "BOTH"
+  enable: "TRUE"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computepacketmirroring-dep
+spec:
+  location: "us-west2"
+  loadBalancingScheme: "INTERNAL"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: computepacketmirroring-dep
+spec:
+  location: "us-west2"
+  networkRef:
     name: computepacketmirroring-dep
-  spec:
-    location: "us-west2"
-    loadBalancingScheme: "INTERNAL"
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeForwardingRule
-  metadata:
+  subnetworkRef:
     name: computepacketmirroring-dep
-  spec:
-    location: "us-west2"
-    networkRef:
+  description: "A test mirror collector forwarding rule with internal load balancing scheme"
+  loadBalancingScheme: "INTERNAL"
+  backendServiceRef:
+    name: computepacketmirroring-dep
+  networkTier: "PREMIUM"
+  allPorts: true
+  isMirroringCollector: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  name: computepacketmirroring-dep
+spec:
+  zone: "us-west2-a"
+  machineType: "zones/us-west2-a/machineTypes/e2-medium"
+  bootDisk:
+    autoDelete: true
+    initializeParams:
+      sourceImageRef:
+        external: projects/debian-cloud/global/images/debian-10-buster-v20210817
+  networkInterface:
+  - networkRef:
       name: computepacketmirroring-dep
     subnetworkRef:
       name: computepacketmirroring-dep
-    description: "A test mirror collector forwarding rule with internal load balancing scheme"
-    loadBalancingScheme: "INTERNAL"
-    backendServiceRef:
-      name: computepacketmirroring-dep
-    networkTier: "PREMIUM"
-    allPorts: true
-    isMirroringCollector: true
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/allow-stopping-for-update: "true"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computepacketmirroring-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computepacketmirroring-dep
+spec:
+  networkRef:
     name: computepacketmirroring-dep
-  spec:
-    zone: "us-west2-a"
-    machineType: "zones/us-west2-a/machineTypes/e2-medium"
-    bootDisk:
-      autoDelete: true
-      initializeParams:
-        sourceImageRef:
-          external: projects/debian-cloud/global/images/debian-10-buster-v20210817
-    networkInterface:
-    - networkRef:
-        name: computepacketmirroring-dep
-      subnetworkRef:
-        name: computepacketmirroring-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computepacketmirroring-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computepacketmirroring-dep
-  spec:
-    networkRef:
-      name: computepacketmirroring-dep
-    ipCidrRange: "10.168.0.0/20"
-    region: us-west2
-  ```
+  ipCidrRange: "10.168.0.0/20"
+  region: us-west2
+```
 
 
 {% endblock %}

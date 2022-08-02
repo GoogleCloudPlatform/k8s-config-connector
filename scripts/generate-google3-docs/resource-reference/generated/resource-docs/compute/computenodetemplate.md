@@ -72,19 +72,19 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  cpuOvercommitType: string
-  description: string
-  nodeType: string
-  nodeTypeFlexibility:
-    cpus: string
-    localSsd: string
-    memory: string
-  region: string
-  resourceID: string
-  serverBinding:
-    type: string
-  ```
+```yaml
+cpuOvercommitType: string
+description: string
+nodeType: string
+nodeTypeFlexibility:
+  cpus: string
+  localSsd: string
+  memory: string
+region: string
+resourceID: string
+serverBinding:
+  type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -229,17 +229,17 @@ nodes will experience outages while maintenance is applied. Possible values: ["R
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -324,64 +324,64 @@ nodes will experience outages while maintenance is applied. Possible values: ["R
 ## Sample YAML(s)
 
 ### Flexible Node Template
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeTemplate
-  metadata:
-    name: computenodetemplate-sample-flexible
-    labels:
-      memory_guarantee: "false"
-      desired_workload: "high-cpu"
-  spec:
-    description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.
-    region: us-central1
-    nodeTypeFlexibility:
-      cpus: "96"
-      memory: any
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodetemplate-sample-flexible
+  labels:
+    memory_guarantee: "false"
+    desired_workload: "high-cpu"
+spec:
+  description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.
+  region: us-central1
+  nodeTypeFlexibility:
+    cpus: "96"
+    memory: any
+```
 
 ### Typed Node Template
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeTemplate
-  metadata:
-    name: computenodetemplate-sample-template
-    labels:
-      memory_guarantee: "true"
-      desired_workload: "sustained"
-  spec:
-    description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and 624GB of memory, on n1 machines.
-    region: us-central1
-    nodeType: n1-node-96-624
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodetemplate-sample-template
+  labels:
+    memory_guarantee: "true"
+    desired_workload: "sustained"
+spec:
+  description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and 624GB of memory, on n1 machines.
+  region: us-central1
+  nodeType: n1-node-96-624
+```
 
 
 {% endblock %}

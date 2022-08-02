@@ -56,51 +56,51 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  accessPolicyRef:
-    external: string
-    name: string
-    namespace: string
-  basic:
-    combiningFunction: string
-    conditions:
-    - devicePolicy:
-        allowedDeviceManagementLevels:
-        - string
-        allowedEncryptionStatuses:
-        - string
-        osConstraints:
-        - minimumVersion: string
-          osType: string
-          requireVerifiedChromeOs: boolean
-        requireAdminApproval: boolean
-        requireCorpOwned: boolean
-        requireScreenLock: boolean
-      ipSubnetworks:
+```yaml
+accessPolicyRef:
+  external: string
+  name: string
+  namespace: string
+basic:
+  combiningFunction: string
+  conditions:
+  - devicePolicy:
+      allowedDeviceManagementLevels:
       - string
-      members:
-      - serviceAccountRef:
-          external: string
-          name: string
-          namespace: string
-        user: string
-      negate: boolean
-      regions:
+      allowedEncryptionStatuses:
       - string
-      requiredAccessLevels:
-      - external: string
+      osConstraints:
+      - minimumVersion: string
+        osType: string
+        requireVerifiedChromeOs: boolean
+      requireAdminApproval: boolean
+      requireCorpOwned: boolean
+      requireScreenLock: boolean
+    ipSubnetworks:
+    - string
+    members:
+    - serviceAccountRef:
+        external: string
         name: string
         namespace: string
-  custom:
-    expr:
-      description: string
-      expression: string
-      location: string
-      title: string
-  description: string
-  resourceID: string
-  title: string
-  ```
+      user: string
+    negate: boolean
+    regions:
+    - string
+    requiredAccessLevels:
+    - external: string
+      name: string
+      namespace: string
+custom:
+  expr:
+    description: string
+    expression: string
+    location: string
+    title: string
+description: string
+resourceID: string
+title: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -626,15 +626,15 @@ custom access levels - https://cloud.google.com/access-context-manager/docs/cust
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -705,51 +705,51 @@ custom access levels - https://cloud.google.com/access-context-manager/docs/cust
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-  kind: AccessContextManagerAccessLevel
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
-    name: accesslevelsample
-  spec:
-    accessPolicyRef:
-      name: accessleveldep
-    title: Config Connector Sample Access Level
-    basic:
-      conditions:
-        - devicePolicy:
-            requireCorpOwned: true
-        - devicePolicy:
-            osConstraints:
-            - osType: DESKTOP_CHROME_OS
-      combiningFunction: OR
-  ---
-  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-  kind: AccessContextManagerAccessPolicy
-  metadata:
-    annotations:
-      # Replace "${ORG_ID?}" with the numeric ID for your organization
-      cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerAccessLevel
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: accesslevelsample
+spec:
+  accessPolicyRef:
     name: accessleveldep
-  spec:
-    title: Config Connector Access Level Dependency
-  ```
+  title: Config Connector Sample Access Level
+  basic:
+    conditions:
+      - devicePolicy:
+          requireCorpOwned: true
+      - devicePolicy:
+          osConstraints:
+          - osType: DESKTOP_CHROME_OS
+    combiningFunction: OR
+---
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerAccessPolicy
+metadata:
+  annotations:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+  name: accessleveldep
+spec:
+  title: Config Connector Access Level Dependency
+```
 
 
 {% endblock %}

@@ -72,20 +72,20 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  instanceRef:
-    external: string
-    name: string
-    namespace: string
-  natPolicy: string
-  networkRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  zone: string
-  ```
+```yaml
+description: string
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+natPolicy: string
+networkRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -224,17 +224,17 @@ that the default network interface belongs to.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -319,65 +319,65 @@ that the default network interface belongs to.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeTargetInstance
-  metadata:
-    name: computetargetinstance-sample
-  spec:
-    description: Target instance, containing a VM instance which will have no NAT applied to it and can be used for protocol forwarding.
-    zone: us-central1-a
-    instanceRef:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetInstance
+metadata:
+  name: computetargetinstance-sample
+spec:
+  description: Target instance, containing a VM instance which will have no NAT applied to it and can be used for protocol forwarding.
+  zone: us-central1-a
+  instanceRef:
+    name: computetargetinstance-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computetargetinstance-dep
+spec:
+  machineType: n1-standard-1
+  zone: us-central1-a
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        external: debian-cloud/debian-9
+  networkInterface:
+  - networkRef:
       name: computetargetinstance-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeInstance
-  metadata:
-    name: computetargetinstance-dep
-  spec:
-    machineType: n1-standard-1
-    zone: us-central1-a
-    bootDisk:
-      initializeParams:
-        sourceImageRef:
-          external: debian-cloud/debian-9
-    networkInterface:
-    - networkRef:
-        name: computetargetinstance-dep
-      subnetworkRef:
-        name: computetargetinstance-dep
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    name: computetargetinstance-dep
-  spec:
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    name: computetargetinstance-dep
-  spec:
-    ipCidrRange: 10.2.0.0/16
-    region: us-central1
-    networkRef:
+    subnetworkRef:
       name: computetargetinstance-dep
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computetargetinstance-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computetargetinstance-dep
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computetargetinstance-dep
+```
 
 
 {% endblock %}

@@ -58,51 +58,51 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  dictionary:
-    cloudStoragePath:
-      path: string
-    wordList:
-      words:
-      - string
-  displayName: string
-  largeCustomDictionary:
-    bigQueryField:
-      field:
+```yaml
+description: string
+dictionary:
+  cloudStoragePath:
+    path: string
+  wordList:
+    words:
+    - string
+displayName: string
+largeCustomDictionary:
+  bigQueryField:
+    field:
+      name: string
+    table:
+      datasetRef:
+        external: string
         name: string
-      table:
-        datasetRef:
-          external: string
-          name: string
-          namespace: string
-        projectRef:
-          external: string
-          name: string
-          namespace: string
-        tableRef:
-          external: string
-          name: string
-          namespace: string
-    cloudStorageFileSet:
-      url: string
-    outputPath:
-      path: string
-  location: string
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  projectRef:
-    external: string
-    name: string
-    namespace: string
-  regex:
-    groupIndexes:
-    - integer
-    pattern: string
-  resourceID: string
-  ```
+        namespace: string
+      projectRef:
+        external: string
+        name: string
+        namespace: string
+      tableRef:
+        external: string
+        name: string
+        namespace: string
+  cloudStorageFileSet:
+    url: string
+  outputPath:
+    path: string
+location: string
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+projectRef:
+  external: string
+  name: string
+  namespace: string
+regex:
+  groupIndexes:
+  - integer
+  pattern: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -557,15 +557,15 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -636,219 +636,219 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 ## Sample YAML(s)
 
 ### Big Query Field Stored Info Type
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
-  kind: DLPStoredInfoType
-  metadata:
-    name: dlpstoredinfotype-sample-bigqueryfieldstoredinfotype
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    largeCustomDictionary:
-      outputPath:
-        path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2"
-      bigQueryField:
-        table:
-          projectRef:
-            # Replace "${PROJECT_ID?}" with your project ID
-            external: "projects/${PROJECT_ID?}"
-          datasetRef:
-            name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
-          tableRef:
-            name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
-        field:
-          name: "sample_field"
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryDataset
-  metadata:
-    name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
-  spec:
-    location: US
-  ---
-  apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-  kind: BigQueryTable
-  metadata:
-    name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
-  spec:
-    datasetRef:
-      name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
-    schema: '[{"name": "sample_field", "type": "STRING"}]'
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/deletion-policy: "abandon"
-    name: dlpstoredinfotype-dep-bigqueryfieldstoredinfotype
-  spec:
-    # Replace ${PROJECT_NUMBER?} with your project number.
-    member: serviceAccount:service-${PROJECT_NUMBER?}@dlp-api.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      apiVersion: storage.cnrm.cloud.google.com/v1beta1
-      kind: StorageBucket
-      external: aaa-dont-delete-kcc-dlp-testing
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+kind: DLPStoredInfoType
+metadata:
+  name: dlpstoredinfotype-sample-bigqueryfieldstoredinfotype
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  largeCustomDictionary:
+    outputPath:
+      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2"
+    bigQueryField:
+      table:
+        projectRef:
+          # Replace "${PROJECT_ID?}" with your project ID
+          external: "projects/${PROJECT_ID?}"
+        datasetRef:
+          name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
+        tableRef:
+          name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
+      field:
+        name: "sample_field"
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
+spec:
+  location: US
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
+spec:
+  datasetRef:
+    name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
+  schema: '[{"name": "sample_field", "type": "STRING"}]'
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: dlpstoredinfotype-dep-bigqueryfieldstoredinfotype
+spec:
+  # Replace ${PROJECT_NUMBER?} with your project number.
+  member: serviceAccount:service-${PROJECT_NUMBER?}@dlp-api.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    external: aaa-dont-delete-kcc-dlp-testing
+```
 
 ### Cloud Storage File Set Stored Info Type
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
-  kind: DLPStoredInfoType
-  metadata:
-    name: dlpstoredinfotype-sample-cloudstoragefilesetstoredinfotype
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    largeCustomDictionary:
-      outputPath:
-        path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-1"
-      cloudStorageFileSet:
-        url: "gs://aaa-dont-delete-kcc-dlp-testing/*"
-  ---
-  apiVersion: iam.cnrm.cloud.google.com/v1beta1
-  kind: IAMPolicyMember
-  metadata:
-    annotations:
-      cnrm.cloud.google.com/deletion-policy: "abandon"
-    name: dlpstoredinfotype-dep-cloudstoragefilesetstoredinfotype
-  spec:
-    # Replace ${PROJECT_NUMBER?} with your project number.
-    member: serviceAccount:service-${PROJECT_NUMBER?}@dlp-api.iam.gserviceaccount.com
-    role: roles/storage.admin
-    resourceRef:
-      apiVersion: storage.cnrm.cloud.google.com/v1beta1
-      kind: StorageBucket
-      external: aaa-dont-delete-kcc-dlp-testing
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+kind: DLPStoredInfoType
+metadata:
+  name: dlpstoredinfotype-sample-cloudstoragefilesetstoredinfotype
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  largeCustomDictionary:
+    outputPath:
+      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-1"
+    cloudStorageFileSet:
+      url: "gs://aaa-dont-delete-kcc-dlp-testing/*"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: dlpstoredinfotype-dep-cloudstoragefilesetstoredinfotype
+spec:
+  # Replace ${PROJECT_NUMBER?} with your project number.
+  member: serviceAccount:service-${PROJECT_NUMBER?}@dlp-api.iam.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    external: aaa-dont-delete-kcc-dlp-testing
+```
 
 ### Cloud Storage Path Stored Info Type
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
-  kind: DLPStoredInfoType
-  metadata:
-    name: dlpstoredinfotype-sample-cloudstoragepathstoredinfotype
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    dictionary:
-      cloudStoragePath:
-        path: "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+kind: DLPStoredInfoType
+metadata:
+  name: dlpstoredinfotype-sample-cloudstoragepathstoredinfotype
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  dictionary:
+    cloudStoragePath:
+      path: "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+```
 
 ### Regex Stored Info Type
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
-  kind: DLPStoredInfoType
-  metadata:
-    name: dlpstoredinfotype-sample-regexstoredinfotype
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    displayName: "sample-type"
-    description: "A sample regex-based stored info type"
-    regex:
-      pattern: "([a-z]*)(.+)"
-      groupIndexes:
-      - 0
-      - 1
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+kind: DLPStoredInfoType
+metadata:
+  name: dlpstoredinfotype-sample-regexstoredinfotype
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  displayName: "sample-type"
+  description: "A sample regex-based stored info type"
+  regex:
+    pattern: "([a-z]*)(.+)"
+    groupIndexes:
+    - 0
+    - 1
+```
 
 ### Word List Stored Info Type
-  ```yaml
-  # Copyright 2022 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
-  kind: DLPStoredInfoType
-  metadata:
-    name: dlpstoredinfotype-sample-wordliststoredinfotype
-  spec:
-    projectRef:
-      # Replace "${PROJECT_ID?}" with your project ID
-      external: "projects/${PROJECT_ID?}"
-    location: "us-west2"
-    dictionary:
-      wordList:
-        words:
-        - "aye"
-        - "nay"
-  ```
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+kind: DLPStoredInfoType
+metadata:
+  name: dlpstoredinfotype-sample-wordliststoredinfotype
+spec:
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  dictionary:
+    wordList:
+      words:
+      - "aye"
+      - "nay"
+```
 
 
 {% endblock %}

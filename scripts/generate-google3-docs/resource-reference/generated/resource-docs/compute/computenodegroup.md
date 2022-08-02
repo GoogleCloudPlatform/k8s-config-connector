@@ -72,24 +72,24 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  autoscalingPolicy:
-    maxNodes: integer
-    minNodes: integer
-    mode: string
-  description: string
-  initialSize: integer
-  maintenancePolicy: string
-  maintenanceWindow:
-    startTime: string
-  nodeTemplateRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  size: integer
-  zone: string
-  ```
+```yaml
+autoscalingPolicy:
+  maxNodes: integer
+  minNodes: integer
+  mode: string
+description: string
+initialSize: integer
+maintenancePolicy: string
+maintenanceWindow:
+  startTime: string
+nodeTemplateRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+size: integer
+zone: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -275,17 +275,17 @@ than or equal to max-nodes. The default value is 0.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -370,40 +370,40 @@ than or equal to max-nodes. The default value is 0.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Typical Use Case
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeGroup
-  metadata:
-    name: computenodegroup-sample
-  spec:
-    description: A single sole-tenant node in the us-central1-b zone.
-    size: 1
-    nodeTemplateRef:
-      name: computenodegroup-dep
-    zone: us-central1-b
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNodeTemplate
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  name: computenodegroup-sample
+spec:
+  description: A single sole-tenant node in the us-central1-b zone.
+  size: 1
+  nodeTemplateRef:
     name: computenodegroup-dep
-  spec:
-    region: us-central1
-    nodeType: n1-node-96-624
-  ```
+  zone: us-central1-b
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeTemplate
+metadata:
+  name: computenodegroup-dep
+spec:
+  region: us-central1
+  nodeType: n1-node-96-624
+```
 
 
 {% endblock %}

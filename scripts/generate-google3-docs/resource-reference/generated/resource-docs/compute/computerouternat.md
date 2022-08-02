@@ -72,44 +72,44 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  drainNatIps:
-  - external: string
-    name: string
-    namespace: string
-  enableDynamicPortAllocation: boolean
-  enableEndpointIndependentMapping: boolean
-  icmpIdleTimeoutSec: integer
-  logConfig:
-    enable: boolean
-    filter: string
-  maxPortsPerVm: integer
-  minPortsPerVm: integer
-  natIpAllocateOption: string
-  natIps:
-  - external: string
-    name: string
-    namespace: string
-  region: string
-  resourceID: string
-  routerRef:
+```yaml
+drainNatIps:
+- external: string
+  name: string
+  namespace: string
+enableDynamicPortAllocation: boolean
+enableEndpointIndependentMapping: boolean
+icmpIdleTimeoutSec: integer
+logConfig:
+  enable: boolean
+  filter: string
+maxPortsPerVm: integer
+minPortsPerVm: integer
+natIpAllocateOption: string
+natIps:
+- external: string
+  name: string
+  namespace: string
+region: string
+resourceID: string
+routerRef:
+  external: string
+  name: string
+  namespace: string
+sourceSubnetworkIpRangesToNat: string
+subnetwork:
+- secondaryIpRangeNames:
+  - string
+  sourceIpRangesToNat:
+  - string
+  subnetworkRef:
     external: string
     name: string
     namespace: string
-  sourceSubnetworkIpRangesToNat: string
-  subnetwork:
-  - secondaryIpRangeNames:
-    - string
-    sourceIpRangesToNat:
-    - string
-    subnetworkRef:
-      external: string
-      name: string
-      namespace: string
-  tcpEstablishedIdleTimeoutSec: integer
-  tcpTransitoryIdleTimeoutSec: integer
-  udpIdleTimeoutSec: integer
-  ```
+tcpEstablishedIdleTimeoutSec: integer
+tcpTransitoryIdleTimeoutSec: integer
+udpIdleTimeoutSec: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -546,15 +546,15 @@ Defaults to 30s if not set.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -625,175 +625,175 @@ Defaults to 30s if not set.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Router Nat For All Subnets
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterNAT
-  metadata:
-    name: computerouternat-sample-forallsubnets
-  spec:
-    region: us-west1
-    routerRef:
-      name: computerouternat-dep-forallsubnets
-    natIpAllocateOption: AUTO_ONLY
-    sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: computerouternat-sample-forallsubnets
+spec:
+  region: us-west1
+  routerRef:
     name: computerouternat-dep-forallsubnets
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouter
-  metadata:
+  natIpAllocateOption: AUTO_ONLY
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouternat-dep-forallsubnets
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouternat-dep-forallsubnets
+spec:
+  description: example router description
+  region: us-west1
+  networkRef:
     name: computerouternat-dep-forallsubnets
-  spec:
-    description: example router description
-    region: us-west1
-    networkRef:
-      name: computerouternat-dep-forallsubnets
-  ```
+```
 
 ### Router Nat For List Of Subnets
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterNAT
-  metadata:
-    name: computerouternat-sample-forlistofsubnets
-  spec:
-    region: us-west1
-    natIpAllocateOption: AUTO_ONLY
-    routerRef:
-      name: computerouternat-dep-forlistofsubnets
-    sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
-    subnetwork:
-    - subnetworkRef:
-        name: computerouternat-dep-forlistofsubnets
-      sourceIpRangesToNat:
-      - ALL_IP_RANGES
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: computerouternat-sample-forlistofsubnets
+spec:
+  region: us-west1
+  natIpAllocateOption: AUTO_ONLY
+  routerRef:
     name: computerouternat-dep-forlistofsubnets
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouter
-  metadata:
-    name: computerouternat-dep-forlistofsubnets
-  spec:
-    description: example router description
-    region: us-west1
-    networkRef:
+  sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
+  subnetwork:
+  - subnetworkRef:
       name: computerouternat-dep-forlistofsubnets
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSubnetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+    sourceIpRangesToNat:
+    - ALL_IP_RANGES
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouternat-dep-forlistofsubnets
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouternat-dep-forlistofsubnets
+spec:
+  description: example router description
+  region: us-west1
+  networkRef:
     name: computerouternat-dep-forlistofsubnets
-  spec:
-    description: My subnet
-    ipCidrRange: 10.1.0.0/16
-    region: us-west1
-    networkRef:
-      name: computerouternat-dep-forlistofsubnets
-  ```
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouternat-dep-forlistofsubnets
+spec:
+  description: My subnet
+  ipCidrRange: 10.1.0.0/16
+  region: us-west1
+  networkRef:
+    name: computerouternat-dep-forlistofsubnets
+```
 
 ### Router Nat With Manual Nat Ips
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouterNAT
-  metadata:
-    name: computerouternat-sample-withmanualnatips
-  spec:
-    region: us-west1
-    routerRef:
-      name: computerouternat-dep-withmanualnatips
-    natIpAllocateOption: MANUAL_ONLY
-    natIps:
-    - name: computerouternat-dep-withmanualnatips
-    sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeAddress
-  metadata:
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: computerouternat-sample-withmanualnatips
+spec:
+  region: us-west1
+  routerRef:
     name: computerouternat-dep-withmanualnatips
-  spec:
-    location: us-west1
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeNetwork
-  metadata:
-    labels:
-      label-one: "value-one"
+  natIpAllocateOption: MANUAL_ONLY
+  natIps:
+  - name: computerouternat-dep-withmanualnatips
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouternat-dep-withmanualnatips
+spec:
+  location: us-west1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computerouternat-dep-withmanualnatips
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouternat-dep-withmanualnatips
+spec:
+  description: example router description
+  region: us-west1
+  networkRef:
     name: computerouternat-dep-withmanualnatips
-  spec:
-    routingMode: REGIONAL
-    autoCreateSubnetworks: false
-  ---
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeRouter
-  metadata:
-    name: computerouternat-dep-withmanualnatips
-  spec:
-    description: example router description
-    region: us-west1
-    networkRef:
-      name: computerouternat-dep-withmanualnatips
-  ```
+```
 
 
 {% endblock %}

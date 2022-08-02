@@ -83,18 +83,18 @@ children and wait for them to be gone from the Kubernetes API Server first.
 
 ### Spec
 #### Schema
-  ```yaml
-  displayName: string
-  folderRef:
-    external: string
-    name: string
-    namespace: string
-  organizationRef:
-    external: string
-    name: string
-    namespace: string
-  resourceID: string
-  ```
+```yaml
+displayName: string
+folderRef:
+  external: string
+  name: string
+  namespace: string
+organizationRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -215,19 +215,19 @@ specified.{% endverbatim %}</p>
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  createTime: string
-  folderId: string
-  lifecycleState: string
-  name: string
-  observedGeneration: integer
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+createTime: string
+folderId: string
+lifecycleState: string
+name: string
+observedGeneration: integer
+```
 
 <table class="properties responsive">
 <thead>
@@ -326,62 +326,62 @@ specified.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Folder In Folder
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: folder-sample-in-folder
-  spec:
-    displayName: Config Connector Sample
-    folderRef:
-      # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
-      external: "${FOLDER_ID?}"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  labels:
+    label-one: "value-one"
+  name: folder-sample-in-folder
+spec:
+  displayName: Config Connector Sample
+  folderRef:
+    # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
+    external: "${FOLDER_ID?}"
+```
 
 ### Folder In Org
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-  kind: Folder
-  metadata:
-    labels:
-      label-one: "value-one"
-    name: folder-sample-in-org
-  spec:
-    displayName: Config Connector Sample
-    organizationRef:
-      # Replace "${ORG_ID?}" with the numeric ID of the parent organization
-      external: "${ORG_ID?}"
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  labels:
+    label-one: "value-one"
+  name: folder-sample-in-org
+spec:
+  displayName: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    external: "${ORG_ID?}"
+```
 
 
 {% endblock %}

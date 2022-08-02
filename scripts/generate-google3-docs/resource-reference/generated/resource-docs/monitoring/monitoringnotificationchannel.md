@@ -72,33 +72,33 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  description: string
-  enabled: boolean
-  labels:
-    string: string
-  resourceID: string
-  sensitiveLabels:
-    authToken:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    password:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-    serviceKey:
-      value: string
-      valueFrom:
-        secretKeyRef:
-          key: string
-          name: string
-  type: string
-  ```
+```yaml
+description: string
+enabled: boolean
+labels:
+  string: string
+resourceID: string
+sensitiveLabels:
+  authToken:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  password:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+  serviceKey:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
+type: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -362,17 +362,17 @@ to a different credential configuration in the config will require an apply to u
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  name: string
-  observedGeneration: integer
-  verificationStatus: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+name: string
+observedGeneration: integer
+verificationStatus: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -459,122 +459,122 @@ The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverba
 ## Sample YAML(s)
 
 ### Basicauth Webhook Monitoring Notification Channel
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    # The metadata.labels field doesn't configure the notification channel
-    # Specify notification channel configuration in spec.labels
-    labels:
-      response-priority: all
-      target-user: automation
-    name: monitoringnotificationchannel-sample-basicauth-webhook
-  spec:
-    type: webhook_basicauth
-    # The spec.labels field below is for configuring the desired behaviour of the notification channel
-    # It does not apply labels to the resource in the cluster
-    labels:
-      url: http://hooks.example.com/notifications
-      username: admin
-    description: Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.
-    sensitiveLabels:
-      password:
-        valueFrom:
-          secretKeyRef:
-            key: password
-            name: monitoringnotificationchannel-dep-basicauthwebhook
-  ---
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: monitoringnotificationchannel-dep-basicauthwebhook
-  data:
-    password: cGFzc3dvcmQK
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  # The metadata.labels field doesn't configure the notification channel
+  # Specify notification channel configuration in spec.labels
+  labels:
+    response-priority: all
+    target-user: automation
+  name: monitoringnotificationchannel-sample-basicauth-webhook
+spec:
+  type: webhook_basicauth
+  # The spec.labels field below is for configuring the desired behaviour of the notification channel
+  # It does not apply labels to the resource in the cluster
+  labels:
+    url: http://hooks.example.com/notifications
+    username: admin
+  description: Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.
+  sensitiveLabels:
+    password:
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: monitoringnotificationchannel-dep-basicauthwebhook
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: monitoringnotificationchannel-dep-basicauthwebhook
+data:
+  password: cGFzc3dvcmQK
+```
 
 ### Disabled Email Monitoring Notification Channel
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    # The metadata.labels field doesn't configure the notification channel
-    # Specify notification channel configuration in spec.labels
-    labels:
-      response-priority: longterm
-      target-user: dev
-    name: monitoringnotificationchannel-sample-disabled-email
-  spec:
-    type: email
-    # The spec.labels field below is for configuring the desired behaviour of the notification channel
-    # It does not apply labels to the resource in the cluster
-    labels:
-      email_address: dev@example.com
-    description: A disabled channel that would send notifications via email if enabled.
-    enabled: false
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  # The metadata.labels field doesn't configure the notification channel
+  # Specify notification channel configuration in spec.labels
+  labels:
+    response-priority: longterm
+    target-user: dev
+  name: monitoringnotificationchannel-sample-disabled-email
+spec:
+  type: email
+  # The spec.labels field below is for configuring the desired behaviour of the notification channel
+  # It does not apply labels to the resource in the cluster
+  labels:
+    email_address: dev@example.com
+  description: A disabled channel that would send notifications via email if enabled.
+  enabled: false
+```
 
 ### Sms Monitoring Notification Channel
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
-  kind: MonitoringNotificationChannel
-  metadata:
-    # The metadata.labels field doesn't configure the notification channel
-    # Specify notification channel configuration in spec.labels
-    labels:
-      response-priority: intervention
-      target-user: on-call
-    name: monitoringnotificationchannel-sample-sms
-  spec:
-    type: sms
-    # The spec.labels field below is for configuring the desired behaviour of the notification channel
-    # It does not apply labels to the resource in the cluster
-    labels:
-      number: "12025550196"
-    description: A channel that sends notifications via Short Message Service (SMS).
-    enabled: true
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  # The metadata.labels field doesn't configure the notification channel
+  # Specify notification channel configuration in spec.labels
+  labels:
+    response-priority: intervention
+    target-user: on-call
+  name: monitoringnotificationchannel-sample-sms
+spec:
+  type: sms
+  # The spec.labels field below is for configuring the desired behaviour of the notification channel
+  # It does not apply labels to the resource in the cluster
+  labels:
+    number: "12025550196"
+  description: A channel that sends notifications via Short Message Service (SMS).
+  enabled: true
+```
 
 
 {% endblock %}

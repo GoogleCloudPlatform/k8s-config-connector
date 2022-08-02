@@ -72,14 +72,14 @@
 
 ### Spec
 #### Schema
-  ```yaml
-  customFeatures:
-  - string
-  description: string
-  minTlsVersion: string
-  profile: string
-  resourceID: string
-  ```
+```yaml
+customFeatures:
+- string
+description: string
+minTlsVersion: string
+profile: string
+resourceID: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -172,20 +172,20 @@ for information on what cipher suites each profile provides. If
 
 ### Status
 #### Schema
-  ```yaml
-  conditions:
-  - lastTransitionTime: string
-    message: string
-    reason: string
-    status: string
-    type: string
-  creationTimestamp: string
-  enabledFeatures:
-  - string
-  fingerprint: string
-  observedGeneration: integer
-  selfLink: string
-  ```
+```yaml
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+creationTimestamp: string
+enabledFeatures:
+- string
+fingerprint: string
+observedGeneration: integer
+selfLink: string
+```
 
 <table class="properties responsive">
 <thead>
@@ -292,61 +292,61 @@ object. This field is used in optimistic locking.{% endverbatim %}</p>
 ## Sample YAML(s)
 
 ### Custom Tls 1 0 Ssl Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSSLPolicy
-  metadata:
-    name: computesslpolicy-sample-customtls10
-  spec:
-    description: An SSL Policy with a CUSTOM encryption profile, supporting a custom set of ciphers for TLS 1.0 and up.
-    profile: CUSTOM
-    customFeatures:
-      - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-      - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
-      - TLS_RSA_WITH_AES_256_GCM_SHA384
-      - TLS_RSA_WITH_AES_256_CBC_SHA
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  name: computesslpolicy-sample-customtls10
+spec:
+  description: An SSL Policy with a CUSTOM encryption profile, supporting a custom set of ciphers for TLS 1.0 and up.
+  profile: CUSTOM
+  customFeatures:
+    - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+    - TLS_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_RSA_WITH_AES_256_CBC_SHA
+```
 
 ### Modern Tls 1 1 Ssl Policy
-  ```yaml
-  # Copyright 2020 Google LLC
-  #
-  # Licensed under the Apache License, Version 2.0 (the "License");
-  # you may not use this file except in compliance with the License.
-  # You may obtain a copy of the License at
-  #
-  #     http://www.apache.org/licenses/LICENSE-2.0
-  #
-  # Unless required by applicable law or agreed to in writing, software
-  # distributed under the License is distributed on an "AS IS" BASIS,
-  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  # See the License for the specific language governing permissions and
-  # limitations under the License.
-  
-  apiVersion: compute.cnrm.cloud.google.com/v1beta1
-  kind: ComputeSSLPolicy
-  metadata:
-    name: computesslpolicy-sample-moderntls11
-  spec:
-    description: An SSL Policy with a MODERN encryption profile, supporting several modern methods of encryption for TLS 1.1 and up.
-    minTlsVersion: TLS_1_1
-    profile: MODERN
-  ```
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  name: computesslpolicy-sample-moderntls11
+spec:
+  description: An SSL Policy with a MODERN encryption profile, supporting several modern methods of encryption for TLS 1.1 and up.
+  minTlsVersion: TLS_1_1
+  profile: MODERN
+```
 
 
 {% endblock %}
