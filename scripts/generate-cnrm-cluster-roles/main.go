@@ -55,57 +55,17 @@ func main() {
 		apis[gvk.Group] = true
 	}
 	apiGroupList := make([]string, 0)
-	for api, _ := range apis {
+	for api := range apis {
 		apiGroupList = slice.IncludeString(apiGroupList, api)
 	}
 
-	viewerRole := &rbacv1.ClusterRole{
-		TypeMeta: v1.TypeMeta{
-			APIVersion: "rbac.authorization.k8s.io/v1",
-			Kind:       "ClusterRole",
-		},
-		ObjectMeta: v1.ObjectMeta{
-			Name: "viewer",
-			Labels: map[string]string{
-				"rbac.authorization.k8s.io/aggregate-to-view": "true",
-			},
-		},
-		Rules: []rbacv1.PolicyRule{
-			{
-				APIGroups: apiGroupList,
-				Verbs:     []string{"get", "list", "watch"},
-				Resources: []string{"*"},
-			},
-		},
-	}
-	adminRole := &rbacv1.ClusterRole{
-		TypeMeta: v1.TypeMeta{
-			APIVersion: "rbac.authorization.k8s.io/v1",
-			Kind:       "ClusterRole",
-		},
-		ObjectMeta: v1.ObjectMeta{
-			Name: "admin",
-			Labels: map[string]string{
-				"rbac.authorization.k8s.io/aggregate-to-admin": "true",
-				"rbac.authorization.k8s.io/aggregate-to-edit":  "true",
-			},
-		},
-		Rules: []rbacv1.PolicyRule{
-			{
-				APIGroups: apiGroupList,
-				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
-				Resources: []string{"*"},
-			},
-		},
-	}
-
 	viewerRoleFileName := "cnrm_viewer.yaml"
-	if err := outputClusterRoleToFile(clusterRolesPath, viewerRoleFileName, viewerRole); err != nil {
+	if err := outputClusterRoleToFile(clusterRolesPath, viewerRoleFileName, viewerRole(apiGroupList)); err != nil {
 		log.Fatalf("error generating %v in %v: %v", viewerRoleFileName, clusterRolesPath, err)
 	}
 
 	adminRoleFileName := "cnrm_admin.yaml"
-	if err := outputClusterRoleToFile(clusterRolesPath, adminRoleFileName, adminRole); err != nil {
+	if err := outputClusterRoleToFile(clusterRolesPath, adminRoleFileName, adminRole(apiGroupList)); err != nil {
 		log.Fatalf("error generating %v in %v: %v", adminRoleFileName, clusterRolesPath, err)
 	}
 }
@@ -121,4 +81,51 @@ func outputClusterRoleToFile(outputDirPath, outputFileName string, r *rbacv1.Clu
 		return err
 	}
 	return nil
+}
+
+func viewerRole(apiGroupList []string) *rbacv1.ClusterRole {
+	viewerRole := &rbacv1.ClusterRole{
+		TypeMeta: v1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRole",
+		},
+		ObjectMeta: v1.ObjectMeta{
+			Name: "viewer",
+			Labels: map[string]string{
+				"rbac.authorization.k8s.io/aggregate-to-view": "true",
+			},
+		},
+	}
+	for _, api := range apiGroupList {
+		viewerRole.Rules = append(viewerRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{api},
+			Verbs:     []string{"get", "list", "watch"},
+			Resources: []string{"*"},
+		})
+	}
+	return viewerRole
+}
+
+func adminRole(apiGroupList []string) *rbacv1.ClusterRole {
+	adminRole := &rbacv1.ClusterRole{
+		TypeMeta: v1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRole",
+		},
+		ObjectMeta: v1.ObjectMeta{
+			Name: "admin",
+			Labels: map[string]string{
+				"rbac.authorization.k8s.io/aggregate-to-admin": "true",
+				"rbac.authorization.k8s.io/aggregate-to-edit":  "true",
+			},
+		},
+	}
+	for _, api := range apiGroupList {
+		adminRole.Rules = append(adminRole.Rules, rbacv1.PolicyRule{
+			APIGroups: []string{api},
+			Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+			Resources: []string{"*"},
+		})
+	}
+	return adminRole
 }
