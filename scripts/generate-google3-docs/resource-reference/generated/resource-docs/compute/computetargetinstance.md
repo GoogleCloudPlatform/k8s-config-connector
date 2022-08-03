@@ -354,7 +354,7 @@ spec:
   bootDisk:
     initializeParams:
       sourceImageRef:
-        external: debian-cloud/debian-9
+        external: debian-cloud/debian-11
   networkInterface:
   - networkRef:
       name: computetargetinstance-dep

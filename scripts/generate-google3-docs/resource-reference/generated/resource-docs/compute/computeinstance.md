@@ -1941,7 +1941,7 @@ spec:
       size: 24
       type: pd-ssd
       sourceImageRef:
-        external: debian-cloud/debian-9
+        external: debian-cloud/debian-11
   networkInterface:
     - subnetworkRef:
         name: computeinstance-dep-cloudmachine
@@ -2169,7 +2169,7 @@ metadata:
 spec:
   location: us-west1-a
   imageRef:
-    external: debian-cloud/debian-9
+    external: debian-cloud/debian-11
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeDisk

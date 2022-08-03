@@ -19,7 +19,7 @@ metadata:
 spec:
   location: us-west1-a
   imageRef:
-    external: debian-cloud/debian-9
+    external: debian-cloud/debian-11
   diskEncryptionKey:
     rawKey:
       value: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
