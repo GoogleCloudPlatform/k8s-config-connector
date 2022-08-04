@@ -20,16 +20,16 @@ spec:
   machineType: n1-standard-1
   disk:
   - sourceImageRef:
-      external: debian-cloud/debian-9
+      external: debian-cloud/debian-11
     boot: true
   - deviceName: disk-a
     sourceImageRef:
-      external: debian-cloud/debian-9
+      external: debian-cloud/debian-11
     autoDelete: true
     boot: false
   - deviceName: disk-b
     sourceImageRef:
-      external: debian-cloud/debian-9
+      external: debian-cloud/debian-11
     boot: false
   networkInterface:
   - networkRef:

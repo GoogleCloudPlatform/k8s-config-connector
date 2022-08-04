@@ -29,7 +29,7 @@ spec:
       size: 24
       type: pd-ssd
       sourceImageRef:
-        external: debian-cloud/debian-9
+        external: debian-cloud/debian-11
   networkInterface:
     - subnetworkRef:
         name: computeinstance-dep-cloudmachine

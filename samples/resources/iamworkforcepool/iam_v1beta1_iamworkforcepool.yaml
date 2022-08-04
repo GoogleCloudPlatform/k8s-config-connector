@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeInstanceTemplate
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkforcePool
 metadata:
-  name: computetargetpool-dep
+  name: iamworkforcepool-sample
 spec:
-  machineType: n1-standard-1
-  disk:
-    - sourceImageRef:
-        external: debian-cloud/debian-11
-      boot: true
-  networkInterface:
-    - networkRef:
-        name: computetargetpool-dep
-      subnetworkRef:
-        name: computetargetpool-dep
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  location: "global"
+  displayName: "Display name"
+  description: "A sample workforce pool."
+  state: "ACTIVE"
+  disabled: false
+  sessionDuration: "7200s"

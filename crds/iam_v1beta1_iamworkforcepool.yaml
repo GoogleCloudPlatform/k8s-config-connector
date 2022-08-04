@@ -19,22 +19,22 @@ metadata:
     cnrm.cloud.google.com/version: 1.91.0
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: sqldatabases.sql.cnrm.cloud.google.com
+  name: iamworkforcepools.iam.cnrm.cloud.google.com
 spec:
-  group: sql.cnrm.cloud.google.com
+  group: iam.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: SQLDatabase
-    plural: sqldatabases
+    kind: IAMWorkforcePool
+    plural: iamworkforcepools
     shortNames:
-    - gcpsqldatabase
-    - gcpsqldatabases
-    singular: sqldatabase
+    - gcpiamworkforcepool
+    - gcpiamworkforcepools
+    singular: iamworkforcepool
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -71,24 +71,25 @@ spec:
             type: object
           spec:
             properties:
-              charset:
-                description: |-
-                  The charset value. See MySQL's
-                  [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
-                  and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
-                  for more details and supported values. Postgres databases only support
-                  a value of 'UTF8' at creation time.
+              description:
+                description: A user-specified description of the pool. Cannot exceed
+                  256 characters.
                 type: string
-              collation:
-                description: |-
-                  The collation value. See MySQL's
-                  [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
-                  and Postgres' [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html)
-                  for more details and supported values. Postgres databases only support
-                  a value of 'en_US.UTF8' at creation time.
+              disabled:
+                description: Whether the pool is disabled. You cannot use a disabled
+                  pool to exchange tokens, or use existing tokens to access resources.
+                  If the pool is re-enabled, existing tokens grant access again.
+                type: boolean
+              displayName:
+                description: A user-specified display name of the pool in Google Cloud
+                  Console. Cannot exceed 32 characters.
                 type: string
-              instanceRef:
-                description: The Cloud SQL instance.
+              location:
+                description: Immutable. The location for the resource
+                type: string
+              organizationRef:
+                description: Immutable. The Organization that this resource belongs
+                  to. Only one of [organizationRef] may be specified.
                 oneOf:
                 - not:
                     required:
@@ -105,11 +106,13 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `SQLInstance`
-                      resource.'
+                    description: 'Allowed value: The Google Cloud resource name of
+                      a Google Cloud Organization (format: `organizations/{{name}}`).'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: |-
+                      [WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                     type: string
                   namespace:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
@@ -120,8 +123,16 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              sessionDuration:
+                description: How long the Google Cloud access tokens, console sign-in
+                  sessions, and gcloud sign-in sessions from this pool are valid.
+                  Must be greater than 15 minutes (900s) and less than 12 hours (43200s).
+                  If `session_duration` is not configured, minted credentials will
+                  have a default duration of one hour (3600s).
+                type: string
             required:
-            - instanceRef
+            - location
+            - organizationRef
             type: object
           status:
             properties:
@@ -159,6 +170,12 @@ spec:
                   the resource.
                 type: integer
               selfLink:
+                description: 'Output only. The resource name of the pool. Format:
+                  `locations/{location}/workforcePools/{workforce_pool_id}`'
+                type: string
+              state:
+                description: 'Output only. The state of the pool. Possible values:
+                  STATE_UNSPECIFIED, ACTIVE, DELETED'
                 type: string
             type: object
         required:
