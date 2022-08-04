@@ -16,7 +16,7 @@ insertText: |
         size: \${8:24}
         type: \${9:pd-ssd}
         sourceImageRef:
-          external: \${10:debian-cloud/debian-9}
+          external: \${10:debian-cloud/debian-11}
     networkInterface:
     - subnetworkRef:
         name: \${11:computeinstance-dep-cloudmachine}

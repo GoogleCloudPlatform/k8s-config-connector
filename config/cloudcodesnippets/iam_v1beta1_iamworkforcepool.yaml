@@ -1,0 +1,16 @@
+label: Config Connector IAMWorkforcePool
+markdownDescription: Creates yaml for a IAMWorkforcePool resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMWorkforcePool
+  metadata:
+    name: \${1:iamworkforcepool-name}
+  spec:
+    organizationRef:
+      external: \${2:organizations/[ORG_ID?]}
+    location: \${3:global}
+    displayName: \${4:Display name}
+    description: \${5:A sample workforce pool.}
+    state: \${6:ACTIVE}
+    disabled: \${7:false}
+    sessionDuration: \${8:7200s}
