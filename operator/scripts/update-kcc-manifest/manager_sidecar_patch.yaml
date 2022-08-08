@@ -30,3 +30,6 @@
       valueFrom:
         fieldRef:
           fieldPath: metadata.namespace
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false

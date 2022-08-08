@@ -68,6 +68,7 @@ spec:
           privileged: false
           runAsUser: 1000
           runAsNonRoot: true
+          allowPrivilegeEscalation: false
         readinessProbe:
           httpGet:
             path: /ready
