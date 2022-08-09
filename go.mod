@@ -47,7 +47,6 @@ require (
 	k8s.io/client-go v0.23.0
 	k8s.io/code-generator v0.23.0
 	k8s.io/gengo v0.0.0-20210813121822-485abfe95c7c
-	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.30.0
 	sigs.k8s.io/controller-runtime v0.11.1
 	sigs.k8s.io/controller-tools v0.6.2
