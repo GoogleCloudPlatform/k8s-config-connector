@@ -181,7 +181,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	case "IAMPolicy":
 		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
 	case "IAMPartialPolicy":
-		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
+		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
 	case "IAMPolicyMember":
 		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
 	case "IAMAuditConfig":
