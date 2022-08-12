@@ -167,15 +167,25 @@ func (r *TestReconciler) newReconcilerForKind(kind string) reconcile.Reconciler 
 	r.t.Helper()
 	var reconciler reconcile.Reconciler
 	var err error
+	// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
+	// to nil to disable reconciler's ability to create asynchronous
+	// watches on unready dependencies. This feature of the reconciler
+	// is unnecessary for our tests since we reconcile each dependency
+	// first before the resource under test is reconciled. Overall,
+	// the feature adds risk of complications due to it's multi-threaded
+	// nature.
+	var immediateReconcileRequests chan event.GenericEvent = nil
+	var resourceWatcherRoutines *semaphore.Weighted = nil
+
 	switch kind {
 	case "IAMPolicy":
-		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
+		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
 	case "IAMPartialPolicy":
 		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
 	case "IAMPolicyMember":
 		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
 	case "IAMAuditConfig":
-		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig)
+		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
 	default:
 		crd := testcontroller.GetCRDForKind(r.t, r.mgr.GetClient(), kind)
 		reconciler, err = r.newReconcilerForCRD(crd)

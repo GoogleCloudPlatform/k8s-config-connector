@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -36,16 +37,22 @@ import (
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 const controllerName = "iamauditconfig-controller"
@@ -54,23 +61,27 @@ var logger = klog.Log.WithName(controllerName)
 
 func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
 	converter *conversion.Converter, dclConfig *mmdcl.Config) error {
-	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig)
+	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
+	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
+	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
 		return err
 	}
 	return add(mgr, reconciler)
 }
 
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
-	converter *conversion.Converter, dclConfig *mmdcl.Config) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
 	r := Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
 		),
-		Client:    mgr.GetClient(),
-		iamClient: kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig).TFIAMClient,
-		scheme:    mgr.GetScheme(),
+		Client:                     mgr.GetClient(),
+		iamClient:                  kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig).TFIAMClient,
+		scheme:                     mgr.GetScheme(),
+		config:                     mgr.GetConfig(),
+		immediateReconcileRequests: immediateReconcileRequests,
+		resourceWatcherRoutines:    resourceWatcherRoutines,
 	}
 	return &r, nil
 }
@@ -82,6 +93,7 @@ func add(mgr manager.Manager, r *Reconciler) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		Watches(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
@@ -98,6 +110,10 @@ type Reconciler struct {
 	metrics.ReconcilerMetrics
 	iamClient *kcciamclient.TFIAMClient
 	scheme    *runtime.Scheme
+	config    *rest.Config
+	// Fields used for triggering reconciliations when dependencies are ready
+	immediateReconcileRequests chan event.GenericEvent
+	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
 type reconcileContext struct {
@@ -157,7 +173,7 @@ func (r *reconcileContext) doReconcile(auditConfig *v1beta1.IAMAuditConfig) (req
 				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
-						return true, r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+						return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
 					}
 					return false, r.handleDeleteFailed(auditConfig, err)
 				}
@@ -168,7 +184,7 @@ func (r *reconcileContext) doReconcile(auditConfig *v1beta1.IAMAuditConfig) (req
 	if _, err := r.Reconciler.iamClient.GetAuditConfig(r.Ctx, auditConfig); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
-			return true, r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+			return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
 		}
 		if !errors.Is(err, kcciamclient.NotFoundError) {
 			return false, r.handleUpdateFailed(auditConfig, err)
@@ -182,7 +198,7 @@ func (r *reconcileContext) doReconcile(auditConfig *v1beta1.IAMAuditConfig) (req
 	if _, err := r.Reconciler.iamClient.SetAuditConfig(r.Ctx, auditConfig); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
-			return true, r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+			return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
 		}
 		return false, r.handleUpdateFailed(auditConfig, fmt.Errorf("error setting audit config: %w", err))
 	}
@@ -235,12 +251,78 @@ func (r *reconcileContext) handleDeleteFailed(auditConfig *v1beta1.IAMAuditConfi
 	return r.Reconciler.HandleDeleteFailed(r.Ctx, resource, origErr)
 }
 
-func (r *reconcileContext) handleUnresolvableDeps(auditConfig *v1beta1.IAMAuditConfig, origErr error) error {
+func (r *Reconciler) supportsImmediateReconciliations() bool {
+	return r.immediateReconcileRequests != nil
+}
+
+func (r *reconcileContext) handleUnresolvableDeps(auditConfig *v1beta1.IAMAuditConfig, origErr error) (requeue bool, err error) {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
-		return fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling unresolvable dependencies event: %w", err)
+		return false, fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling unresolvable dependencies event: %w", err)
 	}
-	return r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, origErr)
+	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(origErr)
+	if !ok || !r.Reconciler.supportsImmediateReconciliations() {
+		// Requeue resource for reconciliation with exponential backoff applied
+		return true, r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, origErr)
+	}
+	// Check that the number of active resource watches
+	// does not exceed the controller's cap. If the
+	// capacity is not exceeded, The number of active
+	// resource watches is incremented by one and a watch
+	// is started
+	if !r.Reconciler.resourceWatcherRoutines.TryAcquire(1) {
+		// Requeue resource for reconciliation with exponential backoff applied
+		return true, r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, origErr)
+	}
+	// Create a logger for ResourceWatcher that contains info
+	// about the referencing resource. This is done since the
+	// messages logged by ResourceWatcher only include the
+	// information of the resource it is watching by default.
+	watcherLogger := logger.WithValues(
+		"referencingResource", resource.GetNamespacedName(),
+		"referencingResourceGVK", resource.GroupVersionKind())
+	watcher, err := resourcewatcher.New(r.Reconciler.config, watcherLogger)
+	if err != nil {
+		return false, r.Reconciler.HandleUpdateFailed(r.Ctx, resource, fmt.Errorf("error initializing new resourcewatcher: %w", err))
+	}
+
+	logger := logger.WithValues(
+		"resource", resource.GetNamespacedName(),
+		"resourceGVK", resource.GroupVersionKind(),
+		"reference", refNN,
+		"referenceGVK", refGVK)
+	go func() {
+		// Decrement the count of active resource watches after
+		// the watch finishes
+		defer r.Reconciler.resourceWatcherRoutines.Release(1)
+		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
+		defer cancel()
+		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
+		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+			logger.Error(err, "error while waiting for resource's reference to be ready")
+			return
+		}
+		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
+		r.Reconciler.enqueueForImmediateReconciliation(resource.GetNamespacedName())
+	}()
+
+	// Do not requeue resource for immediate reconciliation. Wait for either
+	// the next periodic reconciliation or for the referenced resource to be ready (which
+	// triggers a reconciliation), whichever comes first.
+	return false, r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, origErr)
+}
+
+// enqueueForImmediateReconciliation enqueues the given resource for immediate
+// reconciliation. Note that this function only takes in the name and namespace
+// of the resource and not its GVK since the controller instance that this
+// reconcile instance belongs to can only reconcile resources of one GVK.
+func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.NamespacedName) {
+	genEvent := event.GenericEvent{}
+	genEvent.Object = &unstructured.Unstructured{}
+	genEvent.Object.SetNamespace(resourceNN.Namespace)
+	genEvent.Object.SetName(resourceNN.Name)
+	r.immediateReconcileRequests <- genEvent
 }
 
 func isAPIServerUpdateRequired(auditConfig *v1beta1.IAMAuditConfig) bool {
