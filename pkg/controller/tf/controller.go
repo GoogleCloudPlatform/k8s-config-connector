@@ -306,7 +306,9 @@ func supportsImmediateReconciliation(resourceKind string) bool {
 	switch resourceKind {
 	case "ComputeTargetPool",
 		"ComputeNetworkEndpointGroup",
-		"ComputeDisk":
+		"ComputeDisk",
+		"ServiceDirectoryEndpoint",
+		"ServiceDirectoryService":
 		return true
 	}
 	return false

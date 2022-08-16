@@ -307,7 +307,10 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 // TODO(b/239067853): remove function after 100% of DCL resources have been approved for immediate reconcilation
 func supportsImmediateReconciliation(resourceKind string) bool {
 	switch resourceKind {
-	case "NetworkServicesGRPCRoute",
+	case "CloudFunctionsFunction",
+		"EventarcTrigger",
+		"MonitoringUptimeCheckConfig",
+		"NetworkServicesGRPCRoute",
 		"NetworkServicesTLSRoute":
 		return true
 	}
