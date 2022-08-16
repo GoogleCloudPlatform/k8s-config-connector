@@ -251,7 +251,7 @@ observedGeneration: integer
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSchema
 metadata:
-  name: pubsubsubschema-sample
+  name: pubsubschema-sample
 spec:
   type: PROTOCOL_BUFFER
   definition: "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}"
