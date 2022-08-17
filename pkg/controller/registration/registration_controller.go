@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -196,6 +197,17 @@ func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	}
 	if err := deletiondefender.Add(r.mgr, crd); err != nil {
 		return fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
+	}
+	return nil
+}
+
+func RegisterUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) error {
+	if crd.Spec.Names.Kind == "ServiceMapping" {
+		// ServiceMapping is a special resource type that does not make a call to an underlying GCP API
+		return nil
+	}
+	if err := unmanageddetector.Add(r.mgr, crd); err != nil {
+		return fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil
 }

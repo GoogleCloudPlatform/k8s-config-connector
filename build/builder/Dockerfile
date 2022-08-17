@@ -32,6 +32,7 @@ COPY go.sum go.sum
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
 RUN go run scripts/generate-third-party-licenses/main.go
