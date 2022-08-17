@@ -28,6 +28,7 @@ const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
 	ApiDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
+	ControllerManagerNamePrefix          = "cnrm-controller-manager"
 	ControllerMaxConcurrentReconciles    = 20
 	ReconcileDeadline                    = 59 * time.Minute
 	TimeToLeaseExpiration                = 40 * time.Minute
@@ -51,6 +52,8 @@ const (
 	DeleteFailed                         = "DeleteFailed"
 	NoCondition                          = "NoCondition"
 	DeleteFailedMessageTmpl              = "Delete call failed: %v"
+	Unmanaged                            = "Unmanaged"
+	UnmanagedMessageTmpl                 = "No controller is managing this resource. Check if a ConfigConnectorContext exists for resource's namespace, '%v'"
 	ControllerFinalizerName              = "cnrm.cloud.google.com/finalizer"
 	DeletionDefenderFinalizerName        = "cnrm.cloud.google.com/deletion-defender"
 	DependencyNotReady                   = "DependencyNotReady"
@@ -70,6 +73,7 @@ const (
 	ReadinessServerPath = "/ready"
 
 	ControllerManagedFieldManager = "cnrm-controller-manager"
+	UnmanagedDetectorFieldManager = "cnrm-unmanaged-detector"
 	SupportsSSAManager            = "supports-ssa"
 
 	// Management conflict prevention policies
@@ -113,11 +117,12 @@ var (
 		ManagementConflictPreventionPolicyResource,
 	}
 
-	KCCComponentLabel = FormatAnnotation("component")
-	KCCSystemLabel    = FormatAnnotation("system")
-	KCCVersionLabel   = FormatAnnotation("version")
-	DCL2CRDLabel      = FormatAnnotation("dcl2crd")
-	KCCStabilityLabel = FormatAnnotation("stability-level")
+	KCCComponentLabel    = FormatAnnotation("component")
+	KCCSystemLabel       = FormatAnnotation("system")
+	KCCVersionLabel      = FormatAnnotation("version")
+	ScopedNamespaceLabel = FormatAnnotation("scoped-namespace")
+	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
+	KCCStabilityLabel    = FormatAnnotation("stability-level")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")
 	ObservedSecretVersionsAnnotation     = FormatAnnotation("observed-secret-versions")

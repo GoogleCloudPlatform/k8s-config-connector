@@ -62,6 +62,9 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 		return err
 	}
 	if err := r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
+		if apierrors.IsConflict(err) {
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+		}
 		return fmt.Errorf("error with status update call to API server: %v", err)
 	}
 	// rejections by some validating webhooks won't be returned as an error; instead, they will be
@@ -89,7 +92,7 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 	removeSystemLabels(u)
 	if err := r.Client.Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
-			return fmt.Errorf("couldn't update the api server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
 		}
 		return fmt.Errorf("error with update call to API server: %v", err)
 	}
@@ -211,9 +214,12 @@ func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resou
 }
 
 func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Resource) error {
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	setCondition(resource, corev1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage)
-	return r.updateAPIServer(ctx, resource)
+	if err := r.updateAPIServer(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
+	return nil
 }
 
 func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) error {
@@ -222,80 +228,92 @@ func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource 
 		return r.HandleUpdateFailed(ctx, resource, err)
 	}
 	msg := originErr.Error()
-	r.recordEvent(resource, corev1.EventTypeWarning, reason, msg)
 	// Only update the API server if there's new information
-	if k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, reason, msg) {
-		return nil
+	if !k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, reason, msg) {
+		setCondition(resource, corev1.ConditionFalse, reason, msg)
+		setObservedGeneration(resource, resource.GetGeneration())
+		if err := r.updateStatus(ctx, resource); err != nil {
+			return err
+		}
 	}
-	setCondition(resource, corev1.ConditionFalse, reason, msg)
-	setObservedGeneration(resource, resource.GetGeneration())
-	return r.updateStatus(ctx, resource)
+	r.recordEvent(resource, corev1.EventTypeWarning, reason, msg)
+	return nil
 }
 
 func (r *LifecycleHandler) HandleObtainLeaseFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	msg := err.Error()
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
 	// Only update the API server if there's new information
-	if k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.ManagementConflict, msg) {
-		return err
+	if !k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.ManagementConflict, msg) {
+		setCondition(resource, corev1.ConditionFalse, k8s.ManagementConflict, msg)
+		setObservedGeneration(resource, resource.GetGeneration())
+		if err := r.updateStatus(ctx, resource); err != nil {
+			return err
+		}
 	}
-	setCondition(resource, corev1.ConditionFalse, k8s.ManagementConflict, msg)
-	setObservedGeneration(resource, resource.GetGeneration())
-	_ = r.updateStatus(ctx, resource)
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
 	return err
 }
 
 func (r *LifecycleHandler) HandlePreActuationTransformFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	msg := err.Error()
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
 	// Only update the API server if there's new information
-	if k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.PreActuationTransformFailed, msg) {
-		return err
+	if !k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.PreActuationTransformFailed, msg) {
+		setCondition(resource, corev1.ConditionFalse, k8s.PreActuationTransformFailed, msg)
+		setObservedGeneration(resource, resource.GetGeneration())
+		if err := r.updateStatus(ctx, resource); err != nil {
+			return err
+		}
 	}
-	setCondition(resource, corev1.ConditionFalse, k8s.PreActuationTransformFailed, msg)
-	setObservedGeneration(resource, resource.GetGeneration())
-	_ = r.updateStatus(ctx, resource)
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
 	return err
 }
 
 func (r *LifecycleHandler) HandlePostActuationTransformFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	msg := err.Error()
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
 	// Only update the API server if there's new information
-	if k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.PostActuationTransformFailed, msg) {
-		return err
+	if !k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.PostActuationTransformFailed, msg) {
+		setCondition(resource, corev1.ConditionFalse, k8s.PostActuationTransformFailed, msg)
+		setObservedGeneration(resource, resource.GetGeneration())
+		if err := r.updateStatus(ctx, resource); err != nil {
+			return err
+		}
 	}
-	setCondition(resource, corev1.ConditionFalse, k8s.PostActuationTransformFailed, msg)
-	setObservedGeneration(resource, resource.GetGeneration())
-	_ = r.updateStatus(ctx, resource)
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
 	return err
 }
 
 func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Resource) error {
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 	setCondition(resource, corev1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage)
 	setObservedGeneration(resource, resource.GetGeneration())
-	return r.updateStatus(ctx, resource)
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
+	return nil
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	msg := fmt.Sprintf(k8s.UpdateFailedMessageTmpl, err)
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
-	_ = r.updateStatus(ctx, resource)
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	return errors.New(msg)
 }
 
 func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Resource) error {
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
 	setCondition(resource, corev1.ConditionFalse, k8s.Deleting, k8s.DeletingMessage)
 	setObservedGeneration(resource, resource.GetGeneration())
-	return r.updateStatus(ctx, resource)
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
+	return nil
 }
 
 func (r *LifecycleHandler) HandleDeleted(ctx context.Context, resource *k8s.Resource) error {
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
 	setCondition(resource, corev1.ConditionFalse, k8s.Deleted, k8s.DeletedMessage)
 	setObservedGeneration(resource, resource.GetGeneration())
 	// Do an explicit status update first to prevent a race between the status update and the API
@@ -303,17 +321,32 @@ func (r *LifecycleHandler) HandleDeleted(ctx context.Context, resource *k8s.Reso
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return fmt.Errorf("error updating status: %w", err)
 	}
+	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
+
 	k8s.RemoveFinalizer(resource, k8s.ControllerFinalizerName)
 	return r.updateAPIServer(ctx, resource)
 }
 
 func (r *LifecycleHandler) HandleDeleteFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	msg := fmt.Sprintf(k8s.DeleteFailedMessageTmpl, err)
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
 	setCondition(resource, corev1.ConditionFalse, k8s.DeleteFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
-	_ = r.updateStatus(ctx, resource)
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
 	return errors.New(msg)
+}
+
+func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Resource) error {
+	msg := fmt.Sprintf(k8s.UnmanagedMessageTmpl, resource.GetNamespace())
+	setCondition(resource, corev1.ConditionFalse, k8s.Unmanaged, msg)
+	setObservedGeneration(resource, resource.GetGeneration())
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+	r.recordEvent(resource, corev1.EventTypeWarning, k8s.Unmanaged, msg)
+	return nil
 }
 
 func setCondition(resource *k8s.Resource, status corev1.ConditionStatus, reason, msg string) {

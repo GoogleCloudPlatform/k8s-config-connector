@@ -36,28 +36,28 @@ const Namespace = "namespace-1"
 
 func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 	return []*apiextensions.CustomResourceDefinition{
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "test1.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test1Foo",
 		}),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "test1.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test1Bar",
 		}),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			// Unique group
 			Group:   "test2.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test2Baz",
 		}),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "test3.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test3UserSpecifiedResourceIDKind",
 		}),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "test3.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test3ServerGeneratedResourceIDKind",
@@ -70,12 +70,12 @@ func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 // hierarchical resources (e.g. "Project")
 func FakeCRDsWithHierarchicalResources() []*apiextensions.CustomResourceDefinition {
 	return append(FakeCRDs(),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "resourcemanager.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "Project",
 		}),
-		crdForGVK(metav1.GroupVersionKind{
+		CRDForGVK(metav1.GroupVersionKind{
 			Group:   "resourcemanager.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "Folder",
@@ -399,7 +399,7 @@ func EnsureObjectExists(t *testing.T, obj *unstructured.Unstructured, c client.C
 	}
 }
 
-func crdForGVK(gvk metav1.GroupVersionKind) *apiextensions.CustomResourceDefinition {
+func CRDForGVK(gvk metav1.GroupVersionKind) *apiextensions.CustomResourceDefinition {
 	singular := strings.ToLower(gvk.Kind)
 	plural := text.Pluralize(singular)
 	preserveUnknownFields := true
