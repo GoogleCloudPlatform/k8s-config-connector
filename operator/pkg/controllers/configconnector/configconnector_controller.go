@@ -214,13 +214,17 @@ func (r *ConfigConnectorReconciler) handleConfigConnectorLifecycle() declarative
 		}
 
 		if cc.GetMode() == k8s.ClusterMode {
+			if err := r.removeNamespacedModeOnlySharedComponents(ctx, r.client); err != nil {
+				return err
+			}
+
 			// Verify that all per-namespace controller manager pods are removed, then continue the reconciliation.
 			// This is done to avoid having more than one controller reconciling the same object.
 			if err := r.verifyPerNamespaceControllerManagerPodsAreDeleted(ctx, r.client); err != nil {
 				return fmt.Errorf("error waiting for all per-namespace controller manager pods to be removed: %w", err)
 			}
 		} else {
-			if err := r.removeClusterModeOnlyComponents(ctx, r.client); err != nil {
+			if err := r.removeClusterModeOnlySharedComponents(ctx, r.client); err != nil {
 				return err
 			}
 		}
@@ -298,8 +302,33 @@ func createCNRMSystemNamespace(ctx context.Context, c client.Client, m *manifest
 	return nil
 }
 
-func (r *ConfigConnectorReconciler) removeClusterModeOnlyComponents(ctx context.Context, c client.Client) error {
-	r.log.Info("removing controller manager components for cluster mode")
+// removeNamespacedModeOnlySharedComponents deletes shared components that are
+// available only when KCC is in namespaced mode (e.g. unmanaged detector)
+func (r *ConfigConnectorReconciler) removeNamespacedModeOnlySharedComponents(ctx context.Context, c client.Client) error {
+	r.log.Info("removing components that make up unmanaged detector")
+
+	sts := &appsv1.StatefulSet{}
+	sts.Namespace = k8s.CNRMSystemNamespace
+	sts.Name = k8s.KCCUnmanagedDetectorComponent
+	if err := controllers.DeleteObject(ctx, c, sts); err != nil {
+		return err
+	}
+
+	sc := &corev1.ServiceAccount{}
+	sc.Namespace = k8s.CNRMSystemNamespace
+	sc.Name = k8s.KCCUnmanagedDetectorComponent
+	if err := controllers.DeleteObject(ctx, c, sc); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// removeClusterModeOnlySharedComponents deletes shared components that are
+// available only when KCC is in cluster-mode (e.g. global KCC controller).
+func (r *ConfigConnectorReconciler) removeClusterModeOnlySharedComponents(ctx context.Context, c client.Client) error {
+	r.log.Info("removing components that make up the cluster-mode controller manager")
+
 	svc := &corev1.Service{}
 	svc.Namespace = k8s.CNRMSystemNamespace
 	svc.Name = k8s.ControllerManagerService
@@ -320,6 +349,7 @@ func (r *ConfigConnectorReconciler) removeClusterModeOnlyComponents(ctx context.
 	if err := controllers.DeleteObject(ctx, c, sc); err != nil {
 		return err
 	}
+
 	return nil
 }
 

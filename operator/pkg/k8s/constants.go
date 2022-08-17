@@ -31,6 +31,7 @@ const (
 	KCCSystemLabelSelectorRaw            = "cnrm.cloud.google.com/system"
 	KCCSystemComponentLabel              = "cnrm.cloud.google.com/component"
 	KCCControllerManagerComponent        = "cnrm-controller-manager"
+	KCCUnmanagedDetectorComponent        = "cnrm-unmanaged-detector"
 	CNRMDomain                           = "cnrm.cloud.google.com"
 	CNRMSystemNamespace                  = "cnrm-system"
 	NamespacedComponentLabel             = "cnrm.cloud.google.com/scoped-namespace"

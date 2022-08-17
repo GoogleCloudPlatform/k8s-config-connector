@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# All namespaced installations of KCC share the general validating and mutating
-# webhooks, along with our Prometheus recorder workload. All of these run in the
-# cnrm-system namespace.
 namePrefix: cnrm-
 namespace: cnrm-system
 commonLabels:
@@ -23,3 +20,15 @@ commonAnnotations:
   cnrm.cloud.google.com/version: 0.0.0-dev
 resources:
   - ../../../../base
+  - ../../../../components/unmanageddetector
+  # Grant unmanageddetector permissions to list StatefulSets, create events, etc.
+  - unmanageddetector_clusterrole.yaml
+  - unmanageddetector_clusterrolebindings.yaml
+patchesJson6902:
+  # Grant unmanageddetector read/update permissions on KCC resources
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRoleBinding
+      name: admin-binding
+    path: cnrm_admin_binding_unmanageddetector_patch.yaml

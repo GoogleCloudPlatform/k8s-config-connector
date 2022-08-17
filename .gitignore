@@ -103,6 +103,7 @@ config/installbundle/components/manager/base/manager_image_patch.yaml
 config/installbundle/components/recorder/recorder_image_patch.yaml
 config/installbundle/components/webhook/webhook_image_patch.yaml
 config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 operator/config/manager/manager_image_patch.yaml
 
 ### Go ###

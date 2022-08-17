@@ -129,6 +129,14 @@ func main() {
 			}
 			cm.Data["cnrm.deletiondefender"] = image
 		}
+		// unmanaged detector image
+		if obj.Kind == "StatefulSet" && obj.Name == "cnrm-unmanaged-detector" {
+			image, err := extractImageFromStatefulSet(obj.UnstructuredObject(), "unmanageddetector")
+			if err != nil {
+				log.Fatalf("error resolving manager image: %v", err)
+			}
+			cm.Data["cnrm.unmanageddetector"] = image
+		}
 		// webhook image
 		if obj.Kind == "Deployment" && obj.Name == "cnrm-webhook-manager" {
 			image, err := extractImageFromDeployment(obj.UnstructuredObject(), "webhook")
