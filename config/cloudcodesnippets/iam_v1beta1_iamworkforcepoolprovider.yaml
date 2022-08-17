@@ -1,0 +1,16 @@
+label: Config Connector IAMWorkforcePoolProvider
+markdownDescription: Creates yaml for a IAMWorkforcePoolProvider resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMWorkforcePoolProvider
+  metadata:
+    name: \${1:iamworkforcepoolprovider-name}
+  spec:
+    location: \${2:global}
+    workforcePoolRef:
+      name: \${3:iamwfpp-dep-oidc}
+    attributeMapping:
+      google.subject: \${4:assertion.sub}
+    oidc:
+      issuerUri: \${5:https://accounts.google.com}
+      clientId: \${6:client-id}
