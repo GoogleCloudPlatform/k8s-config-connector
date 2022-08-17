@@ -61,6 +61,10 @@ spec:
           limits:
             memory: 1Gi
           requests:
+            # This value was tuned to run on a GKE cluster with
+            # default node settings. Increasing this value may
+            # result in a backwards-incompatible change that breaks
+            # add-on updates by not allowing new versions to schedule themselves.
             cpu: 100m
             memory: 512Mi
         securityContext:
