@@ -49,6 +49,9 @@ spec:
       labels:
         cnrm.cloud.google.com/component: configconnector-operator
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - args:
         - --local-repo=/configconnector-operator/channels
