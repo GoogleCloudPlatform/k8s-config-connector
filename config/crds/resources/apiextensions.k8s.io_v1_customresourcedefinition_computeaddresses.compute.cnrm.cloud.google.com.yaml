@@ -75,7 +75,7 @@ spec:
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
                   address. The default value is ''IPV4''. Possible values: ["IPV4",
-                  "IPV6"].'
+                  "IPV6"]. This field can only be specified for a global address.'
                 type: string
               location:
                 description: 'Location represents the geographical location of the

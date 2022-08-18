@@ -268,3 +268,7 @@ apply-patches:
 	# Ignore the field for now to fix build break and unblock KCC releases.
 	# See b/239812293 for context
 	git apply ../hack/terraform-overrides/container_cluster_ignore_tpuconfig.patch
+	# Change ip_version field description for compute_global_address to include `This field
+	# can only be specified for a global address.`
+	# See b/238334650 for context
+	git apply ../hack/terraform-overrides/compute_global_address_ip_version_description.patch

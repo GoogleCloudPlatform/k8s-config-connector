@@ -148,7 +148,7 @@ if any. Set by the API if undefined.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

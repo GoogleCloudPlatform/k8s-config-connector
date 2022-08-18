@@ -51,7 +51,7 @@ type ComputeAddressSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. */
+	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address. */
 	// +optional
 	IpVersion *string `json:"ipVersion,omitempty"`
 

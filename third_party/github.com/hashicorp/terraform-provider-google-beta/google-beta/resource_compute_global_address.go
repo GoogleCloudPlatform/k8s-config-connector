@@ -86,7 +86,7 @@ address or omitted to allow GCP to choose a valid one for you.`,
 				ForceNew:         true,
 				ValidateFunc:     validateEnum([]string{"IPV4", "IPV6", ""}),
 				DiffSuppressFunc: emptyOrDefaultStringSuppress("IPV4"),
-				Description:      `The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]`,
+				Description:      `The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address.`,
 			},
 			"labels": {
 				Type:        schema.TypeMap,
