@@ -6,6 +6,17 @@
 {% block body %}
 
 
+
+Warning: {{product_name}} will deprecate the GameServicesRealm on November 15,
+2022 due to the deprecation of {{gcp_name}} {{game_servers_name}} on
+June 30, 2023.<br>
+<br>
+This means that {{product_name}} will stop reconciling GameServicesRealm
+resources.<br>
+<br>
+If you have any questions or require assistance, please contact
+[{{gcp_name}} Support](https://cloud.google.com/support-hub).
+
 <table>
 <thead>
 <tr>
