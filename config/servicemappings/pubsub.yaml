@@ -76,6 +76,15 @@ spec:
             version: v1beta1
             group: pubsub.cnrm.cloud.google.com
           valueTemplate: "projects/{{project}}/topics/{{value}}"
+        - tfField: bigquery_config.table
+          key: tableRef
+          description: |-
+            The name of the table to which to write data.
+          gvk:
+            kind: BigQueryTable
+            version: v1beta1
+            group: bigquery.cnrm.cloud.google.com
+          valueTemplate: "{{project}}.{{dataset_id}}.{{value}}"
       containers:
         - type: project
           tfField: project

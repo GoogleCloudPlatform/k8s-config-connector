@@ -103,6 +103,12 @@ type ComputeRegionNetworkEndpointGroupSpec struct {
 	// +optional
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
 
+	/* Immutable. This field is only used for PSC.
+	The URL of the network to which all network endpoints in the NEG belong. Uses
+	"default" project network if unspecified. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
 	/* Immutable. The target service url used to set up private service connection to
 	a Google API or a PSC Producer Service Attachment. */
 	// +optional
@@ -114,6 +120,11 @@ type ComputeRegionNetworkEndpointGroupSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. This field is only used for PSC.
+	Optional URL of the subnetwork to which all network endpoints in the NEG belong. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ComputeRegionNetworkEndpointGroupStatus struct {

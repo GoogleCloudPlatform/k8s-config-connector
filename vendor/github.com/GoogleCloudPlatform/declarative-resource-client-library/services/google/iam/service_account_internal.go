@@ -477,7 +477,7 @@ func canonicalizeServiceAccountDesiredState(rawDesired, rawInitial *ServiceAccou
 		return rawDesired, nil
 	}
 	canonicalDesired := &ServiceAccount{}
-	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
+	if canonicalizeServiceAccountName(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
 	} else {
 		canonicalDesired.Name = rawDesired.Name
@@ -508,7 +508,7 @@ func canonicalizeServiceAccountNewState(c *Client, rawNew, rawDesired *ServiceAc
 	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
 	} else {
-		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
+		if canonicalizeServiceAccountName(rawDesired.Name, rawNew.Name) {
 			rawNew.Name = rawDesired.Name
 		}
 	}
@@ -817,7 +817,7 @@ func diffServiceAccount(c *Client, desired, actual *ServiceAccount, opts ...dcl.
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{CustomDiff: canonicalizeServiceAccountName, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

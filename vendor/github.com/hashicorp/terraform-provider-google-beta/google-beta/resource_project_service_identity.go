@@ -34,6 +34,7 @@ func resourceProjectServiceIdentity() *schema.Resource {
 			},
 			"email": {
 				Type:     schema.TypeString,
+				Optional: true,
 				Computed: true,
 			},
 		},
@@ -86,16 +87,16 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 	}
 	d.SetId(id)
 
-	emailVal, ok := opRes["email"]
-	if !ok {
-		return fmt.Errorf("response %v missing 'email'", opRes)
-	}
-	email, ok := emailVal.(string)
-	if !ok {
-		return fmt.Errorf("unexpected type for email: got %T, want string", email)
-	}
-	if err := d.Set("email", email); err != nil {
-		return fmt.Errorf("Error setting email: %s", err)
+	// This API may not return the service identity's details, even if the relevant
+	// Google API is configured for service identities.
+	if emailVal, ok := opRes["email"]; ok {
+		email, ok := emailVal.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type for email: got %T, want string", email)
+		}
+		if err := d.Set("email", email); err != nil {
+			return fmt.Errorf("Error setting email: %s", err)
+		}
 	}
 	return nil
 }

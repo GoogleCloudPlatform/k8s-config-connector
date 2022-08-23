@@ -73,6 +73,10 @@
 ### Spec
 #### Schema
 ```yaml
+certificateMapRef:
+  external: string
+  name: string
+  namespace: string
 description: string
 location: string
 proxyBind: boolean
@@ -99,6 +103,50 @@ urlMapRef:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>certificateMapRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only the `external` field is supported to configure the reference.
+
+A reference to the CertificateMap resource uri that identifies a
+certificate map associated with the given target proxy. This field
+can only be set for global target proxies.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>
@@ -157,7 +205,7 @@ equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE",
     <tr>
         <td>
             <p><code>sslCertificates</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -167,7 +215,7 @@ equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE",
     <tr>
         <td>
             <p><code>sslCertificates[]</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>

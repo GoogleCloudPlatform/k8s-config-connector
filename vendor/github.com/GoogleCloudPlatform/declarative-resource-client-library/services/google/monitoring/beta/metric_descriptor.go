@@ -399,9 +399,8 @@ func (c *Client) GetMetricDescriptor(ctx context.Context, r *MetricDescriptor) (
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Type = nr.Type
+	result.Project = r.Project
+	result.Type = r.Type
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

@@ -389,10 +389,9 @@ func (c *Client) GetWorkload(ctx context.Context, r *Workload) (*Workload, error
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Organization = nr.Organization
-	result.Location = nr.Location
-	result.Name = nr.Name
+	result.Organization = r.Organization
+	result.Location = r.Location
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

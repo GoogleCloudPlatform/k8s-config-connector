@@ -67,7 +67,7 @@ type Formatter struct {
 // Borrowed logic from https://github.com/sirupsen/logrus/blob/master/json_formatter.go and https://github.com/t-tomalak/logrus-easy-formatter/blob/master/formatter.go
 func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 	// Suppress logs if TF_LOG is not DEBUG or TRACE
-	// also suppress frequent transport spam
+	// Also suppress frequent transport spam
 	if !logging.IsDebugOrHigher() || strings.Contains(entry.Message, "transport is closing") {
 		return nil, nil
 	}
@@ -137,6 +137,7 @@ func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 // Config is the configuration structure used to instantiate the Google
 // provider.
 type Config struct {
+	DCLConfig
 	AccessToken                        string
 	Credentials                        string
 	ImpersonateServiceAccount          string
@@ -253,26 +254,12 @@ type Config struct {
 	StorageTransferBasePath   string
 	BigtableAdminBasePath     string
 
+	// dcl
+	ContainerAwsBasePath   string
+	ContainerAzureBasePath string
+
 	requestBatcherServiceUsage *RequestBatcher
 	requestBatcherIam          *RequestBatcher
-
-	// start DCLBasePaths
-	// dataprocBasePath is implemented in mm
-	AssuredWorkloadsBasePath     string
-	ClouddeployBasePath          string
-	CloudResourceManagerBasePath string
-	ContainerAwsBasePath         string
-	ContainerAzureBasePath       string
-	DataplexBasePath             string
-	EventarcBasePath             string
-	FirebaserulesBasePath        string
-	GkeHubBasePath               string
-	NetworkConnectivityBasePath  string
-	OrgPolicyBasePath            string
-	RecaptchaEnterpriseBasePath  string
-	ApikeysBasePath              string
-	// CloudBuild WorkerPool uses a different endpoint (v1beta1) than any other CloudBuild resources
-	CloudBuildWorkerPoolBasePath string
 }
 
 const AccessApprovalBasePathKey = "AccessApproval"
@@ -364,7 +351,6 @@ const ResourceManagerV3BasePathKey = "ResourceManagerV3"
 const ServiceNetworkingBasePathKey = "ServiceNetworking"
 const StorageTransferBasePathKey = "StorageTransfer"
 const BigtableAdminBasePathKey = "BigtableAdmin"
-const GkeHubFeatureBasePathKey = "GkeHubFeature"
 const ContainerAwsBasePathKey = "ContainerAws"
 const ContainerAzureBasePathKey = "ContainerAzure"
 
@@ -372,7 +358,7 @@ const ContainerAzureBasePathKey = "ContainerAzure"
 var DefaultBasePaths = map[string]string{
 	AccessApprovalBasePathKey:       "https://accessapproval.googleapis.com/v1/",
 	AccessContextManagerBasePathKey: "https://accesscontextmanager.googleapis.com/v1/",
-	ActiveDirectoryBasePathKey:      "https://managedidentities.googleapis.com/v1/",
+	ActiveDirectoryBasePathKey:      "https://managedidentities.googleapis.com/v1beta1/",
 	ApiGatewayBasePathKey:           "https://apigateway.googleapis.com/v1beta/",
 	ApigeeBasePathKey:               "https://apigee.googleapis.com/v1/",
 	AppEngineBasePathKey:            "https://appengine.googleapis.com/v1/",
@@ -406,7 +392,7 @@ var DefaultBasePaths = map[string]string{
 	DialogflowBasePathKey:           "https://dialogflow.googleapis.com/v2/",
 	DialogflowCXBasePathKey:         "https://{{location}}-dialogflow.googleapis.com/v3/",
 	DNSBasePathKey:                  "https://dns.googleapis.com/dns/v1beta2/",
-	DocumentAIBasePathKey:           "https://documentai.googleapis.com/v1/",
+	DocumentAIBasePathKey:           "https://{{location}}-documentai.googleapis.com/v1/",
 	EssentialContactsBasePathKey:    "https://essentialcontacts.googleapis.com/v1/",
 	FilestoreBasePathKey:            "https://file.googleapis.com/v1beta1/",
 	FirebaseBasePathKey:             "https://firebase.googleapis.com/v1beta1/",
@@ -459,7 +445,6 @@ var DefaultBasePaths = map[string]string{
 	ServiceNetworkingBasePathKey:    "https://servicenetworking.googleapis.com/v1/",
 	StorageTransferBasePathKey:      "https://storagetransfer.googleapis.com/v1/",
 	BigtableAdminBasePathKey:        "https://bigtableadmin.googleapis.com/v2/",
-	GkeHubFeatureBasePathKey:        "https://gkehub.googleapis.com/v1beta/",
 	ContainerAwsBasePathKey:         "https://{{location}}-gkemulticloud.googleapis.com/v1/",
 	ContainerAzureBasePathKey:       "https://{{location}}-gkemulticloud.googleapis.com/v1/",
 }

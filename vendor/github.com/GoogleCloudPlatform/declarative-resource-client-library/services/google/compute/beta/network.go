@@ -227,9 +227,8 @@ func (c *Client) GetNetwork(ctx context.Context, r *Network) (*Network, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Name = r.Name
 	if dcl.IsZeroValue(result.AutoCreateSubnetworks) {
 		result.AutoCreateSubnetworks = dcl.Bool(true)
 	}

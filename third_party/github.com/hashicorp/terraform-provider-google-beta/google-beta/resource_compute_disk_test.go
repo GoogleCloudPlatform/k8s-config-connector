@@ -171,12 +171,92 @@ func TestDiskImageDiffSuppress(t *testing.T) {
 			New:                "different-cloud/debian-8",
 			ExpectDiffSuppress: false,
 		},
+		// arm images
+		"matching image opensuse arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images/opensuse-leap-15-4-v20220713-arm64",
+			New:                "opensuse-leap-arm64",
+			ExpectDiffSuppress: true,
+		},
+		"matching image sles arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images/sles-15-sp4-v20220713-arm64",
+			New:                "sles-15-arm64",
+			ExpectDiffSuppress: true,
+		},
+		"matching image ubuntu arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-arm64-v20220712",
+			New:                "ubuntu-1804-lts-arm64",
+			ExpectDiffSuppress: true,
+		},
+		"matching image ubuntu-minimal arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-arm64-v20220713",
+			New:                "ubuntu-minimal-2004-lts-arm64",
+			ExpectDiffSuppress: true,
+		},
+		"matching image debian arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-arm64-v20220719",
+			New:                "debian-11-arm64",
+			ExpectDiffSuppress: true,
+		},
+		"different architecture image opensuse arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images/opensuse-leap-15-4-v20220713-arm64",
+			New:                "opensuse-leap",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image sles arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images/sles-15-sp4-v20220713-arm64",
+			New:                "sles-15",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image ubuntu arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-arm64-v20220712",
+			New:                "ubuntu-1804-lts",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image ubuntu-minimal arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-arm64-v20220713",
+			New:                "ubuntu-minimal-2004-lts",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image debian arm64 self_link": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-arm64-v20220719",
+			New:                "debian-11",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image opensuse arm64 family": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images/opensuse-leap-15-2-v20200702",
+			New:                "opensuse-leap-arm64",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image sles arm64 family": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images/sles-15-sp4-v20220722-x86-64",
+			New:                "sles-15-arm64",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image ubuntu arm64 family": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20220712",
+			New:                "ubuntu-1804-lts-arm64",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image ubuntu-minimal arm64 family": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20220713",
+			New:                "ubuntu-minimal-2004-lts-arm64",
+			ExpectDiffSuppress: false,
+		},
+		"different architecture image debian arm64 family": {
+			Old:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20220719",
+			New:                "debian-11-arm64",
+			ExpectDiffSuppress: false,
+		},
 	}
 
 	for tn, tc := range cases {
-		if diskImageDiffSuppress("image", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
-			t.Errorf("bad: %s, %q => %q expect DiffSuppress to return %t", tn, tc.Old, tc.New, tc.ExpectDiffSuppress)
-		}
+		tc := tc
+		t.Run(tn, func(t *testing.T) {
+			t.Parallel()
+			if diskImageDiffSuppress("image", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
+				t.Fatalf("%q => %q expect DiffSuppress to return %t", tc.Old, tc.New, tc.ExpectDiffSuppress)
+			}
+		})
 	}
 }
 
@@ -185,7 +265,7 @@ func TestAccComputeDisk_imageDiffSuppressPublicVendorsFamilyNames(t *testing.T) 
 	t.Parallel()
 
 	if os.Getenv(TestEnvVar) == "" {
-		t.Skip(fmt.Sprintf("Network access not allowed; use %s=1 to enable", TestEnvVar))
+		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
 	}
 
 	config := getInitializedConfig(t)
@@ -437,6 +517,27 @@ func TestAccComputeDisk_deleteDetachIGM(t *testing.T) {
 	})
 }
 
+func TestAccComputeDisk_pdExtremeImplicitProvisionedIops(t *testing.T) {
+	t.Parallel()
+
+	diskName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeDisk_pdExtremeImplicitProvisionedIops(diskName),
+			},
+			{
+				ResourceName:      "google_compute_disk.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeDisk_resourcePolicies(t *testing.T) {
 	t.Parallel()
 
@@ -530,7 +631,7 @@ func testAccCheckEncryptionKey(t *testing.T, n string, disk *compute.Disk) resou
 func testAccComputeDisk_basic(diskName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -550,7 +651,7 @@ resource "google_compute_disk" "foobar" {
 func testAccComputeDisk_timeout(diskName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -561,7 +662,7 @@ resource "google_compute_disk" "foobar" {
   zone  = "us-central1-a"
 
   timeouts {
-    create = "1s"
+    create = ".5s"
   }
 }
 `, diskName)
@@ -570,7 +671,7 @@ resource "google_compute_disk" "foobar" {
 func testAccComputeDisk_updated(diskName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -591,7 +692,7 @@ resource "google_compute_disk" "foobar" {
 func testAccComputeDisk_fromSnapshot(projectName, firstDiskName, snapshotName, diskName, ref_selector string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -624,7 +725,7 @@ resource "google_compute_disk" "seconddisk" {
 func testAccComputeDisk_encryption(diskName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -648,7 +749,7 @@ data "google_project" "project" {
 }
 
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -677,7 +778,7 @@ resource "google_compute_disk" "foobar" {
 func testAccComputeDisk_deleteDetach(instanceName, diskName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -714,7 +815,7 @@ resource "google_compute_instance" "bar" {
 func testAccComputeDisk_deleteDetachIGM(diskName, mgrName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -766,10 +867,20 @@ resource "google_compute_instance_group_manager" "manager" {
 `, diskName, mgrName)
 }
 
+func testAccComputeDisk_pdExtremeImplicitProvisionedIops(diskName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_disk" "foobar" {
+  name  = "%s"
+  type = "pd-extreme"
+  size = 1
+}
+`, diskName)
+}
+
 func testAccComputeDisk_resourcePolicies(diskName, policyName string) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 
@@ -800,7 +911,7 @@ resource "google_compute_disk" "foobar" {
 func testAccComputeDisk_multiWriter(instance string, diskName string, enableMultiwriter bool) string {
 	return fmt.Sprintf(`
 data "google_compute_image" "my_image" {
-  family  = "debian-9"
+  family  = "debian-11"
   project = "debian-cloud"
 }
 

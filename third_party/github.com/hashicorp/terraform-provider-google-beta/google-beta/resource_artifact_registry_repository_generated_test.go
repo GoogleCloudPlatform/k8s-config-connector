@@ -32,7 +32,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t 
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,12 +51,10 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 `, context)
 }
@@ -71,7 +69,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,67 +88,11 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository with cmek"
-  format = "DOCKER"
-  kms_key_name = "%{kms_key_name}"
-}
-`, context)
-}
-
-func TestAccArtifactRegistryRepository_artifactRegistryRepositoryIamExample(t *testing.T) {
-	t.Parallel()
-
-	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
-	}
-
-	vcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
-		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
-		Steps: []resource.TestStep{
-			{
-				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryIamExample(context),
-			},
-			{
-				ResourceName:            "google_artifact_registry_repository.my-repo",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"repository_id", "location"},
-			},
-		},
-	})
-}
-
-func testAccArtifactRegistryRepository_artifactRegistryRepositoryIamExample(context map[string]interface{}) string {
-	return Nprintf(`
-resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
-  repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository with iam%{random_suffix}"
-  format = "DOCKER"
-}
-
-resource "google_service_account" "test-account" {
-  provider = google-beta
-
-  account_id   = "tf-test-my-account%{random_suffix}"
-  display_name = "Test Service Account"
-}
-
-resource "google_artifact_registry_repository_iam_member" "test-iam" {
-  provider = google-beta
-
-  location = google_artifact_registry_repository.my-repo.location
-  repository = google_artifact_registry_repository.my-repo.name
-  role   = "roles/artifactregistry.reader"
-  member = "serviceAccount:${google_service_account.test-account.email}"
+  description   = "example docker repository with cmek"
+  format        = "DOCKER"
+  kms_key_name  = "%{kms_key_name}"
 }
 `, context)
 }

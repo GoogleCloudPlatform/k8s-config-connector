@@ -580,6 +580,10 @@ spec:
                       be automatically restarted if it is terminated by Compute Engine
                       (not terminated by a user). This defaults to true.
                     type: boolean
+                  instanceTerminationAction:
+                    description: Immutable. Specifies the action GCE should take when
+                      SPOT VM is preempted.
+                    type: string
                   minNodeCpus:
                     description: Minimum number of cpus for the instance.
                     type: integer

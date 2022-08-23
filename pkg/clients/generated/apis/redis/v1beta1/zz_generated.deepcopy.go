@@ -277,6 +277,11 @@ func (in *RedisInstanceSpec) DeepCopyInto(out *RedisInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CustomerManagedKeyRef != nil {
+		in, out := &in.CustomerManagedKeyRef, &out.CustomerManagedKeyRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)

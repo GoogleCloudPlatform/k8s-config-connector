@@ -158,13 +158,28 @@ settings:
     requireSsl: boolean
   locationPreference:
     followGaeApplication: string
+    secondaryZone: string
     zone: string
   maintenanceWindow:
     day: integer
     hour: integer
     updateTrack: string
+  passwordValidationPolicy:
+    complexity: string
+    disallowUsernameSubstring: boolean
+    enablePasswordPolicy: boolean
+    minLength: integer
+    passwordChangeInterval: string
+    reuseInterval: integer
   pricingPlan: string
   replicationType: string
+  sqlServerAuditConfig:
+    bucketRef:
+      external: string
+      name: string
+      namespace: string
+    retentionInterval: string
+    uploadInterval: string
   tier: string
 ```
 
@@ -462,7 +477,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Initial root password. Required for MS SQL Server, ignored by MySQL and PostgreSQL.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Initial root password. Required for MS SQL Server.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -698,7 +713,7 @@ is set to true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of server instance collation.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of server instance collation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -994,6 +1009,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     </tr>
     <tr>
         <td>
+            <p><code>settings.locationPreference.secondaryZone</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The preferred Compute Engine zone for the secondary/failover.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.locationPreference.zone</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1044,6 +1069,76 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     </tr>
     <tr>
         <td>
+            <p><code>settings.passwordValidationPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.complexity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Password complexity.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.disallowUsernameSubstring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Disallow username as a part of the password.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.enablePasswordPolicy</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether the password policy is enabled or not.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.minLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum number of characters allowed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.passwordChangeInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Minimum interval after which the password can be changed. This flag is only supported for PostgresSQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.passwordValidationPolicy.reuseInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of previous passwords that cannot be reused.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.pricingPlan</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1061,6 +1156,76 @@ Specifying this field has no-ops; it's recommended to remove this field from you
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 Specifying this field has no-ops; it's recommended to remove this field from your configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.bucketRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The name of the destination bucket (e.g., gs://mybucket).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.bucketRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `url` field of a `StorageBucket` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.bucketRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.bucketRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.retentionInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s"..{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.sqlServerAuditConfig.uploadInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How often to upload generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

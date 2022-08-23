@@ -117,7 +117,6 @@ func resourceContainerAwsCluster() *schema.Resource {
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Logging configuration.",
 				MaxItems:    1,
 				Elem:        ContainerAwsClusterLoggingConfigSchema(),
@@ -240,7 +239,6 @@ func ContainerAwsClusterControlPlaneSchema() *schema.Resource {
 			"iam_instance_profile": {
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 				Description: "The name of the AWS IAM instance pofile to assign to each control plane replica.",
 			},
 
@@ -543,7 +541,6 @@ func ContainerAwsClusterLoggingConfigSchema() *schema.Resource {
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Configuration of the logging components.",
 				MaxItems:    1,
 				Elem:        ContainerAwsClusterLoggingConfigComponentConfigSchema(),
@@ -559,7 +556,6 @@ func ContainerAwsClusterLoggingConfigComponentConfigSchema() *schema.Resource {
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Components of the logging configuration to be enabled.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
@@ -612,12 +608,12 @@ func resourceContainerAwsClusterCreate(d *schema.ResourceData, meta interface{})
 		Project:       dcl.String(project),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/awsClusters/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -634,7 +630,7 @@ func resourceContainerAwsClusterCreate(d *schema.ResourceData, meta interface{})
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyCluster(context.Background(), obj, createDirective...)
+	res, err := client.ApplyCluster(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)
@@ -1361,7 +1357,6 @@ func flattenContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray
 	}
 	return items
 }
-
 func expandContainerAwsClusterLoggingConfigComponentConfigEnableComponentsArray(o interface{}) []containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnum {
 	objs := o.([]interface{})
 	items := make([]containeraws.ClusterLoggingConfigComponentConfigEnableComponentsEnum, 0, len(objs))

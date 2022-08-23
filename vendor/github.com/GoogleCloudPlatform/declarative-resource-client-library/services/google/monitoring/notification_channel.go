@@ -179,9 +179,8 @@ func (c *Client) GetNotificationChannel(ctx context.Context, r *NotificationChan
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Name = r.Name
 	if dcl.IsZeroValue(result.Enabled) {
 		result.Enabled = dcl.Bool(true)
 	}

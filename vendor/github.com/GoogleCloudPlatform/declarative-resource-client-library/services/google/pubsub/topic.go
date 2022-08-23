@@ -192,9 +192,8 @@ func (c *Client) GetTopic(ctx context.Context, r *Topic) (*Topic, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

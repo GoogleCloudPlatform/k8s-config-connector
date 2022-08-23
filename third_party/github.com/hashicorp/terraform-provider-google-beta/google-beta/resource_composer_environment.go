@@ -133,7 +133,7 @@ func resourceComposerEnvironment() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCPName,
+				ValidateFunc: validateGCEName,
 				Description:  `Name of the environment.`,
 			},
 			"region": {
@@ -434,12 +434,13 @@ func resourceComposerEnvironment() *schema.Resource {
 										Description:  `When enabled, IPs from public (non-RFC1918) ranges can be used for ip_allocation_policy.cluster_ipv4_cidr_block and ip_allocation_policy.service_ipv4_cidr_block.`,
 									},
 									"cloud_composer_connection_subnetwork": {
-										Type:         schema.TypeString,
-										Optional:     true,
-										Computed:     true,
-										AtLeastOneOf: composerPrivateEnvironmentConfig,
-										ForceNew:     true,
-										Description:  `When specified, the environment will use Private Service Connect instead of VPC peerings to connect to Cloud SQL in the Tenant Project, and the PSC endpoint in the Customer Project will use an IP address from this subnetwork. This field is supported for Cloud Composer environments in versions composer-2.*.*-airflow-*.*.* and newer.`,
+										Type:             schema.TypeString,
+										Optional:         true,
+										Computed:         true,
+										AtLeastOneOf:     composerPrivateEnvironmentConfig,
+										ForceNew:         true,
+										DiffSuppressFunc: compareSelfLinkRelativePaths,
+										Description:      `When specified, the environment will use Private Service Connect instead of VPC peerings to connect to Cloud SQL in the Tenant Project, and the PSC endpoint in the Customer Project will use an IP address from this subnetwork. This field is supported for Cloud Composer environments in versions composer-2.*.*-airflow-*.*.* and newer.`,
 									},
 								},
 							},
@@ -503,7 +504,7 @@ func resourceComposerEnvironment() *schema.Resource {
 							Computed:     true,
 							AtLeastOneOf: composerConfigKeys,
 							MaxItems:     1,
-							Description:  `The encryption options for the Composer environment and its dependencies. This field is supported for Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*.`,
+							Description:  `The encryption options for the Composer environment and its dependencies.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"kms_key_name": {
@@ -866,6 +867,21 @@ func resourceComposerEnvironmentUpdate(d *schema.ResourceData, meta interface{})
 				patchObj.Config.SoftwareConfig.ImageVersion = config.SoftwareConfig.ImageVersion
 			}
 			err = resourceComposerEnvironmentPatchField("config.softwareConfig.imageVersion", userAgent, patchObj, d, tfConfig)
+			if err != nil {
+				return err
+			}
+		}
+
+		if d.HasChange("config.0.software_config.0.scheduler_count") {
+			patchObj := &composer.Environment{
+				Config: &composer.EnvironmentConfig{
+					SoftwareConfig: &composer.SoftwareConfig{},
+				},
+			}
+			if config != nil && config.SoftwareConfig != nil {
+				patchObj.Config.SoftwareConfig.SchedulerCount = config.SoftwareConfig.SchedulerCount
+			}
+			err = resourceComposerEnvironmentPatchField("config.softwareConfig.schedulerCount", userAgent, patchObj, d, tfConfig)
 			if err != nil {
 				return err
 			}

@@ -45,7 +45,7 @@ func (r *Asset) validate() error {
 	if err := dcl.RequiredParameter(r.Lake, "Lake"); err != nil {
 		return err
 	}
-	if err := dcl.RequiredParameter(r.Zone, "Zone"); err != nil {
+	if err := dcl.RequiredParameter(r.DataplexZone, "DataplexZone"); err != nil {
 		return err
 	}
 	if !dcl.IsEmptyValueIndirect(r.ResourceSpec) {
@@ -88,6 +88,9 @@ func (r *AssetSecurityStatus) validate() error {
 	return nil
 }
 func (r *AssetDiscoverySpec) validate() error {
+	if err := dcl.Required(r, "enabled"); err != nil {
+		return err
+	}
 	if !dcl.IsEmptyValueIndirect(r.CsvOptions) {
 		if err := r.CsvOptions.validate(); err != nil {
 			return err
@@ -125,50 +128,50 @@ func (r *Asset) basePath() string {
 func (r *Asset) getURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":  dcl.ValueOrEmptyString(nr.Project),
-		"location": dcl.ValueOrEmptyString(nr.Location),
-		"zone":     dcl.ValueOrEmptyString(nr.Zone),
-		"lake":     dcl.ValueOrEmptyString(nr.Lake),
-		"name":     dcl.ValueOrEmptyString(nr.Name),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"location":     dcl.ValueOrEmptyString(nr.Location),
+		"dataplexZone": dcl.ValueOrEmptyString(nr.DataplexZone),
+		"lake":         dcl.ValueOrEmptyString(nr.Lake),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
 	}
-	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplexZone}}/assets/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
 func (r *Asset) listURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":  dcl.ValueOrEmptyString(nr.Project),
-		"location": dcl.ValueOrEmptyString(nr.Location),
-		"zone":     dcl.ValueOrEmptyString(nr.Zone),
-		"lake":     dcl.ValueOrEmptyString(nr.Lake),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"location":     dcl.ValueOrEmptyString(nr.Location),
+		"dataplexZone": dcl.ValueOrEmptyString(nr.DataplexZone),
+		"lake":         dcl.ValueOrEmptyString(nr.Lake),
 	}
-	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplexZone}}/assets", nr.basePath(), userBasePath, params), nil
 
 }
 
 func (r *Asset) createURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":  dcl.ValueOrEmptyString(nr.Project),
-		"location": dcl.ValueOrEmptyString(nr.Location),
-		"zone":     dcl.ValueOrEmptyString(nr.Zone),
-		"lake":     dcl.ValueOrEmptyString(nr.Lake),
-		"name":     dcl.ValueOrEmptyString(nr.Name),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"location":     dcl.ValueOrEmptyString(nr.Location),
+		"dataplexZone": dcl.ValueOrEmptyString(nr.DataplexZone),
+		"lake":         dcl.ValueOrEmptyString(nr.Lake),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
 	}
-	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets?assetId={{name}}", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplexZone}}/assets?assetId={{name}}", nr.basePath(), userBasePath, params), nil
 
 }
 
 func (r *Asset) deleteURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project":  dcl.ValueOrEmptyString(nr.Project),
-		"location": dcl.ValueOrEmptyString(nr.Location),
-		"zone":     dcl.ValueOrEmptyString(nr.Zone),
-		"lake":     dcl.ValueOrEmptyString(nr.Lake),
-		"name":     dcl.ValueOrEmptyString(nr.Name),
+		"project":      dcl.ValueOrEmptyString(nr.Project),
+		"location":     dcl.ValueOrEmptyString(nr.Location),
+		"dataplexZone": dcl.ValueOrEmptyString(nr.DataplexZone),
+		"lake":         dcl.ValueOrEmptyString(nr.Lake),
+		"name":         dcl.ValueOrEmptyString(nr.Name),
 	}
-	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplexZone}}/assets/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
 func (r *Asset) SetPolicyURL(userBasePath string) string {
@@ -205,7 +208,7 @@ func newUpdateAssetUpdateAssetRequest(ctx context.Context, f *Asset, c *Client) 
 	res := f
 	_ = res
 
-	if v, err := dcl.DeriveField("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", f.Name, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Lake), dcl.SelfLinkToName(f.Zone), dcl.SelfLinkToName(f.Name)); err != nil {
+	if v, err := dcl.DeriveField("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", f.Name, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Lake), dcl.SelfLinkToName(f.DataplexZone), dcl.SelfLinkToName(f.Name)); err != nil {
 		return nil, fmt.Errorf("error expanding Name into name: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["name"] = v
@@ -239,7 +242,7 @@ func newUpdateAssetUpdateAssetRequest(ctx context.Context, f *Asset, c *Client) 
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["discoveryStatus"] = v
 	}
-	req["name"] = fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", *f.Project, *f.Location, *f.Lake, *f.Zone, *f.Name)
+	req["name"] = fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", *f.Project, *f.Location, *f.Lake, *f.DataplexZone, *f.Name)
 
 	return req, nil
 }
@@ -358,7 +361,7 @@ func (c *Client) listAsset(ctx context.Context, r *Asset, pageToken string, page
 		}
 		res.Project = r.Project
 		res.Location = r.Location
-		res.Zone = r.Zone
+		res.DataplexZone = r.DataplexZone
 		res.Lake = r.Lake
 		l = append(l, res)
 	}
@@ -618,10 +621,10 @@ func canonicalizeAssetDesiredState(rawDesired, rawInitial *Asset, opts ...dcl.Ap
 	} else {
 		canonicalDesired.Lake = rawDesired.Lake
 	}
-	if dcl.NameToSelfLink(rawDesired.Zone, rawInitial.Zone) {
-		canonicalDesired.Zone = rawInitial.Zone
+	if dcl.NameToSelfLink(rawDesired.DataplexZone, rawInitial.DataplexZone) {
+		canonicalDesired.DataplexZone = rawInitial.DataplexZone
 	} else {
-		canonicalDesired.Zone = rawDesired.Zone
+		canonicalDesired.DataplexZone = rawDesired.DataplexZone
 	}
 
 	return canonicalDesired, nil
@@ -717,7 +720,7 @@ func canonicalizeAssetNewState(c *Client, rawNew, rawDesired *Asset) (*Asset, er
 
 	rawNew.Lake = rawDesired.Lake
 
-	rawNew.Zone = rawDesired.Zone
+	rawNew.DataplexZone = rawDesired.DataplexZone
 
 	return rawNew, nil
 }
@@ -1903,7 +1906,7 @@ func diffAsset(c *Client, desired, actual *Asset, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zone, actual.Zone, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DataplexZone, actual.DataplexZone, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zone")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2310,7 +2313,7 @@ func (r *Asset) urlNormalized() *Asset {
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.Lake = dcl.SelfLinkToName(r.Lake)
-	normalized.Zone = dcl.SelfLinkToName(r.Zone)
+	normalized.DataplexZone = dcl.SelfLinkToName(r.DataplexZone)
 	return &normalized
 }
 
@@ -2318,13 +2321,13 @@ func (r *Asset) updateURL(userBasePath, updateName string) (string, error) {
 	nr := r.urlNormalized()
 	if updateName == "UpdateAsset" {
 		fields := map[string]interface{}{
-			"project":  dcl.ValueOrEmptyString(nr.Project),
-			"location": dcl.ValueOrEmptyString(nr.Location),
-			"zone":     dcl.ValueOrEmptyString(nr.Zone),
-			"lake":     dcl.ValueOrEmptyString(nr.Lake),
-			"name":     dcl.ValueOrEmptyString(nr.Name),
+			"project":      dcl.ValueOrEmptyString(nr.Project),
+			"location":     dcl.ValueOrEmptyString(nr.Location),
+			"dataplexZone": dcl.ValueOrEmptyString(nr.DataplexZone),
+			"lake":         dcl.ValueOrEmptyString(nr.Lake),
+			"name":         dcl.ValueOrEmptyString(nr.Name),
 		}
-		return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}", nr.basePath(), userBasePath, fields), nil
+		return dcl.URL("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplexZone}}/assets/{{name}}", nr.basePath(), userBasePath, fields), nil
 
 	}
 
@@ -2366,7 +2369,7 @@ func expandAsset(c *Client, f *Asset) (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	res := f
 	_ = res
-	if v, err := dcl.DeriveField("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", f.Name, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Lake), dcl.SelfLinkToName(f.Zone), dcl.SelfLinkToName(f.Name)); err != nil {
+	if v, err := dcl.DeriveField("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", f.Name, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Lake), dcl.SelfLinkToName(f.DataplexZone), dcl.SelfLinkToName(f.Name)); err != nil {
 		return nil, fmt.Errorf("error expanding Name into name: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v
@@ -2406,7 +2409,7 @@ func expandAsset(c *Client, f *Asset) (map[string]interface{}, error) {
 		m["lake"] = v
 	}
 	if v, err := dcl.EmptyValue(); err != nil {
-		return nil, fmt.Errorf("error expanding Zone into zone: %w", err)
+		return nil, fmt.Errorf("error expanding DataplexZone into zone: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["zone"] = v
 	}
@@ -2442,7 +2445,7 @@ func flattenAsset(c *Client, i interface{}, res *Asset) *Asset {
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
 	resultRes.Lake = dcl.FlattenString(m["lake"])
-	resultRes.Zone = dcl.FlattenString(m["zone"])
+	resultRes.DataplexZone = dcl.FlattenString(m["zone"])
 
 	return resultRes
 }
@@ -3738,12 +3741,12 @@ func (r *Asset) matcher(c *Client) func([]byte) bool {
 		} else if *nr.Location != *ncr.Location {
 			return false
 		}
-		if nr.Zone == nil && ncr.Zone == nil {
-			c.Config.Logger.Info("Both Zone fields null - considering equal.")
-		} else if nr.Zone == nil || ncr.Zone == nil {
-			c.Config.Logger.Info("Only one Zone field is null - considering unequal.")
+		if nr.DataplexZone == nil && ncr.DataplexZone == nil {
+			c.Config.Logger.Info("Both DataplexZone fields null - considering equal.")
+		} else if nr.DataplexZone == nil || ncr.DataplexZone == nil {
+			c.Config.Logger.Info("Only one DataplexZone field is null - considering unequal.")
 			return false
-		} else if *nr.Zone != *ncr.Zone {
+		} else if *nr.DataplexZone != *ncr.DataplexZone {
 			return false
 		}
 		if nr.Lake == nil && ncr.Lake == nil {

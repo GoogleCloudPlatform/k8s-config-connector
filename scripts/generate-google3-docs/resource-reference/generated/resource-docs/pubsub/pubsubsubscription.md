@@ -92,6 +92,14 @@
 #### Schema
 ```yaml
 ackDeadlineSeconds: integer
+bigqueryConfig:
+  dropUnknownFields: boolean
+  tableRef:
+    external: string
+    name: string
+    namespace: string
+  useTopicSchema: boolean
+  writeMetadata: boolean
 deadLetterPolicy:
   deadLetterTopicRef:
     external: string
@@ -154,6 +162,90 @@ for the call to the push endpoint.
 
 If the subscriber never acknowledges the message, the Pub/Sub system
 will eventually redeliver the message.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}If delivery to BigQuery is used with this subscription, this field is used to configure it.
+Either pushConfig or bigQueryConfig can be set, but not both.
+If both are empty, then the subscriber will pull and ack messages using API methods.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.dropUnknownFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When true and useTopicSchema is true, any fields that are a part of the topic schema that are not part of the BigQuery table schema are dropped when writing to BigQuery.
+Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription's backlog.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.tableRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The name of the table to which to write data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.tableRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: string of the format `{{project}}.{{dataset_id}}.{{value}}`, where {{value}} is the `name` field of a `BigQueryTable` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.tableRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.tableRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.useTopicSchema</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When true, use the topic's schema as the columns to write to in BigQuery, if it exists.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.writeMetadata</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When true, write the subscription name, messageId, publishTime, attributes, and orderingKey to additional columns in the table.
+The subscription name, messageId, and publishTime fields are put in their own columns while all other message properties (other than data) are written to a JSON object in the attributes column.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

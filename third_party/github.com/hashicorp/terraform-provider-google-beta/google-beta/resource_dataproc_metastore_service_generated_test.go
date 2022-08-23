@@ -32,7 +32,7 @@ func TestAccDataprocMetastoreService_dataprocMetastoreServiceBasicExample(t *tes
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,7 +51,6 @@ func TestAccDataprocMetastoreService_dataprocMetastoreServiceBasicExample(t *tes
 func testAccDataprocMetastoreService_dataprocMetastoreServiceBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_dataproc_metastore_service" "default" {
-  provider   = google-beta
   service_id = "tf-test-metastore-srv%{random_suffix}"
   location   = "us-central1"
   port       = 9080
@@ -78,7 +77,7 @@ func TestAccDataprocMetastoreService_dataprocMetastoreServiceCmekTestExample(t *
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,17 +95,12 @@ func TestAccDataprocMetastoreService_dataprocMetastoreServiceCmekTestExample(t *
 
 func testAccDataprocMetastoreService_dataprocMetastoreServiceCmekTestExample(context map[string]interface{}) string {
 	return Nprintf(`
-data "google_project" "project" {
-  provider = google-beta
-}
+data "google_project" "project" {}
 
-data "google_storage_project_service_account" "gcs_account" {
-  provider = google-beta
-}
+data "google_storage_project_service_account" "gcs_account" {}
 
 
 resource "google_dataproc_metastore_service" "default" {
-  provider   = google-beta
   service_id = "tf-test-example-service%{random_suffix}"
   location   = "us-central1"
 
@@ -122,7 +116,6 @@ resource "google_dataproc_metastore_service" "default" {
 }
 
 resource "google_kms_crypto_key" "crypto_key" {
-  provider = google-beta
   name     = "tf-test-example-key%{random_suffix}"
   key_ring = google_kms_key_ring.key_ring.id
 
@@ -130,13 +123,11 @@ resource "google_kms_crypto_key" "crypto_key" {
 }
 
 resource "google_kms_key_ring" "key_ring" {
-  provider = google-beta
   name     = "tf-test-example-keyring%{random_suffix}"
   location = "us-central1"
 }
 
 resource "google_kms_crypto_key_iam_binding" "crypto_key_binding" {
-  provider      = google-beta
   crypto_key_id = google_kms_crypto_key.crypto_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
@@ -144,6 +135,137 @@ resource "google_kms_crypto_key_iam_binding" "crypto_key_binding" {
     "serviceAccount:service-${data.google_project.project.number}@gcp-sa-metastore.iam.gserviceaccount.com",
     "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
   ]
+}
+`, context)
+}
+
+func TestAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(context),
+			},
+			{
+				ResourceName:            "google_dataproc_metastore_service.endpoint",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"service_id", "location"},
+			},
+		},
+	})
+}
+
+func testAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_dataproc_metastore_service" "endpoint" {
+  provider   = google-beta
+  service_id = "tf-test-metastore-endpoint%{random_suffix}"
+  location   = "us-central1"
+  tier       = "DEVELOPER"
+
+  hive_metastore_config {
+    version           = "3.1.2"
+    endpoint_protocol = "GRPC"
+  }
+}
+`, context)
+}
+
+func TestAccDataprocMetastoreService_dataprocMetastoreServiceAuxExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocMetastoreService_dataprocMetastoreServiceAuxExample(context),
+			},
+			{
+				ResourceName:            "google_dataproc_metastore_service.aux",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"service_id", "location"},
+			},
+		},
+	})
+}
+
+func testAccDataprocMetastoreService_dataprocMetastoreServiceAuxExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_dataproc_metastore_service" "aux" {
+  provider   = google-beta
+  service_id = "tf-test-metastore-aux%{random_suffix}"
+  location   = "us-central1"
+  tier       = "DEVELOPER"
+
+  hive_metastore_config {
+    version = "3.1.2"
+    auxiliary_versions {
+      key     = "aux-test"
+      version = "2.3.6"
+    }
+  }
+}
+`, context)
+}
+
+func TestAccDataprocMetastoreService_dataprocMetastoreServiceMetadataExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocMetastoreService_dataprocMetastoreServiceMetadataExample(context),
+			},
+			{
+				ResourceName:            "google_dataproc_metastore_service.metadata",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"service_id", "location"},
+			},
+		},
+	})
+}
+
+func testAccDataprocMetastoreService_dataprocMetastoreServiceMetadataExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_dataproc_metastore_service" "metadata" {
+  provider   = google-beta
+  service_id = "tf-test-metastore-metadata%{random_suffix}"
+  location   = "us-central1"
+  tier       = "DEVELOPER"
+
+  metadata_integration {
+    data_catalog_config {
+      enabled = true
+    }
+  }
+
+  hive_metastore_config {
+    version = "3.1.2"
+  }
 }
 `, context)
 }

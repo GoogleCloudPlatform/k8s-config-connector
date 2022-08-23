@@ -97,6 +97,7 @@ conditions:
       string: string
   conditionMonitoringQueryLanguage:
     duration: string
+    evaluationMissingData: string
     query: string
     trigger:
       count: integer
@@ -117,6 +118,7 @@ conditions:
       perSeriesAligner: string
     denominatorFilter: string
     duration: string
+    evaluationMissingData: string
     filter: string
     thresholdValue: float
     trigger:
@@ -519,6 +521,18 @@ enough so that a single outlier does not
 generate spurious alerts, but short enough
 that unhealthy states are detected and
 alerted on quickly.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionMonitoringQueryLanguage.evaluationMissingData</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A condition control that determines how
+metric-threshold conditions are evaluated when
+data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -951,6 +965,18 @@ enough so that a single outlier does not
 generate spurious alerts, but short enough
 that unhealthy states are detected and
 alerted on quickly.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionThreshold.evaluationMissingData</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A condition control that determines how
+metric-threshold conditions are evaluated when
+data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

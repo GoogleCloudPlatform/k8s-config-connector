@@ -265,7 +265,7 @@ components:
             never have `/s` in a metric `unit`; rates should always be computed at
             query time from the underlying cumulative or delta value). * `.` multiplication
             or composition (as an infix operator). For examples, `GBy.d` or `k{watt}.h`.
-            The grammar for a unit is as follows: Expression = Component: { "." Component
+            The grammar for a unit is as follows: Expression = Component { "." Component
             } { "/" Component } ; Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation
             ] | Annotation | "1" ; Annotation = "{" NAME "}" ; Notes: * `Annotation`
             is just a comment if it follows a `UNIT`. If the annotation is used alone,

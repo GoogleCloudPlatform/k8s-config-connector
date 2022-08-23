@@ -141,7 +141,7 @@ func DCLOAuthIdpConfigSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "ResponseType",
 								GoType:      "OAuthIdpConfigResponseType",
-								Description: "The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g.: {id\\_token, token}).",
+								Description: "The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g. {id\\_token, token}).",
 								Properties: map[string]*dcl.Property{
 									"code": &dcl.Property{
 										Type:        "boolean",

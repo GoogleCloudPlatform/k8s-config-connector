@@ -152,11 +152,10 @@ func (c *Client) GetLogView(ctx context.Context, r *LogView) (*LogView, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Location = nr.Location
-	result.Bucket = nr.Bucket
-	result.Parent = nr.Parent
-	result.Name = nr.Name
+	result.Location = r.Location
+	result.Bucket = r.Bucket
+	result.Parent = r.Parent
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

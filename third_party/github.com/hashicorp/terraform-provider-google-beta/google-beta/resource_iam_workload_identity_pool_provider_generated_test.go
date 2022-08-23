@@ -32,7 +32,7 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderA
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,12 +51,10 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderA
 func testAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderAwsBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workload_identity_pool" "pool" {
-  provider                  = google-beta
   workload_identity_pool_id = "tf-test-example-pool%{random_suffix}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "example" {
-  provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "tf-test-example-prvdr%{random_suffix}"
   aws {
@@ -75,7 +73,7 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderA
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -94,12 +92,10 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderA
 func testAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderAwsFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workload_identity_pool" "pool" {
-  provider                  = google-beta
   workload_identity_pool_id = "tf-test-example-pool%{random_suffix}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "example" {
-  provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "tf-test-example-prvdr%{random_suffix}"
   display_name                       = "Name of provider"
@@ -127,7 +123,7 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderO
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -146,12 +142,10 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderO
 func testAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderOidcBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workload_identity_pool" "pool" {
-  provider                  = google-beta
   workload_identity_pool_id = "tf-test-example-pool%{random_suffix}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "example" {
-  provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "tf-test-example-prvdr%{random_suffix}"
   attribute_mapping                  = {
@@ -173,7 +167,7 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderO
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -192,12 +186,10 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderO
 func testAccIAMBetaWorkloadIdentityPoolProvider_iamWorkloadIdentityPoolProviderOidcFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workload_identity_pool" "pool" {
-  provider                  = google-beta
   workload_identity_pool_id = "tf-test-example-pool%{random_suffix}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "example" {
-  provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "tf-test-example-prvdr%{random_suffix}"
   display_name                       = "Name of provider"

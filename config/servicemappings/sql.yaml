@@ -74,6 +74,14 @@ spec:
             version: v1beta1
             group: kms.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: settings.sql_server_audit_config.bucket
+          key: bucketRef
+          description: The name of the destination bucket (e.g., gs://mybucket).
+          gvk:
+            kind: StorageBucket
+            version: v1beta1
+            group: storage.cnrm.cloud.google.com
+          targetField: url
       ignoredFields:
         - settings.version
         - deletion_protection

@@ -577,9 +577,8 @@ func (c *Client) GetMembership(ctx context.Context, r *Membership) (*Membership,
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Group = nr.Group
-	result.Name = nr.Name
+	result.Group = r.Group
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

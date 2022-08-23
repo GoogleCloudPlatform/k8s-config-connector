@@ -49,14 +49,14 @@ func resourceFirebaserulesRelease() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: "Format: `projects/{project_id}/releases/{release_id}`",
+				Description: "Format: `projects/{project_id}/releases/{release_id}`\\Firestore Rules Releases will **always** have the name 'cloud.firestore'",
 			},
 
 			"ruleset_name": {
 				Type:             schema.TypeString,
 				Required:         true,
 				DiffSuppressFunc: compareSelfLinkOrResourceName,
-				Description:      "Name of the `Ruleset` referred to by this `Release`. The `Ruleset` must exist the `Release` to be created.",
+				Description:      "Name of the `Ruleset` referred to by this `Release`. The `Ruleset` must exist for the `Release` to be created.",
 			},
 
 			"project": {
@@ -102,12 +102,12 @@ func resourceFirebaserulesReleaseCreate(d *schema.ResourceData, meta interface{}
 		Project:     dcl.String(project),
 	}
 
-	id, err := replaceVars(d, config, "projects/{{project}}/releases/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -124,7 +124,7 @@ func resourceFirebaserulesReleaseCreate(d *schema.ResourceData, meta interface{}
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyRelease(context.Background(), obj, createDirective...)
+	res, err := client.ApplyRelease(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)

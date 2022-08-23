@@ -525,7 +525,7 @@ func DCLGuestPolicySchema() *dcl.Schema {
 															"uri": &dcl.Property{
 																Type:        "string",
 																GoName:      "Uri",
-																Description: "URI from which to fetch the object. It should contain both the protocol and path following the format: {protocol}://{location}.",
+																Description: "URI from which to fetch the object. It should contain both the protocol and path following the format {protocol}://{location}.",
 															},
 														},
 													},

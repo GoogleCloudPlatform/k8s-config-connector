@@ -560,7 +560,7 @@ func TestAccContainerNodePool_withNodeConfigScopeAlias(t *testing.T) {
 	})
 }
 
-//This test exists to validate a regional node pool *and* and update to it.
+// This test exists to validate a regional node pool *and* and update to it.
 func TestAccContainerNodePool_regionalAutoscaling(t *testing.T) {
 	t.Parallel()
 
@@ -943,7 +943,6 @@ resource "google_container_cluster" "cluster" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
-  min_master_version = "1.19"
 }
 
 resource "google_container_node_pool" "np" {
@@ -992,7 +991,6 @@ resource "google_container_cluster" "cluster" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
-  min_master_version = "1.19"
 }
 
 resource "google_container_node_pool" "np" {

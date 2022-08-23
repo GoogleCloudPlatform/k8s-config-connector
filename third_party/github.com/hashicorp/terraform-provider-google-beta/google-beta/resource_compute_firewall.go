@@ -150,7 +150,7 @@ func resourceComputeFirewall() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCPName,
+				ValidateFunc: validateGCEName,
 				Description: `Name of the resource. Provided by the client when the resource is
 created. The name must be 1-63 characters long, and comply with
 RFC1035. Specifically, the name must be 1-63 characters long and match
@@ -311,7 +311,7 @@ one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required.`
 					Type: schema.TypeString,
 				},
 				Set:           schema.HashString,
-				ConflictsWith: []string{"destination_ranges", "source_service_accounts", "target_service_accounts"},
+				ConflictsWith: []string{"source_service_accounts", "destination_ranges", "target_service_accounts"},
 			},
 			"target_service_accounts": {
 				Type:     schema.TypeSet,

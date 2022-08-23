@@ -2107,11 +2107,10 @@ func (c *Client) GetCertificate(ctx context.Context, r *Certificate) (*Certifica
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.CaPool = nr.CaPool
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Location = r.Location
+	result.CaPool = r.CaPool
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

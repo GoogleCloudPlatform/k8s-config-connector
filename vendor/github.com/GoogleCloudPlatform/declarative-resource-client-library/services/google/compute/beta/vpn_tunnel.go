@@ -206,10 +206,9 @@ func (c *Client) GetVpnTunnel(ctx context.Context, r *VpnTunnel) (*VpnTunnel, er
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Region = nr.Region
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Region = r.Region
+	result.Name = r.Name
 	if dcl.IsZeroValue(result.IkeVersion) {
 		result.IkeVersion = dcl.Int64(2)
 	}

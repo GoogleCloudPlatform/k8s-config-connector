@@ -219,7 +219,7 @@ spec:
                 type: string
               rootPassword:
                 description: Immutable. Initial root password. Required for MS SQL
-                  Server, ignored by MySQL and PostgreSQL.
+                  Server.
                 oneOf:
                 - not:
                     required:
@@ -326,7 +326,7 @@ spec:
                         type: integer
                     type: object
                   collation:
-                    description: The name of server instance collation.
+                    description: Immutable. The name of server instance collation.
                     type: string
                   crashSafeReplication:
                     description: |-
@@ -447,6 +447,9 @@ spec:
                         description: A Google App Engine application whose zone to
                           remain in. Must be in the same region as this instance.
                         type: string
+                      secondaryZone:
+                        description: The preferred Compute Engine zone for the secondary/failover.
+                        type: string
                       zone:
                         description: The preferred compute engine zone.
                         type: string
@@ -466,6 +469,30 @@ spec:
                         description: Receive updates earlier (canary) or later (stable).
                         type: string
                     type: object
+                  passwordValidationPolicy:
+                    properties:
+                      complexity:
+                        description: Password complexity.
+                        type: string
+                      disallowUsernameSubstring:
+                        description: Disallow username as a part of the password.
+                        type: boolean
+                      enablePasswordPolicy:
+                        description: Whether the password policy is enabled or not.
+                        type: boolean
+                      minLength:
+                        description: Minimum number of characters allowed.
+                        type: integer
+                      passwordChangeInterval:
+                        description: Minimum interval after which the password can
+                          be changed. This flag is only supported for PostgresSQL.
+                        type: string
+                      reuseInterval:
+                        description: Number of previous passwords that cannot be reused.
+                        type: integer
+                    required:
+                    - enablePasswordPolicy
+                    type: object
                   pricingPlan:
                     description: Pricing plan for this instance, can only be PER_USE.
                     type: string
@@ -474,6 +501,49 @@ spec:
                       DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: string
+                  sqlServerAuditConfig:
+                    properties:
+                      bucketRef:
+                        description: The name of the destination bucket (e.g., gs://mybucket).
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: 'Allowed value: The `url` field of a `StorageBucket`
+                              resource.'
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
+                      retentionInterval:
+                        description: 'How long to keep generated audit files. A duration
+                          in seconds with up to nine fractional digits, terminated
+                          by ''s''. Example: "3.5s"..'
+                        type: string
+                      uploadInterval:
+                        description: 'How often to upload generated audit files. A
+                          duration in seconds with up to nine fractional digits, terminated
+                          by ''s''. Example: "3.5s".'
+                        type: string
+                    required:
+                    - bucketRef
+                    type: object
                   tier:
                     description: The machine type to use. See tiers for more details
                       and supported versions. Postgres supports only shared-core machine

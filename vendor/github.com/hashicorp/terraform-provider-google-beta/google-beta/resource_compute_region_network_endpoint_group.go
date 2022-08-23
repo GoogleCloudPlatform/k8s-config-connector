@@ -43,7 +43,7 @@ func resourceComputeRegionNetworkEndpointGroup() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCPName,
+				ValidateFunc: validateGCEName,
 				Description: `Name of the resource; provided by the client when the resource is
 created. The name must be 1-63 characters long, and comply with
 RFC1035. Specifically, the name must be 1-63 characters long and match
@@ -179,7 +179,7 @@ and { service="bar2", tag="foo2" } respectively.`,
 						},
 					},
 				},
-				ConflictsWith: []string{"app_engine", "cloud_function", "serverless_deployment"},
+				ConflictsWith: []string{"cloud_function", "app_engine", "serverless_deployment"},
 			},
 			"description": {
 				Type:     schema.TypeString,
@@ -187,6 +187,15 @@ and { service="bar2", tag="foo2" } respectively.`,
 				ForceNew: true,
 				Description: `An optional description of this resource. Provide this property when
 you create the resource.`,
+			},
+			"network": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				Description: `This field is only used for PSC.
+The URL of the network to which all network endpoints in the NEG belong. Uses
+"default" project network if unspecified.`,
 			},
 			"network_endpoint_type": {
 				Type:         schema.TypeString,
@@ -245,7 +254,15 @@ API Gateway: Unused, App Engine: The service version, Cloud Functions: Unused, C
 						},
 					},
 				},
-				ConflictsWith: []string{"cloud_run", "app_engine", "cloud_function"},
+				ConflictsWith: []string{"cloud_run", "cloud_function", "app_engine"},
+			},
+			"subnetwork": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				Description: `This field is only used for PSC.
+Optional URL of the subnetwork to which all network endpoints in the NEG belong.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -293,6 +310,18 @@ func resourceComputeRegionNetworkEndpointGroupCreate(d *schema.ResourceData, met
 		return err
 	} else if v, ok := d.GetOkExists("psc_target_service"); !isEmptyValue(reflect.ValueOf(pscTargetServiceProp)) && (ok || !reflect.DeepEqual(v, pscTargetServiceProp)) {
 		obj["pscTargetService"] = pscTargetServiceProp
+	}
+	networkProp, err := expandComputeRegionNetworkEndpointGroupNetwork(d.Get("network"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+		obj["network"] = networkProp
+	}
+	subnetworkProp, err := expandComputeRegionNetworkEndpointGroupSubnetwork(d.Get("subnetwork"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("subnetwork"); !isEmptyValue(reflect.ValueOf(subnetworkProp)) && (ok || !reflect.DeepEqual(v, subnetworkProp)) {
+		obj["subnetwork"] = subnetworkProp
 	}
 	cloudRunProp, err := expandComputeRegionNetworkEndpointGroupCloudRun(d.Get("cloud_run"), d, config)
 	if err != nil {
@@ -417,6 +446,12 @@ func resourceComputeRegionNetworkEndpointGroupRead(d *schema.ResourceData, meta 
 	if err := d.Set("psc_target_service", flattenComputeRegionNetworkEndpointGroupPscTargetService(res["pscTargetService"], d, config)); err != nil {
 		return fmt.Errorf("Error reading RegionNetworkEndpointGroup: %s", err)
 	}
+	if err := d.Set("network", flattenComputeRegionNetworkEndpointGroupNetwork(res["network"], d, config)); err != nil {
+		return fmt.Errorf("Error reading RegionNetworkEndpointGroup: %s", err)
+	}
+	if err := d.Set("subnetwork", flattenComputeRegionNetworkEndpointGroupSubnetwork(res["subnetwork"], d, config)); err != nil {
+		return fmt.Errorf("Error reading RegionNetworkEndpointGroup: %s", err)
+	}
 	if err := d.Set("cloud_run", flattenComputeRegionNetworkEndpointGroupCloudRun(res["cloudRun"], d, config)); err != nil {
 		return fmt.Errorf("Error reading RegionNetworkEndpointGroup: %s", err)
 	}
@@ -519,6 +554,20 @@ func flattenComputeRegionNetworkEndpointGroupNetworkEndpointType(v interface{}, 
 
 func flattenComputeRegionNetworkEndpointGroupPscTargetService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
+}
+
+func flattenComputeRegionNetworkEndpointGroupNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return ConvertSelfLinkToV1(v.(string))
+}
+
+func flattenComputeRegionNetworkEndpointGroupSubnetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return ConvertSelfLinkToV1(v.(string))
 }
 
 func flattenComputeRegionNetworkEndpointGroupCloudRun(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -652,6 +701,22 @@ func expandComputeRegionNetworkEndpointGroupNetworkEndpointType(v interface{}, d
 
 func expandComputeRegionNetworkEndpointGroupPscTargetService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
+}
+
+func expandComputeRegionNetworkEndpointGroupNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	f, err := parseGlobalFieldValue("networks", v.(string), "project", d, config, true)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid value for network: %s", err)
+	}
+	return f.RelativeLink(), nil
+}
+
+func expandComputeRegionNetworkEndpointGroupSubnetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	f, err := parseRegionalFieldValue("subnetworks", v.(string), "project", "region", "zone", d, config, true)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid value for subnetwork: %s", err)
+	}
+	return f.RelativeLink(), nil
 }
 
 func expandComputeRegionNetworkEndpointGroupCloudRun(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {

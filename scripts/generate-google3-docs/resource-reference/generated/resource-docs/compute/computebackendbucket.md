@@ -45,7 +45,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}projects/{{project}}/global/backendBuckets/{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 
@@ -78,6 +96,8 @@ bucketRef:
   name: string
   namespace: string
 cdnPolicy:
+  bypassCacheOnRequestHeaders:
+  - headerName: string
   cacheKeyPolicy:
     includeHttpHeaders:
     - string
@@ -91,6 +111,7 @@ cdnPolicy:
   negativeCachingPolicy:
   - code: integer
     ttl: integer
+  requestCoalescing: boolean
   serveWhileStale: integer
   signedUrlCacheMaxAgeSec: integer
 customResponseHeaders:
@@ -156,6 +177,36 @@ resourceID: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Cloud CDN configuration for this Backend Bucket.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[].headerName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field name to match on when bypassing cache. Values are case-insensitive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -304,6 +355,16 @@ can be specified as values, and you cannot specify a status code more than once.
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
 (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.requestCoalescing</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true then Cloud CDN will combine multiple concurrent cache fill requests into a small number of requests to the origin.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

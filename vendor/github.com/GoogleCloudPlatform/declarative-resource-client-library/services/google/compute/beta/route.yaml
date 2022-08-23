@@ -274,7 +274,7 @@ components:
                   [Output Only] Metadata about this warning in <code class="lang-html">key:
                   value</code> format. For example:
                   <pre class="lang-html prettyprint">"data": [
-                   : {
+                    {
                      "key": "scope",
                      "value": "zones/us-east1-d"
                     }</pre>

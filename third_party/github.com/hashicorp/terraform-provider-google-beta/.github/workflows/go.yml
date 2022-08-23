@@ -23,14 +23,15 @@ jobs:
 
     - name: Get dependencies
       run: |
-        go get
-        make tools
+        go mod download
 
     - name: Build
-      run: go build
+      run: |
+        make lint
+        make generate
+        go build
 
     - name: Test
       run: |
         make docscheck
-        make lint
         make test

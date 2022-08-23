@@ -396,15 +396,21 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 	// end code block
 
 	// This list of ignored GVK is to allow certain resources to have
-	// external-only resource references (DCL-based resources).
-	ignoredGvkList := []k8sschema.GroupVersionKind{
+	// external-only resource references (DCL-based resources or unsupported
+	// resources).
+	ignoredGVKList := []k8sschema.GroupVersionKind{
 		{
-			Group:   "networksecurity.cnrm.cloud.google.com/v1beta1",
+			Group:   "networksecurity.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "NetworkSecurityClientTLSPolicy",
 		},
+		{
+			Group:   "certificatemanager.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "CertificateManagerCertificateMap",
+		},
 	}
-	for _, g := range ignoredGvkList {
+	for _, g := range ignoredGVKList {
 		if gvk == g {
 			return
 		}

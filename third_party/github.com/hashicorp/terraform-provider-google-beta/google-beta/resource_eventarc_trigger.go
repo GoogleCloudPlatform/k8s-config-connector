@@ -311,12 +311,12 @@ func resourceEventarcTriggerCreate(d *schema.ResourceData, meta interface{}) err
 		Transport:        expandEventarcTriggerTransport(d.Get("transport")),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -333,7 +333,7 @@ func resourceEventarcTriggerCreate(d *schema.ResourceData, meta interface{}) err
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyTrigger(context.Background(), obj, createDirective...)
+	res, err := client.ApplyTrigger(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)

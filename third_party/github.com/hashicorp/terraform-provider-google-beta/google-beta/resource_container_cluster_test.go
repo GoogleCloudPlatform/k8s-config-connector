@@ -182,15 +182,16 @@ func TestAccContainerCluster_withAddons(t *testing.T) {
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
-			{
-				Config: testAccContainerCluster_withInternalLoadBalancer(pid, clusterName),
-			},
-			{
-				ResourceName:            "google_container_cluster.primary",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"min_master_version"},
-			},
+			// Issue with cloudrun_config addon: https://github.com/hashicorp/terraform-provider-google/issues/11943
+			// {
+			// 	Config: testAccContainerCluster_withInternalLoadBalancer(pid, clusterName),
+			// },
+			// {
+			// 	ResourceName:            "google_container_cluster.primary",
+			// 	ImportState:             true,
+			// 	ImportStateVerify:       true,
+			// 	ImportStateVerifyIgnore: []string{"min_master_version"},
+			// },
 		},
 	})
 }
@@ -349,7 +350,6 @@ func TestAccContainerCluster_withMasterAuthConfig_NoCert(t *testing.T) {
 func TestAccContainerCluster_withAuthenticatorGroupsConfig(t *testing.T) {
 	t.Parallel()
 	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	containerNetName := fmt.Sprintf("tf-test-container-net-%s", randString(t, 10))
 	orgDomain := getTestOrgDomainFromEnv(t)
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -357,10 +357,38 @@ func TestAccContainerCluster_withAuthenticatorGroupsConfig(t *testing.T) {
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccContainerCluster_withAuthenticatorGroupsConfig(containerNetName, clusterName, orgDomain),
+				Config: testAccContainerCluster_basic(clusterName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckNoResourceAttr("google_container_cluster.primary",
+						"authenticator_groups_config.0.enabled"),
+				),
 			},
 			{
-				ResourceName:      "google_container_cluster.with_authenticator_groups",
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withAuthenticatorGroupsConfigUpdate(clusterName, orgDomain),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("google_container_cluster.primary",
+						"authenticator_groups_config.0.security_group", fmt.Sprintf("gke-security-groups@%s", orgDomain)),
+				),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withAuthenticatorGroupsConfigUpdate2(clusterName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckNoResourceAttr("google_container_cluster.primary",
+						"authenticator_groups_config.0.enabled"),
+				),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -2200,7 +2228,7 @@ func TestAccContainerCluster_sharedVpc(t *testing.T) {
 	})
 }
 
-func TestAccContainerCluster_withBinaryAuthorization(t *testing.T) {
+func TestAccContainerCluster_withBinaryAuthorizationEnabledBool(t *testing.T) {
 	t.Parallel()
 
 	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
@@ -2211,18 +2239,111 @@ func TestAccContainerCluster_withBinaryAuthorization(t *testing.T) {
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccContainerCluster_withBinaryAuthorization(clusterName, true),
+				Config: testAccContainerCluster_withBinaryAuthorizationEnabledBool(clusterName, true),
 			},
 			{
-				ResourceName:      "google_container_cluster.with_binary_authorization",
+				ResourceName:            "google_container_cluster.with_binary_authorization_enabled_bool",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"enable_binary_authorization"},
+			},
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEnabledBool(clusterName, false),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_binary_authorization_enabled_bool",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withBinaryAuthorizationEnabledBoolLegacy(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEnabledBoolLegacy(clusterName, true),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_binary_authorization_enabled_bool_legacy",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"enable_binary_authorization", "binary_authorization.#", "binary_authorization.0.%", "binary_authorization.0.enabled", "binary_authorization.0.evaluation_mode"},
+			},
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEnabledBoolLegacy(clusterName, false),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_binary_authorization_enabled_bool_legacy",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"enable_binary_authorization"},
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withBinaryAuthorizationEvaluationModeAutopilot(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEvaluationMode(clusterName, true, "PROJECT_SINGLETON_POLICY_ENFORCE"),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_binary_authorization_evaluation_mode",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccContainerCluster_withBinaryAuthorization(clusterName, false),
+				Config: testAccContainerCluster_withBinaryAuthorizationEvaluationMode(clusterName, true, "DISABLED"),
 			},
 			{
-				ResourceName:      "google_container_cluster.with_binary_authorization",
+				ResourceName:      "google_container_cluster.with_binary_authorization_evaluation_mode",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withBinaryAuthorizationEvaluationModeClassic(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEvaluationMode(clusterName, false, "PROJECT_SINGLETON_POLICY_ENFORCE"),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_binary_authorization_evaluation_mode",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withBinaryAuthorizationEvaluationMode(clusterName, false, "DISABLED"),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_binary_authorization_evaluation_mode",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -2286,6 +2407,30 @@ func TestAccContainerCluster_nodeAutoprovisioningDefaultsImageType(t *testing.T)
 	})
 }
 
+func TestAccContainerCluster_nodeAutoprovisioningDefaultsBootDiskKmsKey(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	kms := BootstrapKMSKeyInLocation(t, "us-central1")
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_autoprovisioningDefaultsBootDiskKmsKey(getTestProjectFromEnv(), clusterName, kms.CryptoKey.Name),
+			},
+			{
+				ResourceName:            "google_container_cluster.nap_boot_disk_kms_key",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+		},
+	})
+}
+
 func TestAccContainerCluster_errorCleanDanglingCluster(t *testing.T) {
 	t.Parallel()
 
@@ -2335,6 +2480,48 @@ func TestAccContainerCluster_errorNoClusterCreated(t *testing.T) {
 			{
 				Config:      testAccContainerCluster_withInvalidLocation("wonderland"),
 				ExpectError: regexp.MustCompile(`Permission denied on 'locations/wonderland' \(or it may not exist\).`),
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withMeshCertificatesConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	pid := getTestProjectFromEnv()
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withMeshCertificatesConfigEnabled(pid, clusterName),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_mesh_certificates_config",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"remove_default_node_pool"},
+			},
+			{
+				Config: testAccContainerCluster_updateMeshCertificatesConfig(pid, clusterName, true),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_mesh_certificates_config",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"remove_default_node_pool"},
+			},
+			{
+				Config: testAccContainerCluster_updateMeshCertificatesConfig(pid, clusterName, false),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_mesh_certificates_config",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"remove_default_node_pool"},
 			},
 		},
 	})
@@ -2722,8 +2909,10 @@ resource "google_container_cluster" "primary" {
     enabled = true
   }
 
+  binary_authorization {
+    evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+  }
   enable_intranode_visibility = true
-  enable_binary_authorization = true
 }
 `, name)
 }
@@ -2753,8 +2942,10 @@ resource "google_container_cluster" "primary" {
     enabled = true
   }
 
+  binary_authorization {
+    evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+  }
   enable_intranode_visibility = true
-  enable_binary_authorization = true
 }
 `, name)
 }
@@ -2792,15 +2983,15 @@ resource "google_container_cluster" "primary" {
     cloudrun_config {
       disabled = true
     }
-    istio_config {
-      disabled = true
-      auth     = "AUTH_MUTUAL_TLS"
-    }
     dns_cache_config {
       enabled = false
     }
     gce_persistent_disk_csi_driver_config {
       enabled = false
+    }
+    istio_config {
+      disabled = true
+      auth     = "AUTH_MUTUAL_TLS"
     }
     kalm_config {
 	  enabled = false
@@ -2847,18 +3038,20 @@ resource "google_container_cluster" "primary" {
       enabled = true
     }
     cloudrun_config {
-      disabled = false
-    }
-    istio_config {
-      disabled = false
-      auth     = "AUTH_NONE"
+	  # https://github.com/hashicorp/terraform-provider-google/issues/11943
+      # disabled = false
+      disabled = true
     }
     dns_cache_config {
       enabled = true
     }
     gce_persistent_disk_csi_driver_config {
       enabled = true
-	}
+    }
+    istio_config {
+      disabled = false
+      auth     = "AUTH_NONE"
+    }
 	kalm_config {
 	  enabled = true
 	}
@@ -2873,41 +3066,42 @@ resource "google_container_cluster" "primary" {
 `, projectID, clusterName)
 }
 
-func testAccContainerCluster_withInternalLoadBalancer(projectID string, clusterName string) string {
-	return fmt.Sprintf(`
-data "google_project" "project" {
-  project_id = "%s"
-}
+// Issue with cloudrun_config addon: https://github.com/hashicorp/terraform-provider-google/issues/11943/
+// func testAccContainerCluster_withInternalLoadBalancer(projectID string, clusterName string) string {
+// 	return fmt.Sprintf(`
+// data "google_project" "project" {
+//   project_id = "%s"
+// }
 
-resource "google_container_cluster" "primary" {
-  name               = "%s"
-  location           = "us-central1-a"
-  initial_node_count = 1
+// resource "google_container_cluster" "primary" {
+//   name               = "%s"
+//   location           = "us-central1-a"
+//   initial_node_count = 1
 
-  min_master_version = "latest"
+//   min_master_version = "latest"
 
-  workload_identity_config {
-    workload_pool = "${data.google_project.project.project_id}.svc.id.goog"
-  }
+//   workload_identity_config {
+//     workload_pool = "${data.google_project.project.project_id}.svc.id.goog"
+//   }
 
-  addons_config {
-    http_load_balancing {
-      disabled = false
-    }
-    horizontal_pod_autoscaling {
-      disabled = false
-    }
-    network_policy_config {
-      disabled = false
-    }
-    cloudrun_config {
-	  disabled = false
-	  load_balancer_type = "LOAD_BALANCER_TYPE_INTERNAL"
-    }
-  }
-}
-`, projectID, clusterName)
-}
+//   addons_config {
+//     http_load_balancing {
+//       disabled = false
+//     }
+//     horizontal_pod_autoscaling {
+//       disabled = false
+//     }
+//     network_policy_config {
+//       disabled = false
+//     }
+//     cloudrun_config {
+// 	  disabled = false
+// 	  load_balancer_type = "LOAD_BALANCER_TYPE_INTERNAL"
+//     }
+//   }
+// }
+// `, projectID, clusterName)
+// }
 
 func testAccContainerCluster_withNotificationConfig(clusterName string, topic string) string {
 	return fmt.Sprintf(`
@@ -3150,49 +3344,32 @@ resource "google_container_cluster" "with_network_policy_enabled" {
 `, clusterName)
 }
 
-func testAccContainerCluster_withAuthenticatorGroupsConfig(containerNetName string, clusterName string, orgDomain string) string {
+func testAccContainerCluster_withAuthenticatorGroupsConfigUpdate(name string, orgDomain string) string {
 	return fmt.Sprintf(`
-resource "google_compute_network" "container_network" {
-  name                    = "%s"
-  auto_create_subnetworks = false
+resource "google_container_cluster" "primary" {
+	name               = "%s"
+	location           = "us-central1-a"
+	initial_node_count = 1
+
+	authenticator_groups_config {
+		security_group = "gke-security-groups@%s"
+	}
+}
+`, name, orgDomain)
 }
 
-resource "google_compute_subnetwork" "container_subnetwork" {
-  name                     = google_compute_network.container_network.name
-  network                  = google_compute_network.container_network.name
-  ip_cidr_range            = "10.0.36.0/24"
-  region                   = "us-central1"
-  private_ip_google_access = true
+func testAccContainerCluster_withAuthenticatorGroupsConfigUpdate2(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+	name               = "%s"
+	location           = "us-central1-a"
+	initial_node_count = 1
 
-  secondary_ip_range {
-    range_name    = "pod"
-    ip_cidr_range = "10.0.0.0/19"
-  }
-
-  secondary_ip_range {
-    range_name    = "svc"
-    ip_cidr_range = "10.0.32.0/22"
-  }
+	authenticator_groups_config {
+		security_group = ""
+	}
 }
-
-resource "google_container_cluster" "with_authenticator_groups" {
-  name               = "%s"
-  location           = "us-central1-a"
-  initial_node_count = 1
-  network            = google_compute_network.container_network.name
-  subnetwork         = google_compute_subnetwork.container_subnetwork.name
-
-  authenticator_groups_config {
-    security_group = "gke-security-groups@%s"
-  }
-
-  networking_mode = "VPC_NATIVE"
-  ip_allocation_policy {
-    cluster_secondary_range_name  = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
-    services_secondary_range_name = google_compute_subnetwork.container_subnetwork.secondary_ip_range[1].range_name
-  }
-}
-`, containerNetName, clusterName, orgDomain)
+`, name)
 }
 
 func testAccContainerCluster_withMasterAuthorizedNetworksConfig(clusterName string, cidrs []string, emptyValue string) string {
@@ -4043,6 +4220,43 @@ resource "google_container_cluster" "with_autoprovisioning" {
 }`, cluster, imageTypeCfg)
 }
 
+func testAccContainerCluster_autoprovisioningDefaultsBootDiskKmsKey(project, clusterName, kmsKeyName string) string {
+	return fmt.Sprintf(`
+data "google_project" "project" {
+  project_id = "%s"
+}
+
+resource "google_project_iam_member" "kms-project-binding" {
+  project = data.google_project.project.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member  = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
+}
+
+resource "google_container_cluster" "nap_boot_disk_kms_key" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  release_channel {
+    channel = "RAPID"
+  }
+  cluster_autoscaling {
+    enabled = true
+    resource_limits {
+      resource_type = "cpu"
+      maximum       = 2
+    }
+    resource_limits {
+      resource_type = "memory"
+      maximum       = 2048
+    }
+    auto_provisioning_defaults {
+	  boot_disk_kms_key = "%s"
+    }
+  }
+}
+`, project, clusterName, kmsKeyName)
+}
+
 func testAccContainerCluster_withNodePoolAutoscaling(cluster, np string) string {
 	return fmt.Sprintf(`
 resource "google_container_cluster" "with_node_pool" {
@@ -4795,9 +5009,23 @@ resource "google_container_cluster" "shared_vpc_cluster" {
 `, projectName, org, billingId, projectName, org, billingId, suffix, suffix, name)
 }
 
-func testAccContainerCluster_withBinaryAuthorization(clusterName string, enabled bool) string {
+func testAccContainerCluster_withBinaryAuthorizationEnabledBool(clusterName string, enabled bool) string {
 	return fmt.Sprintf(`
-resource "google_container_cluster" "with_binary_authorization" {
+resource "google_container_cluster" "with_binary_authorization_enabled_bool" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+
+  binary_authorization {
+    enabled = %v
+  }
+}
+`, clusterName, enabled)
+}
+
+func testAccContainerCluster_withBinaryAuthorizationEnabledBoolLegacy(clusterName string, enabled bool) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_binary_authorization_enabled_bool_legacy" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
@@ -4805,6 +5033,23 @@ resource "google_container_cluster" "with_binary_authorization" {
   enable_binary_authorization = %v
 }
 `, clusterName, enabled)
+}
+
+func testAccContainerCluster_withBinaryAuthorizationEvaluationMode(clusterName string, autopilot_enabled bool, evaluation_mode string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_binary_authorization_evaluation_mode" {
+  name               = "%s"
+  location           = "us-central1"
+  initial_node_count = 1
+  ip_allocation_policy {
+  }
+  enable_autopilot = %v
+
+  binary_authorization {
+    evaluation_mode = "%s"
+  }
+}
+`, clusterName, autopilot_enabled, evaluation_mode)
 }
 
 func testAccContainerCluster_withFlexiblePodCIDR(containerNetName string, clusterName string) string {
@@ -4921,6 +5166,47 @@ resource "google_container_cluster" "with_resource_labels" {
   initial_node_count = 1
 }
 `, location)
+}
+
+func testAccContainerCluster_withMeshCertificatesConfigEnabled(projectID string, clusterName string) string {
+	return fmt.Sprintf(`
+	data "google_project" "project" {
+		project_id = "%s"
+	}
+
+	resource "google_container_cluster" "with_mesh_certificates_config" {
+	name               = "%s"
+	location           = "us-central1-a"
+	initial_node_count = 1
+	remove_default_node_pool = true
+	workload_identity_config {
+		workload_pool = "${data.google_project.project.project_id}.svc.id.goog"
+	}
+	mesh_certificates {
+		enable_certificates = true
+	}
+	}
+`, projectID, clusterName)
+}
+
+func testAccContainerCluster_updateMeshCertificatesConfig(projectID string, clusterName string, enabled bool) string {
+	return fmt.Sprintf(`
+	data "google_project" "project" {
+  		project_id = "%s"
+	}
+
+	resource "google_container_cluster" "with_mesh_certificates_config" {
+		name               = "%s"
+		location           = "us-central1-a"
+		initial_node_count = 1
+		remove_default_node_pool = true
+		workload_identity_config {
+			workload_pool = "${data.google_project.project.project_id}.svc.id.goog"
+			}
+			mesh_certificates {
+			enable_certificates = %v
+			}
+	}`, projectID, clusterName, enabled)
 }
 
 func testAccContainerCluster_withDatabaseEncryption(clusterName string, kmsData bootstrappedKMS) string {
@@ -5191,7 +5477,7 @@ resource "google_container_cluster" "primary" {
   location           = "us-central1-a"
   initial_node_count = 1
   monitoring_config {
-      enable_components = [ "SYSTEM_COMPONENTS" ]
+      enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER" ]
   }
 }
 `, name)
@@ -5204,7 +5490,7 @@ resource "google_container_cluster" "primary" {
   location           = "us-central1-a"
   initial_node_count = 1
   monitoring_config {
-         enable_components = [ "SYSTEM_COMPONENTS", "WORKLOADS" ]
+         enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "WORKLOADS" ]
   }
 }
 `, name)
@@ -5217,7 +5503,7 @@ resource "google_container_cluster" "primary" {
   location           = "us-central1-a"
   initial_node_count = 1
   monitoring_config {
-         enable_components = [ "SYSTEM_COMPONENTS", "WORKLOADS" ]
+         enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "WORKLOADS" ]
          managed_prometheus {
                  enabled = true
          }

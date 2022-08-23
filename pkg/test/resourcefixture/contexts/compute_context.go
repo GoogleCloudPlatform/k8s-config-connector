@@ -37,12 +37,23 @@ func init() {
 
 	resourceContextMap["cloudfunctioncomputeregionnetworkendpointgroup"] = ResourceContext{
 		ResourceKind: "ComputeRegionNetworkEndpointGroup",
-		SkipUpdate:   true,
+		// The GCP resource for ComputeRegionNetworkEndpointGroup doesn't
+		// support update.
+		SkipUpdate: true,
 	}
 
 	resourceContextMap["cloudruncomputeregionnetworkendpointgroup"] = ResourceContext{
 		ResourceKind: "ComputeRegionNetworkEndpointGroup",
-		SkipUpdate:   true,
+		// The GCP resource for ComputeRegionNetworkEndpointGroup doesn't
+		// support update.
+		SkipUpdate: true,
+	}
+
+	resourceContextMap["privateserviceconnectioncomputeregionnetworkendpointgroup"] = ResourceContext{
+		ResourceKind: "ComputeRegionNetworkEndpointGroup",
+		// The GCP resource for ComputeRegionNetworkEndpointGroup doesn't
+		// support update.
+		SkipUpdate: true,
 	}
 
 	resourceContextMap["computenetworkendpointgroup"] = ResourceContext{

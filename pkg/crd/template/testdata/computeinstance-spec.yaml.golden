@@ -118,6 +118,7 @@ resourcePolicies:
   namespace: string
 scheduling:
   automaticRestart: boolean
+  instanceTerminationAction: string
   minNodeCpus: integer
   nodeAffinities:
   - value: {}

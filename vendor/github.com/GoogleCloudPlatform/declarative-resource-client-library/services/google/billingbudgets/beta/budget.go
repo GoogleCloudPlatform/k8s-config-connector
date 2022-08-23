@@ -747,9 +747,8 @@ func (c *Client) GetBudget(ctx context.Context, r *Budget) (*Budget, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.BillingAccount = nr.BillingAccount
-	result.Name = nr.Name
+	result.BillingAccount = r.BillingAccount
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

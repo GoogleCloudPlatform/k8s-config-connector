@@ -759,6 +759,10 @@ spec:
                     description: Specifies if the instance should be restarted if
                       it was terminated by Compute Engine (not a user).
                     type: boolean
+                  instanceTerminationAction:
+                    description: Specifies the action GCE should take when SPOT VM
+                      is preempted.
+                    type: string
                   minNodeCpus:
                     type: integer
                   nodeAffinities:

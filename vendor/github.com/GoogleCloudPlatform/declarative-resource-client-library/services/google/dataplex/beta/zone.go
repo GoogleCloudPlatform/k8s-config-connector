@@ -513,11 +513,10 @@ func (c *Client) GetZone(ctx context.Context, r *Zone) (*Zone, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.Lake = nr.Lake
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Location = r.Location
+	result.Lake = r.Lake
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

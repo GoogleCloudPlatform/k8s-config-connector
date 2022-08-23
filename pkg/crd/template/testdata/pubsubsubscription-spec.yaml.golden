@@ -1,4 +1,12 @@
 ackDeadlineSeconds: integer
+bigqueryConfig:
+  dropUnknownFields: boolean
+  tableRef:
+    external: string
+    name: string
+    namespace: string
+  useTopicSchema: boolean
+  writeMetadata: boolean
 deadLetterPolicy:
   deadLetterTopicRef:
     external: string

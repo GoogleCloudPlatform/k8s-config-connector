@@ -368,11 +368,11 @@ components:
         serviceAccount:
           type: string
           x-dcl-go-name: ServiceAccount
-          description: 'The service account to be used as credentials for all operations
+          description: The service account to be used as credentials for all operations
             performed by the managed instance group on instances. The service accounts
             needs all permissions required to create and delete instances. By default,
-            the service account: {projectNumber}@cloudservices.gserviceaccount.com
-            is used.'
+            the service account {projectNumber}@cloudservices.gserviceaccount.com
+            is used.
           x-dcl-references:
           - resource: Iam/ServiceAccount
             field: email

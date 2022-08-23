@@ -142,9 +142,8 @@ func (c *Client) GetFirewallPolicyAssociation(ctx context.Context, r *FirewallPo
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.FirewallPolicy = nr.FirewallPolicy
-	result.Name = nr.Name
+	result.FirewallPolicy = r.FirewallPolicy
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

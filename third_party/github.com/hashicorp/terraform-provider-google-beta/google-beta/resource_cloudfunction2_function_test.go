@@ -182,3 +182,147 @@ resource "google_cloudfunctions2_function" "terraform-test2" {
 }
 `, context)
 }
+
+func TestAccCloudFunctions2Function_fullUpdate(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project":       getTestProjectFromEnv(),
+		"zip_path":      "./test-fixtures/cloudfunctions2/function-source-eventarc-gcs.zip",
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				// Re-use config from the generated tests
+				Config: testAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample(context),
+			},
+			{
+				Config: testAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample_update(context),
+			},
+		},
+	})
+}
+
+func testAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample_update(context map[string]interface{}) string {
+	return Nprintf(`
+# [START functions_v2_basic_auditlogs]
+# This example follows the examples shown in this Google Cloud Community blog post
+# https://medium.com/google-cloud/applying-a-path-pattern-when-filtering-in-eventarc-f06b937b4c34
+# and the docs:
+# https://cloud.google.com/eventarc/docs/path-patterns
+
+resource "google_storage_bucket" "source-bucket" {
+  provider = google-beta
+  name     = "tf-test-gcf-source-bucket%{random_suffix}"
+  location = "US"
+  uniform_bucket_level_access = true
+}
+ 
+resource "google_storage_bucket_object" "object" {
+  provider = google-beta
+  name   = "function-source.zip"
+  bucket = google_storage_bucket.source-bucket.name
+  source = "%{zip_path}"  # Add path to the zipped function source code
+}
+
+resource "google_service_account" "account" {
+  provider     = google-beta
+  account_id   = "tf-test-gcf-sa%{random_suffix}"
+  display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
+}
+
+# Note: The right way of listening for Cloud Storage events is to use a Cloud Storage trigger.
+# Here we use Audit Logs to monitor the bucket so path patterns can be used in the example of
+# google_cloudfunctions2_function below (Audit Log events have path pattern support)
+resource "google_storage_bucket" "audit-log-bucket" {
+  provider = google-beta
+  name     = "tf-test-gcf-auditlog-bucket%{random_suffix}"
+  location = "us-central1"  # The trigger must be in the same location as the bucket
+  uniform_bucket_level_access = true
+}
+
+# Permissions on the service account used by the function and Eventarc trigger
+resource "google_project_iam_member" "invoking" {
+  provider = google-beta
+  project = "%{project}"
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.account.email}"
+}
+
+resource "google_project_iam_member" "event-receiving" {
+  provider = google-beta
+  project = "%{project}"
+  role    = "roles/eventarc.eventReceiver"
+  member  = "serviceAccount:${google_service_account.account.email}"
+}
+
+resource "google_project_iam_member" "artifactregistry-reader" {
+  provider = google-beta
+  project = "%{project}"
+  role     = "roles/artifactregistry.reader"
+  member   = "serviceAccount:${google_service_account.account.email}"
+}
+
+resource "google_cloudfunctions2_function" "function" {
+  provider = google-beta
+  depends_on = [
+    google_project_iam_member.event-receiving,
+    google_project_iam_member.artifactregistry-reader,
+  ]
+  name = "tf-test-gcf-function%{random_suffix}"
+  location = "us-central1"
+  description = "a new function"
+ 
+  build_config {
+    runtime     = "nodejs12"
+    entry_point = "entryPoint" # Set the entry point in the code
+    environment_variables = {
+      BUILD_CONFIG_TEST = "build_test"
+    }
+    source {
+      storage_source {
+        bucket = google_storage_bucket.source-bucket.name
+        object = google_storage_bucket_object.object.name
+      }
+    }
+  }
+ 
+  service_config {
+    max_instance_count  = 3
+    min_instance_count = 1
+    available_memory    = "256M"
+    timeout_seconds     = 60
+    environment_variables = {
+        SERVICE_CONFIG_TEST = "config_test"
+    }
+    ingress_settings = "ALLOW_INTERNAL_ONLY"
+    all_traffic_on_latest_revision = true
+    service_account_email = google_service_account.account.email
+  }
+
+  event_trigger {
+    trigger_region = "us-central1" # The trigger must be in the same location as the bucket
+    event_type = "google.cloud.audit.log.v1.written"
+    retry_policy = "RETRY_POLICY_RETRY"
+    service_account_email = google_service_account.account.email
+    event_filters {
+      attribute = "serviceName"
+      value = "storage.googleapis.com"
+    }
+    event_filters {
+      attribute = "methodName"
+      value = "storage.objects.get" # Update: change value
+    }
+    event_filters {
+      attribute = "resourceName"
+      value = google_storage_bucket.audit-log-bucket.name # Update: stops using path pattern operator
+    }
+  }
+}
+# [END functions_v2_basic_auditlogs]`, context)
+}

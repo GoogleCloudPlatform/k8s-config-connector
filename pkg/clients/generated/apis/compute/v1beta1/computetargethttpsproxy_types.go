@@ -36,6 +36,14 @@ import (
 )
 
 type ComputeTargetHTTPSProxySpec struct {
+	/* Only the `external` field is supported to configure the reference.
+
+	A reference to the CertificateMap resource uri that identifies a
+	certificate map associated with the given target proxy. This field
+	can only be set for global target proxies. */
+	// +optional
+	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
+
 	/* Immutable. An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -61,7 +69,8 @@ type ComputeTargetHTTPSProxySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/*  */
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates"`
+	// +optional
+	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the ComputeTargetHTTPSProxy resource. If not set,

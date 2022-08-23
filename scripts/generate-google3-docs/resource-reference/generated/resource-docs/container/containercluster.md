@@ -109,8 +109,15 @@ addonsConfig:
     disabled: boolean
 authenticatorGroupsConfig:
   securityGroup: string
+binaryAuthorization:
+  enabled: boolean
+  evaluationMode: string
 clusterAutoscaling:
   autoProvisioningDefaults:
+    bootDiskKMSKeyRef:
+      external: string
+      name: string
+      namespace: string
     imageType: string
     minCpuPlatform: string
     oauthScopes:
@@ -194,6 +201,8 @@ masterAuthorizedNetworksConfig:
   cidrBlocks:
   - cidrBlock: string
     displayName: string
+meshCertificates:
+  enableCertificates: boolean
 minMasterVersion: string
 monitoringConfig:
   enableComponents:
@@ -402,7 +411,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to disabled; set enabled = true to enable.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to enabled; set disabled = true to disable.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -572,7 +581,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Configuration for the Google Groups for GKE feature.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration for the Google Groups for GKE feature.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -582,7 +591,37 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>binaryAuthorization</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration options for the Binary Authorization feature.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>binaryAuthorization.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of evaluation_mode. Enable Binary Authorization for this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>binaryAuthorization.evaluationMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Mode of operation for Binary Authorization policy evaluation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -603,6 +642,47 @@ workloadIdentityConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Contains defaults for a node pool created by NAP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.bootDiskKMSKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The Customer Managed Encryption Key used to encrypt the
+boot disk attached to each node in the node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.bootDiskKMSKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.bootDiskKMSKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.bootDiskKMSKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -942,7 +1022,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Deprecated in favor of binary_authorization. Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1467,6 +1547,26 @@ workloadIdentityConfig:
     </tr>
     <tr>
         <td>
+            <p><code>meshCertificates</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}If set, and enable_certificates=true, the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>meshCertificates.enableCertificates</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>minMasterVersion</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1492,7 +1592,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS and WORKLOADS.{% endverbatim %}</p>
+            <p>{% verbatim %}GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2324,7 +2424,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2334,7 +2434,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

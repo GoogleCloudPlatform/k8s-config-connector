@@ -299,11 +299,13 @@ resource "google_container_aws_cluster" "primary" {
 func testAccContainerAwsCluster_BetaBasicHandWritten(context map[string]interface{}) string {
 	return Nprintf(`
 data "google_container_aws_versions" "versions" {
+  provider = google-beta
   project = "%{project_name}"
   location = "us-west1"
 }
 
 resource "google_container_aws_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "%{service_acct}"
@@ -399,11 +401,13 @@ resource "google_container_aws_cluster" "primary" {
 func testAccContainerAwsCluster_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
 	return Nprintf(`
 data "google_container_aws_versions" "versions" {
+  provider = google-beta
   project = "%{project_name}"
   location = "us-west1"
 }
 
 resource "google_container_aws_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "%{service_acct}"

@@ -187,7 +187,7 @@ func resourceComputeForwardingRule() *schema.Resource {
 				Optional:     true,
 				ForceNew:     true,
 				Description:  "An optional prefix to the service name for this Forwarding Rule. If specified, the prefix is the first label of the fully qualified service name. The label must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Specifically, the label must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. This field is only used for internal load balancing.",
-				ValidateFunc: validateGCPName,
+				ValidateFunc: validateGCEName,
 			},
 
 			"subnetwork": {
@@ -305,7 +305,7 @@ func resourceComputeForwardingRuleCreate(d *schema.ResourceData, meta interface{
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -322,7 +322,7 @@ func resourceComputeForwardingRuleCreate(d *schema.ResourceData, meta interface{
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyForwardingRule(context.Background(), obj, createDirective...)
+	res, err := client.ApplyForwardingRule(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)

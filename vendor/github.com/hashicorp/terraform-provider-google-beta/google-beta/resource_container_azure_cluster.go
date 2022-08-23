@@ -132,7 +132,6 @@ func resourceContainerAzureCluster() *schema.Resource {
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Logging configuration.",
 				MaxItems:    1,
 				Elem:        ContainerAzureClusterLoggingConfigSchema(),
@@ -230,7 +229,6 @@ func ContainerAzureClusterControlPlaneSchema() *schema.Resource {
 			"ssh_config": {
 				Type:        schema.TypeList,
 				Required:    true,
-				ForceNew:    true,
 				Description: "SSH configuration for how to access the underlying control plane machines.",
 				MaxItems:    1,
 				Elem:        ContainerAzureClusterControlPlaneSshConfigSchema(),
@@ -319,7 +317,6 @@ func ContainerAzureClusterControlPlaneSshConfigSchema() *schema.Resource {
 			"authorized_key": {
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 				Description: "The SSH public key data for VMs managed by Anthos. This accepts the authorized_keys file format used in OpenSSH according to the sshd(8) manual page.",
 			},
 		},
@@ -464,7 +461,6 @@ func ContainerAzureClusterLoggingConfigSchema() *schema.Resource {
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Configuration of the logging components.",
 				MaxItems:    1,
 				Elem:        ContainerAzureClusterLoggingConfigComponentConfigSchema(),
@@ -480,7 +476,6 @@ func ContainerAzureClusterLoggingConfigComponentConfigSchema() *schema.Resource 
 				Type:        schema.TypeList,
 				Computed:    true,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Components of the logging configuration to be enabled.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
@@ -535,12 +530,12 @@ func resourceContainerAzureClusterCreate(d *schema.ResourceData, meta interface{
 		Project:         dcl.String(project),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/azureClusters/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -557,7 +552,7 @@ func resourceContainerAzureClusterCreate(d *schema.ResourceData, meta interface{
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyCluster(context.Background(), obj, createDirective...)
+	res, err := client.ApplyCluster(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)
@@ -1253,7 +1248,6 @@ func flattenContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArr
 	}
 	return items
 }
-
 func expandContainerAzureClusterLoggingConfigComponentConfigEnableComponentsArray(o interface{}) []containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnum {
 	objs := o.([]interface{})
 	items := make([]containerazure.ClusterLoggingConfigComponentConfigEnableComponentsEnum, 0, len(objs))

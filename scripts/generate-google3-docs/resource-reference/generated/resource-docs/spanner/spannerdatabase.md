@@ -104,6 +104,7 @@ instanceRef:
   name: string
   namespace: string
 resourceID: string
+versionRetentionPeriod: string
 ```
 
 <table class="properties responsive">
@@ -120,7 +121,8 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The dialect of the Cloud Spanner Database.
+If it is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,6 +247,20 @@ must exist in the same location as the Spanner Database.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>versionRetentionPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The retention period for the database. The retention period must be between 1 hour
+and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
+the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
+If this property is used, you must avoid adding new DDL statements to 'ddl' that
+update the database's version_retention_period.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

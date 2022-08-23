@@ -58,7 +58,7 @@ resource "google_compute_instance" "default" {
   }
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
 
@@ -231,7 +231,7 @@ resource "google_compute_instance" "spot_vm_instance" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
   
@@ -239,6 +239,7 @@ resource "google_compute_instance" "spot_vm_instance" {
       preemptible = true
       automatic_restart = false
       provisioning_model = "SPOT"
+      instance_termination_action = "STOP"
   }
 
   network_interface {
@@ -288,7 +289,7 @@ resource "google_compute_instance" "custom_hostname_instance" {
   
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
   network_interface {
@@ -297,6 +298,219 @@ resource "google_compute_instance" "custom_hostname_instance" {
     access_config {
     }
   }
+}
+
+`, context)
+}
+
+func TestAccCGCSnippet_computeReservationExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project":       getTestProjectFromEnv(),
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_computeReservationExample(context),
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_computeReservationExample(context map[string]interface{}) string {
+	return Nprintf(`
+
+resource "google_compute_reservation" "gce_reservation_local" {
+  name = "tf-test-gce-reservation-local%{random_suffix}"
+  zone = "us-central1-c"
+  project = "%{project}"
+
+  share_settings {
+    share_type = "LOCAL"
+  }
+
+  specific_reservation {
+    count = 1
+    instance_properties {
+      machine_type     = "n2-standard-2"
+    }
+  }
+}
+
+`, context)
+}
+
+func TestAccCGCSnippet_instanceVirtualDisplayEnabledExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_instanceVirtualDisplayEnabledExample(context),
+			},
+			{
+				ResourceName:      "google_compute_instance.instance_virtual_display",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_instanceVirtualDisplayEnabledExample(context map[string]interface{}) string {
+	return Nprintf(`
+
+resource "google_compute_instance" "instance_virtual_display" {
+  name         = "tf-test-instance-virtual-display%{random_suffix}"
+  machine_type = "f1-micro"
+  zone = "us-central1-c"
+  
+  # Set the below to true to enable virtual display
+  enable_display = true
+  
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    # A default network is created for all GCP projects
+    network = "default"
+    access_config {
+    }
+  }
+}
+
+`, context)
+}
+
+func TestAccCGCSnippet_eventarcWorkflowsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProvidersOiCS,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_eventarcWorkflowsExample(context),
+			},
+			{
+				ResourceName:      "google_eventarc_trigger.trigger_pubsub_tf",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_eventarcWorkflowsExample(context map[string]interface{}) string {
+	return Nprintf(`
+# Used to retrieve project_number later
+data "google_project" "project" {
+  provider = google-beta
+}
+
+# Enable Eventarc API
+resource "google_project_service" "eventarc" {
+  provider = google-beta
+  service            = "eventarc.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Pub/Sub API
+resource "google_project_service" "pubsub" {
+  provider = google-beta
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Workflows API
+resource "google_project_service" "workflows" {
+  provider = google-beta
+  service            = "workflows.googleapis.com"
+  disable_on_destroy = false
+}
+
+
+
+# Create a service account for Eventarc trigger and Workflows
+resource "google_service_account" "eventarc_workflows_service_account" {
+  provider = google-beta
+  account_id   = "eventarc-workflows-sa"
+  display_name = "Eventarc Workflows Service Account"
+}
+
+# Grant the logWriter role to the service account
+resource "google_project_iam_binding" "project_binding_eventarc" {
+  provider = google-beta
+  project = data.google_project.project.id
+  role    = "roles/logging.logWriter"
+
+members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
+
+  depends_on = [google_service_account.eventarc_workflows_service_account]
+}
+
+# Grant the workflows.invoker role to the service account
+resource "google_project_iam_binding" "project_binding_workflows" {
+  provider = google-beta
+  project = data.google_project.project.id
+  role    = "roles/workflows.invoker"
+
+members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
+
+  depends_on = [google_service_account.eventarc_workflows_service_account]
+}
+
+
+# Define and deploy a workflow
+resource "google_workflows_workflow" "workflows_example" {
+  name            = "tf-test-pubsub-workflow-tf%{random_suffix}"
+  provider = google-beta
+  region          = "us-central1"
+  description     = "A sample workflow"
+  service_account = google_service_account.eventarc_workflows_service_account.id
+  # Imported main workflow YAML file
+  source_contents = templatefile("test-fixtures/workflow.yaml",{})
+
+  depends_on = [google_project_service.workflows, 
+google_service_account.eventarc_workflows_service_account]
+}
+
+
+# Create an Eventarc trigger routing Pub/Sub events to Workflows
+resource "google_eventarc_trigger" "trigger_pubsub_tf" {
+  name     = "tf-test-trigger-pubsub-workflow-tf%{random_suffix}"
+  provider = google-beta
+  location = "us-central1"
+  matching_criteria {
+    attribute = "type"
+    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+  }
+  destination {
+    workflow = google_workflows_workflow.workflows_example.id
+  }
+
+
+  service_account = google_service_account.eventarc_workflows_service_account.id
+
+  depends_on = [google_project_service.pubsub, google_project_service.eventarc, 
+google_service_account.eventarc_workflows_service_account]
 }
 
 `, context)
@@ -1084,6 +1298,68 @@ resource "google_storage_bucket" "bucket" {
 resource "google_pubsub_topic" "topic" {
   name     = "tf_test_your_topic_name%{random_suffix}"
   provider = google-beta
+}
+`, context)
+}
+
+func TestAccCGCSnippet_storageStaticWebsiteExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_storageStaticWebsiteExample(context),
+			},
+			{
+				ResourceName:      "google_storage_bucket.static_website",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_storageStaticWebsiteExample(context map[string]interface{}) string {
+	return Nprintf(`
+# Create new storage bucket in the US multi-region
+# with coldline storage and settings for main_page_suffix and not_found_page
+resource "google_storage_bucket" "static_website" {
+    name          = "tf-test-static-website-bucket%{random_suffix}"
+    location      = "US"
+    storage_class = "COLDLINE"
+    website {
+        main_page_suffix = "index.html%{random_suffix}"
+        not_found_page = "index.html%{random_suffix}"
+    }
+}
+
+# Make bucket public by granting allUsers READER access
+resource "google_storage_bucket_access_control" "public_rule" {
+  bucket = google_storage_bucket.static_website.id
+  role   = "READER"
+  entity = "allUsers"
+}
+
+# Upload a simple index.html page to the bucket
+resource "google_storage_bucket_object" "indexpage" {
+  name         = "index.html%{random_suffix}"
+  content      = "<html><body>Hello World!</body></html>"
+  content_type = "text/html"
+  bucket       = google_storage_bucket.static_website.id
+}
+
+# Upload a simple 404 / error page to the bucket
+resource "google_storage_bucket_object" "errorpage" {
+  name         = "404.html%{random_suffix}"
+  content      = "<html><body>404!</body></html>"
+  content_type = "text/html"
+  bucket       = google_storage_bucket.static_website.id
 }
 `, context)
 }

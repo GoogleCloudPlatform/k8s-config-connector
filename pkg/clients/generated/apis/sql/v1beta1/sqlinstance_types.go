@@ -145,6 +145,10 @@ type InstanceLocationPreference struct {
 	// +optional
 	FollowGaeApplication *string `json:"followGaeApplication,omitempty"`
 
+	/* The preferred Compute Engine zone for the secondary/failover. */
+	// +optional
+	SecondaryZone *string `json:"secondaryZone,omitempty"`
+
 	/* The preferred compute engine zone. */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
@@ -172,6 +176,31 @@ type InstancePassword struct {
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
 	// +optional
 	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
+}
+
+type InstancePasswordValidationPolicy struct {
+	/* Password complexity. */
+	// +optional
+	Complexity *string `json:"complexity,omitempty"`
+
+	/* Disallow username as a part of the password. */
+	// +optional
+	DisallowUsernameSubstring *bool `json:"disallowUsernameSubstring,omitempty"`
+
+	/* Whether the password policy is enabled or not. */
+	EnablePasswordPolicy bool `json:"enablePasswordPolicy"`
+
+	/* Minimum number of characters allowed. */
+	// +optional
+	MinLength *int `json:"minLength,omitempty"`
+
+	/* Minimum interval after which the password can be changed. This flag is only supported for PostgresSQL. */
+	// +optional
+	PasswordChangeInterval *string `json:"passwordChangeInterval,omitempty"`
+
+	/* Number of previous passwords that cannot be reused. */
+	// +optional
+	ReuseInterval *int `json:"reuseInterval,omitempty"`
 }
 
 type InstanceReplicaConfiguration struct {
@@ -257,7 +286,7 @@ type InstanceSettings struct {
 	// +optional
 	BackupConfiguration *InstanceBackupConfiguration `json:"backupConfiguration,omitempty"`
 
-	/* The name of server instance collation. */
+	/* Immutable. The name of server instance collation. */
 	// +optional
 	Collation *string `json:"collation,omitempty"`
 
@@ -302,6 +331,10 @@ type InstanceSettings struct {
 	// +optional
 	MaintenanceWindow *InstanceMaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
+	/*  */
+	// +optional
+	PasswordValidationPolicy *InstancePasswordValidationPolicy `json:"passwordValidationPolicy,omitempty"`
+
 	/* Pricing plan for this instance, can only be PER_USE. */
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
@@ -311,8 +344,25 @@ type InstanceSettings struct {
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 
+	/*  */
+	// +optional
+	SqlServerAuditConfig *InstanceSqlServerAuditConfig `json:"sqlServerAuditConfig,omitempty"`
+
 	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
 	Tier string `json:"tier"`
+}
+
+type InstanceSqlServerAuditConfig struct {
+	/* The name of the destination bucket (e.g., gs://mybucket). */
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
+	/* How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".. */
+	// +optional
+	RetentionInterval *string `json:"retentionInterval,omitempty"`
+
+	/* How often to upload generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	// +optional
+	UploadInterval *string `json:"uploadInterval,omitempty"`
 }
 
 type InstanceValueFrom struct {
@@ -346,7 +396,7 @@ type SQLInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Initial root password. Required for MS SQL Server, ignored by MySQL and PostgreSQL. */
+	/* Immutable. Initial root password. Required for MS SQL Server. */
 	// +optional
 	RootPassword *InstanceRootPassword `json:"rootPassword,omitempty"`
 

@@ -99,7 +99,7 @@ spec:
                 description: |-
                   Immutable. The immutable purpose of this CryptoKey. See the
                   [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-                  for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"].
+                  for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"].
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
@@ -129,7 +129,7 @@ spec:
                   protectionLevel:
                     description: Immutable. The protection level to use when creating
                       a version based on this template. Possible values include "SOFTWARE",
-                      "HSM", "EXTERNAL". Defaults to "SOFTWARE".
+                      "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE".
                     type: string
                 required:
                 - algorithm

@@ -73,7 +73,7 @@ func DCLAssetSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "zone",
+						Name:     "dataplexzone",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -106,7 +106,7 @@ func DCLAssetSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "zone",
+						Name:     "dataplexzone",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -125,11 +125,8 @@ func DCLAssetSchema() *dcl.Schema {
 		Components: &dcl.Components{
 			Schemas: map[string]*dcl.Component{
 				"Asset": &dcl.Component{
-					Title: "Asset",
-					ID:    "projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}",
-					Locations: []string{
-						"zone",
-					},
+					Title:           "Asset",
+					ID:              "projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplex_zone}}/assets/{{name}}",
 					ParentContainer: "project",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
@@ -141,7 +138,7 @@ func DCLAssetSchema() *dcl.Schema {
 							"project",
 							"location",
 							"lake",
-							"zone",
+							"dataplexZone",
 						},
 						Properties: map[string]*dcl.Property{
 							"createTime": &dcl.Property{
@@ -150,6 +147,12 @@ func DCLAssetSchema() *dcl.Schema {
 								GoName:      "CreateTime",
 								ReadOnly:    true,
 								Description: "Output only. The time when the asset was created.",
+								Immutable:   true,
+							},
+							"dataplexZone": &dcl.Property{
+								Type:        "string",
+								GoName:      "DataplexZone",
+								Description: "The zone for the resource",
 								Immutable:   true,
 							},
 							"description": &dcl.Property{
@@ -162,6 +165,9 @@ func DCLAssetSchema() *dcl.Schema {
 								GoName:      "DiscoverySpec",
 								GoType:      "AssetDiscoverySpec",
 								Description: "Required. Specification of the discovery feature applied to data referenced by this asset. When this spec is left unset, the asset will use the spec set on the parent zone.",
+								Required: []string{
+									"enabled",
+								},
 								Properties: map[string]*dcl.Property{
 									"csvOptions": &dcl.Property{
 										Type:        "object",
@@ -390,10 +396,9 @@ func DCLAssetSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "Type",
 										GoType:      "AssetResourceSpecTypeEnum",
-										Description: "Required. Immutable. Type of resource. Possible values: TYPE_UNSPECIFIED, STORAGE_BUCKET, BIGQUERY_DATASET",
+										Description: "Required. Immutable. Type of resource. Possible values: STORAGE_BUCKET, BIGQUERY_DATASET",
 										Immutable:   true,
 										Enum: []string{
-											"TYPE_UNSPECIFIED",
 											"STORAGE_BUCKET",
 											"BIGQUERY_DATASET",
 										},
@@ -491,12 +496,6 @@ func DCLAssetSchema() *dcl.Schema {
 								GoName:      "UpdateTime",
 								ReadOnly:    true,
 								Description: "Output only. The time when the asset was last updated.",
-								Immutable:   true,
-							},
-							"zone": &dcl.Property{
-								Type:        "string",
-								GoName:      "Zone",
-								Description: "The zone for the resource",
 								Immutable:   true,
 							},
 						},

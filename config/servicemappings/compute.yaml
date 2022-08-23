@@ -83,6 +83,13 @@ spec:
       containers:
         - type: project
           tfField: project
+      iamConfig:
+        policyName: google_compute_backend_bucket_iam_policy
+        policyMemberName: google_compute_backend_bucket_iam_member
+        referenceField:
+          name: name
+          type: name
+        supportsConditions: false
     - name: google_compute_backend_service
       kind: ComputeBackendService
       metadataMapping:
@@ -163,7 +170,7 @@ spec:
           gvk:
             kind: NetworkSecurityClientTLSPolicy
             version: v1beta1
-            group: networksecurity.cnrm.cloud.google.com/v1beta1
+            group: networksecurity.cnrm.cloud.google.com
         - tfField: iap.oauth2_client_id
           description: |-
             Only `external` field is supported to configure the reference.
@@ -1398,6 +1405,27 @@ spec:
           version: v1beta1
           group: cloudfunctions.cnrm.cloud.google.com
         targetField: name
+      - key: networkRef
+        tfField: network
+        description: |-
+          Immutable. This field is only used for PSC.
+          The URL of the network to which all network endpoints in the NEG belong. Uses
+          "default" project network if unspecified.
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - key: subnetworkRef
+        tfField: subnetwork
+        description: |-
+          Immutable. This field is only used for PSC.
+          Optional URL of the subnetwork to which all network endpoints in the NEG belong.
+        gvk:
+          kind: ComputeSubnetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
       ignoredFields:
         # As of 5/19/22 the only allowed value for serverlessDeployment.platform is `apigateway.googleapis.com`
         # This field is ignored because APIGateway is not a supported resource at this time
@@ -1950,6 +1978,13 @@ spec:
       containers:
         - type: project
           tfField: project
+      iamConfig:
+        policyName: google_compute_snapshot_iam_policy
+        policyMemberName: google_compute_snapshot_iam_member
+        referenceField:
+          name: name
+          type: name
+        supportsConditions: false
     - name: google_compute_ssl_certificate
       kind: ComputeSSLCertificate
       metadataMapping:
@@ -2097,6 +2132,20 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: certificateMapRef
+          tfField: certificate_map
+          # TODO (b/203667132): Fix the reference config after CertificateManagerCertificateMap is supported.
+          description: |-
+            Only the `external` field is supported to configure the reference.
+
+            A reference to the CertificateMap resource uri that identifies a
+            certificate map associated with the given target proxy. This field
+            can only be set for global target proxies.
+          gvk:
+            kind: CertificateManagerCertificateMap
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
       containers:
         - type: project
           tfField: project

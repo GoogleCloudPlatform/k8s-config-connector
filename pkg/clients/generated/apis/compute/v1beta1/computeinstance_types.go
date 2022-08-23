@@ -275,6 +275,10 @@ type InstanceScheduling struct {
 	// +optional
 	AutomaticRestart *bool `json:"automaticRestart,omitempty"`
 
+	/* Specifies the action GCE should take when SPOT VM is preempted. */
+	// +optional
+	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
 	/*  */
 	// +optional
 	MinNodeCpus *int `json:"minNodeCpus,omitempty"`

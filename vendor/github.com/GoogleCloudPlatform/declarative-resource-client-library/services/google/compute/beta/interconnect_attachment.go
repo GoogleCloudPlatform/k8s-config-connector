@@ -455,10 +455,9 @@ func (c *Client) GetInterconnectAttachment(ctx context.Context, r *InterconnectA
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Region = nr.Region
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Region = r.Region
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

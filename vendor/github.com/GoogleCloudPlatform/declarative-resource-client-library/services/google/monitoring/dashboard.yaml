@@ -223,7 +223,7 @@ components:
                                 above/below, then the scorecard is in a warning state
                                 - unless x also puts it in a danger state. (Danger
                                 trumps warning.)  As an example, consider a scorecard
-                                with the following four thresholds: {   value: 90,   category:
+                                with the following four thresholds {   value: 90,   category:
                                 ''DANGER'',   trigger: ''ABOVE'', },: {   value: 70,   category:
                                 ''WARNING'',   trigger: ''ABOVE'', }, {   value: 10,   category:
                                 ''DANGER'',   trigger: ''BELOW'', }, {   value: 20,   category:
@@ -2500,7 +2500,7 @@ components:
                           threshold that triggers above/below, then the scorecard
                           is in a warning state - unless x also puts it in a danger
                           state. (Danger trumps warning.)  As an example, consider
-                          a scorecard with the following four thresholds: {   value:
+                          a scorecard with the following four thresholds {   value:
                           90,   category: ''DANGER'',   trigger: ''ABOVE'', },: {   value:
                           70,   category: ''WARNING'',   trigger: ''ABOVE'', }, {   value:
                           10,   category: ''DANGER'',   trigger: ''BELOW'', }, {   value:
@@ -4626,7 +4626,7 @@ components:
                               the scorecard is in a warning state - unless x also
                               puts it in a danger state. (Danger trumps warning.)  As
                               an example, consider a scorecard with the following
-                              four thresholds: {   value: 90,   category: ''DANGER'',   trigger:
+                              four thresholds {   value: 90,   category: ''DANGER'',   trigger:
                               ''ABOVE'', },: {   value: 70,   category: ''WARNING'',   trigger:
                               ''ABOVE'', }, {   value: 10,   category: ''DANGER'',   trigger:
                               ''BELOW'', }, {   value: 20,   category: ''WARNING'',   trigger:
@@ -6872,7 +6872,7 @@ components:
                                 above/below, then the scorecard is in a warning state
                                 - unless x also puts it in a danger state. (Danger
                                 trumps warning.)  As an example, consider a scorecard
-                                with the following four thresholds: {   value: 90,   category:
+                                with the following four thresholds {   value: 90,   category:
                                 ''DANGER'',   trigger: ''ABOVE'', },: {   value: 70,   category:
                                 ''WARNING'',   trigger: ''ABOVE'', }, {   value: 10,   category:
                                 ''DANGER'',   trigger: ''BELOW'', }, {   value: 20,   category:

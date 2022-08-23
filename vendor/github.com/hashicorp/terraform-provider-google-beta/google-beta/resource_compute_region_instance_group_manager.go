@@ -180,7 +180,8 @@ func resourceComputeRegionInstanceGroupManager() *schema.Resource {
 				Optional:     true,
 				Default:      "STABLE",
 				ValidateFunc: validation.StringInSlice([]string{"STABLE", "UPDATED"}, false),
-				Description:  `When used with wait_for_instances specifies the status to wait for. When STABLE is specified this resource will wait until the instances are stable before returning. When UPDATED is set, it will wait for the version target to be reached and any per instance configs to be effective as well as all instances to be stable before returning.`,
+
+				Description: `When used with wait_for_instances specifies the status to wait for. When STABLE is specified this resource will wait until the instances are stable before returning. When UPDATED is set, it will wait for the version target to be reached and any per instance configs to be effective and all instances configs to be effective as well as all instances to be stable before returning.`,
 			},
 
 			"auto_healing_policies": {
@@ -312,7 +313,30 @@ func resourceComputeRegionInstanceGroupManager() *schema.Resource {
 					},
 				},
 			},
-
+			"all_instances_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `Specifies configuration that overrides the instance template configuration for the group.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"metadata": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Set:         schema.HashString,
+							Description: `The metadata key-value pairs that you want to patch onto the instance. For more information, see Project and instance metadata,`,
+						},
+						"labels": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Set:         schema.HashString,
+							Description: `The label key-value pairs that you want to patch onto the instance,`,
+						},
+					},
+				},
+			},
 			"stateful_disk": {
 				Type:        schema.TypeSet,
 				Optional:    true,
@@ -357,6 +381,20 @@ func resourceComputeRegionInstanceGroupManager() *schema.Resource {
 										Type:        schema.TypeBool,
 										Computed:    true,
 										Description: `A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by version field on Instance Group Manager.`,
+									},
+								},
+							},
+						},
+						"all_instances_config": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Description: `Status of all-instances configuration on the group.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"effective": {
+										Type:        schema.TypeBool,
+										Computed:    true,
+										Description: `A bit indicating whether this configuration has been applied to all managed instances in the group.`,
 									},
 								},
 							},
@@ -424,6 +462,7 @@ func resourceComputeRegionInstanceGroupManagerCreate(d *schema.ResourceData, met
 		AutoHealingPolicies: expandAutoHealingPolicies(d.Get("auto_healing_policies").([]interface{})),
 		Versions:            expandVersions(d.Get("version").([]interface{})),
 		UpdatePolicy:        expandRegionUpdatePolicy(d.Get("update_policy").([]interface{})),
+		AllInstancesConfig:  expandAllInstancesConfig(nil, d.Get("all_instances_config").([]interface{})),
 		DistributionPolicy:  expandDistributionPolicy(d),
 		StatefulPolicy:      expandStatefulPolicy(d.Get("stateful_disk").(*schema.Set).List()),
 		// Force send TargetSize to allow size of 0.
@@ -461,7 +500,7 @@ func resourceComputeRegionInstanceGroupManagerCreate(d *schema.ResourceData, met
 func computeRIGMWaitForInstanceStatus(d *schema.ResourceData, meta interface{}) error {
 	waitForUpdates := d.Get("wait_for_instances_status").(string) == "UPDATED"
 	conf := resource.StateChangeConf{
-		Pending: []string{"creating", "error", "updating per instance configs", "reaching version target"},
+		Pending: []string{"creating", "error", "updating per instance configs", "reaching version target", "updating all instances config"},
 		Target:  []string{"created"},
 		Refresh: waitForInstancesRefreshFunc(getRegionalManager, waitForUpdates, d, meta),
 		Timeout: d.Timeout(schema.TimeoutCreate),
@@ -519,6 +558,12 @@ func waitForInstancesRefreshFunc(f getInstanceManagerFunc, waitForUpdates bool, 
 				}
 				if !m.Status.VersionTarget.IsReached {
 					return false, "reaching version target", nil
+				}
+				if !m.Status.VersionTarget.IsReached {
+					return false, "reaching version target", nil
+				}
+				if !m.Status.AllInstancesConfig.Effective {
+					return false, "updating all instances config", nil
 				}
 			}
 			return true, "created", nil
@@ -595,6 +640,11 @@ func resourceComputeRegionInstanceGroupManagerRead(d *schema.ResourceData, meta 
 	if err := d.Set("update_policy", flattenRegionUpdatePolicy(manager.UpdatePolicy)); err != nil {
 		return fmt.Errorf("Error setting update_policy in state: %s", err.Error())
 	}
+	if manager.AllInstancesConfig != nil {
+		if err = d.Set("all_instances_config", flattenAllInstancesConfig(manager.AllInstancesConfig)); err != nil {
+			return fmt.Errorf("Error setting all_instances_config in state: %s", err.Error())
+		}
+	}
 	if err = d.Set("stateful_disk", flattenStatefulPolicy(manager.StatefulPolicy)); err != nil {
 		return fmt.Errorf("Error setting stateful_disk in state: %s", err.Error())
 	}
@@ -654,6 +704,16 @@ func resourceComputeRegionInstanceGroupManagerUpdate(d *schema.ResourceData, met
 
 	if d.HasChange("update_policy") {
 		updatedManager.UpdatePolicy = expandRegionUpdatePolicy(d.Get("update_policy").([]interface{}))
+		change = true
+	}
+
+	if d.HasChange("all_instances_config") {
+		oldAic, newAic := d.GetChange("all_instances_config")
+		if newAic == nil || len(newAic.([]interface{})) == 0 {
+			updatedManager.NullFields = append(updatedManager.NullFields, "AllInstancesConfig")
+		} else {
+			updatedManager.AllInstancesConfig = expandAllInstancesConfig(oldAic.([]interface{}), newAic.([]interface{}))
+		}
 		change = true
 	}
 

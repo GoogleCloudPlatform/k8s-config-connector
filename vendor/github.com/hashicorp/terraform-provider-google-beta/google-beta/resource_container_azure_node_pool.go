@@ -48,7 +48,6 @@ func resourceContainerAzureNodePool() *schema.Resource {
 			"autoscaling": {
 				Type:        schema.TypeList,
 				Required:    true,
-				ForceNew:    true,
 				Description: "Autoscaler configuration for this node pool.",
 				MaxItems:    1,
 				Elem:        ContainerAzureNodePoolAutoscalingSchema(),
@@ -65,7 +64,6 @@ func resourceContainerAzureNodePool() *schema.Resource {
 			"config": {
 				Type:        schema.TypeList,
 				Required:    true,
-				ForceNew:    true,
 				Description: "The node configuration of the node pool.",
 				MaxItems:    1,
 				Elem:        ContainerAzureNodePoolConfigSchema(),
@@ -176,14 +174,12 @@ func ContainerAzureNodePoolAutoscalingSchema() *schema.Resource {
 			"max_node_count": {
 				Type:        schema.TypeInt,
 				Required:    true,
-				ForceNew:    true,
 				Description: "Maximum number of nodes in the node pool. Must be >= min_node_count.",
 			},
 
 			"min_node_count": {
 				Type:        schema.TypeInt,
 				Required:    true,
-				ForceNew:    true,
 				Description: "Minimum number of nodes in the node pool. Must be >= 1 and <= max_node_count.",
 			},
 		},
@@ -196,7 +192,6 @@ func ContainerAzureNodePoolConfigSchema() *schema.Resource {
 			"ssh_config": {
 				Type:        schema.TypeList,
 				Required:    true,
-				ForceNew:    true,
 				Description: "SSH configuration for how to access the node pool machines.",
 				MaxItems:    1,
 				Elem:        ContainerAzureNodePoolConfigSshConfigSchema(),
@@ -254,7 +249,6 @@ func ContainerAzureNodePoolConfigSshConfigSchema() *schema.Resource {
 			"authorized_key": {
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 				Description: "The SSH public key data for VMs managed by Anthos. This accepts the authorized_keys file format used in OpenSSH according to the sshd(8) manual page.",
 			},
 		},
@@ -329,12 +323,12 @@ func resourceContainerAzureNodePoolCreate(d *schema.ResourceData, meta interface
 		Project:               dcl.String(project),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/azureClusters/{{cluster}}/azureNodePools/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -351,7 +345,7 @@ func resourceContainerAzureNodePoolCreate(d *schema.ResourceData, meta interface
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyNodePool(context.Background(), obj, createDirective...)
+	res, err := client.ApplyNodePool(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)

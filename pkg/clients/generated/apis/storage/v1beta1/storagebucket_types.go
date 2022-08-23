@@ -66,9 +66,17 @@ type BucketCondition struct {
 	// +optional
 	DaysSinceNoncurrentTime *int `json:"daysSinceNoncurrentTime,omitempty"`
 
+	/* One or more matching name prefixes to satisfy this condition. */
+	// +optional
+	MatchesPrefix []string `json:"matchesPrefix,omitempty"`
+
 	/* Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, DURABLE_REDUCED_AVAILABILITY. */
 	// +optional
 	MatchesStorageClass []string `json:"matchesStorageClass,omitempty"`
+
+	/* One or more matching name suffixes to satisfy this condition. */
+	// +optional
+	MatchesSuffix []string `json:"matchesSuffix,omitempty"`
 
 	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
 	// +optional

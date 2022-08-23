@@ -201,7 +201,7 @@ components:
                 type: string
               x-dcl-go-name: Labels
               description: 'Optional. The initial labels assigned to nodes of this
-                node pool. An object containing a list of "key": value pairs. Example:
+                node pool. An object containing a list of "key": value pairs. Example
                 { "name": "wrench", "mass": "1.3kg", "count": "3" }.'
               x-kubernetes-immutable: true
             proxyConfig:

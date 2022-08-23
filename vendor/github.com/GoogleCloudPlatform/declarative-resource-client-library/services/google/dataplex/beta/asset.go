@@ -42,7 +42,7 @@ type Asset struct {
 	Project         *string               `json:"project"`
 	Location        *string               `json:"location"`
 	Lake            *string               `json:"lake"`
-	Zone            *string               `json:"zone"`
+	DataplexZone    *string               `json:"dataplexZone"`
 }
 
 func (r *Asset) String() string {
@@ -91,7 +91,7 @@ func (v AssetResourceSpecTypeEnum) Validate() error {
 		// Empty enum is okay.
 		return nil
 	}
-	for _, s := range []string{"TYPE_UNSPECIFIED", "STORAGE_BUCKET", "BIGQUERY_DATASET"} {
+	for _, s := range []string{"STORAGE_BUCKET", "BIGQUERY_DATASET"} {
 		if string(v) == s {
 			return nil
 		}
@@ -650,9 +650,9 @@ func (r *Asset) ID() (string, error) {
 		"project":          dcl.ValueOrEmptyString(nr.Project),
 		"location":         dcl.ValueOrEmptyString(nr.Location),
 		"lake":             dcl.ValueOrEmptyString(nr.Lake),
-		"zone":             dcl.ValueOrEmptyString(nr.Zone),
+		"dataplex_zone":    dcl.ValueOrEmptyString(nr.DataplexZone),
 	}
-	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}", params), nil
+	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplex_zone}}/assets/{{name}}", params), nil
 }
 
 const AssetMaxPage = -1
@@ -687,25 +687,25 @@ func (l *AssetList) Next(ctx context.Context, c *Client) error {
 	return err
 }
 
-func (c *Client) ListAsset(ctx context.Context, project, location, zone, lake string) (*AssetList, error) {
+func (c *Client) ListAsset(ctx context.Context, project, location, dataplexZone, lake string) (*AssetList, error) {
 	ctx = dcl.ContextWithRequestID(ctx)
 	ctx, cancel := context.WithTimeout(ctx, c.Config.TimeoutOr(0*time.Second))
 	defer cancel()
 
-	return c.ListAssetWithMaxResults(ctx, project, location, zone, lake, AssetMaxPage)
+	return c.ListAssetWithMaxResults(ctx, project, location, dataplexZone, lake, AssetMaxPage)
 
 }
 
-func (c *Client) ListAssetWithMaxResults(ctx context.Context, project, location, zone, lake string, pageSize int32) (*AssetList, error) {
+func (c *Client) ListAssetWithMaxResults(ctx context.Context, project, location, dataplexZone, lake string, pageSize int32) (*AssetList, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.Config.TimeoutOr(0*time.Second))
 	defer cancel()
 
 	// Create a resource object so that we can use proper url normalization methods.
 	r := &Asset{
-		Project:  &project,
-		Location: &location,
-		Zone:     &zone,
-		Lake:     &lake,
+		Project:      &project,
+		Location:     &location,
+		DataplexZone: &dataplexZone,
+		Lake:         &lake,
 	}
 	items, token, err := c.listAsset(ctx, r, "", pageSize)
 	if err != nil {
@@ -743,12 +743,11 @@ func (c *Client) GetAsset(ctx context.Context, r *Asset) (*Asset, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.Zone = nr.Zone
-	result.Lake = nr.Lake
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Location = r.Location
+	result.DataplexZone = r.DataplexZone
+	result.Lake = r.Lake
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)
@@ -778,8 +777,8 @@ func (c *Client) DeleteAsset(ctx context.Context, r *Asset) error {
 }
 
 // DeleteAllAsset deletes all resources that the filter functions returns true on.
-func (c *Client) DeleteAllAsset(ctx context.Context, project, location, zone, lake string, filter func(*Asset) bool) error {
-	listObj, err := c.ListAsset(ctx, project, location, zone, lake)
+func (c *Client) DeleteAllAsset(ctx context.Context, project, location, dataplexZone, lake string, filter func(*Asset) bool) error {
+	listObj, err := c.ListAsset(ctx, project, location, dataplexZone, lake)
 	if err != nil {
 		return err
 	}

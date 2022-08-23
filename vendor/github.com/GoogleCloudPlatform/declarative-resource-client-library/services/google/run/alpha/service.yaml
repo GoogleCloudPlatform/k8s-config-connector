@@ -380,10 +380,10 @@ components:
                                 secret:
                                   type: string
                                   x-dcl-go-name: Secret
-                                  description: 'Required. The name of the secret in
-                                    Cloud Secret Manager. Format: {secret_name} if
+                                  description: Required. The name of the secret in
+                                    Cloud Secret Manager. Format {secret_name} if
                                     the secret is in the same project. projects/{project}/secrets/{secret_name}
-                                    if the secret is in a different project.'
+                                    if the secret is in a different project.
                                   x-dcl-references:
                                   - resource: Secretmanager/Secret
                                     field: name
@@ -560,11 +560,11 @@ components:
                       instances:
                         type: array
                         x-dcl-go-name: Instances
-                        description: 'The Cloud SQL instance connection names, as
-                          can be found in https://console.cloud.google.com/sql/instances.
+                        description: The Cloud SQL instance connection names, as can
+                          be found in https://console.cloud.google.com/sql/instances.
                           Visit https://cloud.google.com/sql/docs/mysql/connect-run
                           for more information on how to connect Cloud SQL and Cloud
-                          Run. Format: {project}:{location}:{instance}'
+                          Run. Format {project}:{location}:{instance}
                         x-dcl-send-empty: true
                         x-dcl-list-type: list
                         items:
@@ -660,10 +660,10 @@ components:
                       secret:
                         type: string
                         x-dcl-go-name: Secret
-                        description: 'Required. The name of the secret in Cloud Secret
-                          Manager. Format: {secret} if the secret is in the same project.
+                        description: Required. The name of the secret in Cloud Secret
+                          Manager. Format {secret} if the secret is in the same project.
                           projects/{project}/secrets/{secret} if the secret is in
-                          a different project.'
+                          a different project.
                         x-dcl-references:
                         - resource: Secretmanager/Secret
                           field: name

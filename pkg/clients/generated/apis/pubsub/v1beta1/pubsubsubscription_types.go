@@ -35,6 +35,25 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SubscriptionBigqueryConfig struct {
+	/* When true and useTopicSchema is true, any fields that are a part of the topic schema that are not part of the BigQuery table schema are dropped when writing to BigQuery.
+	Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription's backlog. */
+	// +optional
+	DropUnknownFields *bool `json:"dropUnknownFields,omitempty"`
+
+	/* The name of the table to which to write data. */
+	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+
+	/* When true, use the topic's schema as the columns to write to in BigQuery, if it exists. */
+	// +optional
+	UseTopicSchema *bool `json:"useTopicSchema,omitempty"`
+
+	/* When true, write the subscription name, messageId, publishTime, attributes, and orderingKey to additional columns in the table.
+	The subscription name, messageId, and publishTime fields are put in their own columns while all other message properties (other than data) are written to a JSON object in the attributes column. */
+	// +optional
+	WriteMetadata *bool `json:"writeMetadata,omitempty"`
+}
+
 type SubscriptionDeadLetterPolicy struct {
 	/*  */
 	// +optional
@@ -153,6 +172,12 @@ type PubSubSubscriptionSpec struct {
 	will eventually redeliver the message. */
 	// +optional
 	AckDeadlineSeconds *int `json:"ackDeadlineSeconds,omitempty"`
+
+	/* If delivery to BigQuery is used with this subscription, this field is used to configure it.
+	Either pushConfig or bigQueryConfig can be set, but not both.
+	If both are empty, then the subscriber will pull and ack messages using API methods. */
+	// +optional
+	BigqueryConfig *SubscriptionBigqueryConfig `json:"bigqueryConfig,omitempty"`
 
 	/* A policy that specifies the conditions for dead lettering messages in
 	this subscription. If dead_letter_policy is not set, dead lettering

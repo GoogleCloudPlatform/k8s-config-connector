@@ -432,11 +432,13 @@ resource "google_container_aws_node_pool" "primary" {
 func testAccContainerAwsNodePool_BetaBasicHandWritten(context map[string]interface{}) string {
 	return Nprintf(`
 data "google_container_aws_versions" "versions" {
+  provider = google-beta
   project = "%{project_name}"
   location = "us-west1"
 }
 
 resource "google_container_aws_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "%{service_acct}"
@@ -517,6 +519,7 @@ resource "google_container_aws_cluster" "primary" {
 
 
 resource "google_container_aws_node_pool" "primary" {
+  provider = google-beta
   autoscaling {
     max_node_count = 5
     min_node_count = 1
@@ -595,11 +598,13 @@ resource "google_container_aws_node_pool" "primary" {
 func testAccContainerAwsNodePool_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
 	return Nprintf(`
 data "google_container_aws_versions" "versions" {
+  provider = google-beta
   project = "%{project_name}"
   location = "us-west1"
 }
 
 resource "google_container_aws_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "%{service_acct}"
@@ -679,6 +684,7 @@ resource "google_container_aws_cluster" "primary" {
 }
 
 resource "google_container_aws_node_pool" "primary" {
+  provider = google-beta
   autoscaling {
     max_node_count = 5
     min_node_count = 1

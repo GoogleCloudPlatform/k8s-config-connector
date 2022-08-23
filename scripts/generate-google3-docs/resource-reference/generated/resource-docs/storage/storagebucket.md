@@ -125,7 +125,11 @@ lifecycleRule:
     customTimeBefore: string
     daysSinceCustomTime: integer
     daysSinceNoncurrentTime: integer
+    matchesPrefix:
+    - string
     matchesStorageClass:
+    - string
+    matchesSuffix:
     - string
     noncurrentTimeBefore: string
     numNewerVersions: integer
@@ -430,6 +434,26 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>lifecycleRule[].condition.matchesPrefix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}One or more matching name prefixes to satisfy this condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>lifecycleRule[].condition.matchesPrefix[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>lifecycleRule[].condition.matchesStorageClass</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -441,6 +465,26 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>lifecycleRule[].condition.matchesStorageClass[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>lifecycleRule[].condition.matchesSuffix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}One or more matching name suffixes to satisfy this condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>lifecycleRule[].condition.matchesSuffix[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

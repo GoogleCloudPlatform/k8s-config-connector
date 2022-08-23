@@ -711,8 +711,7 @@ func (c *Client) GetPolicy(ctx context.Context, r *Policy) (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
+	result.Project = r.Project
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

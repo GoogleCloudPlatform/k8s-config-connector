@@ -131,6 +131,11 @@ func (in *SpannerDatabaseSpec) DeepCopyInto(out *SpannerDatabaseSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.VersionRetentionPeriod != nil {
+		in, out := &in.VersionRetentionPeriod, &out.VersionRetentionPeriod
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

@@ -391,7 +391,7 @@ func DCLServiceSchema() *dcl.Schema {
 																			"secret": &dcl.Property{
 																				Type:        "string",
 																				GoName:      "Secret",
-																				Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
+																				Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
 																				ResourceReferences: []*dcl.PropertyResourceReference{
 																					&dcl.PropertyResourceReference{
 																						Resource: "Secretmanager/Secret",
@@ -587,7 +587,7 @@ func DCLServiceSchema() *dcl.Schema {
 														"instances": &dcl.Property{
 															Type:        "array",
 															GoName:      "Instances",
-															Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}",
+															Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format {project}:{location}:{instance}",
 															SendEmpty:   true,
 															ListType:    "list",
 															Items: &dcl.Property{
@@ -667,7 +667,7 @@ func DCLServiceSchema() *dcl.Schema {
 														"secret": &dcl.Property{
 															Type:        "string",
 															GoName:      "Secret",
-															Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
+															Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
 															ResourceReferences: []*dcl.PropertyResourceReference{
 																&dcl.PropertyResourceReference{
 																	Resource: "Secretmanager/Secret",

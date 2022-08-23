@@ -42,10 +42,13 @@ func resourceServiceUsageConsumerQuotaOverride() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"limit": {
-				Type:        schema.TypeString,
-				Required:    true,
-				ForceNew:    true,
-				Description: `The limit on the metric, e.g. '/project/region'.`,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+				Description: `The limit on the metric, e.g. '/project/region'.
+
+~> Make sure that 'limit' is in a format that doesn't start with '1/' or contain curly braces.
+E.g. use '/project/user' instead of '1/{project}/{user}'.`,
 			},
 			"metric": {
 				Type:        schema.TypeString,

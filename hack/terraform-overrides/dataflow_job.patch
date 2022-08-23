@@ -13,7 +13,7 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
-index 6d542e022..a37861985 100644
+index dada1c0e9..24780eb4a 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
 @@ -1,13 +1,13 @@
@@ -68,17 +68,20 @@ index 6d542e022..a37861985 100644
  func resourceDataflowJob() *schema.Resource {
  	return &schema.Resource{
  		Create: resourceDataflowJobCreate,
-@@ -56,9 +78,6 @@ func resourceDataflowJob() *schema.Resource {
+@@ -56,12 +78,6 @@ func resourceDataflowJob() *schema.Resource {
  		Timeouts: &schema.ResourceTimeout{
  			Update: schema.DefaultTimeout(10 * time.Minute),
  		},
 -		CustomizeDiff: customdiff.All(
 -			resourceDataflowJobTypeCustomizeDiff,
 -		),
+-		Importer: &schema.ResourceImporter{
+-			State: schema.ImportStatePassthrough,
+-		},
  		Schema: map[string]*schema.Schema{
  			"name": {
  				Type:     schema.TypeString,
-@@ -166,7 +185,7 @@ func resourceDataflowJob() *schema.Resource {
+@@ -169,7 +185,7 @@ func resourceDataflowJob() *schema.Resource {
  			"subnetwork": {
  				Type:             schema.TypeString,
  				Optional:         true,
@@ -87,7 +90,7 @@ index 6d542e022..a37861985 100644
  				Description:      `The subnetwork to which VMs will be assigned. Should be of the form "regions/REGION/subnetworks/SUBNETWORK".`,
  			},
  
-@@ -221,30 +240,6 @@ func resourceDataflowJob() *schema.Resource {
+@@ -225,30 +241,6 @@ func resourceDataflowJob() *schema.Resource {
  	}
  }
  
@@ -118,7 +121,7 @@ index 6d542e022..a37861985 100644
  // return true if a job is in a terminal state, OR if a job is in a
  // terminating state and skipWait is true
  func shouldStopDataflowJobDeleteQuery(state string, skipWait bool) bool {
-@@ -286,11 +281,18 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
+@@ -290,11 +282,18 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
  		Environment: &env,
  	}
  
@@ -138,7 +141,7 @@ index 6d542e022..a37861985 100644
  
  	return resourceDataflowJobRead(d, meta)
  }
-@@ -312,10 +314,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
+@@ -316,10 +315,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
  		return err
  	}
  
@@ -164,7 +167,7 @@ index 6d542e022..a37861985 100644
  		return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
  	}
  
-@@ -364,13 +378,17 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
+@@ -368,13 +379,17 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
  	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
  		return fmt.Errorf("Error setting additional_experiments: %s", err)
  	}
@@ -187,7 +190,7 @@ index 6d542e022..a37861985 100644
  
  	return nil
  }
-@@ -382,6 +400,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+@@ -386,6 +401,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  		return nil
  	}
  
@@ -198,7 +201,7 @@ index 6d542e022..a37861985 100644
  	config := meta.(*Config)
  	userAgent, err := generateUserAgentString(d, config.userAgent)
  	if err != nil {
-@@ -424,10 +446,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+@@ -428,10 +447,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  	}
  
  	if err := waitForDataflowJobToBeUpdated(d, config, response.Job.Id, userAgent, d.Timeout(schema.TimeoutUpdate)); err != nil {
@@ -211,7 +214,7 @@ index 6d542e022..a37861985 100644
  
  	return resourceDataflowJobRead(d, meta)
  }
-@@ -449,7 +471,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -453,7 +472,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		return err
  	}
  
@@ -225,7 +228,7 @@ index 6d542e022..a37861985 100644
  
  	requestedState, err := resourceDataflowJobMapRequestedState(d.Get("on_delete").(string))
  	if err != nil {
-@@ -511,7 +538,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -515,7 +539,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		d.SetId("")
  		return nil
  	}
@@ -234,7 +237,7 @@ index 6d542e022..a37861985 100644
  }
  
  func resourceDataflowJobMapRequestedState(policy string) (string, error) {
-@@ -532,6 +559,34 @@ func resourceDataflowJobCreateJob(config *Config, project, region, userAgent str
+@@ -536,6 +560,34 @@ func resourceDataflowJobCreateJob(config *Config, project, region, userAgent str
  	return config.NewDataflowClient(userAgent).Projects.Locations.Templates.Create(project, region, request).Do()
  }
  
@@ -269,7 +272,7 @@ index 6d542e022..a37861985 100644
  func resourceDataflowJobGetJob(config *Config, project, region, userAgent string, id string) (*dataflow.Job, error) {
  	if region == "" {
  		return config.NewDataflowClient(userAgent).Projects.Jobs.Get(project, id).View("JOB_VIEW_ALL").Do()
-@@ -556,6 +611,11 @@ func resourceDataflowJobLaunchTemplate(config *Config, project, region, userAgen
+@@ -560,6 +612,11 @@ func resourceDataflowJobLaunchTemplate(config *Config, project, region, userAgen
  func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (dataflow.RuntimeEnvironment, error) {
  	zone, _ := getZone(d, config)
  
@@ -281,7 +284,7 @@ index 6d542e022..a37861985 100644
  	labels := expandStringMap(d, "labels")
  
  	additionalExperiments := convertStringSet(d.Get("additional_experiments").(*schema.Set))
-@@ -564,7 +624,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (datafl
+@@ -568,7 +625,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (datafl
  		MaxWorkers:            int64(d.Get("max_workers").(int)),
  		Network:               d.Get("network").(string),
  		ServiceAccountEmail:   d.Get("service_account_email").(string),
@@ -290,7 +293,7 @@ index 6d542e022..a37861985 100644
  		TempLocation:          d.Get("temp_gcs_location").(string),
  		MachineType:           d.Get("machine_type").(string),
  		KmsKeyName:            d.Get("kms_key_name").(string),
-@@ -655,3 +715,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *Config, repla
+@@ -659,3 +716,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *Config, repla
  		}
  	})
  }

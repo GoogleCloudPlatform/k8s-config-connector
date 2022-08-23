@@ -169,7 +169,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The immutable purpose of this CryptoKey. See the
 [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT"].{% endverbatim %}</p>
+for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -234,7 +234,7 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL". Defaults to "SOFTWARE".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE".{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

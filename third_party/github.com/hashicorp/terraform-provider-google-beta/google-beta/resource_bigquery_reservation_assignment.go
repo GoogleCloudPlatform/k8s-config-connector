@@ -118,7 +118,7 @@ func resourceBigqueryReservationAssignmentCreate(d *schema.ResourceData, meta in
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -135,7 +135,7 @@ func resourceBigqueryReservationAssignmentCreate(d *schema.ResourceData, meta in
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyAssignment(context.Background(), obj, createDirective...)
+	res, err := client.ApplyAssignment(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)
@@ -145,7 +145,12 @@ func resourceBigqueryReservationAssignmentCreate(d *schema.ResourceData, meta in
 		return fmt.Errorf("Error creating Assignment: %s", err)
 	}
 
-	id, err = obj.ID()
+	if err = d.Set("name", res.Name); err != nil {
+		return fmt.Errorf("error setting name in state: %s", err)
+	}
+	// ID has a server-generated value, set again after creation.
+
+	id, err = res.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}

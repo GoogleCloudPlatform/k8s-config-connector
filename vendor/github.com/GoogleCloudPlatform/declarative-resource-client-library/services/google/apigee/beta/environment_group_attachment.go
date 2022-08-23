@@ -142,9 +142,8 @@ func (c *Client) GetEnvironmentGroupAttachment(ctx context.Context, r *Environme
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Envgroup = nr.Envgroup
-	result.Name = nr.Name
+	result.Envgroup = r.Envgroup
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

@@ -346,7 +346,7 @@ func NewDCLGkeHubClient(config *Config, userAgent, billingProject string, timeou
 		dcl.WithHTTPClient(config.client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
-		dcl.WithBasePath(config.GkeHubBasePath),
+		dcl.WithBasePath(config.GKEHubFeatureBasePath),
 	}
 
 	if timeout != 0 {

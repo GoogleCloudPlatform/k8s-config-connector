@@ -442,7 +442,7 @@ func expandMetricsScope(c *Client, f *MetricsScope) (map[string]interface{}, err
 	m := make(map[string]interface{})
 	res := f
 	_ = res
-	if v, err := dcl.DeriveField("locations/global/metricsScope/%s", f.Name, dcl.SelfLinkToName(f.Name)); err != nil {
+	if v, err := dcl.ExpandProjectIDsToNumbers(c.Config, f.Name); err != nil {
 		return nil, fmt.Errorf("error expanding Name into name: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v
@@ -463,7 +463,7 @@ func flattenMetricsScope(c *Client, i interface{}, res *MetricsScope) *MetricsSc
 	}
 
 	resultRes := &MetricsScope{}
-	resultRes.Name = dcl.FlattenString(m["name"])
+	resultRes.Name = dcl.FlattenProjectNumbersToIDs(c.Config, dcl.FlattenString(m["name"]))
 	resultRes.CreateTime = dcl.FlattenString(m["createTime"])
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
 	resultRes.MonitoredProjects = flattenMetricsScopeMonitoredProjectsSlice(c, m["monitoredProjects"], res)

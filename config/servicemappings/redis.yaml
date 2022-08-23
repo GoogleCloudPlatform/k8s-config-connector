@@ -43,6 +43,17 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: customer_managed_key
+          key: customerManagedKeyRef
+          description: |-
+            Immutable. Optional. The KMS key reference that you want to use to
+            encrypt the data at rest for this Redis instance. If this is
+            provided, CMEK is enabled.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

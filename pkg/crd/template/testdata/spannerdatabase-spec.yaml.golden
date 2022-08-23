@@ -11,3 +11,4 @@ instanceRef:
   name: string
   namespace: string
 resourceID: string
+versionRetentionPeriod: string

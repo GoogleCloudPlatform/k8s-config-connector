@@ -115,9 +115,9 @@ spec:
                   is used as the default.
                 type: string
               responseType:
-                description: 'The multiple response type to request for in the OAuth
+                description: The multiple response type to request for in the OAuth
                   authorization flow. This can possibly be a combination of set bits
-                  (e.g.: {id\_token, token}).'
+                  (e.g. {id\_token, token}).
                 properties:
                   code:
                     description: If true, authorization code is returned from IdP's

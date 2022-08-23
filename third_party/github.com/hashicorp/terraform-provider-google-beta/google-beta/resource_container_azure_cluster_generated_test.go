@@ -258,9 +258,11 @@ func testAccContainerAzureCluster_BetaBasicHandWritten(context map[string]interf
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
+  provider = google-beta
 }
 
 resource "google_container_azure_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "mmv2@google.com"
@@ -303,6 +305,7 @@ resource "google_container_azure_cluster" "primary" {
 }
 
 resource "google_container_azure_client" "basic" {
+  provider = google-beta
   application_id = "%{azure_app}"
   location       = "us-west1"
   name           = "tf-test-client-name%{random_suffix}"
@@ -319,9 +322,11 @@ func testAccContainerAzureCluster_BetaBasicHandWrittenUpdate0(context map[string
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
+  provider = google-beta
 }
 
 resource "google_container_azure_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "mmv2@google.com"
@@ -398,6 +403,7 @@ resource "google_container_azure_cluster" "primary" {
 }
 
 resource "google_container_azure_client" "basic" {
+  provider = google-beta
   application_id = "%{azure_app}"
   location       = "us-west1"
   name           = "tf-test-client-name%{random_suffix}"

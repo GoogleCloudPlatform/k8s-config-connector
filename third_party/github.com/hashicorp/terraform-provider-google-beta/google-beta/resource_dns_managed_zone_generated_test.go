@@ -32,7 +32,7 @@ func TestAccDNSManagedZone_dnsManagedZoneQuickstartExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,14 +52,13 @@ func testAccDNSManagedZone_dnsManagedZoneQuickstartExample(context map[string]in
 	return Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
-  provider     = google-beta
   name         = "tf-test-dns-compute-instance%{random_suffix}"
   machine_type = "g1-small"
   zone         = "us-central1-b"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
 
@@ -78,7 +77,6 @@ resource "google_compute_instance" "default" {
 
 # to allow http traffic
 resource "google_compute_firewall" "default" {
-  provider = google-beta
   name     = "tf-test-allow-http-traffic%{random_suffix}"
   network  = "default"
   allow {
@@ -90,7 +88,6 @@ resource "google_compute_firewall" "default" {
 
 # to create a DNS zone
 resource "google_dns_managed_zone" "default" {
-  provider      = google-beta
   name          = "tf-test-example-zone-googlecloudexample%{random_suffix}"
   dns_name      = "googlecloudexample.com."
   description   = "Example DNS zone"
@@ -99,7 +96,6 @@ resource "google_dns_managed_zone" "default" {
 
 # to register web-server's ip address in DNS
 resource "google_dns_record_set" "default" {
-  provider     = google-beta
   name         = google_dns_managed_zone.default.dns_name
   managed_zone = google_dns_managed_zone.default.name
   type         = "A"
@@ -107,6 +103,48 @@ resource "google_dns_record_set" "default" {
   rrdatas = [
     google_compute_instance.default.network_interface.0.access_config.0.nat_ip
   ]
+}
+`, context)
+}
+
+func TestAccDNSManagedZone_dnsRecordSetBasicExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDNSManagedZoneDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDNSManagedZone_dnsRecordSetBasicExample(context),
+			},
+			{
+				ResourceName:      "google_dns_managed_zone.parent-zone",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccDNSManagedZone_dnsRecordSetBasicExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_dns_managed_zone" "parent-zone" {
+  name        = "tf-test-sample-zone%{random_suffix}"
+  dns_name    = "tf-test-sample-zone%{random_suffix}.hashicorptest.com."
+  description = "Test Description"
+}
+
+resource "google_dns_record_set" "default" {
+  managed_zone = google_dns_managed_zone.parent-zone.name
+  name         = "test-record.tf-test-sample-zone%{random_suffix}.hashicorptest.com."
+  type         = "A"
+  rrdatas      = ["10.0.0.1", "10.1.0.1"]
+  ttl          = 86400
 }
 `, context)
 }

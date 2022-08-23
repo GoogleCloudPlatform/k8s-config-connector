@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -25,19 +26,31 @@ func TestAccArtifactRegistryRepositoryIamBindingGenerated(t *testing.T) {
 
 	context := map[string]interface{}{
 		"random_suffix": randString(t, 10),
-		"role":          "roles/viewer",
+		"role":          "roles/artifactregistry.reader",
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepositoryIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_artifact_registry_repository_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccArtifactRegistryRepositoryIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_artifact_registry_repository_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -48,16 +61,22 @@ func TestAccArtifactRegistryRepositoryIamMemberGenerated(t *testing.T) {
 
 	context := map[string]interface{}{
 		"random_suffix": randString(t, 10),
-		"role":          "roles/viewer",
+		"role":          "roles/artifactregistry.reader",
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccArtifactRegistryRepositoryIamMember_basicGenerated(context),
+			},
+			{
+				ResourceName:      "google_artifact_registry_repository_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader user:admin@hashicorptest.com", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -68,18 +87,30 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 
 	context := map[string]interface{}{
 		"random_suffix": randString(t, 10),
-		"role":          "roles/viewer",
+		"role":          "roles/artifactregistry.reader",
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepositoryIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_artifact_registry_repository_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccArtifactRegistryRepositoryIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_artifact_registry_repository_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -88,16 +119,13 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 func testAccArtifactRegistryRepositoryIamMember_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 
 resource "google_artifact_registry_repository_iam_member" "foo" {
-  provider = google-beta
   project = google_artifact_registry_repository.my-repo.project
   location = google_artifact_registry_repository.my-repo.location
   repository = google_artifact_registry_repository.my-repo.name
@@ -110,16 +138,13 @@ resource "google_artifact_registry_repository_iam_member" "foo" {
 func testAccArtifactRegistryRepositoryIamPolicy_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
   binding {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
@@ -127,7 +152,6 @@ data "google_iam_policy" "foo" {
 }
 
 resource "google_artifact_registry_repository_iam_policy" "foo" {
-  provider = google-beta
   project = google_artifact_registry_repository.my-repo.project
   location = google_artifact_registry_repository.my-repo.location
   repository = google_artifact_registry_repository.my-repo.name
@@ -139,20 +163,16 @@ resource "google_artifact_registry_repository_iam_policy" "foo" {
 func testAccArtifactRegistryRepositoryIamPolicy_emptyBinding(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
 }
 
 resource "google_artifact_registry_repository_iam_policy" "foo" {
-  provider = google-beta
   project = google_artifact_registry_repository.my-repo.project
   location = google_artifact_registry_repository.my-repo.location
   repository = google_artifact_registry_repository.my-repo.name
@@ -164,16 +184,13 @@ resource "google_artifact_registry_repository_iam_policy" "foo" {
 func testAccArtifactRegistryRepositoryIamBinding_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 
 resource "google_artifact_registry_repository_iam_binding" "foo" {
-  provider = google-beta
   project = google_artifact_registry_repository.my-repo.project
   location = google_artifact_registry_repository.my-repo.location
   repository = google_artifact_registry_repository.my-repo.name
@@ -186,16 +203,13 @@ resource "google_artifact_registry_repository_iam_binding" "foo" {
 func testAccArtifactRegistryRepositoryIamBinding_updateGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider = google-beta
-
-  location = "us-central1"
+  location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
-  description = "example docker repository%{random_suffix}"
-  format = "DOCKER"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
 }
 
 resource "google_artifact_registry_repository_iam_binding" "foo" {
-  provider = google-beta
   project = google_artifact_registry_repository.my-repo.project
   location = google_artifact_registry_repository.my-repo.location
   repository = google_artifact_registry_repository.my-repo.name

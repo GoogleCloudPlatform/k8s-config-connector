@@ -164,6 +164,7 @@ reservationAffinity:
 resourceID: string
 scheduling:
   automaticRestart: boolean
+  instanceTerminationAction: string
   minNodeCpus: integer
   nodeAffinities:
   - value: {}
@@ -1170,6 +1171,16 @@ tags:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). This defaults to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.instanceTerminationAction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Specifies the action GCE should take when SPOT VM is preempted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

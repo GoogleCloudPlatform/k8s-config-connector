@@ -230,7 +230,7 @@ func DCLEkmConnectionSchema() *dcl.Schema {
 											ResourceReferences: []*dcl.PropertyResourceReference{
 												&dcl.PropertyResourceReference{
 													Resource: "Servicedirectory/Service",
-													Field:    "selfLink",
+													Field:    "name",
 												},
 											},
 										},

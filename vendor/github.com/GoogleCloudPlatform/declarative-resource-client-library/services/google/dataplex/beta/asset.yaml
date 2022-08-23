@@ -46,7 +46,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: zone
+    - name: dataplexzone
       required: true
       schema:
         type: string
@@ -65,7 +65,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: zone
+    - name: dataplexzone
       required: true
       schema:
         type: string
@@ -77,9 +77,7 @@ components:
   schemas:
     Asset:
       title: Asset
-      x-dcl-id: projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{zone}}/assets/{{name}}
-      x-dcl-locations:
-      - zone
+      x-dcl-id: projects/{{project}}/locations/{{location}}/lakes/{{lake}}/zones/{{dataplex_zone}}/assets/{{name}}
       x-dcl-parent-container: project
       x-dcl-has-create: true
       x-dcl-has-iam: false
@@ -94,7 +92,7 @@ components:
       - project
       - location
       - lake
-      - zone
+      - dataplexZone
       properties:
         createTime:
           type: string
@@ -102,6 +100,11 @@ components:
           x-dcl-go-name: CreateTime
           readOnly: true
           description: Output only. The time when the asset was created.
+          x-kubernetes-immutable: true
+        dataplexZone:
+          type: string
+          x-dcl-go-name: DataplexZone
+          description: The zone for the resource
           x-kubernetes-immutable: true
         description:
           type: string
@@ -114,6 +117,8 @@ components:
           description: Required. Specification of the discovery feature applied to
             data referenced by this asset. When this spec is left unset, the asset
             will use the spec set on the parent zone.
+          required:
+          - enabled
           properties:
             csvOptions:
               type: object
@@ -325,10 +330,9 @@ components:
               x-dcl-go-name: Type
               x-dcl-go-type: AssetResourceSpecTypeEnum
               description: 'Required. Immutable. Type of resource. Possible values:
-                TYPE_UNSPECIFIED, STORAGE_BUCKET, BIGQUERY_DATASET'
+                STORAGE_BUCKET, BIGQUERY_DATASET'
               x-kubernetes-immutable: true
               enum:
-              - TYPE_UNSPECIFIED
               - STORAGE_BUCKET
               - BIGQUERY_DATASET
         resourceStatus:
@@ -414,9 +418,4 @@ components:
           x-dcl-go-name: UpdateTime
           readOnly: true
           description: Output only. The time when the asset was last updated.
-          x-kubernetes-immutable: true
-        zone:
-          type: string
-          x-dcl-go-name: Zone
-          description: The zone for the resource
           x-kubernetes-immutable: true

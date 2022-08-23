@@ -15,7 +15,13 @@
 package contexts
 
 func init() {
-	resourceContextMap["sqlinstance"] = ResourceContext{
+	resourceContextMap["mysqlinstance"] = ResourceContext{
+		// SQL instances names are reserved for 1 week after use: https://cloud.google.com/sql/docs/mysql/delete-instance
+		SkipDriftDetection: true,
+		ResourceKind:       "SQLInstance",
+	}
+
+	resourceContextMap["sqlserverinstance"] = ResourceContext{
 		// SQL instances names are reserved for 1 week after use: https://cloud.google.com/sql/docs/mysql/delete-instance
 		SkipDriftDetection: true,
 		ResourceKind:       "SQLInstance",

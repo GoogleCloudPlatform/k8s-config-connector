@@ -197,7 +197,7 @@ func GkeHubFeatureMembershipConfigmanagementConfigSyncGitSchema() *schema.Resour
 			"secret_type": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Type of secret configured for access to the Git repo.",
+				Description: "Type of secret configured for access to the Git repo. Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount or none. The validation of this is case-sensitive.",
 			},
 
 			"sync_branch": {
@@ -279,6 +279,21 @@ func GkeHubFeatureMembershipConfigmanagementPolicyControllerSchema() *schema.Res
 				Description: "Logs all denies and dry run failures.",
 			},
 
+			"monitoring": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: "Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: [\"cloudmonitoring\", \"prometheus\"]. Default: [\"cloudmonitoring\", \"prometheus\"]",
+				MaxItems:    1,
+				Elem:        GkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringSchema(),
+			},
+
+			"mutation_enabled": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster.",
+			},
+
 			"referential_rules_enabled": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -289,6 +304,20 @@ func GkeHubFeatureMembershipConfigmanagementPolicyControllerSchema() *schema.Res
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Description: "Installs the default template library along with Policy Controller.",
+			},
+		},
+	}
+}
+
+func GkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"backends": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: " Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 		},
 	}
@@ -320,7 +349,7 @@ func resourceGkeHubFeatureMembershipCreate(d *schema.ResourceData, meta interfac
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -337,7 +366,7 @@ func resourceGkeHubFeatureMembershipCreate(d *schema.ResourceData, meta interfac
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyFeatureMembership(context.Background(), obj, createDirective...)
+	res, err := client.ApplyFeatureMembership(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)
@@ -702,6 +731,8 @@ func expandGkeHubFeatureMembershipConfigmanagementPolicyController(o interface{}
 		Enabled:                  dcl.Bool(obj["enabled"].(bool)),
 		ExemptableNamespaces:     expandStringArray(obj["exemptable_namespaces"]),
 		LogDeniesEnabled:         dcl.Bool(obj["log_denies_enabled"].(bool)),
+		Monitoring:               expandGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoring(obj["monitoring"]),
+		MutationEnabled:          dcl.Bool(obj["mutation_enabled"].(bool)),
 		ReferentialRulesEnabled:  dcl.Bool(obj["referential_rules_enabled"].(bool)),
 		TemplateLibraryInstalled: dcl.Bool(obj["template_library_installed"].(bool)),
 	}
@@ -716,10 +747,57 @@ func flattenGkeHubFeatureMembershipConfigmanagementPolicyController(obj *gkehub.
 		"enabled":                    obj.Enabled,
 		"exemptable_namespaces":      obj.ExemptableNamespaces,
 		"log_denies_enabled":         obj.LogDeniesEnabled,
+		"monitoring":                 flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoring(obj.Monitoring),
+		"mutation_enabled":           obj.MutationEnabled,
 		"referential_rules_enabled":  obj.ReferentialRulesEnabled,
 		"template_library_installed": obj.TemplateLibraryInstalled,
 	}
 
 	return []interface{}{transformed}
 
+}
+
+func expandGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoring(o interface{}) *gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoring {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoring{
+		Backends: expandGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsArray(obj["backends"]),
+	}
+}
+
+func flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoring(obj *gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoring) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"backends": flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsArray(obj.Backends),
+	}
+
+	return []interface{}{transformed}
+
+}
+func flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsArray(obj []gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum) interface{} {
+	if obj == nil {
+		return nil
+	}
+	items := []string{}
+	for _, item := range obj {
+		items = append(items, string(item))
+	}
+	return items
+}
+func expandGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsArray(o interface{}) []gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+	objs := o.([]interface{})
+	items := make([]gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum, 0, len(objs))
+	for _, item := range objs {
+		i := gkehub.FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumRef(item.(string))
+		items = append(items, *i)
+	}
+	return items
 }

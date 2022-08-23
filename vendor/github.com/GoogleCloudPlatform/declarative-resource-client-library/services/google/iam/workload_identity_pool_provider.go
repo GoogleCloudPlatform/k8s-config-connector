@@ -287,11 +287,10 @@ func (c *Client) GetWorkloadIdentityPoolProvider(ctx context.Context, r *Workloa
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.WorkloadIdentityPool = nr.WorkloadIdentityPool
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Location = r.Location
+	result.WorkloadIdentityPool = r.WorkloadIdentityPool
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

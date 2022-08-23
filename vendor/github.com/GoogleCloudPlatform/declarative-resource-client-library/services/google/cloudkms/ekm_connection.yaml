@@ -199,4 +199,4 @@ components:
                   service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.
                 x-dcl-references:
                 - resource: Servicedirectory/Service
-                  field: selfLink
+                  field: name

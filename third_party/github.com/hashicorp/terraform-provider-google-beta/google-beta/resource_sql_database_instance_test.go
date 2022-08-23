@@ -222,6 +222,16 @@ func TestAccSqlDatabaseInstance_basicMSSQL(t *testing.T) {
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
 			},
+			{
+				Config: fmt.Sprintf(
+					testGoogleSqlDatabaseInstance_update_mssql, databaseName, rootPassword),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
 		},
 	})
 }
@@ -288,6 +298,30 @@ func TestAccSqlDatabaseInstance_settings_basic(t *testing.T) {
 			{
 				Config: fmt.Sprintf(
 					testGoogleSqlDatabaseInstance_settings, databaseName),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_settings_secondary(t *testing.T) {
+	t.Parallel()
+
+	databaseName := "tf-test-" + randString(t, 10)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: fmt.Sprintf(
+					testGoogleSqlDatabaseInstance_settings_secondary, databaseName),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -1031,13 +1065,14 @@ func TestAccSqlDatabaseInstance_encryptionKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
+		"project_id":    getTestProjectFromEnv(),
 		"key_name":      "tf-test-key-" + randString(t, 10),
 		"instance_name": "tf-test-sql-" + randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1064,13 +1099,14 @@ func TestAccSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
+		"project_id":    getTestProjectFromEnv(),
 		"key_name":      "tf-test-key-" + randString(t, 10),
 		"instance_name": "tf-test-sql-" + randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1119,6 +1155,93 @@ func TestAccSqlDatabaseInstance_ActiveDirectory(t *testing.T) {
 	})
 }
 
+func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
+	t.Parallel()
+	databaseName := "tf-test-" + randString(t, 10)
+	rootPassword := randString(t, 15)
+	addressName := "tf-test-" + randString(t, 10)
+	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-allocated-ip-range")
+	bucketName := fmt.Sprintf("%s-%d", "tf-test-bucket", randInt(t))
+	uploadInterval := "900s"
+	retentionInterval := "86400s"
+	bucketNameUpdate := fmt.Sprintf("%s-%d", "tf-test-bucket", randInt(t)) + "update"
+	uploadIntervalUpdate := "1200s"
+	retentionIntervalUpdate := "172800s"
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketName, uploadInterval, retentionInterval),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketNameUpdate, uploadIntervalUpdate, retentionIntervalUpdate),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"deletion_protection": false,
+		"random_suffix":       randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(context),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.mysql_pvp_instance_name",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+		},
+	})
+}
+
+func testAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_sql_database_instance" "mysql_pvp_instance_name" {
+  name             = "tf-test-mysql-pvp-instance-name%{random_suffix}"
+  region           = "asia-northeast1"
+  database_version = "MYSQL_8_0"
+  root_password = "abcABC123!"
+  settings {
+    tier              = "db-f1-micro"
+    password_validation_policy {
+      min_length  = 6
+      complexity  =  "COMPLEXITY_DEFAULT"
+      reuse_interval = 2
+      disallow_username_substring = true
+      enable_password_policy = true
+    }
+  }
+  deletion_protection =  "%{deletion_protection}"
+}
+`, context)
+}
+
 var testGoogleSqlDatabaseInstance_basic2 = `
 resource "google_sql_database_instance" "instance" {
   region              = "us-central1"
@@ -1151,6 +1274,23 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = "db-custom-1-3840"
     collation = "Polish_CI_AS"
+  }
+}
+`
+
+var testGoogleSqlDatabaseInstance_update_mssql = `
+resource "google_sql_database_instance" "instance" {
+  name                = "%s"
+  database_version    = "SQLSERVER_2019_STANDARD"
+  root_password       = "%s"
+  deletion_protection = false
+  settings {
+    tier = "db-custom-1-3840"
+    collation = "Polish_CI_AS"
+    ip_configuration {
+      ipv4_enabled = true
+      require_ssl = true
+    }
   }
 }
 `
@@ -1194,6 +1334,55 @@ resource "google_sql_database_instance" "instance-with-ad" {
     }
   }
 }`, networkName, addressRangeName, databaseName, rootPassword, adDomainName)
+}
+
+func testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketName, uploadInterval, retentionInterval string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "gs-bucket" {
+  name                      	= "%s"
+  location                  	= "US"
+  uniform_bucket_level_access = true
+}
+
+data "google_compute_network" "servicenet" {
+  name = "%s"
+}
+
+resource "google_compute_global_address" "foobar" {
+  name          = "%s"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = data.google_compute_network.servicenet.self_link
+}
+
+resource "google_service_networking_connection" "foobar" {
+  network                 = data.google_compute_network.servicenet.self_link
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.foobar.name]
+}
+
+resource "google_sql_database_instance" "instance" {
+	depends_on = [google_service_networking_connection.foobar]
+  name             = "%s"
+  region           = "us-central1"
+  database_version = "SQLSERVER_2017_STANDARD"
+  root_password    = "%s"
+  deletion_protection = false
+  settings {
+    tier = "db-custom-1-3840"
+    ip_configuration {
+      ipv4_enabled       = "false"
+      private_network    = data.google_compute_network.servicenet.self_link
+    }
+    sql_server_audit_config {
+      bucket = "gs://%s"
+      retention_interval = "%s"
+      upload_interval = "%s"
+    }
+  }
+}
+`, bucketName, networkName, addressName, databaseName, rootPassword, bucketName, retentionInterval, uploadInterval)
 }
 
 func testGoogleSqlDatabaseInstanceConfig_withoutReplica(instanceName string) string {
@@ -1482,6 +1671,39 @@ resource "google_sql_database_instance" "instance" {
   }
 }
 `
+
+var testGoogleSqlDatabaseInstance_settings_secondary = `
+resource "google_sql_database_instance" "instance" {
+  name                = "%s"
+  region              = "us-central1"
+  database_version    = "MYSQL_5_7"
+  deletion_protection = false
+  settings {
+    tier                   = "db-f1-micro"
+    location_preference {
+      zone           = "us-central1-f"
+	  secondary_zone = "us-central1-a"	  
+    }
+
+    ip_configuration {
+      ipv4_enabled = "true"
+      authorized_networks {
+        value           = "108.12.12.12"
+        name            = "misc"
+        expiration_time = "2037-11-15T16:19:00.094Z"
+      }
+    }
+
+    backup_configuration {
+      enabled    = "true"
+      start_time = "19:19"
+    }
+
+    activation_policy = "ALWAYS"
+  }
+}
+`
+
 var testGoogleSqlDatabaseInstance_settings_deletionProtection = `
 resource "google_sql_database_instance" "instance" {
   name                = "%s"
@@ -1796,37 +2018,29 @@ resource "google_sql_database_instance" "instance" {
 }
 `
 var testGoogleSqlDatabaseInstance_encryptionKey = `
-resource "google_project_service_identity" "gcp_sa_cloud_sql" {
-  provider = google-beta
-  service  = "sqladmin.googleapis.com"
+data "google_project" "project" {
+  project_id = "%{project_id}"
 }
-
 resource "google_kms_key_ring" "keyring" {
-  provider = google-beta
-
   name     = "%{key_name}"
   location = "us-central1"
 }
 
 resource "google_kms_crypto_key" "key" {
-  provider = google-beta
-
   name     = "%{key_name}"
   key_ring = google_kms_key_ring.keyring.id
 }
 
 resource "google_kms_crypto_key_iam_binding" "crypto_key" {
-  provider      = google-beta
   crypto_key_id = google_kms_crypto_key.key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
   members = [
-    "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
+  "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   ]
 }
 
 resource "google_sql_database_instance" "master" {
-  provider            = google-beta
   name                = "%{instance_name}-master"
   database_version    = "MYSQL_5_7"
   region              = "us-central1"
@@ -1845,7 +2059,6 @@ resource "google_sql_database_instance" "master" {
 }
 
 resource "google_sql_database_instance" "replica" {
-  provider             = google-beta
   name                 = "%{instance_name}-replica"
   database_version     = "MYSQL_5_7"
   region               = "us-central1"
@@ -1861,37 +2074,32 @@ resource "google_sql_database_instance" "replica" {
 `
 
 var testGoogleSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion = `
-resource "google_project_service_identity" "gcp_sa_cloud_sql" {
-  provider = google-beta
-  service  = "sqladmin.googleapis.com"
+
+data "google_project" "project" {
+  project_id = "%{project_id}"
 }
 
 resource "google_kms_key_ring" "keyring" {
-  provider = google-beta
-
   name     = "%{key_name}"
   location = "us-central1"
 }
 
 resource "google_kms_crypto_key" "key" {
-  provider = google-beta
 
   name     = "%{key_name}"
   key_ring = google_kms_key_ring.keyring.id
 }
 
 resource "google_kms_crypto_key_iam_binding" "crypto_key" {
-  provider      = google-beta
   crypto_key_id = google_kms_crypto_key.key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
   members = [
-    "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
+    "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   ]
 }
 
 resource "google_sql_database_instance" "master" {
-  provider            = google-beta
   name                = "%{instance_name}-master"
   database_version    = "MYSQL_5_7"
   region              = "us-central1"
@@ -1910,31 +2118,27 @@ resource "google_sql_database_instance" "master" {
 }
 
 resource "google_kms_key_ring" "keyring-rep" {
-  provider = google-beta
 
   name     = "%{key_name}-rep"
   location = "us-east1"
 }
 
 resource "google_kms_crypto_key" "key-rep" {
-  provider = google-beta
 
   name     = "%{key_name}-rep"
   key_ring = google_kms_key_ring.keyring-rep.id
 }
 
 resource "google_kms_crypto_key_iam_binding" "crypto_key_rep" {
-  provider      = google-beta
   crypto_key_id = google_kms_crypto_key.key-rep.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
   members = [
-    "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
+    "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   ]
 }
 
 resource "google_sql_database_instance" "replica" {
-  provider             = google-beta
   name                 = "%{instance_name}-replica"
   database_version     = "MYSQL_5_7"
   region               = "us-east1"

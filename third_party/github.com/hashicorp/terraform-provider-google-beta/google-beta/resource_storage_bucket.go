@@ -207,6 +207,18 @@ func resourceStorageBucket() *schema.Resource {
 										Optional:    true,
 										Description: `Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition.`,
 									},
+									"matches_prefix": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `One or more matching name prefixes to satisfy this condition.`,
+									},
+									"matches_suffix": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `One or more matching name suffixes to satisfy this condition.`,
+									},
 								},
 							},
 							Description: `The Lifecycle Rule's condition configuration.`,
@@ -389,6 +401,9 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	// Get the bucket and location
 	bucket := d.Get("name").(string)
+	if err := checkGCSName(bucket); err != nil {
+		return err
+	}
 	location := d.Get("location").(string)
 
 	// Create a bucket, setting the labels, location and name.
@@ -986,6 +1001,8 @@ func flattenBucketLifecycleRuleCondition(condition *storage.BucketLifecycleRuleC
 		"days_since_custom_time":     int(condition.DaysSinceCustomTime),
 		"days_since_noncurrent_time": int(condition.DaysSinceNoncurrentTime),
 		"noncurrent_time_before":     condition.NoncurrentTimeBefore,
+		"matches_prefix":             convertStringArrToInterface(condition.MatchesPrefix),
+		"matches_suffix":             convertStringArrToInterface(condition.MatchesSuffix),
 	}
 	if condition.IsLive == nil {
 		ruleCondition["with_state"] = "ANY"
@@ -1199,6 +1216,25 @@ func expandStorageBucketLifecycleRuleCondition(v interface{}) (*storage.BucketLi
 		transformed.NoncurrentTimeBefore = v.(string)
 	}
 
+	if v, ok := condition["matches_prefix"]; ok {
+		prefixes := v.([]interface{})
+		transformedPrefixes := make([]string, 0, len(prefixes))
+
+		for _, v := range prefixes {
+			transformedPrefixes = append(transformedPrefixes, v.(string))
+		}
+		transformed.MatchesPrefix = transformedPrefixes
+	}
+	if v, ok := condition["matches_suffix"]; ok {
+		suffixes := v.([]interface{})
+		transformedSuffixes := make([]string, 0, len(suffixes))
+
+		for _, v := range suffixes {
+			transformedSuffixes = append(transformedSuffixes, v.(string))
+		}
+		transformed.MatchesSuffix = transformedSuffixes
+	}
+
 	return transformed, nil
 }
 
@@ -1262,6 +1298,19 @@ func resourceGCSBucketLifecycleRuleConditionHash(v interface{}) int {
 
 	if v, ok := m["num_newer_versions"]; ok {
 		buf.WriteString(fmt.Sprintf("%d-", v.(int)))
+	}
+
+	if v, ok := m["matches_prefix"]; ok {
+		matches_prefixes := v.([]interface{})
+		for _, matches_prefix := range matches_prefixes {
+			buf.WriteString(fmt.Sprintf("%s-", matches_prefix))
+		}
+	}
+	if v, ok := m["matches_suffix"]; ok {
+		matches_suffixes := v.([]interface{})
+		for _, matches_suffix := range matches_suffixes {
+			buf.WriteString(fmt.Sprintf("%s-", matches_suffix))
+		}
 	}
 
 	return hashcode(buf.String())

@@ -97,7 +97,7 @@ func isConnectionResetNetworkError(err error) (bool, string) {
 // Retry 409s because some APIs like Cloud SQL throw a 409 if concurrent calls
 // are being made.
 //
-//The only way right now to determine it is a retryable 409 due to
+// The only way right now to determine it is a retryable 409 due to
 // concurrent calls is to look at the contents of the error message.
 // See https://github.com/hashicorp/terraform-provider-google/issues/3279
 func is409OperationInProgressError(err error) (bool, string) {
@@ -415,6 +415,17 @@ func isBigTableRetryableError(err error) (bool, string) {
 	statusCode := status.Code(err)
 	if statusCode.String() == "FailedPrecondition" {
 		return true, "Waiting for table to be in a valid state"
+	}
+
+	return false, ""
+}
+
+// Concurrent Apigee operations can fail with a 400 error
+func isApigeeRetryableError(err error) (bool, string) {
+	if gerr, ok := err.(*googleapi.Error); ok {
+		if gerr.Code == 400 && strings.Contains(strings.ToLower(gerr.Body), "the resource is locked by another operation") {
+			return true, "Waiting for other concurrent operations to finish"
+		}
 	}
 
 	return false, ""

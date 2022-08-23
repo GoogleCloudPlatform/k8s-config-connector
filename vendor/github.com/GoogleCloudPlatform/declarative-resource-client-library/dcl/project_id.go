@@ -21,10 +21,10 @@ import (
 )
 
 // This matches either the entire string if it contains no forward slashes or just projects/{project_number}/ if it does.
-var projectNumberRegex = regexp.MustCompile(`(^\d+$|projects/\d+)`)
+var projectNumberRegex = regexp.MustCompile(`(^\d+$|projects/\d+|metricsScopes/\d+)`)
 
 // This matches either the entire string if it contains no forward slashes or just projects/{project_id}/ if it does.
-var projectIDRegex = regexp.MustCompile(`(^[^/]+$|projects/[^/]+)`)
+var projectIDRegex = regexp.MustCompile(`(^[^/]+$|projects/[^/]+|metricsScopes/[^/]+)`)
 
 // ProjectResponse is the response from Cloud Resource Manager.
 type ProjectResponse struct {
@@ -50,6 +50,10 @@ func FlattenProjectNumbersToIDs(config *Config, fromServer *string) *string {
 		if strings.HasPrefix(number, "projects/") {
 			p.ProjectID = "projects/" + p.ProjectID
 		}
+		if strings.HasPrefix(number, "metricsScopes/") {
+			p.ProjectID = "metricsScopes/" + p.ProjectID
+		}
+
 		return p.ProjectID
 	})
 	return &editedServer
@@ -76,6 +80,10 @@ func ExpandProjectIDsToNumbers(config *Config, fromConfig *string) (*string, err
 		if strings.HasPrefix(id, "projects/") {
 			p.ProjectNumber = "projects/" + p.ProjectNumber
 		}
+		if strings.HasPrefix(id, "metricsScopes/") {
+			p.ProjectNumber = "metricsScopes/" + p.ProjectNumber
+		}
+
 		return p.ProjectNumber
 	})
 	return &editedConfig, nil
@@ -85,6 +93,7 @@ func ExpandProjectIDsToNumbers(config *Config, fromConfig *string) (*string, err
 func FetchProjectInfo(config *Config, projectIdentifier string) (ProjectResponse, error) {
 	var p ProjectResponse
 	trimmedIdentifier := strings.TrimPrefix(projectIdentifier, "projects/")
+	trimmedIdentifier = strings.TrimPrefix(trimmedIdentifier, "metricsScopes/")
 	trimmedIdentifier = strings.TrimSuffix(trimmedIdentifier, "/")
 	retryDetails, err := SendRequest(context.TODO(), config, "GET", "https://cloudresourcemanager.googleapis.com/v1/projects/"+trimmedIdentifier, nil, nil)
 	if err != nil {

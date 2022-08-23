@@ -211,6 +211,12 @@ type AlertpolicyConditionMonitoringQueryLanguage struct {
 	alerted on quickly. */
 	Duration string `json:"duration"`
 
+	/* A condition control that determines how
+	metric-threshold conditions are evaluated when
+	data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
+	// +optional
+	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
+
 	/* Monitoring Query Language query that outputs a boolean stream. */
 	Query string `json:"query"`
 
@@ -306,6 +312,12 @@ type AlertpolicyConditionThreshold struct {
 	that unhealthy states are detected and
 	alerted on quickly. */
 	Duration string `json:"duration"`
+
+	/* A condition control that determines how
+	metric-threshold conditions are evaluated when
+	data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]. */
+	// +optional
+	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
 
 	/* A filter that identifies which time series
 	should be compared with the threshold.The

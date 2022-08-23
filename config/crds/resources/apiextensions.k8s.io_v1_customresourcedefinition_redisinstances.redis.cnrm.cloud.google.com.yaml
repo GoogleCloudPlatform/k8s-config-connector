@@ -110,6 +110,37 @@ spec:
                   Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING",
                   "PRIVATE_SERVICE_ACCESS"].'
                 type: string
+              customerManagedKeyRef:
+                description: |-
+                  Immutable. Optional. The KMS key reference that you want to use to
+                  encrypt the data at rest for this Redis instance. If this is
+                  provided, CMEK is enabled.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               displayName:
                 description: An arbitrary and optional user-provided name for the
                   instance.

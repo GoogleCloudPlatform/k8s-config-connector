@@ -204,10 +204,9 @@ func (c *Client) GetAssignment(ctx context.Context, r *Assignment) (*Assignment,
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.Reservation = nr.Reservation
+	result.Project = r.Project
+	result.Location = r.Location
+	result.Reservation = r.Reservation
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

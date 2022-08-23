@@ -53,6 +53,28 @@ func EncodeServiceAccountCreateRequest(m map[string]interface{}) map[string]inte
 	return EncodeIAMCreateRequest(m, "serviceAccount", "accountId")
 }
 
+// canonicalizeServiceAccountName compares service account names ignoring the part after @.
+func canonicalizeServiceAccountName(m, n interface{}) bool {
+	mStr, ok := m.(*string)
+	if !ok {
+		return false
+	}
+	nStr, ok := n.(*string)
+	if !ok {
+		return false
+	}
+	if mStr == nil && nStr == nil {
+		return true
+	}
+	if mStr == nil || nStr == nil {
+		return false
+	}
+	// Compare values before @.
+	mVal := strings.Split(*mStr, "@")[0]
+	nVal := strings.Split(*nStr, "@")[0]
+	return dcl.PartialSelfLinkToSelfLink(&mVal, &nVal)
+}
+
 func (c *Client) GetWorkloadIdentityPool(ctx context.Context, r *WorkloadIdentityPool) (*WorkloadIdentityPool, error) {
 	ctx = dcl.ContextWithRequestID(ctx)
 	ctx, cancel := context.WithTimeout(ctx, c.Config.TimeoutOr(0*time.Second))

@@ -111,7 +111,7 @@ func (op *StandardGCPOperation) operate(ctx context.Context) (*dcl.RetryDetails,
 	}
 
 	if op.Error != nil {
-		return nil, fmt.Errorf("operation received error: %+v", op.Error)
+		return nil, fmt.Errorf("operation received error: %+v details: %v", op.Error, op.Response)
 	}
 
 	if len(op.response) == 0 && len(op.Response) != 0 {

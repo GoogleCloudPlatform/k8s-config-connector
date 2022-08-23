@@ -288,9 +288,8 @@ func (c *Client) GetFirewallPolicyRule(ctx context.Context, r *FirewallPolicyRul
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.FirewallPolicy = nr.FirewallPolicy
-	result.Priority = nr.Priority
+	result.FirewallPolicy = r.FirewallPolicy
+	result.Priority = r.Priority
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

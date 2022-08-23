@@ -284,7 +284,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be: {subnetName}
+            <p>{% verbatim %}Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}
 
 Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource (format: `projects/{{project}}/regions/{{region}}/subnetworks/{{name}}`).{% endverbatim %}</p>
         </td>

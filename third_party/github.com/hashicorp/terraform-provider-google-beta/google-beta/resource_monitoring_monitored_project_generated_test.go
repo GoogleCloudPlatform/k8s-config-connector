@@ -36,9 +36,8 @@ func TestAccMonitoringMonitoredProject_BasicMonitoredProject(t *testing.T) {
 	}
 
 	vcrTest(t, resource.TestCase{
-		PreCheck: func() { testAccPreCheck(t) },
-
-		Providers:    testAccProvidersOiCS,
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckMonitoringMonitoredProjectDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -58,14 +57,14 @@ func testAccMonitoringMonitoredProject_BasicMonitoredProject(context map[string]
 resource "google_monitoring_monitored_project" "primary" {
   metrics_scope = "%{project_name}"
   name          = google_project.basic.name
-  provider      = google-beta
 }
+
 resource "google_project" "basic" {
   project_id = "tf-test-id%{random_suffix}"
   name       = "tf-test-id%{random_suffix}"
   org_id     = "%{org_id}"
-  provider   = google-beta
 }
+
 
 `, context)
 }

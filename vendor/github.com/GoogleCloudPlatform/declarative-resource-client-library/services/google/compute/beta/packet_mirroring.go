@@ -517,10 +517,9 @@ func (c *Client) GetPacketMirroring(ctx context.Context, r *PacketMirroring) (*P
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Location = nr.Location
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Location = r.Location
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

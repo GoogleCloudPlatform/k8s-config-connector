@@ -368,11 +368,8 @@ func (op *createWorkloadOperation) do(ctx context.Context, r *Workload, c *Clien
 	op.response, _ = o.FirstResponse()
 
 	// Include Name in URL substitution for initial GET request.
-	name, ok := op.response["name"].(string)
-	if !ok {
-		return fmt.Errorf("expected name to be a string in %v, was %T", op.response, op.response["name"])
-	}
-	r.Name = &name
+	m := op.response
+	r.Name = dcl.SelfLinkToName(dcl.FlattenString(m["name"]))
 
 	if _, err := c.GetWorkload(ctx, r); err != nil {
 		c.Config.Logger.WarningWithContextf(ctx, "get returned error: %v", err)

@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type BackendbucketBypassCacheOnRequestHeaders struct {
+	/* The header field name to match on when bypassing cache. Values are case-insensitive. */
+	// +optional
+	HeaderName *string `json:"headerName,omitempty"`
+}
+
 type BackendbucketCacheKeyPolicy struct {
 	/* Allows HTTP request headers (by name) to be used in the
 	cache key. */
@@ -49,6 +55,10 @@ type BackendbucketCacheKeyPolicy struct {
 }
 
 type BackendbucketCdnPolicy struct {
+	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings. */
+	// +optional
+	BypassCacheOnRequestHeaders []BackendbucketBypassCacheOnRequestHeaders `json:"bypassCacheOnRequestHeaders,omitempty"`
+
 	/* The CacheKeyPolicy for this CdnPolicy. */
 	// +optional
 	CacheKeyPolicy *BackendbucketCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
@@ -79,6 +89,10 @@ type BackendbucketCdnPolicy struct {
 	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
 	// +optional
 	NegativeCachingPolicy []BackendbucketNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
+
+	/* If true then Cloud CDN will combine multiple concurrent cache fill requests into a small number of requests to the origin. */
+	// +optional
+	RequestCoalescing *bool `json:"requestCoalescing,omitempty"`
 
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
 	// +optional

@@ -581,9 +581,8 @@ func (c *Client) GetUptimeCheckConfig(ctx context.Context, r *UptimeCheckConfig)
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Project = nr.Project
-	result.Name = nr.Name
+	result.Project = r.Project
+	result.Name = r.Name
 	if dcl.IsZeroValue(result.Period) {
 		result.Period = dcl.String("60s")
 	}

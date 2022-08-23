@@ -175,10 +175,22 @@ spec:
                             timestamp of an object. This\n\t\t\t\t\t\t\t\t\t\tcondition
                             is relevant only for versioned objects."
                           type: integer
+                        matchesPrefix:
+                          description: One or more matching name prefixes to satisfy
+                            this condition.
+                          items:
+                            type: string
+                          type: array
                         matchesStorageClass:
                           description: 'Storage Class of objects to satisfy this condition.
                             Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE,
                             COLDLINE, ARCHIVE, STANDARD, DURABLE_REDUCED_AVAILABILITY.'
+                          items:
+                            type: string
+                          type: array
+                        matchesSuffix:
+                          description: One or more matching name suffixes to satisfy
+                            this condition.
                           items:
                             type: string
                           type: array

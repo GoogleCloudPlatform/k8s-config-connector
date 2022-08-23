@@ -78,8 +78,18 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 		*out = new(int)
 		**out = **in
 	}
+	if in.MatchesPrefix != nil {
+		in, out := &in.MatchesPrefix, &out.MatchesPrefix
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.MatchesStorageClass != nil {
 		in, out := &in.MatchesStorageClass, &out.MatchesStorageClass
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
+	if in.MatchesSuffix != nil {
+		in, out := &in.MatchesSuffix, &out.MatchesSuffix
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

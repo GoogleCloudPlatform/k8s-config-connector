@@ -42,7 +42,8 @@ type DatabaseEncryptionConfig struct {
 }
 
 type SpannerDatabaseSpec struct {
-	/*  */
+	/* Immutable. The dialect of the Cloud Spanner Database.
+	If it is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"]. */
 	// +optional
 	DatabaseDialect *string `json:"databaseDialect,omitempty"`
 
@@ -63,6 +64,14 @@ type SpannerDatabaseSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The retention period for the database. The retention period must be between 1 hour
+	and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
+	the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
+	If this property is used, you must avoid adding new DDL statements to 'ddl' that
+	update the database's version_retention_period. */
+	// +optional
+	VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty"`
 }
 
 type SpannerDatabaseStatus struct {

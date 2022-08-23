@@ -41,3 +41,16 @@ spec:
     enableComponents:
       - "SYSTEM_COMPONENTS"
       - "WORKLOADS"
+  clusterAutoscaling:
+    enabled: true
+    autoscalingProfile: BALANCED
+    resourceLimits:
+      - resourceType: cpu
+        maximum: 100
+        minimum: 10
+      - resourceType: memory
+        maximum: 1000
+        minimum: 100
+    autoProvisioningDefaults:
+      bootDiskKMSKeyRef:
+        name: kmscryptokey-${uniqueId}

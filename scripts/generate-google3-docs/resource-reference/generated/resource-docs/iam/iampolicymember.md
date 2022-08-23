@@ -131,6 +131,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>ComputeBackendBucket</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>ComputeDisk</code></td>
         <td></td>
     </tr>
@@ -141,6 +145,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     <tr>
         <td><code>ComputeInstance</code></td>
         <td>Y</td>
+    </tr>
+    <tr>
+        <td><code>ComputeSnapshot</code></td>
+        <td></td>
     </tr>
     <tr>
         <td><code>ComputeSubnetwork</code></td>
@@ -314,6 +322,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         </td>
     </tr>
     <tr>
+        <td><code>ComputeBackendBucket</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/global/backendBuckets/{{name}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
         <td><code>ComputeDisk</code></td>
         <td>
             
@@ -336,6 +352,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/zones/{{zone}}/instances/{{name}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>ComputeSnapshot</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/global/snapshots/{{name}}{% endverbatim %}</code></p>
             
         </td>
     </tr>

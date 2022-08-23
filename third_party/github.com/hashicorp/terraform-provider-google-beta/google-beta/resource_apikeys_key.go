@@ -49,7 +49,7 @@ func resourceApikeysKey() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: "The resource name of the key. The name must be unique within the project, must conform with RFC-1034, is restricted to lower-cased letters, and has a maximum length of 63 characters. In another word, the name must match the regular expression: [a-z]([a-z0-9-]{0,61}[a-z0-9])?.",
+				Description: "The resource name of the key. The name must be unique within the project, must conform with RFC-1034, is restricted to lower-cased letters, and has a maximum length of 63 characters. In another word, the name must match the regular expression: `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.",
 			},
 
 			"display_name": {
@@ -80,6 +80,12 @@ func resourceApikeysKey() *schema.Resource {
 				Computed:    true,
 				Sensitive:   true,
 				Description: "Output only. An encrypted and signed value held by this key. This field can be accessed only through the `GetKeyString` method.",
+			},
+
+			"uid": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Output only. Unique id in UUID4 format.",
 			},
 		},
 	}
@@ -233,12 +239,12 @@ func resourceApikeysKeyCreate(d *schema.ResourceData, meta interface{}) error {
 		Restrictions: expandApikeysKeyRestrictions(d.Get("restrictions")),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/global/keys/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -255,7 +261,7 @@ func resourceApikeysKeyCreate(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyKey(context.Background(), obj, createDirective...)
+	res, err := client.ApplyKey(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)
@@ -320,6 +326,9 @@ func resourceApikeysKeyRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	if err = d.Set("key_string", res.KeyString); err != nil {
 		return fmt.Errorf("error setting key_string in state: %s", err)
+	}
+	if err = d.Set("uid", res.Uid); err != nil {
+		return fmt.Errorf("error setting uid in state: %s", err)
 	}
 
 	return nil

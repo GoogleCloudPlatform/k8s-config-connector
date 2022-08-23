@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-func TestAccActiveDirectoryDomain_activeDirectoryDomainBasicExample(t *testing.T) {
+func TestAccCertificateManagerCertificateMap_certificateManagerCertificateMapBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -33,35 +33,38 @@ func TestAccActiveDirectoryDomain_activeDirectoryDomainBasicExample(t *testing.T
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckActiveDirectoryDomainDestroyProducer(t),
+		CheckDestroy: testAccCheckCertificateManagerCertificateMapDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccActiveDirectoryDomain_activeDirectoryDomainBasicExample(context),
+				Config: testAccCertificateManagerCertificateMap_certificateManagerCertificateMapBasicExample(context),
 			},
 			{
-				ResourceName:            "google_active_directory_domain.ad-domain",
+				ResourceName:            "google_certificate_manager_certificate_map.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"domain_name"},
+				ImportStateVerifyIgnore: []string{"name"},
 			},
 		},
 	})
 }
 
-func testAccActiveDirectoryDomain_activeDirectoryDomainBasicExample(context map[string]interface{}) string {
+func testAccCertificateManagerCertificateMap_certificateManagerCertificateMapBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
-resource "google_active_directory_domain" "ad-domain" {
-  domain_name       = "tfgen%{random_suffix}.org.com"
-  locations         = ["us-central1"]
-  reserved_ip_range = "192.168.255.0/24" 
+resource "google_certificate_manager_certificate_map" "default" {
+  name        = "tf-test-cert-map%{random_suffix}"
+  description = "My acceptance test certificate map"
+  labels      = {
+    "terraform" : true,
+    "acc-test"  : true,
+  }
 }
 `, context)
 }
 
-func testAccCheckActiveDirectoryDomainDestroyProducer(t *testing.T) func(s *terraform.State) error {
+func testAccCheckCertificateManagerCertificateMapDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
-			if rs.Type != "google_active_directory_domain" {
+			if rs.Type != "google_certificate_manager_certificate_map" {
 				continue
 			}
 			if strings.HasPrefix(name, "data.") {
@@ -70,7 +73,7 @@ func testAccCheckActiveDirectoryDomainDestroyProducer(t *testing.T) func(s *terr
 
 			config := googleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ActiveDirectoryBasePath}}{{name}}")
+			url, err := replaceVarsForTest(config, rs, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -83,7 +86,7 @@ func testAccCheckActiveDirectoryDomainDestroyProducer(t *testing.T) func(s *terr
 
 			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
 			if err == nil {
-				return fmt.Errorf("ActiveDirectoryDomain still exists at %s", url)
+				return fmt.Errorf("CertificateManagerCertificateMap still exists at %s", url)
 			}
 		}
 

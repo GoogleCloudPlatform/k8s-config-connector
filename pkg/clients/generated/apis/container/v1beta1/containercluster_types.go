@@ -48,7 +48,7 @@ type ClusterAddonsConfig struct {
 	// +optional
 	DnsCacheConfig *ClusterDnsCacheConfig `json:"dnsCacheConfig,omitempty"`
 
-	/* Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to disabled; set enabled = true to enable. */
+	/* Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to enabled; set disabled = true to disable. */
 	// +optional
 	GcePersistentDiskCsiDriverConfig *ClusterGcePersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
@@ -82,11 +82,16 @@ type ClusterAddonsConfig struct {
 }
 
 type ClusterAuthenticatorGroupsConfig struct {
-	/* Immutable. The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com. */
+	/* The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com. */
 	SecurityGroup string `json:"securityGroup"`
 }
 
 type ClusterAutoProvisioningDefaults struct {
+	/* Immutable. The Customer Managed Encryption Key used to encrypt the
+	boot disk attached to each node in the node pool. */
+	// +optional
+	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
+
 	/* The default image type used by NAP once a new node pool is being created. */
 	// +optional
 	ImageType *string `json:"imageType,omitempty"`
@@ -107,6 +112,16 @@ type ClusterAutoProvisioningDefaults struct {
 type ClusterBigqueryDestination struct {
 	/* The ID of a BigQuery Dataset. */
 	DatasetId string `json:"datasetId"`
+}
+
+type ClusterBinaryAuthorization struct {
+	/* DEPRECATED. Deprecated in favor of evaluation_mode. Enable Binary Authorization for this cluster. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Mode of operation for Binary Authorization policy evaluation. */
+	// +optional
+	EvaluationMode *string `json:"evaluationMode,omitempty"`
 }
 
 type ClusterCidrBlocks struct {
@@ -395,8 +410,13 @@ type ClusterMasterGlobalAccessConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterMeshCertificates struct {
+	/* When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. */
+	EnableCertificates bool `json:"enableCertificates"`
+}
+
 type ClusterMonitoringConfig struct {
-	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS and WORKLOADS. */
+	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. */
 	// +optional
 	EnableComponents []string `json:"enableComponents,omitempty"`
 
@@ -544,10 +564,10 @@ type ClusterPodSecurityPolicyConfig struct {
 }
 
 type ClusterPrivateClusterConfig struct {
-	/* Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
+	/* Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true. */
 	EnablePrivateEndpoint bool `json:"enablePrivateEndpoint"`
 
-	/* Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true. */
+	/* Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
 	// +optional
 	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
 
@@ -690,9 +710,13 @@ type ContainerClusterSpec struct {
 	// +optional
 	AddonsConfig *ClusterAddonsConfig `json:"addonsConfig,omitempty"`
 
-	/* Immutable. Configuration for the Google Groups for GKE feature. */
+	/* Configuration for the Google Groups for GKE feature. */
 	// +optional
 	AuthenticatorGroupsConfig *ClusterAuthenticatorGroupsConfig `json:"authenticatorGroupsConfig,omitempty"`
+
+	/* Configuration options for the Binary Authorization feature. */
+	// +optional
+	BinaryAuthorization *ClusterBinaryAuthorization `json:"binaryAuthorization,omitempty"`
 
 	/* Per-cluster configuration of Node Auto-Provisioning with Cluster Autoscaler to automatically adjust the size of the cluster and create/delete node pools based on the current needs of the cluster's workload. See the guide to using Node Auto-Provisioning for more details. */
 	// +optional
@@ -738,7 +762,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableAutopilot *bool `json:"enableAutopilot,omitempty"`
 
-	/* Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization. */
+	/* DEPRECATED. Deprecated in favor of binary_authorization. Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization. */
 	// +optional
 	EnableBinaryAuthorization *bool `json:"enableBinaryAuthorization,omitempty"`
 
@@ -800,6 +824,10 @@ type ContainerClusterSpec struct {
 	/* The desired configuration options for master authorized networks. Omit the nested cidr_blocks attribute to disallow external access (except the cluster node IPs, which GKE automatically whitelists). */
 	// +optional
 	MasterAuthorizedNetworksConfig *ClusterMasterAuthorizedNetworksConfig `json:"masterAuthorizedNetworksConfig,omitempty"`
+
+	/* If set, and enable_certificates=true, the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster. */
+	// +optional
+	MeshCertificates *ClusterMeshCertificates `json:"meshCertificates,omitempty"`
 
 	/* The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster's version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version). */
 	// +optional

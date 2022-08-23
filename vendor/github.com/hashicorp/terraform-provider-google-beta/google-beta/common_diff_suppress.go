@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -209,4 +210,30 @@ func compareOptionalSubnet(_, old, new string, _ *schema.ResourceData) bool {
 	}
 	// otherwise compare as self links
 	return compareSelfLinkOrResourceName("", old, new, nil)
+}
+
+// Suppress diffs in below cases
+// "https://hello-rehvs75zla-uc.a.run.app/" -> "https://hello-rehvs75zla-uc.a.run.app"
+// "https://hello-rehvs75zla-uc.a.run.app" -> "https://hello-rehvs75zla-uc.a.run.app/"
+func lastSlashDiffSuppress(_, old, new string, _ *schema.ResourceData) bool {
+	if last := len(new) - 1; last >= 0 && new[last] == '/' {
+		new = new[:last]
+	}
+
+	if last := len(old) - 1; last >= 0 && old[last] == '/' {
+		old = old[:last]
+	}
+	return new == old
+}
+
+// Suppress diffs when the value read from api
+// has the project number instead of the project name
+func projectNumberDiffSuppress(_, old, new string, _ *schema.ResourceData) bool {
+	var a2, b2 string
+	reN := regexp.MustCompile("projects/\\d+")
+	re := regexp.MustCompile("projects/[^/]+")
+	replacement := []byte("projects/equal")
+	a2 = string(reN.ReplaceAll([]byte(old), replacement))
+	b2 = string(re.ReplaceAll([]byte(new), replacement))
+	return a2 == b2
 }

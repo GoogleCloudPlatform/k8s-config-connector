@@ -1,8 +1,8 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-index 253aed526..ab85197c0 100644
+index acb0ec0e6..50a1e8376 100755
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-@@ -521,43 +521,11 @@ func resourceContainerCluster() *schema.Resource {
+@@ -554,43 +554,11 @@ func resourceContainerCluster() *schema.Resource {
  			},
  
  			"enable_tpu": {
@@ -50,7 +50,7 @@ index 253aed526..ab85197c0 100644
  			},
  
  			"enable_legacy_abac": {
-@@ -1658,10 +1626,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
+@@ -1707,10 +1675,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
  		cluster.IdentityServiceConfig = expandIdentityServiceConfig(v)
  	}
  
@@ -61,7 +61,7 @@ index 253aed526..ab85197c0 100644
  	if v, ok := d.GetOk("resource_usage_export_config"); ok {
  		cluster.ResourceUsageExportConfig = expandResourceUsageExportConfig(v)
  	}
-@@ -3731,19 +3695,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig
+@@ -3879,19 +3843,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig
  	return mc
  }
  
@@ -78,14 +78,14 @@ index 253aed526..ab85197c0 100644
 -	}
 -}
 -
- func flattenNotificationConfig(c *container.NotificationConfig) []map[string]interface{} {
- 	if c == nil {
- 		return nil
+ func expandContainerClusterAuthenticatorGroupsConfig(configured interface{}) *container.AuthenticatorGroupsConfig {
+ 	l := configured.([]interface{})
+ 	if len(l) == 0 || l[0] == nil {
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-index 07f11d662..277722069 100644
+index 40780dde0..3cd3e3e74 100755
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-@@ -2527,30 +2527,6 @@ func TestAccContainerCluster_withDNSConfig(t *testing.T) {
+@@ -2714,30 +2714,6 @@ func TestAccContainerCluster_withDNSConfig(t *testing.T) {
  	})
  }
  
@@ -116,7 +116,7 @@ index 07f11d662..277722069 100644
  func testAccContainerCluster_masterAuthorizedNetworksDisabled(t *testing.T, resource_name string) resource.TestCheckFunc {
  	return func(s *terraform.State) error {
  		rs, ok := s.RootModule().Resources[resource_name]
-@@ -5295,59 +5271,3 @@ resource "google_container_cluster" "primary" {
+@@ -5581,59 +5557,3 @@ resource "google_container_cluster" "primary" {
  }
  `, name, name, name)
  }
@@ -127,7 +127,7 @@ index 07f11d662..277722069 100644
 -	name                    = "%s"
 -	auto_create_subnetworks = false
 -}
--	  
+-
 -resource "google_compute_subnetwork" "container_subnetwork" {
 -	name                     = google_compute_network.container_network.name
 -	network                  = google_compute_network.container_network.name
@@ -145,22 +145,22 @@ index 07f11d662..277722069 100644
 -		ip_cidr_range = "10.0.32.0/22"
 -	}
 -}
--	
+-
 -resource "google_container_cluster" "with_tpu_config" {
 -	name               = "%s"
 -	location           = "us-central1-a"
 -	initial_node_count = 1
--	
--	
+-
+-
 -	tpu_config {
 -		enabled                = true
 -		use_service_networking = true
 -	}
--	
+-
 -	network         = google_compute_network.container_network.name
 -	subnetwork      = google_compute_subnetwork.container_subnetwork.name
 -	networking_mode = "VPC_NATIVE"
--	
+-
 -	private_cluster_config {
 -		enable_private_endpoint = true
 -		enable_private_nodes    = true
@@ -168,7 +168,7 @@ index 07f11d662..277722069 100644
 -	}
 -	master_authorized_networks_config {
 -	}
--	
+-
 -	ip_allocation_policy {
 -		cluster_secondary_range_name  = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
 -		services_secondary_range_name = google_compute_subnetwork.container_subnetwork.secondary_ip_range[1].range_name

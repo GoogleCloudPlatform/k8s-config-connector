@@ -403,7 +403,7 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 							"serviceAccount": &dcl.Property{
 								Type:        "string",
 								GoName:      "ServiceAccount",
-								Description: "The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.",
+								Description: "The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account {projectNumber}@cloudservices.gserviceaccount.com is used.",
 								ResourceReferences: []*dcl.PropertyResourceReference{
 									&dcl.PropertyResourceReference{
 										Resource: "Iam/ServiceAccount",

@@ -67,7 +67,6 @@ func resourceBigqueryDataTransferConfig() *schema.Resource {
 			"display_name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 				Description: `The user specified display name for the transfer config.`,
 			},
 			"params": {
@@ -75,7 +74,9 @@ func resourceBigqueryDataTransferConfig() *schema.Resource {
 				Required: true,
 				Description: `Parameters specific to each data source. For more information see the bq tab in the 'Setting up a data transfer'
 section for each data source. For example the parameters for Cloud Storage transfers are listed here:
-https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq`,
+https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
+
+**NOTE** : If you are attempting to update a parameter that cannot be updated (due to api limitations) [please force recreation of the resource](https://www.terraform.io/cli/state/taint#forcing-re-creation-of-resources).`,
 				Elem: &schema.Schema{Type: schema.TypeString},
 			},
 			"data_refresh_window_days": {
@@ -458,6 +459,12 @@ func resourceBigqueryDataTransferConfigUpdate(d *schema.ResourceData, meta inter
 	billingProject = project
 
 	obj := make(map[string]interface{})
+	displayNameProp, err := expandBigqueryDataTransferConfigDisplayName(d.Get("display_name"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+		obj["displayName"] = displayNameProp
+	}
 	destinationDatasetIdProp, err := expandBigqueryDataTransferConfigDestinationDatasetId(d.Get("destination_dataset_id"), d, config)
 	if err != nil {
 		return err
@@ -519,6 +526,10 @@ func resourceBigqueryDataTransferConfigUpdate(d *schema.ResourceData, meta inter
 
 	log.Printf("[DEBUG] Updating Config %q: %#v", d.Id(), obj)
 	updateMask := []string{}
+
+	if d.HasChange("display_name") {
+		updateMask = append(updateMask, "displayName")
+	}
 
 	if d.HasChange("destination_dataset_id") {
 		updateMask = append(updateMask, "destinationDatasetId")

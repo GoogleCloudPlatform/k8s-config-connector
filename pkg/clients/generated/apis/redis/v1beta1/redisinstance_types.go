@@ -153,6 +153,12 @@ type RedisInstanceSpec struct {
 	// +optional
 	ConnectMode *string `json:"connectMode,omitempty"`
 
+	/* Immutable. Optional. The KMS key reference that you want to use to
+	encrypt the data at rest for this Redis instance. If this is
+	provided, CMEK is enabled. */
+	// +optional
+	CustomerManagedKeyRef *v1alpha1.ResourceRef `json:"customerManagedKeyRef,omitempty"`
+
 	/* An arbitrary and optional user-provided name for the instance. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`

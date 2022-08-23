@@ -59,6 +59,9 @@ spec:
           spec:
             properties:
               databaseDialect:
+                description: |-
+                  Immutable. The dialect of the Cloud Spanner Database.
+                  If it is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"].
                 type: string
               ddl:
                 description: |-
@@ -137,6 +140,14 @@ spec:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              versionRetentionPeriod:
+                description: |-
+                  The retention period for the database. The retention period must be between 1 hour
+                  and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
+                  the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
+                  If this property is used, you must avoid adding new DDL statements to 'ddl' that
+                  update the database's version_retention_period.
                 type: string
             required:
             - instanceRef

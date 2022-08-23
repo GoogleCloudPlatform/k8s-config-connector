@@ -281,10 +281,9 @@ func (c *Client) GetWorkforcePoolProvider(ctx context.Context, r *WorkforcePoolP
 	if err != nil {
 		return nil, err
 	}
-	nr := r.urlNormalized()
-	result.Location = nr.Location
-	result.WorkforcePool = nr.WorkforcePool
-	result.Name = nr.Name
+	result.Location = r.Location
+	result.WorkforcePool = r.WorkforcePool
+	result.Name = r.Name
 
 	c.Config.Logger.InfoWithContextf(ctx, "Retrieved raw result state: %v", result)
 	c.Config.Logger.InfoWithContextf(ctx, "Canonicalizing with specified state: %v", r)

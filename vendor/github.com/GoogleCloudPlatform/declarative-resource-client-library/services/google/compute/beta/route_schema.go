@@ -282,7 +282,7 @@ func DCLRouteSchema() *dcl.Schema {
 											},
 											GoName:      "Data",
 											ReadOnly:    true,
-											Description: "[Output Only] Metadata about this warning in <code class=\"lang-html\">key:\nvalue</code> format. For example:\n<pre class=\"lang-html prettyprint\">\"data\": [\n : {\n   \"key\": \"scope\",\n   \"value\": \"zones/us-east1-d\"\n  }</pre>",
+											Description: "[Output Only] Metadata about this warning in <code class=\"lang-html\">key:\nvalue</code> format. For example:\n<pre class=\"lang-html prettyprint\">\"data\": [\n  {\n   \"key\": \"scope\",\n   \"value\": \"zones/us-east1-d\"\n  }</pre>",
 											Immutable:   true,
 										},
 										"message": &dcl.Property{

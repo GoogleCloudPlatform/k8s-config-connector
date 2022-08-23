@@ -200,6 +200,13 @@ response to a condition in another service.`,
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
+						"event_filters": {
+							Type:        schema.TypeSet,
+							Optional:    true,
+							Description: `Criteria used to filter events.`,
+							Elem:        cloudfunctions2functionEventTriggerEventFiltersSchema(),
+							// Default schema.HashSchema is used.
+						},
 						"event_type": {
 							Type:        schema.TypeString,
 							Optional:    true,
@@ -207,6 +214,7 @@ response to a condition in another service.`,
 						},
 						"pubsub_topic": {
 							Type:     schema.TypeString,
+							Computed: true,
 							Optional: true,
 							Description: `The name of a Pub/Sub topic in the same project that will be used
 as the transport topic for the event delivery.`,
@@ -363,6 +371,35 @@ timeout period. Defaults to 60 seconds.`,
 			},
 		},
 		UseJSONNumber: true,
+	}
+}
+
+func cloudfunctions2functionEventTriggerEventFiltersSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"attribute": {
+				Type:     schema.TypeString,
+				Required: true,
+				Description: `'Required. The name of a CloudEvents attribute.
+Currently, only a subset of attributes are supported for filtering. Use the 'gcloud eventarc providers describe' command to learn more about events and their attributes.
+Do not filter for the 'type' attribute here, as this is already achieved by the resource's 'event_type' attribute.`,
+			},
+			"value": {
+				Type:     schema.TypeString,
+				Required: true,
+				Description: `Required. The value for the attribute.
+If the operator field is set as 'match-path-pattern', this value can be a path pattern instead of an exact value.`,
+			},
+			"operator": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Description: `Optional. The operator used for matching the events with the value of
+the filter. If not specified, only events that have an exact key-value
+pair specified in the filter are matched.
+The only allowed value is 'match-path-pattern'.
+[See documentation on path patterns here](https://cloud.google.com/eventarc/docs/path-patterns)'`,
+			},
+		},
 	}
 }
 
@@ -1027,6 +1064,8 @@ func flattenCloudfunctions2functionEventTrigger(v interface{}, d *schema.Resourc
 		flattenCloudfunctions2functionEventTriggerTriggerRegion(original["triggerRegion"], d, config)
 	transformed["event_type"] =
 		flattenCloudfunctions2functionEventTriggerEventType(original["eventType"], d, config)
+	transformed["event_filters"] =
+		flattenCloudfunctions2functionEventTriggerEventFilters(original["eventFilters"], d, config)
 	transformed["pubsub_topic"] =
 		flattenCloudfunctions2functionEventTriggerPubsubTopic(original["pubsubTopic"], d, config)
 	transformed["service_account_email"] =
@@ -1044,6 +1083,38 @@ func flattenCloudfunctions2functionEventTriggerTriggerRegion(v interface{}, d *s
 }
 
 func flattenCloudfunctions2functionEventTriggerEventType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudfunctions2functionEventTriggerEventFilters(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := schema.NewSet(schema.HashResource(cloudfunctions2functionEventTriggerEventFiltersSchema()), []interface{}{})
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed.Add(map[string]interface{}{
+			"attribute": flattenCloudfunctions2functionEventTriggerEventFiltersAttribute(original["attribute"], d, config),
+			"value":     flattenCloudfunctions2functionEventTriggerEventFiltersValue(original["value"], d, config),
+			"operator":  flattenCloudfunctions2functionEventTriggerEventFiltersOperator(original["operator"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenCloudfunctions2functionEventTriggerEventFiltersAttribute(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudfunctions2functionEventTriggerEventFiltersValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudfunctions2functionEventTriggerEventFiltersOperator(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -1519,6 +1590,13 @@ func expandCloudfunctions2functionEventTrigger(v interface{}, d TerraformResourc
 		transformed["eventType"] = transformedEventType
 	}
 
+	transformedEventFilters, err := expandCloudfunctions2functionEventTriggerEventFilters(original["event_filters"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedEventFilters); val.IsValid() && !isEmptyValue(val) {
+		transformed["eventFilters"] = transformedEventFilters
+	}
+
 	transformedPubsubTopic, err := expandCloudfunctions2functionEventTriggerPubsubTopic(original["pubsub_topic"], d, config)
 	if err != nil {
 		return nil, err
@@ -1552,6 +1630,55 @@ func expandCloudfunctions2functionEventTriggerTriggerRegion(v interface{}, d Ter
 }
 
 func expandCloudfunctions2functionEventTriggerEventType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudfunctions2functionEventTriggerEventFilters(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	v = v.(*schema.Set).List()
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedAttribute, err := expandCloudfunctions2functionEventTriggerEventFiltersAttribute(original["attribute"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedAttribute); val.IsValid() && !isEmptyValue(val) {
+			transformed["attribute"] = transformedAttribute
+		}
+
+		transformedValue, err := expandCloudfunctions2functionEventTriggerEventFiltersValue(original["value"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+			transformed["value"] = transformedValue
+		}
+
+		transformedOperator, err := expandCloudfunctions2functionEventTriggerEventFiltersOperator(original["operator"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedOperator); val.IsValid() && !isEmptyValue(val) {
+			transformed["operator"] = transformedOperator
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandCloudfunctions2functionEventTriggerEventFiltersAttribute(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudfunctions2functionEventTriggerEventFiltersValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudfunctions2functionEventTriggerEventFiltersOperator(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

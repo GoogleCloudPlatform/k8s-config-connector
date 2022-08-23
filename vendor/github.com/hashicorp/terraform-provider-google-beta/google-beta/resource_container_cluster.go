@@ -60,9 +60,9 @@ var (
 		"addons_config.0.network_policy_config",
 		"addons_config.0.cloudrun_config",
 		"addons_config.0.gcp_filestore_csi_driver_config",
-		"addons_config.0.istio_config",
 		"addons_config.0.dns_cache_config",
 		"addons_config.0.gce_persistent_disk_csi_driver_config",
+		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
 		"addons_config.0.config_connector_config",
 		"addons_config.0.gke_backup_agent_config",
@@ -288,31 +288,6 @@ func resourceContainerCluster() *schema.Resource {
 								},
 							},
 						},
-						"istio_config": {
-							Type:         schema.TypeList,
-							Optional:     true,
-							Computed:     true,
-							AtLeastOneOf: addonsConfigKeys,
-							MaxItems:     1,
-							Description:  `The status of the Istio addon.`,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"disabled": {
-										Type:        schema.TypeBool,
-										Required:    true,
-										Description: `The status of the Istio addon, which makes it easy to set up Istio for services in a cluster. It is disabled by default. Set disabled = false to enable.`,
-									},
-									"auth": {
-										Type:     schema.TypeString,
-										Optional: true,
-										// We can't use a Terraform-level default because it won't be true when the block is disabled: true
-										DiffSuppressFunc: emptyOrDefaultStringSuppress("AUTH_NONE"),
-										ValidateFunc:     validation.StringInSlice([]string{"AUTH_NONE", "AUTH_MUTUAL_TLS"}, false),
-										Description:      `The authentication type between services in Istio. Available options include AUTH_MUTUAL_TLS.`,
-									},
-								},
-							},
-						},
 						"dns_cache_config": {
 							Type:          schema.TypeList,
 							Optional:      true,
@@ -336,12 +311,37 @@ func resourceContainerCluster() *schema.Resource {
 							Computed:     true,
 							AtLeastOneOf: addonsConfigKeys,
 							MaxItems:     1,
-							Description:  `Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to disabled; set enabled = true to enable.`,
+							Description:  `Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to enabled; set disabled = true to disable.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"enabled": {
 										Type:     schema.TypeBool,
 										Required: true,
+									},
+								},
+							},
+						},
+						"istio_config": {
+							Type:         schema.TypeList,
+							Optional:     true,
+							Computed:     true,
+							AtLeastOneOf: addonsConfigKeys,
+							MaxItems:     1,
+							Description:  `The status of the Istio addon.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"disabled": {
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: `The status of the Istio addon, which makes it easy to set up Istio for services in a cluster. It is disabled by default. Set disabled = false to enable.`,
+									},
+									"auth": {
+										Type:     schema.TypeString,
+										Optional: true,
+										// We can't use a Terraform-level default because it won't be true when the block is disabled: true
+										DiffSuppressFunc: emptyOrDefaultStringSuppress("AUTH_NONE"),
+										ValidateFunc:     validation.StringInSlice([]string{"AUTH_NONE", "AUTH_MUTUAL_TLS"}, false),
+										Description:      `The authentication type between services in Istio. Available options include AUTH_MUTUAL_TLS.`,
 									},
 								},
 							},
@@ -473,6 +473,12 @@ func resourceContainerCluster() *schema.Resource {
 										DiffSuppressFunc: emptyOrDefaultStringSuppress("automatic"),
 										Description:      `Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell.`,
 									},
+									"boot_disk_kms_key": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										ForceNew:    true,
+										Description: `The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool.`,
+									},
 								},
 							},
 						},
@@ -505,11 +511,38 @@ func resourceContainerCluster() *schema.Resource {
 			},
 
 			"enable_binary_authorization": {
-				Default:       false,
 				Type:          schema.TypeBool,
 				Optional:      true,
+				Default:       false,
+				Deprecated:    "Deprecated in favor of binary_authorization.",
 				Description:   `Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization.`,
-				ConflictsWith: []string{"enable_autopilot"},
+				ConflictsWith: []string{"enable_autopilot", "binary_authorization"},
+			},
+			"binary_authorization": {
+				Type:             schema.TypeList,
+				Optional:         true,
+				DiffSuppressFunc: BinaryAuthorizationDiffSuppress,
+				MaxItems:         1,
+				Description:      "Configuration options for the Binary Authorization feature.",
+				ConflictsWith:    []string{"enable_binary_authorization"},
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:          schema.TypeBool,
+							Optional:      true,
+							Deprecated:    "Deprecated in favor of evaluation_mode.",
+							Description:   "Enable Binary Authorization for this cluster.",
+							ConflictsWith: []string{"enable_autopilot", "binary_authorization.0.evaluation_mode"},
+						},
+						"evaluation_mode": {
+							Type:          schema.TypeString,
+							Optional:      true,
+							ValidateFunc:  validation.StringInSlice([]string{"DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"}, false),
+							Description:   "Mode of operation for Binary Authorization policy evaluation.",
+							ConflictsWith: []string{"binary_authorization.0.enabled"},
+						},
+					},
+				},
 			},
 
 			"enable_kubernetes_alpha": {
@@ -555,7 +588,6 @@ func resourceContainerCluster() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				ForceNew:    true,
 				MaxItems:    1,
 				Description: `Configuration for the Google Groups for GKE feature.`,
 				Elem: &schema.Resource{
@@ -563,7 +595,6 @@ func resourceContainerCluster() *schema.Resource {
 						"security_group": {
 							Type:        schema.TypeString,
 							Required:    true,
-							ForceNew:    true,
 							Description: `The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com.`,
 						},
 					},
@@ -723,10 +754,10 @@ func resourceContainerCluster() *schema.Resource {
 							Type:        schema.TypeList,
 							Optional:    true,
 							Computed:    true,
-							Description: `GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS and WORKLOADS.`,
+							Description: `GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS.`,
 							Elem: &schema.Schema{
 								Type:         schema.TypeString,
-								ValidateFunc: validation.StringInSlice([]string{"SYSTEM_COMPONENTS", "WORKLOADS"}, false),
+								ValidateFunc: validation.StringInSlice([]string{"SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "WORKLOADS"}, false),
 							},
 						},
 						"managed_prometheus": {
@@ -1088,14 +1119,14 @@ func resourceContainerCluster() *schema.Resource {
 							Required:         true,
 							ForceNew:         true,
 							DiffSuppressFunc: containerClusterPrivateClusterConfigSuppress,
-							Description:      `Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.`,
+							Description:      `When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.`,
 						},
 						"enable_private_nodes": {
 							Type:             schema.TypeBool,
 							Optional:         true,
 							ForceNew:         true,
 							DiffSuppressFunc: containerClusterPrivateClusterConfigSuppress,
-							Description:      `When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.`,
+							Description:      `Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.`,
 						},
 						"master_ipv4_cidr_block": {
 							Type:         schema.TypeString,
@@ -1211,6 +1242,23 @@ func resourceContainerCluster() *schema.Resource {
 							Type:        schema.TypeBool,
 							Optional:    true,
 							Description: "Whether to enable the Identity Service component.",
+						},
+					},
+				},
+			},
+
+			"mesh_certificates": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `If set, and enable_certificates=true, the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enable_certificates": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							Description: `When enabled the GKE Workload Identity Certificates controller and node agent will be deployed in the cluster.`,
 						},
 					},
 				},
@@ -1503,10 +1551,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		IpAllocationPolicy:      ipAllocationBlock,
 		PodSecurityPolicyConfig: expandPodSecurityPolicyConfig(d.Get("pod_security_policy_config")),
 		Autoscaling:             expandClusterAutoscaling(d.Get("cluster_autoscaling"), d),
-		BinaryAuthorization: &container.BinaryAuthorization{
-			Enabled:         d.Get("enable_binary_authorization").(bool),
-			ForceSendFields: []string{"Enabled"},
-		},
+		BinaryAuthorization:     expandBinaryAuthorization(d.Get("binary_authorization"), d.Get("enable_binary_authorization").(bool)),
 		Autopilot: &container.Autopilot{
 			Enabled:         d.Get("enable_autopilot").(bool),
 			ForceSendFields: []string{"Enabled"},
@@ -1612,6 +1657,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("vertical_pod_autoscaling"); ok {
 		cluster.VerticalPodAutoscaling = expandVerticalPodAutoscaling(v)
+	}
+
+	if v, ok := d.GetOk("mesh_certificates"); ok {
+		cluster.MeshCertificates = expandMeshCertificates(v)
 	}
 
 	if v, ok := d.GetOk("database_encryption"); ok {
@@ -1856,8 +1905,17 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("cluster_autoscaling", flattenClusterAutoscaling(cluster.Autoscaling)); err != nil {
 		return err
 	}
-	if err := d.Set("enable_binary_authorization", cluster.BinaryAuthorization != nil && cluster.BinaryAuthorization.Enabled); err != nil {
-		return fmt.Errorf("Error setting enable_binary_authorization: %s", err)
+	binauthz_enabled := d.Get("binary_authorization.0.enabled").(bool)
+	legacy_binauthz_enabled := d.Get("enable_binary_authorization").(bool)
+	if !binauthz_enabled {
+		if err := d.Set("enable_binary_authorization", cluster.BinaryAuthorization != nil && cluster.BinaryAuthorization.Enabled); err != nil {
+			return fmt.Errorf("Error setting enable_binary_authorization: %s", err)
+		}
+	}
+	if !legacy_binauthz_enabled {
+		if err := d.Set("binary_authorization", flattenBinaryAuthorization(cluster.BinaryAuthorization)); err != nil {
+			return err
+		}
 	}
 	if cluster.Autopilot != nil {
 		if err := d.Set("enable_autopilot", cluster.Autopilot.Enabled); err != nil {
@@ -1945,6 +2003,10 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	if err := d.Set("identity_service_config", flattenIdentityServiceConfig(cluster.IdentityServiceConfig, d, config)); err != nil {
+		return err
+	}
+
+	if err := d.Set("mesh_certificates", flattenMeshCertificates(cluster.MeshCertificates)); err != nil {
 		return err
 	}
 
@@ -2096,6 +2158,22 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s's binary authorization has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("binary_authorization") {
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredBinaryAuthorization: expandBinaryAuthorization(d.Get("binary_authorization"), d.Get("enable_binary_authorization").(bool)),
+			},
+		}
+
+		updateF := updateFunc(req, "updating GKE binary authorization")
+		// Call update serially.
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's binary authorization has been updated to %v", d.Id(), req.Update.DesiredBinaryAuthorization)
 	}
 
 	if d.HasChange("enable_shielded_nodes") {
@@ -2253,6 +2331,21 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s L4 ILB Subsetting has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("authenticator_groups_config") {
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredAuthenticatorGroupsConfig: expandContainerClusterAuthenticatorGroupsConfig(d.Get("authenticator_groups_config")),
+			},
+		}
+		updateF := updateFunc(req, "updating GKE cluster authenticator groups config")
+		// Call update serially.
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s authenticator groups config has been updated", d.Id())
 	}
 
 	if d.HasChange("default_snat_status") {
@@ -2658,6 +2751,33 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			log.Printf("[INFO] GKE cluster %s vertical pod autoscaling has been updated", d.Id())
 		}
+	}
+
+	if d.HasChange("mesh_certificates") {
+		c := d.Get("mesh_certificates")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredMeshCertificates: expandMeshCertificates(c),
+			},
+		}
+
+		updateF := func() error {
+			name := containerClusterFullName(project, location, clusterName)
+			clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+			if config.UserProjectOverride {
+				clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+			}
+			op, err := clusterUpdateCall.Do()
+			if err != nil {
+				return err
+			}
+			// Wait until it's updated
+			return containerOperationWait(config, op, project, location, "updating GKE cluster mesh certificates config", userAgent, d.Timeout(schema.TimeoutUpdate))
+		}
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+		log.Printf("[INFO] GKE cluster %s mesh certificates config has been updated", d.Id())
 	}
 
 	if d.HasChange("database_encryption") {
@@ -3115,15 +3235,6 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 		}
 	}
 
-	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
-		addon := v.([]interface{})[0].(map[string]interface{})
-		ac.IstioConfig = &container.IstioConfig{
-			Disabled:        addon["disabled"].(bool),
-			Auth:            addon["auth"].(string),
-			ForceSendFields: []string{"Disabled"},
-		}
-	}
-
 	if v, ok := config["dns_cache_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
 		ac.DnsCacheConfig = &container.DnsCacheConfig{
@@ -3137,6 +3248,15 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 		ac.GcePersistentDiskCsiDriverConfig = &container.GcePersistentDiskCsiDriverConfig{
 			Enabled:         addon["enabled"].(bool),
 			ForceSendFields: []string{"Enabled"},
+		}
+	}
+
+	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.IstioConfig = &container.IstioConfig{
+			Disabled:        addon["disabled"].(bool),
+			Auth:            addon["auth"].(string),
+			ForceSendFields: []string{"Disabled"},
 		}
 	}
 
@@ -3346,6 +3466,7 @@ func expandAutoProvisioningDefaults(configured interface{}, d *schema.ResourceDa
 		OauthScopes:    convertStringArr(config["oauth_scopes"].([]interface{})),
 		ServiceAccount: config["service_account"].(string),
 		ImageType:      config["image_type"].(string),
+		BootDiskKmsKey: config["boot_disk_kms_key"].(string),
 	}
 
 	cpu := config["min_cpu_platform"].(string)
@@ -3399,6 +3520,21 @@ func expandNotificationConfig(configured interface{}) *container.NotificationCon
 		Pubsub: &container.PubSub{
 			Enabled: false,
 		},
+	}
+}
+
+func expandBinaryAuthorization(configured interface{}, legacy_enabled bool) *container.BinaryAuthorization {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return &container.BinaryAuthorization{
+			Enabled:         legacy_enabled,
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
+	config := l[0].(map[string]interface{})
+	return &container.BinaryAuthorization{
+		Enabled:        config["enabled"].(bool),
+		EvaluationMode: config["evaluation_mode"].(string),
 	}
 }
 
@@ -3515,6 +3651,18 @@ func expandVerticalPodAutoscaling(configured interface{}) *container.VerticalPod
 	config := l[0].(map[string]interface{})
 	return &container.VerticalPodAutoscaling{
 		Enabled: config["enabled"].(bool),
+	}
+}
+
+func expandMeshCertificates(configured interface{}) *container.MeshCertificates {
+	l := configured.([]interface{})
+	if len(l) == 0 {
+		return nil
+	}
+	config := l[0].(map[string]interface{})
+	return &container.MeshCertificates{
+		EnableCertificates: config["enable_certificates"].(bool),
+		ForceSendFields:    []string{"EnableCertificates"},
 	}
 }
 
@@ -3695,6 +3843,18 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 	return mc
 }
 
+func expandContainerClusterAuthenticatorGroupsConfig(configured interface{}) *container.AuthenticatorGroupsConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+
+	config := l[0].(map[string]interface{})
+	return &container.AuthenticatorGroupsConfig{
+		SecurityGroup: config["security_group"].(string),
+	}
+}
+
 func flattenNotificationConfig(c *container.NotificationConfig) []map[string]interface{} {
 	if c == nil {
 		return nil
@@ -3710,6 +3870,17 @@ func flattenNotificationConfig(c *container.NotificationConfig) []map[string]int
 			},
 		},
 	}
+}
+
+func flattenBinaryAuthorization(c *container.BinaryAuthorization) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil {
+		result = append(result, map[string]interface{}{
+			"enabled":         c.Enabled,
+			"evaluation_mode": c.EvaluationMode,
+		})
+	}
+	return result
 }
 
 func flattenConfidentialNodes(c *container.ConfidentialNodes) []map[string]interface{} {
@@ -3785,15 +3956,6 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 		result["cloudrun_config"] = []map[string]interface{}{cloudRunConfig}
 	}
 
-	if c.IstioConfig != nil {
-		result["istio_config"] = []map[string]interface{}{
-			{
-				"disabled": c.IstioConfig.Disabled,
-				"auth":     c.IstioConfig.Auth,
-			},
-		}
-	}
-
 	if c.DnsCacheConfig != nil {
 		result["dns_cache_config"] = []map[string]interface{}{
 			{
@@ -3806,6 +3968,15 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 		result["gce_persistent_disk_csi_driver_config"] = []map[string]interface{}{
 			{
 				"enabled": c.GcePersistentDiskCsiDriverConfig.Enabled,
+			},
+		}
+	}
+
+	if c.IstioConfig != nil {
+		result["istio_config"] = []map[string]interface{}{
+			{
+				"disabled": c.IstioConfig.Disabled,
+				"auth":     c.IstioConfig.Auth,
 			},
 		}
 	}
@@ -4102,6 +4273,7 @@ func flattenAutoProvisioningDefaults(a *container.AutoprovisioningNodePoolDefaul
 	r["service_account"] = a.ServiceAccount
 	r["image_type"] = a.ImageType
 	r["min_cpu_platform"] = a.MinCpuPlatform
+	r["boot_disk_kms_key"] = a.BootDiskKmsKey
 
 	return []map[string]interface{}{r}
 }
@@ -4156,6 +4328,17 @@ func flattenResourceUsageExportConfig(c *container.ResourceUsageExportConfig) []
 			"bigquery_destination": []map[string]interface{}{
 				{"dataset_id": c.BigqueryDestination.DatasetId},
 			},
+		},
+	}
+}
+
+func flattenMeshCertificates(c *container.MeshCertificates) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enable_certificates": c.EnableCertificates,
 		},
 	}
 }
@@ -4420,6 +4603,18 @@ func containerClusterNetworkPolicyDiffSuppress(k, old, new string, r *schema.Res
 	if k == "network_policy.#" && old == "1" && new == "0" {
 		o, _ := r.GetChange("network_policy.0.enabled")
 		if !o.(bool) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func BinaryAuthorizationDiffSuppress(k, old, new string, r *schema.ResourceData) bool {
+	// An empty config is equivalent to a config with enabled set to false.
+	if k == "binary_authorization.#" && old == "1" && new == "0" {
+		o, _ := r.GetChange("binary_authorization.0.enabled")
+		if !o.(bool) && !r.HasChange("binary_authorization.0.evaluation_mode") {
 			return true
 		}
 	}

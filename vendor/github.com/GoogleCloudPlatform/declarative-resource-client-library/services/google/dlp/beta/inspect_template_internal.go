@@ -493,11 +493,8 @@ func (op *createInspectTemplateOperation) do(ctx context.Context, r *InspectTemp
 	op.response = o
 
 	// Include Name in URL substitution for initial GET request.
-	name, ok := op.response["name"].(string)
-	if !ok {
-		return fmt.Errorf("expected name to be a string in %v, was %T", op.response, op.response["name"])
-	}
-	r.Name = &name
+	m := op.response
+	r.Name = dcl.SelfLinkToName(dcl.FlattenString(m["name"]))
 
 	if _, err := c.GetInspectTemplate(ctx, r); err != nil {
 		c.Config.Logger.WarningWithContextf(ctx, "get returned error: %v", err)

@@ -192,7 +192,6 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 			"iam_instance_profile": {
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 				Description: "The name of the AWS IAM role assigned to nodes in the pool.",
 			},
 
@@ -218,6 +217,7 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
+				ForceNew:    true,
 				Description: "Optional. The AWS instance type. When unspecified, it defaults to `m5.large`.",
 			},
 
@@ -225,7 +225,7 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 				Type:        schema.TypeMap,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "Optional. The initial labels assigned to nodes of this node pool. An object containing a list of \"key\": value pairs. Example: { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.",
+				Description: "Optional. The initial labels assigned to nodes of this node pool. An object containing a list of \"key\": value pairs. Example { \"name\": \"wrench\", \"mass\": \"1.3kg\", \"count\": \"3\" }.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 
@@ -429,12 +429,12 @@ func resourceContainerAwsNodePoolCreate(d *schema.ResourceData, meta interface{}
 		Project:           dcl.String(project),
 	}
 
-	id, err := replaceVarsForId(d, config, "projects/{{project}}/locations/{{location}}/awsClusters/{{cluster}}/awsNodePools/{{name}}")
+	id, err := obj.ID()
 	if err != nil {
 		return fmt.Errorf("error constructing id: %s", err)
 	}
 	d.SetId(id)
-	createDirective := CreateDirective
+	directive := CreateDirective
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -451,7 +451,7 @@ func resourceContainerAwsNodePoolCreate(d *schema.ResourceData, meta interface{}
 	} else {
 		client.Config.BasePath = bp
 	}
-	res, err := client.ApplyNodePool(context.Background(), obj, createDirective...)
+	res, err := client.ApplyNodePool(context.Background(), obj, directive...)
 
 	if _, ok := err.(dcl.DiffAfterApplyError); ok {
 		log.Printf("[DEBUG] Diff after apply returned from the DCL: %s", err)

@@ -27,7 +27,6 @@ func resourceComputeInstanceGroupManager() *schema.Resource {
 			Update: schema.DefaultTimeout(15 * time.Minute),
 			Delete: schema.DefaultTimeout(15 * time.Minute),
 		},
-
 		Schema: map[string]*schema.Schema{
 			"base_instance_name": {
 				Type:        schema.TypeString,
@@ -267,7 +266,30 @@ func resourceComputeInstanceGroupManager() *schema.Resource {
 					},
 				},
 			},
-
+			"all_instances_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `Specifies configuration that overrides the instance template configuration for the group.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"metadata": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Set:         schema.HashString,
+							Description: `The metadata key-value pairs that you want to patch onto the instance. For more information, see Project and instance metadata,`,
+						},
+						"labels": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Set:         schema.HashString,
+							Description: `The label key-value pairs that you want to patch onto the instance,`,
+						},
+					},
+				},
+			},
 			"wait_for_instances": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -279,7 +301,8 @@ func resourceComputeInstanceGroupManager() *schema.Resource {
 				Optional:     true,
 				Default:      "STABLE",
 				ValidateFunc: validation.StringInSlice([]string{"STABLE", "UPDATED"}, false),
-				Description:  `When used with wait_for_instances specifies the status to wait for. When STABLE is specified this resource will wait until the instances are stable before returning. When UPDATED is set, it will wait for the version target to be reached and any per instance configs to be effective as well as all instances to be stable before returning.`,
+
+				Description: `When used with wait_for_instances specifies the status to wait for. When STABLE is specified this resource will wait until the instances are stable before returning. When UPDATED is set, it will wait for the version target to be reached and any per instance configs to be effective and all instances configs to be effective as well as all instances to be stable before returning.`,
 			},
 			"stateful_disk": {
 				Type:        schema.TypeSet,
@@ -329,6 +352,20 @@ func resourceComputeInstanceGroupManager() *schema.Resource {
 										Type:        schema.TypeBool,
 										Computed:    true,
 										Description: `A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by version field on Instance Group Manager.`,
+									},
+								},
+							},
+						},
+						"all_instances_config": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Description: `Status of all-instances configuration on the group.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"effective": {
+										Type:        schema.TypeBool,
+										Computed:    true,
+										Description: `A bit indicating whether this configuration has been applied to all managed instances in the group.`,
 									},
 								},
 							},
@@ -423,6 +460,7 @@ func resourceComputeInstanceGroupManagerCreate(d *schema.ResourceData, meta inte
 		AutoHealingPolicies: expandAutoHealingPolicies(d.Get("auto_healing_policies").([]interface{})),
 		Versions:            expandVersions(d.Get("version").([]interface{})),
 		UpdatePolicy:        expandUpdatePolicy(d.Get("update_policy").([]interface{})),
+		AllInstancesConfig:  expandAllInstancesConfig(nil, d.Get("all_instances_config").([]interface{})),
 		StatefulPolicy:      expandStatefulPolicy(d.Get("stateful_disk").(*schema.Set).List()),
 		// Force send TargetSize to allow a value of 0.
 		ForceSendFields: []string{"TargetSize"},
@@ -630,6 +668,11 @@ func resourceComputeInstanceGroupManagerRead(d *schema.ResourceData, meta interf
 	if err = d.Set("update_policy", flattenUpdatePolicy(manager.UpdatePolicy)); err != nil {
 		return fmt.Errorf("Error setting update_policy in state: %s", err.Error())
 	}
+	if manager.AllInstancesConfig != nil {
+		if err = d.Set("all_instances_config", flattenAllInstancesConfig(manager.AllInstancesConfig)); err != nil {
+			return fmt.Errorf("Error setting all_instances_config in state: %s", err.Error())
+		}
+	}
 	if err = d.Set("status", flattenStatus(manager.Status)); err != nil {
 		return fmt.Errorf("Error setting status in state: %s", err.Error())
 	}
@@ -692,6 +735,16 @@ func resourceComputeInstanceGroupManagerUpdate(d *schema.ResourceData, meta inte
 
 	if d.HasChange("update_policy") {
 		updatedManager.UpdatePolicy = expandUpdatePolicy(d.Get("update_policy").([]interface{}))
+		change = true
+	}
+
+	if d.HasChange("all_instances_config") {
+		oldAic, newAic := d.GetChange("all_instances_config")
+		if newAic == nil || len(newAic.([]interface{})) == 0 {
+			updatedManager.NullFields = append(updatedManager.NullFields, "AllInstancesConfig")
+		} else {
+			updatedManager.AllInstancesConfig = expandAllInstancesConfig(oldAic.([]interface{}), newAic.([]interface{}))
+		}
 		change = true
 	}
 
@@ -838,7 +891,7 @@ func resourceComputeInstanceGroupManagerDelete(d *schema.ResourceData, meta inte
 func computeIGMWaitForInstanceStatus(d *schema.ResourceData, meta interface{}) error {
 	waitForUpdates := d.Get("wait_for_instances_status").(string) == "UPDATED"
 	conf := resource.StateChangeConf{
-		Pending: []string{"creating", "error", "updating per instance configs", "reaching version target"},
+		Pending: []string{"creating", "error", "updating per instance configs", "reaching version target", "updating all instances config"},
 		Target:  []string{"created"},
 		Refresh: waitForInstancesRefreshFunc(getManager, waitForUpdates, d, meta),
 		Timeout: d.Timeout(schema.TimeoutCreate),
@@ -1020,12 +1073,67 @@ func flattenUpdatePolicy(updatePolicy *compute.InstanceGroupManagerUpdatePolicy)
 	return results
 }
 
+func expandAllInstancesConfig(old []interface{}, new []interface{}) *compute.InstanceGroupManagerAllInstancesConfig {
+	var properties *compute.InstancePropertiesPatch
+	for _, raw := range new {
+		properties = &compute.InstancePropertiesPatch{}
+		data := raw.(map[string]interface{})
+		properties.Metadata = convertStringMap(data["metadata"].(map[string]interface{}))
+		if len(properties.Metadata) == 0 {
+			properties.NullFields = append(properties.NullFields, "Metadata")
+		}
+		properties.Labels = convertStringMap(data["labels"].(map[string]interface{}))
+		if len(properties.Labels) == 0 {
+			properties.NullFields = append(properties.NullFields, "Labels")
+		}
+	}
+
+	if properties != nil {
+		for _, raw := range old {
+			data := raw.(map[string]interface{})
+			for k := range data["metadata"].(map[string]interface{}) {
+				if _, exist := properties.Metadata[k]; !exist {
+					properties.NullFields = append(properties.NullFields, fmt.Sprintf("Metadata.%s", k))
+				}
+			}
+			for k := range data["labels"].(map[string]interface{}) {
+				if _, exist := properties.Labels[k]; !exist {
+					properties.NullFields = append(properties.NullFields, fmt.Sprintf("Labels.%s", k))
+				}
+			}
+		}
+	}
+	if properties != nil {
+		allInstancesConfig := &compute.InstanceGroupManagerAllInstancesConfig{}
+		allInstancesConfig.Properties = properties
+		return allInstancesConfig
+	} else {
+		return nil
+	}
+}
+
+func flattenAllInstancesConfig(allInstancesConfig *compute.InstanceGroupManagerAllInstancesConfig) []map[string]interface{} {
+	results := []map[string]interface{}{}
+	props := map[string]interface{}{}
+	if len(allInstancesConfig.Properties.Metadata) > 0 {
+		props["metadata"] = allInstancesConfig.Properties.Metadata
+	}
+	if len(allInstancesConfig.Properties.Labels) > 0 {
+		props["labels"] = allInstancesConfig.Properties.Labels
+	}
+	results = append(results, props)
+	return results
+}
+
 func flattenStatus(status *compute.InstanceGroupManagerStatus) []map[string]interface{} {
 	results := []map[string]interface{}{}
 	data := map[string]interface{}{
 		"is_stable":      status.IsStable,
 		"stateful":       flattenStatusStateful(status.Stateful),
 		"version_target": flattenStatusVersionTarget(status.VersionTarget),
+	}
+	if status.AllInstancesConfig != nil {
+		data["all_instances_config"] = flattenStatusAllInstancesConfig(status.AllInstancesConfig)
 	}
 	results = append(results, data)
 	return results
@@ -1054,6 +1162,15 @@ func flattenStatusVersionTarget(versionTarget *compute.InstanceGroupManagerStatu
 	results := []map[string]interface{}{}
 	data := map[string]interface{}{
 		"is_reached": versionTarget.IsReached,
+	}
+	results = append(results, data)
+	return results
+}
+
+func flattenStatusAllInstancesConfig(allInstancesConfig *compute.InstanceGroupManagerStatusAllInstancesConfig) []map[string]interface{} {
+	results := []map[string]interface{}{}
+	data := map[string]interface{}{
+		"effective": allInstancesConfig.Effective,
 	}
 	results = append(results, data)
 	return results

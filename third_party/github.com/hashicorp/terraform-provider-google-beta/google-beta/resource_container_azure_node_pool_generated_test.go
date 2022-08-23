@@ -312,9 +312,11 @@ func testAccContainerAzureNodePool_BetaBasicHandWritten(context map[string]inter
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
+  provider = google-beta
 }
 
 resource "google_container_azure_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "mmv2@google.com"
@@ -351,6 +353,7 @@ resource "google_container_azure_cluster" "primary" {
 }
 
 resource "google_container_azure_client" "basic" {
+  provider = google-beta
   application_id = "%{azure_app}"
   location       = "us-west1"
   name           = "tf-test-client-name%{random_suffix}"
@@ -359,6 +362,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 resource "google_container_azure_node_pool" "primary" {
+  provider = google-beta
   autoscaling {
     max_node_count = 3
     min_node_count = 2
@@ -413,12 +417,14 @@ resource "google_container_azure_node_pool" "primary" {
 func testAccContainerAzureNodePool_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
 	return Nprintf(`
 data "google_container_azure_versions" "versions" {
+  provider = google-beta
   project = "%{project_name}"
   location = "us-west1"
 }
 
 
 resource "google_container_azure_cluster" "primary" {
+  provider = google-beta
   authorization {
     admin_users {
       username = "mmv2@google.com"
@@ -455,6 +461,7 @@ resource "google_container_azure_cluster" "primary" {
 }
 
 resource "google_container_azure_client" "basic" {
+  provider = google-beta
   application_id = "%{azure_app}"
   location       = "us-west1"
   name           = "tf-test-client-name%{random_suffix}"
@@ -463,6 +470,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 resource "google_container_azure_node_pool" "primary" {
+  provider = google-beta
   autoscaling {
     max_node_count = 3
     min_node_count = 2

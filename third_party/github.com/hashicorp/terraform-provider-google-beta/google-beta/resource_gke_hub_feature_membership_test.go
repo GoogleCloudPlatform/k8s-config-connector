@@ -101,7 +101,7 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -118,7 +118,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -151,7 +151,7 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -168,7 +168,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -207,7 +207,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "unstructured"
       git {
@@ -235,7 +235,7 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_third.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -256,6 +256,29 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
   }
   provider = google-beta
 }
+
+resource "google_gke_hub_feature_membership" "feature_member_4" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership_fourth.membership_id
+  configmanagement {
+    version = "1.12.0"
+    policy_controller {
+      enabled = true
+      audit_interval_seconds = "100"
+      template_library_installed = true
+      mutation_enabled = true
+      monitoring {
+        backends = ["CLOUD_MONITORING", "PROMETHEUS"]
+      }
+    }
+  }
+  provider = google-beta
+}
+
+
+
 `, context)
 }
 
@@ -279,7 +302,7 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_third.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     policy_controller {
       enabled = true
       audit_interval_seconds = "100"
@@ -397,7 +420,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       git {
         sync_repo = "https://github.com/hashicorp/terraform"
@@ -463,7 +486,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.10.1"
+    version = "1.12.0"
     config_sync {
       git {
         sync_repo = "https://github.com/hashicorp/terraform"
@@ -536,7 +559,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.9.0"
+    version = "1.12.0"
     config_sync {
       git {
         sync_repo = "https://github.com/hashicorp/terraform"
@@ -577,6 +600,16 @@ resource "google_container_cluster" "tertiary" {
   depends_on = [google_project_service.container, google_project_service.container, google_project_service.gkehub]
 }
 
+
+resource "google_container_cluster" "quarternary" {
+  name               = "tf-test-cl4%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
 resource "google_gke_hub_membership" "membership" {
   project = google_project.project.project_id
   membership_id = "tf-test1%{random_suffix}"
@@ -607,6 +640,18 @@ resource "google_gke_hub_membership" "membership_third" {
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${google_container_cluster.tertiary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+
+resource "google_gke_hub_membership" "membership_fourth" {
+  project = google_project.project.project_id
+  membership_id = "tf-test4%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.quarternary.id}"
     }
   }
   description = "test resource."
